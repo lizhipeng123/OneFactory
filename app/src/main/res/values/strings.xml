@@ -1,3 +1,18 @@
 <resources>
-    <string name="app_name">OneFactory</string>
+    <string name="app_name">测试项目</string>
+
+    <string name="loginusername">请输入账号</string>
+    <string name="loginpassword">请输入密码</string>
+    <string name="login">登录</string>
+    <string name="resgister">注册</string>
+    <string name="Retrieve">找回密码</string>
+    <string name="agreement">已阅读并同意《<u>用户协议</u>》</string>
+    <string name="rememberpassword">记住密码</string>
+    <string name="open">开启</string>
+    <string name="openlogin">自动登录</string>
+
+    <string name="work">工作</string>
+    <string name="office">在办</string>
+    <string name="information">资讯</string>
+    <string name="setup">设置</string>
 </resources>
