@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="系统设置"
+            android:text="@string/setupSystem"
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_60sp" />
     </android.support.v7.widget.Toolbar>

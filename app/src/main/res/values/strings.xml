@@ -15,4 +15,15 @@
     <string name="office">在办</string>
     <string name="information">资讯</string>
     <string name="setup">设置</string>
+
+    <string name="informationCommunicate">资讯沟通</string>
+    <string name="officeMatter">在办事项</string>
+    <string name="setupSystem">系统设置</string>
+    <string name="workTask">工作任务</string>
+
+    <string name="noHttp">网络连接错误</string>
+
+    <string name="carid">编号</string>
+    <string name="applyname">申请人</string>
+    <string name="cardate">出车日期</string>
 </resources>

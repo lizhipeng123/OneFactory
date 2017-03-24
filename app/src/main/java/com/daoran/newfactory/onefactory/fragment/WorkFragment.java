@@ -3,6 +3,7 @@ package com.daoran.newfactory.onefactory.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,23 +16,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.SqlCarApplyActivity;
 
 
 /**
  * Created by lizhipeng on 2017/3/22.
  */
 
-public class WorkFragment extends Fragment {
+public class WorkFragment extends Fragment implements View.OnClickListener {
 
     Activity mactivity;
     private Toolbar tbarWrok;
     private View view;
     private int tvWidthNumber;
+    private TextView tvOpenCarDetail, tvSign, tvSqlSign, tvBusRoute, tvProduction, tvSqlgoods;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getViews();
     }
 
     @Nullable
@@ -39,22 +41,39 @@ public class WorkFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mactivity = getActivity();
         view = inflater.inflate(R.layout.fragment_work, container, false);
-        tbarWrok = (Toolbar) view.findViewById(R.id.tbarWrok);
-        tbarWrok.setTitle("");
-
-        TextView tvSign = (TextView) view.findViewById(R.id.tvSign);
-        int spec = View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);
-        tvSign.measure(spec,spec);
-        tvWidthNumber = tvSign.getMeasuredWidth();
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) tvSign.getLayoutParams();
-        lp.height = tvWidthNumber;
-        tvSign.setLayoutParams(lp);
 
         getViews();
+        initViews();
+        setListener();
         return view;
     }
 
-    private void getViews(){
+    private void getViews() {
+        tbarWrok = (Toolbar) view.findViewById(R.id.tbarWrok);
+        tvOpenCarDetail = (TextView) view.findViewById(R.id.tvOpenCarDetail);
+        tvSign = (TextView) view.findViewById(R.id.tvSign);
+        tvSqlSign = (TextView) view.findViewById(R.id.tvSqlSign);
+        tvBusRoute = (TextView) view.findViewById(R.id.tvBusRoute);
+        tvProduction = (TextView) view.findViewById(R.id.tvProduction);
+        tvSqlgoods = (TextView) view.findViewById(R.id.tvSqlgoods);
+    }
 
+    private void initViews() {
+        tbarWrok.setTitle("");
+        tvOpenCarDetail.setOnClickListener(this);
+
+    }
+
+    private void setListener() {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tvOpenCarDetail:
+                getActivity().startActivity(new Intent(getActivity(), SqlCarApplyActivity.class));
+                break;
+        }
     }
 }

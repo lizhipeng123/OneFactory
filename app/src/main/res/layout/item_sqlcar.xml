@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+    <!-- 编号 -->
+    <TextView
+        android:id="@+id/tvSqlCarId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/shape_text_sql_boild"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dimen_55sp" />
+    <!-- 编号 -->
+    <TextView
+        android:id="@+id/tvSqlApplyName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/shape_text_sql_boild"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dimen_55sp" />
+    <!-- 出车日期 -->
+    <TextView
+        android:id="@+id/tvSqlCarDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/shape_text_sql_boild"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dimen_55sp" />
+</LinearLayout>

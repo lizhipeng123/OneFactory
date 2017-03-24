@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tbarSqlCarapply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:minHeight="?attr/actionBarSize">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/dimen_60sp"
+            android:textColor="@color/black"
+            android:text="用车查询" />
+        <ImageButton
+            android:id="@+id/ibSqlCarDialog"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/matte_white"/>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:paddingTop="@dimen/dimen_20"
+            android:paddingBottom="@dimen/dimen_20"
+            android:textSize="@dimen/dimen_60sp"
+            android:textColor="@color/black"
+            android:text="@string/carid" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:paddingTop="@dimen/dimen_20"
+            android:paddingBottom="@dimen/dimen_20"
+            android:textSize="@dimen/dimen_60sp"
+            android:textColor="@color/black"
+            android:text="@string/applyname" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingTop="@dimen/dimen_20"
+            android:paddingBottom="@dimen/dimen_20"
+            android:textSize="@dimen/dimen_60sp"
+            android:textColor="@color/black"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text="@string/cardate" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lvSqlCar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/lightblue" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnSqlopen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/dimen_60sp"
+            android:textColor="@color/black"
+            android:text="直接进入" />
+    </LinearLayout>
+</LinearLayout>
