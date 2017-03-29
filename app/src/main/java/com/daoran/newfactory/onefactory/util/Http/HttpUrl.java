@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.util.Http;
 
 /**
+ * 接口地址
  * Created by lizhipeng on 2017/3/23.
  */
 
@@ -22,5 +23,18 @@ public class HttpUrl {
     public static final String updateAppUrl = "AppVersion/GetAppVersion";
     /*签到*/
     public static final String savebillUrl = "OutRegister/SaveBill/";
+    /*出车列表*/
+    public static final String sqlCarApply = "UCarsApply/UCarsApplySearch/";
+
+    public static final String updateCarApply = "UCarsExamine/CarNumberBind/";
+
+    public static final String sqldriver = "UCarsExamine/DriverBind/";
+    /*获取车单*/
+    public static final String sqlcarsApplyModel = "UCarsApply/GetUCarsApplyModel/";
+    /*生产单查询*/
+    public static final String sqlcork = "QACwork/BindSearchQACworkAPP/";
+    /*查货跟踪表*/
+    public static final String sqlcorgetdetail = "QACwork/APPGetDetail/";
+
 
 }

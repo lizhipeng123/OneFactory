@@ -436,9 +436,11 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/dimen_58sp" />
 
-                        <Spinner
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                        <EditText
+                            android:id="@+id/etStartDataClick"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -456,9 +458,11 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/dimen_60sp" />
 
-                        <Spinner
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                        <EditText
+                            android:id="@+id/etEndDataClick"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"/>
                     </LinearLayout>
                 </LinearLayout>
 

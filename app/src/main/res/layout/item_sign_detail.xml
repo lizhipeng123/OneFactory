@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/llContent"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvDatat"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dimen_20"
+            android:paddingTop="@dimen/dimen_20"
+            android:text="jlfkdjlfjld"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_45sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dimen_20"
+            android:paddingTop="@dimen/dimen_20"
+            android:text="李志鹏"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_45sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dimen_20"
+            android:paddingTop="@dimen/dimen_20"
+            android:text="午餐后"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_45sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dimen_20"
+            android:paddingTop="@dimen/dimen_20"
+            android:text="2017/3/28 14:49:28"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_45sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dimen_20"
+            android:paddingTop="@dimen/dimen_20"
+            android:text="杭州市道然进出口有限公司"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_45sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dimen_20"
+            android:paddingTop="@dimen/dimen_20"
+            android:text="说明"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_45sp" />
+    </LinearLayout>
+</LinearLayout>

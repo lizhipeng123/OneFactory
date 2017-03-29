@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.bean;
 
 /**
+ * fragment和toolbar控件实体类
  * Created by lizhipeng on 2017/3/15.
  */
 

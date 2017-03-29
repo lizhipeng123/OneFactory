@@ -57,6 +57,29 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
+        <!-- 外勤签到查询 -->
+        <activity
+            android:name=".activity.work.SqlSiganDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <!-- 外勤签到查询测试类 -->
+        <activity
+            android:name=".activity.work.DebugDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <!-- 生产日报查询测试类 -->
+        <activity
+            android:name=".activity.work.ProductionActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <!-- 查货跟踪查询测试类 -->
+        <activity
+            android:name=".activity.work.CommoditySqlActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

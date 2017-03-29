@@ -16,7 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.CommoditySqlActivity;
+import com.daoran.newfactory.onefactory.activity.work.DebugDetailActivity;
+import com.daoran.newfactory.onefactory.activity.work.ProductionActivity;
 import com.daoran.newfactory.onefactory.activity.work.SqlCarApplyActivity;
+import com.daoran.newfactory.onefactory.activity.work.SqlSiganDetailActivity;
+import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 
 
 /**
@@ -41,7 +46,6 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mactivity = getActivity();
         view = inflater.inflate(R.layout.fragment_work, container, false);
-
         getViews();
         initViews();
         setListener();
@@ -61,7 +65,9 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
     private void initViews() {
         tbarWrok.setTitle("");
         tvOpenCarDetail.setOnClickListener(this);
-
+        tvSqlSign.setOnClickListener(this);
+        tvProduction.setOnClickListener(this);
+        tvSqlgoods.setOnClickListener(this);
     }
 
     private void setListener() {
@@ -72,8 +78,21 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvOpenCarDetail:
+                ResponseDialog.showLoading(getActivity(), "请稍后");
                 getActivity().startActivity(new Intent(getActivity(), SqlCarApplyActivity.class));
                 break;
+            case R.id.tvSqlSign:
+                ResponseDialog.showLoading(getActivity(), "请稍后");
+                getActivity().startActivity(new Intent(getActivity(), DebugDetailActivity.class));
+                break;
+            case R.id.tvProduction:
+                ResponseDialog.showLoading(getActivity(), "请稍后");
+                getActivity().startActivity(new Intent(getActivity(), ProductionActivity.class));
+                break;
+            case R.id.tvSqlgoods:
+                getActivity().startActivity(new Intent(getActivity(), CommoditySqlActivity.class));
+                break;
         }
+
     }
 }

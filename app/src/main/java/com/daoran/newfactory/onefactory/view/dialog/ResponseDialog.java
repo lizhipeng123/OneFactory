@@ -3,7 +3,10 @@ package com.daoran.newfactory.onefactory.view.dialog;
 import android.content.Context;
 import android.os.Handler;
 
+import com.daoran.newfactory.onefactory.view.dialog.CustomProgress;
+
 /**
+ * 加载等待dialog
  * Created by lizhipeng on 2017/3/24.
  */
 
@@ -29,13 +32,19 @@ public class ResponseDialog {
                     }
                 }
             }, 60 * 1000);
+        }else{
+            progress.dismiss();
         }
     }
 
     public static void closeLoading() {
         if (progress != null) {
-            progress.cancel();
+            progress.dismiss();
             progress = null;
         }
+    }
+
+    public static void isShowing() {
+        progress.isShowing();
     }
 }

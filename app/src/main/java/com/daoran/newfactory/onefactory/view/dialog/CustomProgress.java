@@ -4,11 +4,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 
 /**
+ *  加载等待dialog
  * Created by lizhipeng on 2017/3/24.
  */
 
@@ -19,6 +21,11 @@ public class CustomProgress extends Dialog {
     public CustomProgress(Context context) {
         super(context);
         this.contextt = context;
+    }
+
+    @Override
+    public boolean isShowing() {
+        return super.isShowing();
     }
 
     public CustomProgress(Context context, int themeResId) {
@@ -36,7 +43,7 @@ public class CustomProgress extends Dialog {
         if (progress == null) {
             return;
         }
-        View progressBar = progress.findViewById(R.id.loadbar);
+        View progressBar = (ProgressBar)progress.findViewById(R.id.loadbar);
         progressBar.setVisibility(View.VISIBLE);
     }
 

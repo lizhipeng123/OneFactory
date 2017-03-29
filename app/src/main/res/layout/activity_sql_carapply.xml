@@ -1,35 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/tbarSqlCarapply"
+        android:id="@+id/tbarCarapply"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:minHeight="?attr/actionBarSize">
 
-        <TextView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="@dimen/dimen_60sp"
-            android:textColor="@color/black"
-            android:text="用车查询" />
-        <ImageButton
-            android:id="@+id/ibSqlCarDialog"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:layout_marginRight="10dp"
-            android:src="@mipmap/matte_white"/>
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="@dimen/dimen_50"
+                android:layout_height="@dimen/dimen_50"
+                android:src="@mipmap/title_back_gray" />
+
+            <TextView
+                android:id="@+id/tvTbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="出车单展示"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_60sp" />
+
+            <ImageView
+                android:id="@+id/ivSearch"
+                android:layout_width="@dimen/dimen_60"
+                android:layout_height="@dimen/dimen_60"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/dimen_30"
+                android:src="@mipmap/search" />
+        </RelativeLayout>
+
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
+        android:id="@+id/lltitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tbarCarapply"
         android:orientation="horizontal">
 
         <TextView
@@ -38,11 +57,11 @@
             android:layout_weight="1"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:paddingTop="@dimen/dimen_20"
             android:paddingBottom="@dimen/dimen_20"
-            android:textSize="@dimen/dimen_60sp"
+            android:paddingTop="@dimen/dimen_20"
+            android:text="@string/carid"
             android:textColor="@color/black"
-            android:text="@string/carid" />
+            android:textSize="@dimen/dimen_60sp" />
 
         <TextView
             android:layout_width="0dp"
@@ -50,36 +69,43 @@
             android:layout_weight="1"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:paddingTop="@dimen/dimen_20"
             android:paddingBottom="@dimen/dimen_20"
-            android:textSize="@dimen/dimen_60sp"
+            android:paddingTop="@dimen/dimen_20"
+            android:text="@string/applyname"
             android:textColor="@color/black"
-            android:text="@string/applyname" />
+            android:textSize="@dimen/dimen_60sp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingTop="@dimen/dimen_20"
-            android:paddingBottom="@dimen/dimen_20"
-            android:textSize="@dimen/dimen_60sp"
-            android:textColor="@color/black"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:text="@string/cardate" />
+            android:paddingBottom="@dimen/dimen_20"
+            android:paddingTop="@dimen/dimen_20"
+            android:text="@string/cardate"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_60sp" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/lvSqlCar"
+    <com.daoran.newfactory.onefactory.view.RefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_below="@+id/lltitle"
+        android:id="@+id/swipe_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/lightblue" />
+        android:layout_height="fill_parent">
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent" />
+    </com.daoran.newfactory.onefactory.view.RefreshLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:background="@color/white"
+        android:layout_below="@+id/swipe_container"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -87,8 +113,8 @@
             android:id="@+id/btnSqlopen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/dimen_60sp"
+            android:text="直接进入"
             android:textColor="@color/black"
-            android:text="直接进入" />
+            android:textSize="@dimen/dimen_60sp" />
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
