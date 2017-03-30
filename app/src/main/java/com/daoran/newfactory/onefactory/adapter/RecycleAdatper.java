@@ -11,9 +11,6 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.bean.SqlCarApplyBean;
-import com.gan.myrecycleview.CommonAdapter;
-import com.gan.myrecycleview.base.ViewHolder;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

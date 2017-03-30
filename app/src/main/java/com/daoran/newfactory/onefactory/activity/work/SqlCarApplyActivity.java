@@ -25,8 +25,6 @@ import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.RefreshLayout;
 import com.daoran.newfactory.onefactory.view.dialog.ContentDialog;
-import com.gan.myrecycleview.CommonAdapter;
-import com.gan.myrecycleview.MyRecycleView;
 
 import com.daoran.newfactory.onefactory.view.RefreshLayout.OnLoadListener;
 import com.google.gson.Gson;

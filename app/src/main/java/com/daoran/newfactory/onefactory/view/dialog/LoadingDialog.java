@@ -2,7 +2,6 @@ package com.daoran.newfactory.onefactory.view.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -12,6 +11,7 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.view.LVCircularRing;
 
 /**
+ * 加载提示弹框
  * Created by lizhipeng on 2017/3/29.
  */
 

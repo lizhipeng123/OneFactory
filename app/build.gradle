@@ -30,6 +30,5 @@ dependencies {
     compile 'com.zhy:okhttputils:2.6.2'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.android.support:recyclerview-v7:25.2.0'
-    compile project(':myrecycleview')
     compile files('libry/PullToRefreshListView.jar')
 }
