@@ -16,9 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.BusRouteActivity;
 import com.daoran.newfactory.onefactory.activity.work.CommoditySqlActivity;
 import com.daoran.newfactory.onefactory.activity.work.DebugDetailActivity;
 import com.daoran.newfactory.onefactory.activity.work.ProductionActivity;
+import com.daoran.newfactory.onefactory.activity.work.SignActivity;
 import com.daoran.newfactory.onefactory.activity.work.SqlCarApplyActivity;
 import com.daoran.newfactory.onefactory.activity.work.SqlSiganDetailActivity;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
@@ -68,6 +70,8 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
         tvSqlSign.setOnClickListener(this);
         tvProduction.setOnClickListener(this);
         tvSqlgoods.setOnClickListener(this);
+        tvBusRoute.setOnClickListener(this);
+        tvSign.setOnClickListener(this);
     }
 
     private void setListener() {
@@ -77,20 +81,23 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tvOpenCarDetail:
-                ResponseDialog.showLoading(getActivity(), "请稍后");
+            case R.id.tvOpenCarDetail://用车单
                 getActivity().startActivity(new Intent(getActivity(), SqlCarApplyActivity.class));
                 break;
-            case R.id.tvSqlSign:
-                ResponseDialog.showLoading(getActivity(), "请稍后");
+            case R.id.tvSqlSign://查询签到详情
                 getActivity().startActivity(new Intent(getActivity(), DebugDetailActivity.class));
                 break;
-            case R.id.tvProduction:
-                ResponseDialog.showLoading(getActivity(), "请稍后");
+            case R.id.tvProduction://生产日报
                 getActivity().startActivity(new Intent(getActivity(), ProductionActivity.class));
                 break;
-            case R.id.tvSqlgoods:
+            case R.id.tvSqlgoods://查货跟踪单
                 getActivity().startActivity(new Intent(getActivity(), CommoditySqlActivity.class));
+                break;
+            case R.id.tvBusRoute://公交路线
+                getActivity().startActivity(new Intent(getActivity(), BusRouteActivity.class));
+                break;
+            case R.id.tvSign://外勤签到
+                getActivity().startActivity(new Intent(getActivity(), SignActivity.class));
                 break;
         }
 

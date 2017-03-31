@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 查货跟踪单
  * Created by lizhipeng on 2017/3/29.
  */
 

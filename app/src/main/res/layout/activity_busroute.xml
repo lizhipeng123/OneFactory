@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivBusroute"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/title_back_gray" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="地图定位"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_60sp" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/btnOpen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="点击展开收缩"/>
+        <com.daoran.newfactory.onefactory.view.ExpandLayout
+            android:id="@+id/expandLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffff00"
+            android:orientation="vertical"
+            android:clickable="true">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center"-->
+                <!--android:orientation="horizontal">-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="起点："-->
+                    <!--android:textSize="@dimen/dimen_50sp"-->
+                    <!--android:layout_weight="0.5"-->
+                    <!--android:textColor="@color/black"/>-->
+                <!--<EditText-->
+                    <!--android:id="@+id/etStartSpot"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="@dimen/dimen_50sp"-->
+                    <!--android:textColor="@color/black"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:text="信义坊"/>-->
+                <!--<Spinner-->
+                    <!--android:id="@+id/spinnerStart"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="@dimen/dimen_50sp"-->
+                    <!--android:textColor="@color/black"-->
+                    <!--android:layout_weight="1" />-->
+            <!--</LinearLayout>-->
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center"-->
+                <!--android:orientation="horizontal">-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="终点："-->
+                    <!--android:textSize="@dimen/dimen_50sp"-->
+                    <!--android:layout_weight="0.5"-->
+                    <!--android:textColor="@color/black"/>-->
+                <!--<EditText-->
+                    <!--android:id="@+id/etEndSpot"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="@dimen/dimen_50sp"-->
+                    <!--android:textColor="@color/black"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:text="经纬创意产业园"/>-->
+                <!--<Spinner-->
+                    <!--android:id="@+id/spinnerEnd"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="@dimen/dimen_50sp"-->
+                    <!--android:textColor="@color/black"-->
+                    <!--android:layout_weight="1" />-->
+            <!--</LinearLayout>-->
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center"-->
+                <!--android:orientation="horizontal">-->
+                <!--<Button-->
+                    <!--android:id="@+id/btnCarRoute"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="@dimen/dimen_50sp"-->
+                    <!--android:textColor="@color/black"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="驾车"/>-->
+                <!--<Button-->
+                    <!--android:id="@+id/btnBusRoute"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="@dimen/dimen_50sp"-->
+                    <!--android:textColor="@color/black"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="公交"/>-->
+                <!--<Button-->
+                    <!--android:id="@+id/btnFootRoute"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="@dimen/dimen_50sp"-->
+                    <!--android:textColor="@color/black"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="步行"/>-->
+            <!--</LinearLayout>-->
+        </com.daoran.newfactory.onefactory.view.ExpandLayout>
+        <LinearLayout
+            android:id="@+id/linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/clear_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="clear_location" />
+        </LinearLayout>
+
+        <com.baidu.mapapi.map.MapView
+            android:id="@+id/bMapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true" />
+    </LinearLayout>
+</LinearLayout>
