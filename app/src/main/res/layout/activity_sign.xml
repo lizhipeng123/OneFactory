@@ -36,27 +36,42 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="签到统计" />
+                android:text="签到统计"
+                android:textSize="@dimen/dimen_50sp" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="@dimen/dimen_30"
             android:paddingRight="@dimen/dimen_30">
-
-            <com.baidu.mapapi.map.MapView
-                android:id="@+id/mapSign"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_800" />
+                android:layout_height="wrap_content">
+                <com.baidu.mapapi.map.MapView
+                    android:id="@+id/mapSign"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_800" />
+                <ImageView
+                    android:id="@+id/ivClickMarke"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:clickable="true"
+                    android:src="@mipmap/type_select_btn_nor"/>
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_50"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -66,17 +81,27 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="当前地点" />
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:text="当前地点："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_45sp" />
 
                 <TextView
                     android:id="@+id/tvSignAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_30"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_45sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_50"
+                android:layout_marginTop="@dimen/dimen_50"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -85,17 +110,25 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="当前日期："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_45sp" />
 
                 <TextView
                     android:id="@+id/tvSignDate"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_45sp" />
 
                 <Spinner
                     android:id="@+id/SpinnerSign"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:textSize="@dimen/dimen_45sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -107,11 +140,20 @@
                     android:id="@+id/etRemark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusableInTouchMode="false"/>
+                    android:focusableInTouchMode="false"
+                    android:paddingTop="@dimen/dimen_10"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:hint="填写备注"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:textColorHint="@color/gray"
+                    android:gravity="top|left"
+                    android:minLines="3"
+                    android:textSize="@dimen/dimen_45sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_30"
                     android:orientation="horizontal">
 
                     <Button
@@ -126,7 +168,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="确定" />
+                        android:text="保存" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

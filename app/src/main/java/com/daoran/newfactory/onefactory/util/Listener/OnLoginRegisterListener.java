@@ -1,4 +1,4 @@
-package com.daoran.newfactory.onefactory.Listener;
+package com.daoran.newfactory.onefactory.util.Listener;
 
 /**
  * Created by lizhipeng on 2017/3/21.

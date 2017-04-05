@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="signSpinner">
+        <item>上班</item>
+        <item>午餐前</item>
+        <item>午餐后</item>
+        <item>到达目的地</item>
+        <item>离开目的地</item>
+        <item>回公司</item>
+        <item>下班</item>
+        <item>其他</item>
+    </string-array>
+</resources>

@@ -250,7 +250,7 @@ public class FragmentTabHost extends TabHost implements
 
         if (mAttached) {
             // If we are already attached to the window, then check to make
-            // sure this tab's fragment is inactive if it exists. This shouldn't
+            // sure this tab'SignDetailAdapter fragment is inactive if it exists. This shouldn't
             // normally happen.
             info.fragment = mFragmentManager.findFragmentByTag(tag);
             if (info.fragment != null && !info.fragment.isDetached()) {

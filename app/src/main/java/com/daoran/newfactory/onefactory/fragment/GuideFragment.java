@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.daoran.newfactory.onefactory.Listener.OnLoginRegisterListener;
+import com.daoran.newfactory.onefactory.util.Listener.OnLoginRegisterListener;
 import com.daoran.newfactory.onefactory.R;
 
 

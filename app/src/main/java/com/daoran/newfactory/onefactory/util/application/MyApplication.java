@@ -1,4 +1,4 @@
-package com.daoran.newfactory.onefactory.application;
+package com.daoran.newfactory.onefactory.util.application;
 
 import android.app.Application;
 

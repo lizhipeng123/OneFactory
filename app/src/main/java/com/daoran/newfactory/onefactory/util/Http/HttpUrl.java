@@ -35,6 +35,7 @@ public class HttpUrl {
     public static final String sqlcork = "QACwork/BindSearchQACworkAPP/";
     /*查货跟踪表*/
     public static final String sqlcorgetdetail = "QACwork/APPGetDetail/";
-
+    /*签到统计*/
+    public static final String BindSearchAPPPage ="OutRegister/BindSearchAPPPage/";
 
 }

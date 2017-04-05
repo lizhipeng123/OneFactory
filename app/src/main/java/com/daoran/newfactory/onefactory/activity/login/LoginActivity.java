@@ -86,7 +86,7 @@ public class LoginActivity extends BaseFrangmentActivity implements View.OnClick
     }
 
     private void postLogin() {
-        String loginuserUrl = HttpUrl.Url + HttpUrl.loginUrl;
+        String loginuserUrl = HttpUrl.debugoneUrl + HttpUrl.loginUrl;
         user = etUsername.getText().toString();
         password = etPassword.getText().toString();
         if (NetWork.isNetWorkAvailable(this)) {
