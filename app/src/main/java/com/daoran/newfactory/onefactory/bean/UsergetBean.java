@@ -7,10 +7,6 @@ package com.daoran.newfactory.onefactory.bean;
 
 public class UsergetBean {
 
-    public UsergetBean() {
-
-    }
-
     private int id;//Id
     private String logid;//用户名
     private String u_name;//姓名

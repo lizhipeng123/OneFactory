@@ -20,8 +20,8 @@ public class Comfig {
      * token值
      */
     public static final String TOKEN = "token";
-    public static final String USERNAME = "name";
-    public static final String PASSWORD = "password";
+    public static final String USERNAME = "Login";
+    public static final String PASSWORD = "pwd";
 
     /**
      * 是否开启打印输出 true 开启打印输出 false 关闭打印输出,发布设置为flase

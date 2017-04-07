@@ -1,25 +1,43 @@
 package com.daoran.newfactory.onefactory.activity.work;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.adapter.SignDetailAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
+import com.daoran.newfactory.onefactory.base.BaseListActivity;
+import com.daoran.newfactory.onefactory.bean.SignDebugBean;
+import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
+import com.daoran.newfactory.onefactory.util.Http.NetWork;
+import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.SyncHorizontalScrollView;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
+import com.google.gson.JsonSyntaxException;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
+
 /**
+ * 签到查询
  * Created by lizhipeng on 2017/3/29.
  */
 
@@ -28,26 +46,30 @@ public class DebugDetailActivity extends BaseFrangmentActivity implements View.O
     private LeftAdapter mLeftAdapter;
 
     private NoscrollListView mData;
-    private DataAdapter mDataAdapter;
+    private SignDetailAdapter detailAdapter;
 
     private SyncHorizontalScrollView mHeaderHorizontal;
     private SyncHorizontalScrollView mDataHorizontal;
 
-    private List<String> mListData;
-
+    private List<SignDebugBean.DataBean> mListData = new ArrayList<SignDebugBean.DataBean>();
+    private SignDebugBean signBean;
     private ImageView ivSiganSqlDetail;
+
+    public boolean isRefreshing = false;
+    public int defaultPageIndex = 0;
+    public int pageIndex = defaultPageIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ResponseDialog.showLoading(this,"请稍后");
+//        ResponseDialog.showLoading(this, "请稍后");
         setContentView(R.layout.debug_activity_detail);
-
         initView();
         getViews();
+        setSignDetail();
     }
 
-    private void initView(){
+    private void initView() {
         ivSiganSqlDetail = (ImageView) findViewById(R.id.ivSiganSqlDetail);
         mLeft = (NoscrollListView) findViewById(R.id.lv_left);
         mData = (NoscrollListView) findViewById(R.id.lv_data);
@@ -57,38 +79,58 @@ public class DebugDetailActivity extends BaseFrangmentActivity implements View.O
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);
 
-        mListData = new ArrayList<>();
-        mListData.add("1");
-        mListData.add("2");
-        mListData.add("3");
-        mListData.add("4");
-        mListData.add("5");
-        mListData.add("6");
-        mListData.add("7");
-        mListData.add("8");
-        mListData.add("9");
-        mListData.add("10");
-        mListData.add("11");
-        mListData.add("12");
-        mListData.add("13");
-
-        mLeftAdapter= new LeftAdapter();
+        mLeftAdapter = new LeftAdapter();
         mLeft.setAdapter(mLeftAdapter);
-
-        mDataAdapter = new DataAdapter();
-        mData.setAdapter(mDataAdapter);
     }
 
-    private void getViews(){
+    private void getViews() {
         ivSiganSqlDetail.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ivSiganSqlDetail:
                 finish();
                 break;
+        }
+    }
+
+    private void setSignDetail() {
+        String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
+        if (NetWork.isNetWorkAvailable(this)) {
+            OkHttpUtils
+                    .post()
+                    .url(str)
+                    .addParams("pageNum", "1")
+                    .addParams("pageSize", "20")
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            System.out.print(response);
+                            try {
+                                Gson gson = new Gson();
+                                signBean = gson.fromJson(response, SignDebugBean.class);
+                                mListData = signBean.getData();
+                                detailAdapter = new SignDetailAdapter(mListData, DebugDetailActivity.this);
+                                mData.setAdapter(detailAdapter);
+                                System.out.print(mListData);
+                                System.out.print(signBean);
+                            } catch (JsonSyntaxException e) {
+                                ToastUtils.ShowToastMessage("获取列表失败,请重新再试", DebugDetailActivity.this);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+        } else {
+            ToastUtils.ShowToastMessage("当前网络不可用", DebugDetailActivity.this);
         }
     }
 
@@ -111,7 +153,7 @@ public class DebugDetailActivity extends BaseFrangmentActivity implements View.O
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder = null;
+            ViewHolder holder;
             if (convertView == null) {
                 holder = new ViewHolder();
                 convertView = LayoutInflater.from(DebugDetailActivity.this).inflate(R.layout.debug_item_left, null);
@@ -121,52 +163,13 @@ public class DebugDetailActivity extends BaseFrangmentActivity implements View.O
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            holder.tvLeft.setText("第" + position + "行");
+            holder.tvLeft.setText(String.valueOf(position+1));
 
             return convertView;
         }
 
         class ViewHolder {
             TextView tvLeft;
-        }
-    }
-
-    class DataAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return mListData.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mListData.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder = null;
-            if(convertView == null){
-                holder = new ViewHolder();
-                convertView = LayoutInflater.from(DebugDetailActivity.this).inflate(R.layout.debug_item_data, null);
-                holder.tvData = (TextView) convertView.findViewById(R.id.tv_data);
-                holder.linContent = (LinearLayout) convertView.findViewById(R.id.lin_content);
-                convertView.setTag(holder);
-            }else{
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            return convertView;
-        }
-
-        class ViewHolder {
-            TextView tvData;
-            LinearLayout linContent;
         }
     }
 

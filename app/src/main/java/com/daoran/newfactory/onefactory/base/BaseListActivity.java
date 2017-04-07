@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.adapter.SignDetailAdapter;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -152,17 +153,8 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
         //无数据
         if (datas == null || datas.size() == 0) {
             if (pageIndex == defaultPageIndex) {
-//                if (adapter instanceof QuickAdapter) {
-//                    ((QuickAdapter) adapter).clear();
-//                } else if (adapter instanceof VillageTalkFindActiveAdapter) {
-//                    ((VillageTalkFindActiveAdapter) adapter).clear();
-//                }else if (adapter instanceof VillageIntroAdapter) {
-//                    ((VillageIntroAdapter) adapter).clear();
-//                }
-
-
-//                else if (adapter instanceof HelpListAdapter) {
-//                    ((HelpListAdapter) adapter).clear();
+//                if(adapter instanceof SignDetailAdapter){
+//                    ((SignDetailAdapter) adapter).clear();
 //                }
                 setEmptyView();
             } else {
@@ -174,29 +166,15 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
 
             hideEmptyView();
 
-            if (pageIndex == defaultPageIndex) {
-//                if (adapter instanceof QuickAdapter) {
-//                    ((QuickAdapter) adapter).replaceAll(datas);
-//                } else if (adapter instanceof VillageTalkFindActiveAdapter) {
-//                    ((VillageTalkFindActiveAdapter) adapter).replaceAll(datas);
-//                }else if (adapter instanceof VillageIntroAdapter) {
-//                    ((VillageIntroAdapter) adapter).replaceAll(datas);
+//            if (pageIndex == defaultPageIndex) {
+//                if(adapter instanceof SignDetailAdapter){
+//                    ((SignDetailAdapter) adapter).replaceAll(datas);
 //                }
-//                else if (adapter instanceof HelpListAdapter) {
-//                    ((HelpListAdapter) adapter).replaceAll(datas);
+//            } else {
+//                if(adapter instanceof SignDetailAdapter){
+//                    ((SignDetailAdapter) adapter).addAll(datas);
 //                }
-            } else {
-//                if (adapter instanceof QuickAdapter) {
-//                    ((QuickAdapter) adapter).addAll(datas);
-//                } else if (adapter instanceof VillageTalkFindActiveAdapter) {
-//                    ((VillageTalkFindActiveAdapter) adapter).addAll(datas);
-//                }else if (adapter instanceof VillageIntroAdapter) {
-//                    ((VillageIntroAdapter) adapter).addAll(datas);
-//                }
-//                else if (adapter instanceof HelpListAdapter) {
-//                    ((HelpListAdapter) adapter).addAll(datas);
-//                }
-            }
+//            }
             pageIndex++;
         }
 
@@ -211,15 +189,8 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
         isRefreshing = false;
         if (datas == null || datas.size() == 0) {
             if (pageIndex == defaultPageIndex) {
-//                if (adapter instanceof QuickAdapter) {
-//                    ((QuickAdapter) adapter).clear();
-//                } else if (adapter instanceof VillageTalkFindActiveAdapter) {
-//                    ((VillageTalkFindActiveAdapter) adapter).clear();
-//                }else if (adapter instanceof VillageIntroAdapter) {
-//                    ((VillageIntroAdapter) adapter).clear();
-//                }
-//                else if (adapter instanceof HelpListAdapter) {
-//                    ((HelpListAdapter) adapter).clear();
+//                if(adapter instanceof SignDetailAdapter){
+//                    ((SignDetailAdapter) adapter).clear();
 //                }
             } else {
                 Toast.makeText(this, "没有更多数据了", Toast.LENGTH_SHORT).show();
@@ -231,26 +202,12 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
             hideEmptyView();
 
             if (pageIndex == defaultPageIndex) {
-//                if (adapter instanceof QuickAdapter) {
-//                    ((QuickAdapter) adapter).replaceAll(datas);
-//                } else if (adapter instanceof VillageTalkFindActiveAdapter) {
-//                    ((VillageTalkFindActiveAdapter) adapter).replaceAll(datas);
-//                }else if (adapter instanceof VillageIntroAdapter) {
-//                    ((VillageIntroAdapter) adapter).replaceAll(datas);
-//                }
-//                else if (adapter instanceof HelpListAdapter) {
-//                    ((HelpListAdapter) adapter).replaceAll(datas);
+//                if(adapter instanceof SignDetailAdapter){
+//                    ((SignDetailAdapter) adapter).replaceAll(datas);
 //                }
             } else {
-//                if (adapter instanceof QuickAdapter) {
-//                    ((QuickAdapter) adapter).addAll(datas);
-//                } else if (adapter instanceof VillageTalkFindActiveAdapter) {
-//                    ((VillageTalkFindActiveAdapter) adapter).addAll(datas);
-//                }else if (adapter instanceof VillageIntroAdapter) {
-//                    ((VillageIntroAdapter) adapter).addAll(datas);
-//                }
-//                else if (adapter instanceof HelpListAdapter) {
-//                    ((HelpListAdapter) adapter).addAll(datas);
+//                if(adapter instanceof SignDetailAdapter){
+//                    ((SignDetailAdapter) adapter).addAll(datas);
 //                }
             }
             pageIndex++;
@@ -275,16 +232,6 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
         }
         emptyView.setVisibility(View.VISIBLE);
     }
-//    /**
-//     * 没有数据时显示
-//     */
-//    public void setEmptyView() {
-//        if (emptyView == null) {
-//            emptyView = View.inflate(this, R.layout.list_item_empty, null);
-//            listView.setEmptyView(emptyView);
-//        }
-//        emptyView.setVisibility(View.VISIBLE);
-//    }
 
     public void hideEmptyView() {
         if (emptyView != null) {

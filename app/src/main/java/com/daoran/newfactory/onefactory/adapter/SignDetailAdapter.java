@@ -1,16 +1,19 @@
 package com.daoran.newfactory.onefactory.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.DebugDetailActivity;
-import com.daoran.newfactory.onefactory.bean.SignBean;
+import com.daoran.newfactory.onefactory.bean.SignDebugBean;
+//import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -19,10 +22,10 @@ import java.util.List;
  */
 
 public class SignDetailAdapter extends BaseAdapter {
-    private List<SignBean.Data> signdata;
+    private List<SignDebugBean.DataBean> signdata;
     private Context context;
 
-    public SignDetailAdapter(List<SignBean.Data> signdata, Context context) {
+    public SignDetailAdapter(List<SignDebugBean.DataBean> signdata, Context context) {
         this.signdata = signdata;
         this.context = context;
     }
@@ -33,7 +36,7 @@ public class SignDetailAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public SignDebugBean.DataBean getItem(int position) {
         return signdata.get(position);
     }
 
@@ -44,8 +47,7 @@ public class SignDetailAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final ViewHolder holder;
-        SignBean.Data data = signdata.get(position);
+        ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.debug_item_data, null);
@@ -56,15 +58,15 @@ public class SignDetailAdapter extends BaseAdapter {
             holder.tvSignAddre = (TextView) convertView.findViewById(R.id.tvSignAddre);
             holder.tvSignRemarks = (TextView) convertView.findViewById(R.id.tvSignRemarks);
             convertView.setTag(holder);
-        }else{
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.tvData.setText(data.getCode());
-        holder.tvsignName.setText(data.getRecorder());
-        holder.tvClasses.setText(data.getRegedittyp());
-        holder.tvSignData.setText(data.getRecordat());
-        holder.tvSignAddre.setText(data.getRecordplace());
-        holder.tvSignRemarks.setText(data.getMemo());
+        holder.tvData.setText(getItem(position).getCode());
+        holder.tvsignName.setText(getItem(position).getRecorder());
+        holder.tvClasses.setText(getItem(position).getRegedittyp());
+        holder.tvSignData.setText(getItem(position).getRecordat());
+        holder.tvSignAddre.setText(getItem(position).getRecordplace());
+        holder.tvSignRemarks.setText(getItem(position).getMemo());
         return convertView;
     }
 

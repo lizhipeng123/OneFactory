@@ -7,10 +7,8 @@ package com.daoran.newfactory.onefactory.util.Http;
 
 public class HttpUrl {
 
-    /**
-     * 服务器地址ip测试版
-     */
-    public static final String Url = "http://115.238.84.67:8888/WebAPI/api/";
+    /*正式版—— hzm*/
+    public static final String Url = "http://115.238.84.67:8888/WebAPI/api/";//正式服务器
     /*测试账号—— hzm*/
     public static final String debugoneUrl = "http://192.168.3.120/WebAPI/api/";
     /*测试账号—— bsj*/
@@ -34,6 +32,7 @@ public class HttpUrl {
     /*生产单查询*/
     public static final String sqlcork = "QACwork/BindSearchQACworkAPP/";
     /*查货跟踪表*/
+    public static final String sqldebugcorgetdetail = "QACwork/BindSearchQACworkAPP/";
     public static final String sqlcorgetdetail = "QACwork/APPGetDetail/";
     /*签到统计*/
     public static final String BindSearchAPPPage ="OutRegister/BindSearchAPPPage/";

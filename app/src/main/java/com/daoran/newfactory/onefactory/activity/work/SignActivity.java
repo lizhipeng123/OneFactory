@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -23,7 +22,6 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -32,17 +30,21 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
-import com.daoran.newfactory.onefactory.bean.SignBean;
+import com.daoran.newfactory.onefactory.bean.SignDebugBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.Response;
 
 /**
@@ -51,7 +53,7 @@ import okhttp3.Response;
  */
 
 public class SignActivity extends BaseFrangmentActivity implements View.OnClickListener, BDLocationListener {
-
+    private static final String TAG = "TAG";
     private MapView mapView = null;
     private BaiduMap mBaidumap;
     private boolean isFirstLoc = true;
@@ -61,13 +63,14 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
     private Spinner SpinnerSign;
     private EditText etRemark;
     private ImageView ivSignBack, ivClickMarke;
-    private List<SignBean> signBean = new ArrayList<SignBean>();
+    private List<SignDebugBean> signBean = new ArrayList<SignDebugBean>();
     private MyLocationListener mMyLocationListener = null;
     private LocationClient mLocationClient = null;
 
     private int year, month, date, hour, minute, second;
     private Marker marker;
     private String id;
+    private int codeid;
 
 
     @Override
@@ -240,30 +243,31 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
     private void setSign() {
         String url = HttpUrl.Url + "OutRegister/SaveBill/";
         if (NetWork.isNetWorkAvailable(this)) {
-            List<SignBean> params = new ArrayList<SignBean>();
+            List<SignDebugBean> params = new ArrayList<SignDebugBean>();
+            OkHttpClient client = new OkHttpClient();
+            FormBody body = new FormBody.Builder()
+                    .add("id","")
+                    .add("code","")
+                    .add("recordat","")
+                    .build();
+            final Request request = new Request.Builder().post(body).url(url).build();
+            Call call = client.newCall(request);
+            call.enqueue(new okhttp3.Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.i(TAG, "onFailure: " + e);
+                }
 
-            OkHttpUtils
-                    .post()
-                    .url(url)
-                    .addParams("id", "10")
-                    .build()
-                    .execute(new Callback() {
-                        @Override
-                        public Object parseNetworkResponse(Response response, int id) throws Exception {
-                            System.out.print(response);
-                            return null;
-                        }
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    System.out.print(request);
+                    if(response.isSuccessful()){
+                        showToast("保存成功");
 
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            e.printStackTrace();
-                        }
-
-                        @Override
-                        public void onResponse(Object response, int id) {
-                            System.out.print(response);
-                        }
-                    });
+                        Log.i(TAG, "onResponse: " + response.body().string());
+                    }
+                }
+            });
         } else {
             ToastUtils.ShowToastMessage("当前网络不可用", SignActivity.this);
         }

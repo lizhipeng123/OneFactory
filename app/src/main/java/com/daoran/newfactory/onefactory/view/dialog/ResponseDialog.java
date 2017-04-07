@@ -31,7 +31,7 @@ public class ResponseDialog {
                         progress.dismiss();
                     }
                 }
-            }, 60 * 1000);
+            }, 30 * 1000);
         }else{
             progress.dismiss();
         }

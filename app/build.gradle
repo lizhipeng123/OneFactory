@@ -40,6 +40,13 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
 }
 
 dependencies {
@@ -50,6 +57,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.2.0'
     testCompile 'junit:junit:4.12'
     compile 'com.squareup.okhttp3:okhttp:3.4.2'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.zhy:okhttputils:2.6.2'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.android.support:recyclerview-v7:25.2.0'
@@ -59,4 +67,7 @@ dependencies {
     compile files('libs/IndoorscapeAlbumPlugin.jar')
     compile files('libry/PullToRefreshListView.jar')
     compile files('libry/pulltorefresh-3.2.2.jar')
+    compile files('libry/commons-logging-1.1.1.jar')
+    compile files('libry/httpclient-4.1.2.jar')
+    compile files('libry/httpcore-4.0.jar')
 }
