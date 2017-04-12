@@ -10,15 +10,26 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:minHeight="?attr/actionBarSize">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="@string/workTask"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dimen_60sp" />
+    <TextView
+        android:id="@+id/idworkname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:textSize="@dimen/dimen_50sp"
+        android:textColor="@color/black"/>
+</RelativeLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="@string/workTask"
-            android:textColor="@color/black"
-            android:textSize="@dimen/dimen_60sp" />
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout

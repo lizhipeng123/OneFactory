@@ -2,28 +2,22 @@ package com.daoran.newfactory.onefactory.fragment;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.BusRouteActivity;
 import com.daoran.newfactory.onefactory.activity.work.CommoditySqlActivity;
 import com.daoran.newfactory.onefactory.activity.work.DebugDetailActivity;
 import com.daoran.newfactory.onefactory.activity.work.ProductionActivity;
 import com.daoran.newfactory.onefactory.activity.work.SignActivity;
 import com.daoran.newfactory.onefactory.activity.work.SqlCarApplyActivity;
-import com.daoran.newfactory.onefactory.activity.work.SqlSiganDetailActivity;
-import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 
 
 /**
@@ -37,7 +31,8 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
     private View view;
     private int tvWidthNumber;
     private TextView tvOpenCarDetail, tvSign, tvSqlSign, tvBusRoute, tvProduction, tvSqlgoods;
-
+    private TextView idworkname;
+    private String name;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +57,7 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
         tvBusRoute = (TextView) view.findViewById(R.id.tvBusRoute);
         tvProduction = (TextView) view.findViewById(R.id.tvProduction);
         tvSqlgoods = (TextView) view.findViewById(R.id.tvSqlgoods);
+        idworkname = (TextView) view.findViewById(R.id.idworkname);
     }
 
     private void initViews() {
@@ -72,6 +68,9 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
         tvSqlgoods.setOnClickListener(this);
         tvBusRoute.setOnClickListener(this);
         tvSign.setOnClickListener(this);
+        Bundle bundle = getActivity().getIntent().getExtras();
+        String name = bundle.getString("u_name");
+        idworkname.setText(name);
     }
 
     private void setListener() {
@@ -94,7 +93,7 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
                 getActivity().startActivity(new Intent(getActivity(), CommoditySqlActivity.class));
                 break;
             case R.id.tvBusRoute://公交路线
-                getActivity().startActivity(new Intent(getActivity(), BusRouteActivity.class));
+                getActivity().startActivity(new Intent(getActivity(), DebugBusdingweiActivity.class));
                 break;
             case R.id.tvSign://外勤签到
                 getActivity().startActivity(new Intent(getActivity(), SignActivity.class));

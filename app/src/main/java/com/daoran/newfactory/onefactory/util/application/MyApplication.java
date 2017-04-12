@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.util.application;
 
 import android.app.Application;
+import android.content.Context;
 
 import java.util.concurrent.TimeUnit;
 
@@ -20,10 +21,11 @@ import okhttp3.OkHttpClient;
  */
 
 public class MyApplication extends Application {
-
+    private static Context context;
     @Override
     public void onCreate() {
         super.onCreate();
+        MyApplication.context = getApplicationContext();
         HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(10000L, TimeUnit.MILLISECONDS)
@@ -38,6 +40,10 @@ public class MyApplication extends Application {
                 .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
                 .build();
         OkHttpUtils.initClient(okHttpClient);
+    }
+
+    public static Context getAppContext(){
+        return MyApplication.context;
     }
 
 

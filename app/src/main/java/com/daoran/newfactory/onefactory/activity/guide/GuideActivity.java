@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.login.LoginActivity;
+import com.daoran.newfactory.onefactory.activity.login.LoginDebugActivity;
 import com.daoran.newfactory.onefactory.adapter.GuideFragmentAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.base.Common;
@@ -118,7 +119,7 @@ public class GuideActivity extends BaseFrangmentActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvLoginbtn:
-                startActivity(new Intent(this,LoginActivity.class));
+                startActivity(new Intent(this,LoginDebugActivity.class));
                 finish();
                 break;
         }

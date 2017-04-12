@@ -26,4 +26,5 @@
     <string name="carid">编号</string>
     <string name="applyname">申请人</string>
     <string name="cardate">出车日期</string>
+    <string name="nonet">网络连接错误</string>
 </resources>

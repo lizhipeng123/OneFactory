@@ -20,9 +20,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- SD卡读取权限，用户写入离线定位数据 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+
     <!-- 允许应用读取低级别的系统日志文件 -->
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-permission android:name="android.permission" />
+
 
     <application
         android:allowBackup="true"
@@ -33,7 +37,7 @@
         <!-- 开发者申请的Key -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="TDKk4mzEKCoCGLWLNz46pr84aDafA7vy" />
+            android:value="53ewNV1KLLGVC71xFVEeu6GdbQ9vcggt" />
         <!-- 启动页 -->
         <activity
             android:name=".activity.start.StartActivity"
@@ -114,6 +118,14 @@
             android:name=".activity.work.SignActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
+        <!-- 外勤签到测试类 -->
+        <activity
+            android:name=".activity.login.LoginDebugActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <!-- 测试 -->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"

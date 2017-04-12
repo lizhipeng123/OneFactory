@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.login.LoginActivity;
+import com.daoran.newfactory.onefactory.activity.login.LoginDebugActivity;
 
 
 /**
@@ -57,7 +58,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.rlAgainLogin:
-                startActivity(new Intent(getActivity(), LoginActivity.class));
+                startActivity(new Intent(getActivity(), LoginDebugActivity.class));
                 break;
             case R.id.rlEditionUpdate:
 

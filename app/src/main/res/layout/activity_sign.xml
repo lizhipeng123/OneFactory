@@ -130,7 +130,16 @@
                     android:background="@drawable/shape_text_sql_boild"
                     android:textSize="@dimen/dimen_45sp" />
             </LinearLayout>
-
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/topBg"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:src="@mipmap/daoran"/>
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

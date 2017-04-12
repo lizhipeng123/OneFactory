@@ -20,6 +20,7 @@ public class Comfig {
      * token值
      */
     public static final String TOKEN = "token";
+    public static String USERINFO = "userinfo";
     public static final String USERNAME = "Login";
     public static final String PASSWORD = "pwd";
 
