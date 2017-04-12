@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.BusdingweiActivity;
 import com.daoran.newfactory.onefactory.activity.work.CommoditySqlActivity;
 import com.daoran.newfactory.onefactory.activity.work.DebugDetailActivity;
 import com.daoran.newfactory.onefactory.activity.work.ProductionActivity;
@@ -93,7 +94,7 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
                 getActivity().startActivity(new Intent(getActivity(), CommoditySqlActivity.class));
                 break;
             case R.id.tvBusRoute://公交路线
-                getActivity().startActivity(new Intent(getActivity(), DebugBusdingweiActivity.class));
+                getActivity().startActivity(new Intent(getActivity(), BusdingweiActivity.class));
                 break;
             case R.id.tvSign://外勤签到
                 getActivity().startActivity(new Intent(getActivity(), SignActivity.class));
