@@ -129,6 +129,10 @@
             android:name=".activity.login.LoginDebugActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.work.DebugBusdingweiActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
 
         <!-- 测试 -->
         <service
