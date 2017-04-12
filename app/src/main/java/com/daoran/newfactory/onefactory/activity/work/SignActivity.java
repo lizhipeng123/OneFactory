@@ -2,8 +2,16 @@ package com.daoran.newfactory.onefactory.activity.work;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +23,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -31,21 +41,37 @@ import com.baidu.mapapi.model.LatLng;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.SignDebugBean;
+import com.daoran.newfactory.onefactory.util.BitmapTools;
+import com.daoran.newfactory.onefactory.util.CLApplication;
+import com.daoran.newfactory.onefactory.util.CrameUtils;
+import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
+import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
+import com.daoran.newfactory.onefactory.util.Http.RequestParams;
+import com.daoran.newfactory.onefactory.util.ImageRes;
+import com.daoran.newfactory.onefactory.util.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.Callback;
+import com.daoran.newfactory.onefactory.util.xutil.HttpParams;
+import com.daoran.newfactory.onefactory.util.xutil.HttpRequestCallBack;
+import com.daoran.newfactory.onefactory.util.xutil.HttpUtils;
+import com.daoran.newfactory.onefactory.view.CustomPhotoDialog;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.client.HttpRequest;
+import com.squareup.picasso.Picasso;
 
+import org.apache.http.NameValuePair;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import java.util.TimeZone;
 
 /**
  * 外勤签到
@@ -53,6 +79,8 @@ import okhttp3.Response;
  */
 
 public class SignActivity extends BaseFrangmentActivity implements View.OnClickListener, BDLocationListener {
+    private View view;
+
     private static final String TAG = "TAG";
     private MapView mapView = null;
     private BaiduMap mBaidumap;
@@ -63,14 +91,19 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
     private Spinner SpinnerSign;
     private EditText etRemark;
     private ImageView ivSignBack, ivClickMarke;
-    private List<SignDebugBean> signBean = new ArrayList<SignDebugBean>();
+    private ImageView topBg;
+    private List<SignDebugBean.DataBean> signBean = new ArrayList<SignDebugBean.DataBean>();
+    private SignDebugBean dataBean;
     private MyLocationListener mMyLocationListener = null;
     private LocationClient mLocationClient = null;
 
     private int year, month, date, hour, minute, second;
-    private Marker marker;
-    private String id;
-    private int codeid;
+    private SharedPreferences sp;
+    private SPUtils spUtils;
+    private CrameUtils crameUtils;
+    public String path = "";
+    private boolean isMe = false;
+    private int id;
 
 
     @Override
@@ -114,6 +147,8 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
         ivClickMarke.setOnClickListener(this);
         btnSignCancle.setOnClickListener(this);
         btnSignOk.setOnClickListener(this);
+        topBg.setOnClickListener(this);
+        crameUtils = new CrameUtils();
     }
 
 
@@ -129,8 +164,10 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
         etRemark = (EditText) findViewById(R.id.etRemark);
         SpinnerSign = (Spinner) findViewById(R.id.SpinnerSign);
         ivClickMarke = (ImageView) findViewById(R.id.ivClickMarke);
+        topBg = (ImageView) findViewById(R.id.topBg);
         getSpinner();
         getDate();
+
 
     }
 
@@ -143,6 +180,7 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] languages = getResources().getStringArray(R.array.signSpinner);
+                spUtils.put(SignActivity.this, "languages", languages[position]);
                 ToastUtils.ShowToastMessage("点击的是：" + languages[position], SignActivity.this);
             }
 
@@ -165,21 +203,67 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
         mLocationClient.start();
     }
 
-    public void location(Context ct) {
-        mLocationClient = new LocationClient(ct);
-        LocationClientOption option = new LocationClientOption();
-        option.setIsNeedAddress(true);// 中文地址
-        option.setCoorType("bd09ll");// gcj02 国测局经纬度坐标系 ；bd09 百度墨卡托坐标系；bd09ll
-        // 百度经纬度坐标系
-        option.setLocationMode(LocationClientOption.LocationMode.Battery_Saving);// 设置定位模式
-        option.setScanSpan(5 * 60000);//检查周期 小于1秒的按1秒
-        mLocationClient.setLocOption(option);
-        mLocationClient.registerLocationListener(new MyLocationListener());
-        mLocationClient.start();
-    }
-
     private void setListener() {
 
+    }
+
+    /**
+     * 打开系统相册，并选择图片
+     */
+    public void selectPic(View view){
+        Intent intent = new Intent("android.intent.action.PICK");
+        intent.setType("image/*");
+        startActivityForResult(intent, 0);
+    }
+
+    /**
+     * 给拍的照片命名
+     */
+    public String createPhotoName(){
+        //以系统的当前时间给图片命名
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+        String fileName = format.format(date)+".jpg";
+        return fileName;
+    }
+
+    /**
+     * 把拍的照片保存到SD卡
+     */
+    public void saveToSDCard(Bitmap bitmap) {
+        //先要判断SD卡是否存在并且挂载
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            File file = new File(CLApplication.photoPath);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            FileOutputStream outputStream = null;
+            try {
+                outputStream = new FileOutputStream(createPhotoName());
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);//把图片数据写入文件
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }finally {
+                if(outputStream!=null){
+                    try {
+                        outputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }else {
+            ToastUtils.ShowToastMessage("SD卡不存在",SignActivity.this);
+        }
+    }
+
+
+    /**
+     * 选择拍照的图片
+     */
+    public void takePhoto(View view){
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        startActivityForResult(intent, 1);
     }
 
     @Override
@@ -204,9 +288,83 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.btnSignOk:
-                setSign();
+                setSignDebug();
+//                mBaidumap.snapshot(new BaiduMap.SnapshotReadyCallback() {
+//                    @Override
+//                    public void onSnapshotReady(Bitmap bitmap) {
+//                        File file = new File("/mnt/sdcard/test.png");
+//                        FileOutputStream out;
+//                        try {
+//                            out = new FileOutputStream(file);
+//                            if (bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)) {
+//                                out.flush();
+//                                out.close();
+//                            }
+//                            ToastUtils.ShowToastMessage("屏幕截图成功，保存在：" + file.toString(), SignActivity.this);
+//                        } catch (FileNotFoundException e) {
+//                            e.printStackTrace();
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
+////                Rect rect = new Rect(0, 0, 300, 300);//左xy,右xy
+////                mBaidumap.snapshotScope(rect, new BaiduMap.SnapshotReadyCallback() {
+////                    @Override
+////                    public void onSnapshotReady(Bitmap bitmap) {
+////                        File file = new File("/mnt/sdcard/testall300.png");
+////                        FileOutputStream out;
+////                        try {
+////                            out = new FileOutputStream(file);
+////                            if (bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)) {
+////                                out.flush();
+////                                out.close();
+////                            }
+////                            ToastUtils.ShowToastMessage("屏幕截图成功，保存在：" + file.toString(), SignActivity.this);
+////                        } catch (FileNotFoundException e) {
+////                            e.printStackTrace();
+////                        } catch (IOException e) {
+////                            e.printStackTrace();
+////                        }
+////                    }
+////                });
+//                ToastUtils.ShowToastMessage("正在截取屏幕图片....", SignActivity.this);
+//                setSignDebug();
+                break;
+            case R.id.topBg:
+                selectPic(view);
+//                changebg();
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(data==null){
+            return;//当data为空的时候，不做任何处理
+        }
+        Bitmap bitmap = null;
+        if(requestCode==0){
+            //获取从相册界面返回的缩略图
+            bitmap = data.getParcelableExtra("data");
+            if(bitmap==null){//如果返回的图片不够大，就不会执行缩略图的代码，因此需要判断是否为null,如果是小图，直接显示原图即可
+                try {
+                    //通过URI得到输入流
+                    InputStream inputStream = getContentResolver().openInputStream(data.getData());
+                    //通过输入流得到bitmap对象
+                    bitmap = BitmapFactory.decodeStream(inputStream);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else if(requestCode==1){
+            bitmap = (Bitmap) data.getExtras().get("data");
+            saveToSDCard(bitmap);
+        }
+        //将选择的图片设置到控件上
+        topBg.setImageBitmap(bitmap);
+        String picurl = BitmapTools.convertIconToString(bitmap);
+        spUtils.put(SignActivity.this, "picurl",picurl);
     }
 
     @Override
@@ -214,7 +372,6 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
         super.onResume();
         if (mapView != null) {
             mapView.onResume();
-//            tvSignAddress.setText();
         }
 
     }
@@ -240,36 +397,93 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
         }
     }
 
-    private void setSign() {
-        String url = HttpUrl.Url + "OutRegister/SaveBill/";
+    private void setSignDebug() {
+        String url = HttpUrl.debugoneUrl + "OutRegister/SaveBill/";
+        sp = this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        String userna = sp.getString("username", "");
+        String Latitude = sp.getString("Latitude", "");
+        String Longitude = sp.getString("Longitude", "");
+        String languages = sp.getString("languages", "");
+        String picstr = sp.getString("picurl", "");
         if (NetWork.isNetWorkAvailable(this)) {
-            List<SignDebugBean> params = new ArrayList<SignDebugBean>();
-            OkHttpClient client = new OkHttpClient();
-            FormBody body = new FormBody.Builder()
-                    .add("id","")
-                    .add("code","")
-                    .add("recordat","")
-                    .build();
-            final Request request = new Request.Builder().post(body).url(url).build();
-            Call call = client.newCall(request);
-            call.enqueue(new okhttp3.Callback() {
+//            HttpParams httpParams = new HttpParams(url);
+//            String urll = httpParams.toString();
+//            HttpUtils httpUtils = HttpUtils.getInstance();
+//            HttpParams hp = new HttpParams(url);
+//            hp.addBodyParameter("id", "");
+//            hp.addBodyParameter("pic", new File(pic));
+//            hp.addBodyParameter("code", "");
+//            hp.addBodyParameter("memo", etRemark.getText().toString());
+//            hp.addBodyParameter("recorder", userna);
+//            hp.addBodyParameter("recorderID", "");
+//            hp.addBodyParameter("recordat", tvSignDate.getText().toString());
+//            hp.addBodyParameter("recordplace", tvSignAddress.getText().toString());
+//            hp.addBodyParameter("LNGLAT", Latitude + Longitude);
+//            hp.addBodyParameter("regedittyp", languages);
+//            httpUtils.send(HttpRequest.HttpMethod.POST, urll, hp, new HttpRequestCallBack<String>(String.class, this, "正在修改") {
+//                @Override
+//                protected void onSuccess(String s) {
+//                    JSONObject jsonObject = JSONObject.parseObject(s);
+//                    if (s.contains("1")) {
+//                        if (jsonObject.containsKey("Data")) {
+//                            String jsonStr = jsonObject.getString("Data");
+//                            dataBean = JSON.parseObject(jsonStr, SignDebugBean.class);
+//                            Picasso.with(SignActivity.this).load(signBean.get(0).getPicpath());
+//                            ToastUtils.ShowToastMessage("更换成功", SignActivity.this);
+//                        }
+//
+//                    } else {
+//                        ToastUtils.ShowToastMessage("更换失败", SignActivity.this);
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(HttpException arg0, String arg1) {
+//                    super.onFailure(arg0, arg1);
+//                    ToastUtils.ShowToastMessage("更换失败", SignActivity.this);
+//                }
+//            });
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(NetUtil.createParam("id", ""));
+            params.add(NetUtil.createParam("picpath",picstr));
+            params.add(NetUtil.createParam("code", ""));
+            params.add(NetUtil.createParam("memo", etRemark.getText().toString()));
+            params.add(NetUtil.createParam("recorder", userna));
+            params.add(NetUtil.createParam("recorderID", ""));
+            params.add(NetUtil.createParam("recordat", "2017/3/3 19:00:25"));
+            params.add(NetUtil.createParam("recordplace", tvSignAddress.getText().toString()));
+            params.add(NetUtil.createParam("LNGLAT", Latitude+""+ Longitude));
+            params.add(NetUtil.createParam("regedittyp", languages));
+            RequestParams requestParams = new RequestParams(params);
+            NetUtil.getAsyncHttpClient().post(url, requestParams, new AsyncHttpResponseHandler() {
                 @Override
-                public void onFailure(Call call, IOException e) {
-                    Log.i(TAG, "onFailure: " + e);
+                public void onSuccess(String content) {
+                    super.onSuccess(content);
+                    System.out.print(content);
+                    if (content == "1") {
+                        System.out.print(content);
+                        ToastUtils.ShowToastMessage("上传成功" + content, SignActivity.this);
+                    } else {
+                        ToastUtils.ShowToastMessage("上传失败", SignActivity.this);
+                    }
+
                 }
 
                 @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    System.out.print(request);
-                    if(response.isSuccessful()){
-                        showToast("保存成功");
+                public void onFailure(Throwable error, String content) {
+                    super.onFailure(error, content);
+                    ToastUtils.ShowToastMessage("上传失败"+content,SignActivity.this);
+                    error.printStackTrace();
+                }
 
-                        Log.i(TAG, "onResponse: " + response.body().string());
-                    }
+                @Override
+                public void onFinish() {
+                    super.onFinish();
                 }
             });
         } else {
-            ToastUtils.ShowToastMessage("当前网络不可用", SignActivity.this);
+            ToastUtils.ShowToastMessage("当前网络不可用，请重试", SignActivity.this);
+
         }
     }
 
@@ -354,6 +568,8 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
                 ContentValues initialValues = new ContentValues();
                 initialValues.put("shijian", location.getTime());
                 initialValues.put("didian", location.getLatitude() + "--" + location.getLongitude());
+                spUtils.put(SignActivity.this, "Latitude", location.getLatitude() + "");
+                spUtils.put(SignActivity.this, "Longitude", location.getLongitude() + "");
                 ToastUtils.ShowToastMessage(location.getAddrStr(), getApplicationContext());
 
             }
@@ -363,6 +579,11 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
         public void onConnectHotSpotMessage(String s, int i) {
 
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override

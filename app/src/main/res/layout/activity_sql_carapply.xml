@@ -55,7 +55,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/shape_text_sql_boild"
+            android:background="@color/lightblue"
             android:gravity="center"
             android:paddingBottom="@dimen/dimen_20"
             android:paddingTop="@dimen/dimen_20"
@@ -67,7 +67,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/shape_text_sql_boild"
+            android:background="@color/lightblue"
             android:gravity="center"
             android:paddingBottom="@dimen/dimen_20"
             android:paddingTop="@dimen/dimen_20"
@@ -79,7 +79,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/shape_text_sql_boild"
+            android:background="@color/lightblue"
             android:gravity="center"
             android:paddingBottom="@dimen/dimen_20"
             android:paddingTop="@dimen/dimen_20"
@@ -94,7 +94,7 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent">
 
-        <ListView
+        <com.daoran.newfactory.onefactory.view.NoscrollListView
             android:id="@+id/listview"
             android:layout_width="match_parent"
             android:layout_height="fill_parent" />

@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.login.LoginActivity;
 import com.daoran.newfactory.onefactory.adapter.RecycleAdatper;
+import com.daoran.newfactory.onefactory.adapter.SqlCarApplyAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.SqlCarApplyBean;
 
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.view.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.RefreshLayout;
 import com.daoran.newfactory.onefactory.view.dialog.ContentDialog;
 
@@ -31,6 +33,7 @@ import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -46,16 +49,19 @@ public class SqlCarApplyActivity extends BaseFrangmentActivity implements OnRefr
     private ImageButton ibSqlCarDialog;
     private Button btnSqlopen;
     private RefreshLayout swipeLayout;
-    private ListView listView;
     private RecycleAdatper adatper;
     private View header;
     private List<SqlCarApplyBean> actAllList;
-    private SqlCarApplyBean bean;
     private boolean isFirstIn = true;//是否是第一次加载
     private ImageView ivBack, ivSearch;
     private TextView tvTbarTitle;
     private TextView tvInitialDate;
     private ContentDialog dialog;
+
+    private List<SqlCarApplyBean.DataBean> dataBeen = new ArrayList<SqlCarApplyBean.DataBean>();
+    private SqlCarApplyBean applyBean;
+    private SqlCarApplyAdapter applyAdapter;
+    private NoscrollListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +77,7 @@ public class SqlCarApplyActivity extends BaseFrangmentActivity implements OnRefr
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivSearch = (ImageView) findViewById(R.id.ivSearch);
         tvInitialDate = (TextView) findViewById(R.id.tvInitialDate);
-
+        listView = (NoscrollListView) findViewById(R.id.listview);
         ivBack.setOnClickListener(this);
         ivSearch.setOnClickListener(this);
 
@@ -79,10 +85,14 @@ public class SqlCarApplyActivity extends BaseFrangmentActivity implements OnRefr
     }
 
     private void setDatas() {
-        String sqlcar = HttpUrl.Url + HttpUrl.sqlCarApply;
+        String sqlcar = HttpUrl.debugoneUrl + "UCarsApply/UCarsApplySearch/";
         if (NetWork.isNetWorkAvailable(this)) {
 
-            OkHttpUtils.post().url(sqlcar)
+            OkHttpUtils
+                    .post()
+                    .url(sqlcar)
+                    .addParams("pageNum", "1")
+                    .addParams("pageSize", "20")
                     .build()
                     .execute(new StringCallback() {
 
@@ -103,8 +113,13 @@ public class SqlCarApplyActivity extends BaseFrangmentActivity implements OnRefr
 
                         @Override
                         public void onResponse(String response, int id) {
-                            SqlCarApplyBean bean = new Gson().fromJson(response, SqlCarApplyBean.class);
-
+                            System.out.print(response);
+                            applyBean = new Gson().fromJson(response, SqlCarApplyBean.class);
+                            dataBeen = applyBean.getData();
+                            applyAdapter = new SqlCarApplyAdapter(dataBeen, SqlCarApplyActivity.this);
+                            listView.setAdapter(applyAdapter);
+                            System.out.print(dataBeen);
+                            System.out.print(applyBean);
                         }
                     });
         } else {
