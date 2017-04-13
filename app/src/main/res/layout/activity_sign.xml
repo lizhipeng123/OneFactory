@@ -42,6 +42,7 @@
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
+        android:id="@+id/scrollviewSign"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -51,21 +52,34 @@
             android:orientation="vertical"
             android:paddingLeft="@dimen/dimen_30"
             android:paddingRight="@dimen/dimen_30">
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Spinner
+                    android:id="@+id/spinnerfineTune"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:paddingTop="@dimen/dimen_20"
+                    android:paddingBottom="@dimen/dimen_20"
+                    android:text="杭州市下城区经纬创意产业园"
+                    android:layout_weight="3"/>
+                <Button
+                    android:id="@+id/btnfileTune"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_50sp"
+                    android:text="微调"/>
+            </LinearLayout>
+
                 <com.baidu.mapapi.map.MapView
                     android:id="@+id/mapSign"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_800" />
-                <ImageView
-                    android:id="@+id/ivClickMarke"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:clickable="true"
-                    android:src="@mipmap/type_select_btn_nor"/>
-            </RelativeLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"

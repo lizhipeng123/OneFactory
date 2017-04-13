@@ -40,6 +40,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * 登录修改版
  * Created by lizhipeng on 2017/4/10.
  */
 
@@ -146,6 +147,9 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
         return result;
     }
 
+    /**
+     * 登录
+     */
     private void postLogin() {
         String loginuserUrl = HttpUrl.debugoneUrl + "Login/UserLogin/";
         if (NetWork.isNetWorkAvailable(this)) {

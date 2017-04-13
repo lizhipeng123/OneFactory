@@ -30,6 +30,7 @@ import com.daoran.newfactory.onefactory.view.dialog.ContentDialog;
 
 import com.daoran.newfactory.onefactory.view.RefreshLayout.OnLoadListener;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -40,6 +41,7 @@ import okhttp3.Call;
 import okhttp3.Request;
 
 /**
+ * 用车单查询
  * Created by lizhipeng on 2017/3/24.
  */
 
@@ -113,13 +115,17 @@ public class SqlCarApplyActivity extends BaseFrangmentActivity implements OnRefr
 
                         @Override
                         public void onResponse(String response, int id) {
-                            System.out.print(response);
-                            applyBean = new Gson().fromJson(response, SqlCarApplyBean.class);
-                            dataBeen = applyBean.getData();
-                            applyAdapter = new SqlCarApplyAdapter(dataBeen, SqlCarApplyActivity.this);
-                            listView.setAdapter(applyAdapter);
-                            System.out.print(dataBeen);
-                            System.out.print(applyBean);
+                            try {
+                                System.out.print(response);
+                                applyBean = new Gson().fromJson(response, SqlCarApplyBean.class);
+                                dataBeen = applyBean.getData();
+                                applyAdapter = new SqlCarApplyAdapter(dataBeen, SqlCarApplyActivity.this);
+                                listView.setAdapter(applyAdapter);
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
         } else {

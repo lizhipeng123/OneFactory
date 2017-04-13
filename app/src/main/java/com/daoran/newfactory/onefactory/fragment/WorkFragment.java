@@ -3,6 +3,7 @@ package com.daoran.newfactory.onefactory.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import com.daoran.newfactory.onefactory.activity.work.DebugDetailActivity;
 import com.daoran.newfactory.onefactory.activity.work.ProductionActivity;
 import com.daoran.newfactory.onefactory.activity.work.SignActivity;
 import com.daoran.newfactory.onefactory.activity.work.SqlCarApplyActivity;
+import com.daoran.newfactory.onefactory.util.SPUtils;
 
 
 /**
@@ -35,6 +37,9 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
     private TextView tvOpenCarDetail, tvSign, tvSqlSign, tvBusRoute, tvProduction, tvSqlgoods;
     private TextView idworkname;
     private String name;
+
+    private SharedPreferences sp;
+    private SPUtils spUtils;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +77,7 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
         tvSign.setOnClickListener(this);
         Bundle bundle = getActivity().getIntent().getExtras();
         String name = bundle.getString("u_name");
+        spUtils.put(getActivity(),"u_name",name);
         idworkname.setText(name);
     }
 

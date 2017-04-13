@@ -96,6 +96,9 @@ public class DebugDetailActivity extends BaseFrangmentActivity implements View.O
         }
     }
 
+    /**
+     * 签到查询服务器
+     */
     private void setSignDetail() {
         String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
         if (NetWork.isNetWorkAvailable(this)) {
@@ -121,8 +124,6 @@ public class DebugDetailActivity extends BaseFrangmentActivity implements View.O
                                 mListData = signBean.getData();
                                 detailAdapter = new SignDetailAdapter(mListData, DebugDetailActivity.this);
                                 mData.setAdapter(detailAdapter);
-                                System.out.print(mListData);
-                                System.out.print(signBean);
                             } catch (JsonSyntaxException e) {
                                 ToastUtils.ShowToastMessage("获取列表失败,请重新再试", DebugDetailActivity.this);
                                 ResponseDialog.closeLoading();
@@ -133,10 +134,13 @@ public class DebugDetailActivity extends BaseFrangmentActivity implements View.O
                         }
                     });
         } else {
-            ToastUtils.ShowToastMessage("当前网络不可用", DebugDetailActivity.this);
+            ToastUtils.ShowToastMessage(R.string.disNetworking, DebugDetailActivity.this);
         }
     }
 
+    /**
+     * 左列行号适配
+     */
     class LeftAdapter extends BaseAdapter {
 
         @Override
