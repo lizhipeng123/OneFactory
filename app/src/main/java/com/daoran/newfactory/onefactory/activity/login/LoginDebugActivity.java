@@ -26,6 +26,7 @@ import com.daoran.newfactory.onefactory.util.SPUtils;
 import com.daoran.newfactory.onefactory.util.SharedHelper;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.util.UserUtils;
+import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
@@ -148,6 +149,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
     private void postLogin() {
         String loginuserUrl = HttpUrl.debugoneUrl + "Login/UserLogin/";
         if (NetWork.isNetWorkAvailable(this)) {
+            ResponseDialog.showLoading(this,"登录中");
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(NetUtil.createParam("Logid", etUsername.getText().toString()));
             params.add(NetUtil.createParam("pwd", etPassword.getText().toString()));
@@ -175,6 +177,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
 
                     } else {
                         ToastUtils.ShowToastMessage("用户名密码错误，请重新输入", LoginDebugActivity.this);
+                        ResponseDialog.closeLoading();
                     }
                 }
 
@@ -182,6 +185,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                 public void onFailure(Throwable error, String content) {
                     super.onFailure(error, content);
                     ToastUtils.ShowToastMessage("登录失败", LoginDebugActivity.this);
+                    ResponseDialog.closeLoading();
                 }
 
                 @Override

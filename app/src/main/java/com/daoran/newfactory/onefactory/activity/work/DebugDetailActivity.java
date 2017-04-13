@@ -99,11 +99,12 @@ public class DebugDetailActivity extends BaseFrangmentActivity implements View.O
     private void setSignDetail() {
         String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
         if (NetWork.isNetWorkAvailable(this)) {
+            ResponseDialog.showLoading(this,"正在查询，请稍后");
             OkHttpUtils
                     .post()
                     .url(str)
                     .addParams("pageNum", "1")
-                    .addParams("pageSize", "20")
+                    .addParams("pageSize", "")
                     .build()
                     .execute(new StringCallback() {
                         @Override
@@ -124,8 +125,10 @@ public class DebugDetailActivity extends BaseFrangmentActivity implements View.O
                                 System.out.print(signBean);
                             } catch (JsonSyntaxException e) {
                                 ToastUtils.ShowToastMessage("获取列表失败,请重新再试", DebugDetailActivity.this);
+                                ResponseDialog.closeLoading();
                             } catch (Exception e) {
                                 e.printStackTrace();
+                                ResponseDialog.closeLoading();
                             }
                         }
                     });

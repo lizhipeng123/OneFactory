@@ -40,6 +40,7 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
+import com.daoran.newfactory.onefactory.bean.ResponseBean;
 import com.daoran.newfactory.onefactory.bean.SignDebugBean;
 import com.daoran.newfactory.onefactory.util.BitmapTools;
 import com.daoran.newfactory.onefactory.util.CLApplication;
@@ -48,6 +49,7 @@ import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
+import com.daoran.newfactory.onefactory.util.Http.OkHttp;
 import com.daoran.newfactory.onefactory.util.Http.RequestParams;
 import com.daoran.newfactory.onefactory.util.ImageRes;
 import com.daoran.newfactory.onefactory.util.SPUtils;
@@ -56,9 +58,13 @@ import com.daoran.newfactory.onefactory.util.xutil.HttpParams;
 import com.daoran.newfactory.onefactory.util.xutil.HttpRequestCallBack;
 import com.daoran.newfactory.onefactory.util.xutil.HttpUtils;
 import com.daoran.newfactory.onefactory.view.CustomPhotoDialog;
+import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
+import com.google.gson.Gson;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.client.HttpRequest;
 import com.squareup.picasso.Picasso;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.apache.http.NameValuePair;
 
@@ -72,6 +78,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+
+import okhttp3.Call;
 
 /**
  * 外勤签到
@@ -94,6 +102,7 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
     private ImageView topBg;
     private List<SignDebugBean.DataBean> signBean = new ArrayList<SignDebugBean.DataBean>();
     private SignDebugBean dataBean;
+    private ResponseBean responseBean;
     private MyLocationListener mMyLocationListener = null;
     private LocationClient mLocationClient = null;
 
@@ -210,7 +219,7 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
     /**
      * 打开系统相册，并选择图片
      */
-    public void selectPic(View view){
+    public void selectPic(View view) {
         Intent intent = new Intent("android.intent.action.PICK");
         intent.setType("image/*");
         startActivityForResult(intent, 0);
@@ -219,11 +228,11 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
     /**
      * 给拍的照片命名
      */
-    public String createPhotoName(){
+    public String createPhotoName() {
         //以系统的当前时间给图片命名
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-        String fileName = format.format(date)+".jpg";
+        String fileName = format.format(date) + ".jpg";
         return fileName;
     }
 
@@ -243,8 +252,8 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);//把图片数据写入文件
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-            }finally {
-                if(outputStream!=null){
+            } finally {
+                if (outputStream != null) {
                     try {
                         outputStream.close();
                     } catch (IOException e) {
@@ -252,8 +261,8 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
                     }
                 }
             }
-        }else {
-            ToastUtils.ShowToastMessage("SD卡不存在",SignActivity.this);
+        } else {
+            ToastUtils.ShowToastMessage("SD卡不存在", SignActivity.this);
         }
     }
 
@@ -261,7 +270,7 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
     /**
      * 选择拍照的图片
      */
-    public void takePhoto(View view){
+    public void takePhoto(View view) {
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         startActivityForResult(intent, 1);
     }
@@ -340,14 +349,14 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(data==null){
+        if (data == null) {
             return;//当data为空的时候，不做任何处理
         }
         Bitmap bitmap = null;
-        if(requestCode==0){
+        if (requestCode == 0) {
             //获取从相册界面返回的缩略图
             bitmap = data.getParcelableExtra("data");
-            if(bitmap==null){//如果返回的图片不够大，就不会执行缩略图的代码，因此需要判断是否为null,如果是小图，直接显示原图即可
+            if (bitmap == null) {//如果返回的图片不够大，就不会执行缩略图的代码，因此需要判断是否为null,如果是小图，直接显示原图即可
                 try {
                     //通过URI得到输入流
                     InputStream inputStream = getContentResolver().openInputStream(data.getData());
@@ -357,14 +366,14 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
                     e.printStackTrace();
                 }
             }
-        }else if(requestCode==1){
+        } else if (requestCode == 1) {
             bitmap = (Bitmap) data.getExtras().get("data");
             saveToSDCard(bitmap);
         }
         //将选择的图片设置到控件上
         topBg.setImageBitmap(bitmap);
         String picurl = BitmapTools.convertIconToString(bitmap);
-        spUtils.put(SignActivity.this, "picurl",picurl);
+        spUtils.put(SignActivity.this, "picurl", picurl);
     }
 
     @Override
@@ -400,12 +409,59 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
     private void setSignDebug() {
         String url = HttpUrl.debugoneUrl + "OutRegister/SaveBill/";
         sp = this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+//        Bundle bundle = this.getIntent().getExtras();
+//        String recodername = sp.getString("u_name");
         String userna = sp.getString("username", "");
         String Latitude = sp.getString("Latitude", "");
         String Longitude = sp.getString("Longitude", "");
         String languages = sp.getString("languages", "");
         String picstr = sp.getString("picurl", "");
+
         if (NetWork.isNetWorkAvailable(this)) {
+            ResponseDialog.showLoading(this, "请稍后");
+            OkHttpUtils.post()
+                    .url(url)
+                    .addParams("id", "")
+                    .addParams("pic", picstr)
+                    .addParams("code", "")
+                    .addParams("memo", etRemark.getText().toString())
+                    .addParams("recorder", userna)
+                    .addParams("recorderID", "")
+                    .addParams("recordat", "2017/3/3 19:00:25")
+                    .addParams("recordplace", tvSignAddress.getText().toString())
+                    .addParams("LNGLAT", Latitude + "" + Longitude)
+                    .addParams("regedittyp", languages)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                            ToastUtils.ShowToastMessage("上传错误" + e, SignActivity.this);
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            System.out.print(response);
+                            JSONObject jsonObject = new JSONObject
+                                    (Boolean.parseBoolean(response.toString()))
+                                    .getJSONObject("response");
+                            Gson gson = new Gson();
+                            responseBean = gson.fromJson(response,ResponseBean.class);
+                            if(responseBean.getResponse()=="1"){
+                                ToastUtils.ShowToastMessage("上传成功",SignActivity.this);
+
+                            }else{
+                                ToastUtils.ShowToastMessage("失败",SignActivity.this);
+                            }
+//                            if(response.equals("1")){
+//                                ToastUtils.ShowToastMessage("上传成功",SignActivity.this);
+//                            }else{
+//                                ToastUtils.ShowToastMessage("失败",SignActivity.this);
+//                            }
+                            ToastUtils.ShowToastMessage("上传进来了", SignActivity.this);
+                        }
+                    });
+
 //            HttpParams httpParams = new HttpParams(url);
 //            String urll = httpParams.toString();
 //            HttpUtils httpUtils = HttpUtils.getInstance();
@@ -443,47 +499,55 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
 //                    ToastUtils.ShowToastMessage("更换失败", SignActivity.this);
 //                }
 //            });
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(NetUtil.createParam("id", ""));
-            params.add(NetUtil.createParam("picpath",picstr));
-            params.add(NetUtil.createParam("code", ""));
-            params.add(NetUtil.createParam("memo", etRemark.getText().toString()));
-            params.add(NetUtil.createParam("recorder", userna));
-            params.add(NetUtil.createParam("recorderID", ""));
-            params.add(NetUtil.createParam("recordat", "2017/3/3 19:00:25"));
-            params.add(NetUtil.createParam("recordplace", tvSignAddress.getText().toString()));
-            params.add(NetUtil.createParam("LNGLAT", Latitude+""+ Longitude));
-            params.add(NetUtil.createParam("regedittyp", languages));
-            RequestParams requestParams = new RequestParams(params);
-            NetUtil.getAsyncHttpClient().post(url, requestParams, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(String content) {
-                    super.onSuccess(content);
-                    System.out.print(content);
-                    if (content == "1") {
-                        System.out.print(content);
-                        ToastUtils.ShowToastMessage("上传成功" + content, SignActivity.this);
-                    } else {
-                        ToastUtils.ShowToastMessage("上传失败", SignActivity.this);
-                    }
 
-                }
 
-                @Override
-                public void onFailure(Throwable error, String content) {
-                    super.onFailure(error, content);
-                    ToastUtils.ShowToastMessage("上传失败"+content,SignActivity.this);
-                    error.printStackTrace();
-                }
+//            List<NameValuePair> params = new ArrayList<NameValuePair>();
+//            params.add(NetUtil.createParam("id", ""));
+//            params.add(NetUtil.createParam("picpath",picstr));
+//            params.add(NetUtil.createParam("code", ""));
+//            params.add(NetUtil.createParam("memo", etRemark.getText().toString()));
+//            params.add(NetUtil.createParam("recorder", userna));
+//            params.add(NetUtil.createParam("recorderID", ""));
+//            params.add(NetUtil.createParam("recordat", "2017/3/3 19:00:25"));
+//            params.add(NetUtil.createParam("recordplace", tvSignAddress.getText().toString()));
+//            params.add(NetUtil.createParam("LNGLAT", Latitude+""+Longitude));
+//            params.add(NetUtil.createParam("regedittyp", languages));
+//            RequestParams requestParams = new RequestParams(params);
+//            NetUtil.getAsyncHttpClient().post(url, requestParams, new AsyncHttpResponseHandler() {
+//                @Override
+//                public void onSuccess(String content) {
+//                    super.onSuccess(content);
+//                    try {
+//                        System.out.print(content);
+//                        if (content == "1") {
+//                            System.out.print(content);
+//                            ToastUtils.ShowToastMessage("上传成功" + content, SignActivity.this);
+//                        } else {
+//                            ToastUtils.ShowToastMessage("上传失败", SignActivity.this);
+//                            ResponseDialog.closeLoading();
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//
+//                @Override
+//                public void onFailure(Throwable error, String content) {
+//                    super.onFailure(error, content);
+//                    ToastUtils.ShowToastMessage("上传失败"+content,SignActivity.this);
+//                    error.printStackTrace();
+//                    ResponseDialog.closeLoading();
+//                }
+//
+//                @Override
+//                public void onFinish() {
+//                    super.onFinish();
+//                }
+//            });
 
-                @Override
-                public void onFinish() {
-                    super.onFinish();
-                }
-            });
         } else {
             ToastUtils.ShowToastMessage("当前网络不可用，请重试", SignActivity.this);
-
         }
     }
 
