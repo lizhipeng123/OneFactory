@@ -296,7 +296,7 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
                 selectPic(view);
                 break;
             case R.id.btnfileTune:
-                setFileTune();
+//                setFileTune();
                 break;
         }
     }
