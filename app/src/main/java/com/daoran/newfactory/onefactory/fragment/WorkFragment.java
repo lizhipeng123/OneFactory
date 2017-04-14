@@ -18,6 +18,8 @@ import com.daoran.newfactory.onefactory.activity.work.BusdingweiActivity;
 import com.daoran.newfactory.onefactory.activity.work.CommoditySqlActivity;
 import com.daoran.newfactory.onefactory.activity.work.DebugBusdingweiActivity;
 import com.daoran.newfactory.onefactory.activity.work.DebugDetailActivity;
+import com.daoran.newfactory.onefactory.activity.work.DebugGaodeActivity;
+import com.daoran.newfactory.onefactory.activity.work.GaodeMapLocationActivity;
 import com.daoran.newfactory.onefactory.activity.work.ProductionActivity;
 import com.daoran.newfactory.onefactory.activity.work.SignActivity;
 import com.daoran.newfactory.onefactory.activity.work.SqlCarApplyActivity;
@@ -101,7 +103,7 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
                 getActivity().startActivity(new Intent(getActivity(), CommoditySqlActivity.class));
                 break;
             case R.id.tvBusRoute://公交路线
-                getActivity().startActivity(new Intent(getActivity(), DebugBusdingweiActivity.class));
+                getActivity().startActivity(new Intent(getActivity(), DebugGaodeActivity.class));
                 break;
             case R.id.tvSign://外勤签到
                 getActivity().startActivity(new Intent(getActivity(), SignActivity.class));

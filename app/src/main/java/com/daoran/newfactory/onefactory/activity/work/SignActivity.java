@@ -1,5 +1,6 @@
 package com.daoran.newfactory.onefactory.activity.work;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -21,18 +22,19 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.location.Poi;
-import com.baidu.mapapi.SDKInitializer;
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.MapStatusUpdate;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.model.LatLng;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.CameraUpdateFactory;
+import com.amap.api.maps2d.LocationSource;
+import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.UiSettings;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.poisearch.PoiResult;
+import com.amap.api.services.poisearch.PoiSearch;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.SignDebugBean;
@@ -64,13 +66,32 @@ import okhttp3.Call;
  * Created by lizhipeng on 2017/3/31.
  */
 
-public class SignActivity extends BaseFrangmentActivity implements View.OnClickListener, BDLocationListener {
+public class SignActivity extends BaseFrangmentActivity implements View.OnClickListener,LocationSource,AMapLocationListener {
     private View view;
 
-    private static final String TAG = "TAG";
-    private MapView mapView = null;
-    private BaiduMap mBaidumap;
+    private MapView mapView;
+    private AMap aMap;
+    private AMapLocationClient mapLocationClient;
+    private AMapLocationClientOption mapLocationClientOption;
     private boolean isFirstLoc = true;
+    private LocationSource.OnLocationChangedListener mListener ;
+
+    private ProgressDialog progressDialog = null;//搜索时进度条
+    private PoiSearch.Query query;//poi查询类
+    private PoiSearch poiSearch;//搜索
+    private PoiSearch.SearchBound searchBound;
+    private int currentPage;//当前页面，从0开始
+    private PoiResult poiResult;//poi返回的结果
+    private String city = "";//搜索城市
+    private int juli = 1000;
+    private LatLonPoint latLonPoint;
+    private Spinner spinner;
+
+
+    private static final String TAG = "TAG";
+//    private MapView mapView = null;
+//    private BaiduMap mBaidumap;
+//    private boolean isFirstLoc = true;
 
     private Button btnCount, btnSignCancle, btnSignOk, btnfileTune;
     private TextView tvSignAddress, tvSignDate;
@@ -82,8 +103,10 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
 
     private List<SignDebugBean.DataBean> signBean = new ArrayList<SignDebugBean.DataBean>();
     private SignDebugBean dataBean;
-    private MyLocationListener mMyLocationListener = null;
-    private LocationClient mLocationClient = null;
+
+
+//    private MyLocationListener mMyLocationListener = null;
+//    private LocationClient mLocationClient = null;
 
     private int year, month, date, hour, minute, second;
     private SharedPreferences sp;
@@ -95,23 +118,23 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SDKInitializer.initialize(getApplicationContext());
-        mLocationClient = new LocationClient(getApplicationContext());
-        mLocationClient.registerLocationListener(this);
-        setContentView(R.layout.activity_sign);
 
+        setContentView(R.layout.activity_sign);
+        mapView = (MapView) findViewById(R.id.mapSigngaode);
+        mapView.onCreate(savedInstanceState);
+        if(aMap==null){
+            aMap = mapView.getMap();
+            UiSettings settings = aMap.getUiSettings();//设置显示定位按钮 并且可以点击
+            aMap.setLocationSource(this);//设置了定位的监听,这里要实现LocationSource接口
+            settings.setMyLocationButtonEnabled(true);// 是否显示定位按钮
+            aMap.setMyLocationEnabled(true);//显示定位层并且可以触发定位,默认是flase
+        }
         getViews();
         initViews();
-        mBaidumap = mapView.getMap();
-        mBaidumap.setMyLocationEnabled(true);
-        if (mLocationClient.isStarted()) {
-            mLocationClient.stop();
-        }
-        mMyLocationListener = new MyLocationListener();
-        location(mMyLocationListener);
+        init();
         sp = this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
         tvSignAddress = (TextView) findViewById(R.id.tvSignAddress);
-        String tvaddress = sp.getString("address", "");
+        String tvaddress = sp.getString("gmapaddress", "");
         tvSignAddress.setText(tvaddress);
     }
 
@@ -121,20 +144,7 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
     private void initViews() {
         ivSignBack.setOnClickListener(this);
         btnCount.setOnClickListener(this);
-        LocationClientOption locOption = new LocationClientOption();
-        locOption.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);// 设置定位模式
-        locOption.setCoorType("bd09ll");// 设置定位结果类型
-        int span = 1000;
-        locOption.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
-        locOption.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
-        locOption.setOpenGps(true);//可选，默认false,设置是否使用gps
-        locOption.setLocationNotify(true);//可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
-        locOption.setIsNeedLocationDescribe(true);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
-        locOption.setIsNeedLocationPoiList(true);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
-        locOption.setIgnoreKillProcess(false);//可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
-        locOption.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
-        locOption.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
-        mLocationClient.setLocOption(locOption);
+
         tvSignDate.setText(String.valueOf(year + "/" + month + "/" + date));
         View v = mapView.getChildAt(0);
         //解决scrollview与mapview滑动冲突
@@ -163,7 +173,6 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
     private void getViews() {
         scrollviewSign = (ScrollView) findViewById(R.id.scrollviewSign);
         ivSignBack = (ImageView) findViewById(R.id.ivSignBack);
-        mapView = (MapView) findViewById(R.id.mapSign);
         btnCount = (Button) findViewById(R.id.btnCount);
         btnSignCancle = (Button) findViewById(R.id.btnSignCancle);
         btnSignOk = (Button) findViewById(R.id.btnSignOk);
@@ -177,6 +186,29 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
         getDate();
 
 
+    }
+
+    private void init() {
+        mapLocationClient = new AMapLocationClient(getApplicationContext());
+        mapLocationClient.setLocationListener(this);
+        //初始化定位参数
+        mapLocationClientOption = new AMapLocationClientOption();
+        //设置定位模式为Hight_Accuracy高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+        mapLocationClientOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //设置是否返回地址信息（默认返回地址信息）
+        mapLocationClientOption.setNeedAddress(true);
+        //设置是否只定位一次,默认为false
+        mapLocationClientOption.setOnceLocation(false);
+        //设置是否强制刷新WIFI，默认为强制刷新
+        mapLocationClientOption.setWifiActiveScan(true);
+        //设置是否允许模拟位置,默认为false，不允许模拟位置
+        mapLocationClientOption.setMockEnable(false);
+        //设置定位间隔,单位毫秒,默认为2000ms
+        mapLocationClientOption.setInterval(2000);
+        //给定位客户端对象设置定位参数
+        mapLocationClient.setLocationOption(mapLocationClientOption);
+        //启动定位
+        mapLocationClient.startLocation();
     }
 
     /**
@@ -200,18 +232,6 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
 
             }
         });
-    }
-
-    public void location(BDLocationListener listener) {
-        mLocationClient = new LocationClient(getApplicationContext());
-        LocationClientOption option = new LocationClientOption();
-        option.setIsNeedAddress(true);
-        option.setCoorType("bd09ll");
-        option.setLocationMode(LocationClientOption.LocationMode.Battery_Saving);// 设置定位模式
-        option.setScanSpan(5 * 60000);//检查周期 小于1秒的按1秒
-        mLocationClient.setLocOption(option);
-        mLocationClient.registerLocationListener(listener);
-        mLocationClient.start();
     }
 
     /**
@@ -296,7 +316,7 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
                 selectPic(view);
                 break;
             case R.id.btnfileTune:
-//                setFileTune();
+
                 break;
         }
     }
@@ -351,13 +371,18 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mapView != null) {
+//        if (mapView != null) {
             mapView.onDestroy();
-            mapView = null;
-        }
-        if (mLocationClient != null) {
-            mLocationClient.unRegisterLocationListener(SignActivity.this);
-        }
+//            mapView = null;
+//        }
+        mapLocationClient.onDestroy();//销毁定位客户端。
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
     }
 
     /**
@@ -369,11 +394,10 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
         sp = this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
         String recodername = sp.getString("u_name", "");
         String userna = sp.getString("username", "");
-        String Latitude = sp.getString("Latitude", "");
-        String Longitude = sp.getString("Longitude", "");
+        String Latitude = sp.getString("latitude", "");
         String languages = sp.getString("languages", "");
         String picstr = sp.getString("picurl", "");
-        String address = sp.getString("address", "");
+        String address = sp.getString("gmapaddress", "");
         if (NetWork.isNetWorkAvailable(this)) {
 
             OkHttpUtils.post()
@@ -386,7 +410,7 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
                     .addParams("recorderID", userna)
                     .addParams("recordat", tvSignDate.getText().toString())
                     .addParams("recordplace", address)
-                    .addParams("LNGLAT", Latitude + "" + Longitude)
+                    .addParams("LNGLAT", Latitude)
                     .addParams("regedittyp", languages)
                     .build()
                     .execute(new StringCallback() {
@@ -418,187 +442,19 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
         }
     }
 
-    public class MyLocationListener implements BDLocationListener {
+    @Override
+    public void activate(OnLocationChangedListener onLocationChangedListener) {
+        mListener = onLocationChangedListener;
+    }
 
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            if (location == null) {
-                return;
-            }
-            MyLocationData locData = new MyLocationData.Builder()
-                    .accuracy(location.getRadius())
-                    // 此处设置开发者获取到的方向信息，顺时针0-360
-                    .direction(100).latitude(location.getLatitude())
-                    .longitude(location.getLongitude()).build();
-            // 设置定位数据
-            mBaidumap.setMyLocationData(locData);
-            if (isFirstLoc) {
-                LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
-                MapStatusUpdate update = MapStatusUpdateFactory.newLatLngZoom(ll, 20);//设置地图中心及缩放级别
-                mBaidumap.animateMapStatus(update);
-                isFirstLoc = false;
-                StringBuffer sb = new StringBuffer(256);
-                sb.append("time : ");
-                sb.append(location.getTime());
-                sb.append("\nerror code : ");
-                sb.append(location.getLocType());
-                sb.append("\nlatitude : ");
-                sb.append(location.getLatitude());
-                sb.append("\nlontitude : ");
-                sb.append(location.getLongitude());
-                sb.append("\nradius : ");
-                sb.append(location.getRadius());
-                if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
-                    sb.append("\nspeed : ");
-                    sb.append(location.getSpeed());// 单位：公里每小时
-                    sb.append("\nsatellite : ");
-                    sb.append(location.getSatelliteNumber());
-                    sb.append("\nheight : ");
-                    sb.append(location.getAltitude());// 单位：米
-                    sb.append("\ndirection : ");
-                    sb.append(location.getDirection());// 单位度
-                    sb.append("\naddr : ");
-                    sb.append(location.getAddrStr());
-                    sb.append("\ndescribe : ");
-                    sb.append("gps定位成功");
-
-
-                } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
-                    sb.append("\naddr : ");
-                    sb.append(location.getAddrStr());
-                    //运营商信息
-                    sb.append("\noperationers : ");
-                    sb.append(location.getOperators());
-                    sb.append("\ndescribe : ");
-                    sb.append("网络定位成功");
-                } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
-                    sb.append("\ndescribe : ");
-                    sb.append("离线定位成功，离线定位结果也是有效的");
-                } else if (location.getLocType() == BDLocation.TypeServerError) {
-                    sb.append("\ndescribe : ");
-                    sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
-                } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
-                    sb.append("\ndescribe : ");
-                    sb.append("网络不同导致定位失败，请检查网络是否通畅");
-                } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
-                    sb.append("\ndescribe : ");
-                    sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
-                }
-                sb.append("\nlocationdescribe : ");
-                sb.append(location.getLocationDescribe());// 位置语义化信息
-                List<Poi> list = location.getPoiList();// POI数据
-                if (list != null) {
-                    sb.append("\npoilist size = : ");
-                    sb.append(list.size());
-                    for (Poi p : list) {
-                        sb.append("\npoi= : ");
-                        sb.append(p.getId() + " " + p.getName() + " " + p.getRank());
-                    }
-                }
-                Log.i("BaiduLocationApiDem", sb.toString());
-                ContentValues initialValues = new ContentValues();
-                initialValues.put("shijian", location.getTime());
-                initialValues.put("didian", location.getLatitude() + "--" + location.getLongitude());
-                spUtils.put(SignActivity.this, "address", location.getAddrStr() + "");
-                spUtils.put(SignActivity.this, "Latitude", location.getLatitude() + "");
-                spUtils.put(SignActivity.this, "Longitude", location.getLongitude() + "");
-                ToastUtils.ShowToastMessage(location.getAddrStr(), getApplicationContext());
-
-            }
-        }
-
-        @Override
-        public void onConnectHotSpotMessage(String s, int i) {
-
-        }
+    @Override
+    public void deactivate() {
+        mListener = null;
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-    }
-
-    @Override
-    public void onReceiveLocation(BDLocation location) {
-        if (location == null) {
-            return;
-        }
-        MyLocationData locData = new MyLocationData.Builder()
-                .accuracy(location.getRadius())
-                // 此处设置开发者获取到的方向信息，顺时针0-360
-                .direction(100).latitude(location.getLatitude())
-                .longitude(location.getLongitude()).build();
-        // 设置定位数据
-        mBaidumap.setMyLocationData(locData);
-        if (isFirstLoc) {
-            LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
-            MapStatusUpdate update = MapStatusUpdateFactory.newLatLngZoom(ll, 20);//设置地图中心及缩放级别
-            mBaidumap.animateMapStatus(update);
-            isFirstLoc = false;
-            StringBuffer sb = new StringBuffer(256);
-            sb.append("time : ");
-            sb.append(location.getTime());
-            sb.append("\nerror code : ");
-            sb.append(location.getLocType());
-            sb.append("\nlatitude : ");
-            sb.append(location.getLatitude());
-            sb.append("\nlontitude : ");
-            sb.append(location.getLongitude());
-            sb.append("\nradius : ");
-            sb.append(location.getRadius());
-            if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
-                sb.append("\nspeed : ");
-                sb.append(location.getSpeed());// 单位：公里每小时
-                sb.append("\nsatellite : ");
-                sb.append(location.getSatelliteNumber());
-                sb.append("\nheight : ");
-                sb.append(location.getAltitude());// 单位：米
-                sb.append("\ndirection : ");
-                sb.append(location.getDirection());// 单位度
-                sb.append("\naddr : ");
-                sb.append(location.getAddrStr());
-                sb.append("\ndescribe : ");
-                sb.append("gps定位成功");
-
-            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
-                sb.append("\naddr : ");
-                sb.append(location.getAddrStr());
-                //运营商信息
-                sb.append("\noperationers : ");
-                sb.append(location.getOperators());
-                sb.append("\ndescribe : ");
-                sb.append("网络定位成功");
-            } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
-                sb.append("\ndescribe : ");
-                sb.append("离线定位成功，离线定位结果也是有效的");
-            } else if (location.getLocType() == BDLocation.TypeServerError) {
-                sb.append("\ndescribe : ");
-                sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
-            } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
-                sb.append("\ndescribe : ");
-                sb.append("网络不同导致定位失败，请检查网络是否通畅");
-            } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
-                sb.append("\ndescribe : ");
-                sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
-            }
-            sb.append("\nlocationdescribe : ");
-            sb.append(location.getLocationDescribe());// 位置语义化信息
-            List<Poi> list = location.getPoiList();// POI数据
-            if (list != null) {
-                sb.append("\npoilist size = : ");
-                sb.append(list.size());
-                for (Poi p : list) {
-                    sb.append("\npoi= : ");
-                    sb.append(p.getId() + " " + p.getName() + " " + p.getRank());
-                }
-            }
-            Log.i("BaiduLocationApiDem", sb.toString());
-            ContentValues initialValues = new ContentValues();
-            initialValues.put("shijian", location.getTime());
-            initialValues.put("didian", location.getLatitude() + "--" + location.getLongitude());
-            ToastUtils.ShowToastMessage(location.getAddrStr(), getApplicationContext());
-            tvSignAddress.setText("guale");
-        }
     }
 
     private void getDate() {
@@ -613,39 +469,59 @@ public class SignActivity extends BaseFrangmentActivity implements View.OnClickL
     }
 
     @Override
-    public void onConnectHotSpotMessage(String s, int i) {
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        if (aMapLocation != null) {
+            if (aMapLocation.getErrorCode() == 0) {
+                //定位成功回调信息，设置相关消息
+                aMapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见官方定位类型表
+                aMapLocation.getLatitude();//获取纬度
+                aMapLocation.getLongitude();//获取经度
+                aMapLocation.getAccuracy();//获取精度信息
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date = new Date(aMapLocation.getTime());
+                df.format(date);//定位时间
+                aMapLocation.getAddress();//地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
+                aMapLocation.getCountry();//国家信息
+                aMapLocation.getProvince();//省信息
+                aMapLocation.getCity();//城市信息
+                aMapLocation.getDistrict();//城区信息
+                aMapLocation.getStreet();//街道信息
+                aMapLocation.getStreetNum();//街道门牌号信息
+                aMapLocation.getCityCode();//城市编码
+                aMapLocation.getAdCode();//地区编码
 
-    }
+                // 如果不设置标志位，此时再拖动地图时，它会不断将地图移动到当前的位置
+                if (isFirstLoc) {
+                    //设置缩放级别
+                    aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
+                    //将地图移动到定位点
+                    aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude())));
+                    //点击定位按钮 能够将地图的中心移动到定位点
+                    mListener.onLocationChanged(aMapLocation);
+                    //获取定位信息
+                    StringBuffer buffer = new StringBuffer();
+                    buffer.append(aMapLocation.getCountry() + ""
+                            + aMapLocation.getProvince() + ""
+                            + aMapLocation.getCity() + ""
+                            + aMapLocation.getProvince() + ""
+                            + aMapLocation.getDistrict() + ""
+                            + aMapLocation.getStreet() + ""
+                            + aMapLocation.getStreetNum());
+                    StringBuffer buffer1 = new StringBuffer();
+                    buffer1.append(aMapLocation.getLatitude()+","+aMapLocation.getLongitude());
 
-    private void setFileTune() {
-        String strFileTune = "http://api.map.baidu.com/geocoder/v2/";
-        sp = this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
-        String Latitude = sp.getString("Latitude", "");
-        String Longitude = sp.getString("Longitude", "");
-        if (NetWork.isNetWorkAvailable(this)) {
-            OkHttpUtils.post()
-                    .url(strFileTune)
-                    .addParams("output","")
-                    .addParams("ak","TDKk4mzEKCoCGLWLNz46pr84aDafA7vy")
-                    .addParams("coordtype", "")
-                    .addParams("location", Latitude + "" + Longitude)
-                    .addParams("pois", "")
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            e.printStackTrace();
-                            ToastUtils.ShowToastMessage("发生错误" + e, SignActivity.this);
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-                            System.out.print(response);
-
-                        }
-                    });
+                    spUtils.put(SignActivity.this,"gmapaddress",buffer.toString());
+                    spUtils.put(SignActivity.this,"latitude",buffer1.toString());
+                    ToastUtils.ShowToastMessage(buffer.toString(),SignActivity.this);
+                    isFirstLoc = false;
+                }
+            } else {
+                //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                Log.e("AmapError", "location Error, ErrCode:"
+                        + aMapLocation.getErrorCode() + ", errInfo:"
+                        + aMapLocation.getErrorInfo());
+                ToastUtils.ShowToastMessage("定位失败",SignActivity.this);
+            }
         }
     }
-
-
 }
