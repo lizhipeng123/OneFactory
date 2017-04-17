@@ -19,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
+ * 自定义刷新加载layout
  * Created by lizhipeng on 2017/3/27.
  */
 

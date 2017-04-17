@@ -11,8 +11,10 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
-import com.daoran.newfactory.onefactory.view.NoscrollListView;
-import com.daoran.newfactory.onefactory.view.SyncHorizontalScrollView;
+import com.daoran.newfactory.onefactory.util.Http.NetWork;
+import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
+import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +89,18 @@ public class ProductionActivity extends BaseFrangmentActivity implements View.On
             case R.id.ivProductionBack:
                 finish();
                 break;
+        }
+    }
+
+
+
+
+    private void setData(){
+//        String str = HttpUrl.Url+
+        if(NetWork.isNetWorkAvailable(this)){
+
+        }else{
+            ToastUtils.ShowToastMessage("当前网络不可用,请重新再试",ProductionActivity.this);
         }
     }
 

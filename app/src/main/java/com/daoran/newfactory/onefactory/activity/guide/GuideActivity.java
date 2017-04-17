@@ -1,7 +1,6 @@
 package com.daoran.newfactory.onefactory.activity.guide;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.login.LoginActivity;
 import com.daoran.newfactory.onefactory.activity.login.LoginDebugActivity;
 import com.daoran.newfactory.onefactory.adapter.GuideFragmentAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;

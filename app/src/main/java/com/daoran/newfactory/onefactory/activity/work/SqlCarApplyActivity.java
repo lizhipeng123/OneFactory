@@ -1,16 +1,12 @@
 package com.daoran.newfactory.onefactory.activity.work;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.login.LoginActivity;
 import com.daoran.newfactory.onefactory.adapter.RecycleAdatper;
 import com.daoran.newfactory.onefactory.adapter.SqlCarApplyAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
@@ -18,13 +14,12 @@ import com.daoran.newfactory.onefactory.bean.SqlCarApplyBean;
 
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
-import com.daoran.newfactory.onefactory.view.NoscrollListView;
+import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.RefreshLayout;
 import com.daoran.newfactory.onefactory.view.dialog.ContentDialog;
 

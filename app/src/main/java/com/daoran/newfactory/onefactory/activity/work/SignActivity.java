@@ -2,13 +2,11 @@ package com.daoran.newfactory.onefactory.activity.work;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -39,20 +37,19 @@ import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MarkerOptions;
-import com.amap.api.maps2d.model.MyLocationStyle;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
-import com.daoran.newfactory.onefactory.bean.SignDebugBean;
-import com.daoran.newfactory.onefactory.util.BitmapTools;
-import com.daoran.newfactory.onefactory.util.CLApplication;
-import com.daoran.newfactory.onefactory.util.CrameUtils;
+import com.daoran.newfactory.onefactory.bean.SignDetailBean;
+import com.daoran.newfactory.onefactory.util.image.BitmapTools;
+import com.daoran.newfactory.onefactory.util.application.CLApplication;
+import com.daoran.newfactory.onefactory.util.file.CrameUtils;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
-import com.daoran.newfactory.onefactory.util.SPUtils;
+import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -70,7 +67,6 @@ import java.util.List;
 
 import okhttp3.Call;
 import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
 
 /**
@@ -123,8 +119,8 @@ public class SignActivity extends BaseFrangmentActivity
     private ArrayList<String> locationList = new ArrayList<>();
 
 
-    private List<SignDebugBean.DataBean> signBean = new ArrayList<SignDebugBean.DataBean>();
-    private SignDebugBean dataBean;
+    private List<SignDetailBean.DataBean> signBean = new ArrayList<SignDetailBean.DataBean>();
+    private SignDetailBean dataBean;
 
     private int year, month, date, hour, minute, second;
     private SharedPreferences sp;
@@ -267,18 +263,6 @@ public class SignActivity extends BaseFrangmentActivity
             //启动定位
             mapLocationClient.startLocation();
         }
-//        MyLocationStyle myLocationStyle = new MyLocationStyle();
-//        myLocationStyle.myLocationIcon
-//                (BitmapDescriptorFactory.
-//                        fromResource(R.drawable.location_landmark));// 设置小蓝点的图标
-//        myLocationStyle.strokeColor(Color.BLACK);// 设置圆形的边框颜色
-//        myLocationStyle.radiusFillColor(Color.argb(100, 0, 0, 180));//圆形填充颜色
-//        myLocationStyle.strokeWidth(1.0f);//圆形的边框粗细
-//        aMap.setMyLocationStyle(myLocationStyle);
-//        aMap.setLocationSource(this);// 设置定位监听
-//        aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
-//        aMap.setMyLocationEnabled(true);//设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
-
     }
 
     private void setUp() {
@@ -320,12 +304,11 @@ public class SignActivity extends BaseFrangmentActivity
         spinnerfineTune.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                spUtils.put(SignActivity.this, "position", position);
                 String str = (String) spinnerfineTune.getSelectedItem();
                 spUtils.put(SignActivity.this, "addressItem", str);
                 tvSignAddress = (TextView) findViewById(R.id.tvSignAddress);
                 tvSignAddress.setText(str);
-                ToastUtils.ShowToastMessage("position" + position, SignActivity.this);
+//                ToastUtils.ShowToastMessage("position" + position, SignActivity.this);
 
             }
 
@@ -376,7 +359,7 @@ public class SignActivity extends BaseFrangmentActivity
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] languages = getResources().getStringArray(R.array.signSpinner);
                 spUtils.put(SignActivity.this, "languages", languages[position]);
-                ToastUtils.ShowToastMessage("点击的是：" + languages[position], SignActivity.this);
+//                ToastUtils.ShowToastMessage("点击的是：" + languages[position], SignActivity.this);
             }
 
             @Override
@@ -452,7 +435,7 @@ public class SignActivity extends BaseFrangmentActivity
                 finish();
                 break;
             case R.id.btnCount:
-                startActivity(new Intent(SignActivity.this, DebugDetailActivity.class));
+                startActivity(new Intent(SignActivity.this, SignDetailActivity.class));
                 break;
             case R.id.etRemark:
                 etRemark.setFocusableInTouchMode(true);
@@ -661,7 +644,7 @@ public class SignActivity extends BaseFrangmentActivity
 
                     spUtils.put(SignActivity.this, "gmapaddress", buffer.toString());
                     spUtils.put(SignActivity.this, "latitude", buffer1.toString());
-                    ToastUtils.ShowToastMessage(buffer.toString(), SignActivity.this);
+//                    ToastUtils.ShowToastMessage(buffer.toString(), SignActivity.this);
                     isFirstLoc = false;
                 }
             } else {

@@ -94,7 +94,7 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent">
 
-        <com.daoran.newfactory.onefactory.view.NoscrollListView
+        <com.daoran.newfactory.onefactory.view.listview.NoscrollListView
             android:id="@+id/listview"
             android:layout_width="match_parent"
             android:layout_height="fill_parent" />

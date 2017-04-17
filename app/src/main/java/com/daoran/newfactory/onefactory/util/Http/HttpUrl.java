@@ -8,9 +8,9 @@ package com.daoran.newfactory.onefactory.util.Http;
 public class HttpUrl {
 
     /*正式版—— hzm*/
-    public static final String Url = "http://115.238.84.67:8888/WebAPI/api/";//正式服务器
+    public static final String Url = " http://192.168.3.120/WebAPI/api/";//正式服务器
     /*测试账号—— hzm*/
-    public static final String debugoneUrl = "http://192.168.3.120/WebAPI/api/";
+    public static final String debugoneUrl = "http://115.238.84.67:8888/WebAPI/api/";
     /*测试账号—— bsj*/
     public static final String debugtwoUrl = "http://192.168.3.130/WebAPI/api/";
     /*登录地址*/

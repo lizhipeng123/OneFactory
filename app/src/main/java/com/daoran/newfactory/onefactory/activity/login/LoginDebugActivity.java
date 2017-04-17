@@ -13,34 +13,27 @@ import android.widget.Toast;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.main.MainActivity;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
-import com.daoran.newfactory.onefactory.bean.UserBean;
 import com.daoran.newfactory.onefactory.bean.UsergetBean;
-import com.daoran.newfactory.onefactory.util.Comfig;
 import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.RequestParams;
-import com.daoran.newfactory.onefactory.util.PreferencesUtils;
-import com.daoran.newfactory.onefactory.util.SPUtils;
-import com.daoran.newfactory.onefactory.util.SharedHelper;
+import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
+import com.daoran.newfactory.onefactory.util.Http.sharedparams.SharedHelper;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
-import com.daoran.newfactory.onefactory.util.UserUtils;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 登录修改版
+ * 登录
  * Created by lizhipeng on 2017/4/10.
  */
 
@@ -176,8 +169,6 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                         startActivity(intent);
                         spUtils.put(LoginDebugActivity.this, "username", etUsername.getText().toString());
                         spUtils.put(LoginDebugActivity.this, "passwd", etPassword.getText().toString());
-//                        sh.save(etUsername.getText().toString()
-//                                , etPassword.getText().toString());
 
                     } else {
                         ToastUtils.ShowToastMessage("用户名密码错误，请重新输入", LoginDebugActivity.this);

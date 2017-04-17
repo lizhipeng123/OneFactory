@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.daoran.newfactory.onefactory.util.Comfig;
+import com.daoran.newfactory.onefactory.util.settings.Comfig;
 
 import java.io.File;
 import java.io.FileInputStream;

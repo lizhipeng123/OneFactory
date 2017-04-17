@@ -1,18 +1,14 @@
 package com.daoran.newfactory.onefactory.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.bean.SignDebugBean;
+import com.daoran.newfactory.onefactory.bean.SignDetailBean;
 //import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -22,10 +18,10 @@ import java.util.List;
  */
 
 public class SignDetailAdapter extends BaseAdapter {
-    private List<SignDebugBean.DataBean> signdata;
+    private List<SignDetailBean.DataBean> signdata;
     private Context context;
 
-    public SignDetailAdapter(List<SignDebugBean.DataBean> signdata, Context context) {
+    public SignDetailAdapter(List<SignDetailBean.DataBean> signdata, Context context) {
         this.signdata = signdata;
         this.context = context;
     }
@@ -36,7 +32,7 @@ public class SignDetailAdapter extends BaseAdapter {
     }
 
     @Override
-    public SignDebugBean.DataBean getItem(int position) {
+    public SignDetailBean.DataBean getItem(int position) {
         return signdata.get(position);
     }
 

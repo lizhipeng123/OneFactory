@@ -12,8 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.util.Comfig;
-import com.daoran.newfactory.onefactory.util.PreferencesUtils;
+import com.daoran.newfactory.onefactory.util.settings.Comfig;
+import com.daoran.newfactory.onefactory.util.Http.sharedparams.PreferencesUtils;
 
 import java.util.List;
 

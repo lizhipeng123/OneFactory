@@ -73,10 +73,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!-- 登录 -->
-        <activity
-            android:name=".activity.login.LoginActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
         <!-- 注册 -->
         <activity
             android:name=".activity.resgister.ResgisterActivity"
@@ -95,14 +91,10 @@
             android:screenOrientation="portrait" />
 
         <!-- 外勤签到查询 -->
-        <activity
-            android:name=".activity.work.SqlSiganDetailActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
 
         <!-- 外勤签到查询测试类 -->
         <activity
-            android:name=".activity.work.DebugDetailActivity"
+            android:name=".activity.work.SignDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
@@ -119,10 +111,6 @@
             android:screenOrientation="portrait" />
 
         <!-- 公交查询测试类 -->
-        <activity
-            android:name=".activity.work.BusRouteActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
 
         <!-- 外勤签到测试类 -->
         <activity
@@ -133,14 +121,6 @@
         <!-- 外勤签到测试类 -->
         <activity
             android:name=".activity.login.LoginDebugActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.work.DebugBusdingweiActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.work.GaodeMapLocationActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity

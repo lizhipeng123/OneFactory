@@ -12,6 +12,14 @@ import android.widget.EditText;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
+import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
+import com.daoran.newfactory.onefactory.util.Http.NetWork;
+import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.google.gson.Gson;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import okhttp3.Call;
 
 /**
  * 出车单展示
@@ -31,6 +39,7 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
         getViews();
         initViews();
         setListener();
+        setCardetail();
     }
 
     private void getViews() {
@@ -62,6 +71,32 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
         display.getMetrics(outMetrics);
         int width = outMetrics.widthPixels;
 //        View menuView = LayoutInflater.from(this).inflate()
+    }
+
+    private void setCardetail() {
+        String str = HttpUrl.debugoneUrl + "UCarsApply/UCarsApplySearch/";
+        if (NetWork.isNetWorkAvailable(this)) {
+            OkHttpUtils
+                    .post()
+                    .url(str)
+                    .addParams("pageNum", "1")
+                    .addParams("pageSize","20")
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            System.out.print(response);
+                            Gson gson = new Gson();
+                        }
+                    });
+        } else {
+            ToastUtils.ShowToastMessage("当前网络不可用，请稍后再试", CarapplyActivity.this);
+        }
     }
 
     @Override

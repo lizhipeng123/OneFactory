@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.util.Log;
 
-import com.daoran.newfactory.onefactory.util.Comfig;
+import com.daoran.newfactory.onefactory.util.settings.Comfig;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;

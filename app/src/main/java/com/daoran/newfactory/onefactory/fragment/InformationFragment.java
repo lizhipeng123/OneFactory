@@ -13,6 +13,7 @@ import com.daoran.newfactory.onefactory.R;
 
 
 /**
+ * 资讯模块
  * Created by lizhipeng on 2017/3/22.
  */
 
@@ -36,5 +37,4 @@ public class InformationFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    private void getViews(){}
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 /**
+ * 自定义展开layout
  * Created by lizhipeng on 2017/3/31.
  */
 

@@ -12,11 +12,11 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.login.LoginActivity;
 import com.daoran.newfactory.onefactory.activity.login.LoginDebugActivity;
 
 
 /**
+ * 设置模块
  * Created by lizhipeng on 2017/3/22.
  */
 

@@ -68,7 +68,7 @@
             android:layout_weight="3"
             android:orientation="vertical">
 
-            <com.daoran.newfactory.onefactory.view.SyncHorizontalScrollView
+            <com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView
                 android:id="@+id/header_horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -153,7 +153,7 @@
                         android:layout_height="50dp"
                         android:background="#cccccc"/>
                 </LinearLayout>
-            </com.daoran.newfactory.onefactory.view.SyncHorizontalScrollView>
+            </com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView>
         </LinearLayout>
     </LinearLayout>
 
@@ -175,7 +175,7 @@
             android:layout_alignParentTop="true"
             android:orientation="horizontal">
 
-            <com.daoran.newfactory.onefactory.view.NoscrollListView
+            <com.daoran.newfactory.onefactory.view.listview.NoscrollListView
                 android:id="@+id/lv_left"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -195,20 +195,20 @@
                 android:layout_weight="3"
                 android:orientation="vertical">
 
-                <com.daoran.newfactory.onefactory.view.SyncHorizontalScrollView
+                <com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView
                     android:id="@+id/data_horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:overScrollMode="never"
                     android:scrollbars="none">
 
-                    <com.daoran.newfactory.onefactory.view.NoscrollListView
+                    <com.daoran.newfactory.onefactory.view.listview.NoscrollListView
                         android:id="@+id/lv_data"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:overScrollMode="never"
                         android:scrollbars="none"/>
-                </com.daoran.newfactory.onefactory.view.SyncHorizontalScrollView>
+                </com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -1,11 +1,8 @@
 package com.daoran.newfactory.onefactory.activity.start;
 
-import android.app.Activity;
-import android.app.LauncherActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Window;
 import android.widget.ImageView;
 
 import com.daoran.newfactory.onefactory.R;
@@ -13,10 +10,8 @@ import com.daoran.newfactory.onefactory.activity.guide.GuideActivity;
 import com.daoran.newfactory.onefactory.activity.main.MainActivity;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.base.Common;
-import com.daoran.newfactory.onefactory.util.Comfig;
-import com.daoran.newfactory.onefactory.util.PreferencesUtils;
-
-import java.util.Timer;
+import com.daoran.newfactory.onefactory.util.settings.Comfig;
+import com.daoran.newfactory.onefactory.util.Http.sharedparams.PreferencesUtils;
 
 /**
  * 启动页

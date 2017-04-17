@@ -13,6 +13,7 @@ import com.daoran.newfactory.onefactory.R;
 
 
 /**
+ * 在办事项模块
  * Created by lizhipeng on 2017/3/22.
  */
 
@@ -36,5 +37,4 @@ public class OfficeFragment extends Fragment {
         return view;
     }
 
-    private void getViews(){}
 }

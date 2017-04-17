@@ -4,7 +4,8 @@ package com.daoran.newfactory.onefactory.view;
 
 /**
  * Created by monkey
- * on 2014/9/24
+ * on lizhipeng
+ * 2017-4-10
  * 功能描述：修改过的FragmentTabHost,保存fragment实例不销毁
  */
 /*

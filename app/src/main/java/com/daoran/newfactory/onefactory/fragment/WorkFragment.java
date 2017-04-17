@@ -14,19 +14,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.BusdingweiActivity;
 import com.daoran.newfactory.onefactory.activity.work.CommoditySqlActivity;
-import com.daoran.newfactory.onefactory.activity.work.DebugBusdingweiActivity;
-import com.daoran.newfactory.onefactory.activity.work.DebugDetailActivity;
+import com.daoran.newfactory.onefactory.activity.work.SignDetailActivity;
 import com.daoran.newfactory.onefactory.activity.work.DebugGaodeActivity;
-import com.daoran.newfactory.onefactory.activity.work.GaodeMapLocationActivity;
 import com.daoran.newfactory.onefactory.activity.work.ProductionActivity;
 import com.daoran.newfactory.onefactory.activity.work.SignActivity;
 import com.daoran.newfactory.onefactory.activity.work.SqlCarApplyActivity;
-import com.daoran.newfactory.onefactory.util.SPUtils;
+import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 
 
 /**
+ * 工作模块
  * Created by lizhipeng on 2017/3/22.
  */
 
@@ -35,11 +33,8 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
     Activity mactivity;
     private Toolbar tbarWrok;
     private View view;
-    private int tvWidthNumber;
     private TextView tvOpenCarDetail, tvSign, tvSqlSign, tvBusRoute, tvProduction, tvSqlgoods;
     private TextView idworkname;
-    private String name;
-
     private SharedPreferences sp;
     private SPUtils spUtils;
     @Override
@@ -94,7 +89,7 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
                 getActivity().startActivity(new Intent(getActivity(), SqlCarApplyActivity.class));
                 break;
             case R.id.tvSqlSign://查询签到详情
-                getActivity().startActivity(new Intent(getActivity(), DebugDetailActivity.class));
+                getActivity().startActivity(new Intent(getActivity(), SignDetailActivity.class));
                 break;
             case R.id.tvProduction://生产日报
                 getActivity().startActivity(new Intent(getActivity(), ProductionActivity.class));
