@@ -15,9 +15,10 @@ import android.widget.Toast;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.adapter.SignDetailAdapter;
-import com.handmark.pulltorefresh.library.ILoadingLayout;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.i5tong.epubreaderlib.view.pulltorefresh.ILoadingLayout;
+import com.i5tong.epubreaderlib.view.pulltorefresh.PullToRefreshBase;
+import com.i5tong.epubreaderlib.view.pulltorefresh.PullToRefreshListView;
+
 
 import java.util.List;
 
@@ -146,16 +147,15 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
     public void setListData(List datas) {
         this.datas = datas;
         listView.onRefreshComplete();
-
         isRefreshing = false;
 
         //填充数据
         //无数据
         if (datas == null || datas.size() == 0) {
             if (pageIndex == defaultPageIndex) {
-//                if(adapter instanceof SignDetailAdapter){
-//                    ((SignDetailAdapter) adapter).clear();
-//                }
+                if(adapter instanceof SignDetailAdapter){
+                    ((SignDetailAdapter) adapter).clear();
+                }
                 setEmptyView();
             } else {
                 Toast.makeText(this, "没有更多数据了", Toast.LENGTH_SHORT).show();
@@ -166,15 +166,15 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
 
             hideEmptyView();
 
-//            if (pageIndex == defaultPageIndex) {
-//                if(adapter instanceof SignDetailAdapter){
-//                    ((SignDetailAdapter) adapter).replaceAll(datas);
-//                }
-//            } else {
-//                if(adapter instanceof SignDetailAdapter){
-//                    ((SignDetailAdapter) adapter).addAll(datas);
-//                }
-//            }
+            if (pageIndex == defaultPageIndex) {
+                if(adapter instanceof SignDetailAdapter){
+                    ((SignDetailAdapter) adapter).replaceAll(datas);
+                }
+            } else {
+                if(adapter instanceof SignDetailAdapter){
+                    ((SignDetailAdapter) adapter).addAll(datas);
+                }
+            }
             pageIndex++;
         }
 
@@ -189,9 +189,9 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
         isRefreshing = false;
         if (datas == null || datas.size() == 0) {
             if (pageIndex == defaultPageIndex) {
-//                if(adapter instanceof SignDetailAdapter){
-//                    ((SignDetailAdapter) adapter).clear();
-//                }
+                if(adapter instanceof SignDetailAdapter){
+                    ((SignDetailAdapter) adapter).clear();
+                }
             } else {
                 Toast.makeText(this, "没有更多数据了", Toast.LENGTH_SHORT).show();
             }
@@ -202,13 +202,13 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
             hideEmptyView();
 
             if (pageIndex == defaultPageIndex) {
-//                if(adapter instanceof SignDetailAdapter){
-//                    ((SignDetailAdapter) adapter).replaceAll(datas);
-//                }
+                if(adapter instanceof SignDetailAdapter){
+                    ((SignDetailAdapter) adapter).replaceAll(datas);
+                }
             } else {
-//                if(adapter instanceof SignDetailAdapter){
-//                    ((SignDetailAdapter) adapter).addAll(datas);
-//                }
+                if(adapter instanceof SignDetailAdapter){
+                    ((SignDetailAdapter) adapter).addAll(datas);
+                }
             }
             pageIndex++;
         }

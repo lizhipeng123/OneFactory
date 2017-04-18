@@ -73,4 +73,6 @@ dependencies {
     compile 'com.github.hotchemi:permissionsdispatcher:2.0.0'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.0.0'
     compile files('libs/AMap3DMap_5.0.0_AMapNavi_5.0.1_AMapSearch_5.0.0_AMapLocation_3.3.0_20170410.jar')
+    compile project(':epubReader')
+    compile project(':youkuPlayerOpenSDK')
 }

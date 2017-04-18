@@ -11,6 +11,7 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.bean.SignDetailBean;
 //import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +26,21 @@ public class SignDetailAdapter extends BaseAdapter {
         this.signdata = signdata;
         this.context = context;
     }
+    public void clear() {
+        signdata.clear();
+        notifyDataSetChanged();
+    }
 
+
+    public void addAll(List<SignDetailBean.DataBean> _c) {
+        signdata.addAll(_c);
+        notifyDataSetChanged();
+    }
+
+    public void replaceAll(List<SignDetailBean.DataBean> _c) {
+        signdata.clear();
+        addAll(_c);
+    }
     @Override
     public int getCount() {
         return signdata.size();
