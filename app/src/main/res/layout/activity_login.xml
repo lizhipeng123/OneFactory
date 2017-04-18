@@ -76,7 +76,7 @@
                 android:orientation="horizontal">
 
                 <CheckBox
-                    android:id="@+id/checkBox"
+                    android:id="@+id/checkBoxPw"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -96,6 +96,7 @@
                 android:orientation="horizontal">
 
                 <CheckBox
+                    android:id="@+id/checkboxopen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 

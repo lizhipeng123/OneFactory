@@ -1,12 +1,17 @@
 package com.daoran.newfactory.onefactory.activity.login;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -43,6 +48,9 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
     private EditText etUsername, etPassword;
     private SharedHelper sh;
     private SPUtils spUtils;
+    private CheckBox checkBoxPw, checkboxopen;
+    private SharedPreferences sp;
+    private String userNameValue, passwordValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +68,31 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
         });
         getViews();
         initViews();
+        sp = this.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
+        String name = sp.getString("username", "");
+        String passwd = sp.getString("passwd", "");
+        boolean choseRemember = sp.getBoolean("remember", false);
+        boolean choseAutoLogin = sp.getBoolean("autologin", false);
+        if (choseRemember == true) {
+            etUsername.setText(name);
+            etPassword.setText(passwd);
+            checkBoxPw.setChecked(true);
+        }
+        if (choseAutoLogin) {
+            checkboxopen.setChecked(true);
+            etUsername.setText(name);
+            etPassword.setText(passwd);
+            if (etUsername.getText().toString() != null) {
+                postLogin();
+            }
+        }
     }
 
     private void getViews() {
         etUsername = (EditText) findViewById(R.id.etUsername);
         etPassword = (EditText) findViewById(R.id.etPassword);
+        checkBoxPw = (CheckBox) findViewById(R.id.checkBoxPw);
+        checkboxopen = (CheckBox) findViewById(R.id.checkboxopen);
     }
 
     private void initViews() {
@@ -146,30 +174,45 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
     private void postLogin() {
         String loginuserUrl = HttpUrl.debugoneUrl + "Login/UserLogin/";
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this,"登录中");
+
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(NetUtil.createParam("Logid", etUsername.getText().toString()));
             params.add(NetUtil.createParam("pwd", etPassword.getText().toString()));
             params.add(NetUtil.createParam("Ischeckpwd", true));
             params.add(NetUtil.createParam("Company", "杭州道然进出口有限公司"));
             RequestParams requestParams = new RequestParams(params);
+            ResponseDialog.showLoading(this, "登录中");
             NetUtil.getAsyncHttpClient().post(loginuserUrl, requestParams, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String content) {
                     super.onSuccess(content);
                     System.out.print(content);
+                    userNameValue = etUsername.getText().toString();
+                    passwordValue = etPassword.getText().toString();
+                    Editor editor = sp.edit();
                     Gson gson = new Gson();
                     UsergetBean userBean = gson.fromJson(content, UsergetBean.class);
                     if (userBean.isStatus() == true) {
-
+                        editor.putString("username", userNameValue);
+                        editor.putString("passwd", passwordValue);
+                        //记住密码
+                        if (checkBoxPw.isChecked()) {
+                            editor.putBoolean("remember", true);
+                        } else {
+                            editor.putBoolean("remember", false);
+                        }
+                        //
+                        if (checkboxopen.isChecked()) {
+                            editor.putBoolean("autologin", true);
+                        } else {
+                            editor.putBoolean("autologin", false);
+                        }
+                        editor.commit();
                         Intent intent = new Intent(LoginDebugActivity.this, MainActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("u_name", userBean.getU_name());
                         intent.putExtras(bundle);
                         startActivity(intent);
-                        spUtils.put(LoginDebugActivity.this, "username", etUsername.getText().toString());
-                        spUtils.put(LoginDebugActivity.this, "passwd", etPassword.getText().toString());
-
                     } else {
                         ToastUtils.ShowToastMessage("用户名密码错误，请重新输入", LoginDebugActivity.this);
                         ResponseDialog.closeLoading();

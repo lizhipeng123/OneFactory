@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.text.format.Time;
 import android.util.Log;
@@ -39,13 +37,13 @@ import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
+import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.SignDetailBean;
 import com.daoran.newfactory.onefactory.util.image.BitmapTools;
-import com.daoran.newfactory.onefactory.util.application.CLApplication;
 import com.daoran.newfactory.onefactory.util.file.CrameUtils;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
@@ -55,11 +53,6 @@ import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -77,8 +70,6 @@ import permissions.dispatcher.RuntimePermissions;
 public class SignActivity extends BaseFrangmentActivity
         implements View.OnClickListener, PoiSearch.OnPoiSearchListener,
         LocationSource, AMapLocationListener, AMap.OnCameraChangeListener {
-    private View view;
-
     private MapView mapView;
     private AMap aMap;
     private AMapLocationClient mapLocationClient;
@@ -87,7 +78,6 @@ public class SignActivity extends BaseFrangmentActivity
     private double longitude;
     private double latitude;
     private LocationSource.OnLocationChangedListener mListener;
-
     private ProgressDialog progressDialog = null;//搜索时进度条
     private PoiSearch.Query query;//poi查询类
     private PoiSearch poiSearch;//搜索
@@ -99,6 +89,7 @@ public class SignActivity extends BaseFrangmentActivity
     private String deepType;//搜索类型
     private int juli = 1000;
     private LatLonPoint latLonPoint;
+    private GeocodeSearch geocodeSearch;
     private Spinner spinner, spinnnerfileTune;
 
     private static final String TAG = "TAG";
@@ -117,23 +108,17 @@ public class SignActivity extends BaseFrangmentActivity
     private ScrollView scrollviewSign;
     private ArrayAdapter<String> adapter;
     private ArrayList<String> locationList = new ArrayList<>();
-
-
     private List<SignDetailBean.DataBean> signBean = new ArrayList<SignDetailBean.DataBean>();
     private SignDetailBean dataBean;
 
     private int year, month, date, hour, minute, second;
     private SharedPreferences sp;
     private SPUtils spUtils;
-    private CrameUtils crameUtils;
-    private boolean isMe = false;
     private MarkerOptions mMarkerOptions;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_sign);
         mapView = (MapView) findViewById(R.id.mapSigngaode);
         mapView.onCreate(savedInstanceState);
@@ -151,12 +136,8 @@ public class SignActivity extends BaseFrangmentActivity
         getViews();
         initViews();
         initSpinner();
-
         init();
-
         sp = this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
-
-
         SignActivityPermissionsDispatcher.startLocationWithCheck(this);
     }
 
@@ -172,7 +153,6 @@ public class SignActivity extends BaseFrangmentActivity
     private void initViews() {
         ivSignBack.setOnClickListener(this);
         btnCount.setOnClickListener(this);
-
         tvSignDate.setText(String.valueOf(year + "/" + month + "/" + date));
         View v = mapView.getChildAt(0);
         //解决scrollview与mapview滑动冲突
@@ -191,7 +171,6 @@ public class SignActivity extends BaseFrangmentActivity
         btnSignCancle.setOnClickListener(this);
         btnSignOk.setOnClickListener(this);
         topBg.setOnClickListener(this);
-        crameUtils = new CrameUtils();
     }
 
     /**
@@ -211,7 +190,6 @@ public class SignActivity extends BaseFrangmentActivity
         spinnnerfileTune = (Spinner) findViewById(R.id.spinnnerfileTune);
         getSpinner();
         getDate();
-
 
     }
 
@@ -244,15 +222,13 @@ public class SignActivity extends BaseFrangmentActivity
                             Log.i(TAG, amapLocation.getPoiName());
                             latitude = amapLocation.getLatitude();
                             longitude = amapLocation.getLongitude();
-//                            setTextWithColor("纬度 = " + latitude + "\n经度 = " + longitude, Color.BLACK);
                             cityCode = amapLocation.getCity();
                             doSearch();
                             mapLocationClient.stopLocation();
-                        } else if (amapLocation.getErrorCode() == 12) {
-//                            setTextWithColor(amapLocation.getErrorInfo(), Color.RED);
+                        } else if (
+                                amapLocation.getErrorCode() == 12) {
                             Toast.makeText(getApplicationContext(), "权限不足，请在设置中授予相应权限", Toast.LENGTH_SHORT).show();
                         } else {
-//                            setTextWithColor(amapLocation.getErrorInfo(), Color.RED);
                             Log.e(TAG, "error code = " + amapLocation.getErrorCode());
                         }
                     }
@@ -308,8 +284,6 @@ public class SignActivity extends BaseFrangmentActivity
                 spUtils.put(SignActivity.this, "addressItem", str);
                 tvSignAddress = (TextView) findViewById(R.id.tvSignAddress);
                 tvSignAddress.setText(str);
-//                ToastUtils.ShowToastMessage("position" + position, SignActivity.this);
-
             }
 
             @Override
@@ -320,15 +294,14 @@ public class SignActivity extends BaseFrangmentActivity
     }
 
     private void doSearch() {
-//        loading();
         aMap.setOnMapClickListener(null);//进行poi搜索时清除掉地图点击事件
         query = new PoiSearch.Query("", deepType, cityCode);
         PoiSearch poiSearch = new PoiSearch(this, query);
         poiSearch.setOnPoiSearchListener(this);
-        query.setPageSize(20);// 设置每页最多返回多少条数据
+        query.setPageSize(30);// 设置每页最多返回多少条数据
         query.setPageNum(0);//设置查询页码
         LatLonPoint lp = new LatLonPoint(latitude, longitude);
-        poiSearch.setBound(new PoiSearch.SearchBound(lp, 2000, true));//设置周边搜索的中心点以及半径
+        poiSearch.setBound(new PoiSearch.SearchBound(lp, 1000, true));//设置周边搜索的中心点以及半径
         //keyWord表示搜索字符串，
         //第二个参数表示POI搜索类型，二者选填其一，
         //POI搜索类型共分为以下20种：汽车服务|汽车销售|
@@ -336,7 +309,6 @@ public class SignActivity extends BaseFrangmentActivity
         //住宿服务|风景名胜|商务住宅|政府机构及社会团体|科教文化服务|交通设施服务|
         //金融保险服务|公司企业|道路附属设施|地名地址信息|公共设施
         //cityCode表示POI搜索区域，可以是城市编码也可以是城市名称，也可以传空字符串，空字符串代表全国在全国范围内进行搜索
-
         poiSearch.searchPOIAsyn();
     }
 
@@ -359,7 +331,6 @@ public class SignActivity extends BaseFrangmentActivity
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] languages = getResources().getStringArray(R.array.signSpinner);
                 spUtils.put(SignActivity.this, "languages", languages[position]);
-//                ToastUtils.ShowToastMessage("点击的是：" + languages[position], SignActivity.this);
             }
 
             @Override
@@ -367,65 +338,6 @@ public class SignActivity extends BaseFrangmentActivity
 
             }
         });
-    }
-
-    /**
-     * 打开系统相册，并选择图片
-     */
-    public void selectPic(View view) {
-        Intent intent = new Intent("android.intent.action.PICK");
-        intent.setType("image/*");
-        startActivityForResult(intent, 0);
-    }
-
-    /**
-     * 给拍的照片命名
-     */
-    public String createPhotoName() {
-        //以系统的当前时间给图片命名
-        Date date = new Date(System.currentTimeMillis());
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-        String fileName = format.format(date) + ".jpg";
-        return fileName;
-    }
-
-    /**
-     * 把拍的照片保存到SD卡
-     */
-    public void saveToSDCard(Bitmap bitmap) {
-        //先要判断SD卡是否存在并且挂载
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            File file = new File(CLApplication.photoPath);
-            if (!file.exists()) {
-                file.mkdirs();
-            }
-            FileOutputStream outputStream = null;
-            try {
-                outputStream = new FileOutputStream(createPhotoName());
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);//把图片数据写入文件
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } finally {
-                if (outputStream != null) {
-                    try {
-                        outputStream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        } else {
-            ToastUtils.ShowToastMessage("SD卡不存在", SignActivity.this);
-        }
-    }
-
-
-    /**
-     * 选择拍照的图片
-     */
-    public void takePhoto(View view) {
-        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-        startActivityForResult(intent, 1);
     }
 
     @Override
@@ -448,38 +360,21 @@ public class SignActivity extends BaseFrangmentActivity
                 setSignDebug();
                 break;
             case R.id.topBg:
-                selectPic(view);
+                mapView.setDrawingCacheEnabled(true);
+                Bitmap bitmap = mapView.getDrawingCache();
+                bitmap = bitmap.createBitmap(bitmap);
+                mapView.setDrawingCacheEnabled(false);
+                if (bitmap != null) {
+                    topBg.setImageBitmap(bitmap);
+                    ToastUtils.ShowToastMessage("获取成功", SignActivity.this);
+                    //将选择的图片设置到控件上
+                    String picurl = BitmapTools.convertIconToString(bitmap);
+                    spUtils.put(SignActivity.this, "picurl", picurl);
+                } else {
+                    ToastUtils.ShowToastMessage("获取失败", SignActivity.this);
+                }
                 break;
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null) {
-            return;//当data为空的时候，不做任何处理
-        }
-        Bitmap bitmap = null;
-        if (requestCode == 0) {
-            //获取从相册界面返回的缩略图
-            bitmap = data.getParcelableExtra("data");
-            if (bitmap == null) {//如果返回的图片不够大，就不会执行缩略图的代码，因此需要判断是否为null,如果是小图，直接显示原图即可
-                try {
-                    //通过URI得到输入流
-                    InputStream inputStream = getContentResolver().openInputStream(data.getData());
-                    //通过输入流得到bitmap对象
-                    bitmap = BitmapFactory.decodeStream(inputStream);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else if (requestCode == 1) {
-            bitmap = (Bitmap) data.getExtras().get("data");
-            saveToSDCard(bitmap);
-        }
-        //将选择的图片设置到控件上
-        topBg.setImageBitmap(bitmap);
-        String picurl = BitmapTools.convertIconToString(bitmap);
-        spUtils.put(SignActivity.this, "picurl", picurl);
     }
 
     @Override
@@ -488,7 +383,6 @@ public class SignActivity extends BaseFrangmentActivity
         if (mapView != null) {
             mapView.onResume();
         }
-
     }
 
     @Override
@@ -497,16 +391,15 @@ public class SignActivity extends BaseFrangmentActivity
         if (mapView != null) {
             mapView.onResume();
         }
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        if (mapView != null) {
-        mapView.onDestroy();
-//            mapView = null;
-//        }
+        if (mapView != null) {
+            mapView.onDestroy();
+            mapView = null;
+        }
         mapLocationClient.onDestroy();//销毁定位客户端。
 
     }
@@ -531,7 +424,6 @@ public class SignActivity extends BaseFrangmentActivity
         String picstr = sp.getString("picurl", "");
         String address = sp.getString("addressItem", "");
         if (NetWork.isNetWorkAvailable(this)) {
-
             OkHttpUtils.post()
                     .url(url)
                     .addParams("id", "")
@@ -590,6 +482,8 @@ public class SignActivity extends BaseFrangmentActivity
     }
 
     private void getDate() {
+//        String timedate =  DateUtils.currentTime();
+//        System.out.print(timedate);
         Time t = new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
         t.setToNow(); // 取得系统时间。
         year = t.year;
@@ -625,7 +519,7 @@ public class SignActivity extends BaseFrangmentActivity
                 // 如果不设置标志位，此时再拖动地图时，它会不断将地图移动到当前的位置
                 if (isFirstLoc) {
                     //设置缩放级别
-                    aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
+                    aMap.moveCamera(CameraUpdateFactory.zoomTo(19));
                     //将地图移动到定位点
                     aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude())));
                     //点击定位按钮 能够将地图的中心移动到定位点
@@ -641,13 +535,11 @@ public class SignActivity extends BaseFrangmentActivity
                             + aMapLocation.getStreetNum());
                     StringBuffer buffer1 = new StringBuffer();
                     buffer1.append(aMapLocation.getLatitude() + "," + aMapLocation.getLongitude());
-
-                    spUtils.put(SignActivity.this, "gmapaddress", buffer.toString());
                     spUtils.put(SignActivity.this, "latitude", buffer1.toString());
-//                    ToastUtils.ShowToastMessage(buffer.toString(), SignActivity.this);
                     isFirstLoc = false;
                 }
             } else {
+
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                 Log.e("AmapError", "location Error, ErrCode:"
                         + aMapLocation.getErrorCode() + ", errInfo:"
@@ -668,6 +560,11 @@ public class SignActivity extends BaseFrangmentActivity
     }
 
     @Override
+    public void onPoiItemSearched(PoiItem poiItem, int i) {
+
+    }
+
+    @Override
     public void onPoiSearched(PoiResult result, int rCode) {
         locationList.clear();
         if (rCode == 1000) {
@@ -675,7 +572,6 @@ public class SignActivity extends BaseFrangmentActivity
                 if (result.getQuery().equals(query)) {// 是否是同一条
                     PoiResult poiResult = result;
                     ArrayList<PoiItem> poiItems = poiResult.getPois();
-
                     if (poiItems != null && poiItems.size() > 0) {
                         for (PoiItem p : poiItems) {
                             Log.i(TAG, "getTitle = " + p.getTitle());
@@ -683,10 +579,7 @@ public class SignActivity extends BaseFrangmentActivity
                             String snippet = p.getSnippet();
                             spUtils.put(SignActivity.this, "snippet", snippet);
                             initSign();
-                            selectPositon();
-
                         }
-
                     }
                 } else {
                     Log.e(TAG, "无结果");
@@ -701,15 +594,6 @@ public class SignActivity extends BaseFrangmentActivity
             Log.e(TAG, "error_other：" + rCode);
         }
         adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onPoiItemSearched(PoiItem poiItem, int i) {
-
-    }
-
-    private void selectPositon() {
-
     }
 
 }
