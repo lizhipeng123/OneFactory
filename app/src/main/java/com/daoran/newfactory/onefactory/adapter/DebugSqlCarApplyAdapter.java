@@ -14,18 +14,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by lizhipeng on 2017/4/12.
+ * Created by lizhipeng on 2017/4/19.
  */
 
-public class SqlCarApplyAdapter extends BaseAdapter {
+public class DebugSqlCarApplyAdapter extends BaseAdapter {
     private List<SqlCarApplyBean.DataBean> dataBeen;
     private Context context;
 
-    public SqlCarApplyAdapter(List<SqlCarApplyBean.DataBean> dataBeen, Context context) {
-        this.dataBeen = dataBeen;
+    public DebugSqlCarApplyAdapter(Context context) {
+        this.dataBeen = new ArrayList<>();
         this.context = context;
     }
+    public void clear() {
+        dataBeen.clear();
+        notifyDataSetChanged();
+    }
 
+    public void addAll(List<SqlCarApplyBean.DataBean> _c) {
+        dataBeen.addAll(_c);
+        notifyDataSetChanged();
+    }
+
+    public void replaceAll(List<SqlCarApplyBean.DataBean> _c) {
+        dataBeen.clear();
+        addAll(_c);
+    }
     @Override
     public int getCount() {
         return dataBeen.size();
@@ -43,16 +56,16 @@ public class SqlCarApplyAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        DebugSqlCarApplyAdapter.ViewHolder holder;
         if (convertView == null) {
-            holder = new ViewHolder();
+            holder = new DebugSqlCarApplyAdapter.ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_sqlcar, null);
             holder.tvSqlCarId = (TextView) convertView.findViewById(R.id.tvSqlCarId);
             holder.tvSqlApplyName = (TextView) convertView.findViewById(R.id.tvSqlApplyName);
             holder.tvSqlCarDate = (TextView) convertView.findViewById(R.id.tvSqlCarDate);
             convertView.setTag(holder);
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            holder = (DebugSqlCarApplyAdapter.ViewHolder) convertView.getTag();
         }
         holder.tvSqlCarId.setText(getItem(position).getCode());
         holder.tvSqlApplyName.setText(getItem(position).getRecorder());
