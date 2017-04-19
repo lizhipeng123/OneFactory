@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.adapter.SignDetailAdapter;
+import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.base.BaseListActivity;
 import com.daoran.newfactory.onefactory.bean.SignDetailBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
@@ -21,7 +22,6 @@ import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.google.gson.JsonSyntaxException;
-import com.i5tong.epubreaderlib.view.pulltorefresh.PullToRefreshListView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -37,11 +37,13 @@ import okhttp3.Call;
  * Created by lizhipeng on 2017/3/29.
  */
 
-public class SignDetailActivity extends BaseListActivity
-        implements View.OnClickListener {
+public class SignDetailActivity extends BaseFrangmentActivity implements View.OnClickListener {
     private NoscrollListView mLeft;
     private LeftAdapter mLeftAdapter;
+
+    private NoscrollListView mData;
     private SignDetailAdapter detailAdapter;
+
     private SyncHorizontalScrollView mHeaderHorizontal;
     private SyncHorizontalScrollView mDataHorizontal;
 
@@ -56,25 +58,25 @@ public class SignDetailActivity extends BaseListActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        ResponseDialog.showLoading(this, "请稍后");
         setContentView(R.layout.debug_activity_detail);
         initView();
         getViews();
-
+        setSignDetail();
     }
 
     private void initView() {
         ivSiganSqlDetail = (ImageView) findViewById(R.id.ivSiganSqlDetail);
         mLeft = (NoscrollListView) findViewById(R.id.lv_left);
+        mData = (NoscrollListView) findViewById(R.id.lv_data);
         mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
         mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
+
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);
 
         mLeftAdapter = new LeftAdapter();
         mLeft.setAdapter(mLeftAdapter);
-        init(R.id.lv_data);
-        setPullToRefreshListViewModeBOTH();
-        getData();
     }
 
     private void getViews() {
@@ -94,61 +96,14 @@ public class SignDetailActivity extends BaseListActivity
      * 签到查询服务器
      */
     private void setSignDetail() {
-//        String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
-//        if (NetWork.isNetWorkAvailable(this)) {
-//            ResponseDialog.showLoading(this, "正在查询，请稍后");
-//            OkHttpUtils
-//                    .post()
-//                    .url(str)
-//                    .addParams("pageNum", "1")
-//                    .addParams("pageSize", "20")
-//                    .build()
-//                    .execute(new StringCallback() {
-//                        @Override
-//                        public void onError(Call call, Exception e, int id) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        @Override
-//                        public void onResponse(String response, int id) {
-//                            System.out.print(response);
-//                            try {
-//                                Gson gson = new Gson();
-//                                signBean = gson.fromJson(response, SignDetailBean.class);
-//                                mListData = signBean.getData();
-//                                detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
-//                                waterDropListView.setAdapter(detailAdapter);
-////                                waterDropListView.setWaterDropListViewListener(SignDetailActivity.this);
-//                                waterDropListView.setPullLoadEnable(true);
-//                            } catch (JsonSyntaxException e) {
-//                                ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
-//                                ResponseDialog.closeLoading();
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                                ResponseDialog.closeLoading();
-//                            }
-//                        }
-//                    });
-//        } else {
-//            ToastUtils.ShowToastMessage(R.string.disNetworking, SignDetailActivity.this);
-//        }
-    }
-
-    @Override
-    public BaseAdapter setListAdapter() {
-        return new SignDetailAdapter(mListData, this);
-    }
-
-    @Override
-    public void getData(int pageIndex) {
         String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this, "正在查询，请稍后");
+            ResponseDialog.showLoading(this,"正在查询，请稍后");
             OkHttpUtils
                     .post()
                     .url(str)
                     .addParams("pageNum", "1")
-                    .addParams("pageSize", pageIndex * 10 + "")
+                    .addParams("pageSize", "20")
                     .build()
                     .execute(new StringCallback() {
                         @Override
@@ -163,13 +118,13 @@ public class SignDetailActivity extends BaseListActivity
                                 Gson gson = new Gson();
                                 signBean = gson.fromJson(response, SignDetailBean.class);
                                 mListData = signBean.getData();
-                                setListDataRelpy(mListData);
+                                detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
+                                mData.setAdapter(detailAdapter);
                             } catch (JsonSyntaxException e) {
                                 ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
                                 ResponseDialog.closeLoading();
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                setListDataRelpy(new ArrayList());
                                 ResponseDialog.closeLoading();
                             }
                         }
@@ -177,16 +132,6 @@ public class SignDetailActivity extends BaseListActivity
         } else {
             ToastUtils.ShowToastMessage(R.string.disNetworking, SignDetailActivity.this);
         }
-    }
-
-    @Override
-    public void onListItemClick(Object o) {
-
-    }
-
-    @Override
-    public void onListItemLongClick(Object o) {
-
     }
 
     /**
@@ -221,7 +166,7 @@ public class SignDetailActivity extends BaseListActivity
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            holder.tvLeft.setText(String.valueOf(position + 1));
+            holder.tvLeft.setText(String.valueOf(position+1));
 
             return convertView;
         }
