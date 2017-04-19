@@ -85,10 +85,6 @@
             android:screenOrientation="portrait" />
 
         <!-- 用车查询 -->
-        <activity
-            android:name=".activity.work.SqlCarApplyActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
 
         <!-- 外勤签到查询 -->
 
@@ -125,6 +121,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.work.DebugGaodeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activity.work.DebugSqlcarApplyActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!-- 测试 -->

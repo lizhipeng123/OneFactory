@@ -18,7 +18,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_alignParentLeft="true"
-                android:src="@mipmap/title_back_gray" />
+                android:src="@mipmap/title_back_gray"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -54,13 +54,13 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="行号" />
+                android:text="行号"/>
         </LinearLayout>
 
         <View
             android:layout_width="1px"
             android:layout_height="50dp"
-            android:background="#cccccc" />
+            android:background="#cccccc"/>
 
         <LinearLayout
             android:id="@+id/lin_header_content"
@@ -88,7 +88,7 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="编号" />
+                        android:text="编号"/>
 
                     <View
                         android:layout_width="1px"
@@ -100,60 +100,59 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="制单人" />
+                        android:text="制单人"/>
 
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="#cccccc"/>
 
                     <TextView
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="班次" />
+                        android:text="班次"/>
 
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="#cccccc"/>
 
                     <TextView
                         android:layout_width="150dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="签到时间" />
+                        android:text="签到时间"/>
 
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="#cccccc"/>
 
                     <TextView
                         android:layout_width="200dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="签到地点" />
+                        android:text="签到地点"/>
 
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
-
+                        android:background="#cccccc"/>
                     <TextView
                         android:layout_width="200dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="备注" />
+                        android:text="备注"/>
 
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="#cccccc"/>
                 </LinearLayout>
             </com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView>
         </LinearLayout>
@@ -162,7 +161,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="#cccccc" />
+        android:background="#cccccc"/>
 
     <ScrollView
         android:id="@+id/scroll_content"
@@ -183,12 +182,12 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:overScrollMode="never"
-                android:scrollbars="none" />
+                android:scrollbars="none"/>
 
             <View
                 android:layout_width="1px"
                 android:layout_height="match_parent"
-                android:background="#cccccc" />
+                android:background="#cccccc"/>
 
             <LinearLayout
                 android:id="@+id/lin_data_content"
@@ -204,12 +203,12 @@
                     android:overScrollMode="never"
                     android:scrollbars="none">
 
-                    <com.i5tong.epubreaderlib.view.pulltorefresh.PullToRefreshListView
+                    <com.daoran.newfactory.onefactory.view.listview.NoscrollListView
                         android:id="@+id/lv_data"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:divider="@null"
-                        android:scrollbars="none" />
+                        android:overScrollMode="never"
+                        android:scrollbars="none"/>
                 </com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView>
             </LinearLayout>
         </LinearLayout>
