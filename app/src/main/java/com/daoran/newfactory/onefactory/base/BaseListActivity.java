@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.adapter.SignDetailAdapter;
+import com.daoran.newfactory.onefactory.adapter.DebugSqlCarApplyAdapter;
 import com.i5tong.epubreaderlib.view.pulltorefresh.ILoadingLayout;
 import com.i5tong.epubreaderlib.view.pulltorefresh.PullToRefreshBase;
 import com.i5tong.epubreaderlib.view.pulltorefresh.PullToRefreshListView;
@@ -51,8 +51,9 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
         listView.setOnItemClickListener(this);
         listView.setOnRefreshListener(this);
         listView.setOnPullEventListener(this);
-        if (adapter != null)
+        if (adapter != null) {
             listView.setAdapter(adapter);
+        }
     }
 
     public void setPullToRefreshListViewModeBOTH() {
@@ -76,12 +77,14 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
         }
 
     }
+
     public void setNoListViewMode() {
         if (listView != null) {
             listView.setMode(PullToRefreshBase.Mode.DISABLED);
         }
 
     }
+
     public Adapter getAdapter() {
         return adapter;
     }
@@ -153,8 +156,8 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
         //无数据
         if (datas == null || datas.size() == 0) {
             if (pageIndex == defaultPageIndex) {
-                if(adapter instanceof SignDetailAdapter){
-                    ((SignDetailAdapter) adapter).clear();
+                if (adapter instanceof DebugSqlCarApplyAdapter) {
+                    ((DebugSqlCarApplyAdapter) adapter).clear();
                 }
                 setEmptyView();
             } else {
@@ -163,16 +166,14 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
         } else {
             if (adapter == null)
                 return;
-
             hideEmptyView();
-
             if (pageIndex == defaultPageIndex) {
-                if(adapter instanceof SignDetailAdapter){
-                    ((SignDetailAdapter) adapter).replaceAll(datas);
+                if (adapter instanceof DebugSqlCarApplyAdapter) {
+                    ((DebugSqlCarApplyAdapter) adapter).replaceAll(datas);
                 }
             } else {
-                if(adapter instanceof SignDetailAdapter){
-                    ((SignDetailAdapter) adapter).addAll(datas);
+                if (adapter instanceof DebugSqlCarApplyAdapter) {
+                    ((DebugSqlCarApplyAdapter) adapter).addAll(datas);
                 }
             }
             pageIndex++;
@@ -189,9 +190,12 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
         isRefreshing = false;
         if (datas == null || datas.size() == 0) {
             if (pageIndex == defaultPageIndex) {
-                if(adapter instanceof SignDetailAdapter){
-                    ((SignDetailAdapter) adapter).clear();
-                }
+//                if (adapter instanceof QuickAdapter) {
+//                    ((QuickAdapter) adapter).clear();
+//                } else
+//                if (adapter instanceof SignDetailAdapter) {
+//                    ((SignDetailAdapter) adapter).clear();
+//                }
             } else {
                 Toast.makeText(this, "没有更多数据了", Toast.LENGTH_SHORT).show();
             }
@@ -202,13 +206,19 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
             hideEmptyView();
 
             if (pageIndex == defaultPageIndex) {
-                if(adapter instanceof SignDetailAdapter){
-                    ((SignDetailAdapter) adapter).replaceAll(datas);
-                }
+//                if(adapter instanceof QuickAdapter){
+//                    ((QuickAdapter) adapter).replaceAll(datas);
+//                }else
+//                if (adapter instanceof SignDetailAdapter) {
+//                    ((SignDetailAdapter) adapter).replaceAll(datas);
+//                }
             } else {
-                if(adapter instanceof SignDetailAdapter){
-                    ((SignDetailAdapter) adapter).addAll(datas);
-                }
+//                if(adapter instanceof QuickAdapter){
+//                    ((QuickAdapter) adapter).addAll(datas);
+//                }else
+//                if (adapter instanceof SignDetailAdapter) {
+//                    ((SignDetailAdapter) adapter).addAll(datas);
+//                }
             }
             pageIndex++;
         }
