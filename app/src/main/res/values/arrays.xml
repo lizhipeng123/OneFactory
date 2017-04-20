@@ -10,4 +10,11 @@
         <item>下班</item>
         <item>其他</item>
     </string-array>
+    <string-array name="languages">
+        <item>全部</item>
+        <item>待审核 </item>
+        <item>陶签字</item>
+        <item>已结束</item>
+        <item>已取消</item>
+    </string-array>
 </resources>

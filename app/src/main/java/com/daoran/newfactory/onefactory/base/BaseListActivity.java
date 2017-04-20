@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.adapter.SignDetailAdapter;
 import com.daoran.newfactory.onefactory.adapter.SqlCarApplyAdapter;
 import com.i5tong.epubreaderlib.view.pulltorefresh.ILoadingLayout;
 import com.i5tong.epubreaderlib.view.pulltorefresh.PullToRefreshBase;
@@ -159,6 +160,9 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
                 if (adapter instanceof SqlCarApplyAdapter) {
                     ((SqlCarApplyAdapter) adapter).clear();
                 }
+//                else if(adapter instanceof SignDetailAdapter){
+//                    ((SignDetailAdapter) adapter).clear();
+//                }
                 setEmptyView();
             } else {
                 Toast.makeText(this, "没有更多数据了", Toast.LENGTH_SHORT).show();
@@ -171,10 +175,16 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
                 if (adapter instanceof SqlCarApplyAdapter) {
                     ((SqlCarApplyAdapter) adapter).replaceAll(datas);
                 }
+//                else if(adapter instanceof SignDetailAdapter){
+//                    ((SignDetailAdapter) adapter).replaceAll(datas);
+//                }
             } else {
                 if (adapter instanceof SqlCarApplyAdapter) {
                     ((SqlCarApplyAdapter) adapter).addAll(datas);
                 }
+//                else if(adapter instanceof SignDetailAdapter){
+//                    ((SignDetailAdapter) adapter).addAll(datas);
+//                }
             }
             pageIndex++;
         }

@@ -35,8 +35,8 @@
 
             <ImageView
                 android:id="@+id/ivSearch"
-                android:layout_width="@dimen/dimen_60"
-                android:layout_height="@dimen/dimen_60"
+                android:layout_width="@dimen/dimen_70"
+                android:layout_height="@dimen/dimen_70"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/dimen_30"
                 android:src="@mipmap/search" />

@@ -40,17 +40,22 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="审核状态"
                 android:textColor="@color/black"
+                android:layout_weight="1"
                 android:textSize="@dimen/dimen_50sp" />
 
             <Spinner
                 android:id="@+id/spinnerAudit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_50" />
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/dimen_50"
+                android:entries="@array/languages"/>
         </LinearLayout>
 
         <LinearLayout
@@ -70,10 +75,12 @@
             <TextView
                 android:id="@+id/tvInitialDate"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_100"
+                android:layout_height="37dp"
                 android:layout_marginLeft="@dimen/dimen_50"
+                android:textColor="@color/black"
+                android:gravity="center"
                 android:background="@drawable/shape_text_sql_boild"
-                android:textSize="@dimen/dimen_60sp" />
+                android:textSize="@dimen/dimen_50sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -94,8 +101,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_100"
                 android:layout_marginLeft="@dimen/dimen_50"
+                android:textColor="@color/black"
+                android:gravity="center"
                 android:background="@drawable/shape_text_sql_boild"
-                android:textSize="@dimen/dimen_60sp" />
+                android:textSize="@dimen/dimen_50sp" />
         </LinearLayout>
     </LinearLayout>
     <View

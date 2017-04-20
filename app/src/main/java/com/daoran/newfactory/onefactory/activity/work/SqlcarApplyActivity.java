@@ -1,7 +1,10 @@
 package com.daoran.newfactory.onefactory.activity.work;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -14,6 +17,7 @@ import com.daoran.newfactory.onefactory.base.BaseListActivity;
 import com.daoran.newfactory.onefactory.bean.SqlCarApplyBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
+import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.RefreshLayout;
 import com.daoran.newfactory.onefactory.view.dialog.ContentDialog;
@@ -29,6 +33,7 @@ import okhttp3.Call;
 import okhttp3.Request;
 
 /**
+ * 出车单
  * Created by lizhipeng on 2017/4/19.
  */
 
@@ -43,6 +48,8 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
 
     private List<SqlCarApplyBean.DataBean> dataBeen = new ArrayList<SqlCarApplyBean.DataBean>();
     private SqlCarApplyBean applyBean;
+    private SharedPreferences sp;
+    private SPUtils spUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +59,6 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
         init(R.id.listview);
         setPullToRefreshListViewModeBOTH();
         getData();
-
     }
 
     private void getViews() {
@@ -72,10 +78,18 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
     @Override
     public void getData(int pageIndex) {
         String sqlcar = HttpUrl.debugoneUrl + "UCarsApply/UCarsApplySearch/";
+        sp = SqlcarApplyActivity.this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        String datetime = sp.getString("datetime", "");
+        String endtime = sp.getString("endtime", "");
+        String spinnerPosition = sp.getString("spinnerPosition", "");
+        System.out.print(datetime);
         if (NetWork.isNetWorkAvailable(this)) {
             OkHttpUtils
                     .post()
                     .url(sqlcar)
+                    .addParams("start", datetime)
+                    .addParams("endtime", endtime)
+                    .addParams("title", spinnerPosition)
                     .addParams("pageNum", pageIndex + "0")
                     .addParams("pageSize", "10")
                     .build()
@@ -117,7 +131,9 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
 
     @Override
     public void onListItemClick(Object o) {
-
+        sp = SqlcarApplyActivity.this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        String datetime = sp.getString("datetime", "");
+        System.out.print(datetime);
     }
 
     @Override
@@ -147,7 +163,8 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btnComfirm:
-                    dialog.dismiss();
+                    SqlcarApplyActivity.this.getData();
+                    dismissDialog();
                     break;
             }
         }
