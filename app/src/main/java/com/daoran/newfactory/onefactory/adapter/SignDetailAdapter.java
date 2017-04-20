@@ -9,8 +9,10 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.bean.SignDetailBean;
+import com.daoran.newfactory.onefactory.bean.SqlCarApplyBean;
 //import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,10 +23,25 @@ public class SignDetailAdapter extends BaseAdapter {
     private List<SignDetailBean.DataBean> signdata;
     private Context context;
 
-    public SignDetailAdapter(List<SignDetailBean.DataBean> signdata, Context context) {
+    public SignDetailAdapter(List<SignDetailBean.DataBean> signdata,Context context) {
         this.signdata = signdata;
         this.context = context;
     }
+
+//    public void clear() {
+//        signdata.clear();
+//        notifyDataSetChanged();
+//    }
+//
+//    public void addAll(List<SignDetailBean.DataBean> _c) {
+//        signdata.addAll(_c);
+//        notifyDataSetChanged();
+//    }
+//
+//    public void replaceAll(List<SignDetailBean.DataBean> _c) {
+//        signdata.clear();
+//        addAll(_c);
+//    }
 
     @Override
     public int getCount() {

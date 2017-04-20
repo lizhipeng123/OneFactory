@@ -1,5 +1,7 @@
 package com.daoran.newfactory.onefactory.activity.work;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,11 +19,14 @@ import com.daoran.newfactory.onefactory.base.BaseListActivity;
 import com.daoran.newfactory.onefactory.bean.SignDetailBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
+import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.view.dialog.SignContentDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.google.gson.JsonSyntaxException;
+import com.i5tong.epubreaderlib.view.pulltorefresh.PullToRefreshListView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -39,7 +44,6 @@ import okhttp3.Call;
 
 public class SignDetailActivity extends BaseFrangmentActivity implements View.OnClickListener {
     private NoscrollListView mLeft;
-    private LeftAdapter mLeftAdapter;
 
     private NoscrollListView mData;
     private SignDetailAdapter detailAdapter;
@@ -50,18 +54,24 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     private List<SignDetailBean.DataBean> mListData = new ArrayList<SignDetailBean.DataBean>();
     private SignDetailBean signBean;
     private ImageView ivSiganSqlDetail;
+    private ImageView ivSearch;
+    private SignContentDialog dialog;
 
     public boolean isRefreshing = false;
     public int defaultPageIndex = 0;
+    private SharedPreferences sp;
+    private SPUtils spUtils;
     public int pageIndex = defaultPageIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        ResponseDialog.showLoading(this, "请稍后");
         setContentView(R.layout.debug_activity_detail);
         initView();
         getViews();
+//        init(R.id.lv_data);
+//        setPullToRefreshListViewModeBOTH();
+//        getData();
         setSignDetail();
     }
 
@@ -71,16 +81,14 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         mData = (NoscrollListView) findViewById(R.id.lv_data);
         mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
         mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
-
+        ivSearch = (ImageView) findViewById(R.id.ivSearch);
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);
-
-        mLeftAdapter = new LeftAdapter();
-        mLeft.setAdapter(mLeftAdapter);
     }
 
     private void getViews() {
         ivSiganSqlDetail.setOnClickListener(this);
+        ivSearch.setOnClickListener(this);
     }
 
     @Override
@@ -88,6 +96,9 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         switch (v.getId()) {
             case R.id.ivSiganSqlDetail:
                 finish();
+                break;
+            case R.id.ivSearch:
+                showDialog(v);
                 break;
         }
     }
@@ -97,13 +108,22 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
      */
     private void setSignDetail() {
         String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
+        sp = SignDetailActivity.this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        String name = sp.getString("etAudit","");
+        String datetime = sp.getString("datetimesign","");
+        String endtime = sp.getString("endtimesign","");
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this,"正在查询，请稍后");
+            ResponseDialog.showLoading(this, "正在查询，请稍后");
             OkHttpUtils
                     .post()
                     .url(str)
-                    .addParams("pageNum", "1")
-                    .addParams("pageSize", "20")
+                    .addParams("pageNum", "0")
+                    .addParams("pageSize", "10")
+                    .addParams("recorder",name)
+                    .addParams("recordat_start",datetime)
+                    .addParams("recordat_end",endtime)
+                    .addParams("recordplace","")
+                    .addParams("memo","")
                     .build()
                     .execute(new StringCallback() {
                         @Override
@@ -134,46 +154,87 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         }
     }
 
-    /**
-     * 左列行号适配
-     */
-    class LeftAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return mListData.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mListData.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
-            if (convertView == null) {
-                holder = new ViewHolder();
-                convertView = LayoutInflater.from(SignDetailActivity.this).inflate(R.layout.debug_item_left, null);
-                holder.tvLeft = (TextView) convertView.findViewById(R.id.tv_left);
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            holder.tvLeft.setText(String.valueOf(position+1));
-
-            return convertView;
-        }
-
-        class ViewHolder {
-            TextView tvLeft;
-        }
+    private void showDialog(View view) {
+        dialog = new SignContentDialog(this,
+                R.style.dialogstyle, onClickListener, onCancleListener);
+        dialog.show();
     }
+
+    private View.OnClickListener onCancleListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.btnCancle:
+                    dialog.dismiss();
+                    break;
+            }
+        }
+    };
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.btnComfirm:
+                    setSignDetail();
+                    dialog.dismiss();
+                    break;
+            }
+        }
+    };
+//    @Override
+//    public BaseAdapter setListAdapter() {
+//        return new SignDetailAdapter(SignDetailActivity.this);
+//    }
+//
+//    @Override
+//    public void getData(int pageIndex) {
+//        String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
+//        if (NetWork.isNetWorkAvailable(this)) {
+//            ResponseDialog.showLoading(this, "正在查询，请稍后");
+//            OkHttpUtils
+//                    .post()
+//                    .url(str)
+//                    .addParams("pageNum", pageIndex + "0")
+//                    .addParams("pageSize", "10")
+//                    .build()
+//                    .execute(new StringCallback() {
+//                        @Override
+//                        public void onError(Call call, Exception e, int id) {
+//                            e.printStackTrace();
+//                        }
+//
+//                        @Override
+//                        public void onResponse(String response, int id) {
+//                            System.out.print(response);
+//                            try {
+//                                Gson gson = new Gson();
+//                                signBean = gson.fromJson(response, SignDetailBean.class);
+//                                mListData = signBean.getData();
+//                                setListData(mListData);
+//                            } catch (JsonSyntaxException e) {
+//                                setListData(new ArrayList());
+//                                ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
+//                                ResponseDialog.closeLoading();
+//                            } catch (Exception e) {
+//                                setListData(new ArrayList());
+//                                ResponseDialog.closeLoading();
+//                            }
+//                        }
+//                    });
+//        } else {
+//            ToastUtils.ShowToastMessage(R.string.disNetworking, SignDetailActivity.this);
+//        }
+//    }
+//
+//    @Override
+//    public void onListItemClick(Object o) {
+//
+//    }
+//
+//    @Override
+//    public void onListItemLongClick(Object o) {
+//
+//    }
 
 }

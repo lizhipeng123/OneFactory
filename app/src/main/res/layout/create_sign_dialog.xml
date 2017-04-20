@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/create_user_dialog_view"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_30"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="签到查询"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_60sp" />
+    </LinearLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="#FF909090"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dimen_70"
+        android:paddingLeft="@dimen/dimen_70"
+        android:paddingRight="@dimen/dimen_70"
+        android:paddingTop="@dimen/dimen_70"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_70"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="制单人"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_50sp" />
+
+            <EditText
+                android:id="@+id/etAudit"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:background="@drawable/shape_text_sql_boild"
+                android:layout_marginLeft="@dimen/dimen_50"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/dimen_70"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="起始日期"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_50sp" />
+
+            <TextView
+                android:id="@+id/tvInitialDate"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:layout_marginLeft="@dimen/dimen_50"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:background="@drawable/shape_text_sql_boild"
+                android:textSize="@dimen/dimen_50sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="结束日期"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_50sp" />
+
+            <TextView
+                android:id="@+id/tvEndDate"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_100"
+                android:layout_marginLeft="@dimen/dimen_50"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:background="@drawable/shape_text_sql_boild"
+                android:textSize="@dimen/dimen_50sp" />
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="#FF909090"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dimen_30"
+        android:paddingBottom="@dimen/dimen_30"
+        android:paddingLeft="@dimen/dimen_70"
+        android:paddingRight="@dimen/dimen_70"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnCancle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="取消" />
+
+        <Button
+            android:id="@+id/btnComfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_200"
+            android:layout_weight="1"
+            android:text="确定" />
+    </LinearLayout>
+</LinearLayout>

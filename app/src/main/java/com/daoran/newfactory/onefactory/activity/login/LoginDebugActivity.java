@@ -208,6 +208,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                             editor.putBoolean("autologin", false);
                         }
                         editor.commit();
+                        spUtils.put(getApplicationContext(),"name",userBean.getU_name());
                         Intent intent = new Intent(LoginDebugActivity.this, MainActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("u_name", userBean.getU_name());

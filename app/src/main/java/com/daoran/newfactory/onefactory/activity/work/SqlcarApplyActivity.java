@@ -164,7 +164,7 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
             switch (v.getId()) {
                 case R.id.btnComfirm:
                     SqlcarApplyActivity.this.getData();
-                    dismissDialog();
+                    dialog.dismiss();
                     break;
             }
         }

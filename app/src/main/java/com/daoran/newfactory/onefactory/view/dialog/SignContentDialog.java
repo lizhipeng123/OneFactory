@@ -6,17 +6,16 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.Spinner;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
@@ -26,28 +25,24 @@ import com.daoran.newfactory.onefactory.util.ToastUtils;
 import java.util.Calendar;
 
 /**
- * Created by lizhipeng on 2017/3/28.
+ * Created by lizhipeng on 2017/4/20.
  */
 
-public class ContentDialog extends Dialog {
+public class SignContentDialog extends Dialog {
 
     Activity content;
-    private Spinner spinnerAudit;
     private TextView tvInitialDate, tvEndDate;
     private Button btnCancle, btnComfirm;
-
     private View.OnClickListener mClickListener, mCancleLinstener;
-    private AdapterView.OnItemClickListener spinnerListener;
     private SharedPreferences sp;
     private SPUtils spUtils;
-    final int DATE_DIALOG = 1;
+    private EditText etAudit;
 
-    public ContentDialog(Activity context) {
+    public SignContentDialog(Context context) {
         super(context);
-        this.content = context;
     }
 
-    public ContentDialog(Activity context, int theme, View.OnClickListener clickListener, View.OnClickListener mCancleLinstener) {
+    public SignContentDialog(Activity context, int theme, View.OnClickListener clickListener, View.OnClickListener mCancleLinstener) {
         super(context, theme);
         this.content = context;
         this.mClickListener = clickListener;
@@ -57,7 +52,7 @@ public class ContentDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.create_user_dialog);
+        this.setContentView(R.layout.create_sign_dialog);
         getViews();
         initViews();
     }
@@ -65,41 +60,62 @@ public class ContentDialog extends Dialog {
     private void getViews() {
         tvInitialDate = (TextView) findViewById(R.id.tvInitialDate);
         tvEndDate = (TextView) findViewById(R.id.tvEndDate);
-        spinnerAudit = (Spinner) findViewById(R.id.spinnerAudit);
         btnCancle = (Button) findViewById(R.id.btnCancle);
         btnComfirm = (Button) findViewById(R.id.btnComfirm);
+        etAudit = (EditText) findViewById(R.id.etAudit);
     }
 
     private void initViews() {
         sp = content.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
         Window dialogWindow = this.getWindow();
         WindowManager m = content.getWindowManager();
-        String tvdate = sp.getString("datetime", "");
-        tvInitialDate.setText(tvdate);
-        String tvend = sp.getString("endtime","");
-        tvEndDate.setText(tvend);
-//        System.out.print(tvdate);
         Display display = m.getDefaultDisplay();
         WindowManager.LayoutParams p = dialogWindow.getAttributes();
         p.width = (int) (display.getWidth() * 0.8);
         dialogWindow.setAttributes(p);
-        String[] mItems = getContext().getResources().getStringArray(R.array.languages);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(content, android.R.layout.simple_spinner_item, mItems);
-        adapter.setDropDownViewResource(R.layout.dropdown_stytle);
-        spinnerAudit.setAdapter(adapter);
+        String etaa = sp.getString("name","");
+        etAudit.setText(etaa);
+        etAudit.addTextChangedListener(textWatcher);
+        String tvInitial = sp.getString("datetimesign","");
+        tvInitialDate.setText(tvInitial);
+        String tvend = sp.getString("endtimesign","");
+        tvEndDate.setText(tvend);
         btnComfirm.setOnClickListener(mClickListener);
         btnCancle.setOnClickListener(mCancleLinstener);
-        spinnerAudit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String[] lanages = content.getResources().getStringArray(R.array.languages);
-                spUtils.put(content, "spinnerPosition", lanages[position]);
-                ToastUtils.ShowToastMessage("点击的是：" + lanages[position], content);
-            }
 
+        tvInitialDate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                final DatePickerDialog datePickerDialog = new DatePickerDialog(
+                        content, null, calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)
+                );
+                datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE
+                        , "完成", new OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                DatePicker datePicker = datePickerDialog.getDatePicker();
+                                int year = datePicker.getYear();
+                                int month = datePicker.getMonth();
+                                int day = datePicker.getDayOfMonth();
+                                String datetime = year + "/" + (month + 1) + "/" + day;
+                                tvInitialDate.setText(datetime);
+                                spUtils.put(content, "datetimesign", datetime);
+                            }
+                        });
+                datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
+                        , "取消", new OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                tvInitialDate.setText("");
+                                spUtils.put(content, "datetimesign", "");
+//                                String tvinit = tvInitialDate.getText().toString();
+//                                spUtils.put(content, "datetimesign", tvinit);
+                            }
+                        });
+                datePickerDialog.show();
             }
         });
         tvEndDate.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +138,7 @@ public class ContentDialog extends Dialog {
                                 String datetime = year + "/" + (month + 1) + "/" + day;
                                 String endtime = year + "/" + (month + 1) + "/" + day;
                                 tvEndDate.setText(endtime);
-                                spUtils.put(content, "endtime", endtime);
+                                spUtils.put(content, "endtimesign", endtime);
                                 System.out.print(endtime);
                                 System.out.print(datetime);
                             }
@@ -133,49 +149,41 @@ public class ContentDialog extends Dialog {
                             public void onClick(DialogInterface dialog, int which) {
                                 System.out.println("BUTTON_NEGATIVE~~");
                                 tvEndDate.setText("");
-                                spUtils.put(content, "endtime", "");
+                                spUtils.put(content, "endtimesign", "");
                             }
                         });
                 datePickerDialog.show();
             }
         });
-        tvInitialDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                final DatePickerDialog datePickerDialog = new DatePickerDialog(
-                        content, null, calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)
-                );
-                datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE
-                        , "完成", new OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                DatePicker datePicker = datePickerDialog.getDatePicker();
-                                int year = datePicker.getYear();
-                                int month = datePicker.getMonth();
-                                int day = datePicker.getDayOfMonth();
-                                String datetime = year + "/" + (month + 1) + "/" + day;
-                                tvInitialDate.setText(datetime);
-                                spUtils.put(content, "datetime", datetime);
-                            }
-                        });
-                datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
-                        , "取消", new OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                tvInitialDate.setText("");
-                                spUtils.put(content, "datetime", "");
-                            }
-                        });
-                datePickerDialog.show();
-
-            }
-        });
-
         this.setCancelable(true);
     }
 
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            System.out.println("-2-beforeTextChanged-->"
+                    + etAudit.getText().toString() + "<--");
+//            ToastUtils.ShowToastMessage("-2-beforeTextChanged-->"
+//                    + etAudit.getText().toString() + "<--",getContext());
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            System.out.println("-1-onTextChanged-->"
+                    + etAudit.getText().toString() + "<--");
+//            ToastUtils.ShowToastMessage("-1-onTextChanged-->"
+//                    + etAudit.getText().toString() + "<--",getContext());
+            String textchanged = etAudit.getText().toString();
+            spUtils.put(content,"etAudit",textchanged);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            System.out.println("-3-afterTextChanged-->"
+                    + etAudit.getText().toString() + "<--");
+//            ToastUtils.ShowToastMessage("-3-afterTextChanged-->"
+//                    + etAudit.getText().toString() + "<--",getContext());
+        }
+    };
 
 }
