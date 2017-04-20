@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.adapter.DebugSqlCarApplyAdapter;
+import com.daoran.newfactory.onefactory.adapter.SqlCarApplyAdapter;
 import com.daoran.newfactory.onefactory.base.BaseListActivity;
 import com.daoran.newfactory.onefactory.bean.SqlCarApplyBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
@@ -32,7 +32,7 @@ import okhttp3.Request;
  * Created by lizhipeng on 2017/4/19.
  */
 
-public class DebugSqlcarApplyActivity extends BaseListActivity implements View.OnClickListener {
+public class SqlcarApplyActivity extends BaseListActivity implements View.OnClickListener {
     private ImageButton ibSqlCarDialog;
     private Button btnSqlopen;
     private RefreshLayout swipeLayout;
@@ -66,7 +66,7 @@ public class DebugSqlcarApplyActivity extends BaseListActivity implements View.O
 
     @Override
     public BaseAdapter setListAdapter() {
-        return new DebugSqlCarApplyAdapter(DebugSqlcarApplyActivity.this);
+        return new SqlCarApplyAdapter(SqlcarApplyActivity.this);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class DebugSqlcarApplyActivity extends BaseListActivity implements View.O
 
                         @Override
                         public void onError(Call call, Exception e, int id) {
-                            ToastUtils.ShowToastMessage("获取失败，请稍后再试", DebugSqlcarApplyActivity.this);
+                            ToastUtils.ShowToastMessage("获取失败，请稍后再试", SqlcarApplyActivity.this);
                         }
 
                         @Override
@@ -111,7 +111,7 @@ public class DebugSqlcarApplyActivity extends BaseListActivity implements View.O
                         }
                     });
         } else {
-            ToastUtils.ShowToastMessage(getString(R.string.noHttp), DebugSqlcarApplyActivity.this);
+            ToastUtils.ShowToastMessage(getString(R.string.noHttp), SqlcarApplyActivity.this);
         }
     }
 

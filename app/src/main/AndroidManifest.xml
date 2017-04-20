@@ -125,7 +125,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.work.DebugSqlcarApplyActivity"
+            android:name=".activity.work.SqlcarApplyActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!-- 测试 -->

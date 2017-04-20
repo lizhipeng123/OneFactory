@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.work.CommoditySqlActivity;
-import com.daoran.newfactory.onefactory.activity.work.DebugSqlcarApplyActivity;
+import com.daoran.newfactory.onefactory.activity.work.SqlcarApplyActivity;
 import com.daoran.newfactory.onefactory.activity.work.SignDetailActivity;
 import com.daoran.newfactory.onefactory.activity.work.DebugGaodeActivity;
 import com.daoran.newfactory.onefactory.activity.work.ProductionActivity;
@@ -86,7 +86,7 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvOpenCarDetail://用车单
-                getActivity().startActivity(new Intent(getActivity(), DebugSqlcarApplyActivity.class));
+                getActivity().startActivity(new Intent(getActivity(), SqlcarApplyActivity.class));
                 break;
             case R.id.tvSqlSign://查询签到详情
                 getActivity().startActivity(new Intent(getActivity(), SignDetailActivity.class));

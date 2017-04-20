@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.adapter.DebugSqlCarApplyAdapter;
+import com.daoran.newfactory.onefactory.adapter.SqlCarApplyAdapter;
 import com.i5tong.epubreaderlib.view.pulltorefresh.ILoadingLayout;
 import com.i5tong.epubreaderlib.view.pulltorefresh.PullToRefreshBase;
 import com.i5tong.epubreaderlib.view.pulltorefresh.PullToRefreshListView;
@@ -156,8 +156,8 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
         //无数据
         if (datas == null || datas.size() == 0) {
             if (pageIndex == defaultPageIndex) {
-                if (adapter instanceof DebugSqlCarApplyAdapter) {
-                    ((DebugSqlCarApplyAdapter) adapter).clear();
+                if (adapter instanceof SqlCarApplyAdapter) {
+                    ((SqlCarApplyAdapter) adapter).clear();
                 }
                 setEmptyView();
             } else {
@@ -168,12 +168,12 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
                 return;
             hideEmptyView();
             if (pageIndex == defaultPageIndex) {
-                if (adapter instanceof DebugSqlCarApplyAdapter) {
-                    ((DebugSqlCarApplyAdapter) adapter).replaceAll(datas);
+                if (adapter instanceof SqlCarApplyAdapter) {
+                    ((SqlCarApplyAdapter) adapter).replaceAll(datas);
                 }
             } else {
-                if (adapter instanceof DebugSqlCarApplyAdapter) {
-                    ((DebugSqlCarApplyAdapter) adapter).addAll(datas);
+                if (adapter instanceof SqlCarApplyAdapter) {
+                    ((SqlCarApplyAdapter) adapter).addAll(datas);
                 }
             }
             pageIndex++;

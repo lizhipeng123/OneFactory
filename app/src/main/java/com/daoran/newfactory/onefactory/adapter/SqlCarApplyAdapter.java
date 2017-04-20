@@ -17,11 +17,11 @@ import java.util.List;
  * Created by lizhipeng on 2017/4/19.
  */
 
-public class DebugSqlCarApplyAdapter extends BaseAdapter {
+public class SqlCarApplyAdapter extends BaseAdapter {
     private List<SqlCarApplyBean.DataBean> dataBeen;
     private Context context;
 
-    public DebugSqlCarApplyAdapter(Context context) {
+    public SqlCarApplyAdapter(Context context) {
         this.dataBeen = new ArrayList<>();
         this.context = context;
     }
@@ -56,16 +56,16 @@ public class DebugSqlCarApplyAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        DebugSqlCarApplyAdapter.ViewHolder holder;
+        SqlCarApplyAdapter.ViewHolder holder;
         if (convertView == null) {
-            holder = new DebugSqlCarApplyAdapter.ViewHolder();
+            holder = new SqlCarApplyAdapter.ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_sqlcar, null);
             holder.tvSqlCarId = (TextView) convertView.findViewById(R.id.tvSqlCarId);
             holder.tvSqlApplyName = (TextView) convertView.findViewById(R.id.tvSqlApplyName);
             holder.tvSqlCarDate = (TextView) convertView.findViewById(R.id.tvSqlCarDate);
             convertView.setTag(holder);
         } else {
-            holder = (DebugSqlCarApplyAdapter.ViewHolder) convertView.getTag();
+            holder = (SqlCarApplyAdapter.ViewHolder) convertView.getTag();
         }
         holder.tvSqlCarId.setText(getItem(position).getCode());
         holder.tvSqlApplyName.setText(getItem(position).getRecorder());
