@@ -53,6 +53,10 @@
             android:paddingLeft="@dimen/dimen_30"
             android:paddingRight="@dimen/dimen_30">
 
+            <com.amap.api.maps.MapView
+                android:id="@+id/mapSigngaode"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_800" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -77,12 +81,6 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen_50sp" />
             </LinearLayout>
-
-            <com.amap.api.maps2d.MapView
-                android:id="@+id/mapSigngaode"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_800" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -151,7 +149,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="请选择图片："/>
                 <ImageView
                     android:id="@+id/topBg"
                     android:layout_width="100dp"

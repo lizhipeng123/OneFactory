@@ -46,9 +46,9 @@ public class JsonUtil {
      * @param <T>
      * @return
      */
-    public static <T> List<T> stringToList(String json, Class<T> cls) {
+    public static <T> ArrayList<T> stringToList(String json, Class<T> cls) {
         Gson gson = new Gson();
-        List<T> list = new ArrayList<T>();
+        ArrayList<T> list = new ArrayList<T>();
         JsonArray array = new JsonParser().parse(json).getAsJsonArray();
         for (final JsonElement elem : array) {
             list.add(gson.fromJson(elem, cls));

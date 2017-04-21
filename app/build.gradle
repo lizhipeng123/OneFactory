@@ -74,7 +74,6 @@ dependencies {
     compile files('libry/xUtils-2.6.14.jar')
     compile files('libry/fastjson-1.1.46.jar')
     compile files('libry/picasso-2.5.2.jar')
-    compile files('libs/AMap2DMap_4.2.0_AMapSearch_4.0.0_AMapLocation_3.3.0_20170120.jar')
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
     compile 'com.github.Aspsine:SwipeToLoadLayout:1.0.4'
     compile 'com.jakewharton:butterknife:7.0.0'
@@ -84,4 +83,7 @@ dependencies {
     compile project(':youkuPlayerOpenSDK')
     compile 'com.github.hotchemi:permissionsdispatcher:2.3.1'
     apt 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
+    compile files('libry/json-lib-0.9.jar')
+    compile files('libs/AMap_Location_V3.3.0_20170118.jar')
+    compile files('libs/AMap_Search_V5.0.0_20170309.jar')
 }

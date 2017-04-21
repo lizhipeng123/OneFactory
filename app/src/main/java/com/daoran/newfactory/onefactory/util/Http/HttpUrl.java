@@ -23,12 +23,6 @@ public class HttpUrl {
     public static final String savebillUrl = "OutRegister/SaveBill/";
     /*出车列表*/
     public static final String sqlCarApply = "UCarsApply/UCarsApplySearch/";
-
-    public static final String updateCarApply = "UCarsExamine/CarNumberBind/";
-
-    public static final String sqldriver = "UCarsExamine/DriverBind/";
-    /*获取车单*/
-    public static final String sqlcarsApplyModel = "UCarsApply/GetUCarsApplyModel/";
     /*生产单查询*/
     public static final String sqlcork = "QACwork/BindSearchQACworkAPP/";
     /*查货跟踪表*/
@@ -36,5 +30,10 @@ public class HttpUrl {
     public static final String sqlcorgetdetail = "QACwork/APPGetDetail/";
     /*签到统计*/
     public static final String BindSearchAPPPage ="OutRegister/BindSearchAPPPage/";
-
+    /*司机*/
+    public static final String DriverBind = "UCarsExamine/DriverBind/";
+    /*车牌*/
+    public static final String CarNumberBind = "UCarsExamine/CarNumberBind/";
+    /*获取出车单详细信息*/
+    public static final String GetUCarsApplyModel = "UCarsApply/GetUCarsApplyModel/";
 }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.text.format.Time;
 import android.util.Log;
@@ -26,15 +27,15 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.amap.api.maps2d.AMap;
-import com.amap.api.maps2d.CameraUpdateFactory;
-import com.amap.api.maps2d.LocationSource;
-import com.amap.api.maps2d.MapView;
-import com.amap.api.maps2d.UiSettings;
-import com.amap.api.maps2d.model.BitmapDescriptorFactory;
-import com.amap.api.maps2d.model.CameraPosition;
-import com.amap.api.maps2d.model.LatLng;
-import com.amap.api.maps2d.model.MarkerOptions;
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.LocationSource;
+import com.amap.api.maps.MapView;
+import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.CameraPosition;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.geocoder.GeocodeSearch;
@@ -44,7 +45,6 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.SignDetailBean;
 import com.daoran.newfactory.onefactory.util.image.BitmapTools;
-import com.daoran.newfactory.onefactory.util.file.CrameUtils;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
@@ -53,6 +53,9 @@ import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -239,6 +242,7 @@ public class SignActivity extends BaseFrangmentActivity
             //启动定位
             mapLocationClient.startLocation();
         }
+
     }
 
     private void setUp() {
@@ -261,7 +265,7 @@ public class SignActivity extends BaseFrangmentActivity
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         if (position == 0) {
-                            deepType = str[5] + "|" + str[7] + "|" + str[12];
+                            deepType = str[5] + "|" + str[7] + "|" + str[12] + "|" + str[17];
                         } else {
                             deepType = (String) spinnnerfileTune.getSelectedItem();
                         }
@@ -360,20 +364,69 @@ public class SignActivity extends BaseFrangmentActivity
                 setSignDebug();
                 break;
             case R.id.topBg:
-                mapView.setDrawingCacheEnabled(true);
-                Bitmap bitmap = mapView.getDrawingCache();
-                bitmap = bitmap.createBitmap(bitmap);
-                mapView.setDrawingCacheEnabled(false);
-                if (bitmap != null) {
-                    topBg.setImageBitmap(bitmap);
-                    ToastUtils.ShowToastMessage("获取成功", SignActivity.this);
-                    //将选择的图片设置到控件上
-                    String picurl = BitmapTools.convertIconToString(bitmap);
-                    spUtils.put(SignActivity.this, "picurl", picurl);
-                } else {
-                    ToastUtils.ShowToastMessage("获取失败", SignActivity.this);
-                }
-                break;
+                aMap.getMapScreenShot(new AMap.OnMapScreenShotListener() {
+                    @Override
+                    public void onMapScreenShot(Bitmap bitmap) {
+
+                    }
+
+                    @Override
+                    public void onMapScreenShot(Bitmap bitmap, int status) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+                        if(null == bitmap){
+                            return;
+                        }
+                        try {
+                            FileOutputStream fos = new FileOutputStream(
+                                    Environment.getExternalStorageDirectory() + "/test_"
+                                            + sdf.format(new Date()) + ".png");
+                            boolean b = bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                            try {
+                                fos.flush();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                fos.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            StringBuffer buffer = new StringBuffer();
+                            if (b)
+                                buffer.append("截屏成功 ");
+                            else {
+                                buffer.append("截屏失败 ");
+                            }
+                            if (status != 0)
+                                buffer.append("地图渲染完成，截屏无网格");
+                            else {
+                                buffer.append( "地图未渲染完成，截屏有网格");
+                            }
+                            System.out.print(buffer.toString());
+                            ToastUtils.ShowToastMessage(buffer.toString(),getApplicationContext());
+                            topBg.setImageBitmap(bitmap);
+                            String picurl = BitmapTools.convertIconToString(bitmap);
+                            spUtils.put(SignActivity.this, "picurl", picurl);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+//                mapView.setDrawingCacheEnabled(true);
+//                Bitmap bitmap = mapView.getDrawingCache();
+//                bitmap = bitmap.createBitmap(bitmap);
+//                mapView.setDrawingCacheEnabled(false);
+//                if (bitmap != null) {
+//                    topBg.setImageBitmap(bitmap);
+//                    ToastUtils.ShowToastMessage("获取成功", SignActivity.this);
+//                    //将选择的图片设置到控件上
+//                    String picurl = BitmapTools.convertIconToString(bitmap);
+//                    spUtils.put(SignActivity.this, "picurl", picurl);
+//                } else {
+//                    ToastUtils.ShowToastMessage("获取失败", SignActivity.this);
+//                }
+//                break;
         }
     }
 

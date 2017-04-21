@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.activity.work;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -26,7 +27,12 @@ import com.google.gson.JsonSyntaxException;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Call;
@@ -46,8 +52,7 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
     private TextView tvInitialDate;
     private ContentDialog dialog;
 
-    private List<SqlCarApplyBean.DataBean> dataBeen = new ArrayList<SqlCarApplyBean.DataBean>();
-    private SqlCarApplyBean applyBean;
+    private SqlCarApplyBean.DataBean dataBean;
     private SharedPreferences sp;
     private SPUtils spUtils;
 
@@ -114,9 +119,8 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                         public void onResponse(String response, int id) {
                             try {
                                 System.out.print(response);
-                                applyBean = new Gson().fromJson(response, SqlCarApplyBean.class);
-                                dataBeen = applyBean.getData();
-                                setListData(dataBeen);
+                                SqlCarApplyBean carApplyBean = new Gson().fromJson(response, SqlCarApplyBean.class);
+                                setListData(carApplyBean.getData());
                             } catch (JsonSyntaxException e) {
                                 setListData(new ArrayList());
                             } catch (Exception e) {
@@ -131,9 +135,10 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
 
     @Override
     public void onListItemClick(Object o) {
-        sp = SqlcarApplyActivity.this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
-        String datetime = sp.getString("datetime", "");
-        System.out.print(datetime);
+        System.out.print(o);
+        dataBean = (SqlCarApplyBean.DataBean) o;
+        startActivity(new Intent(SqlcarApplyActivity.this,CarapplyActivity.class)
+        .putExtra("id",dataBean.getId()));
     }
 
     @Override
