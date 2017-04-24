@@ -32,6 +32,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    dexOptions {
+        jumboMode true
+    }
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
@@ -78,12 +82,10 @@ dependencies {
     compile 'com.github.Aspsine:SwipeToLoadLayout:1.0.4'
     compile 'com.jakewharton:butterknife:7.0.0'
     compile 'com.github.hotchemi:permissionsdispatcher:2.0.0'
-    compile files('libs/AMap3DMap_5.0.0_AMapNavi_5.0.1_AMapSearch_5.0.0_AMapLocation_3.3.0_20170410.jar')
     compile project(':epubReader')
     compile project(':youkuPlayerOpenSDK')
     compile 'com.github.hotchemi:permissionsdispatcher:2.3.1'
     apt 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
     compile files('libry/json-lib-0.9.jar')
-    compile files('libs/AMap_Location_V3.3.0_20170118.jar')
     compile files('libs/AMap_Search_V5.0.0_20170309.jar')
 }
