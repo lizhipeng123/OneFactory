@@ -10,25 +10,28 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:minHeight="?attr/actionBarSize">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:text="@string/workTask"
-        android:textColor="@color/black"
-        android:textSize="@dimen/dimen_60sp" />
-    <TextView
-        android:id="@+id/idworkname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:textSize="@dimen/dimen_50sp"
-        android:textColor="@color/black"/>
-</RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/workTask"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_60sp" />
+
+            <TextView
+                android:id="@+id/idworkname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_50sp" />
+        </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
 
@@ -40,80 +43,181 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/dimen_30"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/dimen_30">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/tvOpenCarDetail"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+
+                <LinearLayout
+                    android:id="@+id/llOpenCarDetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
                     android:layout_weight="1"
                     android:background="@drawable/shape_text_sql_boild"
                     android:gravity="center"
-                    android:text="用车申请单" />
-                <TextView
-                    android:id="@+id/tvSign"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/ivopenCarDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:src="@mipmap/daoran"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/tvOpenCarDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:text="用车申请单" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llOpenSign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
                     android:layout_weight="1"
                     android:background="@drawable/shape_text_sql_boild"
                     android:gravity="center"
-                    android:text="外勤签到" />
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/ivOpenSign"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:src="@mipmap/daoran"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/tvSign"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:text="外勤签到" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tvSqlSign"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:background="@drawable/shape_text_sql_boild"
-                    android:text="签到查询" />
-
-                <TextView
-                    android:id="@+id/tvBusRoute"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                <LinearLayout
+                    android:id="@+id/llOPenSqlSign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
                     android:layout_weight="1"
                     android:background="@drawable/shape_text_sql_boild"
                     android:gravity="center"
-                    android:text="公交路线" />
+                    android:orientation="vertical">
 
+                    <ImageView
+                        android:id="@+id/tvOpenSqlSign"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:visibility="gone"
+                        android:src="@mipmap/daoran" />
+
+                    <TextView
+                        android:id="@+id/tvSqlSign"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:text="签到查询表" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llOpenBusRoute"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/ivOpenBusRoute"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:visibility="gone"
+                        android:src="@mipmap/daoran" />
+
+                    <TextView
+                        android:id="@+id/tvBusRoute"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:text="公交路线" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/tvProduction"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_text_sql_boild"
-                    android:gravity="center"
-                    android:text="生产日报表" />
 
-                <TextView
-                    android:id="@+id/tvSqlgoods"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                <LinearLayout
+                    android:id="@+id/llProduction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
                     android:layout_weight="1"
                     android:background="@drawable/shape_text_sql_boild"
                     android:gravity="center"
-                    android:text="查货跟踪单" />
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/ivProduction"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:visibility="gone"
+                        android:src="@mipmap/daoran" />
+
+                    <TextView
+                        android:id="@+id/tvProduction"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        android:text="用车申请单" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSqlgoods"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/ivSqlgoods"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:visibility="gone"
+                        android:src="@mipmap/daoran" />
+
+                    <TextView
+                        android:id="@+id/tvSqlgoods"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:text="查货跟踪" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

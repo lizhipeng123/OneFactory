@@ -87,5 +87,4 @@ dependencies {
     compile 'com.github.hotchemi:permissionsdispatcher:2.3.1'
     apt 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
     compile files('libry/json-lib-0.9.jar')
-    compile files('libs/AMap_Search_V5.0.0_20170309.jar')
 }

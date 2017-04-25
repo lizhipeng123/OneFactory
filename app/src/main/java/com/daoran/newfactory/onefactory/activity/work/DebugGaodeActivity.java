@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -140,7 +139,7 @@ public class DebugGaodeActivity extends
     //提交转圈的动画
     KProgressHUD hud;
     //完成提交的数据
-    private RouteModel routeModel;
+    RouteModel routeModel;
     long mileage;
     String imgUrl;
 
@@ -191,7 +190,6 @@ public class DebugGaodeActivity extends
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_debug_gaode);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         mapView = (MapView) findViewById(R.id.gaomapview);
         mapView.onCreate(savedInstanceState);
         routeModel = new RouteModel();
@@ -337,7 +335,6 @@ public class DebugGaodeActivity extends
             public void onClick(View v) {
                 //设置起始位置
                 if (currentShowPoint == 0) {
-//                    currentShowPoint = 17;
                     if (routePointModelArrayList.size() >= 1) {
                         routePointModelArrayList.remove(0);
                         routePointModelArrayList.add(0, new RoutePointModel(mTarget.latitude, mTarget.longitude, currentSpecificPosition));
@@ -1725,7 +1722,6 @@ public class DebugGaodeActivity extends
             } else {
                 return routePointModelList.size() + 1;
             }
-
         }
 
         @Override

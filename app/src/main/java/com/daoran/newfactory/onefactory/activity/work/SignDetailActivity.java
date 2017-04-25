@@ -57,11 +57,8 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     private ImageView ivSearch;
     private SignContentDialog dialog;
 
-    public boolean isRefreshing = false;
-    public int defaultPageIndex = 0;
     private SharedPreferences sp;
     private SPUtils spUtils;
-    public int pageIndex = defaultPageIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,15 +66,11 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         setContentView(R.layout.debug_activity_detail);
         initView();
         getViews();
-//        init(R.id.lv_data);
-//        setPullToRefreshListViewModeBOTH();
-//        getData();
         setSignDetail();
     }
 
     private void initView() {
         ivSiganSqlDetail = (ImageView) findViewById(R.id.ivSiganSqlDetail);
-        mLeft = (NoscrollListView) findViewById(R.id.lv_left);
         mData = (NoscrollListView) findViewById(R.id.lv_data);
         mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
         mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
@@ -170,7 +163,6 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
             }
         }
     };
-
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -182,59 +174,4 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
             }
         }
     };
-//    @Override
-//    public BaseAdapter setListAdapter() {
-//        return new SignDetailAdapter(SignDetailActivity.this);
-//    }
-//
-//    @Override
-//    public void getData(int pageIndex) {
-//        String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
-//        if (NetWork.isNetWorkAvailable(this)) {
-//            ResponseDialog.showLoading(this, "正在查询，请稍后");
-//            OkHttpUtils
-//                    .post()
-//                    .url(str)
-//                    .addParams("pageNum", pageIndex + "0")
-//                    .addParams("pageSize", "10")
-//                    .build()
-//                    .execute(new StringCallback() {
-//                        @Override
-//                        public void onError(Call call, Exception e, int id) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        @Override
-//                        public void onResponse(String response, int id) {
-//                            System.out.print(response);
-//                            try {
-//                                Gson gson = new Gson();
-//                                signBean = gson.fromJson(response, SignDetailBean.class);
-//                                mListData = signBean.getData();
-//                                setListData(mListData);
-//                            } catch (JsonSyntaxException e) {
-//                                setListData(new ArrayList());
-//                                ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
-//                                ResponseDialog.closeLoading();
-//                            } catch (Exception e) {
-//                                setListData(new ArrayList());
-//                                ResponseDialog.closeLoading();
-//                            }
-//                        }
-//                    });
-//        } else {
-//            ToastUtils.ShowToastMessage(R.string.disNetworking, SignDetailActivity.this);
-//        }
-//    }
-//
-//    @Override
-//    public void onListItemClick(Object o) {
-//
-//    }
-//
-//    @Override
-//    public void onListItemLongClick(Object o) {
-//
-//    }
-
 }

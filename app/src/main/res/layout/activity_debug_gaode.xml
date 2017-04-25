@@ -117,8 +117,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_600"
         android:orientation="horizontal">
-
-        <com.amap.api.maps.MapView
+         <com.amap.api.maps.MapView
             android:id="@+id/gaomapview"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_600" />

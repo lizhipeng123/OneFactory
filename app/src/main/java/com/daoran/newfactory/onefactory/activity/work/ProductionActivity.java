@@ -24,10 +24,8 @@ import java.util.List;
  * Created by lizhipeng on 2017/3/29.
  */
 
-public class ProductionActivity extends BaseFrangmentActivity implements View.OnClickListener{
-
-    private NoscrollListView mLeft;
-    private LeftAdapter mLeftAdapter;
+public class ProductionActivity extends BaseFrangmentActivity
+        implements View.OnClickListener{
 
     private NoscrollListView mData;
     private DataAdapter mDataAdapter;
@@ -49,7 +47,6 @@ public class ProductionActivity extends BaseFrangmentActivity implements View.On
     private void initView() {
         ivProductionBack = (ImageView) findViewById(R.id.ivProductionBack);
 
-        mLeft = (NoscrollListView) findViewById(R.id.lv_left);
         mData = (NoscrollListView) findViewById(R.id.lv_data);
         mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
         mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
@@ -71,9 +68,6 @@ public class ProductionActivity extends BaseFrangmentActivity implements View.On
         mListData.add("11");
         mListData.add("12");
         mListData.add("13");
-
-        mLeftAdapter = new LeftAdapter();
-        mLeft.setAdapter(mLeftAdapter);
 
         mDataAdapter = new DataAdapter();
         mData.setAdapter(mDataAdapter);
@@ -101,45 +95,6 @@ public class ProductionActivity extends BaseFrangmentActivity implements View.On
 
         }else{
             ToastUtils.ShowToastMessage("当前网络不可用,请重新再试",ProductionActivity.this);
-        }
-    }
-
-    class LeftAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return mListData.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mListData.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder = null;
-            if (convertView == null) {
-                holder = new ViewHolder();
-                convertView = LayoutInflater.from(ProductionActivity.this).inflate(R.layout.debug_item_left, null);
-                holder.tvLeft = (TextView) convertView.findViewById(R.id.tv_left);
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            holder.tvLeft.setText("第" + position + "行");
-
-            return convertView;
-        }
-
-        class ViewHolder {
-            TextView tvLeft;
         }
     }
 
