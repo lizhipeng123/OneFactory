@@ -10,6 +10,11 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/appp" />
+            <option value="$PROJECT_DIR$/epubReader" />
+            <option value="$PROJECT_DIR$/mylibrary" />
+            <option value="$PROJECT_DIR$/myrecycleview" />
+            <option value="$PROJECT_DIR$/youkuPlayerOpenSDK" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
