@@ -17,7 +17,9 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.CarNumberBindBean;
 import com.daoran.newfactory.onefactory.bean.DriverBindBean;
+import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
+import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
@@ -109,29 +111,28 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
      * 根据id查询用车详细信息
      */
     private void setCardetail() {
-        String str = HttpUrl.debugoneUrl + "UCarsApply/GetUCarsApplyModel/";
-        if (NetWork.isNetWorkAvailable(this)) {
-            OkHttpUtils
-                    .post()
-                    .url(str)
-                    .addParams("ucid", String.valueOf(id))
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            e.printStackTrace();
-                        }
+        String str = HttpUrl.debugoneUrl + "UCarsApply/GetUCarsApplyModel/"+id;
 
-                        @Override
-                        public void onResponse(String response, int id) {
-                            try {
-                                System.out.print(response);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-        } else {
+        if (NetWork.isNetWorkAvailable(this)) {
+            NetUtil.getAsyncHttpClient().get(str,new AsyncHttpResponseHandler(){
+                @Override
+                public void onSuccess(String content) {
+                    super.onSuccess(content);
+                    System.out.print(content);
+                }
+
+                @Override
+                public void onFailure(Throwable error, String content) {
+                    super.onFailure(error, content);
+                }
+
+                @Override
+                public void onFinish() {
+                    super.onFinish();
+                }
+            });
+        }
+    else {
             ToastUtils.ShowToastMessage("当前网络不可用，请稍后再试", CarapplyActivity.this);
         }
     }
