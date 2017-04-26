@@ -344,6 +344,57 @@ public class SignActivity extends BaseFrangmentActivity
         });
     }
 
+    private void getpicture(){
+        aMap.getMapScreenShot(new AMap.OnMapScreenShotListener() {
+            @Override
+            public void onMapScreenShot(Bitmap bitmap) {
+
+            }
+
+            @Override
+            public void onMapScreenShot(Bitmap bitmap, int status) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+                if(null == bitmap){
+                    return;
+                }
+                try {
+                    FileOutputStream fos = new FileOutputStream(
+                            Environment.getExternalStorageDirectory() + "/test_"
+                                    + sdf.format(new Date()) + ".png");
+                    boolean b = bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                    try {
+                        fos.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    StringBuffer buffer = new StringBuffer();
+                    if (b)
+                        buffer.append("截屏成功 ");
+                    else {
+                        buffer.append("截屏失败 ");
+                    }
+                    if (status != 0)
+                        buffer.append("地图渲染完成，截屏无网格");
+                    else {
+                        buffer.append( "地图未渲染完成，截屏有网格");
+                    }
+                    System.out.print(buffer.toString());
+                    ToastUtils.ShowToastMessage(buffer.toString(),getApplicationContext());
+                    topBg.setImageBitmap(bitmap);
+                    String picurl = BitmapTools.convertIconToString(bitmap);
+                    spUtils.put(SignActivity.this, "picurl", picurl);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -361,72 +412,11 @@ public class SignActivity extends BaseFrangmentActivity
                 break;
             case R.id.btnSignOk:
                 ResponseDialog.showLoading(this, "请稍后");
+                getpicture();
                 setSignDebug();
                 break;
             case R.id.topBg:
-                aMap.getMapScreenShot(new AMap.OnMapScreenShotListener() {
-                    @Override
-                    public void onMapScreenShot(Bitmap bitmap) {
-
-                    }
-
-                    @Override
-                    public void onMapScreenShot(Bitmap bitmap, int status) {
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-                        if(null == bitmap){
-                            return;
-                        }
-                        try {
-                            FileOutputStream fos = new FileOutputStream(
-                                    Environment.getExternalStorageDirectory() + "/test_"
-                                            + sdf.format(new Date()) + ".png");
-                            boolean b = bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                            try {
-                                fos.flush();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            try {
-                                fos.close();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            StringBuffer buffer = new StringBuffer();
-                            if (b)
-                                buffer.append("截屏成功 ");
-                            else {
-                                buffer.append("截屏失败 ");
-                            }
-                            if (status != 0)
-                                buffer.append("地图渲染完成，截屏无网格");
-                            else {
-                                buffer.append( "地图未渲染完成，截屏有网格");
-                            }
-                            System.out.print(buffer.toString());
-                            ToastUtils.ShowToastMessage(buffer.toString(),getApplicationContext());
-                            topBg.setImageBitmap(bitmap);
-                            String picurl = BitmapTools.convertIconToString(bitmap);
-                            spUtils.put(SignActivity.this, "picurl", picurl);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-//                mapView.setDrawingCacheEnabled(true);
-//                Bitmap bitmap = mapView.getDrawingCache();
-//                bitmap = bitmap.createBitmap(bitmap);
-//                mapView.setDrawingCacheEnabled(false);
-//                if (bitmap != null) {
-//                    topBg.setImageBitmap(bitmap);
-//                    ToastUtils.ShowToastMessage("获取成功", SignActivity.this);
-//                    //将选择的图片设置到控件上
-//                    String picurl = BitmapTools.convertIconToString(bitmap);
-//                    spUtils.put(SignActivity.this, "picurl", picurl);
-//                } else {
-//                    ToastUtils.ShowToastMessage("获取失败", SignActivity.this);
-//                }
-//                break;
+                break;
         }
     }
 

@@ -64,11 +64,12 @@
                             android:textSize="@dimen/dimen_58sp" />
 
                         <TextView
+                            android:id="@+id/tvCarcode"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="170324004"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/dimen_58sp" />
+                            android:textSize="@dimen/dimen_50sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -85,11 +86,12 @@
                             android:textSize="@dimen/dimen_58sp" />
 
                         <TextView
+                            android:id="@+id/tvCarrecorder"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="zhangsan"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/dimen_58sp" />
+                            android:textSize="@dimen/dimen_50sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -110,11 +112,12 @@
                         android:textSize="@dimen/dimen_58sp" />
 
                     <TextView
+                        android:id="@+id/tvCarroad"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="绍兴"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_58sp" />
+                        android:textSize="@dimen/dimen_50sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -134,11 +137,12 @@
                         android:textSize="@dimen/dimen_58sp" />
 
                     <TextView
+                        android:id="@+id/tvCarrecordt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="2017-03-24 15:13:02"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_58sp" />
+                        android:textSize="@dimen/dimen_50sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -158,11 +162,12 @@
                         android:textSize="@dimen/dimen_58sp" />
 
                     <TextView
+                        android:id="@+id/tvCarreason"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="面料"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_58sp" />
+                        android:textSize="@dimen/dimen_50sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -180,14 +185,32 @@
                         android:text="预计出车时间"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dimen_58sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/dimen_20"
-                        android:text="2017/03/24 15:13至2017/03/24 15:13"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_58sp" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tvCardepartureBdt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/dimen_20"
+                            android:text="2017/03/24 15:13"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen_50sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen_50sp"
+                            android:text="至"/>
+                        <TextView
+                            android:id="@+id/tvCardepartureEdt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dimen_50sp"
+                            android:text="2017/03/24 15:13"/>
+                    </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>
@@ -257,6 +280,7 @@
                             android:textSize="@dimen/dimen_60sp" />
 
                         <Spinner
+                            android:id="@+id/spinnerNumberBind"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
                     </LinearLayout>

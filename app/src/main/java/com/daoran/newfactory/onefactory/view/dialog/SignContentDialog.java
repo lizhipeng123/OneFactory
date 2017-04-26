@@ -163,16 +163,12 @@ public class SignContentDialog extends Dialog {
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             System.out.println("-2-beforeTextChanged-->"
                     + etAudit.getText().toString() + "<--");
-//            ToastUtils.ShowToastMessage("-2-beforeTextChanged-->"
-//                    + etAudit.getText().toString() + "<--",getContext());
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             System.out.println("-1-onTextChanged-->"
                     + etAudit.getText().toString() + "<--");
-//            ToastUtils.ShowToastMessage("-1-onTextChanged-->"
-//                    + etAudit.getText().toString() + "<--",getContext());
             String textchanged = etAudit.getText().toString();
             spUtils.put(content,"etAudit",textchanged);
         }
@@ -181,8 +177,6 @@ public class SignContentDialog extends Dialog {
         public void afterTextChanged(Editable s) {
             System.out.println("-3-afterTextChanged-->"
                     + etAudit.getText().toString() + "<--");
-//            ToastUtils.ShowToastMessage("-3-afterTextChanged-->"
-//                    + etAudit.getText().toString() + "<--",getContext());
         }
     };
 

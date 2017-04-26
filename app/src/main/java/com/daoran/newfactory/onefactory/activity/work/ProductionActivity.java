@@ -11,13 +11,26 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
+import com.daoran.newfactory.onefactory.bean.Propostbean;
+import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
+import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
+import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
+import com.daoran.newfactory.onefactory.util.Http.RequestParams;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.view.dialog.ProcationDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.apache.http.NameValuePair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.Call;
 
 /**
  * 生产日报
@@ -25,115 +38,122 @@ import java.util.List;
  */
 
 public class ProductionActivity extends BaseFrangmentActivity
-        implements View.OnClickListener{
+        implements View.OnClickListener {
 
     private NoscrollListView mData;
-    private DataAdapter mDataAdapter;
+    private ProcationDialog procationDialog;
 
     private SyncHorizontalScrollView mHeaderHorizontal;
     private SyncHorizontalScrollView mDataHorizontal;
-    private ImageView ivProductionBack;
+    private ImageView ivProductionBack, ivSearch;
     private List<String> mListData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_production);
-
-        initView();
         getViews();
+        initView();
+        setListener();
+        setData();
     }
 
-    private void initView() {
+    private void getViews() {
         ivProductionBack = (ImageView) findViewById(R.id.ivProductionBack);
-
         mData = (NoscrollListView) findViewById(R.id.lv_data);
+        ivSearch = (ImageView) findViewById(R.id.ivSearch);
         mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
         mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
 
-        mDataHorizontal.setSrollView(mHeaderHorizontal);
-        mHeaderHorizontal.setSrollView(mDataHorizontal);
-
-        mListData = new ArrayList<>();
-        mListData.add("1");
-        mListData.add("2");
-        mListData.add("3");
-        mListData.add("4");
-        mListData.add("5");
-        mListData.add("6");
-        mListData.add("7");
-        mListData.add("8");
-        mListData.add("9");
-        mListData.add("10");
-        mListData.add("11");
-        mListData.add("12");
-        mListData.add("13");
-
-        mDataAdapter = new DataAdapter();
-        mData.setAdapter(mDataAdapter);
     }
 
-    private void getViews(){
+    private void initView() {
+
+    }
+
+    private void setListener() {
+        mDataHorizontal.setSrollView(mHeaderHorizontal);
+        mHeaderHorizontal.setSrollView(mDataHorizontal);
         ivProductionBack.setOnClickListener(this);
+        ivSearch.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ivProductionBack:
                 finish();
+                break;
+            case R.id.ivSearch:
+                ShowDialog(v);
                 break;
         }
     }
 
+    private void setData() {
+        String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
+        List<Propostbean> list = new ArrayList<Propostbean>();
+        Propostbean propostbean = new Propostbean();
+        propostbean.setItem("");
+        propostbean.setPrddocumentary("");
+        propostbean.setSubfactory("");
+        propostbean.setWorkingProcedure("");
+        propostbean.setPrddocumentaryisnull(true);
+        list.add(propostbean);
+        if (NetWork.isNetWorkAvailable(this)) {
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(NetUtil.createParam("Conditions",list));
+            params.add(NetUtil.createParam("pageNum","0"));
+            params.add(NetUtil.createParam("pageSize","10"));
+            RequestParams requestParams = new RequestParams(params);
+            NetUtil.getAsyncHttpClient().post(str,requestParams,new AsyncHttpResponseHandler(){
+                @Override
+                public void onSuccess(String content) {
+                    super.onSuccess(content);
+                    System.out.print(content);
+                }
 
+                @Override
+                public void onFinish() {
+                    super.onFinish();
+                }
 
-
-    private void setData(){
-//        String str = HttpUrl.Url+
-        if(NetWork.isNetWorkAvailable(this)){
-
-        }else{
-            ToastUtils.ShowToastMessage("当前网络不可用,请重新再试",ProductionActivity.this);
+                @Override
+                public void onFailure(Throwable error, String content) {
+                    super.onFailure(error, content);
+                }
+            });
+        } else {
+            ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", ProductionActivity.this);
         }
     }
 
-    class DataAdapter extends BaseAdapter {
+    private void ShowDialog(View view){
+        procationDialog = new ProcationDialog(this,
+                R.style.dialogstyle, onClickListener, onCancleListener);
+        procationDialog.show();
+    }
 
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
-        public int getCount() {
-            return mListData.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mListData.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder = null;
-            if (convertView == null) {
-                holder = new ViewHolder();
-                convertView = LayoutInflater.from(ProductionActivity.this).inflate(R.layout.item_production_data, null);
-                holder.tvData = (TextView) convertView.findViewById(R.id.tv_data);
-                holder.linContent = (LinearLayout) convertView.findViewById(R.id.lin_content);
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.btnComfirm:
+                    procationDialog.dismiss();
+                    break;
             }
-
-            return convertView;
         }
+    };
 
-        class ViewHolder {
-            TextView tvData;
-            LinearLayout linContent;
+    private View.OnClickListener onCancleListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.btnCancle:
+                    procationDialog.dismiss();
+                    break;
+            }
         }
-    }
+    };
+
 }

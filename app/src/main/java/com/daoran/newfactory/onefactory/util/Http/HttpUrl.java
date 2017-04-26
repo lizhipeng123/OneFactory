@@ -24,7 +24,7 @@ public class HttpUrl {
     /*出车列表*/
     public static final String sqlCarApply = "UCarsApply/UCarsApplySearch/";
     /*生产单查询*/
-    public static final String sqlcork = "QACwork/BindSearchQACworkAPP/";
+    public static final String sqlcork = "FactoryPlan/BindGridDailyAPP/";
     /*查货跟踪表*/
     public static final String sqldebugcorgetdetail = "QACwork/BindSearchQACworkAPP/";
     public static final String sqlcorgetdetail = "QACwork/APPGetDetail/";
@@ -36,4 +36,6 @@ public class HttpUrl {
     public static final String CarNumberBind = "UCarsExamine/CarNumberBind/";
     /*获取出车单详细信息*/
     public static final String GetUCarsApplyModel = "UCarsApply/GetUCarsApplyModel/";
+    /*保存修改生产日报信息*/
+    public static final String SaveFactoryDaily = "FactoryPlan/SaveFactoryDaily/";
 }

@@ -28,21 +28,6 @@ public class SignDetailAdapter extends BaseAdapter {
         this.context = context;
     }
 
-//    public void clear() {
-//        signdata.clear();
-//        notifyDataSetChanged();
-//    }
-//
-//    public void addAll(List<SignDetailBean.DataBean> _c) {
-//        signdata.addAll(_c);
-//        notifyDataSetChanged();
-//    }
-//
-//    public void replaceAll(List<SignDetailBean.DataBean> _c) {
-//        signdata.clear();
-//        addAll(_c);
-//    }
-
     @Override
     public int getCount() {
         return signdata.size();
@@ -82,6 +67,7 @@ public class SignDetailAdapter extends BaseAdapter {
         holder.tvSignRemarks.setText(getItem(position).getMemo());
         return convertView;
     }
+
 
     class ViewHolder {
         TextView tvData;

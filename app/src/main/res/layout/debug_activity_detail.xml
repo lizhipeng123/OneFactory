@@ -19,7 +19,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_alignParentLeft="true"
-                android:src="@mipmap/title_back_gray"/>
+                android:src="@mipmap/title_back_gray" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
                 android:layout_height="@dimen/dimen_70"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/dimen_30"
-                android:src="@mipmap/search"/>
+                android:src="@mipmap/search" />
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
@@ -47,24 +47,24 @@
         android:orientation="horizontal">
 
         <!--<LinearLayout-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="50dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:orientation="vertical">-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:orientation="vertical">-->
 
-            <!--<TextView-->
-                <!--android:id="@+id/tv_id"-->
-                <!--android:layout_width="100dp"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:gravity="center"-->
-                <!--android:text="行号"/>-->
+        <!--<TextView-->
+        <!--android:id="@+id/tv_id"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:gravity="center"-->
+        <!--android:text="行号"/>-->
         <!--</LinearLayout>-->
 
         <!--<View-->
-            <!--android:layout_width="1px"-->
-            <!--android:layout_height="50dp"-->
-            <!--android:background="#cccccc"/>-->
+        <!--android:layout_width="1px"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:background="#cccccc"/>-->
 
         <LinearLayout
             android:id="@+id/lin_header_content"
@@ -92,7 +92,7 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="编号"/>
+                        android:text="编号" />
 
                     <View
                         android:layout_width="1px"
@@ -104,59 +104,60 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="制单人"/>
+                        android:text="制单人" />
 
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc"/>
+                        android:background="#cccccc" />
 
                     <TextView
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="班次"/>
+                        android:text="班次" />
 
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc"/>
+                        android:background="#cccccc" />
 
                     <TextView
                         android:layout_width="150dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="签到时间"/>
+                        android:text="签到时间" />
 
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc"/>
+                        android:background="#cccccc" />
 
                     <TextView
                         android:layout_width="200dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="签到地点"/>
+                        android:text="签到地点" />
 
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc"/>
+                        android:background="#cccccc" />
+
                     <TextView
                         android:layout_width="200dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="备注"/>
+                        android:text="备注" />
 
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc"/>
+                        android:background="#cccccc" />
                 </LinearLayout>
             </com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView>
         </LinearLayout>
@@ -165,22 +166,28 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="#cccccc"/>
+        android:background="#cccccc" />
 
-    <ScrollView
-        android:id="@+id/scroll_content"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"
-        android:scrollbars="none">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/scroll_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:scrollbars="none">
 
-            <!--<com.daoran.newfactory.onefactory.view.listview.NoscrollListView-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:orientation="horizontal">
+
+                <!--<com.daoran.newfactory.onefactory.view.listview.NoscrollListView-->
                 <!--android:id="@+id/lv_left"-->
                 <!--android:layout_width="0dp"-->
                 <!--android:layout_height="match_parent"-->
@@ -188,33 +195,73 @@
                 <!--android:overScrollMode="never"-->
                 <!--android:scrollbars="none"/>-->
 
-            <!--<View-->
+                <!--<View-->
                 <!--android:layout_width="1px"-->
                 <!--android:layout_height="match_parent"-->
                 <!--android:background="#cccccc"/>-->
 
-            <LinearLayout
-                android:id="@+id/lin_data_content"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:orientation="vertical">
-
-                <com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView
-                    android:id="@+id/data_horizontal"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:id="@+id/lin_data_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:overScrollMode="never"
-                    android:scrollbars="none">
+                    android:layout_weight="3"
+                    android:orientation="vertical">
 
-                    <com.daoran.newfactory.onefactory.view.listview.NoscrollListView
-                        android:id="@+id/lv_data"
+                    <com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView
+                        android:id="@+id/data_horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:overScrollMode="never"
-                        android:scrollbars="none"/>
-                </com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView>
+                        android:scrollbars="none">
+
+                        <com.daoran.newfactory.onefactory.view.listview.NoscrollListView
+                            android:id="@+id/lv_data"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:overScrollMode="never"
+                            android:scrollbars="none" />
+                    </com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView>
+                </LinearLayout>
             </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="9"
+            android:gravity="center_horizontal"
+            android:background="@color/gray">
+
+            <EditText
+                android:id="@+id/etSqlDetail"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_text_sql_boild"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="1"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginLeft="5dp"
+                android:text="/" />
+
+            <TextView
+                android:id="@+id/tvSignPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginLeft="5dp"
+                android:text="19405" />
+            <Button
+                android:id="@+id/btnSignPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="确定"/>
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
+
 </LinearLayout>

@@ -12,9 +12,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
+import com.daoran.newfactory.onefactory.bean.CarDetailBean;
 import com.daoran.newfactory.onefactory.bean.CarNumberBindBean;
 import com.daoran.newfactory.onefactory.bean.DriverBindBean;
 import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
@@ -22,6 +24,7 @@ import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.StringUtil;
+import com.daoran.newfactory.onefactory.util.ToastUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.util.file.JsonUtil;
 import com.google.gson.Gson;
@@ -55,14 +58,23 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
     private Toolbar tbarCarapply;
     private EditText etStartDataClick, etEndDataClick;
     private int id;
-    private Spinner spinnerdriver;
+    private Spinner spinnerdriver,spinnerNumberBind;
 
-    private ArrayList<DriverBindBean> bindBeen = new ArrayList<DriverBindBean>();
-    private ArrayList<CarNumberBindBean> bindBeencar = new ArrayList<CarNumberBindBean>();
+    private List<DriverBindBean> bindBeen = new ArrayList<DriverBindBean>();
+    private List<CarNumberBindBean> bindBeencar = new ArrayList<CarNumberBindBean>();
     private DriverBindBean driverBindBean;
     private List<CarNumberBindBean> numberBindBeen;
     private CarNumberBindBean carNumberBindBean;
+    private List<CarDetailBean> carDetailBeen = new ArrayList<CarDetailBean>();
+    private CarDetailBean carDetailBean;
     private String[] attr;
+    private TextView tvCarcode,//编号
+            tvCarrecorder,//申请人
+            tvCarroad,//地点
+            tvCarrecordt,//申请日期
+            tvCarreason,//事由
+            tvCardepartureBdt,//预计出车时间
+            tvCardepartureEdt;//预计结束时间
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +94,14 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
         etStartDataClick = (EditText) findViewById(R.id.etStartDataClick);
         etEndDataClick = (EditText) findViewById(R.id.etEndDataClick);
         spinnerdriver = (Spinner) findViewById(R.id.spinnerdriver);
+        spinnerNumberBind = (Spinner) findViewById(R.id.spinnerNumberBind);
+        tvCarcode = (TextView) findViewById(R.id.tvCarcode);
+        tvCarrecorder = (TextView) findViewById(R.id.tvCarrecorder);
+        tvCarroad = (TextView) findViewById(R.id.tvCarroad);
+        tvCarrecordt = (TextView) findViewById(R.id.tvCarrecordt);
+        tvCarreason = (TextView) findViewById(R.id.tvCarreason);
+        tvCardepartureBdt = (TextView) findViewById(R.id.tvCardepartureBdt);
+        tvCardepartureEdt = (TextView) findViewById(R.id.tvCardepartureEdt);
     }
 
     private void initViews() {
@@ -119,6 +139,15 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
                 public void onSuccess(String content) {
                     super.onSuccess(content);
                     System.out.print(content);
+                    carDetailBean = new Gson().fromJson(content,CarDetailBean.class);
+                    System.out.print(carDetailBean);
+                    tvCarcode.setText(carDetailBean.getCode());
+                    tvCarrecorder.setText(carDetailBean.getRecorder());
+                    tvCarroad.setText(carDetailBean.getRoad());
+                    tvCarrecordt.setText(carDetailBean.getRecordt());
+                    tvCarreason.setText(carDetailBean.getReason());
+                    tvCardepartureBdt.setText(carDetailBean.getDepartureBdt());
+                    tvCardepartureEdt.setText(carDetailBean.getDepartureEdt());
                 }
 
                 @Override
@@ -161,25 +190,25 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
                             System.out.print(ression);
                             bindBeen = JsonUtil.stringToList(ression, DriverBindBean.class);
                             System.out.print(bindBeen);
-                            /*
-                            填充有问题
-                             */
-//                            spinnerdriver.setAdapter(
-//                                    new ArrayAdapter<>(CarapplyActivity.this,
-//                                            android.R.layout.simple_spinner_dropdown_item
-//                                            , bindBeen));
-//                            spinnerdriver.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                                @Override
-//                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                                    ToastUtils.ShowToastMessage("点击的是：" + position, CarapplyActivity.this);
-//                                    System.out.print(position);
-//                                }
-//
-//                                @Override
-//                                public void onNothingSelected(AdapterView<?> parent) {
-//
-//                                }
-//                            });
+
+                            String[] spinnerr = getResources().getStringArray(R.array.driver);
+                            ArrayAdapter<String> adapter = new
+                                    ArrayAdapter<String>(CarapplyActivity.this,android.R.layout.simple_spinner_item,spinnerr);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinnerdriver.setAdapter(adapter);
+                            spinnerdriver.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    String[] languages = getResources().getStringArray(R.array.driver);
+                                    ToastUtils.ShowToastMessage("点击的是"+languages[position],CarapplyActivity.this);
+//                                    .put(CarapplyActivity.this, "languages", languages[position]);
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                }
+                            });
                         }
                     });
         } else {
@@ -211,6 +240,23 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
                             System.out.print(ression);
                             bindBeencar = JsonUtil.stringToList(ression,CarNumberBindBean.class);
                             System.out.print(bindBeencar);
+                            String[] spinnerr = getResources().getStringArray(R.array.CarNumberBind);
+                            ArrayAdapter<String> adapter = new
+                                    ArrayAdapter<String>(CarapplyActivity.this,android.R.layout.simple_spinner_item,spinnerr);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinnerNumberBind.setAdapter(adapter);
+                            spinnerNumberBind.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    String[] languages = getResources().getStringArray(R.array.CarNumberBind);
+                                    ToastUtils.ShowToastMessage("点击的是"+languages[position],CarapplyActivity.this);
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                }
+                            });
                         }
                     });
         } else {

@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -56,9 +58,14 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     private ImageView ivSiganSqlDetail;
     private ImageView ivSearch;
     private SignContentDialog dialog;
+    private EditText etSqlDetail;
+    private TextView tvSignPage;
+    private Button btnSignPage;
 
     private SharedPreferences sp;
     private SPUtils spUtils;
+    int pageIndex = 0;
+    int pageCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +84,15 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         ivSearch = (ImageView) findViewById(R.id.ivSearch);
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);
+        etSqlDetail = (EditText) findViewById(R.id.etSqlDetail);
+        tvSignPage = (TextView) findViewById(R.id.tvSignPage);
+        btnSignPage = (Button) findViewById(R.id.btnSignPage);
     }
 
     private void getViews() {
         ivSiganSqlDetail.setOnClickListener(this);
         ivSearch.setOnClickListener(this);
+        btnSignPage.setOnClickListener(this);
     }
 
     @Override
@@ -92,6 +103,9 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                 break;
             case R.id.ivSearch:
                 showDialog(v);
+                break;
+            case R.id.btnSignPage:
+                setPageSignDetail();
                 break;
         }
     }
@@ -111,7 +125,65 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                     .post()
                     .url(str)
                     .addParams("pageNum", "0")
-                    .addParams("pageSize", "10")
+                    .addParams("pageSize", "20")
+                    .addParams("recorder",name)
+                    .addParams("recordat_start",datetime)
+                    .addParams("recordat_end",endtime)
+                    .addParams("recordplace","")
+                    .addParams("memo","")
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            System.out.print(response);
+                            try {
+                                Gson gson = new Gson();
+                                signBean = gson.fromJson(response, SignDetailBean.class);
+                                mListData = signBean.getData();
+                                pageCount = signBean.getTotalCount();
+                                System.out.print(pageCount);
+                                String count = String.valueOf(pageCount/20);
+                                System.out.print(count);
+                                tvSignPage.setText(count);
+                                detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
+                                mData.setAdapter(detailAdapter);
+                            } catch (JsonSyntaxException e) {
+                                ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
+                                ResponseDialog.closeLoading();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                ResponseDialog.closeLoading();
+                            }
+                        }
+                    });
+        } else {
+            ToastUtils.ShowToastMessage(R.string.disNetworking, SignDetailActivity.this);
+        }
+    }
+
+    /**
+     * 翻页查找
+     */
+    private void setPageSignDetail() {
+        String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
+        sp = SignDetailActivity.this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        String name = sp.getString("etAudit","");
+        String datetime = sp.getString("datetimesign","");
+        String endtime = sp.getString("endtimesign","");
+        pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
+        String index = String.valueOf(pageIndex-1);
+        if (NetWork.isNetWorkAvailable(this)) {
+            ResponseDialog.showLoading(this, "正在查询，请稍后");
+            OkHttpUtils
+                    .post()
+                    .url(str)
+                    .addParams("pageNum", index)
+                    .addParams("pageSize", "20")
                     .addParams("recorder",name)
                     .addParams("recordat_start",datetime)
                     .addParams("recordat_end",endtime)
@@ -146,7 +218,6 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
             ToastUtils.ShowToastMessage(R.string.disNetworking, SignDetailActivity.this);
         }
     }
-
     private void showDialog(View view) {
         dialog = new SignContentDialog(this,
                 R.style.dialogstyle, onClickListener, onCancleListener);

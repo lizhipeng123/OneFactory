@@ -56,7 +56,8 @@
             <com.amap.api.maps.MapView
                 android:id="@+id/mapSigngaode"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_800" />
+                android:layout_height="@dimen/dimen_600" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -68,8 +69,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:background="@drawable/shape_text_sql_boild"
-                    android:paddingBottom="@dimen/dimen_20"
-                    android:paddingTop="@dimen/dimen_20"
+                    android:paddingBottom="@dimen/dimen_5"
+                    android:paddingTop="@dimen/dimen_5"
                     android:text="杭州市下城区经纬创意产业园" />
 
                 <Spinner
@@ -81,6 +82,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen_50sp" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -148,11 +150,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="请选择图片："/>
+                    android:text="请选择图片：" />
+
                 <ImageView
                     android:id="@+id/topBg"
                     android:layout_width="100dp"

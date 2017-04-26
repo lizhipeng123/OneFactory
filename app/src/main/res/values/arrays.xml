@@ -17,4 +17,24 @@
         <item>已结束</item>
         <item>已取消</item>
     </string-array>
+    <string-array name="driver">
+        <item>秦志刚</item>
+        <item>余雄军</item>
+        <item>孙顺华</item>
+        <item>韩向文</item>
+        <item>陶志英</item>
+        <item>宇同炉</item>
+        <item>王志勇</item>
+        <item>邵东</item>
+    </string-array>
+    <string-array name="CarNumberBind">
+        <item>1QT88</item>
+        <item>9871V</item>
+        <item>E3K91</item>
+        <item>H7761</item>
+        <item>QD970</item>
+        <item>SK777</item>
+        <item>XM011</item>
+        <item>Y9A86</item>
+    </string-array>
 </resources>

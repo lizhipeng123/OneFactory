@@ -17,6 +17,7 @@ import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.view.dialog.CommoDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
 
@@ -53,30 +54,34 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private List<String> mListData;
     private boolean prdmasterisnull = false;
 
+    private CommoDialog commoDialog;
+    private ImageView ivSearch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_commodity);
-
-        initView();
         getViews();
+        initView();
+        setListener();
     }
 
-
-    private void initView() {
+    private void getViews() {
         ivProductionBack = (ImageView) findViewById(R.id.ivCommoditySql);
         mData = (NoscrollListView) findViewById(R.id.lv_data);
         mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
         mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
-
-        mDataHorizontal.setSrollView(mHeaderHorizontal);
-        mHeaderHorizontal.setSrollView(mDataHorizontal);
-
-        new Thread(networkTask).start();
+        ivSearch = (ImageView) findViewById(R.id.ivSearch);
     }
 
-    private void getViews() {
+    private void initView() {
+        mDataHorizontal.setSrollView(mHeaderHorizontal);
+        mHeaderHorizontal.setSrollView(mDataHorizontal);
+    }
+
+    private void setListener(){
         ivProductionBack.setOnClickListener(this);
+        ivSearch.setOnClickListener(this);
     }
 
     @Override
@@ -85,91 +90,39 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
             case R.id.ivCommoditySql:
                 finish();
                 break;
+            case R.id.ivSearch:
+                ShowDialog(v);
+                break;
         }
     }
 
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            Bundle bundle = msg.getData();
-            String val = bundle.getString("value");
-            Log.i("mylog", "请求结果" + val);
-        }
-    };
+    private void ShowDialog(View view){
+        commoDialog = new CommoDialog(this,
+                R.style.dialogstyle, onClickListener, onCancleListener);
+        commoDialog.show();
+    }
 
-    Runnable networkTask = new Runnable() {
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
-        public void run() {
-            final String str = HttpUrl.debugoneUrl + "QACwork/BindSearchQACworkAPP/";
-
-            try {
-//                OkHttpClient client = new OkHttpClient();
-//                OkHttp
-//                        .post()
-//                        .url(str)
-//                        .build()
-//                        .execute(new StringCallback() {
-//                            @Override
-//                            public void onError(Call call, Exception e, int id) {
-//                                e.printStackTrace();
-//                            }
-//
-//                            @Override
-//                            public void onResponse(String response, int id) {
-//                                Message msg = new Message();
-//                                Bundle bundle = new Bundle();
-//                                bundle.putString("value", response.toString());
-//                                msg.setData(bundle);
-//                                handler.sendMessage(msg);
-//                                System.out.print(response);
-//                                Log.e("responsedebug", response);
-//                            }
-//                        });
-                HttpPost httpPost = new HttpPost(str);
-                JSONObject jsonObject = new JSONObject();
-                StringEntity entity = null;
-                entity = new StringEntity(jsonObject.toString(), HTTP.UTF_8);
-                entity.setContentType("application/json");
-                HttpClient client = new DefaultHttpClient();
-                httpPost.setEntity(entity);
-                HttpResponse response = client.execute(httpPost);
-                System.out.print(response);
-                Message msg = new Message();
-                Bundle bundle = new Bundle();
-                bundle.putString("value", response.toString());
-                msg.setData(bundle);
-                handler.sendMessage(msg);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.btnComfirm:
+                    commoDialog.dismiss();
+                    break;
             }
-
         }
     };
 
-    public static OkHttpClient genericClient() {
-        OkHttpClient httpClient = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request request = chain.request()
-                                .newBuilder()
-                                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-                                .addHeader("Accept-Encoding", "gzip, deflate")
-                                .addHeader("Connection", "keep-alive")
-                                .addHeader("Accept", "*/*")
-                                .addHeader("Cookie", "add cookies here")
-                                .build();
-                        return chain.proceed(request);
-                    }
-
-                })
-                .build();
-
-        return httpClient;
-    }
+    private View.OnClickListener onCancleListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.btnCancle:
+                    commoDialog.dismiss();
+                    break;
+            }
+        }
+    };
 
     private void setData() {
         final String str = HttpUrl.debugoneUrl + "QACwork/BindSearchQACworkAPP/";
