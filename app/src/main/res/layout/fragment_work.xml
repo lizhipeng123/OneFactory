@@ -66,6 +66,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
                         android:src="@mipmap/daoran"
+                        android:clickable="false"
                         android:visibility="gone"/>
 
                     <TextView
@@ -73,6 +74,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:clickable="false"
                         android:visibility="gone"
                         android:text="用车申请单" />
                 </LinearLayout>
@@ -92,6 +94,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
                         android:src="@mipmap/daoran"
+                        android:clickable="false"
                         android:visibility="gone"/>
 
                     <TextView
@@ -100,6 +103,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:visibility="gone"
+                        android:clickable="false"
                         android:text="外勤签到" />
                 </LinearLayout>
             </LinearLayout>
@@ -124,6 +128,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
                         android:visibility="gone"
+                        android:clickable="false"
                         android:src="@mipmap/daoran" />
 
                     <TextView
@@ -131,6 +136,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:clickable="false"
                         android:visibility="gone"
                         android:text="签到查询表" />
                 </LinearLayout>
@@ -150,6 +156,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
                         android:visibility="gone"
+                        android:clickable="false"
                         android:src="@mipmap/daoran" />
 
                     <TextView
@@ -157,6 +164,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:clickable="false"
                         android:visibility="gone"
                         android:text="公交路线" />
                 </LinearLayout>
@@ -182,6 +190,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
                         android:visibility="gone"
+                        android:clickable="false"
                         android:src="@mipmap/daoran" />
 
                     <TextView
@@ -189,6 +198,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:clickable="false"
                         android:gravity="center"
                         android:text="用车申请单" />
                 </LinearLayout>
@@ -208,6 +218,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
                         android:visibility="gone"
+                        android:clickable="false"
                         android:src="@mipmap/daoran" />
 
                     <TextView
@@ -215,6 +226,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:clickable="false"
                         android:visibility="gone"
                         android:text="查货跟踪" />
                 </LinearLayout>

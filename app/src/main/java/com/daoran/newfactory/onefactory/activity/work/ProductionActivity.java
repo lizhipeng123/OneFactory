@@ -1,36 +1,34 @@
 package com.daoran.newfactory.onefactory.activity.work;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.adapter.ProductionAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
+import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
 import com.daoran.newfactory.onefactory.bean.Propostbean;
-import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
-import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
-import com.daoran.newfactory.onefactory.util.Http.RequestParams;
+import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.dialog.ProcationDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
+import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.apache.http.NameValuePair;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Call;
+import okhttp3.MediaType;
 
 /**
  * 生产日报
@@ -46,7 +44,14 @@ public class ProductionActivity extends BaseFrangmentActivity
     private SyncHorizontalScrollView mHeaderHorizontal;
     private SyncHorizontalScrollView mDataHorizontal;
     private ImageView ivProductionBack, ivSearch;
-    private List<String> mListData;
+    private List<ProducationDetailBean.DataBean> detailBeenList =
+            new ArrayList<ProducationDetailBean.DataBean>();
+    private ProducationDetailBean detailBean;
+    private ProductionAdapter adapter;
+
+    private EditText etSqlDetail;
+    private TextView tvSignPage;
+    private Button btnSignPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,18 +69,21 @@ public class ProductionActivity extends BaseFrangmentActivity
         ivSearch = (ImageView) findViewById(R.id.ivSearch);
         mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
         mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
-
+        etSqlDetail = (EditText) findViewById(R.id.etSqlDetail);
+        tvSignPage = (TextView) findViewById(R.id.tvSignPage);
+        btnSignPage = (Button) findViewById(R.id.btnSignPage);
     }
 
     private void initView() {
-
+        mDataHorizontal.setSrollView(mHeaderHorizontal);
+        mHeaderHorizontal.setSrollView(mDataHorizontal);
     }
 
     private void setListener() {
-        mDataHorizontal.setSrollView(mHeaderHorizontal);
-        mHeaderHorizontal.setSrollView(mDataHorizontal);
+
         ivProductionBack.setOnClickListener(this);
         ivSearch.setOnClickListener(this);
+        btnSignPage.setOnClickListener(this);
     }
 
     @Override
@@ -87,48 +95,104 @@ public class ProductionActivity extends BaseFrangmentActivity
             case R.id.ivSearch:
                 ShowDialog(v);
                 break;
+            case R.id.btnSignPage:
+
+                break;
         }
     }
 
     private void setData() {
         String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
-        List<Propostbean> list = new ArrayList<Propostbean>();
+        Gson gson = new Gson();
         Propostbean propostbean = new Propostbean();
-        propostbean.setItem("");
-        propostbean.setPrddocumentary("");
-        propostbean.setSubfactory("");
-        propostbean.setWorkingProcedure("");
-        propostbean.setPrddocumentaryisnull(true);
-        list.add(propostbean);
+        Propostbean.Conditions conditions = propostbean.new Conditions();
+        conditions.setItem("");
+        conditions.setPrddocumentary("");
+        conditions.setSubfactory("");
+        conditions.setWorkingProcedure("");
+        conditions.setPrddocumentaryisnull(true);
+        propostbean.setConditions(conditions);
+        propostbean.setPageNum(0);
+        propostbean.setPageSize(10);
+        String gsonbeanStr = gson.toJson(propostbean);
         if (NetWork.isNetWorkAvailable(this)) {
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(NetUtil.createParam("Conditions",list));
-            params.add(NetUtil.createParam("pageNum","0"));
-            params.add(NetUtil.createParam("pageSize","10"));
-            RequestParams requestParams = new RequestParams(params);
-            NetUtil.getAsyncHttpClient().post(str,requestParams,new AsyncHttpResponseHandler(){
-                @Override
-                public void onSuccess(String content) {
-                    super.onSuccess(content);
-                    System.out.print(content);
-                }
+            OkHttpUtils.postString()
+                    .url(str)
+                    .content(gsonbeanStr)
+                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                        }
 
-                @Override
-                public void onFinish() {
-                    super.onFinish();
-                }
+                        @Override
+                        public void onResponse(String response, int id) {
+                            System.out.print(response);
+                            String ress = response.replace("\\", "");
+                            System.out.print(ress);
+                            String ression = StringUtil.sideTrim(ress, "\"");
+                            System.out.print(ression);
+                            detailBean = new Gson().fromJson(ression,ProducationDetailBean.class);
+                            detailBeenList = detailBean.getData();
+                            System.out.print(detailBeenList);
+                            adapter = new ProductionAdapter(ProductionActivity.this,detailBeenList);
+                            mData.setAdapter(adapter);
+                        }
+                    });
+        } else {
+            ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", ProductionActivity.this);
+        }
 
-                @Override
-                public void onFailure(Throwable error, String content) {
-                    super.onFailure(error, content);
-                }
-            });
+    }
+
+    private void setPageDetail(){
+        String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
+        Gson gson = new Gson();
+        Propostbean propostbean = new Propostbean();
+        Propostbean.Conditions conditions = propostbean.new Conditions();
+        conditions.setItem("");
+        conditions.setPrddocumentary("");
+        conditions.setSubfactory("");
+        conditions.setWorkingProcedure("");
+        conditions.setPrddocumentaryisnull(true);
+        propostbean.setConditions(conditions);
+        propostbean.setPageNum(0);
+        propostbean.setPageSize(10);
+        String gsonbeanStr = gson.toJson(propostbean);
+        if (NetWork.isNetWorkAvailable(this)) {
+            OkHttpUtils.postString()
+                    .url(str)
+                    .content(gsonbeanStr)
+                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            System.out.print(response);
+                            String ress = response.replace("\\", "");
+                            System.out.print(ress);
+                            String ression = StringUtil.sideTrim(ress, "\"");
+                            System.out.print(ression);
+                            detailBean = new Gson().fromJson(ression,ProducationDetailBean.class);
+                            detailBeenList = detailBean.getData();
+                            System.out.print(detailBeenList);
+                            adapter = new ProductionAdapter(ProductionActivity.this,detailBeenList);
+                            mData.setAdapter(adapter);
+                        }
+                    });
         } else {
             ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", ProductionActivity.this);
         }
     }
 
-    private void ShowDialog(View view){
+    private void ShowDialog(View view) {
         procationDialog = new ProcationDialog(this,
                 R.style.dialogstyle, onClickListener, onCancleListener);
         procationDialog.show();
@@ -137,7 +201,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.btnComfirm:
                     procationDialog.dismiss();
                     break;
@@ -148,7 +212,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     private View.OnClickListener onCancleListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.btnCancle:
                     procationDialog.dismiss();
                     break;

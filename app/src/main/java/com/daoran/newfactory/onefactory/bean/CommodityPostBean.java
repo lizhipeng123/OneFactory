@@ -1,22 +1,20 @@
 package com.daoran.newfactory.onefactory.bean;
 
 /**
- * 生产日报请求参数实体类
- * Created by lizhipeng on 2017/4/26.
+ * 查货跟踪请求参数实体类
+ * Created by lizhipeng on 2017/4/27.
  */
 
-public class Propostbean {
+public class CommodityPostBean {
 
     private Conditions conditions;
     private int pageNum;
     private int pageSize;
-
     public class Conditions {
         private String item;
         private String prddocumentary;
-        private String subfactory;
-        private String workingProcedure;
-        private Boolean prddocumentaryisnull;
+        private String prdmaster;
+        private Boolean prdmasterisnull;
 
         public String getItem() {
             return item;
@@ -34,30 +32,21 @@ public class Propostbean {
             this.prddocumentary = prddocumentary;
         }
 
-        public String getSubfactory() {
-            return subfactory;
+        public String getPrdmaster() {
+            return prdmaster;
         }
 
-        public void setSubfactory(String subfactory) {
-            this.subfactory = subfactory;
+        public void setPrdmaster(String prdmaster) {
+            this.prdmaster = prdmaster;
         }
 
-        public String getWorkingProcedure() {
-            return workingProcedure;
+        public Boolean getPrdmasterisnull() {
+            return prdmasterisnull;
         }
 
-        public void setWorkingProcedure(String workingProcedure) {
-            this.workingProcedure = workingProcedure;
+        public void setPrdmasterisnull(Boolean prdmasterisnull) {
+            this.prdmasterisnull = prdmasterisnull;
         }
-
-        public Boolean getPrddocumentaryisnull() {
-            return prddocumentaryisnull;
-        }
-
-        public void setPrddocumentaryisnull(Boolean prddocumentaryisnull) {
-            this.prddocumentaryisnull = prddocumentaryisnull;
-        }
-
     }
 
     public Conditions getConditions() {
@@ -83,6 +72,4 @@ public class Propostbean {
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
     }
-
-
 }

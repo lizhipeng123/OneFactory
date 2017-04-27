@@ -13,13 +13,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.adapter.CommoditySqlAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
+import com.daoran.newfactory.onefactory.bean.CommodityPostBean;
+import com.daoran.newfactory.onefactory.bean.CommoditydetailBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
+import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.dialog.CommoDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
+import com.google.gson.Gson;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -34,7 +41,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -51,11 +60,14 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private SyncHorizontalScrollView mHeaderHorizontal;
     private SyncHorizontalScrollView mDataHorizontal;
     private ImageView ivProductionBack;
-    private List<String> mListData;
     private boolean prdmasterisnull = false;
-
     private CommoDialog commoDialog;
     private ImageView ivSearch;
+
+    private List<CommoditydetailBean.DataBean> dataBeen
+            = new ArrayList<CommoditydetailBean.DataBean>();
+    private CommoditydetailBean commoditydetailBean;
+    private CommoditySqlAdapter sqlAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +75,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         setContentView(R.layout.activity_commodity);
         getViews();
         initView();
+        setData();
         setListener();
     }
 
@@ -125,64 +138,93 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     };
 
     private void setData() {
-        final String str = HttpUrl.debugoneUrl + "QACwork/BindSearchQACworkAPP/";
+        String str = HttpUrl.debugoneUrl + "QACwork/BindSearchQACworkAPP/";
+        Gson gson = new Gson();
+        CommodityPostBean postBean = new CommodityPostBean();
+        CommodityPostBean.Conditions conditions = postBean.new Conditions();
+        conditions.setItem("");
+        conditions.setPrddocumentary("");
+        conditions.setPrdmaster("");
+        conditions.setPrdmasterisnull(true);
+        postBean.setConditions(conditions);
+        postBean.setPageNum(0);
+        postBean.setPageSize(10);
+        String stringpost = gson.toJson(postBean);
         if (NetWork.isNetWorkAvailable(this)) {
-            try {
-                HttpPost httpPost = new HttpPost(str);
-                JSONObject jsonObject = new JSONObject();
-                StringEntity entity = new StringEntity(jsonObject.toString(), HTTP.UTF_8);
-                entity.setContentType("application/json");
-                HttpClient client = new DefaultHttpClient();
-                httpPost.setEntity(entity);
-                HttpResponse response = client.execute(httpPost);
-                System.out.print(response);
+            OkHttpUtils.postString()
+                    .url(str)
+                    .content(stringpost)
+                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                        }
 
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                        @Override
+                        public void onResponse(String response, int id) {
+                            System.out.print(response);
+                            String ress = response.replace("\\", "");
+                            System.out.print(ress);
+                            String ression = StringUtil.sideTrim(ress, "\"");
+                            System.out.print(ression);
+                            commoditydetailBean = new Gson().fromJson(ression,CommoditydetailBean.class);
+                            dataBeen = commoditydetailBean.getData();
+                            System.out.print(dataBeen);
+                            sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this,dataBeen);
+                            mData.setAdapter(sqlAdapter);
+                        }
+                    });
+
         } else {
             ToastUtils.ShowToastMessage("当前网络不可用,请稍后再试", CommoditySqlActivity.this);
         }
     }
 
-    class DataAdapter extends BaseAdapter {
+    private void setPageDetail(){
+        String str = HttpUrl.debugoneUrl + "QACwork/BindSearchQACworkAPP/";
+        Gson gson = new Gson();
+        CommodityPostBean postBean = new CommodityPostBean();
+        CommodityPostBean.Conditions conditions = postBean.new Conditions();
+        conditions.setItem("");
+        conditions.setPrddocumentary("");
+        conditions.setPrdmaster("");
+        conditions.setPrdmasterisnull(true);
+        postBean.setConditions(conditions);
+        postBean.setPageNum(0);
+        postBean.setPageSize(10);
+        String stringpost = gson.toJson(postBean);
+        if (NetWork.isNetWorkAvailable(this)) {
+            OkHttpUtils.postString()
+                    .url(str)
+                    .content(stringpost)
+                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                        }
 
-        @Override
-        public int getCount() {
-            return mListData.size();
-        }
+                        @Override
+                        public void onResponse(String response, int id) {
+                            System.out.print(response);
+                            String ress = response.replace("\\", "");
+                            System.out.print(ress);
+                            String ression = StringUtil.sideTrim(ress, "\"");
+                            System.out.print(ression);
+                            commoditydetailBean = new Gson().fromJson(ression,CommoditydetailBean.class);
+                            dataBeen = commoditydetailBean.getData();
+                            System.out.print(dataBeen);
+                            sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this,dataBeen);
+                            mData.setAdapter(sqlAdapter);
+                        }
+                    });
 
-        @Override
-        public Object getItem(int position) {
-            return mListData.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
-            if (convertView == null) {
-                holder = new ViewHolder();
-                convertView = LayoutInflater.from(CommoditySqlActivity.this).inflate(R.layout.item_commodity_data, null);
-                holder.tvData = (TextView) convertView.findViewById(R.id.tv_data1);
-                holder.linContent = (LinearLayout) convertView.findViewById(R.id.lin_content);
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            return convertView;
-        }
-
-        class ViewHolder {
-            TextView tvData;
-            LinearLayout linContent;
+        } else {
+            ToastUtils.ShowToastMessage("当前网络不可用,请稍后再试", CommoditySqlActivity.this);
         }
     }
+
 }

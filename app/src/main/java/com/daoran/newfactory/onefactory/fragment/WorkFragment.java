@@ -67,8 +67,6 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
         setPhoneMenu();
         getViews();
         initViews();
-//        setPhoneMenu();
-//        setListener();
         return view;
     }
 
