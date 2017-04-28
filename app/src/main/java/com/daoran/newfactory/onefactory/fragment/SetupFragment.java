@@ -14,12 +14,18 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.login.LoginDebugActivity;
+import com.daoran.newfactory.onefactory.bean.VerCodeBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
+import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import okhttp3.Call;
 
@@ -36,6 +42,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     private View view;
     private RelativeLayout rlAgainLogin, rlEditionUpdate;
     private TextView tvVersion;
+    private VerCodeBean codeBean;
 
     @Nullable
     @Override
@@ -95,6 +102,23 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                         @Override
                         public void onResponse(String response, int id) {
                             System.out.print(response);
+                            response = response.replace("{", "{\"");
+                            System.out.print(response);
+                            response = response.replace("\'", "\"");
+                            System.out.print(response);
+                            response = response.replace(",", ",\"");
+                            System.out.print(response);
+                            response = response.replace(":\"", "\":\"");
+                            System.out.print(response);
+                            String strfram = StringUtil.sideTrim(response, "\"");
+                            System.out.print(strfram);
+                            codeBean = new Gson().fromJson(strfram, VerCodeBean.class);
+                            String vercode = codeBean.getVerCode();
+                            System.out.print(vercode);
+                            String apkpath = codeBean.getApkPath();
+                            System.out.print(apkpath);
+                            String reason = codeBean.getReason();
+                            System.out.print(reason);
                         }
                     });
         } else {
