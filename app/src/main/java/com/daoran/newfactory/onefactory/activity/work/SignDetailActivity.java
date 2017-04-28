@@ -3,6 +3,7 @@ package com.daoran.newfactory.onefactory.activity.work;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import com.daoran.newfactory.onefactory.bean.SignDetailBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
+import com.daoran.newfactory.onefactory.util.ToastUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.dialog.SignContentDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
@@ -87,12 +89,14 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         etSqlDetail = (EditText) findViewById(R.id.etSqlDetail);
         tvSignPage = (TextView) findViewById(R.id.tvSignPage);
         btnSignPage = (Button) findViewById(R.id.btnSignPage);
+
     }
 
     private void getViews() {
         ivSiganSqlDetail.setOnClickListener(this);
         ivSearch.setOnClickListener(this);
         btnSignPage.setOnClickListener(this);
+        etSqlDetail.setOnClickListener(this);
     }
 
     @Override
@@ -105,7 +109,20 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                 showDialog(v);
                 break;
             case R.id.btnSignPage:
-                setPageSignDetail();
+                String txt = etSqlDetail.getText().toString();
+                String txtint = tvSignPage.getText().toString();
+                if (txt.length() == 0) {
+                    ToastUtils.ShowToastMessage("页码不能为空", SignDetailActivity.this);
+                    return;
+                } else if (txt.length() > txtint.length()) {
+                    ToastUtils.ShowToastMessage("页码超出输入范围", SignDetailActivity.this);
+                    return;
+                } else {
+                    setPageSignDetail();
+                }
+                break;
+            case R.id.etSqlDetail:
+
                 break;
         }
     }
@@ -116,9 +133,9 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     private void setSignDetail() {
         String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
         sp = SignDetailActivity.this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
-        String name = sp.getString("etAudit","");
-        String datetime = sp.getString("datetimesign","");
-        String endtime = sp.getString("endtimesign","");
+        String name = sp.getString("name", "");
+        String datetime = sp.getString("datetimesign", "");
+        String endtime = sp.getString("endtimesign", "");
         if (NetWork.isNetWorkAvailable(this)) {
             ResponseDialog.showLoading(this, "正在查询，请稍后");
             OkHttpUtils
@@ -126,11 +143,11 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                     .url(str)
                     .addParams("pageNum", "0")
                     .addParams("pageSize", "20")
-                    .addParams("recorder",name)
-                    .addParams("recordat_start",datetime)
-                    .addParams("recordat_end",endtime)
-                    .addParams("recordplace","")
-                    .addParams("memo","")
+                    .addParams("recorder", name)
+                    .addParams("recordat_start", datetime)
+                    .addParams("recordat_end", endtime)
+                    .addParams("recordplace", "")
+                    .addParams("memo", "")
                     .build()
                     .execute(new StringCallback() {
                         @Override
@@ -146,8 +163,9 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                 signBean = gson.fromJson(response, SignDetailBean.class);
                                 mListData = signBean.getData();
                                 pageCount = signBean.getTotalCount();
+                                spUtils.put(SignDetailActivity.this, "pageCount", pageCount);
                                 System.out.print(pageCount);
-                                String count = String.valueOf(pageCount/20);
+                                String count = String.valueOf(pageCount / 20);
                                 System.out.print(count);
                                 tvSignPage.setText(count);
                                 detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
@@ -172,11 +190,11 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     private void setPageSignDetail() {
         String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
         sp = SignDetailActivity.this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
-        String name = sp.getString("etAudit","");
-        String datetime = sp.getString("datetimesign","");
-        String endtime = sp.getString("endtimesign","");
+        String name = sp.getString("name", "");
+        String datetime = sp.getString("datetimesign", "");
+        String endtime = sp.getString("endtimesign", "");
         pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
-        String index = String.valueOf(pageIndex-1);
+        String index = String.valueOf(pageIndex - 1);
         if (NetWork.isNetWorkAvailable(this)) {
             ResponseDialog.showLoading(this, "正在查询，请稍后");
             OkHttpUtils
@@ -184,11 +202,11 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                     .url(str)
                     .addParams("pageNum", index)
                     .addParams("pageSize", "20")
-                    .addParams("recorder",name)
-                    .addParams("recordat_start",datetime)
-                    .addParams("recordat_end",endtime)
-                    .addParams("recordplace","")
-                    .addParams("memo","")
+                    .addParams("recorder", name)
+                    .addParams("recordat_start", datetime)
+                    .addParams("recordat_end", endtime)
+                    .addParams("recordplace", "")
+                    .addParams("memo", "")
                     .build()
                     .execute(new StringCallback() {
                         @Override
@@ -203,6 +221,12 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                 Gson gson = new Gson();
                                 signBean = gson.fromJson(response, SignDetailBean.class);
                                 mListData = signBean.getData();
+                                pageCount = signBean.getTotalCount();
+                                spUtils.put(SignDetailActivity.this, "pagesqlCount", pageCount);
+                                System.out.print(pageCount);
+                                String count = String.valueOf(pageCount / 20);
+                                System.out.print(count);
+                                tvSignPage.setText(count);
                                 detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
                                 mData.setAdapter(detailAdapter);
                             } catch (JsonSyntaxException e) {
@@ -218,6 +242,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
             ToastUtils.ShowToastMessage(R.string.disNetworking, SignDetailActivity.this);
         }
     }
+
     private void showDialog(View view) {
         dialog = new SignContentDialog(this,
                 R.style.dialogstyle, onClickListener, onCancleListener);
@@ -239,7 +264,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btnComfirm:
-                    setSignDetail();
+                    setPageSignDetail();
                     dialog.dismiss();
                     break;
             }

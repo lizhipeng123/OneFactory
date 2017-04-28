@@ -101,6 +101,8 @@ public class SignContentDialog extends Dialog {
                                 int month = datePicker.getMonth();
                                 int day = datePicker.getDayOfMonth();
                                 String datetime = year + "/" + (month + 1) + "/" + day;
+                                String etaudit= etAudit.getText().toString();
+                                spUtils.put(content,"etaudit",etaudit);
                                 tvInitialDate.setText(datetime);
                                 spUtils.put(content, "datetimesign", datetime);
                             }
@@ -111,6 +113,8 @@ public class SignContentDialog extends Dialog {
                             public void onClick(DialogInterface dialog, int which) {
                                 tvInitialDate.setText("");
                                 spUtils.put(content, "datetimesign", "");
+                                String etaudit= etAudit.getText().toString();
+                                spUtils.put(content,"etaudit","");
 //                                String tvinit = tvInitialDate.getText().toString();
 //                                spUtils.put(content, "datetimesign", tvinit);
                             }
@@ -139,6 +143,8 @@ public class SignContentDialog extends Dialog {
                                 String endtime = year + "/" + (month + 1) + "/" + day;
                                 tvEndDate.setText(endtime);
                                 spUtils.put(content, "endtimesign", endtime);
+                                String etaudit= etAudit.getText().toString();
+                                spUtils.put(content,"etaudit",etaudit);
                                 System.out.print(endtime);
                                 System.out.print(datetime);
                             }
@@ -150,6 +156,8 @@ public class SignContentDialog extends Dialog {
                                 System.out.println("BUTTON_NEGATIVE~~");
                                 tvEndDate.setText("");
                                 spUtils.put(content, "endtimesign", "");
+                                String etaudit= etAudit.getText().toString();
+                                spUtils.put(content,"etaudit","");
                             }
                         });
                 datePickerDialog.show();
@@ -170,7 +178,7 @@ public class SignContentDialog extends Dialog {
             System.out.println("-1-onTextChanged-->"
                     + etAudit.getText().toString() + "<--");
             String textchanged = etAudit.getText().toString();
-            spUtils.put(content,"etAudit",textchanged);
+            spUtils.put(content,"name",textchanged);
         }
 
         @Override
@@ -179,5 +187,7 @@ public class SignContentDialog extends Dialog {
                     + etAudit.getText().toString() + "<--");
         }
     };
+
+
 
 }

@@ -37,4 +37,13 @@
         <item>XM011</item>
         <item>Y9A86</item>
     </string-array>
+    <string-array name="Procedure">
+        <item>全部</item>
+        <item>车间</item>
+        <item>裁床</item>
+        <item>后道手工</item>
+        <item>后道检验</item>
+        <item>后道整烫</item>
+        <item>后道包装</item>
+    </string-array>
 </resources>

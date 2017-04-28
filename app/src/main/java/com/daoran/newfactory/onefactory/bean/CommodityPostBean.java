@@ -14,6 +14,7 @@ public class CommodityPostBean {
         private String item;
         private String prddocumentary;
         private String prdmaster;
+        private String IPQC;
         private Boolean prdmasterisnull;
 
         public String getItem() {
@@ -46,6 +47,14 @@ public class CommodityPostBean {
 
         public void setPrdmasterisnull(Boolean prdmasterisnull) {
             this.prdmasterisnull = prdmasterisnull;
+        }
+
+        public String getIPQC() {
+            return IPQC;
+        }
+
+        public void setIPQC(String IPQC) {
+            this.IPQC = IPQC;
         }
     }
 

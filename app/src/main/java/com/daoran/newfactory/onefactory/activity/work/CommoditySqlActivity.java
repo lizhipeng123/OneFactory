@@ -1,5 +1,7 @@
 package com.daoran.newfactory.onefactory.activity.work;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -8,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +23,7 @@ import com.daoran.newfactory.onefactory.bean.CommodityPostBean;
 import com.daoran.newfactory.onefactory.bean.CommoditydetailBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
+import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.dialog.CommoDialog;
@@ -69,6 +74,14 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private CommoditydetailBean commoditydetailBean;
     private CommoditySqlAdapter sqlAdapter;
 
+    private TextView tvSignPage;
+    private EditText etSqlDetail;
+    private Button btnSignPage;
+    private SharedPreferences sp;
+    private SPUtils spUtils;
+    private int pageCount;
+    private int pageIndex = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +98,9 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
         mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
         ivSearch = (ImageView) findViewById(R.id.ivSearch);
+        tvSignPage = (TextView) findViewById(R.id.tvSignPage);
+        btnSignPage = (Button) findViewById(R.id.btnSignPage);
+        etSqlDetail = (EditText) findViewById(R.id.etSqlDetail);
     }
 
     private void initView() {
@@ -92,9 +108,10 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         mHeaderHorizontal.setSrollView(mDataHorizontal);
     }
 
-    private void setListener(){
+    private void setListener() {
         ivProductionBack.setOnClickListener(this);
         ivSearch.setOnClickListener(this);
+        btnSignPage.setOnClickListener(this);
     }
 
     @Override
@@ -106,10 +123,22 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
             case R.id.ivSearch:
                 ShowDialog(v);
                 break;
+            case R.id.btnSignPage:
+                String txt = etSqlDetail.getText().toString();
+                String txtcount = tvSignPage.getText().toString();
+                if (txt.length() == 0) {
+                    ToastUtils.ShowToastMessage("页码不能为空", CommoditySqlActivity.this);
+                } else if (txt.length() > txtcount.length()) {
+                    ToastUtils.ShowToastMessage("页码超出输入范围", CommoditySqlActivity.this);
+                } else {
+                    setPageDetail();
+                }
+                break;
+
         }
     }
 
-    private void ShowDialog(View view){
+    private void ShowDialog(View view) {
         commoDialog = new CommoDialog(this,
                 R.style.dialogstyle, onClickListener, onCancleListener);
         commoDialog.show();
@@ -118,8 +147,9 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.btnComfirm:
+                    setPageDetail();
                     commoDialog.dismiss();
                     break;
             }
@@ -129,7 +159,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private View.OnClickListener onCancleListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.btnCancle:
                     commoDialog.dismiss();
                     break;
@@ -139,12 +169,18 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
 
     private void setData() {
         String str = HttpUrl.debugoneUrl + "QACwork/BindSearchQACworkAPP/";
+        sp = CommoditySqlActivity.this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        String Style = sp.getString("commoStyle", "");//款号
+        String Factory = sp.getString("commoFactory", "");//跟单
+        String Recode = sp.getString("commoRecode", "");//巡检
+        String etprodialogProcedure = sp.getString("etprodialogProcedure", "");//生产主管
         Gson gson = new Gson();
         CommodityPostBean postBean = new CommodityPostBean();
         CommodityPostBean.Conditions conditions = postBean.new Conditions();
-        conditions.setItem("");
-        conditions.setPrddocumentary("");
-        conditions.setPrdmaster("");
+        conditions.setItem(Style);
+        conditions.setPrddocumentary(Factory);
+        conditions.setPrdmaster(etprodialogProcedure);
+        conditions.setIPQC(Recode);
         conditions.setPrdmasterisnull(true);
         postBean.setConditions(conditions);
         postBean.setPageNum(0);
@@ -169,10 +205,13 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                             System.out.print(ress);
                             String ression = StringUtil.sideTrim(ress, "\"");
                             System.out.print(ression);
-                            commoditydetailBean = new Gson().fromJson(ression,CommoditydetailBean.class);
+                            commoditydetailBean = new Gson().fromJson(ression, CommoditydetailBean.class);
                             dataBeen = commoditydetailBean.getData();
                             System.out.print(dataBeen);
-                            sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this,dataBeen);
+                            pageCount = commoditydetailBean.getTotalCount();
+                            String count = String.valueOf(pageCount / 10);
+                            tvSignPage.setText(count);
+                            sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this, dataBeen);
                             mData.setAdapter(sqlAdapter);
                         }
                     });
@@ -182,17 +221,25 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         }
     }
 
-    private void setPageDetail(){
+    private void setPageDetail() {
         String str = HttpUrl.debugoneUrl + "QACwork/BindSearchQACworkAPP/";
+        sp = CommoditySqlActivity.this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        String Style = sp.getString("commoStyle", "");//款号
+        String Factory = sp.getString("commoFactory", "");//跟单
+        String Recode = sp.getString("commoRecode", "");//巡检
+        String etprodialogProcedure = sp.getString("etproProcedure", "");//生产主管
+        pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
+        int Index = pageIndex - 1;
         Gson gson = new Gson();
         CommodityPostBean postBean = new CommodityPostBean();
         CommodityPostBean.Conditions conditions = postBean.new Conditions();
-        conditions.setItem("");
-        conditions.setPrddocumentary("");
-        conditions.setPrdmaster("");
+        conditions.setItem(Style);
+        conditions.setPrddocumentary(Factory);
+        conditions.setPrdmaster(etprodialogProcedure);
+        conditions.setIPQC(Recode);
         conditions.setPrdmasterisnull(true);
         postBean.setConditions(conditions);
-        postBean.setPageNum(0);
+        postBean.setPageNum(Index);
         postBean.setPageSize(10);
         String stringpost = gson.toJson(postBean);
         if (NetWork.isNetWorkAvailable(this)) {
@@ -214,10 +261,13 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                             System.out.print(ress);
                             String ression = StringUtil.sideTrim(ress, "\"");
                             System.out.print(ression);
-                            commoditydetailBean = new Gson().fromJson(ression,CommoditydetailBean.class);
+                            commoditydetailBean = new Gson().fromJson(ression, CommoditydetailBean.class);
                             dataBeen = commoditydetailBean.getData();
                             System.out.print(dataBeen);
-                            sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this,dataBeen);
+                            pageCount = commoditydetailBean.getTotalCount();
+                            String count = String.valueOf(pageCount / 10);
+                            tvSignPage.setText(count);
+                            sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this, dataBeen);
                             mData.setAdapter(sqlAdapter);
                         }
                     });
