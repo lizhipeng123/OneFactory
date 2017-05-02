@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/show_up"
+        android:title="可上车位"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/show_copy"
+        android:title="在车位上"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/show_goods_debug"
+        android:title="货期有问题"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/show_debug"
+        android:title="出状况，要关注"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/show_down"
+        android:title="已下车位"
+        app:showAsAction="never"/>
+</menu>

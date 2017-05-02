@@ -46,4 +46,10 @@
         <item>后道整烫</item>
         <item>后道包装</item>
     </string-array>
+    <string-array name="promenu">
+        <item>菜单</item>
+        <item>新建</item>
+        <item>复制</item>
+        <item>刷新</item>
+    </string-array>
 </resources>

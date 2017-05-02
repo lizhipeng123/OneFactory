@@ -22,6 +22,7 @@ import com.daoran.newfactory.onefactory.base.BaseListActivity;
 import com.daoran.newfactory.onefactory.bean.SignDetailBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
+import com.daoran.newfactory.onefactory.util.Http.OkHttp;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
@@ -71,8 +72,11 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ResponseDialog.showLoading(this);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.debug_activity_detail);
+
         initView();
         getViews();
         setSignDetail();
@@ -86,6 +90,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         ivSearch = (ImageView) findViewById(R.id.ivSearch);
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);
+
         etSqlDetail = (EditText) findViewById(R.id.etSqlDetail);
         tvSignPage = (TextView) findViewById(R.id.tvSignPage);
         btnSignPage = (Button) findViewById(R.id.btnSignPage);
@@ -137,7 +142,6 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         String datetime = sp.getString("datetimesign", "");
         String endtime = sp.getString("endtimesign", "");
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this, "正在查询，请稍后");
             OkHttpUtils
                     .post()
                     .url(str)
@@ -170,6 +174,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                 tvSignPage.setText(count);
                                 detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
                                 mData.setAdapter(detailAdapter);
+                                detailAdapter.notifyDataSetChanged();
                             } catch (JsonSyntaxException e) {
                                 ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
                                 ResponseDialog.closeLoading();
@@ -196,7 +201,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
         String index = String.valueOf(pageIndex - 1);
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this, "正在查询，请稍后");
+            ResponseDialog.showLoading(this);
             OkHttpUtils
                     .post()
                     .url(str)
@@ -229,6 +234,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                 tvSignPage.setText(count);
                                 detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
                                 mData.setAdapter(detailAdapter);
+                                detailAdapter.notifyDataSetChanged();
                             } catch (JsonSyntaxException e) {
                                 ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
                                 ResponseDialog.closeLoading();

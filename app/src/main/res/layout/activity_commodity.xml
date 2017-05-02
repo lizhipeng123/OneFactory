@@ -16,13 +16,15 @@
                 android:id="@+id/ivCommoditySql"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
+                android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:src="@mipmap/title_back_gray"/>
 
             <TextView
+                android:id="@+id/tvCommoTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
                 android:text="查货跟踪单"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_60sp" />
@@ -31,9 +33,24 @@
                 android:id="@+id/ivSearch"
                 android:layout_width="@dimen/dimen_70"
                 android:layout_height="@dimen/dimen_70"
-                android:layout_alignParentRight="true"
+                android:layout_toLeftOf="@+id/tvCommoTitle"
                 android:layout_marginRight="@dimen/dimen_30"
+                android:layout_centerVertical="true"
                 android:src="@mipmap/search" />
+            <Button
+                android:id="@+id/btnCommoRefresh"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/btnCommoSave"
+                android:text="刷新"/>
+            <Button
+                android:id="@+id/btnCommoSave"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="保存"/>
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
@@ -656,6 +673,8 @@
                 android:background="@drawable/shape_text_sql_boild"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
+                android:inputType="phone|number"
+                android:numeric="integer"
                 android:text="1"
                 android:textSize="20sp" />
 

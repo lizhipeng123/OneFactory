@@ -82,7 +82,7 @@
             android:screenOrientation="portrait" />
         <!-- 出车单展示 -->
         <activity
-            android:name=".activity.work.CarapplyActivity"
+            android:name=".activity.work.car.CarapplyActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
@@ -98,7 +98,7 @@
 
         <!-- 生产日报查询测试类 -->
         <activity
-            android:name=".activity.work.ProductionActivity"
+            android:name=".activity.work.production.ProductionActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
@@ -126,7 +126,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.work.SqlcarApplyActivity"
+            android:name=".activity.work.car.SqlcarApplyActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 

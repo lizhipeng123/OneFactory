@@ -10,12 +10,14 @@
         android:layout_height="50dp"
         android:orientation="horizontal">
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoItem"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:text="1" />
 
         <View
@@ -23,11 +25,13 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoCtmtxt"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:gravity="center"
             android:text="2" />
 
@@ -36,11 +40,13 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoPrddocumentary"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:gravity="center"
             android:text="3" />
 
@@ -49,11 +55,13 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoprdmaster"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:gravity="center"
             android:text="4" />
 
@@ -62,11 +70,13 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoQCMasterScore"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:gravity="center"
             android:text="5" />
 
@@ -75,11 +85,13 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoSealedrev"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:gravity="center"
             android:text="6" />
 
@@ -88,11 +100,13 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoDocback"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:gravity="center"
             android:text="7" />
 
@@ -101,11 +115,13 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoLcdat"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:gravity="center"
             android:text="8" />
 
@@ -114,10 +130,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoTaskqty"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="9" />
@@ -127,11 +145,13 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoPreMemo"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:gravity="center"
             android:text="10" />
 
@@ -140,10 +160,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoPredocdt"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="11" />
@@ -153,10 +175,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoPred"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="12" />
@@ -166,10 +190,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoPredoc"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="13" />
@@ -179,10 +205,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoFabricsok"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="14" />
@@ -192,10 +220,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoAccessoriesok"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="15" />
@@ -205,10 +235,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoSpcproDec"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="16" />
@@ -218,10 +250,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoSpcproMemo"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="17" />
@@ -231,10 +265,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoCutqty"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="18" />
@@ -244,10 +280,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoSewFdt"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="19" />
@@ -257,10 +295,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoSewMdt"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="20" />
@@ -270,10 +310,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoSubfactory"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="21" />
@@ -283,10 +325,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoPrebdt"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="22" />
@@ -296,10 +340,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoQCbdt"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="23" />
@@ -309,10 +355,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoQCbdtDoc"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="24" />
@@ -322,10 +370,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoPremdt"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="25" />
@@ -335,10 +385,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoQCmdt"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="26" />
@@ -348,10 +400,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoQCmdtDoc"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="27" />
@@ -361,10 +415,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoPreedt"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="28" />
@@ -374,10 +430,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoQCMedt"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="29" />
@@ -387,10 +445,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoQCedtDoc"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="30" />
@@ -400,10 +460,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoFctmdt"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="31" />
@@ -413,10 +475,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoFctedt"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="32" />
@@ -426,10 +490,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoPackbdat"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="33" />
@@ -439,10 +505,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoPackqty2"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="34" />
@@ -452,10 +520,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoQCMemo"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="35" />
@@ -465,10 +535,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoFactlcdat"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="36" />
@@ -478,10 +550,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoBatchid"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="37" />
@@ -495,6 +569,8 @@
             android:id="@+id/tvCommoOurAfter"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="38" />
@@ -504,10 +580,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoCtmchkdt"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="39" />
@@ -517,10 +595,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoIPQCPedt"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="40" />
@@ -530,10 +610,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoIPQCmdt"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="41" />
@@ -543,10 +625,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoQAname"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="42" />
@@ -556,10 +640,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoQAScore"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="43" />
@@ -569,10 +655,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvCommoQAMemo"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="44" />

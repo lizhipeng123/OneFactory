@@ -13,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -20,6 +21,7 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 
 /**
+ * 查货dialog弹出框且监听
  * Created by lizhipeng on 2017/4/26.
  */
 
@@ -84,6 +86,13 @@ public class CommoDialog extends Dialog {
         etprodialogProcedure.addTextChangedListener(etproProcedure);//生产主管
         btnComfirm.setOnClickListener(mClickListener);
         btnCancle.setOnClickListener(mCancleLinstener);
+        checkboxNull.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String is = String.valueOf(isChecked);
+                spUtils.put(content,"ischeckedd",is);
+            }
+        });
         this.setCancelable(true);
     }
 

@@ -1,24 +1,35 @@
 package com.daoran.newfactory.onefactory.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
+import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
+import com.daoran.newfactory.onefactory.util.ToastUtils;
 
 import java.util.List;
 
 /**
+ * 生产日报适配器
  * Created by lizhipeng on 2017/4/26.
  */
 
 public class ProductionAdapter extends BaseAdapter {
     private Context context;
     private List<ProducationDetailBean.DataBean> dataBeen;
+    private SharedPreferences sp;
+    private SPUtils spUtils;
 
     public ProductionAdapter(Context context, List<ProducationDetailBean.DataBean> dataBeen) {
         this.context = context;
@@ -40,68 +51,234 @@ public class ProductionAdapter extends BaseAdapter {
         return position;
     }
 
+    /**
+     * 填充item
+     *
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
-        if(convertView==null){
+        final ViewHolder viewHolder;
+        if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.
-                    from(context).inflate(R.layout.item_production_data,null);
-            viewHolder.tv_data = (TextView) convertView.findViewById(R.id.tv_data);
-            viewHolder.tvProDocumentary = (TextView) convertView.findViewById(R.id.tvProDocumentary);
-            viewHolder.tvProFactory = (TextView) convertView.findViewById(R.id.tvProFactory);
+                    from(context).inflate(R.layout.item_production_data, null);
+            viewHolder.tv_data = (EditText) convertView.findViewById(R.id.tv_data);
+            viewHolder.tvProDocumentary = (EditText) convertView.findViewById(R.id.tvProDocumentary);
+            viewHolder.tvProFactory = (EditText) convertView.findViewById(R.id.tvProFactory);
             viewHolder.tvProDepartment = (TextView) convertView.findViewById(R.id.tvProDepartment);
             viewHolder.tvProProcedure = (TextView) convertView.findViewById(R.id.tvProProcedure);
-            viewHolder.tvProOthers = (TextView) convertView.findViewById(R.id.tvProOthers);
-            viewHolder.tvProSingularSystem = (TextView) convertView.findViewById(R.id.tvProSingularSystem);
-            viewHolder.tvProColor = (TextView) convertView.findViewById(R.id.tvProColor);
-            viewHolder.tvProTaskNumber = (TextView) convertView.findViewById(R.id.tvProTaskNumber);
-            viewHolder.tvProSize = (TextView) convertView.findViewById(R.id.tvProSize);
-            viewHolder.tvProClippingNumber = (TextView) convertView.findViewById(R.id.tvProClippingNumber);
-            viewHolder.tvProCompletedLastMonth = (TextView) convertView.findViewById(R.id.tvProCompletedLastMonth);
-            viewHolder.tvProTotalCompletion = (TextView) convertView.findViewById(R.id.tvProTotalCompletion);
-            viewHolder.tvProBalanceAmount = (TextView) convertView.findViewById(R.id.tvProBalanceAmount);
+            viewHolder.tvProOthers = (EditText) convertView.findViewById(R.id.tvProOthers);
+            viewHolder.tvProSingularSystem = (EditText) convertView.findViewById(R.id.tvProSingularSystem);
+            viewHolder.tvProColor = (EditText) convertView.findViewById(R.id.tvProColor);
+            viewHolder.tvProTaskNumber = (EditText) convertView.findViewById(R.id.tvProTaskNumber);
+            viewHolder.tvProSize = (EditText) convertView.findViewById(R.id.tvProSize);
+            viewHolder.tvProClippingNumber = (EditText) convertView.findViewById(R.id.tvProClippingNumber);
+            viewHolder.tvProCompletedLastMonth = (EditText) convertView.findViewById(R.id.tvProCompletedLastMonth);
+            viewHolder.tvProTotalCompletion = (EditText) convertView.findViewById(R.id.tvProTotalCompletion);
+            viewHolder.tvProBalanceAmount = (EditText) convertView.findViewById(R.id.tvProBalanceAmount);
             viewHolder.tvProState = (TextView) convertView.findViewById(R.id.tvProState);
-            viewHolder.tvProYear = (TextView) convertView.findViewById(R.id.tvProYear);
-            viewHolder.tvProMonth = (TextView) convertView.findViewById(R.id.tvProMonth);
-            viewHolder.tvProOneDay = (TextView) convertView.findViewById(R.id.tvProOneDay);
-            viewHolder.tvProTwoDay = (TextView) convertView.findViewById(R.id.tvProTwoDay);
-            viewHolder.tvProThreeDay = (TextView) convertView.findViewById(R.id.tvProThreeDay);
-            viewHolder.tvProForeDay = (TextView) convertView.findViewById(R.id.tvProForeDay);
-            viewHolder.tvProFiveDay = (TextView) convertView.findViewById(R.id.tvProFiveDay);
-            viewHolder.tvProSixDay = (TextView) convertView.findViewById(R.id.tvProSixDay);
-            viewHolder.tvProSevenDay = (TextView) convertView.findViewById(R.id.tvProSevenDay);
-            viewHolder.tvProEightDay = (TextView) convertView.findViewById(R.id.tvProEightDay);
-            viewHolder.tvProNineDay = (TextView) convertView.findViewById(R.id.tvProNineDay);
-            viewHolder.tvProTenDay = (TextView) convertView.findViewById(R.id.tvProTenDay);
-            viewHolder.tvProElevenDay = (TextView) convertView.findViewById(R.id.tvProElevenDay);
-            viewHolder.tvProTwelveDay = (TextView) convertView.findViewById(R.id.tvProTwelveDay);
-            viewHolder.tvProThirteenDay = (TextView) convertView.findViewById(R.id.tvProThirteenDay);
-            viewHolder.tvProFourteenDay = (TextView) convertView.findViewById(R.id.tvProFourteenDay);
-            viewHolder.tvProFifteenDay = (TextView) convertView.findViewById(R.id.tvProFifteenDay);
-            viewHolder.tvProSixteenDay = (TextView) convertView.findViewById(R.id.tvProSixteenDay);
-            viewHolder.tvProSeventeenDay = (TextView) convertView.findViewById(R.id.tvProSeventeenDay);
-            viewHolder.tvProEighteenDay = (TextView) convertView.findViewById(R.id.tvProEighteenDay);
-            viewHolder.tvProNineteenDay = (TextView) convertView.findViewById(R.id.tvProNineteenDay);
-            viewHolder.tvProTwentyDay = (TextView) convertView.findViewById(R.id.tvProTwentyDay);
-            viewHolder.tvProTwentyOneDay = (TextView) convertView.findViewById(R.id.tvProTwentyOneDay);
-            viewHolder.tvProTwentyTwoDay = (TextView) convertView.findViewById(R.id.tvProTwentyTwoDay);
-            viewHolder.tvProTwentyThreeDay = (TextView) convertView.findViewById(R.id.tvProTwentyThreeDay);
-            viewHolder.tvProTwentyForeDay = (TextView) convertView.findViewById(R.id.tvProTwentyForeDay);
-            viewHolder.tvProTwentyFiveDay = (TextView) convertView.findViewById(R.id.tvProTwentyFiveDay);
-            viewHolder.tvProTwentySixDay = (TextView) convertView.findViewById(R.id.tvProTwentySixDay);
-            viewHolder.tvProTwentySevenDay = (TextView) convertView.findViewById(R.id.tvProTwentySevenDay);
-            viewHolder.tvProTwentyEightDay = (TextView) convertView.findViewById(R.id.tvProTwentyEightDay);
-            viewHolder.tvProTwentyNineDay = (TextView) convertView.findViewById(R.id.tvProTwentyNineDay);
-            viewHolder.tvProThirtyDay = (TextView) convertView.findViewById(R.id.tvProThirtyDay);
-            viewHolder.tvProThirtyOneDay = (TextView) convertView.findViewById(R.id.tvProThirtyOneDay);
-            viewHolder.tvProRemarks = (TextView) convertView.findViewById(R.id.tvProRemarks);
-            viewHolder.tvProRecorder = (TextView) convertView.findViewById(R.id.tvProRecorder);
-            viewHolder.tvProRecordat = (TextView) convertView.findViewById(R.id.tvProRecordat);
+            viewHolder.tvProYear = (EditText) convertView.findViewById(R.id.tvProYear);
+            viewHolder.tvProMonth = (EditText) convertView.findViewById(R.id.tvProMonth);
+            viewHolder.tvProOneDay = (EditText) convertView.findViewById(R.id.tvProOneDay);
+            viewHolder.tvProTwoDay = (EditText) convertView.findViewById(R.id.tvProTwoDay);
+            viewHolder.tvProThreeDay = (EditText) convertView.findViewById(R.id.tvProThreeDay);
+            viewHolder.tvProForeDay = (EditText) convertView.findViewById(R.id.tvProForeDay);
+            viewHolder.tvProFiveDay = (EditText) convertView.findViewById(R.id.tvProFiveDay);
+            viewHolder.tvProSixDay = (EditText) convertView.findViewById(R.id.tvProSixDay);
+            viewHolder.tvProSevenDay = (EditText) convertView.findViewById(R.id.tvProSevenDay);
+            viewHolder.tvProEightDay = (EditText) convertView.findViewById(R.id.tvProEightDay);
+            viewHolder.tvProNineDay = (EditText) convertView.findViewById(R.id.tvProNineDay);
+            viewHolder.tvProTenDay = (EditText) convertView.findViewById(R.id.tvProTenDay);
+            viewHolder.tvProElevenDay = (EditText) convertView.findViewById(R.id.tvProElevenDay);
+            viewHolder.tvProTwelveDay = (EditText) convertView.findViewById(R.id.tvProTwelveDay);
+            viewHolder.tvProThirteenDay = (EditText) convertView.findViewById(R.id.tvProThirteenDay);
+            viewHolder.tvProFourteenDay = (EditText) convertView.findViewById(R.id.tvProFourteenDay);
+            viewHolder.tvProFifteenDay = (EditText) convertView.findViewById(R.id.tvProFifteenDay);
+            viewHolder.tvProSixteenDay = (EditText) convertView.findViewById(R.id.tvProSixteenDay);
+            viewHolder.tvProSeventeenDay = (EditText) convertView.findViewById(R.id.tvProSeventeenDay);
+            viewHolder.tvProEighteenDay = (EditText) convertView.findViewById(R.id.tvProEighteenDay);
+            viewHolder.tvProNineteenDay = (EditText) convertView.findViewById(R.id.tvProNineteenDay);
+            viewHolder.tvProTwentyDay = (EditText) convertView.findViewById(R.id.tvProTwentyDay);
+            viewHolder.tvProTwentyOneDay = (EditText) convertView.findViewById(R.id.tvProTwentyOneDay);
+            viewHolder.tvProTwentyTwoDay = (EditText) convertView.findViewById(R.id.tvProTwentyTwoDay);
+            viewHolder.tvProTwentyThreeDay = (EditText) convertView.findViewById(R.id.tvProTwentyThreeDay);
+            viewHolder.tvProTwentyForeDay = (EditText) convertView.findViewById(R.id.tvProTwentyForeDay);
+            viewHolder.tvProTwentyFiveDay = (EditText) convertView.findViewById(R.id.tvProTwentyFiveDay);
+            viewHolder.tvProTwentySixDay = (EditText) convertView.findViewById(R.id.tvProTwentySixDay);
+            viewHolder.tvProTwentySevenDay = (EditText) convertView.findViewById(R.id.tvProTwentySevenDay);
+            viewHolder.tvProTwentyEightDay = (EditText) convertView.findViewById(R.id.tvProTwentyEightDay);
+            viewHolder.tvProTwentyNineDay = (EditText) convertView.findViewById(R.id.tvProTwentyNineDay);
+            viewHolder.tvProThirtyDay = (EditText) convertView.findViewById(R.id.tvProThirtyDay);
+            viewHolder.tvProThirtyOneDay = (EditText) convertView.findViewById(R.id.tvProThirtyOneDay);
+            viewHolder.tvProRemarks = (EditText) convertView.findViewById(R.id.tvProRemarks);
+            viewHolder.tvProRecorder = (EditText) convertView.findViewById(R.id.tvProRecorder);
+            viewHolder.tvProRecordat = (EditText) convertView.findViewById(R.id.tvProRecordat);
+
             convertView.setTag(viewHolder);
-        }else{
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+        /*判断item中制单人是否是登录用户，是为可改，否为不可改*/
+        sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
+        String nameid = sp.getString("username", "");
+        String recorder = getItem(position).getRecorder().toString();
+        if (nameid == recorder || recorder.equals(nameid)) {
+            viewHolder.tv_data.setEnabled(true);
+            viewHolder.tvProDocumentary.setEnabled(true);
+            viewHolder.tvProFactory.setEnabled(true);
+            viewHolder.tvProDepartment.setEnabled(true);
+            viewHolder.tvProProcedure.setEnabled(true);
+            viewHolder.tvProOthers.setEnabled(true);
+            viewHolder.tvProSingularSystem.setEnabled(true);
+            viewHolder.tvProColor.setEnabled(true);
+            viewHolder.tvProTaskNumber.setEnabled(true);
+            viewHolder.tvProSize.setEnabled(true);
+            viewHolder.tvProClippingNumber.setEnabled(true);
+            viewHolder.tvProCompletedLastMonth.setEnabled(true);
+            viewHolder.tvProTotalCompletion.setEnabled(true);
+            viewHolder.tvProBalanceAmount.setEnabled(true);
+            viewHolder.tvProState.setEnabled(true);
+            viewHolder.tvProYear.setEnabled(true);
+            viewHolder.tvProMonth.setEnabled(true);
+            viewHolder.tvProOneDay.setEnabled(true);
+            viewHolder.tvProTwoDay.setEnabled(true);
+            viewHolder.tvProThreeDay.setEnabled(true);
+            viewHolder.tvProForeDay.setEnabled(true);
+            viewHolder.tvProFiveDay.setEnabled(true);
+            viewHolder.tvProSixDay.setEnabled(true);
+            viewHolder.tvProSevenDay.setEnabled(true);
+            viewHolder.tvProEightDay.setEnabled(true);
+            viewHolder.tvProNineDay.setEnabled(true);
+            viewHolder.tvProTenDay.setEnabled(true);
+            viewHolder.tvProElevenDay.setEnabled(true);
+            viewHolder.tvProTwelveDay.setEnabled(true);
+            viewHolder.tvProThirteenDay.setEnabled(true);
+            viewHolder.tvProFourteenDay.setEnabled(true);
+            viewHolder.tvProFifteenDay.setEnabled(true);
+            viewHolder.tvProSixteenDay.setEnabled(true);
+            viewHolder.tvProSeventeenDay.setEnabled(true);
+            viewHolder.tvProEighteenDay.setEnabled(true);
+            viewHolder.tvProNineteenDay.setEnabled(true);
+            viewHolder.tvProTwentyDay.setEnabled(true);
+            viewHolder.tvProTwentyOneDay.setEnabled(true);
+            viewHolder.tvProTwentyTwoDay.setEnabled(true);
+            viewHolder.tvProTwentyThreeDay.setEnabled(true);
+            viewHolder.tvProTwentyForeDay.setEnabled(true);
+            viewHolder.tvProTwentyFiveDay.setEnabled(true);
+            viewHolder.tvProTwentySixDay.setEnabled(true);
+            viewHolder.tvProTwentySevenDay.setEnabled(true);
+            viewHolder.tvProTwentyEightDay.setEnabled(true);
+            viewHolder.tvProTwentyNineDay.setEnabled(true);
+            viewHolder.tvProThirtyDay.setEnabled(true);
+            viewHolder.tvProThirtyOneDay.setEnabled(true);
+            viewHolder.tvProRemarks.setEnabled(true);
+            viewHolder.tvProRecorder.setEnabled(true);
+            viewHolder.tvProRecordat.setEnabled(true);
+        } else {
+            viewHolder.tv_data.setEnabled(false);
+            viewHolder.tvProDocumentary.setEnabled(false);
+            viewHolder.tvProFactory.setEnabled(false);
+            viewHolder.tvProDepartment.setEnabled(false);
+            viewHolder.tvProProcedure.setEnabled(false);
+            viewHolder.tvProOthers.setEnabled(false);
+            viewHolder.tvProSingularSystem.setEnabled(false);
+            viewHolder.tvProColor.setEnabled(false);
+            viewHolder.tvProTaskNumber.setEnabled(false);
+            viewHolder.tvProSize.setEnabled(false);
+            viewHolder.tvProClippingNumber.setEnabled(false);
+            viewHolder.tvProCompletedLastMonth.setEnabled(false);
+            viewHolder.tvProTotalCompletion.setEnabled(false);
+            viewHolder.tvProBalanceAmount.setEnabled(false);
+            viewHolder.tvProState.setEnabled(false);
+            viewHolder.tvProYear.setEnabled(false);
+            viewHolder.tvProMonth.setEnabled(false);
+            viewHolder.tvProOneDay.setEnabled(false);
+            viewHolder.tvProTwoDay.setEnabled(false);
+            viewHolder.tvProThreeDay.setEnabled(false);
+            viewHolder.tvProForeDay.setEnabled(false);
+            viewHolder.tvProFiveDay.setEnabled(false);
+            viewHolder.tvProSixDay.setEnabled(false);
+            viewHolder.tvProSevenDay.setEnabled(false);
+            viewHolder.tvProEightDay.setEnabled(false);
+            viewHolder.tvProNineDay.setEnabled(false);
+            viewHolder.tvProTenDay.setEnabled(false);
+            viewHolder.tvProElevenDay.setEnabled(false);
+            viewHolder.tvProTwelveDay.setEnabled(false);
+            viewHolder.tvProThirteenDay.setEnabled(false);
+            viewHolder.tvProFourteenDay.setEnabled(false);
+            viewHolder.tvProFifteenDay.setEnabled(false);
+            viewHolder.tvProSixteenDay.setEnabled(false);
+            viewHolder.tvProSeventeenDay.setEnabled(false);
+            viewHolder.tvProEighteenDay.setEnabled(false);
+            viewHolder.tvProNineteenDay.setEnabled(false);
+            viewHolder.tvProTwentyDay.setEnabled(false);
+            viewHolder.tvProTwentyOneDay.setEnabled(false);
+            viewHolder.tvProTwentyTwoDay.setEnabled(false);
+            viewHolder.tvProTwentyThreeDay.setEnabled(false);
+            viewHolder.tvProTwentyForeDay.setEnabled(false);
+            viewHolder.tvProTwentyFiveDay.setEnabled(false);
+            viewHolder.tvProTwentySixDay.setEnabled(false);
+            viewHolder.tvProTwentySevenDay.setEnabled(false);
+            viewHolder.tvProTwentyEightDay.setEnabled(false);
+            viewHolder.tvProTwentyNineDay.setEnabled(false);
+            viewHolder.tvProThirtyDay.setEnabled(false);
+            viewHolder.tvProThirtyOneDay.setEnabled(false);
+            viewHolder.tvProRemarks.setEnabled(false);
+            viewHolder.tvProRecorder.setEnabled(false);
+            viewHolder.tvProRecordat.setEnabled(false);
+        }
+
+        viewHolder.tvProDepartment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopupColumnMenu(viewHolder.tvProDepartment);
+            }
+        });
+
+        viewHolder.tvProProcedure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopupProcedureMenu(viewHolder.tvProProcedure);
+            }
+        });
+
+        viewHolder.tvProState.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopupPrdstatusMenu(viewHolder.tvProState);
+            }
+        });
+
+        class Tvdate implements TextWatcher {
+            public Tvdate(ViewHolder holder) {
+                mHolder = holder;
+            }
+
+            private ViewHolder mHolder;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s != null && !"".equals(s.toString())) {
+                    int position = (int) mHolder.tv_data.getTag();
+
+                }
+            }
+        }
+
         viewHolder.tv_data.setText(getItem(position).getItem());
         viewHolder.tvProDocumentary.setText(getItem(position).getPrddocumentary());
         viewHolder.tvProFactory.setText(getItem(position).getSubfactory());
@@ -156,13 +333,102 @@ public class ProductionAdapter extends BaseAdapter {
         return convertView;
     }
 
+    /**
+     * 弹出部门选择菜单
+     *
+     * @param view
+     */
+    private void showPopupColumnMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(context, view);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_pro_column, popupMenu.getMenu());
+        // menu的item点击事件
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                sp = context.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+                String title = item.getTitle().toString();
+                spUtils.put(context, "proColumnTitle", title);
+                ToastUtils.ShowToastMessage("点击的是：" + title, context);
+                return false;
+            }
+        });
+        // PopupMenu关闭事件
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu menu) {
+//                Toast.makeText(getApplicationContext(), "关闭PopupMenu", Toast.LENGTH_SHORT).show();
+            }
+        });
+        popupMenu.show();
+    }
+
+    /**
+     * 弹出工序选择菜单
+     *
+     * @param view
+     */
+    private void showPopupProcedureMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(context, view);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_pro_procedure, popupMenu.getMenu());
+        // menu的item点击事件
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                sp = context.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+                String title = item.getTitle().toString();
+                spUtils.put(context, "proProcedureTitle", title);
+                ToastUtils.ShowToastMessage("点击的是：" + title, context);
+                return false;
+            }
+        });
+        // PopupMenu关闭事件
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu menu) {
+//                Toast.makeText(getApplicationContext(), "关闭PopupMenu", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        popupMenu.show();
+    }
+
+    /**
+     * 弹出状态选择菜单
+     *
+     * @param view
+     */
+    private void showPopupPrdstatusMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(context, view);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_pro_prdstatus, popupMenu.getMenu());
+        // menu的item点击事件
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                sp = context.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+                String title = item.getTitle().toString();
+                spUtils.put(context, "proPrdstatusTitle", title);
+                ToastUtils.ShowToastMessage("点击的是：" + title, context);
+                return false;
+            }
+        });
+        // PopupMenu关闭事件
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu menu) {
+//                Toast.makeText(getApplicationContext(), "关闭PopupMenu", Toast.LENGTH_SHORT).show();
+            }
+        });
+        popupMenu.show();
+    }
+
     class ViewHolder {
-        TextView tv_data,//款号
-                tvProDocumentary,//跟单
-                tvProFactory,//工厂
-                tvProDepartment,//部门/组别
-                tvProProcedure,//工序
-                tvProOthers,//组别人
+        EditText tv_data;//款号
+        EditText tvProDocumentary,//跟单
+                tvProFactory;//工厂
+        TextView tvProDepartment,//部门/组别
+                tvProState,//状态
+                tvProProcedure;//工序
+        EditText tvProOthers,//组别人
                 tvProSingularSystem,//制单数
                 tvProColor,//花色
                 tvProTaskNumber,//任务数
@@ -171,8 +437,8 @@ public class ProductionAdapter extends BaseAdapter {
                 tvProCompletedLastMonth,//上月完工
                 tvProTotalCompletion,//总完工数
                 tvProBalanceAmount,//结余数量
-                tvProState,//状态
-                tvProYear,//年
+
+        tvProYear,//年
                 tvProMonth,//月
                 tvProOneDay,//1日
                 tvProTwoDay,//2

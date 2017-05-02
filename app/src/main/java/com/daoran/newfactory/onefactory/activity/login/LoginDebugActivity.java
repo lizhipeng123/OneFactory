@@ -216,7 +216,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                         startActivity(intent);
                     } else {
                         ToastUtils.ShowToastMessage("用户名密码错误，请重新输入", LoginDebugActivity.this);
-                        ResponseDialog.closeLoading();
+//                        ResponseDialog.closeLoading();
                     }
                 }
 
@@ -224,7 +224,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                 public void onFailure(Throwable error, String content) {
                     super.onFailure(error, content);
                     ToastUtils.ShowToastMessage("登录失败", LoginDebugActivity.this);
-                    ResponseDialog.closeLoading();
+//                    ResponseDialog.closeLoading();
                 }
 
                 @Override

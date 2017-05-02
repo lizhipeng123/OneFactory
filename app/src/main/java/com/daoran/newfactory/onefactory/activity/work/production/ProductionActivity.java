@@ -1,14 +1,19 @@
-package com.daoran.newfactory.onefactory.activity.work;
+package com.daoran.newfactory.onefactory.activity.work.production;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.adapter.ProductionAdapter;
@@ -19,11 +24,14 @@ import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
+import com.daoran.newfactory.onefactory.util.ToastUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.dialog.ProcationDialog;
+import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -34,7 +42,7 @@ import okhttp3.Call;
 import okhttp3.MediaType;
 
 /**
- * 生产日报
+ * 生产日报页面
  * Created by lizhipeng on 2017/3/29.
  */
 
@@ -54,7 +62,7 @@ public class ProductionActivity extends BaseFrangmentActivity
 
     private EditText etSqlDetail;
     private TextView tvSignPage;
-    private Button btnSignPage;
+    private Button btnSignPage, btnProSave,spinnermenu;
 
     private SharedPreferences sp;
     private SPUtils spUtils;
@@ -83,8 +91,13 @@ public class ProductionActivity extends BaseFrangmentActivity
         etSqlDetail = (EditText) findViewById(R.id.etSqlDetail);
         tvSignPage = (TextView) findViewById(R.id.tvSignPage);
         btnSignPage = (Button) findViewById(R.id.btnSignPage);
+        btnProSave = (Button) findViewById(R.id.btnProSave);
+        spinnermenu = (Button) findViewById(R.id.spinnermenu);
     }
 
+    /**
+     * 操作控件
+     */
     private void initView() {
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);
@@ -97,6 +110,8 @@ public class ProductionActivity extends BaseFrangmentActivity
         ivProductionBack.setOnClickListener(this);
         ivSearch.setOnClickListener(this);
         btnSignPage.setOnClickListener(this);
+        btnProSave.setOnClickListener(this);
+        spinnermenu.setOnClickListener(this);
     }
 
     @Override
@@ -111,15 +126,17 @@ public class ProductionActivity extends BaseFrangmentActivity
             case R.id.btnSignPage:
                 String txt = etSqlDetail.getText().toString();
                 String txtcount = tvSignPage.getText().toString();
-                if(txt.length()==0){
-                    ToastUtils.ShowToastMessage("页码不能为空",ProductionActivity.this);
+                if (txt.length() == 0) {
+                    ToastUtils.ShowToastMessage("页码不能为空", ProductionActivity.this);
                     return;
-                }else if(txt.length()>txtcount.length()){
-                    ToastUtils.ShowToastMessage("页码超出输入范围",ProductionActivity.this);
-                }else{
+                } else if (txt.length() > txtcount.length()) {
+                    ToastUtils.ShowToastMessage("页码超出输入范围", ProductionActivity.this);
+                } else {
                     setPageDetail();
                 }
-
+                break;
+            case R.id.spinnermenu:
+                showPopupMenu(spinnermenu);
                 break;
         }
     }
@@ -130,12 +147,12 @@ public class ProductionActivity extends BaseFrangmentActivity
     private void setData() {
         String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
         sp = ProductionActivity.this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
-        String Style = sp.getString("etprodialogStyle","");
-        String Factory = sp.getString("etprodialogFactory","");
-        String Recode = sp.getString("etprodialogRecode","");
-        String Procedure = sp.getString("Procedure","");
-        String stis = sp.getString("ischeckedd","");
-        if(Procedure.equals("全部")){
+        String Style = sp.getString("etprodialogStyle", "");
+        String Factory = sp.getString("etprodialogFactory", "");
+        String Recode = sp.getString("etprodialogRecode", "");
+        String Procedure = sp.getString("Procedure", "");
+        String stis = sp.getString("ischeckedd", "");
+        if (Procedure.equals("全部")) {
             boolean stris = Boolean.parseBoolean(stis);
             Gson gson = new Gson();
             Propostbean propostbean = new Propostbean();
@@ -150,6 +167,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             propostbean.setPageSize(10);
             String gsonbeanStr = gson.toJson(propostbean);
             if (NetWork.isNetWorkAvailable(this)) {
+                ResponseDialog.showLoading(this);
                 OkHttpUtils.postString()
                         .url(str)
                         .content(gsonbeanStr)
@@ -159,29 +177,36 @@ public class ProductionActivity extends BaseFrangmentActivity
                             @Override
                             public void onError(Call call, Exception e, int id) {
                                 e.printStackTrace();
+                                ResponseDialog.closeLoading();
                             }
 
                             @Override
                             public void onResponse(String response, int id) {
-                                System.out.print(response);
-                                String ress = response.replace("\\", "");
-                                System.out.print(ress);
-                                String ression = StringUtil.sideTrim(ress, "\"");
-                                System.out.print(ression);
-                                detailBean = new Gson().fromJson(ression,ProducationDetailBean.class);
-                                detailBeenList = detailBean.getData();
-                                System.out.print(detailBeenList);
-                                pageCount = detailBean.getTotalCount();
-                                String count = String.valueOf(pageCount/20);
-                                tvSignPage.setText(count);
-                                adapter = new ProductionAdapter(ProductionActivity.this,detailBeenList);
-                                mData.setAdapter(adapter);
+                                try {
+                                    System.out.print(response);
+                                    String ress = response.replace("\\", "");
+                                    System.out.print(ress);
+                                    String ression = StringUtil.sideTrim(ress, "\"");
+                                    System.out.print(ression);
+                                    detailBean = new Gson().fromJson(ression, ProducationDetailBean.class);
+                                    detailBeenList = detailBean.getData();
+                                    System.out.print(detailBeenList);
+                                    pageCount = detailBean.getTotalCount();
+                                    String count = String.valueOf(pageCount / 20);
+                                    tvSignPage.setText(count);
+                                    adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
+                                    mData.setAdapter(adapter);
+                                    adapter.notifyDataSetChanged();
+                                } catch (JsonSyntaxException e) {
+                                    e.printStackTrace();
+                                    ResponseDialog.closeLoading();
+                                }
                             }
                         });
             } else {
                 ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", ProductionActivity.this);
             }
-        }else{
+        } else {
             boolean stris = Boolean.parseBoolean(stis);
             Gson gson = new Gson();
             Propostbean propostbean = new Propostbean();
@@ -196,6 +221,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             propostbean.setPageSize(10);
             String gsonbeanStr = gson.toJson(propostbean);
             if (NetWork.isNetWorkAvailable(this)) {
+                ResponseDialog.showLoading(this);
                 OkHttpUtils.postString()
                         .url(str)
                         .content(gsonbeanStr)
@@ -205,48 +231,53 @@ public class ProductionActivity extends BaseFrangmentActivity
                             @Override
                             public void onError(Call call, Exception e, int id) {
                                 e.printStackTrace();
+                                ResponseDialog.closeLoading();
                             }
 
                             @Override
                             public void onResponse(String response, int id) {
-                                System.out.print(response);
-                                String ress = response.replace("\\", "");
-                                System.out.print(ress);
-                                String ression = StringUtil.sideTrim(ress, "\"");
-                                System.out.print(ression);
-                                detailBean = new Gson().fromJson(ression,ProducationDetailBean.class);
-                                detailBeenList = detailBean.getData();
-                                System.out.print(detailBeenList);
-                                pageCount = detailBean.getTotalCount();
-                                String count = String.valueOf(pageCount/20);
-                                tvSignPage.setText(count);
-                                adapter = new ProductionAdapter(ProductionActivity.this,detailBeenList);
-                                mData.setAdapter(adapter);
+                                try {
+                                    System.out.print(response);
+                                    String ress = response.replace("\\", "");
+                                    System.out.print(ress);
+                                    String ression = StringUtil.sideTrim(ress, "\"");
+                                    System.out.print(ression);
+                                    detailBean = new Gson().fromJson(ression, ProducationDetailBean.class);
+                                    detailBeenList = detailBean.getData();
+                                    System.out.print(detailBeenList);
+                                    pageCount = detailBean.getTotalCount();
+                                    String count = String.valueOf(pageCount / 20);
+                                    tvSignPage.setText(count);
+                                    adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
+                                    mData.setAdapter(adapter);
+                                    adapter.notifyDataSetChanged();
+                                } catch (JsonSyntaxException e) {
+                                    e.printStackTrace();
+                                    ResponseDialog.closeLoading();
+                                }
                             }
                         });
             } else {
                 ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", ProductionActivity.this);
             }
         }
-
-
     }
 
     /**
      * 翻页查询
      */
-    private void setPageDetail(){
+    private void setPageDetail() {
         String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
         sp = ProductionActivity.this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
-        String Style = sp.getString("etprodialogStyle","");
-        String Factory = sp.getString("etprodialogFactory","");
-        String Recode = sp.getString("etprodialogRecode","");
-        String Procedure = sp.getString("Procedure","");
-        String stis = sp.getString("ischeckedd","");
-        if(Procedure.equals("全部")){
+        String Style = sp.getString("etprodialogStyle", "");
+        String Factory = sp.getString("etprodialogFactory", "");
+        String Recode = sp.getString("etprodialogRecode", "");
+        String Procedure = sp.getString("Procedure", "");
+        String stis = sp.getString("ischeckedd", "");
+        if (Procedure.equals("全部")) {
             boolean stris = Boolean.parseBoolean(stis);
             pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
-            int index = pageIndex-1;
+            int index = pageIndex - 1;
             Gson gson = new Gson();
             Propostbean propostbean = new Propostbean();
             Propostbean.Conditions conditions = propostbean.new Conditions();
@@ -260,6 +291,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             propostbean.setPageSize(10);
             String gsonbeanStr = gson.toJson(propostbean);
             if (NetWork.isNetWorkAvailable(this)) {
+                ResponseDialog.showLoading(this);
                 OkHttpUtils.postString()
                         .url(str)
                         .content(gsonbeanStr)
@@ -273,28 +305,33 @@ public class ProductionActivity extends BaseFrangmentActivity
 
                             @Override
                             public void onResponse(String response, int id) {
-                                System.out.print(response);
-                                String ress = response.replace("\\", "");
-                                System.out.print(ress);
-                                String ression = StringUtil.sideTrim(ress, "\"");
-                                System.out.print(ression);
-                                detailBean = new Gson().fromJson(ression,ProducationDetailBean.class);
-                                detailBeenList = detailBean.getData();
-                                System.out.print(detailBeenList);
-                                pageCount = detailBean.getTotalCount();
-                                String count = String.valueOf(pageCount/20);
-                                tvSignPage.setText(count);
-                                adapter = new ProductionAdapter(ProductionActivity.this,detailBeenList);
-                                mData.setAdapter(adapter);
+                                try {
+                                    System.out.print(response);
+                                    String ress = response.replace("\\", "");
+                                    System.out.print(ress);
+                                    String ression = StringUtil.sideTrim(ress, "\"");
+                                    System.out.print(ression);
+                                    detailBean = new Gson().fromJson(ression, ProducationDetailBean.class);
+                                    detailBeenList = detailBean.getData();
+                                    System.out.print(detailBeenList);
+                                    pageCount = detailBean.getTotalCount();
+                                    String count = String.valueOf(pageCount / 20);
+                                    tvSignPage.setText(count);
+                                    adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
+                                    mData.setAdapter(adapter);
+                                    adapter.notifyDataSetChanged();
+                                } catch (JsonSyntaxException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         });
             } else {
                 ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", ProductionActivity.this);
             }
-        }else{
+        } else {
             boolean stris = Boolean.parseBoolean(stis);
             pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
-            int index = pageIndex-1;
+            int index = pageIndex - 1;
             Gson gson = new Gson();
             Propostbean propostbean = new Propostbean();
             Propostbean.Conditions conditions = propostbean.new Conditions();
@@ -308,6 +345,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             propostbean.setPageSize(10);
             String gsonbeanStr = gson.toJson(propostbean);
             if (NetWork.isNetWorkAvailable(this)) {
+                ResponseDialog.showLoading(this);
                 OkHttpUtils.postString()
                         .url(str)
                         .content(gsonbeanStr)
@@ -317,23 +355,30 @@ public class ProductionActivity extends BaseFrangmentActivity
                             @Override
                             public void onError(Call call, Exception e, int id) {
                                 e.printStackTrace();
+                                ResponseDialog.closeLoading();
                             }
 
                             @Override
                             public void onResponse(String response, int id) {
-                                System.out.print(response);
-                                String ress = response.replace("\\", "");
-                                System.out.print(ress);
-                                String ression = StringUtil.sideTrim(ress, "\"");
-                                System.out.print(ression);
-                                detailBean = new Gson().fromJson(ression,ProducationDetailBean.class);
-                                detailBeenList = detailBean.getData();
-                                System.out.print(detailBeenList);
-                                pageCount = detailBean.getTotalCount();
-                                String count = String.valueOf(pageCount/10);
-                                tvSignPage.setText(count);
-                                adapter = new ProductionAdapter(ProductionActivity.this,detailBeenList);
-                                mData.setAdapter(adapter);
+                                try {
+                                    System.out.print(response);
+                                    String ress = response.replace("\\", "");
+                                    System.out.print(ress);
+                                    String ression = StringUtil.sideTrim(ress, "\"");
+                                    System.out.print(ression);
+                                    detailBean = new Gson().fromJson(ression, ProducationDetailBean.class);
+                                    detailBeenList = detailBean.getData();
+                                    System.out.print(detailBeenList);
+                                    pageCount = detailBean.getTotalCount();
+                                    String count = String.valueOf(pageCount / 10);
+                                    tvSignPage.setText(count);
+                                    adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
+                                    mData.setAdapter(adapter);
+                                    adapter.notifyDataSetChanged();
+                                } catch (JsonSyntaxException e) {
+                                    e.printStackTrace();
+                                    ResponseDialog.closeLoading();
+                                }
                             }
                         });
             } else {
@@ -345,6 +390,7 @@ public class ProductionActivity extends BaseFrangmentActivity
 
     /**
      * 弹出输入框
+     *
      * @param view
      */
     private void ShowDialog(View view) {
@@ -376,4 +422,46 @@ public class ProductionActivity extends BaseFrangmentActivity
         }
     };
 
+    /**
+     * 弹出选择菜单
+     * @param view
+     */
+    private void showPopupMenu(View view){
+        PopupMenu popupMenu = new PopupMenu(this,view);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_pro,popupMenu.getMenu());
+        // menu的item点击事件
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                String title = item.getTitle().toString();
+                switch (title){
+                    case "新建":
+
+                        break;
+                    case "复制":
+
+                        break;
+                    case "刷新":
+                        setData();
+                        break;
+                }
+                return false;
+            }
+        });
+        // PopupMenu关闭事件
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu menu) {
+//                Toast.makeText(getApplicationContext(), "关闭PopupMenu", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        popupMenu.show();
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 }

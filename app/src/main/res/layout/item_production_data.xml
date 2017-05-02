@@ -10,12 +10,14 @@
         android:layout_height="50dp"
         android:orientation="horizontal">
 
-        <TextView
+        <EditText
             android:id="@+id/tv_data"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:text="1" />
 
         <View
@@ -23,10 +25,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProDocumentary"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="2" />
@@ -36,10 +40,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProFactory"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="3" />
@@ -53,7 +59,10 @@
             android:id="@+id/tvProDepartment"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
+            android:focusableInTouchMode="false"
             android:gravity="center"
             android:text="4" />
 
@@ -66,6 +75,8 @@
             android:id="@+id/tvProProcedure"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="5" />
@@ -75,10 +86,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProOthers"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="6" />
@@ -88,10 +101,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProSingularSystem"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="7" />
@@ -101,10 +116,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProColor"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="8" />
@@ -114,11 +131,13 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProTaskNumber"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:gravity="center"
             android:text="9" />
 
@@ -127,9 +146,11 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProSize"
             android:layout_width="100dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
@@ -140,10 +161,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProClippingNumber"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="11" />
@@ -153,10 +176,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProCompletedLastMonth"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="12" />
@@ -166,11 +191,13 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProTotalCompletion"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:gravity="center"
             android:text="13" />
 
@@ -179,10 +206,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProBalanceAmount"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="14" />
@@ -196,6 +225,8 @@
             android:id="@+id/tvProState"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="15" />
@@ -205,10 +236,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProYear"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="16" />
@@ -219,10 +252,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProMonth"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="17" />
@@ -232,10 +267,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProOneDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="18" />
@@ -245,10 +282,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProTwoDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="19" />
@@ -258,10 +297,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProThreeDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="20" />
@@ -271,10 +312,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProForeDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="21" />
@@ -284,10 +327,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProFiveDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="22" />
@@ -297,10 +342,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProSixDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="23" />
@@ -310,10 +357,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProSevenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="24" />
@@ -323,10 +372,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProEightDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="25" />
@@ -336,10 +387,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProNineDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="26" />
@@ -349,10 +402,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProTenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="27" />
@@ -362,10 +417,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProElevenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="28" />
@@ -375,10 +432,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProTwelveDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="29" />
@@ -388,10 +447,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProThirteenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="30" />
@@ -401,10 +462,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProFourteenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="31" />
@@ -414,10 +477,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProFifteenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="32" />
@@ -427,10 +492,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProSixteenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="33" />
@@ -440,10 +507,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProSeventeenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="34" />
@@ -453,10 +522,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProEighteenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="35" />
@@ -466,10 +537,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProNineteenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="36" />
@@ -479,10 +552,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProTwentyDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="37" />
@@ -492,10 +567,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProTwentyOneDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="38" />
@@ -505,10 +582,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProTwentyTwoDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="39" />
@@ -518,10 +597,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProTwentyThreeDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="40" />
@@ -531,10 +612,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProTwentyForeDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="41" />
@@ -544,10 +627,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProTwentyFiveDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="42" />
@@ -557,10 +642,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProTwentySixDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="43" />
@@ -570,10 +657,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProTwentySevenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="44" />
@@ -583,10 +672,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProTwentyEightDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="45" />
@@ -596,10 +687,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProTwentyNineDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="46" />
@@ -609,10 +702,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProThirtyDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="47" />
@@ -622,10 +717,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProThirtyOneDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="48" />
@@ -635,10 +732,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProRemarks"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="49" />
@@ -648,10 +747,12 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvProRecorder"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="50" />
@@ -660,10 +761,12 @@
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
-        <TextView
+        <EditText
             android:id="@+id/tvProRecordat"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="51" />

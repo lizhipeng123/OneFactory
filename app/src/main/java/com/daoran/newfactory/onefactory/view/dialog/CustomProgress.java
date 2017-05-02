@@ -15,12 +15,12 @@ import com.daoran.newfactory.onefactory.R;
  */
 
 public class CustomProgress extends Dialog {
-    private Context contextt = null;
+    private Context context = null;
     private static CustomProgress progress = null;
 
     public CustomProgress(Context context) {
         super(context);
-        this.contextt = context;
+        this.context = context;
     }
 
     @Override
