@@ -140,7 +140,7 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
                         JSONObject objectsign = (JSONObject) temp.get(1);
                         String Stringsign = objectsign.getString("text");
                         tvSign.setVisibility(View.VISIBLE);
-                        tvSign.setText(Stringsign);
+                        tvSign.setText(Stringsign+"表");
                         //签到查询
                         JSONObject objectsignsql = (JSONObject) temp.get(2);
                         String Stringsignsql = objectsignsql.getString("text");
@@ -150,7 +150,7 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
                         JSONObject objectbus = (JSONObject) temp.get(3);
                         String Stringbus = objectbus.getString("text");
                         tvBusRoute.setVisibility(View.VISIBLE);
-                        tvBusRoute.setText(Stringbus);
+                        tvBusRoute.setText(Stringbus+"图");
                         //生产日报
                         JSONObject objectproduction = (JSONObject) temp.get(4);
                         String Stringproduction = objectproduction.getString("text");
