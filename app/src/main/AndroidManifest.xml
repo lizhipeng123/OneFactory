@@ -104,7 +104,7 @@
 
         <!-- 查货跟踪查询测试类 -->
         <activity
-            android:name=".activity.work.CommoditySqlActivity"
+            android:name=".activity.work.commo.CommoditySqlActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 

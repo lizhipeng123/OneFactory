@@ -5,15 +5,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.adapter.ProductionAdapter;
@@ -24,7 +21,6 @@ import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
-import com.daoran.newfactory.onefactory.util.ToastUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.dialog.ProcationDialog;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
@@ -77,6 +73,7 @@ public class ProductionActivity extends BaseFrangmentActivity
         initView();
         setListener();
         setData();
+//        setItemClick();
     }
 
     /**
@@ -137,6 +134,9 @@ public class ProductionActivity extends BaseFrangmentActivity
                 break;
             case R.id.spinnermenu:
                 showPopupMenu(spinnermenu);
+                break;
+            case R.id.btnProSave:
+
                 break;
         }
     }
@@ -388,6 +388,28 @@ public class ProductionActivity extends BaseFrangmentActivity
 
     }
 
+    private void setSave(){
+        String saveurl = HttpUrl.debugoneUrl+"FactoryPlan/SaveFactoryDaily/";
+        if(NetWork.isNetWorkAvailable(this)){
+            OkHttpUtils.post().
+                    url(saveurl)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+
+                        }
+                    });
+        }else{
+            ToastUtils.ShowToastMessage(R.string.noHttp,ProductionActivity.this);
+        }
+    }
+
     /**
      * 弹出输入框
      *
@@ -458,6 +480,15 @@ public class ProductionActivity extends BaseFrangmentActivity
 
         popupMenu.show();
     }
+
+//    private void setItemClick(){
+//        mData.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//            }
+//        });
+//    }
 
 
     @Override
