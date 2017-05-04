@@ -210,7 +210,7 @@ public class ProductionAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = viewHolder.tvProDocumentary.getText().toString();
-                    spUtils.put(context, "productionDocumentary", proitem);
+                    spUtils.put(context, "productionadapterDocumentary", proitem);
                     ToastUtils.ShowToastMessage(proitem, context);
                 }
             };
@@ -341,7 +341,7 @@ public class ProductionAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = viewHolder.tvProSingularSystem.getText().toString();
-                    spUtils.put(context, "productionSingularSystem", proitem);
+                    spUtils.put(context, "productionadapterSingularSystem", proitem);
                     ToastUtils.ShowToastMessage(proitem, context);
                 }
             };
@@ -2698,7 +2698,7 @@ public class ProductionAdapter extends BaseAdapter {
             public boolean onMenuItemClick(MenuItem item) {
                 sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
                 String title = item.getTitle().toString();
-                spUtils.put(context, "proPrdstatusTitle", title);
+                spUtils.put(context, "proadapterPrdstatusTitle", title);
                 ToastUtils.ShowToastMessage("点击的是：" + title, context);
                 return false;
             }

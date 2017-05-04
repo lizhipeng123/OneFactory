@@ -58,7 +58,7 @@ public class ProductionActivity extends BaseFrangmentActivity
 
     private EditText etSqlDetail;
     private TextView tvSignPage;
-    private Button btnSignPage, btnProSave,spinnermenu;
+    private Button btnSignPage, btnProSave, spinnermenu;
 
     private SharedPreferences sp;
     private SPUtils spUtils;
@@ -98,6 +98,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     private void initView() {
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);
+        etSqlDetail.setSelection(etSqlDetail.length());
     }
 
     /**
@@ -136,7 +137,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                 showPopupMenu(spinnermenu);
                 break;
             case R.id.btnProSave:
-
+                setSave();
                 break;
         }
     }
@@ -388,25 +389,138 @@ public class ProductionActivity extends BaseFrangmentActivity
 
     }
 
-    private void setSave(){
-        String saveurl = HttpUrl.debugoneUrl+"FactoryPlan/SaveFactoryDaily/";
-        if(NetWork.isNetWorkAvailable(this)){
-            OkHttpUtils.post().
+    private void setSave() {
+        String saveurl = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
+        sp = this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        String proColumnTitle = sp.getString("proColumnTitle", "");//部门
+        String proProcedureTitle = sp.getString("proProcedureTitle", "");//工序
+
+        String proPrdstatusTitle = sp.getString("proadapterPrdstatusTitle", "");//状态//
+
+        String productionItem = sp.getString("productionItem", "");//款号
+
+        String productionDocumentary = sp.getString("productionadapterDocumentary", "");//跟单//
+
+        String productionFactory = sp.getString("productionFactory", "");//工厂
+        String productionOthers = sp.getString("productionOthers", "");//组别人
+
+        String productionSingularSystem = sp.getString("productionadapterSingularSystem", "");//制单数//
+
+        String productionColor = sp.getString("productionColor", "");//花色
+        String productionTaskNumber = sp.getString("productionTaskNumber", "");//任务数
+        String productionSize = sp.getString("productionSize", "");//尺码
+        String productionClippingNumber = sp.getString("productionClippingNumber", "");//实裁数
+        String productionCompletedLastMonth = sp.getString("productionCompletedLastMonth", "");//上月完工
+        String productionTotalCompletion = sp.getString("productionTotalCompletion", "");//总完工数
+        String productionBalanceAmount = sp.getString("productionBalanceAmount", "");//结余数量
+        String productionYear = sp.getString("productionYear", "");//年
+        String productionMonth = sp.getString("productionMonth", "");//月
+        String productionOneDay = sp.getString("productionOneDay", "");//1
+        String productionTwoDay = sp.getString("productionTwoDay", "");//2
+        String productionThreeDay = sp.getString("productionThreeDay", "");//3
+        String productionForeDay = sp.getString("productionForeDay", "");//4
+        String productionFiveDay = sp.getString("productionFiveDay", "");//5
+        String productionSixDay = sp.getString("productionSixDay", "");//6
+        String productionSevenDay = sp.getString("productionSevenDay", "");//7
+        String productionEightDay = sp.getString("productionEightDay", "");//8
+        String productionNineDay = sp.getString("productionNineDay", "");//9
+        String productionTenDay = sp.getString("productionTenDay", "");//10
+        String productionElevenDay = sp.getString("productionElevenDay", "");//11
+        String productionTwelveDay = sp.getString("productionTwelveDay", "");//12
+        String productionThirteenDay = sp.getString("productionThirteenDay", "");//13
+        String productionFourteenDay = sp.getString("productionFourteenDay", "");//14
+        String productionFifteenDay = sp.getString("productionFifteenDay", "");//15
+        String productionSixteenDay = sp.getString("productionSixteenDay", "");//16
+        String productionSeventeenDay = sp.getString("productionSeventeenDay", "");//17
+        String productionEighteenDay = sp.getString("productionEighteenDay", "");//18
+        String productionNineteenDay = sp.getString("productionNineteenDay", "");//19
+        String productionTwentyDay = sp.getString("productionTwentyDay", "");//20
+        String productionTwentyOneDay = sp.getString("productionTwentyOneDay", "");//21
+        String productionTwentyTwoDay = sp.getString("productionTwentyTwoDay", "");//22
+        String productionTwentyThreeDay = sp.getString("productionTwentyThreeDay", "");//23
+        String productionTwentyForeDay = sp.getString("productionTwentyForeDay", "");//24
+        String productionTwentyFiveDay = sp.getString("productionTwentyFiveDay", "");//25
+        String productionTwentySixDay = sp.getString("productionTwentySixDay", "");//26
+        String productionTwentySevenDay = sp.getString("productionTwentySevenDay", "");//27
+        String productionTwentyEightDay = sp.getString("productionTwentyEightDay", "");//28
+        String productionTwentyNineDay = sp.getString("productionTwentyNineDay", "");//29
+        String productionThirtyDay = sp.getString("productionThirtyDay", "");//30
+        String productionThirtyOneDay = sp.getString("productionThirtyOneDay", "");//31
+        String productionRemarks = sp.getString("productionRemarks", "");//备注
+        String productionRecorder = sp.getString("productionRecorder", "");//制单人
+        String productionRecordat = sp.getString("productionRecordat", "");//制单时间
+        ProducationDetailBean.DataBean dataBean = new ProducationDetailBean.DataBean();
+        dataBean.setItem(productionItem);
+        dataBean.setPrddocumentary(productionDocumentary);
+        dataBean.setSubfactory(productionFactory);
+        dataBean.setSubfactoryTeams(proColumnTitle);
+        dataBean.setWorkingProcedure(proProcedureTitle);
+        dataBean.setWorkers(productionOthers);
+        dataBean.setPqty(productionSingularSystem);
+        dataBean.setProdcol(productionColor);
+        dataBean.setTaskqty(productionTaskNumber);
+        dataBean.setMdl(productionSize);
+        dataBean.setFactcutqty(productionClippingNumber);
+        dataBean.setLastMonQty(productionCompletedLastMonth);
+        dataBean.setSumCompletedQty(productionTotalCompletion);
+        dataBean.String(productionBalanceAmount);
+       dataBean.setPrdstatus(proPrdstatusTitle);
+        dataBean.setYear(productionYear);
+        dataBean.setMonth(productionMonth);
+        dataBean.setDay1(productionOneDay);
+        dataBean.setDay2(productionTwoDay);
+        dataBean.setDay3(productionThreeDay);
+        dataBean.setDay4(productionForeDay);
+        dataBean.setDay5(productionFiveDay);
+        dataBean.setDay6(productionSixDay);
+        dataBean.setDay7(productionSevenDay);
+        dataBean.setDay8(productionEightDay);
+        dataBean.setDay9(productionNineDay);
+        dataBean.setDay10(productionTenDay);
+        dataBean.setDay11(productionElevenDay);
+        dataBean.setDay12(productionTwelveDay);
+        dataBean.setDay13(productionThirteenDay);
+        dataBean.setDay14(productionFourteenDay);
+        dataBean.setDay15(productionFifteenDay);
+        dataBean.setDay16(productionSixteenDay);
+        dataBean.setDay17(productionSeventeenDay);
+        dataBean.setDay18(productionEighteenDay);
+        dataBean.setDay19(productionNineteenDay);
+        dataBean.setDay20(productionTwentyDay);
+        dataBean.setDay21(productionTwentyOneDay);
+        dataBean.setDay22(productionTwentyTwoDay);
+        dataBean.setDay23(productionTwentyThreeDay);
+        dataBean.setDay24(productionTwentyForeDay);
+        dataBean.setDay25(productionTwentyFiveDay);
+        dataBean.setDay26(productionTwentySixDay);
+        dataBean.setDay27(productionTwentySevenDay);
+        dataBean.setDay28(productionTwentyEightDay);
+        dataBean.setDay29(productionTwentyNineDay);
+        dataBean.setDay30(productionThirtyDay);
+        dataBean.setDay31(productionThirtyOneDay);
+        dataBean.setMemo(productionRemarks);
+        dataBean.setRecorder(productionRecorder);
+        dataBean.setRecordat(productionRecordat);
+        detailBeenList.add(dataBean);
+        System.out.print(detailBeenList);
+        String beenlist = detailBeenList.toString();
+        if (NetWork.isNetWorkAvailable(this)) {
+            OkHttpUtils.postString().
                     url(saveurl)
                     .build()
                     .execute(new StringCallback() {
                         @Override
                         public void onError(Call call, Exception e, int id) {
-
+                            e.printStackTrace();
                         }
 
                         @Override
                         public void onResponse(String response, int id) {
-
+                            System.out.print(response);
                         }
                     });
-        }else{
-            ToastUtils.ShowToastMessage(R.string.noHttp,ProductionActivity.this);
+        } else {
+            ToastUtils.ShowToastMessage(R.string.noHttp, ProductionActivity.this);
         }
     }
 
@@ -446,17 +560,18 @@ public class ProductionActivity extends BaseFrangmentActivity
 
     /**
      * 弹出选择菜单
+     *
      * @param view
      */
-    private void showPopupMenu(View view){
-        PopupMenu popupMenu = new PopupMenu(this,view);
-        popupMenu.getMenuInflater().inflate(R.menu.menu_pro,popupMenu.getMenu());
+    private void showPopupMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_pro, popupMenu.getMenu());
         // menu的item点击事件
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 String title = item.getTitle().toString();
-                switch (title){
+                switch (title) {
                     case "新建":
 
                         break;
@@ -480,15 +595,6 @@ public class ProductionActivity extends BaseFrangmentActivity
 
         popupMenu.show();
     }
-
-//    private void setItemClick(){
-//        mData.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//            }
-//        });
-//    }
 
 
     @Override

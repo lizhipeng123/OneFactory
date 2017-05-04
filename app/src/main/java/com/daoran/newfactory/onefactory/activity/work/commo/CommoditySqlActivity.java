@@ -1,4 +1,4 @@
-package com.daoran.newfactory.onefactory.activity.work;
+package com.daoran.newfactory.onefactory.activity.work.commo;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,6 +93,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private void initView() {
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);
+        etSqlDetail.setSelection(etSqlDetail.length());
     }
 
     /**
@@ -141,6 +143,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
 
     /**
      * 查询按钮弹出框
+     *
      * @param view
      */
     private void ShowDialog(View view) {
