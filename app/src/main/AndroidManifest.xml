@@ -134,6 +134,11 @@
             android:name=".activity.work.SearchViaPointActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".activity.work.production.ProductionNewlyBuildActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
         <!-- 测试 -->
         <service android:name="com.amap.api.location.APSService"/><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->

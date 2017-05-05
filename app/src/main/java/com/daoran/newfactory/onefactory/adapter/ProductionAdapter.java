@@ -70,23 +70,23 @@ public class ProductionAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.
                     from(context).inflate(R.layout.item_production_data, null);
-            viewHolder.tv_data = (EditText) convertView.findViewById(R.id.tv_data);
-            viewHolder.tvProDocumentary = (EditText) convertView.findViewById(R.id.tvProDocumentary);
-            viewHolder.tvProFactory = (EditText) convertView.findViewById(R.id.tvProFactory);
+            viewHolder.tv_data = (TextView) convertView.findViewById(R.id.tv_data);
+            viewHolder.tvProDocumentary = (TextView) convertView.findViewById(R.id.tvProDocumentary);
+            viewHolder.tvProFactory = (TextView) convertView.findViewById(R.id.tvProFactory);
             viewHolder.tvProDepartment = (TextView) convertView.findViewById(R.id.tvProDepartment);
             viewHolder.tvProProcedure = (TextView) convertView.findViewById(R.id.tvProProcedure);
             viewHolder.tvProOthers = (EditText) convertView.findViewById(R.id.tvProOthers);
-            viewHolder.tvProSingularSystem = (EditText) convertView.findViewById(R.id.tvProSingularSystem);
-            viewHolder.tvProColor = (EditText) convertView.findViewById(R.id.tvProColor);
+            viewHolder.tvProSingularSystem = (TextView) convertView.findViewById(R.id.tvProSingularSystem);
+            viewHolder.tvProColor = (TextView) convertView.findViewById(R.id.tvProColor);
             viewHolder.tvProTaskNumber = (EditText) convertView.findViewById(R.id.tvProTaskNumber);
-            viewHolder.tvProSize = (EditText) convertView.findViewById(R.id.tvProSize);
-            viewHolder.tvProClippingNumber = (EditText) convertView.findViewById(R.id.tvProClippingNumber);
+            viewHolder.tvProSize = (TextView) convertView.findViewById(R.id.tvProSize);
+            viewHolder.tvProClippingNumber = (TextView) convertView.findViewById(R.id.tvProClippingNumber);
             viewHolder.tvProCompletedLastMonth = (EditText) convertView.findViewById(R.id.tvProCompletedLastMonth);
-            viewHolder.tvProTotalCompletion = (EditText) convertView.findViewById(R.id.tvProTotalCompletion);
-            viewHolder.tvProBalanceAmount = (EditText) convertView.findViewById(R.id.tvProBalanceAmount);
+            viewHolder.tvProTotalCompletion = (TextView) convertView.findViewById(R.id.tvProTotalCompletion);
+            viewHolder.tvProBalanceAmount = (TextView) convertView.findViewById(R.id.tvProBalanceAmount);
             viewHolder.tvProState = (TextView) convertView.findViewById(R.id.tvProState);
-            viewHolder.tvProYear = (EditText) convertView.findViewById(R.id.tvProYear);
-            viewHolder.tvProMonth = (EditText) convertView.findViewById(R.id.tvProMonth);
+            viewHolder.tvProYear = (TextView) convertView.findViewById(R.id.tvProYear);
+            viewHolder.tvProMonth = (TextView) convertView.findViewById(R.id.tvProMonth);
             viewHolder.tvProOneDay = (EditText) convertView.findViewById(R.id.tvProOneDay);
             viewHolder.tvProTwoDay = (EditText) convertView.findViewById(R.id.tvProTwoDay);
             viewHolder.tvProThreeDay = (EditText) convertView.findViewById(R.id.tvProThreeDay);
@@ -119,152 +119,40 @@ public class ProductionAdapter extends BaseAdapter {
             viewHolder.tvProThirtyDay = (EditText) convertView.findViewById(R.id.tvProThirtyDay);
             viewHolder.tvProThirtyOneDay = (EditText) convertView.findViewById(R.id.tvProThirtyOneDay);
             viewHolder.tvProRemarks = (EditText) convertView.findViewById(R.id.tvProRemarks);
-            viewHolder.tvProRecorder = (EditText) convertView.findViewById(R.id.tvProRecorder);
-            viewHolder.tvProRecordat = (EditText) convertView.findViewById(R.id.tvProRecordat);
+            viewHolder.tvProRecorder = (TextView) convertView.findViewById(R.id.tvProRecorder);
+            viewHolder.tvProRecordat = (TextView) convertView.findViewById(R.id.tvProRecordat);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.tvProDepartment.setText(getItem(position).getSubfactoryTeams());
-        viewHolder.tvProProcedure.setText(getItem(position).getWorkingProcedure());
-        viewHolder.tvProState.setText(getItem(position).getPrdstatus());
+
+
+
          /*判断item中制单人是否是登录用户，是为可改，否为不可改*/
         sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
         String nameid = sp.getString("username", "");
         String recorder = getItem(position).getRecorder().toString();
-        if (nameid == recorder || recorder.equals("test22")) {
+        String proid = String.valueOf(getItem(position).getID());
+        spUtils.put(context, "proid", proid);
+        String salesid = String.valueOf(getItem(position).getSalesid());
+        spUtils.put(context, "salesid", salesid);
+        if (nameid == recorder || recorder.equals("毛念欢")) {
 
             viewHolder.tv_data.setEnabled(true);
-            final EditText editTextItem = viewHolder.tv_data;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextItem.getTag() instanceof TextWatcher) {
-                editTextItem.removeTextChangedListener((TextWatcher) editTextItem.getTag());
-            }
-            editTextItem.setText(getItem(position).getItem());
-            editTextItem.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
-            TextWatcher TvItem = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tv_data.getText().toString();
-                    spUtils.put(context, "productionItem", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTextItem.addTextChangedListener(TvItem);
-            editTextItem.setTag(TvItem);
-            /*光标放置在文本最后*/
-            viewHolder.tv_data.setSelection(viewHolder.tv_data.length());
-
+            viewHolder.tv_data.setText(getItem(position).getItem());
 
             viewHolder.tvProDocumentary.setEnabled(true);
-            final EditText editTextDocumentary = viewHolder.tvProDocumentary;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextDocumentary.getTag() instanceof TextWatcher) {
-                editTextDocumentary.removeTextChangedListener((TextWatcher) editTextDocumentary.getTag());
-            }
-            editTextDocumentary.setText(getItem(position).getPrddocumentary());
-            editTextDocumentary.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
-            TextWatcher TvDocumentary = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProDocumentary.getText().toString();
-                    spUtils.put(context, "productionadapterDocumentary", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTextDocumentary.addTextChangedListener(TvDocumentary);
-            editTextDocumentary.setTag(TvDocumentary);
-            /*光标放置在文本最后*/
-            viewHolder.tvProDocumentary.setSelection(viewHolder.tvProDocumentary.length());
-
+            viewHolder.tvProDocumentary.setText(getItem(position).getPrddocumentary());
 
             viewHolder.tvProFactory.setEnabled(true);
-            final EditText editTextFactory = viewHolder.tvProFactory;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextFactory.getTag() instanceof TextWatcher) {
-                editTextFactory.removeTextChangedListener((TextWatcher) editTextFactory.getTag());
-            }
-            editTextFactory.setText(getItem(position).getSubfactory());
-            editTextFactory.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
-            TextWatcher TvFactory = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProFactory.getText().toString();
-                    spUtils.put(context, "productionFactory", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTextFactory.addTextChangedListener(TvFactory);
-            editTextFactory.setTag(TvFactory);
-            /*光标放置在文本最后*/
-            viewHolder.tvProFactory.setSelection(viewHolder.tvProFactory.length());
-
+            viewHolder.tvProFactory.setText(getItem(position).getSubfactory());
 
             viewHolder.tvProDepartment.setEnabled(true);
+            viewHolder.tvProDepartment.setText(getItem(position).getSubfactoryTeams());
+
             viewHolder.tvProProcedure.setEnabled(true);
+            viewHolder.tvProProcedure.setText(getItem(position).getWorkingProcedure());
+
             viewHolder.tvProOthers.setEnabled(true);
             final EditText editTexOthers = viewHolder.tvProOthers;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
@@ -307,92 +195,11 @@ public class ProductionAdapter extends BaseAdapter {
             /*光标放置在文本最后*/
             viewHolder.tvProOthers.setSelection(viewHolder.tvProOthers.length());
 
-
             viewHolder.tvProSingularSystem.setEnabled(true);
-            final EditText editTexSingularSystem = viewHolder.tvProSingularSystem;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexSingularSystem.getTag() instanceof TextWatcher) {
-                editTexSingularSystem.removeTextChangedListener((TextWatcher) editTexSingularSystem.getTag());
-            }
-            editTexSingularSystem.setText(getItem(position).getPqty());
-            editTexSingularSystem.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
-            TextWatcher TvSingularSystem = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProSingularSystem.getText().toString();
-                    spUtils.put(context, "productionadapterSingularSystem", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexSingularSystem.addTextChangedListener(TvSingularSystem);
-            editTexSingularSystem.setTag(TvSingularSystem);
-            /*光标放置在文本最后*/
-            viewHolder.tvProSingularSystem.setSelection(viewHolder.tvProSingularSystem.length());
-
+            viewHolder.tvProSingularSystem.setText(getItem(position).getPqty());
 
             viewHolder.tvProColor.setEnabled(true);
-            final EditText editTexColor = viewHolder.tvProColor;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexColor.getTag() instanceof TextWatcher) {
-                editTexColor.removeTextChangedListener((TextWatcher) editTexColor.getTag());
-            }
-            editTexColor.setText(getItem(position).getProdcol());
-            editTexColor.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
-            TextWatcher TvColor = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProColor.getText().toString();
-                    spUtils.put(context, "productionColor", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexColor.addTextChangedListener(TvColor);
-            editTexColor.setTag(TvColor);
-            /*光标放置在文本最后*/
-            viewHolder.tvProColor.setSelection(viewHolder.tvProColor.length());
-
+            viewHolder.tvProColor.setText(getItem(position).getProdcol());
 
             viewHolder.tvProTaskNumber.setEnabled(true);
             final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
@@ -436,92 +243,11 @@ public class ProductionAdapter extends BaseAdapter {
             /*光标放置在文本最后*/
             viewHolder.tvProTaskNumber.setSelection(viewHolder.tvProTaskNumber.length());
 
-
             viewHolder.tvProSize.setEnabled(true);
-            final EditText editTexSize = viewHolder.tvProSize;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexSize.getTag() instanceof TextWatcher) {
-                editTexSize.removeTextChangedListener((TextWatcher) editTexSize.getTag());
-            }
-            editTexSize.setText(getItem(position).getMdl());
-            editTexSize.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
-            TextWatcher TvSize = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProSize.getText().toString();
-                    spUtils.put(context, "productionSize", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexSize.addTextChangedListener(TvSize);
-            editTexSize.setTag(TvSize);
-            /*光标放置在文本最后*/
-            viewHolder.tvProSize.setSelection(viewHolder.tvProSize.length());
-
+            viewHolder.tvProSize.setText(getItem(position).getMdl());
 
             viewHolder.tvProClippingNumber.setEnabled(true);
-            final EditText editTexClippingNumber = viewHolder.tvProClippingNumber;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexClippingNumber.getTag() instanceof TextWatcher) {
-                editTexClippingNumber.removeTextChangedListener((TextWatcher) editTexClippingNumber.getTag());
-            }
-            editTexClippingNumber.setText(getItem(position).getFactcutqty());
-            editTexClippingNumber.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
-            TextWatcher TvClippingNumber = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProClippingNumber.getText().toString();
-                    spUtils.put(context, "productionClippingNumber", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexClippingNumber.addTextChangedListener(TvClippingNumber);
-            editTexClippingNumber.setTag(TvClippingNumber);
-            /*光标放置在文本最后*/
-            viewHolder.tvProClippingNumber.setSelection(viewHolder.tvProClippingNumber.length());
-
+            viewHolder.tvProClippingNumber.setText(getItem(position).getFactcutqty());
 
             viewHolder.tvProCompletedLastMonth.setEnabled(true);
             final EditText editTexCompletedLastMonth = viewHolder.tvProCompletedLastMonth;
@@ -565,179 +291,20 @@ public class ProductionAdapter extends BaseAdapter {
             /*光标放置在文本最后*/
             viewHolder.tvProCompletedLastMonth.setSelection(viewHolder.tvProCompletedLastMonth.length());
 
-
             viewHolder.tvProTotalCompletion.setEnabled(true);
-            final EditText editTexTotalCompletion = viewHolder.tvProTotalCompletion;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexTotalCompletion.getTag() instanceof TextWatcher) {
-                editTexTotalCompletion.removeTextChangedListener((TextWatcher) editTexTotalCompletion.getTag());
-            }
-            editTexTotalCompletion.setText(getItem(position).getSumCompletedQty());
-            editTexTotalCompletion.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
-            TextWatcher TvTotalCompletion = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProTotalCompletion.getText().toString();
-                    spUtils.put(context, "productionTotalCompletion", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexTotalCompletion.addTextChangedListener(TvTotalCompletion);
-            editTexTotalCompletion.setTag(TvTotalCompletion);
-            /*光标放置在文本最后*/
-            viewHolder.tvProTotalCompletion.setSelection(viewHolder.tvProTotalCompletion.length());
-
+            viewHolder.tvProTotalCompletion.setText(getItem(position).getSumCompletedQty());
 
             viewHolder.tvProBalanceAmount.setEnabled(true);
-            final EditText editTexBalanceAmount = viewHolder.tvProBalanceAmount;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexBalanceAmount.getTag() instanceof TextWatcher) {
-                editTexBalanceAmount.removeTextChangedListener((TextWatcher) editTexBalanceAmount.getTag());
-            }
-            editTexBalanceAmount.setText(getItem(position).getLeftQty());
-            editTexBalanceAmount.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
-            TextWatcher TvBalanceAmount = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProBalanceAmount.getText().toString();
-                    spUtils.put(context, "productionBalanceAmount", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexBalanceAmount.addTextChangedListener(TvBalanceAmount);
-            editTexBalanceAmount.setTag(TvBalanceAmount);
-            /*光标放置在文本最后*/
-            viewHolder.tvProBalanceAmount.setSelection(viewHolder.tvProBalanceAmount.length());
-
+            viewHolder.tvProBalanceAmount.setText(getItem(position).getLeftQty());
 
             viewHolder.tvProState.setEnabled(true);
+            viewHolder.tvProState.setText(getItem(position).getPrdstatus());
+
             viewHolder.tvProYear.setEnabled(true);
-            final EditText editTexYear = viewHolder.tvProYear;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexYear.getTag() instanceof TextWatcher) {
-                editTexYear.removeTextChangedListener((TextWatcher) editTexYear.getTag());
-            }
-            editTexYear.setText(getItem(position).getYear());
-            editTexYear.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
-            TextWatcher TvYear = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProYear.getText().toString();
-                    spUtils.put(context, "productionYear", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexYear.addTextChangedListener(TvYear);
-            editTexYear.setTag(TvYear);
-            /*光标放置在文本最后*/
-            viewHolder.tvProYear.setSelection(viewHolder.tvProYear.length());
-
+            viewHolder.tvProYear.setText(getItem(position).getYear());
 
             viewHolder.tvProMonth.setEnabled(true);
-            final EditText editTexMonth = viewHolder.tvProMonth;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexMonth.getTag() instanceof TextWatcher) {
-                editTexMonth.removeTextChangedListener((TextWatcher) editTexMonth.getTag());
-            }
-            editTexMonth.setText(getItem(position).getMonth());
-            editTexMonth.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
-            TextWatcher TvMonth = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProMonth.getText().toString();
-                    spUtils.put(context, "productionMonth", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexMonth.addTextChangedListener(TvMonth);
-            editTexMonth.setTag(TvMonth);
-            /*光标放置在文本最后*/
-            viewHolder.tvProMonth.setSelection(viewHolder.tvProMonth.length());
-
+            viewHolder.tvProMonth.setText(getItem(position).getMonth());
 
             viewHolder.tvProOneDay.setEnabled(true);
             final EditText editTexOneDay = viewHolder.tvProOneDay;
@@ -2114,121 +1681,28 @@ public class ProductionAdapter extends BaseAdapter {
             /*光标放置在文本最后*/
             viewHolder.tvProRemarks.setSelection(viewHolder.tvProRemarks.length());
 
-
             viewHolder.tvProRecorder.setEnabled(true);
-            final EditText editTexRecorder = viewHolder.tvProRecorder;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexRecorder.getTag() instanceof TextWatcher) {
-                editTexRecorder.removeTextChangedListener((TextWatcher) editTexRecorder.getTag());
-            }
-            editTexRecorder.setText(getItem(position).getRecorder());
-            editTexRecorder.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
-            TextWatcher TvRecorder = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProRecorder.getText().toString();
-                    spUtils.put(context, "productionRecorder", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexRecorder.addTextChangedListener(TvRecorder);
-            editTexRecorder.setTag(TvRecorder);
-            /*光标放置在文本最后*/
-            viewHolder.tvProRecorder.setSelection(viewHolder.tvProRecorder.length());
-
+            viewHolder.tvProRecorder.setText(getItem(position).getRecorder());
 
             viewHolder.tvProRecordat.setEnabled(true);
-            final EditText editTexRecordat = viewHolder.tvProRecordat;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexRecordat.getTag() instanceof TextWatcher) {
-                editTexRecordat.removeTextChangedListener((TextWatcher) editTexRecordat.getTag());
-            }
-            editTexRecordat.setText(getItem(position).getRecordat());
-            editTexRecordat.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
-            TextWatcher TvRecordat = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProRecordat.getText().toString();
-                    spUtils.put(context, "productionRecordat", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexRecordat.addTextChangedListener(TvRecordat);
-            editTexRecordat.setTag(TvRecordat);
-            /*光标放置在文本最后*/
-            viewHolder.tvProRecordat.setSelection(viewHolder.tvProRecordat.length());
+            viewHolder.tvProRecordat.setText(getItem(position).getRecordat());
 
         } else {
             viewHolder.tv_data.setEnabled(false);
-            final EditText editTextItem = viewHolder.tv_data;
-            if (editTextItem.getTag() instanceof TextWatcher) {
-                editTextItem.removeTextChangedListener((TextWatcher) editTextItem.getTag());
-            }
-            editTextItem.setText(getItem(position).getItem());
-
+            viewHolder.tv_data.setText(getItem(position).getItem());
 
             viewHolder.tvProDocumentary.setEnabled(false);
-            final EditText editTextDocumentary = viewHolder.tvProDocumentary;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextDocumentary.getTag() instanceof TextWatcher) {
-                editTextDocumentary.removeTextChangedListener((TextWatcher) editTextDocumentary.getTag());
-            }
-            editTextDocumentary.setText(getItem(position).getPrddocumentary());
-
+            viewHolder.tvProDocumentary.setText(getItem(position).getPrddocumentary());
 
             viewHolder.tvProFactory.setEnabled(false);
-            final EditText editTextFactory = viewHolder.tvProFactory;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextFactory.getTag() instanceof TextWatcher) {
-                editTextFactory.removeTextChangedListener((TextWatcher) editTextFactory.getTag());
-            }
-            editTextFactory.setText(getItem(position).getSubfactory());
-
+            viewHolder.tvProFactory.setText(getItem(position).getSubfactory());
 
             viewHolder.tvProDepartment.setEnabled(false);
+            viewHolder.tvProDepartment.setText(getItem(position).getSubfactoryTeams());
+
             viewHolder.tvProProcedure.setEnabled(false);
+            viewHolder.tvProProcedure.setText(getItem(position).getWorkingProcedure());
+
             viewHolder.tvProOthers.setEnabled(false);
             final EditText editTexOthers = viewHolder.tvProOthers;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
@@ -2237,24 +1711,11 @@ public class ProductionAdapter extends BaseAdapter {
             }
             editTexOthers.setText(getItem(position).getWorkers());
 
-
             viewHolder.tvProSingularSystem.setEnabled(false);
-            final EditText editTexSingularSystem = viewHolder.tvProSingularSystem;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexSingularSystem.getTag() instanceof TextWatcher) {
-                editTexSingularSystem.removeTextChangedListener((TextWatcher) editTexSingularSystem.getTag());
-            }
-            editTexSingularSystem.setText(getItem(position).getPqty());
-
+            viewHolder.tvProSingularSystem.setText(getItem(position).getPqty());
 
             viewHolder.tvProColor.setEnabled(false);
-            final EditText editTexColor = viewHolder.tvProColor;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexColor.getTag() instanceof TextWatcher) {
-                editTexColor.removeTextChangedListener((TextWatcher) editTexColor.getTag());
-            }
-            editTexColor.setText(getItem(position).getProdcol());
-
+            viewHolder.tvProColor.setText(getItem(position).getProdcol());
 
             viewHolder.tvProTaskNumber.setEnabled(false);
             final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
@@ -2264,24 +1725,11 @@ public class ProductionAdapter extends BaseAdapter {
             }
             editTexTaskNumber.setText(getItem(position).getTaskqty());
 
-
             viewHolder.tvProSize.setEnabled(false);
-            final EditText editTexSize = viewHolder.tvProSize;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexSize.getTag() instanceof TextWatcher) {
-                editTexSize.removeTextChangedListener((TextWatcher) editTexSize.getTag());
-            }
-            editTexSize.setText(getItem(position).getMdl());
-
+            viewHolder.tvProSize.setText(getItem(position).getMdl());
 
             viewHolder.tvProClippingNumber.setEnabled(false);
-            final EditText editTexClippingNumber = viewHolder.tvProClippingNumber;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexClippingNumber.getTag() instanceof TextWatcher) {
-                editTexClippingNumber.removeTextChangedListener((TextWatcher) editTexClippingNumber.getTag());
-            }
-            editTexClippingNumber.setText(getItem(position).getFactcutqty());
-
+            viewHolder.tvProClippingNumber.setText(getItem(position).getFactcutqty());
 
             viewHolder.tvProCompletedLastMonth.setEnabled(false);
             final EditText editTexCompletedLastMonth = viewHolder.tvProCompletedLastMonth;
@@ -2291,41 +1739,20 @@ public class ProductionAdapter extends BaseAdapter {
             }
             editTexCompletedLastMonth.setText(getItem(position).getLastMonQty());
 
-
             viewHolder.tvProTotalCompletion.setEnabled(false);
-            final EditText editTexTotalCompletion = viewHolder.tvProTotalCompletion;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexTotalCompletion.getTag() instanceof TextWatcher) {
-                editTexTotalCompletion.removeTextChangedListener((TextWatcher) editTexTotalCompletion.getTag());
-            }
-            editTexTotalCompletion.setText(getItem(position).getSumCompletedQty());
-
+            viewHolder.tvProTotalCompletion.setText(getItem(position).getSumCompletedQty());
 
             viewHolder.tvProBalanceAmount.setEnabled(false);
-            final EditText editTexBalanceAmount = viewHolder.tvProBalanceAmount;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexBalanceAmount.getTag() instanceof TextWatcher) {
-                editTexBalanceAmount.removeTextChangedListener((TextWatcher) editTexBalanceAmount.getTag());
-            }
-            editTexBalanceAmount.setText(getItem(position).getLeftQty());
-
+            viewHolder.tvProBalanceAmount.setText(getItem(position).getLeftQty());
 
             viewHolder.tvProState.setEnabled(false);
+            viewHolder.tvProState.setText(getItem(position).getPrdstatus());
+
             viewHolder.tvProYear.setEnabled(false);
-            final EditText editTexYear = viewHolder.tvProYear;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexYear.getTag() instanceof TextWatcher) {
-                editTexYear.removeTextChangedListener((TextWatcher) editTexYear.getTag());
-            }
-            editTexYear.setText(getItem(position).getYear());
+            viewHolder.tvProYear.setText(getItem(position).getYear());
 
             viewHolder.tvProMonth.setEnabled(false);
-            final EditText editTexMonth = viewHolder.tvProMonth;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexMonth.getTag() instanceof TextWatcher) {
-                editTexMonth.removeTextChangedListener((TextWatcher) editTexMonth.getTag());
-            }
-            editTexMonth.setText(getItem(position).getMonth());
+            viewHolder.tvProMonth.setText(getItem(position).getMonth());
 
             viewHolder.tvProOneDay.setEnabled(false);
             final EditText editTexOneDay = viewHolder.tvProOneDay;
@@ -2584,62 +2011,140 @@ public class ProductionAdapter extends BaseAdapter {
             editTexRemarks.setText(getItem(position).getMemo());
 
             viewHolder.tvProRecorder.setEnabled(false);
-            final EditText editTexRecorder = viewHolder.tvProRecorder;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexRecorder.getTag() instanceof TextWatcher) {
-                editTexRecorder.removeTextChangedListener((TextWatcher) editTexRecorder.getTag());
-            }
-            editTexRecorder.setText(getItem(position).getRecorder());
+            viewHolder.tvProRecorder.setText(getItem(position).getRecorder());
 
             viewHolder.tvProRecordat.setEnabled(false);
-            final EditText editTexRecordat = viewHolder.tvProRecordat;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexRecordat.getTag() instanceof TextWatcher) {
-                editTexRecordat.removeTextChangedListener((TextWatcher) editTexRecordat.getTag());
-            }
-            editTexRecordat.setText(getItem(position).getRecordat());
+            viewHolder.tvProRecordat.setText(getItem(position).getRecordat());
         }
 
+        viewHolder.tvProMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(context, v);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_pro_mouth, popupMenu.getMenu());
+                // menu的item点击事件
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
+                        String title = item.getTitle().toString();
+                        spUtils.put(context, "proadapterMonthTitle", title);
+                        viewHolder.tvProMonth.setText(title);
+                        ToastUtils.ShowToastMessage("点击的是：" + title, context);
+                        return false;
+                    }
+                });
+                // PopupMenu关闭事件
+                popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+                    @Override
+                    public void onDismiss(PopupMenu menu) {
+                    }
+                });
+                popupMenu.show();
+            }
+        });
 
         viewHolder.tvProDepartment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopupColumnMenu(viewHolder.tvProDepartment);
+                PopupMenu popupMenu = new PopupMenu(context, v);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_pro_column, popupMenu.getMenu());
+                // menu的item点击事件
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
+                        String title = item.getTitle().toString();
+                        spUtils.put(context, "proColumnTitle", title);
+                        viewHolder.tvProDepartment.setText(title);
+                        ToastUtils.ShowToastMessage("点击的是：" + title, context);
+                        return false;
+                    }
+                });
+                // PopupMenu关闭事件
+                popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+                    @Override
+                    public void onDismiss(PopupMenu menu) {
+//                Toast.makeText(getApplicationContext(), "关闭PopupMenu", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                popupMenu.show();
             }
         });
 
         viewHolder.tvProProcedure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopupProcedureMenu(viewHolder.tvProProcedure);
+                PopupMenu popupMenu = new PopupMenu(context, v);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_pro_procedure, popupMenu.getMenu());
+                // menu的item点击事件
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
+                        String title = item.getTitle().toString();
+                        spUtils.put(context, "proProcedureTitle", title);
+                        viewHolder.tvProProcedure.setText(title);
+                        ToastUtils.ShowToastMessage("点击的是：" + title, context);
+                        return false;
+                    }
+                });
+                // PopupMenu关闭事件
+                popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+                    @Override
+                    public void onDismiss(PopupMenu menu) {
+//                Toast.makeText(getApplicationContext(), "关闭PopupMenu", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                popupMenu.show();
             }
         });
 
         viewHolder.tvProState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopupPrdstatusMenu(viewHolder.tvProState);
+                PopupMenu popupMenu = new PopupMenu(context, v);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_pro_prdstatus, popupMenu.getMenu());
+                // menu的item点击事件
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
+                        String title = item.getTitle().toString();
+                        spUtils.put(context, "proadapterPrdstatusTitle", title);
+                        viewHolder.tvProState.setText(title);
+                        ToastUtils.ShowToastMessage("点击的是：" + title, context);
+                        return false;
+                    }
+                });
+                // PopupMenu关闭事件
+                popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+                    @Override
+                    public void onDismiss(PopupMenu menu) {
+//                Toast.makeText(getApplicationContext(), "关闭PopupMenu", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                popupMenu.show();
             }
         });
-
         return convertView;
     }
 
     /**
-     * 弹出部门选择菜单
+     * 弹出月份选择菜单
      *
      * @param view
      */
-    private void showPopupColumnMenu(View view) {
+    private void showPopupMonthMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(context, view);
-        popupMenu.getMenuInflater().inflate(R.menu.menu_pro_column, popupMenu.getMenu());
+        popupMenu.getMenuInflater().inflate(R.menu.menu_pro_mouth, popupMenu.getMenu());
         // menu的item点击事件
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
                 String title = item.getTitle().toString();
-                spUtils.put(context, "proColumnTitle", title);
+                spUtils.put(context, "proadapterMonthTitle", title);
                 ToastUtils.ShowToastMessage("点击的是：" + title, context);
                 return false;
             }
@@ -2648,91 +2153,30 @@ public class ProductionAdapter extends BaseAdapter {
         popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override
             public void onDismiss(PopupMenu menu) {
-//                Toast.makeText(getApplicationContext(), "关闭PopupMenu", Toast.LENGTH_SHORT).show();
-            }
-        });
-        popupMenu.show();
-    }
-
-    /**
-     * 弹出工序选择菜单
-     *
-     * @param view
-     */
-    private void showPopupProcedureMenu(View view) {
-        PopupMenu popupMenu = new PopupMenu(context, view);
-        popupMenu.getMenuInflater().inflate(R.menu.menu_pro_procedure, popupMenu.getMenu());
-        // menu的item点击事件
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
-                String title = item.getTitle().toString();
-                spUtils.put(context, "proProcedureTitle", title);
-                ToastUtils.ShowToastMessage("点击的是：" + title, context);
-                return false;
-            }
-        });
-        // PopupMenu关闭事件
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-            @Override
-            public void onDismiss(PopupMenu menu) {
-//                Toast.makeText(getApplicationContext(), "关闭PopupMenu", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        popupMenu.show();
-    }
-
-    /**
-     * 弹出状态选择菜单
-     *
-     * @param view
-     */
-    private void showPopupPrdstatusMenu(View view) {
-        PopupMenu popupMenu = new PopupMenu(context, view);
-        popupMenu.getMenuInflater().inflate(R.menu.menu_pro_prdstatus, popupMenu.getMenu());
-        // menu的item点击事件
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
-                String title = item.getTitle().toString();
-                spUtils.put(context, "proadapterPrdstatusTitle", title);
-                ToastUtils.ShowToastMessage("点击的是：" + title, context);
-                return false;
-            }
-        });
-        // PopupMenu关闭事件
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-            @Override
-            public void onDismiss(PopupMenu menu) {
-//                Toast.makeText(getApplicationContext(), "关闭PopupMenu", Toast.LENGTH_SHORT).show();
             }
         });
         popupMenu.show();
     }
 
     class ViewHolder {
-        EditText tv_data;//款号
-        EditText tvProDocumentary,//跟单
+        TextView tv_data;//款号
+        TextView tvProDocumentary,//跟单
                 tvProFactory;//工厂
         TextView tvProDepartment,//部门/组别
                 tvProState,//状态
                 tvProProcedure;//工序
         EditText tvProOthers,//组别人
-                tvProSingularSystem,//制单数
-                tvProColor,//花色
-                tvProTaskNumber,//任务数
-                tvProSize,//尺码
-                tvProClippingNumber,//实裁数
                 tvProCompletedLastMonth,//上月完工
+                tvProTaskNumber;//任务数;
+        TextView tvProSingularSystem,//制单数
+                tvProColor,//花色
+                tvProSize,//尺码
+                tvProMonth,//月
+                tvProClippingNumber,//实裁数
                 tvProTotalCompletion,//总完工数
                 tvProBalanceAmount,//结余数量
-
-        tvProYear,//年
-                tvProMonth,//月
-                tvProOneDay,//1日
+                tvProYear;//年
+        EditText tvProOneDay,//1日
                 tvProTwoDay,//2
                 tvProThreeDay,//3
                 tvProForeDay,//4
@@ -2763,8 +2207,8 @@ public class ProductionAdapter extends BaseAdapter {
                 tvProTwentyNineDay,//29
                 tvProThirtyDay,//30
                 tvProThirtyOneDay,//31
-                tvProRemarks,//备注
-                tvProRecorder,//制单人
+                tvProRemarks;//备注
+        TextView tvProRecorder,//制单人
                 tvProRecordat;//制单时间
     }
 }

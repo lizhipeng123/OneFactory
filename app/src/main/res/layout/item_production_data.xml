@@ -10,7 +10,7 @@
         android:layout_height="50dp"
         android:orientation="horizontal">
 
-        <EditText
+        <TextView
             android:id="@+id/tv_data"
             android:layout_width="100dp"
             android:layout_height="50dp"
@@ -25,7 +25,7 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProDocumentary"
             android:layout_width="100dp"
             android:layout_height="50dp"
@@ -40,7 +40,7 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProFactory"
             android:layout_width="100dp"
             android:layout_height="50dp"
@@ -103,7 +103,7 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProSingularSystem"
             android:layout_width="100dp"
             android:layout_height="50dp"
@@ -111,8 +111,6 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
             android:text="7" />
 
         <View
@@ -120,7 +118,7 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProColor"
             android:layout_width="100dp"
             android:layout_height="50dp"
@@ -152,7 +150,7 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProSize"
             android:layout_width="100dp"
             android:textSize="@dimen/dimen_40sp"
@@ -167,7 +165,7 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProClippingNumber"
             android:layout_width="100dp"
             android:layout_height="50dp"
@@ -201,15 +199,13 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProTotalCompletion"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:textSize="@dimen/dimen_40sp"
             android:textColor="@color/black"
-            android:inputType="phone|number"
-            android:numeric="integer"
             android:gravity="center"
             android:text="13" />
 
@@ -218,15 +214,13 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProBalanceAmount"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:textSize="@dimen/dimen_40sp"
             android:textColor="@color/black"
             android:layout_gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
             android:gravity="center"
             android:text="14" />
 
@@ -250,7 +244,7 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProYear"
             android:layout_width="100dp"
             android:layout_height="50dp"
@@ -266,7 +260,7 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProMonth"
             android:layout_width="100dp"
             android:layout_height="50dp"
@@ -825,7 +819,7 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProRecorder"
             android:layout_width="100dp"
             android:layout_height="50dp"
@@ -833,15 +827,13 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
             android:text="50" />
 
         <View
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
-        <EditText
+        <TextView
             android:id="@+id/tvProRecordat"
             android:layout_width="100dp"
             android:layout_height="50dp"
@@ -849,8 +841,6 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
             android:text="51" />
 
         <View

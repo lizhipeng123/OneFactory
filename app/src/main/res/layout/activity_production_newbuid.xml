@@ -3,12 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <ImageView
                 android:id="@+id/ivProductionBack"
                 android:layout_width="25dp"
@@ -16,22 +19,342 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:src="@mipmap/title_back_gray" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:text="款号选择"
                 android:textColor="@color/black"
-                android:textSize="@dimen/dimen_60sp"
-                android:layout_centerInParent="true"/>
+                android:textSize="@dimen/dimen_60sp" />
+
             <Button
+                android:id="@+id/btnNewbuildConfirm"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:textColor="@color/black"
                 android:text="确定"
-                android:textSize="@dimen/dimen_50sp"
-                android:layout_alignParentRight="true"/>
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_50sp" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#cccccc" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/spinnerNewbuild"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_50sp"
+            android:text="选择工序"
+            android:layout_weight="3"/>
+        <EditText
+            android:id="@+id/etNewbuild"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:hint="请输入款号"
+            android:textColorHint="@color/defaultTextColor"
+            android:layout_weight="3"/>
+        <Button
+            android:id="@+id/etNewbuildSql"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_50sp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="查 找"
+            android:layout_weight="0"/>
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/lightblue"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/lin_header_content"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="3"
+            android:orientation="vertical">
+
+            <com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView
+                android:id="@+id/header_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:overScrollMode="never"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/lin_year_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_data"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="款号" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="#cccccc" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="跟单" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="#cccccc" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="工厂" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="#cccccc" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="部门/组别" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="#cccccc" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="工序" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="#cccccc" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="组别人" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="#cccccc" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="制单数" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="#cccccc" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="任务数" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="#cccccc" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="尺码" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="#cccccc" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="花色" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="#cccccc" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="实裁数" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="#cccccc" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="总完工数" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="#cccccc" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="状态" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="#cccccc" />
+
+                </LinearLayout>
+            </com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#cccccc" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:id="@+id/scroll_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/lin_data_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView
+                        android:id="@+id/data_horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:overScrollMode="never"
+                        android:scrollbars="none">
+
+                        <com.daoran.newfactory.onefactory.view.listview.NoscrollListView
+                            android:id="@+id/lv_newbuild_data"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:overScrollMode="never"
+                            android:scrollbars="none" />
+                    </com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="9"
+            android:background="@color/gray"
+            android:gravity="center_horizontal">
+
+            <EditText
+                android:id="@+id/etNewbuildDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_text_sql_boild"
+                android:inputType="phone|number"
+                android:numeric="integer"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="1"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="/"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tvNewbuildPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="19405"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btnNewbuildPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="确定" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

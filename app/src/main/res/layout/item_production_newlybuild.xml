@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/lin_content"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_data"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvProDocumentary"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="2"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvProFactory"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="3"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvProDepartment"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:focusableInTouchMode="false"
+            android:gravity="center"
+            android:text="4"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvProProcedure"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="5"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvProOthers"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:inputType="phone|number"
+            android:numeric="integer"
+            android:text="6"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvProSingularSystem"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="7"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvProColor"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="8"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvProTaskNumber"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:inputType="phone|number"
+            android:numeric="integer"
+            android:text="9"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvProSize"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="10"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvProClippingNumber"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:inputType="phone|number"
+            android:numeric="integer"
+            android:text="11"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvProCompletedLastMonth"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:inputType="phone|number"
+            android:numeric="integer"
+            android:text="12"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvProTotalCompletion"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="13"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+    </LinearLayout>
+</LinearLayout>

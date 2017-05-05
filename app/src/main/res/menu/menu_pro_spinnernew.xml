@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/show_one"
+        android:title="选择工序"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/show_two"
+        android:title="车间"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/show_three"
+        android:title="裁床"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/show_fore"
+        android:title="后道手工"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/show_five"
+        android:title="后道检验"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/show_six"
+        android:title="后道整烫"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/show_servem"
+        android:title="后道包装"
+        app:showAsAction="never"/>
+</menu>
