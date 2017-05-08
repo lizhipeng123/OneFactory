@@ -136,7 +136,7 @@ public class ProductionAdapter extends BaseAdapter {
         spUtils.put(context, "proid", proid);
         String salesid = String.valueOf(getItem(position).getSalesid());
         spUtils.put(context, "salesid", salesid);
-        if (nameid == recorder || recorder.equals("毛念欢")) {
+        if (nameid == recorder || recorder.equals("毕三军")) {
 
             viewHolder.tv_data.setEnabled(true);
             viewHolder.tv_data.setText(getItem(position).getItem());

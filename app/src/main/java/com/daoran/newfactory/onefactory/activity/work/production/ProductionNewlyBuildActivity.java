@@ -1,15 +1,21 @@
 package com.daoran.newfactory.onefactory.activity.work.production;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -18,11 +24,28 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.work.SignActivity;
 import com.daoran.newfactory.onefactory.adapter.ProductionNewlyBuildAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
+import com.daoran.newfactory.onefactory.bean.ProNewlyBuildBean;
+import com.daoran.newfactory.onefactory.bean.PropostNewlyBuildBean;
+import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
+import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
+import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
+import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.MediaType;
 
 /**
+ * 新建生产日报
  * Created by lizhipeng on 2017/5/2.
  */
 
@@ -30,15 +53,30 @@ public class ProductionNewlyBuildActivity
         extends BaseFrangmentActivity
         implements View.OnClickListener {
 
+    private SyncHorizontalScrollView mHeaderHorizontal;
+    private SyncHorizontalScrollView mDataHorizontal;
+
     private ImageView ivProductionBack;//返回
     private Button btnNewbuildConfirm;//确定
     private TextView spinnerNewbuild;//选择工序
-    private EditText etNewbuild, etNewbuildDetail;
-    private Button etNewbuildSql, btnNewbuildPage;
+    private EditText
+            etNewbuildetNewbuildSql,
+            etNewbuildDetail;
+    private Button
+            etNewbuildSql,
+            btnNewbuildPage;
     private TextView tvNewbuildPage;
+    private EditText etNewbuild;
 
-    private NoscrollListView lv_newbuild_data;
+    private ListView lv_newbuild_data;
     private ProductionNewlyBuildAdapter buildAdapter;
+    private ProNewlyBuildBean newlyBuildBean;
+    private List<ProNewlyBuildBean.DataBean> dataBeen =
+            new ArrayList<ProNewlyBuildBean.DataBean>();
+
+    private int pageCount;
+    private int pageIndex = 0;
+
     private SharedPreferences sp;
     private SPUtils spUtils;
 
@@ -50,6 +88,7 @@ public class ProductionNewlyBuildActivity
         getViews();
         initViews();
         setListener();
+        setDate();
     }
 
     /**
@@ -61,19 +100,23 @@ public class ProductionNewlyBuildActivity
         spinnerNewbuild = (TextView) findViewById(R.id.spinnerNewbuild);
         etNewbuild = (EditText) findViewById(R.id.etNewbuild);
         etNewbuildDetail = (EditText) findViewById(R.id.etNewbuildDetail);
+        mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
+        mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
         etNewbuildSql = (Button) findViewById(R.id.etNewbuildSql);
         btnNewbuildPage = (Button) findViewById(R.id.btnNewbuildPage);
         tvNewbuildPage = (TextView) findViewById(R.id.tvNewbuildPage);
-        lv_newbuild_data = (NoscrollListView) findViewById(R.id.lv_newbuild_data);
+        lv_newbuild_data = (ListView) findViewById(R.id.lv_newbuild_data);
     }
 
     /**
      * 初始化控件
      */
     private void initViews() {
+        mDataHorizontal.setSrollView(mHeaderHorizontal);
+        mHeaderHorizontal.setSrollView(mDataHorizontal);
+        etNewbuildDetail.setSelection(etNewbuildDetail.getText().length());
 
     }
-
 
 
     /**
@@ -82,9 +125,242 @@ public class ProductionNewlyBuildActivity
     private void setListener() {
         ivProductionBack.setOnClickListener(this);
         spinnerNewbuild.setOnClickListener(this);
+        btnNewbuildPage.setOnClickListener(this);
+        etNewbuildSql.setOnClickListener(this);
+        btnNewbuildConfirm.setOnClickListener(this);
     }
 
-    private void getDate() {
+    private void setDate() {
+        String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
+        Gson gson = new Gson();
+        final PropostNewlyBuildBean buildBean = new PropostNewlyBuildBean();
+        PropostNewlyBuildBean.Conditions conditions = buildBean.new Conditions();
+        conditions.setItem("");
+        conditions.setWorkingProcedure("");
+        buildBean.setConditions(conditions);
+        buildBean.setPageNum(0);
+        buildBean.setPageSize(10);
+        final String bean = gson.toJson(buildBean);
+        if (NetWork.isNetWorkAvailable(this)) {
+            OkHttpUtils.postString()
+                    .url(urlDaily)
+                    .content(bean)
+                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            try {
+                                System.out.print(response);
+                                String ress = response.replace("\\", "");
+                                System.out.print(ress);
+                                String ression = StringUtil.sideTrim(ress, "\"");
+                                System.out.print(ression);
+                                newlyBuildBean = new Gson().fromJson(ression, ProNewlyBuildBean.class);
+                                dataBeen = newlyBuildBean.getData();
+                                System.out.print(dataBeen);
+                                pageCount = newlyBuildBean.getTotalCount();
+                                String count = String.valueOf(pageCount / 10);
+                                tvNewbuildPage.setText(count);
+                                buildAdapter = new ProductionNewlyBuildAdapter(
+                                        ProductionNewlyBuildActivity.this, dataBeen);
+                                lv_newbuild_data.setAdapter(buildAdapter);
+                                lv_newbuild_data.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        ToastUtils.ShowToastMessage("点击的是"+position,ProductionNewlyBuildActivity.this);
+                                    }
+                                });
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
+        } else {
+            ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyBuildActivity.this);
+        }
+    }
+
+    /**
+     * 根据工序及款号查找信息
+     */
+    private void setPageDate() {
+        String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
+        String spinner = spinnerNewbuild.getText().toString();
+        String editNewlyBuild = etNewbuild.getText().toString();//输入款号
+        if (spinner.equals("选择工序") || spinner == null) {
+            new AlertDialog.Builder(ProductionNewlyBuildActivity.this).setTitle("提示信息")
+                    .setMessage("请选择工序,再查找款号信息")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();//相应事件
+        } else {
+            Gson gson = new Gson();
+            final PropostNewlyBuildBean buildBean = new PropostNewlyBuildBean();
+            PropostNewlyBuildBean.Conditions conditions = buildBean.new Conditions();
+            conditions.setItem(editNewlyBuild);
+            conditions.setWorkingProcedure(spinner);
+            buildBean.setConditions(conditions);
+            buildBean.setPageNum(0);
+            buildBean.setPageSize(10);
+            final String bean = gson.toJson(buildBean);
+            if (NetWork.isNetWorkAvailable(this)) {
+                OkHttpUtils.postString()
+                        .url(urlDaily)
+                        .content(bean)
+                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                e.printStackTrace();
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                try {
+                                    System.out.print(response);
+                                    String ress = response.replace("\\", "");
+                                    System.out.print(ress);
+                                    String ression = StringUtil.sideTrim(ress, "\"");
+                                    System.out.print(ression);
+                                    newlyBuildBean = new Gson().fromJson(ression, ProNewlyBuildBean.class);
+                                    dataBeen = newlyBuildBean.getData();
+                                    System.out.print(dataBeen);
+                                    pageCount = newlyBuildBean.getTotalCount();
+                                    String count = String.valueOf(pageCount / 10);
+                                    tvNewbuildPage.setText(count);
+                                    buildAdapter = new ProductionNewlyBuildAdapter(
+                                            ProductionNewlyBuildActivity.this, dataBeen);
+                                    lv_newbuild_data.setAdapter(buildAdapter);
+                                    buildAdapter.notifyDataSetChanged();
+                                } catch (JsonSyntaxException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
+            } else {
+                ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyBuildActivity.this);
+            }
+        }
+    }
+
+    private void setPagefistDate() {
+        String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
+        String spinner = spinnerNewbuild.getText().toString();//工序
+        String editNewlyBuild = etNewbuild.getText().toString();//输入款号
+        pageIndex = Integer.parseInt(etNewbuildDetail.getText().toString());
+        int ind = pageIndex - 1;
+        if (spinner == "选择工序" || spinner.equals("选择工序")) {
+            Gson gson = new Gson();
+            final PropostNewlyBuildBean buildBean = new PropostNewlyBuildBean();
+            PropostNewlyBuildBean.Conditions conditions = buildBean.new Conditions();
+            conditions.setItem("");
+            conditions.setWorkingProcedure("");
+            buildBean.setConditions(conditions);
+            buildBean.setPageNum(ind);
+            buildBean.setPageSize(10);
+            final String bean = gson.toJson(buildBean);
+            if (NetWork.isNetWorkAvailable(this)) {
+                OkHttpUtils.postString()
+                        .url(urlDaily)
+                        .content(bean)
+                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                e.printStackTrace();
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                try {
+                                    System.out.print(response);
+                                    String ress = response.replace("\\", "");
+                                    System.out.print(ress);
+                                    String ression = StringUtil.sideTrim(ress, "\"");
+                                    System.out.print(ression);
+                                    newlyBuildBean = new Gson().fromJson(ression, ProNewlyBuildBean.class);
+                                    dataBeen = newlyBuildBean.getData();
+                                    System.out.print(dataBeen);
+                                    pageCount = newlyBuildBean.getTotalCount();
+                                    String count = String.valueOf(pageCount / 10);
+                                    tvNewbuildPage.setText(count);
+                                    buildAdapter = new ProductionNewlyBuildAdapter(
+                                            ProductionNewlyBuildActivity.this, dataBeen);
+                                    lv_newbuild_data.setAdapter(buildAdapter);
+                                    buildAdapter.notifyDataSetChanged();
+                                } catch (JsonSyntaxException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
+            } else {
+                ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyBuildActivity.this);
+            }
+        } else {
+            Gson gson = new Gson();
+            final PropostNewlyBuildBean buildBean = new PropostNewlyBuildBean();
+            PropostNewlyBuildBean.Conditions conditions = buildBean.new Conditions();
+            conditions.setItem(editNewlyBuild);
+            conditions.setWorkingProcedure(spinner);
+            buildBean.setConditions(conditions);
+            buildBean.setPageNum(ind);
+            buildBean.setPageSize(10);
+            final String bean = gson.toJson(buildBean);
+            if (NetWork.isNetWorkAvailable(this)) {
+                OkHttpUtils.postString()
+                        .url(urlDaily)
+                        .content(bean)
+                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                e.printStackTrace();
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                try {
+                                    System.out.print(response);
+                                    String ress = response.replace("\\", "");
+                                    System.out.print(ress);
+                                    String ression = StringUtil.sideTrim(ress, "\"");
+                                    System.out.print(ression);
+                                    newlyBuildBean = new Gson().fromJson(ression, ProNewlyBuildBean.class);
+                                    dataBeen = newlyBuildBean.getData();
+                                    System.out.print(dataBeen);
+                                    pageCount = newlyBuildBean.getTotalCount();
+                                    String count = String.valueOf(pageCount / 10);
+                                    tvNewbuildPage.setText(count);
+                                    buildAdapter = new ProductionNewlyBuildAdapter(
+                                            ProductionNewlyBuildActivity.this, dataBeen);
+                                    lv_newbuild_data.setAdapter(buildAdapter);
+                                    buildAdapter.notifyDataSetChanged();
+                                } catch (JsonSyntaxException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
+            } else {
+                ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyBuildActivity.this);
+            }
+        }
+
 
     }
 
@@ -116,6 +392,41 @@ public class ProductionNewlyBuildActivity
                 });
                 popupMenu.show();
                 break;
+            case R.id.btnNewbuildPage:
+                String countpage = tvNewbuildPage.getText().toString();
+                String text = etNewbuildDetail.getText().toString();
+                if (text.length() == 0) {
+                    ToastUtils.ShowToastMessage("页码不能为空", ProductionNewlyBuildActivity.this);
+                    return;
+                } else if (text.length() > countpage.length()) {
+                    ToastUtils.ShowToastMessage("页码超出输入范围", ProductionNewlyBuildActivity.this);
+                } else {
+                    setPagefistDate();
+                }
+                break;
+            case R.id.etNewbuildSql:
+                setPageDate();
+                break;
+            case R.id.btnNewbuildConfirm:
+
+                break;
         }
     }
+
+    AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            TextView textView = (TextView) view;
+            textView.setBackgroundColor(Color.YELLOW);
+            buildAdapter.setSelectItem(position);//记录当前选中的item
+            ToastUtils.ShowToastMessage("点击的是"+position,ProductionNewlyBuildActivity.this);
+            buildAdapter.notifyDataSetInvalidated();
+        }
+    };
+
+    public void setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+
 }

@@ -98,7 +98,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     private void initView() {
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);
-        etSqlDetail.setSelection(etSqlDetail.length());
+        etSqlDetail.setSelection(etSqlDetail.getText().length());
     }
 
     /**
@@ -193,12 +193,12 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     detailBeenList = detailBean.getData();
                                     System.out.print(detailBeenList);
                                     pageCount = detailBean.getTotalCount();
-                                    String count = String.valueOf(pageCount / 20);
+                                    String count = String.valueOf(pageCount / 10);
                                     tvSignPage.setText(count);
                                     adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                     mData.setAdapter(adapter);
-                                    adapter.notifyDataSetChanged();
                                     ResponseDialog.closeLoading();
+                                    adapter.notifyDataSetChanged();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
                                     ResponseDialog.closeLoading();
@@ -248,10 +248,11 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     detailBeenList = detailBean.getData();
                                     System.out.print(detailBeenList);
                                     pageCount = detailBean.getTotalCount();
-                                    String count = String.valueOf(pageCount / 20);
+                                    String count = String.valueOf(pageCount / 10);
                                     tvSignPage.setText(count);
                                     adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                     mData.setAdapter(adapter);
+                                    ResponseDialog.closeLoading();
                                     adapter.notifyDataSetChanged();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
@@ -317,10 +318,11 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     detailBeenList = detailBean.getData();
                                     System.out.print(detailBeenList);
                                     pageCount = detailBean.getTotalCount();
-                                    String count = String.valueOf(pageCount / 20);
+                                    String count = String.valueOf(pageCount / 10);
                                     tvSignPage.setText(count);
                                     adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                     mData.setAdapter(adapter);
+                                    ResponseDialog.closeLoading();
                                     adapter.notifyDataSetChanged();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
@@ -376,6 +378,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     tvSignPage.setText(count);
                                     adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                     mData.setAdapter(adapter);
+                                    ResponseDialog.closeLoading();
                                     adapter.notifyDataSetChanged();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
@@ -400,7 +403,6 @@ public class ProductionActivity extends BaseFrangmentActivity
         String proColumnTitle = sp.getString("proColumnTitle", "");//部门
         if (proColumnTitle == "" || proColumnTitle.equals("")) {
             proColumnTitle = null;
-//            String columntitle = proColumnTitle.replace("\0","null");
             System.out.print(proColumnTitle);
         }
         String proProcedureTitle = sp.getString("proProcedureTitle", "");//工序

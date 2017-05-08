@@ -235,6 +235,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                 detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
                                 mData.setAdapter(detailAdapter);
                                 detailAdapter.notifyDataSetChanged();
+                                ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
                                 ResponseDialog.closeLoading();

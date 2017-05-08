@@ -134,13 +134,19 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
                         //用车申请单
                         JSONObject objectcar = (JSONObject) temp.get(0);
                         String Stringcar = objectcar.getString("text");
-                        tvOpenCarDetail.setVisibility(View.VISIBLE);
-                        tvOpenCarDetail.setText(Stringcar);
+                        if (Stringcar.equals("") || Stringcar == "") {
+                            llOpenCarDetail.setVisibility(View.GONE);
+                        } else {
+                            llOpenCarDetail.setVisibility(View.VISIBLE);
+                            tvOpenCarDetail.setVisibility(View.VISIBLE);
+                            tvOpenCarDetail.setText(Stringcar);
+                        }
+
                         //签到
                         JSONObject objectsign = (JSONObject) temp.get(1);
                         String Stringsign = objectsign.getString("text");
                         tvSign.setVisibility(View.VISIBLE);
-                        tvSign.setText(Stringsign+"表");
+                        tvSign.setText(Stringsign + "表");
                         //签到查询
                         JSONObject objectsignsql = (JSONObject) temp.get(2);
                         String Stringsignsql = objectsignsql.getString("text");
@@ -150,15 +156,25 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
                         JSONObject objectbus = (JSONObject) temp.get(3);
                         String Stringbus = objectbus.getString("text");
                         tvBusRoute.setVisibility(View.VISIBLE);
-                        tvBusRoute.setText(Stringbus+"图");
+                        tvBusRoute.setText(Stringbus + "图");
                         //生产日报
                         JSONObject objectproduction = (JSONObject) temp.get(4);
                         String Stringproduction = objectproduction.getString("text");
-                        tvProduction.setVisibility(View.VISIBLE);
-                        tvProduction.setText(Stringproduction);
+                        if (Stringproduction.equals("") || Stringproduction == "") {
+                            llProduction.setVisibility(View.GONE);
+                        } else {
+                            llProduction.setVisibility(View.VISIBLE);
+                            tvProduction.setVisibility(View.VISIBLE);
+                            tvProduction.setText(Stringproduction);
+                        }
                         //查货跟踪
                         JSONObject objectCommo = (JSONObject) temp.get(5);
                         String StringCommo = objectCommo.getString("text");
+                        if (StringCommo.equals("") || StringCommo == "") {
+                            llSqlgoods.setVisibility(View.GONE);
+                        } else {
+                            llSqlgoods.setVisibility(View.VISIBLE);
+                        }
                         tvSqlgoods.setVisibility(View.VISIBLE);
                         tvSqlgoods.setText(StringCommo);
                     }

@@ -1,13 +1,21 @@
 package com.daoran.newfactory.onefactory.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.bean.ProNewlyBuildBean;
+import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
+import com.daoran.newfactory.onefactory.util.ToastUtils;
+
+import java.util.List;
 
 /**
  * Created by lizhipeng on 2017/5/5.
@@ -15,28 +23,41 @@ import com.daoran.newfactory.onefactory.R;
 
 public class ProductionNewlyBuildAdapter extends BaseAdapter {
     private Context context;
+    private List<ProNewlyBuildBean.DataBean> dataBeen;
+    private int selectItem = -1;
+    private SharedPreferences sp;
+    private SPUtils spUtils;
 
-    @Override
-    public int getCount() {
-        return 0;
+    public ProductionNewlyBuildAdapter(Context context, List<ProNewlyBuildBean.DataBean> dataBeen) {
+        this.context = context;
+        this.dataBeen = dataBeen;
     }
 
     @Override
-    public Object getItem(int position) {
-        return null;
+    public int getCount() {
+        return dataBeen.size();
+    }
+
+    @Override
+    public ProNewlyBuildBean.DataBean getItem(int position) {
+        return dataBeen.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
+    }
+
+    public void setSelectItem(int selectItem) {
+        this.selectItem = selectItem;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
-        if(convertView==null){
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        final ViewHolder viewHolder;
+        if (convertView == null) {
             viewHolder = new ViewHolder();
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_production_newlybuild,null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_production_newlybuild, null);
             viewHolder.tv_data = (TextView) convertView.findViewById(R.id.tv_data);
             viewHolder.tvProDocumentary = (TextView) convertView.findViewById(R.id.tvProDocumentary);
             viewHolder.tvProFactory = (TextView) convertView.findViewById(R.id.tvProFactory);
@@ -50,14 +71,68 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
             viewHolder.tvProClippingNumber = (TextView) convertView.findViewById(R.id.tvProClippingNumber);
             viewHolder.tvProCompletedLastMonth = (TextView) convertView.findViewById(R.id.tvProCompletedLastMonth);
             viewHolder.tvProTotalCompletion = (TextView) convertView.findViewById(R.id.tvProTotalCompletion);
+            viewHolder.lin_content = (LinearLayout) convertView.findViewById(R.id.lin_content);
             convertView.setTag(viewHolder);
-        }else{
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        return null;
+        viewHolder.tv_data.setText(getItem(position).getItem());
+        viewHolder.tvProDocumentary.setText(getItem(position).getPrddocumentary());
+        viewHolder.tvProFactory.setText(getItem(position).getSubfactory());
+        viewHolder.tvProDepartment.setText(getItem(position).getSubfactoryTeams());
+        viewHolder.tvProProcedure.setText(getItem(position).getWorkingProcedure());
+        viewHolder.tvProOthers.setText(getItem(position).getWorkers());
+        viewHolder.tvProSingularSystem.setText(getItem(position).getPqty());
+        viewHolder.tvProColor.setText(getItem(position).getTaskqty());
+        viewHolder.tvProTaskNumber.setText(getItem(position).getMdl());
+        viewHolder.tvProSize.setText(getItem(position).getProdcol());
+        viewHolder.tvProClippingNumber.setText(getItem(position).getFactcutqty());
+        viewHolder.tvProCompletedLastMonth.setText(getItem(position).getSumCompletedQty());
+        viewHolder.tvProTotalCompletion.setText(getItem(position).getPrdstatus());
+        if (selectItem == position) {
+            viewHolder.lin_content.setBackgroundColor(Color.YELLOW);
+        } else {
+            viewHolder.lin_content.setBackgroundColor(Color.TRANSPARENT);
+        }
+        viewHolder.lin_content.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtils.ShowToastMessage("点击的是"+position,context);
+                String tvdate = getItem(position).getItem();
+                spUtils.put(context,"tvnewlydate",tvdate);
+                String tvProDocumentary = getItem(position).getPrddocumentary();
+                spUtils.put(context,"tvnewlyDocumentary",tvProDocumentary);
+                String tvProFactory = getItem(position).getSubfactory();
+                spUtils.put(context,"tvnewlyFactory",tvProFactory);
+                String tvProDepartment = getItem(position).getSubfactoryTeams();
+                spUtils.put(context,"tvnewlyDepartment",tvProDepartment);
+                String tvProProcedure = getItem(position).getWorkingProcedure();
+                spUtils.put(context,"tvnewlyProcedure",tvProProcedure);
+                String tvProOthers = getItem(position).getWorkers();
+                spUtils.put(context,"tvnewlyOthers",tvProOthers);
+                String tvProSingularSystem = getItem(position).getPqty();
+                spUtils.put(context,"tvnewSingularSystem",tvProSingularSystem);
+                String tvProColor = getItem(position).getTaskqty();
+                spUtils.put(context,"tvdate",tvProColor);
+                String tvProTaskNumber = getItem(position).getMdl();
+                spUtils.put(context,"tvnewTaskNumber",tvProTaskNumber);
+                String tvProSize = getItem(position).getProdcol();
+                spUtils.put(context,"tvnewlySize",tvProSize);
+                String tvProClippingNumber = getItem(position).getFactcutqty();
+                spUtils.put(context,"tvnewlyClippingNumber",tvProClippingNumber);
+                String tvProCompletedLastMonth = getItem(position).getSumCompletedQty();
+                spUtils.put(context,"tvnewlyCompletedLastMonth",tvProCompletedLastMonth);
+                String tvProTotalCompletion = getItem(position).getPrdstatus();
+                spUtils.put(context,"tvnewlyTotalCompletion",tvProTotalCompletion);
+
+
+                viewHolder.lin_content.setBackgroundColor(Color.YELLOW);
+            }
+        });
+        return convertView;
     }
 
-    class ViewHolder{
+    class ViewHolder {
         TextView tv_data,//款号
                 tvProDocumentary,//跟单
                 tvProFactory,//工厂
@@ -71,5 +146,6 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
                 tvProClippingNumber,//实裁数
                 tvProCompletedLastMonth,//总完工数
                 tvProTotalCompletion;//状态
+        LinearLayout lin_content;
     }
 }

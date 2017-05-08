@@ -61,8 +61,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_commodity_data, null);
-            holder.tvCommoItem = (EditText) convertView.findViewById(R.id.tvCommoItem);
-            holder.tvCommoCtmtxt = (EditText) convertView.findViewById(R.id.tvCommoCtmtxt);
+            holder.tvCommoItem = (TextView) convertView.findViewById(R.id.tvCommoItem);
+            holder.tvCommoCtmtxt = (TextView) convertView.findViewById(R.id.tvCommoCtmtxt);
             holder.tvCommoPrddocumentary = (EditText) convertView.findViewById(R.id.tvCommoPrddocumentary);
             holder.tvCommoprdmaster = (EditText) convertView.findViewById(R.id.tvCommoprdmaster);
             holder.tvCommoQCMasterScore = (EditText) convertView.findViewById(R.id.tvCommoQCMasterScore);
@@ -104,7 +104,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoIPQCmdt = (EditText) convertView.findViewById(R.id.tvCommoIPQCmdt);
             holder.tvCommoQAname = (EditText) convertView.findViewById(R.id.tvCommoQAname);
             holder.tvCommoQAScore = (EditText) convertView.findViewById(R.id.tvCommoQAScore);
-            holder.tvCommoQAMemo = (EditText) convertView.findViewById(R.id.tvCommoQAMemo);
+            holder.tvCommoQAMemo = (TextView) convertView.findViewById(R.id.tvCommoQAMemo);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -127,89 +127,89 @@ public class CommoditySqlAdapter extends BaseAdapter {
             if (documentary.equals("吕玉如") || master.equals(nameid)) {
 
                 holder.tvCommoItem.setEnabled(true);
-                final EditText editTextItem = holder.tvCommoItem;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                if (editTextItem.getTag() instanceof TextWatcher) {
-                    editTextItem.removeTextChangedListener((TextWatcher) editTextItem.getTag());
-                }
-                editTextItem.setText(getItem(position).getItem());
-                editTextItem.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
-                TextWatcher TvItem = new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                        Log.d(TAG, "beforeTextChanged");
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        Log.d(TAG, "onTextChanged");
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        Log.d(TAG, "afterTextChanged");
-                        String proitem = holder.tvCommoItem.getText().toString();
-                        spUtils.put(context, "CommodityItem", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
-                    }
-                };
-                editTextItem.addTextChangedListener(TvItem);
-                editTextItem.setTag(TvItem);
-            /*光标放置在文本最后*/
-                holder.tvCommoItem.setSelection(holder.tvCommoItem.length());
+//                final EditText editTextItem = holder.tvCommoItem;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//                if (editTextItem.getTag() instanceof TextWatcher) {
+//                    editTextItem.removeTextChangedListener((TextWatcher) editTextItem.getTag());
+//                }
+                holder.tvCommoItem.setText(getItem(position).getItem());
+//                editTextItem.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
+//                TextWatcher TvItem = new TextWatcher() {
+//                    @Override
+//                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                        Log.d(TAG, "beforeTextChanged");
+//                    }
+//
+//                    @Override
+//                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                        Log.d(TAG, "onTextChanged");
+//                    }
+//
+//                    @Override
+//                    public void afterTextChanged(Editable s) {
+//                        Log.d(TAG, "afterTextChanged");
+//                        String proitem = holder.tvCommoItem.getText().toString();
+//                        spUtils.put(context, "CommodityItem", proitem);
+//                        ToastUtils.ShowToastMessage(proitem, context);
+//                    }
+//                };
+//                editTextItem.addTextChangedListener(TvItem);
+//                editTextItem.setTag(TvItem);
+//            /*光标放置在文本最后*/
+//                holder.tvCommoItem.setSelection(holder.tvCommoItem.length());
 
 
                 holder.tvCommoCtmtxt.setEnabled(true);
-                final EditText editTextCtmtxt = holder.tvCommoCtmtxt;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                if (editTextCtmtxt.getTag() instanceof TextWatcher) {
-                    editTextCtmtxt.removeTextChangedListener((TextWatcher) editTextCtmtxt.getTag());
-                }
-                editTextCtmtxt.setText(getItem(position).getCtmtxt());
-                editTextCtmtxt.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
-                TextWatcher TvCtmtxt = new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                        Log.d(TAG, "beforeTextChanged");
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        Log.d(TAG, "onTextChanged");
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        Log.d(TAG, "afterTextChanged");
-                        String proitem = holder.tvCommoCtmtxt.getText().toString();
-                        spUtils.put(context, "CommodityCtmtxt", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
-                    }
-                };
-                editTextCtmtxt.addTextChangedListener(TvCtmtxt);
-                editTextCtmtxt.setTag(TvCtmtxt);
-            /*光标放置在文本最后*/
-                holder.tvCommoCtmtxt.setSelection(holder.tvCommoCtmtxt.length());
+//                final EditText editTextCtmtxt = holder.tvCommoCtmtxt;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//                if (editTextCtmtxt.getTag() instanceof TextWatcher) {
+//                    editTextCtmtxt.removeTextChangedListener((TextWatcher) editTextCtmtxt.getTag());
+//                }
+                holder.tvCommoCtmtxt.setText(getItem(position).getCtmtxt());
+//                editTextCtmtxt.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
+//                TextWatcher TvCtmtxt = new TextWatcher() {
+//                    @Override
+//                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                        Log.d(TAG, "beforeTextChanged");
+//                    }
+//
+//                    @Override
+//                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                        Log.d(TAG, "onTextChanged");
+//                    }
+//
+//                    @Override
+//                    public void afterTextChanged(Editable s) {
+//                        Log.d(TAG, "afterTextChanged");
+//                        String proitem = holder.tvCommoCtmtxt.getText().toString();
+//                        spUtils.put(context, "CommodityCtmtxt", proitem);
+//                        ToastUtils.ShowToastMessage(proitem, context);
+//                    }
+//                };
+//                editTextCtmtxt.addTextChangedListener(TvCtmtxt);
+//                editTextCtmtxt.setTag(TvCtmtxt);
+//            /*光标放置在文本最后*/
+//                holder.tvCommoCtmtxt.setSelection(holder.tvCommoCtmtxt.length());
 
 
                 holder.tvCommoPrddocumentary.setEnabled(true);
@@ -1935,63 +1935,63 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
 
                 holder.tvCommoQAMemo.setEnabled(true);
-                final EditText editTextQAMemo = holder.tvCommoQAMemo;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                if (editTextQAMemo.getTag() instanceof TextWatcher) {
-                    editTextQAMemo.removeTextChangedListener((TextWatcher) editTextQAMemo.getTag());
-                }
-                editTextQAMemo.setText(getItem(position).getQAMemo());
-                editTextQAMemo.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
-                TextWatcher TvQAMemo = new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                        Log.d(TAG, "beforeTextChanged");
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        Log.d(TAG, "onTextChanged");
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        Log.d(TAG, "afterTextChanged");
-                        String proitem = holder.tvCommoQAMemo.getText().toString();
-                        spUtils.put(context, "CommodityQAMemo", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
-                    }
-                };
-                editTextQAMemo.addTextChangedListener(TvQAMemo);
-                editTextQAMemo.setTag(TvQAMemo);
-            /*光标放置在文本最后*/
-                holder.tvCommoQAMemo.setSelection(holder.tvCommoQAMemo.length());
+//                final EditText editTextQAMemo = holder.tvCommoQAMemo;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//                if (editTextQAMemo.getTag() instanceof TextWatcher) {
+//                    editTextQAMemo.removeTextChangedListener((TextWatcher) editTextQAMemo.getTag());
+//                }
+                holder.tvCommoQAMemo.setText(getItem(position).getQAMemo());
+//                editTextQAMemo.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
+//                TextWatcher TvQAMemo = new TextWatcher() {
+//                    @Override
+//                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                        Log.d(TAG, "beforeTextChanged");
+//                    }
+//
+//                    @Override
+//                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                        Log.d(TAG, "onTextChanged");
+//                    }
+//
+//                    @Override
+//                    public void afterTextChanged(Editable s) {
+//                        Log.d(TAG, "afterTextChanged");
+//                        String proitem = holder.tvCommoQAMemo.getText().toString();
+//                        spUtils.put(context, "CommodityQAMemo", proitem);
+//                        ToastUtils.ShowToastMessage(proitem, context);
+//                    }
+//                };
+//                editTextQAMemo.addTextChangedListener(TvQAMemo);
+//                editTextQAMemo.setTag(TvQAMemo);
+//            /*光标放置在文本最后*/
+//                holder.tvCommoQAMemo.setSelection(holder.tvCommoQAMemo.length());
 
 
             } else {
                 holder.tvCommoItem.setEnabled(false);
-                final EditText editTextItem = holder.tvCommoItem;
-                if (editTextItem.getTag() instanceof TextWatcher) {
-                    editTextItem.removeTextChangedListener((TextWatcher) editTextItem.getTag());
-                }
-                editTextItem.setText(getItem(position).getItem());
+//                final EditText editTextItem = holder.tvCommoItem;
+//                if (editTextItem.getTag() instanceof TextWatcher) {
+//                    editTextItem.removeTextChangedListener((TextWatcher) editTextItem.getTag());
+//                }
+                holder.tvCommoItem.setText(getItem(position).getItem());
 
                 holder.tvCommoCtmtxt.setEnabled(false);
-                final EditText editTextCtmtxt = holder.tvCommoCtmtxt;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                if (editTextCtmtxt.getTag() instanceof TextWatcher) {
-                    editTextCtmtxt.removeTextChangedListener((TextWatcher) editTextCtmtxt.getTag());
-                }
-                editTextCtmtxt.setText(getItem(position).getCtmtxt());
+//                final EditText editTextCtmtxt = holder.tvCommoCtmtxt;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//                if (editTextCtmtxt.getTag() instanceof TextWatcher) {
+//                    editTextCtmtxt.removeTextChangedListener((TextWatcher) editTextCtmtxt.getTag());
+//                }
+                holder.tvCommoCtmtxt.setText(getItem(position).getCtmtxt());
 
                 holder.tvCommoPrddocumentary.setEnabled(false);
                 final EditText editTextPrddocumentary = holder.tvCommoPrddocumentary;
@@ -2316,30 +2316,30 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextQAScore.setText(getItem(position).getQAScore());
 
                 holder.tvCommoQAMemo.setEnabled(false);
-                final EditText editTextQAMemo = holder.tvCommoQAMemo;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                if (editTextQAMemo.getTag() instanceof TextWatcher) {
-                    editTextQAMemo.removeTextChangedListener((TextWatcher) editTextQAMemo.getTag());
-                }
-                editTextQAMemo.setText(getItem(position).getQAMemo());
+//                final EditText editTextQAMemo = holder.tvCommoQAMemo;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//                if (editTextQAMemo.getTag() instanceof TextWatcher) {
+//                    editTextQAMemo.removeTextChangedListener((TextWatcher) editTextQAMemo.getTag());
+//                }
+                holder.tvCommoQAMemo.setText(getItem(position).getQAMemo());
 
             }
 
         } else {
             holder.tvCommoItem.setEnabled(false);
-            final EditText editTextItem = holder.tvCommoItem;
-            if (editTextItem.getTag() instanceof TextWatcher) {
-                editTextItem.removeTextChangedListener((TextWatcher) editTextItem.getTag());
-            }
-            editTextItem.setText(getItem(position).getItem());
+//            final EditText editTextItem = holder.tvCommoItem;
+//            if (editTextItem.getTag() instanceof TextWatcher) {
+//                editTextItem.removeTextChangedListener((TextWatcher) editTextItem.getTag());
+//            }
+            holder.tvCommoItem.setText(getItem(position).getItem());
 
             holder.tvCommoCtmtxt.setEnabled(false);
-            final EditText editTextCtmtxt = holder.tvCommoCtmtxt;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextCtmtxt.getTag() instanceof TextWatcher) {
-                editTextCtmtxt.removeTextChangedListener((TextWatcher) editTextCtmtxt.getTag());
-            }
-            editTextCtmtxt.setText(getItem(position).getCtmtxt());
+//            final EditText editTextCtmtxt = holder.tvCommoCtmtxt;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextCtmtxt.getTag() instanceof TextWatcher) {
+//                editTextCtmtxt.removeTextChangedListener((TextWatcher) editTextCtmtxt.getTag());
+//            }
+            holder.tvCommoCtmtxt.setText(getItem(position).getCtmtxt());
 
             holder.tvCommoPrddocumentary.setEnabled(false);
             final EditText editTextPrddocumentary = holder.tvCommoPrddocumentary;
@@ -2663,12 +2663,12 @@ public class CommoditySqlAdapter extends BaseAdapter {
             editTextQAScore.setText(getItem(position).getQAScore());
 
             holder.tvCommoQAMemo.setEnabled(false);
-            final EditText editTextQAMemo = holder.tvCommoQAMemo;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextQAMemo.getTag() instanceof TextWatcher) {
-                editTextQAMemo.removeTextChangedListener((TextWatcher) editTextQAMemo.getTag());
-            }
-            editTextQAMemo.setText(getItem(position).getQAMemo());
+//            final EditText editTextQAMemo = holder.tvCommoQAMemo;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextQAMemo.getTag() instanceof TextWatcher) {
+//                editTextQAMemo.removeTextChangedListener((TextWatcher) editTextQAMemo.getTag());
+//            }
+            holder.tvCommoQAMemo.setText(getItem(position).getQAMemo());
 
         }
 
@@ -2705,8 +2705,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        TextView tvCommoOurAfter;
-        EditText tvCommoItem, tvCommoCtmtxt, tvCommoPrddocumentary, tvCommoprdmaster,
+        TextView tvCommoOurAfter,tvCommoItem,tvCommoCtmtxt,tvCommoQAMemo;
+        EditText tvCommoPrddocumentary, tvCommoprdmaster,
                 tvCommoQCMasterScore, tvCommoSealedrev, tvCommoDocback, tvCommoLcdat,
                 tvCommoTaskqty, tvCommoPreMemo, tvCommoPredocdt, tvCommoPred,
                 tvCommoPredoc, tvCommoFabricsok, tvCommoAccessoriesok,
@@ -2716,7 +2716,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 tvCommoPreedt, tvCommoQCMedt, tvCommoQCedtDoc, tvCommoFctmdt,
                 tvCommoFctedt, tvCommoPackbdat, tvCommoPackqty2, tvCommoQCMemo,
                 tvCommoFactlcdat, tvCommoBatchid, tvCommoCtmchkdt,
-                tvCommoIPQCPedt, tvCommoIPQCmdt, tvCommoQAname, tvCommoQAScore,
-                tvCommoQAMemo;
+                tvCommoIPQCPedt, tvCommoIPQCmdt, tvCommoQAname, tvCommoQAScore
+                ;
     }
 }
