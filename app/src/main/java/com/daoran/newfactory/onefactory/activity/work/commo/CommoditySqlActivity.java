@@ -90,6 +90,9 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         btnCommoSave = (Button) findViewById(R.id.btnCommoSave);
     }
 
+    /**
+     * 控件操作
+     */
     private void initView() {
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);

@@ -59,6 +59,9 @@ public class ProductionActivity extends BaseFrangmentActivity
     private EditText etSqlDetail;
     private TextView tvSignPage;
     private Button btnSignPage, btnProSave, spinnermenu;
+    private TextView spinnerNewbuild;
+    private EditText etNewbuild;
+
 
     private SharedPreferences sp;
     private SPUtils spUtils;
@@ -71,9 +74,9 @@ public class ProductionActivity extends BaseFrangmentActivity
         setContentView(R.layout.activity_production);
         getViews();
         initView();
-        setListener();
         setData();
-//        setItemClick();
+        setListener();
+
     }
 
     /**
@@ -198,7 +201,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                     mData.setAdapter(adapter);
                                     ResponseDialog.closeLoading();
-                                    adapter.notifyDataSetChanged();
+//                                    adapter.notifyDataSetChanged();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
                                     ResponseDialog.closeLoading();

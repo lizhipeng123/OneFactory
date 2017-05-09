@@ -3,6 +3,7 @@ package com.daoran.newfactory.onefactory.activity.work.production;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -77,9 +78,8 @@ public class ProductionNewlyBuildActivity
     private int pageCount;
     private int pageIndex = 0;
 
-    private SharedPreferences sp;
-    private SPUtils spUtils;
-
+    private SharedPreferences sp;//轻量级存储
+    private SPUtils spUtils;//保存在手机中的目录
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +118,6 @@ public class ProductionNewlyBuildActivity
 
     }
 
-
     /**
      * 控件属性
      */
@@ -130,6 +129,9 @@ public class ProductionNewlyBuildActivity
         btnNewbuildConfirm.setOnClickListener(this);
     }
 
+    /**
+     * 初始化查询
+     */
     private void setDate() {
         String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
         Gson gson = new Gson();
@@ -173,13 +175,12 @@ public class ProductionNewlyBuildActivity
                                 lv_newbuild_data.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        ToastUtils.ShowToastMessage("点击的是"+position,ProductionNewlyBuildActivity.this);
+                                        ToastUtils.ShowToastMessage("点击的是" + position, ProductionNewlyBuildActivity.this);
                                     }
                                 });
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
                             }
-
                         }
                     });
         } else {
@@ -246,7 +247,6 @@ public class ProductionNewlyBuildActivity
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
                                 }
-
                             }
                         });
             } else {
@@ -255,6 +255,9 @@ public class ProductionNewlyBuildActivity
         }
     }
 
+    /**
+     * 根据工序查询信息
+     */
     private void setPagefistDate() {
         String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
         String spinner = spinnerNewbuild.getText().toString();//工序
@@ -304,7 +307,6 @@ public class ProductionNewlyBuildActivity
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
                                 }
-
                             }
                         });
             } else {
@@ -353,23 +355,22 @@ public class ProductionNewlyBuildActivity
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
                                 }
-
                             }
                         });
             } else {
                 ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyBuildActivity.this);
             }
         }
-
-
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            /*返回按键*/
             case R.id.ivProductionBack:
                 finish();
                 break;
+            /*选择工序*/
             case R.id.spinnerNewbuild:
                 PopupMenu popupMenu = new PopupMenu(ProductionNewlyBuildActivity.this, v);
                 popupMenu.getMenuInflater().inflate(R.menu.menu_pro_spinnernew, popupMenu.getMenu());
@@ -392,6 +393,7 @@ public class ProductionNewlyBuildActivity
                 });
                 popupMenu.show();
                 break;
+            /*翻页确定按钮*/
             case R.id.btnNewbuildPage:
                 String countpage = tvNewbuildPage.getText().toString();
                 String text = etNewbuildDetail.getText().toString();
@@ -404,11 +406,20 @@ public class ProductionNewlyBuildActivity
                     setPagefistDate();
                 }
                 break;
+            /*根据工序及款号查找信息*/
             case R.id.etNewbuildSql:
                 setPageDate();
                 break;
+            /*款号选择之后确定新增*/
             case R.id.btnNewbuildConfirm:
-
+                sp = getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+                boolean b = sp.getBoolean("tvflag",true);
+                if(b==true){
+                    ToastUtils.ShowToastMessage("输入结果是"+b,ProductionNewlyBuildActivity.this);
+                    startActivity(new Intent(this,ProductionNewlyComfigActivity.class));
+                }else{
+                    ToastUtils.ShowToastMessage("请选择款号，再点击确定",ProductionNewlyBuildActivity.this);
+                }
                 break;
         }
     }
@@ -419,7 +430,8 @@ public class ProductionNewlyBuildActivity
             TextView textView = (TextView) view;
             textView.setBackgroundColor(Color.YELLOW);
             buildAdapter.setSelectItem(position);//记录当前选中的item
-            ToastUtils.ShowToastMessage("点击的是"+position,ProductionNewlyBuildActivity.this);
+//            ToastUtils.ShowToastMessage("点击的是" + position, ProductionNewlyBuildActivity.this);
+
             buildAdapter.notifyDataSetInvalidated();
         }
     };
@@ -427,6 +439,4 @@ public class ProductionNewlyBuildActivity
     public void setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
-
-
 }

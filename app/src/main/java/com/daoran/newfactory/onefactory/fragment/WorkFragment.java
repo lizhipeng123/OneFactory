@@ -23,6 +23,7 @@ import com.daoran.newfactory.onefactory.activity.work.SignDetailActivity;
 import com.daoran.newfactory.onefactory.activity.work.DebugGaodeActivity;
 import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
 import com.daoran.newfactory.onefactory.activity.work.SignActivity;
+import com.daoran.newfactory.onefactory.activity.work.production.ProductionNewActivity;
 import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetUtil;

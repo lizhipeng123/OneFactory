@@ -68,8 +68,7 @@ public class ProductionAdapter extends BaseAdapter {
         final ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            convertView = LayoutInflater.
-                    from(context).inflate(R.layout.item_production_data, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_production_data, null);
             viewHolder.tv_data = (TextView) convertView.findViewById(R.id.tv_data);
             viewHolder.tvProDocumentary = (TextView) convertView.findViewById(R.id.tvProDocumentary);
             viewHolder.tvProFactory = (TextView) convertView.findViewById(R.id.tvProFactory);
@@ -125,18 +124,20 @@ public class ProductionAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
-
-
          /*判断item中制单人是否是登录用户，是为可改，否为不可改*/
         sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
         String nameid = sp.getString("username", "");
-        String recorder = getItem(position).getRecorder().toString();
+        String recorder = getItem(position).getRecorder();
         String proid = String.valueOf(getItem(position).getID());
         spUtils.put(context, "proid", proid);
         String salesid = String.valueOf(getItem(position).getSalesid());
         spUtils.put(context, "salesid", salesid);
-        if (nameid == recorder || recorder.equals("毕三军")) {
+        if(recorder==null){
+            recorder="";
+        }else{
+            recorder = getItem(position).getRecorder();
+        }
+        if (recorder.equals("")||recorder.equals("毕三军")) {
 
             viewHolder.tv_data.setEnabled(true);
             viewHolder.tv_data.setText(getItem(position).getItem());

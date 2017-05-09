@@ -127,16 +127,14 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
                     System.out.print(content);
                     carDetailBean = new Gson().fromJson(content,CarDetailBean.class);
                     System.out.print(carDetailBean);
-//                    if(){
-//
-//                    }
-//                    tvCarcode.setText(carDetailBean.getCode());
-//                    tvCarrecorder.setText(carDetailBean.getRecorder());
-//                    tvCarroad.setText(carDetailBean.getRoad());
-//                    tvCarrecordt.setText(carDetailBean.getRecordt());
-//                    tvCarreason.setText(carDetailBean.getReason());
-//                    tvCardepartureBdt.setText(carDetailBean.getDepartureBdt());
-//                    tvCardepartureEdt.setText(carDetailBean.getDepartureEdt());
+
+                    tvCarcode.setText(carDetailBean.getCode());
+                    tvCarrecorder.setText(carDetailBean.getRecorder());
+                    tvCarroad.setText(carDetailBean.getRoad());
+                    tvCarrecordt.setText(carDetailBean.getRecordt());
+                    tvCarreason.setText(carDetailBean.getReason());
+                    tvCardepartureBdt.setText(carDetailBean.getDepartureBdt());
+                    tvCardepartureEdt.setText(carDetailBean.getDepartureEdt());
                 }
 
                 @Override
@@ -189,7 +187,7 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     String[] languages = getResources().getStringArray(R.array.driver);
-                                    ToastUtils.ShowToastMessage("点击的是"+languages[position],CarapplyActivity.this);
+//                                    ToastUtils.ShowToastMessage("点击的是"+languages[position],CarapplyActivity.this);
 //                                    .put(CarapplyActivity.this, "languages", languages[position]);
                                 }
 
@@ -238,7 +236,7 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     String[] languages = getResources().getStringArray(R.array.CarNumberBind);
-                                    ToastUtils.ShowToastMessage("点击的是"+languages[position],CarapplyActivity.this);
+//                                    ToastUtils.ShowToastMessage("点击的是"+languages[position],CarapplyActivity.this);
                                 }
 
                                 @Override

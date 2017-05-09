@@ -18,7 +18,7 @@
             android:gravity="center"
             android:textSize="@dimen/dimen_40sp"
             android:textColor="@color/black"
-            android:text="1" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -29,11 +29,11 @@
             android:id="@+id/tvProDocumentary"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:layout_gravity="center"
             android:textSize="@dimen/dimen_40sp"
             android:textColor="@color/black"
-            android:layout_gravity="center"
             android:gravity="center"
-            android:text="2" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -44,11 +44,11 @@
             android:id="@+id/tvProFactory"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:layout_gravity="center"
             android:textSize="@dimen/dimen_40sp"
             android:textColor="@color/black"
-            android:layout_gravity="center"
             android:gravity="center"
-            android:text="3" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -59,12 +59,11 @@
             android:id="@+id/tvProDepartment"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:layout_gravity="center"
             android:textSize="@dimen/dimen_40sp"
             android:textColor="@color/black"
-            android:layout_gravity="center"
-            android:focusableInTouchMode="false"
             android:gravity="center"
-            android:text="4" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -75,11 +74,11 @@
             android:id="@+id/tvProProcedure"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:layout_gravity="center"
             android:textSize="@dimen/dimen_40sp"
             android:textColor="@color/black"
-            android:layout_gravity="center"
             android:gravity="center"
-            android:text="5" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -90,13 +89,11 @@
             android:id="@+id/tvProOthers"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:layout_gravity="center"
             android:textSize="@dimen/dimen_40sp"
             android:textColor="@color/black"
-            android:layout_gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
             android:gravity="center"
-            android:text="6" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -107,11 +104,11 @@
             android:id="@+id/tvProSingularSystem"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:layout_gravity="center"
             android:textSize="@dimen/dimen_40sp"
             android:textColor="@color/black"
-            android:layout_gravity="center"
             android:gravity="center"
-            android:text="7" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -122,11 +119,11 @@
             android:id="@+id/tvProColor"
             android:layout_width="100dp"
             android:layout_height="50dp"
+            android:layout_gravity="center"
             android:textSize="@dimen/dimen_40sp"
             android:textColor="@color/black"
-            android:layout_gravity="center"
             android:gravity="center"
-            android:text="8" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -137,13 +134,11 @@
             android:id="@+id/tvProTaskNumber"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:layout_gravity="center"
             android:textSize="@dimen/dimen_40sp"
             android:textColor="@color/black"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="9" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -153,12 +148,12 @@
         <TextView
             android:id="@+id/tvProSize"
             android:layout_width="100dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:textSize="@dimen/dimen_40sp"
+            android:textColor="@color/black"
             android:gravity="center"
-            android:text="10" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -172,10 +167,8 @@
             android:textSize="@dimen/dimen_40sp"
             android:textColor="@color/black"
             android:layout_gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
             android:gravity="center"
-            android:text="11" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -190,9 +183,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="12" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -203,11 +194,11 @@
             android:id="@+id/tvProTotalCompletion"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:layout_gravity="center"
             android:textSize="@dimen/dimen_40sp"
             android:textColor="@color/black"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:text="13" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -222,7 +213,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="14" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -237,7 +228,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="15" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -252,10 +243,9 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="16" />
+            android:text="" />
 
         <View
-
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -268,7 +258,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="17" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -283,9 +273,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="18" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -300,9 +288,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="19" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -317,9 +303,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="20" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -333,10 +317,8 @@
             android:textSize="@dimen/dimen_40sp"
             android:textColor="@color/black"
             android:layout_gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
             android:gravity="center"
-            android:text="21" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -351,9 +333,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="22" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -368,9 +348,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="23" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -385,9 +363,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="24" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -402,9 +378,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="25" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -419,9 +393,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="26" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -436,9 +408,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="27" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -453,9 +423,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="28" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -470,9 +438,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="29" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -487,9 +453,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="30" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -504,9 +468,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="31" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -521,9 +483,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="32" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -538,9 +498,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="33" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -555,9 +513,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="34" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -572,9 +528,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="35" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -589,9 +543,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="36" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -606,9 +558,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="37" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -623,9 +573,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="38" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -640,9 +588,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="39" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -657,9 +603,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="40" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -674,9 +618,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="41" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -691,9 +633,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="42" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -708,9 +648,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="43" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -725,15 +663,12 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="44" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
-
         <EditText
             android:id="@+id/tvProTwentyEightDay"
             android:layout_width="100dp"
@@ -742,15 +677,12 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="45" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
-
         <EditText
             android:id="@+id/tvProTwentyNineDay"
             android:layout_width="100dp"
@@ -759,15 +691,12 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="46" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
-
         <EditText
             android:id="@+id/tvProThirtyDay"
             android:layout_width="100dp"
@@ -776,15 +705,12 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="47" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
-
         <EditText
             android:id="@+id/tvProThirtyOneDay"
             android:layout_width="100dp"
@@ -793,15 +719,12 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="48" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
-
         <EditText
             android:id="@+id/tvProRemarks"
             android:layout_width="100dp"
@@ -810,15 +733,12 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:inputType="phone|number"
-            android:numeric="integer"
-            android:text="49" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
-
         <TextView
             android:id="@+id/tvProRecorder"
             android:layout_width="100dp"
@@ -827,7 +747,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="50" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -841,8 +761,7 @@
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="51" />
-
+            android:text="" />
         <View
             android:layout_width="1px"
             android:layout_height="50dp"
