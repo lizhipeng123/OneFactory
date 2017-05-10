@@ -1,9 +1,6 @@
 package com.daoran.newfactory.onefactory.fragment;
-
-
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,27 +9,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.commo.CommoditySqlActivity;
-import com.daoran.newfactory.onefactory.activity.work.car.SqlcarApplyActivity;
-import com.daoran.newfactory.onefactory.activity.work.SignDetailActivity;
-import com.daoran.newfactory.onefactory.activity.work.DebugGaodeActivity;
-import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
-import com.daoran.newfactory.onefactory.activity.work.SignActivity;
-import com.daoran.newfactory.onefactory.activity.work.production.ProductionNewActivity;
+import com.daoran.newfactory.onefactory.adapter.ScrollWrokAdapter;
+import com.daoran.newfactory.onefactory.bean.WorkBean;
 import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
+import com.daoran.newfactory.onefactory.view.ScrollGridView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -40,17 +34,18 @@ import org.json.JSONObject;
  * Created by lizhipeng on 2017/3/22.
  */
 
-public class WorkFragment extends Fragment implements View.OnClickListener {
+public class WorkFragment extends Fragment{
 
     Activity mactivity;
     private Toolbar tbarWrok;
     private View view;
-    private LinearLayout llOpenCarDetail, llOpenSign, llOPenSqlSign, llOpenBusRoute, llProduction, llSqlgoods;
-    private TextView tvOpenCarDetail, tvSign, tvSqlSign, tvBusRoute, tvProduction, tvSqlgoods;
-    private ImageView ivopenCarDetail, ivOpenSign, tvOpenSqlSign, ivOpenBusRoute, ivProduction, ivSqlgoods;
     private TextView idworkname;
     private SharedPreferences sp;
     private SPUtils spUtils;
+    private List<WorkBean> workBeen = new ArrayList<WorkBean>();
+    private ScrollGridView sgv_gridview;
+    private String workitemview;
+    private String sl;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,55 +63,27 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
+    /**
+     * 实例化控件
+     */
     private void getViews() {
         tbarWrok = (Toolbar) view.findViewById(R.id.tbarWrok);
-        tvOpenCarDetail = (TextView) view.findViewById(R.id.tvOpenCarDetail);
-
-        tvSign = (TextView) view.findViewById(R.id.tvSign);
-        tvSqlSign = (TextView) view.findViewById(R.id.tvSqlSign);
-        tvBusRoute = (TextView) view.findViewById(R.id.tvBusRoute);
-        tvProduction = (TextView) view.findViewById(R.id.tvProduction);
-        tvSqlgoods = (TextView) view.findViewById(R.id.tvSqlgoods);
-        idworkname = (TextView) view.findViewById(R.id.idworkname);
-        ivopenCarDetail = (ImageView) view.findViewById(R.id.ivopenCarDetail);
-        ivOpenSign = (ImageView) view.findViewById(R.id.ivOpenSign);
-        tvOpenSqlSign = (ImageView) view.findViewById(R.id.tvOpenSqlSign);
-        ivOpenBusRoute = (ImageView) view.findViewById(R.id.ivOpenBusRoute);
-        ivProduction = (ImageView) view.findViewById(R.id.ivProduction);
-        ivSqlgoods = (ImageView) view.findViewById(R.id.ivSqlgoods);
-        llOpenCarDetail = (LinearLayout) view.findViewById(R.id.llOpenCarDetail);
-        llOpenSign = (LinearLayout) view.findViewById(R.id.llOpenSign);
-        llOPenSqlSign = (LinearLayout) view.findViewById(R.id.llOPenSqlSign);
-        llOpenBusRoute = (LinearLayout) view.findViewById(R.id.llOpenBusRoute);
-        llProduction = (LinearLayout) view.findViewById(R.id.llProduction);
-        llSqlgoods = (LinearLayout) view.findViewById(R.id.llSqlgoods);
     }
 
+    /**
+     * 操作控件
+     */
     private void initViews() {
         tbarWrok.setTitle("");
-        llOpenCarDetail.setOnClickListener(this);
-        llOpenSign.setOnClickListener(this);
-        llOPenSqlSign.setOnClickListener(this);
-        llOpenBusRoute.setOnClickListener(this);
-        llProduction.setOnClickListener(this);
-        llSqlgoods.setOnClickListener(this);
-
-        tvOpenCarDetail.setOnClickListener(this);
-        tvSqlSign.setOnClickListener(this);
-        tvProduction.setOnClickListener(this);
-        tvSqlgoods.setOnClickListener(this);
-        tvBusRoute.setOnClickListener(this);
-        tvSign.setOnClickListener(this);
         Bundle bundle = getActivity().getIntent().getExtras();
         String name = bundle.getString("u_name");
         spUtils.put(getActivity(), "u_name", name);
         idworkname.setText(name);
     }
 
-    private void setListener() {
-
-    }
-
+    /**
+     * 查询角色返回的菜单
+     */
     private void setPhoneMenu() {
         sp = mactivity.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
         String name = sp.getString("username", "");
@@ -132,56 +99,18 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
                 try {
                     JSONArray temp = new JSONArray(resscontent);
                     for (int i = 0; i < temp.length(); i++) {
-                        //用车申请单
-                        JSONObject objectcar = (JSONObject) temp.get(0);
-                        String Stringcar = objectcar.getString("text");
-                        if (Stringcar.equals("") || Stringcar == "") {
-                            llOpenCarDetail.setVisibility(View.GONE);
-                        } else {
-                            llOpenCarDetail.setVisibility(View.VISIBLE);
-                            tvOpenCarDetail.setVisibility(View.VISIBLE);
-                            tvOpenCarDetail.setText(Stringcar);
-                        }
-
-                        //签到
-                        JSONObject objectsign = (JSONObject) temp.get(1);
-                        String Stringsign = objectsign.getString("text");
-                        tvSign.setVisibility(View.VISIBLE);
-                        tvSign.setText(Stringsign + "表");
-                        //签到查询
-                        JSONObject objectsignsql = (JSONObject) temp.get(2);
-                        String Stringsignsql = objectsignsql.getString("text");
-                        tvSqlSign.setVisibility(View.VISIBLE);
-                        tvSqlSign.setText(Stringsignsql + "表");
-                        //公交路线
-                        JSONObject objectbus = (JSONObject) temp.get(3);
-                        String Stringbus = objectbus.getString("text");
-                        tvBusRoute.setVisibility(View.VISIBLE);
-                        tvBusRoute.setText(Stringbus + "图");
-                        //生产日报
-                        JSONObject objectproduction = (JSONObject) temp.get(4);
-                        String Stringproduction = objectproduction.getString("text");
-                        if (Stringproduction.equals("") || Stringproduction == "") {
-                            llProduction.setVisibility(View.GONE);
-                        } else {
-                            llProduction.setVisibility(View.VISIBLE);
-                            tvProduction.setVisibility(View.VISIBLE);
-                            tvProduction.setText(Stringproduction);
-                        }
-                        //查货跟踪
-                        JSONObject objectCommo = (JSONObject) temp.get(5);
-                        String StringCommo = objectCommo.getString("text");
-                        if (StringCommo.equals("") || StringCommo == "") {
-                            llSqlgoods.setVisibility(View.GONE);
-                        } else {
-                            llSqlgoods.setVisibility(View.VISIBLE);
-                        }
-                        tvSqlgoods.setVisibility(View.VISIBLE);
-                        tvSqlgoods.setText(StringCommo);
+                        String Stringcar = temp.getString(i);
+                        String txt = new JSONObject(Stringcar).getString("text");
+                        String phoneurl = new JSONObject(Stringcar).getString("PhoneUrl");
+                        String img = new JSONObject(Stringcar).getString("img");
+                        workBeen.add(new WorkBean(phoneurl, txt, img));
                     }
+                    sl = temp.getString(0);
+                    JSONObject jsonObject = new JSONObject(sl);
+                    workitemview = jsonObject.getString("text");
+                    sgv_gridview = (ScrollGridView) view.findViewById(R.id.sgv_gridview);
+                    sgv_gridview.setAdapter(new ScrollWrokAdapter(getActivity(),workBeen));
                 } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -196,30 +125,5 @@ public class WorkFragment extends Fragment implements View.OnClickListener {
                 super.onFailure(error, content);
             }
         });
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.llOpenCarDetail://用车单
-                getActivity().startActivity(new Intent(getActivity(), SqlcarApplyActivity.class));
-                break;
-            case R.id.llOPenSqlSign://查询签到详情
-                getActivity().startActivity(new Intent(getActivity(), SignDetailActivity.class));
-                break;
-            case R.id.llProduction://生产日报
-                getActivity().startActivity(new Intent(getActivity(), ProductionActivity.class));
-                break;
-            case R.id.llSqlgoods://查货跟踪单
-                getActivity().startActivity(new Intent(getActivity(), CommoditySqlActivity.class));
-                break;
-            case R.id.llOpenBusRoute://公交路线
-                getActivity().startActivity(new Intent(getActivity(), DebugGaodeActivity.class));
-                break;
-            case R.id.llOpenSign://外勤签到
-                getActivity().startActivity(new Intent(getActivity(), SignActivity.class));
-                break;
-        }
-
     }
 }

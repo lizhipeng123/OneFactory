@@ -128,28 +128,34 @@ public class ProductionAdapter extends BaseAdapter {
         sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
         String nameid = sp.getString("username", "");
         String recorder = getItem(position).getRecorder();
-        String proid = String.valueOf(getItem(position).getID());
-        spUtils.put(context, "proid", proid);
-        String salesid = String.valueOf(getItem(position).getSalesid());
-        spUtils.put(context, "salesid", salesid);
+
         if(recorder==null){
             recorder="";
         }else{
             recorder = getItem(position).getRecorder();
         }
         if (recorder.equals("")||recorder.equals("毕三军")) {
+            String proid = String.valueOf(getItem(position).getID());
+            spUtils.put(context, "proadapterid", proid);
+            String salesid = String.valueOf(getItem(position).getSalesid());
+            spUtils.put(context, "prosalesid", salesid);
 
             viewHolder.tv_data.setEnabled(true);
-            viewHolder.tv_data.setText(getItem(position).getItem());
+            String productionItem = getItem(position).getItem();
+            viewHolder.tv_data.setText(productionItem);
 
             viewHolder.tvProDocumentary.setEnabled(true);
-            viewHolder.tvProDocumentary.setText(getItem(position).getPrddocumentary());
+            String productionadapterDocumentary = getItem(position).getPrddocumentary();
+            viewHolder.tvProDocumentary.setText(productionadapterDocumentary);
+
 
             viewHolder.tvProFactory.setEnabled(true);
-            viewHolder.tvProFactory.setText(getItem(position).getSubfactory());
+            String productionFactory = getItem(position).getSubfactory();
+            viewHolder.tvProFactory.setText(productionFactory);
 
             viewHolder.tvProDepartment.setEnabled(true);
             viewHolder.tvProDepartment.setText(getItem(position).getSubfactoryTeams());
+            String proColumnTitle = viewHolder.tvProDepartment.getText().toString();
 
             viewHolder.tvProProcedure.setEnabled(true);
             viewHolder.tvProProcedure.setText(getItem(position).getWorkingProcedure());
@@ -197,10 +203,14 @@ public class ProductionAdapter extends BaseAdapter {
             viewHolder.tvProOthers.setSelection(viewHolder.tvProOthers.length());
 
             viewHolder.tvProSingularSystem.setEnabled(true);
-            viewHolder.tvProSingularSystem.setText(getItem(position).getPqty());
+            String productionadapterSingularSystem = getItem(position).getPqty();
+            viewHolder.tvProSingularSystem.setText(productionadapterSingularSystem);
+            spUtils.put(context,"productionadapterSingularSystem",productionadapterSingularSystem);
 
             viewHolder.tvProColor.setEnabled(true);
-            viewHolder.tvProColor.setText(getItem(position).getProdcol());
+            String productionColor = getItem(position).getProdcol();
+            viewHolder.tvProColor.setText(productionColor);
+            spUtils.put(context,"productionColor",productionColor);
 
             viewHolder.tvProTaskNumber.setEnabled(true);
             final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
@@ -245,10 +255,14 @@ public class ProductionAdapter extends BaseAdapter {
             viewHolder.tvProTaskNumber.setSelection(viewHolder.tvProTaskNumber.length());
 
             viewHolder.tvProSize.setEnabled(true);
-            viewHolder.tvProSize.setText(getItem(position).getMdl());
+            String productionSize = getItem(position).getMdl();
+            viewHolder.tvProSize.setText(productionSize);
+            spUtils.put(context,"productionSize",productionSize);
 
             viewHolder.tvProClippingNumber.setEnabled(true);
-            viewHolder.tvProClippingNumber.setText(getItem(position).getFactcutqty());
+            String productionClippingNumber = getItem(position).getFactcutqty();
+            viewHolder.tvProClippingNumber.setText(productionClippingNumber);
+            spUtils.put(context,"productionClippingNumber",productionClippingNumber);
 
             viewHolder.tvProCompletedLastMonth.setEnabled(true);
             final EditText editTexCompletedLastMonth = viewHolder.tvProCompletedLastMonth;
@@ -296,16 +310,22 @@ public class ProductionAdapter extends BaseAdapter {
             viewHolder.tvProTotalCompletion.setText(getItem(position).getSumCompletedQty());
 
             viewHolder.tvProBalanceAmount.setEnabled(true);
+            String productionBalanceAmount = getItem(position).getLeftQty();
             viewHolder.tvProBalanceAmount.setText(getItem(position).getLeftQty());
+            spUtils.put(context,"productionBalanceAmount",productionBalanceAmount);
 
             viewHolder.tvProState.setEnabled(true);
             viewHolder.tvProState.setText(getItem(position).getPrdstatus());
 
             viewHolder.tvProYear.setEnabled(true);
-            viewHolder.tvProYear.setText(getItem(position).getYear());
+            String productionYear = getItem(position).getYear();
+            viewHolder.tvProYear.setText(productionYear);
+            spUtils.put(context,"productionYear","");
 
             viewHolder.tvProMonth.setEnabled(true);
             viewHolder.tvProMonth.setText(getItem(position).getMonth());
+            String proadapterMonthTitle = viewHolder.tvProMonth.getText().toString();
+            spUtils.put(context,"proadapterMonthTitle",proadapterMonthTitle);
 
             viewHolder.tvProOneDay.setEnabled(true);
             final EditText editTexOneDay = viewHolder.tvProOneDay;
@@ -1683,10 +1703,14 @@ public class ProductionAdapter extends BaseAdapter {
             viewHolder.tvProRemarks.setSelection(viewHolder.tvProRemarks.length());
 
             viewHolder.tvProRecorder.setEnabled(true);
-            viewHolder.tvProRecorder.setText(getItem(position).getRecorder());
+            String productionRecorder = getItem(position).getRecorder();
+            viewHolder.tvProRecorder.setText(productionRecorder);
+            spUtils.put(context,"productionadapterRecorder",productionRecorder);
 
             viewHolder.tvProRecordat.setEnabled(true);
-            viewHolder.tvProRecordat.setText(getItem(position).getRecordat());
+            String productionRecordat = getItem(position).getRecordat();
+            viewHolder.tvProRecordat.setText(productionRecordat);
+            spUtils.put(context,"productionRecordat",productionRecordat);
 
         } else {
             viewHolder.tv_data.setEnabled(false);

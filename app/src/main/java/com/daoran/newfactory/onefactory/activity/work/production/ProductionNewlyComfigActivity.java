@@ -4,8 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.format.Time;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -16,8 +21,6 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.adapter.ProductionAdapter;
-import com.daoran.newfactory.onefactory.adapter.ProductionNewlyComfigAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
@@ -48,6 +51,7 @@ import okhttp3.MediaType;
 
 public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         implements View.OnClickListener {
+    private static final String TAG = "configtest";
 
     private NoscrollListView mData;
     private ProcationDialog procationDialog;
@@ -71,6 +75,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
     private int pageCount;
     private int pageIndex = 0;
     private List<Map<String, Object>> mdate;
+    private int year, month, datetime, hour, minute, second;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +114,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         mdate = getData();
         comfigAdapter = new MyAdatper(this);
         mData.setAdapter(comfigAdapter);
-//        comfigAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -270,8 +274,8 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
     private void setSave() {
         String saveurl = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
         sp = this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
-        String proid = sp.getString("proid", "");
-        String salesid = sp.getString("salesid", "");
+        String proid = null;
+        String salesid = null;
         String proColumnTitle = sp.getString("proColumnTitle", "");//部门
         if (proColumnTitle == "" || proColumnTitle.equals("")) {
             proColumnTitle = null;
@@ -623,10 +627,12 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
     }
 
     public class MyAdatper extends BaseAdapter {
+        private Context context;
         private LayoutInflater layoutInflater;
+        private int index = -1;
 
         public MyAdatper(Context context) {
-            this.layoutInflater = LayoutInflater.from(context);
+            this.context = context;
         }
 
         @Override
@@ -645,11 +651,11 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            final ViewHolder viewHolder;
             if (convertView == null) {
                 viewHolder = new ViewHolder();
-                convertView = layoutInflater.inflate(R.layout.item_production_data, null);
+                convertView = LayoutInflater.from(context).inflate(R.layout.item_production_data, null);
                 viewHolder.tv_data = (TextView) convertView.findViewById(R.id.tv_data);
                 viewHolder.tvProDocumentary = (TextView) convertView.findViewById(R.id.tvProDocumentary);
                 viewHolder.tvProFactory = (TextView) convertView.findViewById(R.id.tvProFactory);
@@ -705,6 +711,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
+
             String tvnewly = String.valueOf(mdate.get(position).get("tvnewlydate"));
             System.out.print(tvnewly);
             viewHolder.tv_data.setText(tvnewly);
@@ -723,12 +730,96 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
 
             String tvnewlyOthers = String.valueOf(mdate.get(position).get("tvnewlyOthers"));
             viewHolder.tvProOthers.setText(tvnewlyOthers);
+            final EditText editTexOthers = viewHolder.tvProOthers;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            if (editTexOthers.getTag() instanceof TextWatcher) {
+                editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
+            }
+            editTexOthers.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        index = position;
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                    }
+                    return false;
+                }
+            });
+            TextWatcher TvOthers = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    Log.d(TAG, "beforeTextChanged");
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    Log.d(TAG, "onTextChanged");
+                    ToastUtils.ShowToastMessage("输入结果为+" + s, context);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    Log.d(TAG, "afterTextChanged");
+                    String proitem = viewHolder.tvProOthers.getText().toString();
+                    spUtils.put(context, "productionConfigOthers", proitem);
+                    ToastUtils.ShowToastMessage(proitem, context);
+                }
+            };
+            editTexOthers.addTextChangedListener(TvOthers);
+            editTexOthers.setTag(TvOthers);
+            /*光标放置在文本最后*/
+            viewHolder.tvProOthers.setSelection(viewHolder.tvProOthers.length());
+
 
             String tvnewSingularSystem = String.valueOf(mdate.get(position).get("tvnewSingularSystem"));
             viewHolder.tvProSingularSystem.setText(tvnewSingularSystem);
 
             String tvdate = String.valueOf(mdate.get(position).get("tvColorTaskqty"));
+
+            final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
+//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            if (editTexTaskNumber.getTag() instanceof TextWatcher) {
+                editTexTaskNumber.removeTextChangedListener((TextWatcher) editTexTaskNumber.getTag());
+            }
             viewHolder.tvProTaskNumber.setText(tvdate);
+            editTexTaskNumber.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        index = position;
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                    }
+                    return false;
+                }
+            });
+            TextWatcher TvTaskNumber = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    Log.d(TAG, "beforeTextChanged");
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    Log.d(TAG, "onTextChanged");
+//                        String proitem = viewHolder.tvProTaskNumber.getText().toString();
+//                        ToastUtils.ShowToastMessage(proitem, context);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    Log.d(TAG, "afterTextChanged");
+                    String proitem = viewHolder.tvProTaskNumber.getText().toString();
+                    spUtils.put(context, "productionConfigTaskNumber", proitem);
+                    ToastUtils.ShowToastMessage(proitem, context);
+                }
+            };
+            editTexTaskNumber.addTextChangedListener(TvTaskNumber);
+            editTexTaskNumber.setTag(TvTaskNumber);
+            /*光标放置在文本最后*/
+            viewHolder.tvProTaskNumber.setSelection(viewHolder.tvProTaskNumber.length());
+
 
             String tvnewTaskNumber = String.valueOf(mdate.get(position).get("tvnewTaskNumber"));
             viewHolder.tvProSize.setText(tvnewTaskNumber);
@@ -745,15 +836,136 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
             String tvnewlyTotalCompletion = String.valueOf(mdate.get(position).get("tvnewlyTotalCompletion"));
             viewHolder.tvProTotalCompletion.setText(tvnewlyTotalCompletion);
 
+
             sp = getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
             String nameid = sp.getString("username", "");
             viewHolder.tvProRecorder.setText(nameid);
 
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日   HH:mm:ss     ");
-            Date date = new Date(System.currentTimeMillis());
-            String str = formatter.format(date);
-            System.out.print(str);
-            viewHolder.tvProRecordat.setText(str);
+            Time t = new Time("GMT+8"); // or Time t=new Time("GMT+8");
+            t.setToNow(); // 取得系统时间。
+            year = t.year;
+            month = t.month;
+            datetime = t.monthDay;
+            hour = t.hour; // 0-23
+            minute = t.minute;
+            second = t.second;
+            month = month + 1;
+            viewHolder.tvProRecordat.setText(year + "/" + month + "/" + datetime);
+
+            String comfigitem = viewHolder.tv_data.getText().toString();
+            spUtils.put(context, "comfigitem", comfigitem);
+
+            viewHolder.tvProDepartment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popupMenu = new PopupMenu(context, v);
+                    popupMenu.getMenuInflater().inflate(R.menu.menu_pro_column, popupMenu.getMenu());
+                    // menu的item点击事件
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
+                            String title = item.getTitle().toString();
+                            spUtils.put(context, "proComfigTitle", title);
+                            viewHolder.tvProDepartment.setText(title);
+                            ToastUtils.ShowToastMessage("点击的是：" + title, context);
+                            return false;
+                        }
+                    });
+                    // PopupMenu关闭事件
+                    popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+                        @Override
+                        public void onDismiss(PopupMenu menu) {
+//                Toast.makeText(getApplicationContext(), "关闭PopupMenu", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
+
+            viewHolder.tvProProcedure.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popupMenu = new PopupMenu(context, v);
+                    popupMenu.getMenuInflater().inflate(R.menu.menu_pro_procedure, popupMenu.getMenu());
+                    // menu的item点击事件
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
+                            String title = item.getTitle().toString();
+                            spUtils.put(context, "proComfigProcedure", title);
+                            viewHolder.tvProProcedure.setText(title);
+                            ToastUtils.ShowToastMessage("点击的是：" + title, context);
+                            return false;
+                        }
+                    });
+                    // PopupMenu关闭事件
+                    popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+                        @Override
+                        public void onDismiss(PopupMenu menu) {
+//                Toast.makeText(getApplicationContext(), "关闭PopupMenu", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
+
+            viewHolder.tvProState.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popupMenu = new PopupMenu(context, v);
+                    popupMenu.getMenuInflater().inflate(R.menu.menu_pro_prdstatus, popupMenu.getMenu());
+                    // menu的item点击事件
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
+                            String title = item.getTitle().toString();
+                            spUtils.put(context, "proComfigPrdstatus", title);
+                            viewHolder.tvProState.setText(title);
+                            ToastUtils.ShowToastMessage("点击的是：" + title, context);
+                            return false;
+                        }
+                    });
+                    // PopupMenu关闭事件
+                    popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+                        @Override
+                        public void onDismiss(PopupMenu menu) {
+//                Toast.makeText(getApplicationContext(), "关闭PopupMenu", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
+
+            viewHolder.tvProMonth.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popupMenu = new PopupMenu(context, v);
+                    popupMenu.getMenuInflater().inflate(R.menu.menu_pro_mouth, popupMenu.getMenu());
+                    // menu的item点击事件
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
+                            String title = item.getTitle().toString();
+                            spUtils.put(context, "proComfigMonth", title);
+                            viewHolder.tvProMonth.setText(title);
+                            ToastUtils.ShowToastMessage("点击的是：" + title, context);
+                            return false;
+                        }
+                    });
+                    // PopupMenu关闭事件
+                    popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+                        @Override
+                        public void onDismiss(PopupMenu menu) {
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
+
             return convertView;
         }
     }

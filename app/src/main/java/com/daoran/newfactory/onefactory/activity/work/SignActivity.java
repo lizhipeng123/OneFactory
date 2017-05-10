@@ -156,6 +156,7 @@ public class SignActivity extends BaseFrangmentActivity
     private void initViews() {
         ivSignBack.setOnClickListener(this);
         btnCount.setOnClickListener(this);
+        month =month+1;
         tvSignDate.setText(String.valueOf(year + "/" + month + "/" + date));
         View v = mapView.getChildAt(0);
         //解决scrollview与mapview滑动冲突

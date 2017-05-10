@@ -401,8 +401,8 @@ public class ProductionActivity extends BaseFrangmentActivity
     private void setSave() {
         String saveurl = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
         sp = this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
-        String proid = sp.getString("proid", "");
-        String salesid = sp.getString("salesid", "");
+        String proid = sp.getString("proadapterid", "");
+        String salesid = sp.getString("prosalesid", "");
         String proColumnTitle = sp.getString("proColumnTitle", "");//部门
         if (proColumnTitle == "" || proColumnTitle.equals("")) {
             proColumnTitle = null;
@@ -416,7 +416,7 @@ public class ProductionActivity extends BaseFrangmentActivity
         if (proPrdstatusTitle == "" || proPrdstatusTitle.equals("")) {
             proPrdstatusTitle = null;
         }
-        String productionItem = sp.getString("productionItem", "");//款号
+        String productionItem = sp.getString("productionAdatperItem", "");//款号
         if (productionItem == "" || productionItem.equals("")) {
             productionItem = null;
         }
@@ -600,7 +600,7 @@ public class ProductionActivity extends BaseFrangmentActivity
         if (productionRemarks == "" || productionRemarks.equals("")) {
             productionRemarks = null;
         }
-        String productionRecorder = sp.getString("productionRecorder", "");//制单人
+        String productionRecorder = sp.getString("productionadapterRecorder", "");//制单人
         if (productionRecorder == "" || productionRecorder.equals("")) {
             productionRecorder = null;
         }
@@ -682,7 +682,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                             System.out.print(response);
                             String ression = StringUtil.sideTrim(response, "\"");
                             System.out.print(ression);
-                            int resindex = Integer.parseInt(response);
+                            int resindex = Integer.parseInt(ression);
                             if (resindex > 3) {
                                 ToastUtils.ShowToastMessage("保存成功，请刷新页面", ProductionActivity.this);
                             } else if (ression == "3" || ression.equals("3")) {
