@@ -37,7 +37,6 @@ import okhttp3.MediaType;
  * 查货跟踪单
  * Created by lizhipeng on 2017/3/29.
  */
-
 public class CommoditySqlActivity extends BaseFrangmentActivity
         implements View.OnClickListener {
     private NoscrollListView mData;
@@ -241,7 +240,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                             }
                         }
                     });
-
         } else {
             ToastUtils.ShowToastMessage("当前网络不可用,请稍后再试", CommoditySqlActivity.this);
         }
