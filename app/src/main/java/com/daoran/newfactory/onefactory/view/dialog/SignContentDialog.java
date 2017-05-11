@@ -107,14 +107,21 @@ public class SignContentDialog extends Dialog {
                                 spUtils.put(content, "datetimesign", datetime);
                             }
                         });
-                datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
-                        , "取消", new OnClickListener() {
+                datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
+                        , "清除", new OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 tvInitialDate.setText("");
                                 spUtils.put(content, "datetimesign", "");
                                 String etaudit= etAudit.getText().toString();
                                 spUtils.put(content,"etaudit","");
+                            }
+                        });
+                datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
+                        , "取消", new OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
 //                                String tvinit = tvInitialDate.getText().toString();
 //                                spUtils.put(content, "datetimesign", tvinit);
                             }
@@ -149,8 +156,8 @@ public class SignContentDialog extends Dialog {
                                 System.out.print(datetime);
                             }
                         });
-                datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
-                        , "取消", new OnClickListener() {
+                datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
+                        , "清除", new OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 System.out.println("BUTTON_NEGATIVE~~");
@@ -158,6 +165,13 @@ public class SignContentDialog extends Dialog {
                                 spUtils.put(content, "endtimesign", "");
                                 String etaudit= etAudit.getText().toString();
                                 spUtils.put(content,"etaudit","");
+                            }
+                        });
+                datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
+                        , "取消", new OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
                             }
                         });
                 datePickerDialog.show();

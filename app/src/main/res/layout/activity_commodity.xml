@@ -691,7 +691,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:layout_marginLeft="5dp"
-                android:text="19405" />
+                android:text="0" />
             <Button
                 android:id="@+id/btnSignPage"
                 android:layout_width="wrap_content"

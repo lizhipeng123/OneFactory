@@ -76,7 +76,7 @@ public class ContentDialog extends Dialog {
         WindowManager m = content.getWindowManager();
         String tvdate = sp.getString("datetime", "");
         tvInitialDate.setText(tvdate);
-        String tvend = sp.getString("endtime","");
+        String tvend = sp.getString("endtime", "");
         tvEndDate.setText(tvend);
 //        System.out.print(tvdate);
         Display display = m.getDefaultDisplay();
@@ -127,13 +127,20 @@ public class ContentDialog extends Dialog {
                                 System.out.print(datetime);
                             }
                         });
-                datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
-                        , "取消", new OnClickListener() {
+                datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
+                        , "清除", new OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 System.out.println("BUTTON_NEGATIVE~~");
                                 tvEndDate.setText("");
                                 spUtils.put(content, "endtime", "");
+                            }
+                        });
+                datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
+                        , "取消", new OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
                             }
                         });
                 datePickerDialog.show();
@@ -161,12 +168,19 @@ public class ContentDialog extends Dialog {
                                 spUtils.put(content, "datetime", datetime);
                             }
                         });
-                datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
-                        , "取消", new OnClickListener() {
+                datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
+                        , "清除", new OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 tvInitialDate.setText("");
                                 spUtils.put(content, "datetime", "");
+                            }
+                        });
+                datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
+                        , "取消", new OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
                             }
                         });
                 datePickerDialog.show();
