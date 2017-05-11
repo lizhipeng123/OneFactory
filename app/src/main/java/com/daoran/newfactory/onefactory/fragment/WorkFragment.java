@@ -1,6 +1,9 @@
 package com.daoran.newfactory.onefactory.fragment;
+
+
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,9 +12,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.commo.CommoditySqlActivity;
+import com.daoran.newfactory.onefactory.activity.work.car.SqlcarApplyActivity;
+import com.daoran.newfactory.onefactory.activity.work.SignDetailActivity;
+import com.daoran.newfactory.onefactory.activity.work.DebugGaodeActivity;
+import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
+import com.daoran.newfactory.onefactory.activity.work.SignActivity;
 import com.daoran.newfactory.onefactory.adapter.ScrollWrokAdapter;
 import com.daoran.newfactory.onefactory.bean.WorkBean;
 import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
@@ -39,10 +51,15 @@ public class WorkFragment extends Fragment{
     Activity mactivity;
     private Toolbar tbarWrok;
     private View view;
+    private LinearLayout llOpenCarDetail, llOpenSign, llOPenSqlSign, llOpenBusRoute, llProduction, llSqlgoods;
+    private TextView tvOpenCarDetail, tvSign, tvSqlSign, tvBusRoute, tvProduction, tvSqlgoods;
+    private ImageView ivopenCarDetail, ivOpenSign, tvOpenSqlSign, ivOpenBusRoute, ivProduction, ivSqlgoods;
     private TextView idworkname;
     private SharedPreferences sp;
     private SPUtils spUtils;
+
     private List<WorkBean> workBeen = new ArrayList<WorkBean>();
+
     private ScrollGridView sgv_gridview;
     private String workitemview;
     private String sl;
@@ -63,16 +80,17 @@ public class WorkFragment extends Fragment{
         return view;
     }
 
-    /**
-     * 实例化控件
-     */
     private void getViews() {
         tbarWrok = (Toolbar) view.findViewById(R.id.tbarWrok);
+        tvOpenCarDetail = (TextView) view.findViewById(R.id.tvOpenCarDetail);
+
+        idworkname = (TextView) view.findViewById(R.id.idworkname);
+        ivopenCarDetail = (ImageView) view.findViewById(R.id.ivopenCarDetail);
+        llOpenCarDetail = (LinearLayout) view.findViewById(R.id.llOpenCarDetail);
+
+
     }
 
-    /**
-     * 操作控件
-     */
     private void initViews() {
         tbarWrok.setTitle("");
         Bundle bundle = getActivity().getIntent().getExtras();
@@ -81,9 +99,6 @@ public class WorkFragment extends Fragment{
         idworkname.setText(name);
     }
 
-    /**
-     * 查询角色返回的菜单
-     */
     private void setPhoneMenu() {
         sp = mactivity.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
         String name = sp.getString("username", "");
@@ -126,4 +141,5 @@ public class WorkFragment extends Fragment{
             }
         });
     }
+
 }
