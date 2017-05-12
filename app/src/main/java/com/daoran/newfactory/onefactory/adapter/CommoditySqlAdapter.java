@@ -15,14 +15,17 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.commo.CommoditySqlActivity;
 import com.daoran.newfactory.onefactory.bean.CommoditydetailBean;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -35,6 +38,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
     private static final String TAG = "commotest";
     private Context context;
     private List<CommoditydetailBean.DataBean> dataBeen;
+    private ArrayList attentionArr = new ArrayList();
     private SharedPreferences sp;
     private SPUtils spUtils;
     private int index = -1;
@@ -109,6 +113,10 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoQAname = (EditText) convertView.findViewById(R.id.tvCommoQAname);
             holder.tvCommoQAScore = (EditText) convertView.findViewById(R.id.tvCommoQAScore);
             holder.tvCommoQAMemo = (TextView) convertView.findViewById(R.id.tvCommoQAMemo);
+            holder.lin_content = (LinearLayout) convertView.findViewById(R.id.lin_content);
+            spUtils.put(context, "strposition", position);
+            convertView.setClickable(true);
+            convertView.setOnClickListener(myOnclicklistener);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -121,36 +129,47 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 showPopuphdMenu(holder.tvCommoOurAfter);
             }
         });
+
+
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                return false;
+            }
+        });
+
         /*判断item中制单人是否是登录用户，是为可改，否为不可改*/
         sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
         String nameid = sp.getString("username", "");
         String documentary = getItem(position).getPrddocumentary();
-        String subfac = getItem(position).getSubfactory();
         String master = getItem(position).getPrdmaster();
         if (documentary != null && !documentary.equals("")) {
             if (documentary.equals("吕玉如") || master.equals(nameid)) {
-                String proid = String.valueOf(getItem(position).getID());
-                spUtils.put(context, "commoproid", proid);
+
+                holder.lin_content.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String proid = String.valueOf(getItem(position).getID());
+                        spUtils.put(context, "commoproid", proid);
+                        String uriid = String.valueOf(getItem(position).getID());
+                        spUtils.put(context, "uriid", uriid);
+                    }
+                });
 
                 holder.tvCommoItem.setEnabled(true);
                 holder.tvCommoItem.setText(getItem(position).getItem());
-                String tvconmmitem = holder.tvCommoItem.getText().toString();
-                spUtils.put(context, "tvconmmitem", tvconmmitem);
 
                 holder.tvCommoCtmtxt.setEnabled(true);
                 holder.tvCommoCtmtxt.setText(getItem(position).getCtmtxt());
-                String tvcommoctmtxt = holder.tvCommoCtmtxt.getText().toString();
-                spUtils.put(context, "tvcommoctmtxt", tvcommoctmtxt);
 
                 holder.tvCommoPrddocumentary.setEnabled(true);
                 holder.tvCommoPrddocumentary.setText(getItem(position).getPrddocumentary());
-                String tvcommoprddocumentary = holder.tvCommoPrddocumentary.getText().toString();
-                spUtils.put(context, "tvcommoprddocumentary", tvcommoprddocumentary);
+
 
                 holder.tvCommoprdmaster.setEnabled(true);
                 holder.tvCommoprdmaster.setText(getItem(position).getPrdmaster());
-                String tvcommoprdmaster = holder.tvCommoprdmaster.getText().toString();
-                spUtils.put(context, "tvcommoprdmaster", tvcommoprdmaster);
+
 
                 holder.tvCommoQCMasterScore.setEnabled(true);
                 final EditText editTextQCMasterScore = holder.tvCommoQCMasterScore;
@@ -201,41 +220,48 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 holder.tvCommoSealedrev.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Calendar calendar = Calendar.getInstance();
-                        final DatePickerDialog datePickerDialog = new DatePickerDialog(
-                                context, null, calendar.get(Calendar.YEAR),
-                                calendar.get(Calendar.MONTH),
-                                calendar.get(Calendar.DAY_OF_MONTH)
-                        );
-                        datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE
-                                , "完成", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        DatePicker datePicker = datePickerDialog.getDatePicker();
-                                        int year = datePicker.getYear();
-                                        int month = datePicker.getMonth();
-                                        int day = datePicker.getDayOfMonth();
-                                        String datetime = year + "/" + (month + 1) + "/" + day;
-                                        holder.tvCommoSealedrev.setText(datetime);
-                                        spUtils.put(context, "dateSealedrewtimesign", datetime);
-                                    }
-                                });
-                        datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL,
-                                "清除", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        holder.tvCommoSealedrev.setText("");
-                                        spUtils.put(context, "dateSealedrewtimesign", "");
-                                    }
-                                });
-                        datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
-                                , "取消", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                        datePickerDialog.show();
+
+                        attentionArr.add(position);
+                        if (attentionArr.contains(position)) {
+                            Calendar calendar = Calendar.getInstance();
+                            final DatePickerDialog datePickerDialog = new DatePickerDialog(
+                                    context, null, calendar.get(Calendar.YEAR),
+                                    calendar.get(Calendar.MONTH),
+                                    calendar.get(Calendar.DAY_OF_MONTH)
+                            );
+                            datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE
+                                    , "完成", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            DatePicker datePicker = datePickerDialog.getDatePicker();
+                                            int year = datePicker.getYear();
+                                            int month = datePicker.getMonth();
+                                            int day = datePicker.getDayOfMonth();
+                                            String datetime = year + "/" + (month + 1) + "/" + day;
+                                            holder.tvCommoSealedrev.setText(datetime);
+                                            if (attentionArr.contains(position)) {
+                                                spUtils.put(context, "dateSealedrewtimesign", datetime);
+                                            }
+                                        }
+                                    });
+                            datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL,
+                                    "清除", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            holder.tvCommoSealedrev.setText("");
+                                            spUtils.put(context, "dateSealedrewtimesign", "");
+                                        }
+                                    });
+                            datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
+                                    , "取消", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            datePickerDialog.show();
+                        }
+
                     }
                 });
 
@@ -286,14 +312,9 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
                 holder.tvCommoLcdat.setEnabled(true);
                 holder.tvCommoLcdat.setText(getItem(position).getLcdat());
-                String tvcommolcdat = holder.tvCommoLcdat.getText().toString();
-                spUtils.put(context, "tvcommolcdat", tvcommolcdat);
-
 
                 holder.tvCommoTaskqty.setEnabled(true);
                 holder.tvCommoTaskqty.setText(getItem(position).getTaskqty());
-                String tvcommotaskqty = holder.tvCommoTaskqty.getText().toString();
-                spUtils.put(context, "tvcommotaskqty", tvcommotaskqty);
 
                 holder.tvCommoPreMemo.setEnabled(true);
                 final EditText editTextPreMemo = holder.tvCommoPreMemo;
@@ -770,8 +791,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
                 holder.tvCommoSubfactory.setEnabled(true);
                 holder.tvCommoSubfactory.setText(getItem(position).getSubfactory());
-                String tvcommosubfactory = holder.tvCommoSubfactory.getText().toString();
-                spUtils.put(context, "tvcommosubfactory", tvcommosubfactory);
 
                 holder.tvCommoPrebdt.setEnabled(true);
                 holder.tvCommoPrebdt.setText(getItem(position).getPrebdt());
@@ -1462,7 +1481,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextBatchid.setTag(TvBatchid);
             /*光标放置在文本最后*/
                 holder.tvCommoBatchid.setSelection(holder.tvCommoBatchid.length());
-
 
                 holder.tvCommoOurAfter.setEnabled(true);
 
@@ -2170,11 +2188,17 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoQAMemo.setEnabled(false);
             holder.tvCommoQAMemo.setText(getItem(position).getQAMemo());
-
         }
-
         return convertView;
     }
+
+    public View.OnClickListener myOnclicklistener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String ss = sp.getString("strposition", "");
+            ToastUtils.ShowToastMessage("点击是" + ss, context);
+        }
+    };
 
     /**
      * 弹出后道选择菜单
@@ -2206,6 +2230,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
+        LinearLayout lin_content;
         TextView tvCommoOurAfter, tvCommoItem, tvCommoCtmtxt, tvCommoQAMemo,
                 tvCommoPrddocumentary, tvCommoprdmaster, tvCommoSealedrev,
                 tvCommoDocback, tvCommoLcdat, tvCommoTaskqty, tvCommoPredocdt, tvCommoPred, tvCommoSewFdt, tvCommoSewMdt, tvCommoSubfactory, tvCommoPrebdt, tvCommoQCbdt, tvCommoPremdt, tvCommoQCmdt, tvCommoPreedt, tvCommoQCMedt, tvCommoFctmdt, tvCommoFctedt, tvCommoPackbdat, tvCommoFactlcdat, tvCommoCtmchkdt;

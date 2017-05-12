@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.adapter.CommoditySqlAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.CommodityPostBean;
+import com.daoran.newfactory.onefactory.bean.CommoditySaveBean;
 import com.daoran.newfactory.onefactory.bean.CommoditydetailBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
@@ -20,6 +22,7 @@ import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.dialog.CommoDialog;
+import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
 import com.google.gson.Gson;
@@ -52,6 +55,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
             = new ArrayList<CommoditydetailBean.DataBean>();
     private CommoditydetailBean commoditydetailBean;
     private CommoditySqlAdapter sqlAdapter;
+    List<CommoditySaveBean> saveBeen = new ArrayList<CommoditySaveBean>();
 
     private TextView tvSignPage;
     private EditText etSqlDetail;
@@ -208,6 +212,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         postBean.setPageSize(10);
         String stringpost = gson.toJson(postBean);
         if (NetWork.isNetWorkAvailable(this)) {
+            ResponseDialog.showLoading(this);
             OkHttpUtils.postString()
                     .url(str)
                     .content(stringpost)
@@ -235,6 +240,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                 tvSignPage.setText(count);
                                 sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this, dataBeen);
                                 mData.setAdapter(sqlAdapter);
+                                ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
                             }
@@ -249,6 +255,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
      * 指定页码查询数据
      */
     private void setPageDetail() {
+        ResponseDialog.showLoading(this);
         String str = HttpUrl.debugoneUrl + "QACwork/BindSearchQACworkAPP/";
         sp = CommoditySqlActivity.this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
         String Style = sp.getString("commoStyle", "");//款号
@@ -272,6 +279,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         postBean.setPageSize(10);
         String stringpost = gson.toJson(postBean);
         if (NetWork.isNetWorkAvailable(this)) {
+            ResponseDialog.showLoading(this);
             OkHttpUtils.postString()
                     .url(str)
                     .content(stringpost)
@@ -299,6 +307,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                 tvSignPage.setText(count);
                                 sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this, dataBeen);
                                 mData.setAdapter(sqlAdapter);
+                                ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
                             }
@@ -310,266 +319,254 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         }
     }
 
+    /**
+     * 保存
+     */
     private void setCommoSave() {
-
-        String saveurl = HttpUrl.debugoneUrl + "QACwork/SaveQACwork/";
-        sp = this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
-        String commoproid = sp.getString("commoproid", "");//id
-        String tvconmmitem = sp.getString("tvconmmitem", "");//款号
-        if (tvconmmitem == "" || tvconmmitem.equals("")) {
-            tvconmmitem = null;
-        }
-        String tvcommoctmtxt = sp.getString("tvcommoctmtxt", "");//客户
-        if (tvcommoctmtxt == "" || tvcommoctmtxt.equals("")) {
-            tvcommoctmtxt = null;
-        }
-        String tvcommoprddocumentary = sp.getString("tvcommoprddocumentary", "");//跟单
-        if (tvcommoprddocumentary == "" || tvcommoprddocumentary.equals("")) {
-            tvcommoprddocumentary = null;
-        }
-        String tvcommoprdmaster = sp.getString("tvcommoprdmaster", "");//生产主管
-        if (tvcommoprdmaster == "" || tvcommoprdmaster.equals("")) {
-            tvcommoprdmaster = null;
-        }
-        String CommodityQCMasterScore = sp.getString("CommodityQCMasterScore", "");//主管评分
-        if (CommodityQCMasterScore == "" || CommodityQCMasterScore.equals("")) {
-            CommodityQCMasterScore = null;
-        }
-        String dateSealedrewtimesign = sp.getString("dateSealedrewtimesign", "");//封样接收时间
-        if (dateSealedrewtimesign == "" || dateSealedrewtimesign.equals("")) {
-            dateSealedrewtimesign = null;
-        }
-        String dateDocbacktimesign = sp.getString("dateDocbacktimesign", "");//大货接收时间
-        if (dateDocbacktimesign == "" || dateDocbacktimesign.equals("")) {
-            dateDocbacktimesign = null;
-        }
-        String tvcommolcdat = sp.getString("tvcommolcdat", "");//出货时间
-        if (tvcommolcdat == "" || tvcommolcdat.equals("")) {
-            tvcommolcdat = null;
-        }
-        String tvcommotaskqty = sp.getString("tvcommotaskqty", "");//制单数量
-        if (tvcommotaskqty == "" || tvcommotaskqty.equals("")) {
-            tvcommotaskqty = null;
-        }
-        String CommodityPreMemo = sp.getString("CommodityPreMemo", "");//备注
-        if (CommodityPreMemo == "" || CommodityPreMemo.equals("")) {
-            CommodityPreMemo = null;
-        }
-        String datePredocdttimesign = sp.getString("datePredocdttimesign", "");//预计产前时间
-        if (datePredocdttimesign == "" || datePredocdttimesign.equals("")) {
-            datePredocdttimesign = null;
-        }
-        String datePredtimesign = sp.getString("datePredtimesign", "");//产前会时间
-        if (datePredtimesign == "" || datePredtimesign.equals("")) {
-            datePredtimesign = null;
-        }
-        String CommodityPredoc = sp.getString("CommodityPredoc", "");//产前会报告
-        if (CommodityPredoc == "" || CommodityPredoc.equals("")) {
-            CommodityPredoc = null;
-        }
-        String CommodityFabricsok = sp.getString("CommodityFabricsok", "");//大货面料情况
-        if (CommodityFabricsok == "" || CommodityFabricsok.equals("")) {
-            CommodityFabricsok = null;
-        }
-        String CommodityAccessoriesok = sp.getString("CommodityAccessoriesok", "");//大货辅料情况
-        if (CommodityAccessoriesok == "" || CommodityAccessoriesok.equals("")) {
-            CommodityAccessoriesok = null;
-        }
-        String CommoditySpcproDec = sp.getString("CommoditySpcproDec", "");//大货特殊工艺情况
-        if (CommoditySpcproDec == "" || CommoditySpcproDec.equals("")) {
-            CommoditySpcproDec = null;
-        }
-        String CommoditySpcproMemo = sp.getString("CommoditySpcproMemo", "");//特殊工艺备注
-        if (CommoditySpcproMemo == "" || CommoditySpcproMemo.equals("")) {
-            CommoditySpcproMemo = null;
-        }
-        String CommodityCutqty = sp.getString("CommodityCutqty", "");//实裁数
-        if (CommodityCutqty == "" || CommodityCutqty.equals("")) {
-            CommodityCutqty = null;
-        }
-        String dateSewFdttimesign = sp.getString("dateSewFdttimesign", "");//上线日期
-        if (dateSewFdttimesign == "" || dateSewFdttimesign.equals("")) {
-            dateSewFdttimesign = null;
-        }
-        String dateSewMdttimesign = sp.getString("dateSewMdttimesign", "");//下线日期
-        if (dateSewMdttimesign == "" || dateSewMdttimesign.equals("")) {
-            dateSewMdttimesign = null;
-        }
-        String tvcommosubfactory = sp.getString("tvcommosubfactory", "");//加工厂
-        if (tvcommosubfactory == "" || tvcommosubfactory.equals("")) {
-            tvcommosubfactory = null;
-        }
-        String datePrebdttimesign = sp.getString("datePrebdttimesign", "");//预计早期时间
-        if (datePrebdttimesign == "" || datePrebdttimesign.equals("")) {
-            datePrebdttimesign = null;
-        }
-        String dateQCbdttimesign = sp.getString("dateQCbdttimesign", "");//自查早期时间
-        if (dateQCbdttimesign == "" || dateQCbdttimesign.equals("")) {
-            dateQCbdttimesign = null;
-        }
-        String CommodityQCbdtDoc = sp.getString("CommodityQCbdtDoc", "");//早期报告
-        if (CommodityQCbdtDoc == "" || CommodityQCbdtDoc.equals("")) {
-            CommodityQCbdtDoc = null;
-        }
-        String datePremdttimesign = sp.getString("datePremdttimesign", "");//预计中期时间
-        if (datePremdttimesign == "" || datePremdttimesign.equals("")) {
-            datePremdttimesign = null;
-        }
-        String dateQCmdttimesign = sp.getString("dateQCmdttimesign", "");//自查中期时间
-        if (dateQCmdttimesign == "" || dateQCmdttimesign.equals("")) {
-            dateQCmdttimesign = null;
-        }
-        String CommodityQCmdtDoc = sp.getString("CommodityQCmdtDoc", "");//中期报告
-        if (CommodityQCmdtDoc == "" || CommodityQCmdtDoc.equals("")) {
-            CommodityQCmdtDoc = null;
-        }
-        String datePreedttimesign = sp.getString("datePreedttimesign", "");//预计尾查时间
-        if (datePreedttimesign == "" || datePreedttimesign.equals("")) {
-            datePreedttimesign = null;
-        }
-        String dateQCMedttimesign = sp.getString("dateQCMedttimesign", "");//自查尾期时间
-        if (dateQCMedttimesign == "" || dateQCMedttimesign.equals("")) {
-            dateQCMedttimesign = null;
-        }
-        String CommodityQCedtDoc = sp.getString("CommodityQCedtDoc", "");//尾期报告
-        if (CommodityQCedtDoc == "" || CommodityQCedtDoc.equals("")) {
-            CommodityQCedtDoc = null;
-        }
-        String dateFctmdttimesign = sp.getString("dateFctmdttimesign", "");//客查中期时间
-        if (dateFctmdttimesign == "" || dateFctmdttimesign.equals("")) {
-            dateFctmdttimesign = null;
-        }
-        String dateFctedttimesign = sp.getString("dateFctedttimesign", "");//客查尾期时间
-        if (dateFctedttimesign == "" || dateFctedttimesign.equals("")) {
-            dateFctedttimesign = null;
-        }
-        String datePackbdattimesign = sp.getString("datePackbdattimesign", "");//成品包装日期
-        if (datePackbdattimesign == "" || datePackbdattimesign.equals("")) {
-            datePackbdattimesign = null;
-        }
-        String CommodityPackqty2 = sp.getString("CommodityPackqty2", "");//装箱数量
-        if (CommodityPackqty2 == "" || CommodityPackqty2.equals("")) {
-            CommodityPackqty2 = null;
-        }
-        String CommodityQCMemo = sp.getString("CommodityQCMemo", "");//qc备注
-        if (CommodityQCMemo == "" || CommodityQCMemo.equals("")) {
-            CommodityQCMemo = null;
-        }
-        String dateFactlcdattimesign = sp.getString("dateFactlcdattimesign", "");//离厂日期
-        if (dateFactlcdattimesign == "" || dateFactlcdattimesign.equals("")) {
-            dateFactlcdattimesign = null;
-        }
-        String CommodityBatchid = sp.getString("CommodityBatchid", "");//查货批次
-        if (CommodityBatchid == "" || CommodityBatchid.equals("")) {
-            CommodityBatchid = null;
-        }
-        String tvCommoOurAfter = sp.getString("commohdTitle", "");//后道
-        if (tvCommoOurAfter == "" || tvCommoOurAfter.equals("")) {
-            tvCommoOurAfter = null;
-        }
-        String dateCtmchkdttimesign = sp.getString("dateCtmchkdttimesign", "");//业务员确认客查日期
-        if (dateCtmchkdttimesign == "" || dateCtmchkdttimesign.equals("")) {
-            dateCtmchkdttimesign = null;
-        }
-        String CommodityIPQCPedt = sp.getString("CommodityIPQCPedt", "");//尾查预查
-        if (CommodityIPQCPedt == "" || CommodityIPQCPedt.equals("")) {
-            CommodityIPQCPedt = null;
-        }
-        String CommodityIPQCmdt = sp.getString("CommodityIPQCmdt", "");//巡检中查
-        if (CommodityIPQCmdt == "" || CommodityIPQCmdt.equals("")) {
-            CommodityIPQCmdt = null;
-        }
-        String CommodityQAname = sp.getString("CommodityQAname", "");//qa首扎
-        if (CommodityQAname == "" || CommodityQAname.equals("")) {
-            CommodityQAname = null;
-        }
-        String CommodityQAScore = sp.getString("CommodityQAScore", "");//qa首扎件
-        if (CommodityQAScore == "" || CommodityQAScore.equals("")) {
-            CommodityQAScore = null;
-        }
-        String dateQAMemotimesign = sp.getString("dateQAMemotimesign", "");//qa首扎日
-        if (dateQAMemotimesign == "" || dateQAMemotimesign.equals("")) {
-            dateQAMemotimesign = null;
-        }
-        Gson gson = new Gson();
-        CommoditydetailBean.DataBean dataBean = new CommoditydetailBean.DataBean();
-        dataBean.setID(Integer.parseInt(commoproid));
-        dataBean.setItem(tvconmmitem);
-        dataBean.setCtmtxt(tvcommoctmtxt);
-        dataBean.setPrddocumentary(tvcommoprddocumentary);
-        dataBean.setPrdmaster(tvcommoprdmaster);
-        dataBean.setQCMasterScore(CommodityQCMasterScore);
-        dataBean.setSealedrev(dateSealedrewtimesign);
-        dataBean.setDocback(dateDocbacktimesign);
-        dataBean.setLcdat(tvcommolcdat);
-        dataBean.setTaskqty(tvcommotaskqty);
-        dataBean.setPreMemo(CommodityPreMemo);
-        dataBean.setPredocdt(datePredocdttimesign);
-        dataBean.setPredt(datePredtimesign);
-        dataBean.setPredoc(CommodityPredoc);
-        dataBean.setFabricsok(CommodityFabricsok);
-        dataBean.setAccessoriesok(CommodityAccessoriesok);
-        dataBean.setSpcproDec(CommoditySpcproDec);
-        dataBean.setSpcproMemo(CommoditySpcproMemo);
-        dataBean.setCutqty(CommodityCutqty);
-        dataBean.setSewFdt(dateSewFdttimesign);
-        dataBean.setSewMdt(dateSewMdttimesign);
-        dataBean.setSubfactory(tvcommosubfactory);
-        dataBean.setPrebdt(datePrebdttimesign);
-        dataBean.setQCbdt(dateQCbdttimesign);
-        dataBean.setQCbdtDoc(CommodityQCbdtDoc);
-        dataBean.setPremdt(datePremdttimesign);
-        dataBean.setQCmdt(dateQCmdttimesign);
-        dataBean.setQCmdtDoc(CommodityQCmdtDoc);
-        dataBean.setPreedt(datePreedttimesign);
-        dataBean.setQCMedt(dateQCMedttimesign);
-        dataBean.setQCedtDoc(CommodityQCedtDoc);
-        dataBean.setFctmdt(dateFctmdttimesign);
-        dataBean.setFctedt(dateFctedttimesign);
-        dataBean.setPackbdat(datePackbdattimesign);
-        dataBean.setPackqty2(CommodityPackqty2);
-        dataBean.setQCMemo(CommodityQCMemo);
-        dataBean.setFactlcdat(dateFactlcdattimesign);
-        dataBean.setBatchid(CommodityBatchid);
-        dataBean.setOurAfter(tvCommoOurAfter);
-        dataBean.setCtmchkdt(dateCtmchkdttimesign);
-        dataBean.setIPQCPedt(CommodityIPQCPedt);
-        dataBean.setIPQCmdt(CommodityIPQCmdt);
-        dataBean.setQAname(CommodityQAname);
-        dataBean.setQAScore(CommodityQAScore);
-        dataBean.setQAMemo(dateQAMemotimesign);
-        dataBeen.add(dataBean);
-        String commjson = gson.toJson(dataBeen);
         if (NetWork.isNetWorkAvailable(this)) {
-            OkHttpUtils.postString()
-                    .url(saveurl)
-                    .content(commjson)
-                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            e.printStackTrace();
+            String saveurl = HttpUrl.debugoneUrl + "QACwork/SaveQACwork/";
+            sp = this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+            String commoproid = sp.getString("commoproid", "");//id
+            String CommodityQCMasterScore = sp.getString("CommodityQCMasterScore", "");//主管评分
+            if (CommodityQCMasterScore == "" || CommodityQCMasterScore.equals("")) {
+                CommodityQCMasterScore = null;
+            }
+            String dateSealedrewtimesign = sp.getString("dateSealedrewtimesign", "");//封样接收时间
+            if (dateSealedrewtimesign == "" || dateSealedrewtimesign.equals("")) {
+                dateSealedrewtimesign = null;
+            }
+            String dateDocbacktimesign = sp.getString("dateDocbacktimesign", "");//大货接收时间
+            if (dateDocbacktimesign == "" || dateDocbacktimesign.equals("")) {
+                dateDocbacktimesign = null;
+            }
+            String CommodityPreMemo = sp.getString("CommodityPreMemo", "");//备注
+            if (CommodityPreMemo == "" || CommodityPreMemo.equals("")) {
+                CommodityPreMemo = null;
+            }
+            String datePredocdttimesign = sp.getString("datePredocdttimesign", "");//预计产前时间
+            if (datePredocdttimesign == "" || datePredocdttimesign.equals("")) {
+                datePredocdttimesign = null;
+            }
+            String datePredtimesign = sp.getString("datePredtimesign", "");//产前会时间
+            if (datePredtimesign == "" || datePredtimesign.equals("")) {
+                datePredtimesign = null;
+            }
+            String CommodityPredoc = sp.getString("CommodityPredoc", "");//产前会报告
+            if (CommodityPredoc == "" || CommodityPredoc.equals("")) {
+                CommodityPredoc = null;
+            }
+            String CommodityFabricsok = sp.getString("CommodityFabricsok", "");//大货面料情况
+            if (CommodityFabricsok == "" || CommodityFabricsok.equals("")) {
+                CommodityFabricsok = null;
+            }
+            String CommodityAccessoriesok = sp.getString("CommodityAccessoriesok", "");//大货辅料情况
+            if (CommodityAccessoriesok == "" || CommodityAccessoriesok.equals("")) {
+                CommodityAccessoriesok = null;
+            }
+            String CommoditySpcproDec = sp.getString("CommoditySpcproDec", "");//大货特殊工艺情况
+            if (CommoditySpcproDec == "" || CommoditySpcproDec.equals("")) {
+                CommoditySpcproDec = null;
+            }
+            String CommoditySpcproMemo = sp.getString("CommoditySpcproMemo", "");//特殊工艺备注
+            if (CommoditySpcproMemo == "" || CommoditySpcproMemo.equals("")) {
+                CommoditySpcproMemo = null;
+            }
+            String CommodityCutqty = sp.getString("CommodityCutqty", "");//实裁数
+            if (CommodityCutqty == "" || CommodityCutqty.equals("")) {
+                CommodityCutqty = null;
+            }
+            String dateSewFdttimesign = sp.getString("dateSewFdttimesign", "");//上线日期
+            if (dateSewFdttimesign == "" || dateSewFdttimesign.equals("")) {
+                dateSewFdttimesign = null;
+            }
+            String dateSewMdttimesign = sp.getString("dateSewMdttimesign", "");//下线日期
+            if (dateSewMdttimesign == "" || dateSewMdttimesign.equals("")) {
+                dateSewMdttimesign = null;
+            }
+            String datePrebdttimesign = sp.getString("datePrebdttimesign", "");//预计早期时间
+            if (datePrebdttimesign == "" || datePrebdttimesign.equals("")) {
+                datePrebdttimesign = null;
+            }
+            String dateQCbdttimesign = sp.getString("dateQCbdttimesign", "");//自查早期时间
+            if (dateQCbdttimesign == "" || dateQCbdttimesign.equals("")) {
+                dateQCbdttimesign = null;
+            }
+            String CommodityQCbdtDoc = sp.getString("CommodityQCbdtDoc", "");//早期报告
+            if (CommodityQCbdtDoc == "" || CommodityQCbdtDoc.equals("")) {
+                CommodityQCbdtDoc = null;
+            }
+            String datePremdttimesign = sp.getString("datePremdttimesign", "");//预计中期时间
+            if (datePremdttimesign == "" || datePremdttimesign.equals("")) {
+                datePremdttimesign = null;
+            }
+            String dateQCmdttimesign = sp.getString("dateQCmdttimesign", "");//自查中期时间
+            if (dateQCmdttimesign == "" || dateQCmdttimesign.equals("")) {
+                dateQCmdttimesign = null;
+            }
+            String CommodityQCmdtDoc = sp.getString("CommodityQCmdtDoc", "");//中期报告
+            if (CommodityQCmdtDoc == "" || CommodityQCmdtDoc.equals("")) {
+                CommodityQCmdtDoc = null;
+            }
+            String datePreedttimesign = sp.getString("datePreedttimesign", "");//预计尾查时间
+            if (datePreedttimesign == "" || datePreedttimesign.equals("")) {
+                datePreedttimesign = null;
+            }
+            String dateQCMedttimesign = sp.getString("dateQCMedttimesign", "");//自查尾期时间
+            if (dateQCMedttimesign == "" || dateQCMedttimesign.equals("")) {
+                dateQCMedttimesign = null;
+            }
+            String CommodityQCedtDoc = sp.getString("CommodityQCedtDoc", "");//尾期报告
+            if (CommodityQCedtDoc == "" || CommodityQCedtDoc.equals("")) {
+                CommodityQCedtDoc = null;
+            }
+            String dateFctmdttimesign = sp.getString("dateFctmdttimesign", "");//客查中期时间
+            if (dateFctmdttimesign == "" || dateFctmdttimesign.equals("")) {
+                dateFctmdttimesign = null;
+            }
+            String dateFctedttimesign = sp.getString("dateFctedttimesign", "");//客查尾期时间
+            if (dateFctedttimesign == "" || dateFctedttimesign.equals("")) {
+                dateFctedttimesign = null;
+            }
+            String datePackbdattimesign = sp.getString("datePackbdattimesign", "");//成品包装日期
+            if (datePackbdattimesign == "" || datePackbdattimesign.equals("")) {
+                datePackbdattimesign = null;
+            }
+            String CommodityPackqty2 = sp.getString("CommodityPackqty2", "");//装箱数量
+            if (CommodityPackqty2 == "" || CommodityPackqty2.equals("")) {
+                CommodityPackqty2 = null;
+            }
+            String CommodityQCMemo = sp.getString("CommodityQCMemo", "");//qc备注
+            if (CommodityQCMemo == "" || CommodityQCMemo.equals("")) {
+                CommodityQCMemo = null;
+            }
+            String dateFactlcdattimesign = sp.getString("dateFactlcdattimesign", "");//离厂日期
+            if (dateFactlcdattimesign == "" || dateFactlcdattimesign.equals("")) {
+                dateFactlcdattimesign = null;
+            }
+            String CommodityBatchid = sp.getString("CommodityBatchid", "");//查货批次
+            if (CommodityBatchid == "" || CommodityBatchid.equals("")) {
+                CommodityBatchid = null;
+            }
+            String tvCommoOurAfter = sp.getString("commohdTitle", "");//后道
+            if (tvCommoOurAfter == "" || tvCommoOurAfter.equals("")) {
+                tvCommoOurAfter = null;
+            }
+            String dateCtmchkdttimesign = sp.getString("dateCtmchkdttimesign", "");//业务员确认客查日期
+            if (dateCtmchkdttimesign == "" || dateCtmchkdttimesign.equals("")) {
+                dateCtmchkdttimesign = null;
+            }
+            String CommodityIPQCPedt = sp.getString("CommodityIPQCPedt", "");//尾查预查
+            if (CommodityIPQCPedt == "" || CommodityIPQCPedt.equals("")) {
+                CommodityIPQCPedt = null;
+            }
+            String CommodityIPQCmdt = sp.getString("CommodityIPQCmdt", "");//巡检中查
+            if (CommodityIPQCmdt == "" || CommodityIPQCmdt.equals("")) {
+                CommodityIPQCmdt = null;
+            }
+            String CommodityQAname = sp.getString("CommodityQAname", "");//qa首扎
+            if (CommodityQAname == "" || CommodityQAname.equals("")) {
+                CommodityQAname = null;
+            }
+            String CommodityQAScore = sp.getString("CommodityQAScore", "");//qa首扎件
+            if (CommodityQAScore == "" || CommodityQAScore.equals("")) {
+                CommodityQAScore = null;
+            }
+            String dateQAMemotimesign = sp.getString("dateQAMemotimesign", "");//qa首扎日
+            if (dateQAMemotimesign == "" || dateQAMemotimesign.equals("")) {
+                dateQAMemotimesign = null;
+            }
+            String uriid = sp.getString("uriid", "");
+            Gson gson = new Gson();
+            CommoditySaveBean saveBean = new CommoditySaveBean();
+            if (uriid == commoproid || uriid.equals(commoproid)) {
+                saveBean.setID(Integer.parseInt(commoproid));
+                saveBean.setItem(null);
+                saveBean.setCtmtxt(null);
+                saveBean.setPrddocumentary(null);
+                saveBean.setPrdmaster(null);
+                saveBean.setQCMasterScore(CommodityQCMasterScore);
+                saveBean.setSealedrev(dateSealedrewtimesign);
+                saveBean.setDocback(dateDocbacktimesign);
+                saveBean.setLcdat(null);
+                saveBean.setTaskqty(null);
+                saveBean.setPreMemo(CommodityPreMemo);
+                saveBean.setPredocdt(datePredocdttimesign);
+                saveBean.setPredt(datePredtimesign);
+                saveBean.setPredoc(CommodityPredoc);
+                saveBean.setFabricsok(CommodityFabricsok);
+                saveBean.setAccessoriesok(CommodityAccessoriesok);
+                saveBean.setSpcproDec(CommoditySpcproDec);
+                saveBean.setSpcproMemo(CommoditySpcproMemo);
+                saveBean.setCutqty(CommodityCutqty);
+                saveBean.setSewFdt(dateSewFdttimesign);
+                saveBean.setSewMdt(dateSewMdttimesign);
+                saveBean.setSubfactory(null);
+                saveBean.setPrebdt(datePrebdttimesign);
+                saveBean.setQCbdt(dateQCbdttimesign);
+                saveBean.setQCbdtDoc(CommodityQCbdtDoc);
+                saveBean.setPremdt(datePremdttimesign);
+                saveBean.setQCmdt(dateQCmdttimesign);
+                saveBean.setQCmdtDoc(CommodityQCmdtDoc);
+                saveBean.setPreedt(datePreedttimesign);
+                saveBean.setQCMedt(dateQCMedttimesign);
+                saveBean.setQCedtDoc(CommodityQCedtDoc);
+                saveBean.setFctmdt(dateFctmdttimesign);
+                saveBean.setFctedt(dateFctedttimesign);
+                saveBean.setPackbdat(datePackbdattimesign);
+                saveBean.setPackqty2(CommodityPackqty2);
+                saveBean.setQCMemo(CommodityQCMemo);
+                saveBean.setFactlcdat(dateFactlcdattimesign);
+                saveBean.setBatchid(CommodityBatchid);
+                saveBean.setOurAfter(tvCommoOurAfter);
+                saveBean.setCtmchkdt(dateCtmchkdttimesign);
+                saveBean.setIPQCPedt(CommodityIPQCPedt);
+                saveBean.setIPQCmdt(CommodityIPQCmdt);
+                saveBean.setQAname(CommodityQAname);
+                saveBean.setQAScore(CommodityQAScore);
+                saveBean.setQAMemo(dateQAMemotimesign);
+                saveBeen.add(saveBean);
+                String commjson = gson.toJson(saveBeen);
 
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-                            System.out.print(response);
-                            response = response.replace("\\","");
-                            String ression = StringUtil.sideTrim(response,"\"");
-                            System.out.print(ression);
-                            if(ression.equals("true")){
-                                ToastUtils.ShowToastMessage("保存成功",CommoditySqlActivity.this);
-                            }else{
-                                ToastUtils.ShowToastMessage("保存失败",CommoditySqlActivity.this);
+                OkHttpUtils.postString()
+                        .url(saveurl)
+                        .content(commjson)
+                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                e.printStackTrace();
+                                ResponseDialog.closeLoading();
                             }
 
-                        }
-                    });
+                            @Override
+                            public void onResponse(String response, int id) {
+                                System.out.print(response);
+                                response = response.replace("\\", "");
+                                String ression = StringUtil.sideTrim(response, "\"");
+                                System.out.print(ression);
+                                if (ression.equals("true")) {
+                                    ResponseDialog.closeLoading();
+                                    ToastUtils.ShowToastMessage("保存成功", CommoditySqlActivity.this);
+                                } else {
+                                    ResponseDialog.closeLoading();
+                                    ToastUtils.ShowToastMessage("保存失败", CommoditySqlActivity.this);
+                                }
+                            }
+                        });
+            } else {
+                ToastUtils.ShowToastMessage("请选择当前行，再进行修改保存",
+                        CommoditySqlActivity.this);
+            }
+
+
         } else {
             ToastUtils.ShowToastMessage(R.string.noHttp, CommoditySqlActivity.this);
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 }

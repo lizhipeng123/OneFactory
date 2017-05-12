@@ -53,6 +53,9 @@ public class CommoDialog extends Dialog {
         initViews();
     }
 
+    /**
+     * 实例化控件
+     */
     private void getViews() {
         etprodialogStyle = (EditText) findViewById(R.id.etprodialogStyle);
         etprodialogFactory = (EditText) findViewById(R.id.etprodialogFactory);
@@ -64,6 +67,9 @@ public class CommoDialog extends Dialog {
 
     }
 
+    /**
+     * 操作控件
+     */
     private void initViews() {
         sp = content.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
         Window dialogWindow = this.getWindow();

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -69,6 +70,7 @@ public class ProductionAdapter extends BaseAdapter {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_production_data, null);
+            viewHolder.lin_content = (LinearLayout) convertView.findViewById(R.id.lin_content);
             viewHolder.tv_data = (TextView) convertView.findViewById(R.id.tv_data);
             viewHolder.tvProDocumentary = (TextView) convertView.findViewById(R.id.tvProDocumentary);
             viewHolder.tvProFactory = (TextView) convertView.findViewById(R.id.tvProFactory);
@@ -128,1590 +130,1907 @@ public class ProductionAdapter extends BaseAdapter {
         sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
         String nameid = sp.getString("username", "");
         String recorder = getItem(position).getRecorder();
-
-        if(recorder==null){
-            recorder="";
-        }else{
-            recorder = getItem(position).getRecorder();
-        }
-        if (recorder.equals("")||recorder.equals("毕三军")) {
-            String proid = String.valueOf(getItem(position).getID());
-            spUtils.put(context, "proadapterid", proid);
-            String salesid = String.valueOf(getItem(position).getSalesid());
-            spUtils.put(context, "prosalesid", salesid);
-
-            viewHolder.tv_data.setEnabled(true);
-            String productionItem = getItem(position).getItem();
-            viewHolder.tv_data.setText(productionItem);
-
-            viewHolder.tvProDocumentary.setEnabled(true);
-            String productionadapterDocumentary = getItem(position).getPrddocumentary();
-            viewHolder.tvProDocumentary.setText(productionadapterDocumentary);
-
-
-            viewHolder.tvProFactory.setEnabled(true);
-            String productionFactory = getItem(position).getSubfactory();
-            viewHolder.tvProFactory.setText(productionFactory);
-
-            viewHolder.tvProDepartment.setEnabled(true);
-            viewHolder.tvProDepartment.setText(getItem(position).getSubfactoryTeams());
-            String proColumnTitle = viewHolder.tvProDepartment.getText().toString();
-
-            viewHolder.tvProProcedure.setEnabled(true);
-            viewHolder.tvProProcedure.setText(getItem(position).getWorkingProcedure());
-
-            viewHolder.tvProOthers.setEnabled(true);
-            final EditText editTexOthers = viewHolder.tvProOthers;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexOthers.getTag() instanceof TextWatcher) {
-                editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
-            }
-            editTexOthers.setText(getItem(position).getWorkers());
-            editTexOthers.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+        if (recorder != null && !recorder.equals("")) {
+            if (recorder.equals("毕三军")) {
+                viewHolder.lin_content.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String proid = String.valueOf(getItem(position).getID());
+                        spUtils.put(context, "proadapterid", proid);
+                        String urlid = String.valueOf(getItem(position).getID());
+                        spUtils.put(context, "prouriid", urlid);
+                        String salesid = String.valueOf(getItem(position).getSalesid());
+                        spUtils.put(context, "prosalesid", salesid);
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvOthers = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                viewHolder.tv_data.setEnabled(true);
+                String productionItem = getItem(position).getItem();
+                viewHolder.tv_data.setText(productionItem);
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                viewHolder.tvProDocumentary.setEnabled(true);
+                String productionadapterDocumentary = getItem(position).getPrddocumentary();
+                viewHolder.tvProDocumentary.setText(productionadapterDocumentary);
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProOthers.getText().toString();
-                    spUtils.put(context, "productionOthers", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexOthers.addTextChangedListener(TvOthers);
-            editTexOthers.setTag(TvOthers);
-            /*光标放置在文本最后*/
-            viewHolder.tvProOthers.setSelection(viewHolder.tvProOthers.length());
 
-            viewHolder.tvProSingularSystem.setEnabled(true);
-            String productionadapterSingularSystem = getItem(position).getPqty();
-            viewHolder.tvProSingularSystem.setText(productionadapterSingularSystem);
-            spUtils.put(context,"productionadapterSingularSystem",productionadapterSingularSystem);
+                viewHolder.tvProFactory.setEnabled(true);
+                String productionFactory = getItem(position).getSubfactory();
+                viewHolder.tvProFactory.setText(productionFactory);
 
-            viewHolder.tvProColor.setEnabled(true);
-            String productionColor = getItem(position).getProdcol();
-            viewHolder.tvProColor.setText(productionColor);
-            spUtils.put(context,"productionColor",productionColor);
+                viewHolder.tvProDepartment.setEnabled(true);
+                viewHolder.tvProDepartment.setText(getItem(position).getSubfactoryTeams());
 
-            viewHolder.tvProTaskNumber.setEnabled(true);
-            final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
+                viewHolder.tvProProcedure.setEnabled(true);
+                viewHolder.tvProProcedure.setText(getItem(position).getWorkingProcedure());
+
+                viewHolder.tvProOthers.setEnabled(true);
+                final EditText editTexOthers = viewHolder.tvProOthers;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexTaskNumber.getTag() instanceof TextWatcher) {
-                editTexTaskNumber.removeTextChangedListener((TextWatcher) editTexTaskNumber.getTag());
-            }
-            editTexTaskNumber.setText(getItem(position).getTaskqty());
-            editTexTaskNumber.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexOthers.getTag() instanceof TextWatcher) {
+                    editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
+                }
+                editTexOthers.setText(getItem(position).getWorkers());
+                editTexOthers.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvTaskNumber = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvOthers = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProTaskNumber.getText().toString();
-                    spUtils.put(context, "productionTaskNumber", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexTaskNumber.addTextChangedListener(TvTaskNumber);
-            editTexTaskNumber.setTag(TvTaskNumber);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProOthers.getText().toString();
+                        spUtils.put(context, "productionOthers", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexOthers.addTextChangedListener(TvOthers);
+                editTexOthers.setTag(TvOthers);
             /*光标放置在文本最后*/
-            viewHolder.tvProTaskNumber.setSelection(viewHolder.tvProTaskNumber.length());
+                viewHolder.tvProOthers.setSelection(viewHolder.tvProOthers.length());
 
-            viewHolder.tvProSize.setEnabled(true);
-            String productionSize = getItem(position).getMdl();
-            viewHolder.tvProSize.setText(productionSize);
-            spUtils.put(context,"productionSize",productionSize);
+                viewHolder.tvProSingularSystem.setEnabled(true);
+                String productionadapterSingularSystem = getItem(position).getPqty();
+                viewHolder.tvProSingularSystem.setText(productionadapterSingularSystem);
 
-            viewHolder.tvProClippingNumber.setEnabled(true);
-            String productionClippingNumber = getItem(position).getFactcutqty();
-            viewHolder.tvProClippingNumber.setText(productionClippingNumber);
-            spUtils.put(context,"productionClippingNumber",productionClippingNumber);
+                viewHolder.tvProColor.setEnabled(true);
+                String productionColor = getItem(position).getProdcol();
+                viewHolder.tvProColor.setText(productionColor);
 
-            viewHolder.tvProCompletedLastMonth.setEnabled(true);
-            final EditText editTexCompletedLastMonth = viewHolder.tvProCompletedLastMonth;
+                viewHolder.tvProTaskNumber.setEnabled(true);
+                final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexCompletedLastMonth.getTag() instanceof TextWatcher) {
-                editTexCompletedLastMonth.removeTextChangedListener((TextWatcher) editTexCompletedLastMonth.getTag());
-            }
-            editTexCompletedLastMonth.setText(getItem(position).getLastMonQty());
-            editTexCompletedLastMonth.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexTaskNumber.getTag() instanceof TextWatcher) {
+                    editTexTaskNumber.removeTextChangedListener((TextWatcher) editTexTaskNumber.getTag());
+                }
+                editTexTaskNumber.setText(getItem(position).getTaskqty());
+                editTexTaskNumber.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvCompletedLastMonth = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvTaskNumber = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProCompletedLastMonth.getText().toString();
-                    spUtils.put(context, "productionCompletedLastMonth", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexCompletedLastMonth.addTextChangedListener(TvCompletedLastMonth);
-            editTexCompletedLastMonth.setTag(TvCompletedLastMonth);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProTaskNumber.getText().toString();
+                        spUtils.put(context, "productionTaskNumber", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexTaskNumber.addTextChangedListener(TvTaskNumber);
+                editTexTaskNumber.setTag(TvTaskNumber);
             /*光标放置在文本最后*/
-            viewHolder.tvProCompletedLastMonth.setSelection(viewHolder.tvProCompletedLastMonth.length());
+                viewHolder.tvProTaskNumber.setSelection(viewHolder.tvProTaskNumber.length());
 
-            viewHolder.tvProTotalCompletion.setEnabled(true);
-            viewHolder.tvProTotalCompletion.setText(getItem(position).getSumCompletedQty());
+                viewHolder.tvProSize.setEnabled(true);
+                String productionSize = getItem(position).getMdl();
+                viewHolder.tvProSize.setText(productionSize);
 
-            viewHolder.tvProBalanceAmount.setEnabled(true);
-            String productionBalanceAmount = getItem(position).getLeftQty();
-            viewHolder.tvProBalanceAmount.setText(getItem(position).getLeftQty());
-            spUtils.put(context,"productionBalanceAmount",productionBalanceAmount);
+                viewHolder.tvProClippingNumber.setEnabled(true);
+                String productionClippingNumber = getItem(position).getFactcutqty();
+                viewHolder.tvProClippingNumber.setText(productionClippingNumber);
 
-            viewHolder.tvProState.setEnabled(true);
-            viewHolder.tvProState.setText(getItem(position).getPrdstatus());
-
-            viewHolder.tvProYear.setEnabled(true);
-            String productionYear = getItem(position).getYear();
-            viewHolder.tvProYear.setText(productionYear);
-            spUtils.put(context,"productionYear","");
-
-            viewHolder.tvProMonth.setEnabled(true);
-            viewHolder.tvProMonth.setText(getItem(position).getMonth());
-            String proadapterMonthTitle = viewHolder.tvProMonth.getText().toString();
-            spUtils.put(context,"proadapterMonthTitle",proadapterMonthTitle);
-
-            viewHolder.tvProOneDay.setEnabled(true);
-            final EditText editTexOneDay = viewHolder.tvProOneDay;
+                viewHolder.tvProCompletedLastMonth.setEnabled(true);
+                final EditText editTexCompletedLastMonth = viewHolder.tvProCompletedLastMonth;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexOneDay.getTag() instanceof TextWatcher) {
-                editTexOneDay.removeTextChangedListener((TextWatcher) editTexOneDay.getTag());
-            }
-            editTexOneDay.setText(getItem(position).getDay1());
-            editTexOneDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexCompletedLastMonth.getTag() instanceof TextWatcher) {
+                    editTexCompletedLastMonth.removeTextChangedListener((TextWatcher) editTexCompletedLastMonth.getTag());
+                }
+                editTexCompletedLastMonth.setText(getItem(position).getLastMonQty());
+                editTexCompletedLastMonth.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvOneDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvCompletedLastMonth = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProOneDay.getText().toString();
-                    spUtils.put(context, "productionOneDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexOneDay.addTextChangedListener(TvOneDay);
-            editTexOneDay.setTag(TvOneDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProCompletedLastMonth.getText().toString();
+                        spUtils.put(context, "productionCompletedLastMonth", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexCompletedLastMonth.addTextChangedListener(TvCompletedLastMonth);
+                editTexCompletedLastMonth.setTag(TvCompletedLastMonth);
             /*光标放置在文本最后*/
-            viewHolder.tvProOneDay.setSelection(viewHolder.tvProOneDay.length());
+                viewHolder.tvProCompletedLastMonth.setSelection(viewHolder.tvProCompletedLastMonth.length());
 
+                viewHolder.tvProTotalCompletion.setEnabled(true);
+                viewHolder.tvProTotalCompletion.setText(getItem(position).getSumCompletedQty());
 
-            viewHolder.tvProTwoDay.setEnabled(true);
-            final EditText editTexTwoDay = viewHolder.tvProTwoDay;
+                viewHolder.tvProBalanceAmount.setEnabled(true);
+                viewHolder.tvProBalanceAmount.setText(getItem(position).getLeftQty());
+
+                viewHolder.tvProState.setEnabled(true);
+                viewHolder.tvProState.setText(getItem(position).getPrdstatus());
+
+                viewHolder.tvProYear.setEnabled(true);
+                String productionYear = getItem(position).getYear();
+                viewHolder.tvProYear.setText(productionYear);
+
+                viewHolder.tvProMonth.setEnabled(true);
+                viewHolder.tvProMonth.setText(getItem(position).getMonth());
+
+                viewHolder.tvProOneDay.setEnabled(true);
+                final EditText editTexOneDay = viewHolder.tvProOneDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexTwoDay.getTag() instanceof TextWatcher) {
-                editTexTwoDay.removeTextChangedListener((TextWatcher) editTexTwoDay.getTag());
-            }
-            editTexTwoDay.setText(getItem(position).getDay2());
-            editTexTwoDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexOneDay.getTag() instanceof TextWatcher) {
+                    editTexOneDay.removeTextChangedListener((TextWatcher) editTexOneDay.getTag());
+                }
+                editTexOneDay.setText(getItem(position).getDay1());
+                editTexOneDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvTwoDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvOneDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProTwoDay.getText().toString();
-                    spUtils.put(context, "productionTwoDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexTwoDay.addTextChangedListener(TvTwoDay);
-            editTexTwoDay.setTag(TvTwoDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProOneDay.getText().toString();
+                        spUtils.put(context, "productionOneDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexOneDay.addTextChangedListener(TvOneDay);
+                editTexOneDay.setTag(TvOneDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProTwoDay.setSelection(viewHolder.tvProTwoDay.length());
+                viewHolder.tvProOneDay.setSelection(viewHolder.tvProOneDay.length());
 
 
-            viewHolder.tvProThreeDay.setEnabled(true);
-            final EditText editTexThreeDay = viewHolder.tvProThreeDay;
+                viewHolder.tvProTwoDay.setEnabled(true);
+                final EditText editTexTwoDay = viewHolder.tvProTwoDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexThreeDay.getTag() instanceof TextWatcher) {
-                editTexThreeDay.removeTextChangedListener((TextWatcher) editTexThreeDay.getTag());
-            }
-            editTexThreeDay.setText(getItem(position).getDay3());
-            editTexThreeDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexTwoDay.getTag() instanceof TextWatcher) {
+                    editTexTwoDay.removeTextChangedListener((TextWatcher) editTexTwoDay.getTag());
+                }
+                editTexTwoDay.setText(getItem(position).getDay2());
+                editTexTwoDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvThreeDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvTwoDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProThreeDay.getText().toString();
-                    spUtils.put(context, "productionThreeDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexThreeDay.addTextChangedListener(TvThreeDay);
-            editTexThreeDay.setTag(TvThreeDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProTwoDay.getText().toString();
+                        spUtils.put(context, "productionTwoDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexTwoDay.addTextChangedListener(TvTwoDay);
+                editTexTwoDay.setTag(TvTwoDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProThreeDay.setSelection(viewHolder.tvProThreeDay.length());
+                viewHolder.tvProTwoDay.setSelection(viewHolder.tvProTwoDay.length());
 
 
-            viewHolder.tvProForeDay.setEnabled(true);
-            final EditText editTexForeDay = viewHolder.tvProForeDay;
+                viewHolder.tvProThreeDay.setEnabled(true);
+                final EditText editTexThreeDay = viewHolder.tvProThreeDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexForeDay.getTag() instanceof TextWatcher) {
-                editTexForeDay.removeTextChangedListener((TextWatcher) editTexForeDay.getTag());
-            }
-            editTexForeDay.setText(getItem(position).getDay4());
-            editTexForeDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexThreeDay.getTag() instanceof TextWatcher) {
+                    editTexThreeDay.removeTextChangedListener((TextWatcher) editTexThreeDay.getTag());
+                }
+                editTexThreeDay.setText(getItem(position).getDay3());
+                editTexThreeDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvForeDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvThreeDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProForeDay.getText().toString();
-                    spUtils.put(context, "productionForeDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexForeDay.addTextChangedListener(TvForeDay);
-            editTexForeDay.setTag(TvForeDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProThreeDay.getText().toString();
+                        spUtils.put(context, "productionThreeDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexThreeDay.addTextChangedListener(TvThreeDay);
+                editTexThreeDay.setTag(TvThreeDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProForeDay.setSelection(viewHolder.tvProForeDay.length());
+                viewHolder.tvProThreeDay.setSelection(viewHolder.tvProThreeDay.length());
 
 
-            viewHolder.tvProFiveDay.setEnabled(true);
-            final EditText editTexFiveDay = viewHolder.tvProFiveDay;
+                viewHolder.tvProForeDay.setEnabled(true);
+                final EditText editTexForeDay = viewHolder.tvProForeDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexFiveDay.getTag() instanceof TextWatcher) {
-                editTexFiveDay.removeTextChangedListener((TextWatcher) editTexFiveDay.getTag());
-            }
-            editTexFiveDay.setText(getItem(position).getDay5());
-            editTexFiveDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexForeDay.getTag() instanceof TextWatcher) {
+                    editTexForeDay.removeTextChangedListener((TextWatcher) editTexForeDay.getTag());
+                }
+                editTexForeDay.setText(getItem(position).getDay4());
+                editTexForeDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvFiveDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvForeDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProFiveDay.getText().toString();
-                    spUtils.put(context, "productionFiveDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexFiveDay.addTextChangedListener(TvFiveDay);
-            editTexFiveDay.setTag(TvFiveDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProForeDay.getText().toString();
+                        spUtils.put(context, "productionForeDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexForeDay.addTextChangedListener(TvForeDay);
+                editTexForeDay.setTag(TvForeDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProFiveDay.setSelection(viewHolder.tvProFiveDay.length());
+                viewHolder.tvProForeDay.setSelection(viewHolder.tvProForeDay.length());
 
 
-            viewHolder.tvProSixDay.setEnabled(true);
-            final EditText editTexSixDay = viewHolder.tvProSixDay;
+                viewHolder.tvProFiveDay.setEnabled(true);
+                final EditText editTexFiveDay = viewHolder.tvProFiveDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexSixDay.getTag() instanceof TextWatcher) {
-                editTexSixDay.removeTextChangedListener((TextWatcher) editTexSixDay.getTag());
-            }
-            editTexSixDay.setText(getItem(position).getDay6());
-            editTexSixDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexFiveDay.getTag() instanceof TextWatcher) {
+                    editTexFiveDay.removeTextChangedListener((TextWatcher) editTexFiveDay.getTag());
+                }
+                editTexFiveDay.setText(getItem(position).getDay5());
+                editTexFiveDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvSixDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvFiveDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProSixDay.getText().toString();
-                    spUtils.put(context, "productionSixDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexSixDay.addTextChangedListener(TvSixDay);
-            editTexSixDay.setTag(TvSixDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProFiveDay.getText().toString();
+                        spUtils.put(context, "productionFiveDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexFiveDay.addTextChangedListener(TvFiveDay);
+                editTexFiveDay.setTag(TvFiveDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProSixDay.setSelection(viewHolder.tvProSixDay.length());
+                viewHolder.tvProFiveDay.setSelection(viewHolder.tvProFiveDay.length());
 
 
-            viewHolder.tvProSevenDay.setEnabled(true);
-            final EditText editTexSevenDay = viewHolder.tvProSevenDay;
+                viewHolder.tvProSixDay.setEnabled(true);
+                final EditText editTexSixDay = viewHolder.tvProSixDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexSevenDay.getTag() instanceof TextWatcher) {
-                editTexSevenDay.removeTextChangedListener((TextWatcher) editTexSevenDay.getTag());
-            }
-            editTexSevenDay.setText(getItem(position).getDay7());
-            editTexSevenDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexSixDay.getTag() instanceof TextWatcher) {
+                    editTexSixDay.removeTextChangedListener((TextWatcher) editTexSixDay.getTag());
+                }
+                editTexSixDay.setText(getItem(position).getDay6());
+                editTexSixDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvSevenDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvSixDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProSevenDay.getText().toString();
-                    spUtils.put(context, "productionSevenDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexSevenDay.addTextChangedListener(TvSevenDay);
-            editTexSevenDay.setTag(TvSevenDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProSixDay.getText().toString();
+                        spUtils.put(context, "productionSixDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexSixDay.addTextChangedListener(TvSixDay);
+                editTexSixDay.setTag(TvSixDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProSevenDay.setSelection(viewHolder.tvProSevenDay.length());
+                viewHolder.tvProSixDay.setSelection(viewHolder.tvProSixDay.length());
 
 
-            viewHolder.tvProEightDay.setEnabled(true);
-            final EditText editTexEightDay = viewHolder.tvProEightDay;
+                viewHolder.tvProSevenDay.setEnabled(true);
+                final EditText editTexSevenDay = viewHolder.tvProSevenDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexEightDay.getTag() instanceof TextWatcher) {
-                editTexEightDay.removeTextChangedListener((TextWatcher) editTexEightDay.getTag());
-            }
-            editTexEightDay.setText(getItem(position).getDay8());
-            editTexEightDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexSevenDay.getTag() instanceof TextWatcher) {
+                    editTexSevenDay.removeTextChangedListener((TextWatcher) editTexSevenDay.getTag());
+                }
+                editTexSevenDay.setText(getItem(position).getDay7());
+                editTexSevenDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvEightDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvSevenDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProEightDay.getText().toString();
-                    spUtils.put(context, "productionEightDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexEightDay.addTextChangedListener(TvEightDay);
-            editTexEightDay.setTag(TvEightDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProSevenDay.getText().toString();
+                        spUtils.put(context, "productionSevenDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexSevenDay.addTextChangedListener(TvSevenDay);
+                editTexSevenDay.setTag(TvSevenDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProEightDay.setSelection(viewHolder.tvProEightDay.length());
+                viewHolder.tvProSevenDay.setSelection(viewHolder.tvProSevenDay.length());
 
 
-            viewHolder.tvProNineDay.setEnabled(true);
-            final EditText editTexNineDay = viewHolder.tvProNineDay;
+                viewHolder.tvProEightDay.setEnabled(true);
+                final EditText editTexEightDay = viewHolder.tvProEightDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexNineDay.getTag() instanceof TextWatcher) {
-                editTexNineDay.removeTextChangedListener((TextWatcher) editTexNineDay.getTag());
-            }
-            editTexNineDay.setText(getItem(position).getDay9());
-            editTexNineDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexEightDay.getTag() instanceof TextWatcher) {
+                    editTexEightDay.removeTextChangedListener((TextWatcher) editTexEightDay.getTag());
+                }
+                editTexEightDay.setText(getItem(position).getDay8());
+                editTexEightDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvNineDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvEightDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProNineDay.getText().toString();
-                    spUtils.put(context, "productionNineDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexNineDay.addTextChangedListener(TvNineDay);
-            editTexNineDay.setTag(TvNineDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProEightDay.getText().toString();
+                        spUtils.put(context, "productionEightDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexEightDay.addTextChangedListener(TvEightDay);
+                editTexEightDay.setTag(TvEightDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProNineDay.setSelection(viewHolder.tvProNineDay.length());
+                viewHolder.tvProEightDay.setSelection(viewHolder.tvProEightDay.length());
 
 
-            viewHolder.tvProTenDay.setEnabled(true);
-            final EditText editTexTenDay = viewHolder.tvProTenDay;
+                viewHolder.tvProNineDay.setEnabled(true);
+                final EditText editTexNineDay = viewHolder.tvProNineDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexTenDay.getTag() instanceof TextWatcher) {
-                editTexTenDay.removeTextChangedListener((TextWatcher) editTexTenDay.getTag());
-            }
-            editTexTenDay.setText(getItem(position).getDay10());
-            editTexTenDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexNineDay.getTag() instanceof TextWatcher) {
+                    editTexNineDay.removeTextChangedListener((TextWatcher) editTexNineDay.getTag());
+                }
+                editTexNineDay.setText(getItem(position).getDay9());
+                editTexNineDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvTenDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvNineDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProTenDay.getText().toString();
-                    spUtils.put(context, "productionTenDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexTenDay.addTextChangedListener(TvTenDay);
-            editTexTenDay.setTag(TvTenDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProNineDay.getText().toString();
+                        spUtils.put(context, "productionNineDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexNineDay.addTextChangedListener(TvNineDay);
+                editTexNineDay.setTag(TvNineDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProTenDay.setSelection(viewHolder.tvProTenDay.length());
+                viewHolder.tvProNineDay.setSelection(viewHolder.tvProNineDay.length());
 
 
-            viewHolder.tvProElevenDay.setEnabled(true);
-            final EditText editTexElevenDay = viewHolder.tvProElevenDay;
+                viewHolder.tvProTenDay.setEnabled(true);
+                final EditText editTexTenDay = viewHolder.tvProTenDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexElevenDay.getTag() instanceof TextWatcher) {
-                editTexElevenDay.removeTextChangedListener((TextWatcher) editTexElevenDay.getTag());
-            }
-            editTexElevenDay.setText(getItem(position).getDay11());
-            editTexElevenDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexTenDay.getTag() instanceof TextWatcher) {
+                    editTexTenDay.removeTextChangedListener((TextWatcher) editTexTenDay.getTag());
+                }
+                editTexTenDay.setText(getItem(position).getDay10());
+                editTexTenDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvElevenDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvTenDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProElevenDay.getText().toString();
-                    spUtils.put(context, "productionElevenDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexElevenDay.addTextChangedListener(TvElevenDay);
-            editTexElevenDay.setTag(TvElevenDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProTenDay.getText().toString();
+                        spUtils.put(context, "productionTenDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexTenDay.addTextChangedListener(TvTenDay);
+                editTexTenDay.setTag(TvTenDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProElevenDay.setSelection(viewHolder.tvProElevenDay.length());
+                viewHolder.tvProTenDay.setSelection(viewHolder.tvProTenDay.length());
 
 
-            viewHolder.tvProTwelveDay.setEnabled(true);
-            final EditText editTexTwelveDay = viewHolder.tvProTwelveDay;
+                viewHolder.tvProElevenDay.setEnabled(true);
+                final EditText editTexElevenDay = viewHolder.tvProElevenDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexTwelveDay.getTag() instanceof TextWatcher) {
-                editTexTwelveDay.removeTextChangedListener((TextWatcher) editTexTwelveDay.getTag());
-            }
-            editTexTwelveDay.setText(getItem(position).getDay12());
-            editTexTwelveDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexElevenDay.getTag() instanceof TextWatcher) {
+                    editTexElevenDay.removeTextChangedListener((TextWatcher) editTexElevenDay.getTag());
+                }
+                editTexElevenDay.setText(getItem(position).getDay11());
+                editTexElevenDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvTwelveDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvElevenDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProTwelveDay.getText().toString();
-                    spUtils.put(context, "productionTwelveDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexTwelveDay.addTextChangedListener(TvTwelveDay);
-            editTexTwelveDay.setTag(TvTwelveDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProElevenDay.getText().toString();
+                        spUtils.put(context, "productionElevenDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexElevenDay.addTextChangedListener(TvElevenDay);
+                editTexElevenDay.setTag(TvElevenDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProTwelveDay.setSelection(viewHolder.tvProTwelveDay.length());
+                viewHolder.tvProElevenDay.setSelection(viewHolder.tvProElevenDay.length());
 
 
-            viewHolder.tvProThirteenDay.setEnabled(true);
-            final EditText editTexThirteenDay = viewHolder.tvProThirteenDay;
+                viewHolder.tvProTwelveDay.setEnabled(true);
+                final EditText editTexTwelveDay = viewHolder.tvProTwelveDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexThirteenDay.getTag() instanceof TextWatcher) {
-                editTexThirteenDay.removeTextChangedListener((TextWatcher) editTexThirteenDay.getTag());
-            }
-            editTexThirteenDay.setText(getItem(position).getDay13());
-            editTexThirteenDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexTwelveDay.getTag() instanceof TextWatcher) {
+                    editTexTwelveDay.removeTextChangedListener((TextWatcher) editTexTwelveDay.getTag());
+                }
+                editTexTwelveDay.setText(getItem(position).getDay12());
+                editTexTwelveDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvThirteenDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvTwelveDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProThirteenDay.getText().toString();
-                    spUtils.put(context, "productionThirteenDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexThirteenDay.addTextChangedListener(TvThirteenDay);
-            editTexThirteenDay.setTag(TvThirteenDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProTwelveDay.getText().toString();
+                        spUtils.put(context, "productionTwelveDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexTwelveDay.addTextChangedListener(TvTwelveDay);
+                editTexTwelveDay.setTag(TvTwelveDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProThirteenDay.setSelection(viewHolder.tvProThirteenDay.length());
+                viewHolder.tvProTwelveDay.setSelection(viewHolder.tvProTwelveDay.length());
 
 
-            viewHolder.tvProFourteenDay.setEnabled(true);
-            final EditText editTexFourteenDay = viewHolder.tvProFourteenDay;
+                viewHolder.tvProThirteenDay.setEnabled(true);
+                final EditText editTexThirteenDay = viewHolder.tvProThirteenDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexFourteenDay.getTag() instanceof TextWatcher) {
-                editTexFourteenDay.removeTextChangedListener((TextWatcher) editTexFourteenDay.getTag());
-            }
-            editTexFourteenDay.setText(getItem(position).getDay14());
-            editTexFourteenDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexThirteenDay.getTag() instanceof TextWatcher) {
+                    editTexThirteenDay.removeTextChangedListener((TextWatcher) editTexThirteenDay.getTag());
+                }
+                editTexThirteenDay.setText(getItem(position).getDay13());
+                editTexThirteenDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvFourteenDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvThirteenDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProFourteenDay.getText().toString();
-                    spUtils.put(context, "productionFourteenDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexFourteenDay.addTextChangedListener(TvFourteenDay);
-            editTexFourteenDay.setTag(TvFourteenDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProThirteenDay.getText().toString();
+                        spUtils.put(context, "productionThirteenDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexThirteenDay.addTextChangedListener(TvThirteenDay);
+                editTexThirteenDay.setTag(TvThirteenDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProFourteenDay.setSelection(viewHolder.tvProFourteenDay.length());
+                viewHolder.tvProThirteenDay.setSelection(viewHolder.tvProThirteenDay.length());
 
 
-            viewHolder.tvProFifteenDay.setEnabled(true);
-            final EditText editTexFifteenDay = viewHolder.tvProFifteenDay;
+                viewHolder.tvProFourteenDay.setEnabled(true);
+                final EditText editTexFourteenDay = viewHolder.tvProFourteenDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexFifteenDay.getTag() instanceof TextWatcher) {
-                editTexFifteenDay.removeTextChangedListener((TextWatcher) editTexFifteenDay.getTag());
-            }
-            editTexFifteenDay.setText(getItem(position).getDay15());
-            editTexFifteenDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexFourteenDay.getTag() instanceof TextWatcher) {
+                    editTexFourteenDay.removeTextChangedListener((TextWatcher) editTexFourteenDay.getTag());
+                }
+                editTexFourteenDay.setText(getItem(position).getDay14());
+                editTexFourteenDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvFifteenDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvFourteenDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProFifteenDay.getText().toString();
-                    spUtils.put(context, "productionFifteenDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexFifteenDay.addTextChangedListener(TvFifteenDay);
-            editTexFifteenDay.setTag(TvFifteenDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProFourteenDay.getText().toString();
+                        spUtils.put(context, "productionFourteenDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexFourteenDay.addTextChangedListener(TvFourteenDay);
+                editTexFourteenDay.setTag(TvFourteenDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProFifteenDay.setSelection(viewHolder.tvProFifteenDay.length());
+                viewHolder.tvProFourteenDay.setSelection(viewHolder.tvProFourteenDay.length());
 
 
-            viewHolder.tvProSixteenDay.setEnabled(true);
-            final EditText editTexSixteenDay = viewHolder.tvProSixteenDay;
+                viewHolder.tvProFifteenDay.setEnabled(true);
+                final EditText editTexFifteenDay = viewHolder.tvProFifteenDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexSixteenDay.getTag() instanceof TextWatcher) {
-                editTexSixteenDay.removeTextChangedListener((TextWatcher) editTexSixteenDay.getTag());
-            }
-            editTexSixteenDay.setText(getItem(position).getDay16());
-            editTexSixteenDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexFifteenDay.getTag() instanceof TextWatcher) {
+                    editTexFifteenDay.removeTextChangedListener((TextWatcher) editTexFifteenDay.getTag());
+                }
+                editTexFifteenDay.setText(getItem(position).getDay15());
+                editTexFifteenDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvSixteenDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvFifteenDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProSixteenDay.getText().toString();
-                    spUtils.put(context, "productionSixteenDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexSixteenDay.addTextChangedListener(TvSixteenDay);
-            editTexSixteenDay.setTag(TvSixteenDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProFifteenDay.getText().toString();
+                        spUtils.put(context, "productionFifteenDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexFifteenDay.addTextChangedListener(TvFifteenDay);
+                editTexFifteenDay.setTag(TvFifteenDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProSixteenDay.setSelection(viewHolder.tvProSixteenDay.length());
+                viewHolder.tvProFifteenDay.setSelection(viewHolder.tvProFifteenDay.length());
 
 
-            viewHolder.tvProSeventeenDay.setEnabled(true);
-            final EditText editTexSeventeenDay = viewHolder.tvProSeventeenDay;
+                viewHolder.tvProSixteenDay.setEnabled(true);
+                final EditText editTexSixteenDay = viewHolder.tvProSixteenDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexSeventeenDay.getTag() instanceof TextWatcher) {
-                editTexSeventeenDay.removeTextChangedListener((TextWatcher) editTexSeventeenDay.getTag());
-            }
-            editTexSeventeenDay.setText(getItem(position).getDay17());
-            editTexSeventeenDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexSixteenDay.getTag() instanceof TextWatcher) {
+                    editTexSixteenDay.removeTextChangedListener((TextWatcher) editTexSixteenDay.getTag());
+                }
+                editTexSixteenDay.setText(getItem(position).getDay16());
+                editTexSixteenDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvSeventeenDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvSixteenDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProSeventeenDay.getText().toString();
-                    spUtils.put(context, "productionSeventeenDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexSeventeenDay.addTextChangedListener(TvSeventeenDay);
-            editTexSeventeenDay.setTag(TvSeventeenDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProSixteenDay.getText().toString();
+                        spUtils.put(context, "productionSixteenDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexSixteenDay.addTextChangedListener(TvSixteenDay);
+                editTexSixteenDay.setTag(TvSixteenDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProSeventeenDay.setSelection(viewHolder.tvProSeventeenDay.length());
+                viewHolder.tvProSixteenDay.setSelection(viewHolder.tvProSixteenDay.length());
 
 
-            viewHolder.tvProEighteenDay.setEnabled(true);
-            final EditText editTexEighteenDay = viewHolder.tvProEighteenDay;
+                viewHolder.tvProSeventeenDay.setEnabled(true);
+                final EditText editTexSeventeenDay = viewHolder.tvProSeventeenDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexEighteenDay.getTag() instanceof TextWatcher) {
-                editTexEighteenDay.removeTextChangedListener((TextWatcher) editTexEighteenDay.getTag());
-            }
-            editTexEighteenDay.setText(getItem(position).getDay18());
-            editTexEighteenDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexSeventeenDay.getTag() instanceof TextWatcher) {
+                    editTexSeventeenDay.removeTextChangedListener((TextWatcher) editTexSeventeenDay.getTag());
+                }
+                editTexSeventeenDay.setText(getItem(position).getDay17());
+                editTexSeventeenDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvEighteenDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvSeventeenDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProEighteenDay.getText().toString();
-                    spUtils.put(context, "productionEighteenDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexEighteenDay.addTextChangedListener(TvEighteenDay);
-            editTexEighteenDay.setTag(TvEighteenDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProSeventeenDay.getText().toString();
+                        spUtils.put(context, "productionSeventeenDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexSeventeenDay.addTextChangedListener(TvSeventeenDay);
+                editTexSeventeenDay.setTag(TvSeventeenDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProEighteenDay.setSelection(viewHolder.tvProEighteenDay.length());
+                viewHolder.tvProSeventeenDay.setSelection(viewHolder.tvProSeventeenDay.length());
 
 
-            viewHolder.tvProNineteenDay.setEnabled(true);
-            final EditText editTexNineteenDay = viewHolder.tvProNineteenDay;
+                viewHolder.tvProEighteenDay.setEnabled(true);
+                final EditText editTexEighteenDay = viewHolder.tvProEighteenDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexNineteenDay.getTag() instanceof TextWatcher) {
-                editTexNineteenDay.removeTextChangedListener((TextWatcher) editTexNineteenDay.getTag());
-            }
-            editTexNineteenDay.setText(getItem(position).getDay19());
-            editTexNineteenDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexEighteenDay.getTag() instanceof TextWatcher) {
+                    editTexEighteenDay.removeTextChangedListener((TextWatcher) editTexEighteenDay.getTag());
+                }
+                editTexEighteenDay.setText(getItem(position).getDay18());
+                editTexEighteenDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvNineteenDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvEighteenDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProNineteenDay.getText().toString();
-                    spUtils.put(context, "productionNineteenDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexNineteenDay.addTextChangedListener(TvNineteenDay);
-            editTexNineteenDay.setTag(TvNineteenDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProEighteenDay.getText().toString();
+                        spUtils.put(context, "productionEighteenDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexEighteenDay.addTextChangedListener(TvEighteenDay);
+                editTexEighteenDay.setTag(TvEighteenDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProNineteenDay.setSelection(viewHolder.tvProNineteenDay.length());
+                viewHolder.tvProEighteenDay.setSelection(viewHolder.tvProEighteenDay.length());
 
 
-            viewHolder.tvProTwentyDay.setEnabled(true);
-            final EditText editTexTwentyDay = viewHolder.tvProTwentyDay;
+                viewHolder.tvProNineteenDay.setEnabled(true);
+                final EditText editTexNineteenDay = viewHolder.tvProNineteenDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexTwentyDay.getTag() instanceof TextWatcher) {
-                editTexTwentyDay.removeTextChangedListener((TextWatcher) editTexTwentyDay.getTag());
-            }
-            editTexTwentyDay.setText(getItem(position).getDay20());
-            editTexTwentyDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexNineteenDay.getTag() instanceof TextWatcher) {
+                    editTexNineteenDay.removeTextChangedListener((TextWatcher) editTexNineteenDay.getTag());
+                }
+                editTexNineteenDay.setText(getItem(position).getDay19());
+                editTexNineteenDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvTwentyDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvNineteenDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProTwentyDay.getText().toString();
-                    spUtils.put(context, "productionTwentyDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexTwentyDay.addTextChangedListener(TvTwentyDay);
-            editTexTwentyDay.setTag(TvTwentyDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProNineteenDay.getText().toString();
+                        spUtils.put(context, "productionNineteenDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexNineteenDay.addTextChangedListener(TvNineteenDay);
+                editTexNineteenDay.setTag(TvNineteenDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProTwentyDay.setSelection(viewHolder.tvProTwentyDay.length());
+                viewHolder.tvProNineteenDay.setSelection(viewHolder.tvProNineteenDay.length());
 
 
-            viewHolder.tvProTwentyOneDay.setEnabled(true);
-            final EditText editTexTwentyOneDay = viewHolder.tvProTwentyOneDay;
+                viewHolder.tvProTwentyDay.setEnabled(true);
+                final EditText editTexTwentyDay = viewHolder.tvProTwentyDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexTwentyOneDay.getTag() instanceof TextWatcher) {
-                editTexTwentyOneDay.removeTextChangedListener((TextWatcher) editTexTwentyOneDay.getTag());
-            }
-            editTexTwentyOneDay.setText(getItem(position).getDay21());
-            editTexTwentyOneDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexTwentyDay.getTag() instanceof TextWatcher) {
+                    editTexTwentyDay.removeTextChangedListener((TextWatcher) editTexTwentyDay.getTag());
+                }
+                editTexTwentyDay.setText(getItem(position).getDay20());
+                editTexTwentyDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvTwentyOneDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvTwentyDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProTwentyOneDay.getText().toString();
-                    spUtils.put(context, "productionTwentyOneDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexTwentyOneDay.addTextChangedListener(TvTwentyOneDay);
-            editTexTwentyOneDay.setTag(TvTwentyOneDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProTwentyDay.getText().toString();
+                        spUtils.put(context, "productionTwentyDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexTwentyDay.addTextChangedListener(TvTwentyDay);
+                editTexTwentyDay.setTag(TvTwentyDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProTwentyOneDay.setSelection(viewHolder.tvProTwentyOneDay.length());
+                viewHolder.tvProTwentyDay.setSelection(viewHolder.tvProTwentyDay.length());
 
 
-            viewHolder.tvProTwentyTwoDay.setEnabled(true);
-            final EditText editTexTwentyTwoDay = viewHolder.tvProTwentyTwoDay;
+                viewHolder.tvProTwentyOneDay.setEnabled(true);
+                final EditText editTexTwentyOneDay = viewHolder.tvProTwentyOneDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexTwentyTwoDay.getTag() instanceof TextWatcher) {
-                editTexTwentyTwoDay.removeTextChangedListener((TextWatcher) editTexTwentyTwoDay.getTag());
-            }
-            editTexTwentyTwoDay.setText(getItem(position).getDay22());
-            editTexTwentyTwoDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexTwentyOneDay.getTag() instanceof TextWatcher) {
+                    editTexTwentyOneDay.removeTextChangedListener((TextWatcher) editTexTwentyOneDay.getTag());
+                }
+                editTexTwentyOneDay.setText(getItem(position).getDay21());
+                editTexTwentyOneDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvTwentyTwoDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvTwentyOneDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProTwentyTwoDay.getText().toString();
-                    spUtils.put(context, "productionTwentyTwoDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexTwentyTwoDay.addTextChangedListener(TvTwentyTwoDay);
-            editTexTwentyTwoDay.setTag(TvTwentyTwoDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProTwentyOneDay.getText().toString();
+                        spUtils.put(context, "productionTwentyOneDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexTwentyOneDay.addTextChangedListener(TvTwentyOneDay);
+                editTexTwentyOneDay.setTag(TvTwentyOneDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProTwentyTwoDay.setSelection(viewHolder.tvProTwentyTwoDay.length());
+                viewHolder.tvProTwentyOneDay.setSelection(viewHolder.tvProTwentyOneDay.length());
 
 
-            viewHolder.tvProTwentyThreeDay.setEnabled(true);
-            final EditText editTexTwentyThreeDay = viewHolder.tvProTwentyThreeDay;
+                viewHolder.tvProTwentyTwoDay.setEnabled(true);
+                final EditText editTexTwentyTwoDay = viewHolder.tvProTwentyTwoDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexTwentyThreeDay.getTag() instanceof TextWatcher) {
-                editTexTwentyThreeDay.removeTextChangedListener((TextWatcher) editTexTwentyThreeDay.getTag());
-            }
-            editTexTwentyThreeDay.setText(getItem(position).getDay23());
-            editTexTwentyThreeDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexTwentyTwoDay.getTag() instanceof TextWatcher) {
+                    editTexTwentyTwoDay.removeTextChangedListener((TextWatcher) editTexTwentyTwoDay.getTag());
+                }
+                editTexTwentyTwoDay.setText(getItem(position).getDay22());
+                editTexTwentyTwoDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvTwentyThreeDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvTwentyTwoDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProTwentyThreeDay.getText().toString();
-                    spUtils.put(context, "productionTwentyThreeDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexTwentyThreeDay.addTextChangedListener(TvTwentyThreeDay);
-            editTexTwentyThreeDay.setTag(TvTwentyThreeDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProTwentyTwoDay.getText().toString();
+                        spUtils.put(context, "productionTwentyTwoDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexTwentyTwoDay.addTextChangedListener(TvTwentyTwoDay);
+                editTexTwentyTwoDay.setTag(TvTwentyTwoDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProTwentyThreeDay.setSelection(viewHolder.tvProTwentyThreeDay.length());
+                viewHolder.tvProTwentyTwoDay.setSelection(viewHolder.tvProTwentyTwoDay.length());
 
 
-            viewHolder.tvProTwentyForeDay.setEnabled(true);
-            final EditText editTexTwentyForeDay = viewHolder.tvProTwentyForeDay;
+                viewHolder.tvProTwentyThreeDay.setEnabled(true);
+                final EditText editTexTwentyThreeDay = viewHolder.tvProTwentyThreeDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexTwentyForeDay.getTag() instanceof TextWatcher) {
-                editTexTwentyForeDay.removeTextChangedListener((TextWatcher) editTexTwentyForeDay.getTag());
-            }
-            editTexTwentyForeDay.setText(getItem(position).getDay24());
-            editTexTwentyForeDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexTwentyThreeDay.getTag() instanceof TextWatcher) {
+                    editTexTwentyThreeDay.removeTextChangedListener((TextWatcher) editTexTwentyThreeDay.getTag());
+                }
+                editTexTwentyThreeDay.setText(getItem(position).getDay23());
+                editTexTwentyThreeDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvTwentyForeDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvTwentyThreeDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProTwentyForeDay.getText().toString();
-                    spUtils.put(context, "productionTwentyForeDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexTwentyForeDay.addTextChangedListener(TvTwentyForeDay);
-            editTexTwentyForeDay.setTag(TvTwentyForeDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProTwentyThreeDay.getText().toString();
+                        spUtils.put(context, "productionTwentyThreeDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexTwentyThreeDay.addTextChangedListener(TvTwentyThreeDay);
+                editTexTwentyThreeDay.setTag(TvTwentyThreeDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProTwentyForeDay.setSelection(viewHolder.tvProTwentyForeDay.length());
+                viewHolder.tvProTwentyThreeDay.setSelection(viewHolder.tvProTwentyThreeDay.length());
 
 
-            viewHolder.tvProTwentyFiveDay.setEnabled(true);
-            final EditText editTexTwentyFiveDay = viewHolder.tvProTwentyFiveDay;
+                viewHolder.tvProTwentyForeDay.setEnabled(true);
+                final EditText editTexTwentyForeDay = viewHolder.tvProTwentyForeDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexTwentyFiveDay.getTag() instanceof TextWatcher) {
-                editTexTwentyFiveDay.removeTextChangedListener((TextWatcher) editTexTwentyFiveDay.getTag());
-            }
-            editTexTwentyFiveDay.setText(getItem(position).getDay25());
-            editTexTwentyFiveDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexTwentyForeDay.getTag() instanceof TextWatcher) {
+                    editTexTwentyForeDay.removeTextChangedListener((TextWatcher) editTexTwentyForeDay.getTag());
+                }
+                editTexTwentyForeDay.setText(getItem(position).getDay24());
+                editTexTwentyForeDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvTwentyFiveDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvTwentyForeDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProTwentyFiveDay.getText().toString();
-                    spUtils.put(context, "productionTwentyFiveDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexTwentyFiveDay.addTextChangedListener(TvTwentyFiveDay);
-            editTexTwentyFiveDay.setTag(TvTwentyFiveDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProTwentyForeDay.getText().toString();
+                        spUtils.put(context, "productionTwentyForeDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexTwentyForeDay.addTextChangedListener(TvTwentyForeDay);
+                editTexTwentyForeDay.setTag(TvTwentyForeDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProTwentyFiveDay.setSelection(viewHolder.tvProTwentyFiveDay.length());
+                viewHolder.tvProTwentyForeDay.setSelection(viewHolder.tvProTwentyForeDay.length());
 
 
-            viewHolder.tvProTwentySixDay.setEnabled(true);
-            final EditText editTexTwentySixDay = viewHolder.tvProTwentySixDay;
+                viewHolder.tvProTwentyFiveDay.setEnabled(true);
+                final EditText editTexTwentyFiveDay = viewHolder.tvProTwentyFiveDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexTwentySixDay.getTag() instanceof TextWatcher) {
-                editTexTwentySixDay.removeTextChangedListener((TextWatcher) editTexTwentySixDay.getTag());
-            }
-            editTexTwentySixDay.setText(getItem(position).getDay26());
-            editTexTwentySixDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexTwentyFiveDay.getTag() instanceof TextWatcher) {
+                    editTexTwentyFiveDay.removeTextChangedListener((TextWatcher) editTexTwentyFiveDay.getTag());
+                }
+                editTexTwentyFiveDay.setText(getItem(position).getDay25());
+                editTexTwentyFiveDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvTwentySixDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvTwentyFiveDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProTwentySixDay.getText().toString();
-                    spUtils.put(context, "productionTwentySixDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexTwentySixDay.addTextChangedListener(TvTwentySixDay);
-            editTexTwentySixDay.setTag(TvTwentySixDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProTwentyFiveDay.getText().toString();
+                        spUtils.put(context, "productionTwentyFiveDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexTwentyFiveDay.addTextChangedListener(TvTwentyFiveDay);
+                editTexTwentyFiveDay.setTag(TvTwentyFiveDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProTwentySixDay.setSelection(viewHolder.tvProTwentySixDay.length());
+                viewHolder.tvProTwentyFiveDay.setSelection(viewHolder.tvProTwentyFiveDay.length());
 
 
-            viewHolder.tvProTwentySevenDay.setEnabled(true);
-            final EditText editTexTwentySevenDay = viewHolder.tvProTwentySevenDay;
+                viewHolder.tvProTwentySixDay.setEnabled(true);
+                final EditText editTexTwentySixDay = viewHolder.tvProTwentySixDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexTwentySevenDay.getTag() instanceof TextWatcher) {
-                editTexTwentySevenDay.removeTextChangedListener((TextWatcher) editTexTwentySevenDay.getTag());
-            }
-            editTexTwentySevenDay.setText(getItem(position).getDay27());
-            editTexTwentySevenDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexTwentySixDay.getTag() instanceof TextWatcher) {
+                    editTexTwentySixDay.removeTextChangedListener((TextWatcher) editTexTwentySixDay.getTag());
+                }
+                editTexTwentySixDay.setText(getItem(position).getDay26());
+                editTexTwentySixDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvTwentySevenDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvTwentySixDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProTwentySevenDay.getText().toString();
-                    spUtils.put(context, "productionTwentySevenDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexTwentySevenDay.addTextChangedListener(TvTwentySevenDay);
-            editTexTwentySevenDay.setTag(TvTwentySevenDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProTwentySixDay.getText().toString();
+                        spUtils.put(context, "productionTwentySixDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexTwentySixDay.addTextChangedListener(TvTwentySixDay);
+                editTexTwentySixDay.setTag(TvTwentySixDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProTwentySevenDay.setSelection(viewHolder.tvProTwentySevenDay.length());
+                viewHolder.tvProTwentySixDay.setSelection(viewHolder.tvProTwentySixDay.length());
 
 
-            viewHolder.tvProTwentyEightDay.setEnabled(true);
-            final EditText editTexTwentyEightDay = viewHolder.tvProTwentyEightDay;
+                viewHolder.tvProTwentySevenDay.setEnabled(true);
+                final EditText editTexTwentySevenDay = viewHolder.tvProTwentySevenDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexTwentyEightDay.getTag() instanceof TextWatcher) {
-                editTexTwentyEightDay.removeTextChangedListener((TextWatcher) editTexTwentyEightDay.getTag());
-            }
-            editTexTwentyEightDay.setText(getItem(position).getDay28());
-            editTexTwentyEightDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexTwentySevenDay.getTag() instanceof TextWatcher) {
+                    editTexTwentySevenDay.removeTextChangedListener((TextWatcher) editTexTwentySevenDay.getTag());
+                }
+                editTexTwentySevenDay.setText(getItem(position).getDay27());
+                editTexTwentySevenDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvTwentyEightDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvTwentySevenDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProTwentyEightDay.getText().toString();
-                    spUtils.put(context, "productionTwentyEightDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexTwentyEightDay.addTextChangedListener(TvTwentyEightDay);
-            editTexTwentyEightDay.setTag(TvTwentyEightDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProTwentySevenDay.getText().toString();
+                        spUtils.put(context, "productionTwentySevenDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexTwentySevenDay.addTextChangedListener(TvTwentySevenDay);
+                editTexTwentySevenDay.setTag(TvTwentySevenDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProTwentyEightDay.setSelection(viewHolder.tvProTwentyEightDay.length());
+                viewHolder.tvProTwentySevenDay.setSelection(viewHolder.tvProTwentySevenDay.length());
 
 
-            viewHolder.tvProTwentyNineDay.setEnabled(true);
-            final EditText editTexTwentyNineDay = viewHolder.tvProTwentyNineDay;
+                viewHolder.tvProTwentyEightDay.setEnabled(true);
+                final EditText editTexTwentyEightDay = viewHolder.tvProTwentyEightDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexTwentyNineDay.getTag() instanceof TextWatcher) {
-                editTexTwentyNineDay.removeTextChangedListener((TextWatcher) editTexTwentyNineDay.getTag());
-            }
-            editTexTwentyNineDay.setText(getItem(position).getDay29());
-            editTexTwentyNineDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexTwentyEightDay.getTag() instanceof TextWatcher) {
+                    editTexTwentyEightDay.removeTextChangedListener((TextWatcher) editTexTwentyEightDay.getTag());
+                }
+                editTexTwentyEightDay.setText(getItem(position).getDay28());
+                editTexTwentyEightDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvTwentyNineDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvTwentyEightDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProTwentyNineDay.getText().toString();
-                    spUtils.put(context, "productionTwentyNineDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexTwentyNineDay.addTextChangedListener(TvTwentyNineDay);
-            editTexTwentyNineDay.setTag(TvTwentyNineDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProTwentyEightDay.getText().toString();
+                        spUtils.put(context, "productionTwentyEightDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexTwentyEightDay.addTextChangedListener(TvTwentyEightDay);
+                editTexTwentyEightDay.setTag(TvTwentyEightDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProTwentyNineDay.setSelection(viewHolder.tvProTwentyNineDay.length());
+                viewHolder.tvProTwentyEightDay.setSelection(viewHolder.tvProTwentyEightDay.length());
 
 
-            viewHolder.tvProThirtyDay.setEnabled(true);
-            final EditText editTexThirtyDay = viewHolder.tvProThirtyDay;
+                viewHolder.tvProTwentyNineDay.setEnabled(true);
+                final EditText editTexTwentyNineDay = viewHolder.tvProTwentyNineDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexThirtyDay.getTag() instanceof TextWatcher) {
-                editTexThirtyDay.removeTextChangedListener((TextWatcher) editTexThirtyDay.getTag());
-            }
-            editTexThirtyDay.setText(getItem(position).getDay30());
-            editTexThirtyDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexTwentyNineDay.getTag() instanceof TextWatcher) {
+                    editTexTwentyNineDay.removeTextChangedListener((TextWatcher) editTexTwentyNineDay.getTag());
+                }
+                editTexTwentyNineDay.setText(getItem(position).getDay29());
+                editTexTwentyNineDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvThirtyDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvTwentyNineDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProThirtyDay.getText().toString();
-                    spUtils.put(context, "productionThirtyDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexThirtyDay.addTextChangedListener(TvThirtyDay);
-            editTexThirtyDay.setTag(TvThirtyDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProTwentyNineDay.getText().toString();
+                        spUtils.put(context, "productionTwentyNineDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexTwentyNineDay.addTextChangedListener(TvTwentyNineDay);
+                editTexTwentyNineDay.setTag(TvTwentyNineDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProThirtyDay.setSelection(viewHolder.tvProThirtyDay.length());
+                viewHolder.tvProTwentyNineDay.setSelection(viewHolder.tvProTwentyNineDay.length());
 
 
-            viewHolder.tvProThirtyOneDay.setEnabled(true);
-            final EditText editTexThirtyOneDay = viewHolder.tvProThirtyOneDay;
+                viewHolder.tvProThirtyDay.setEnabled(true);
+                final EditText editTexThirtyDay = viewHolder.tvProThirtyDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexThirtyOneDay.getTag() instanceof TextWatcher) {
-                editTexThirtyOneDay.removeTextChangedListener((TextWatcher) editTexThirtyOneDay.getTag());
-            }
-            editTexThirtyOneDay.setText(getItem(position).getDay31());
-            editTexThirtyOneDay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexThirtyDay.getTag() instanceof TextWatcher) {
+                    editTexThirtyDay.removeTextChangedListener((TextWatcher) editTexThirtyDay.getTag());
+                }
+                editTexThirtyDay.setText(getItem(position).getDay30());
+                editTexThirtyDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvThirtyOneDay = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvThirtyDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProThirtyOneDay.getText().toString();
-                    spUtils.put(context, "productionThirtyOneDay", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexThirtyOneDay.addTextChangedListener(TvThirtyOneDay);
-            editTexThirtyOneDay.setTag(TvThirtyOneDay);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProThirtyDay.getText().toString();
+                        spUtils.put(context, "productionThirtyDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexThirtyDay.addTextChangedListener(TvThirtyDay);
+                editTexThirtyDay.setTag(TvThirtyDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProThirtyOneDay.setSelection(viewHolder.tvProThirtyOneDay.length());
+                viewHolder.tvProThirtyDay.setSelection(viewHolder.tvProThirtyDay.length());
 
 
-            viewHolder.tvProRemarks.setEnabled(true);
-            final EditText editTexRemarks = viewHolder.tvProRemarks;
+                viewHolder.tvProThirtyOneDay.setEnabled(true);
+                final EditText editTexThirtyOneDay = viewHolder.tvProThirtyOneDay;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexRemarks.getTag() instanceof TextWatcher) {
-                editTexRemarks.removeTextChangedListener((TextWatcher) editTexRemarks.getTag());
-            }
-            editTexRemarks.setText(getItem(position).getMemo());
-            editTexRemarks.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                if (editTexThirtyOneDay.getTag() instanceof TextWatcher) {
+                    editTexThirtyOneDay.removeTextChangedListener((TextWatcher) editTexThirtyOneDay.getTag());
+                }
+                editTexThirtyOneDay.setText(getItem(position).getDay31());
+                editTexThirtyOneDay.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            TextWatcher TvRemarks = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
+                });
+                TextWatcher TvThirtyOneDay = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = viewHolder.tvProRemarks.getText().toString();
-                    spUtils.put(context, "productionRemarks", proitem);
-                    ToastUtils.ShowToastMessage(proitem, context);
-                }
-            };
-            editTexRemarks.addTextChangedListener(TvRemarks);
-            editTexRemarks.setTag(TvRemarks);
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProThirtyOneDay.getText().toString();
+                        spUtils.put(context, "productionThirtyOneDay", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexThirtyOneDay.addTextChangedListener(TvThirtyOneDay);
+                editTexThirtyOneDay.setTag(TvThirtyOneDay);
             /*光标放置在文本最后*/
-            viewHolder.tvProRemarks.setSelection(viewHolder.tvProRemarks.length());
+                viewHolder.tvProThirtyOneDay.setSelection(viewHolder.tvProThirtyOneDay.length());
 
-            viewHolder.tvProRecorder.setEnabled(true);
-            String productionRecorder = getItem(position).getRecorder();
-            viewHolder.tvProRecorder.setText(productionRecorder);
-            spUtils.put(context,"productionadapterRecorder",productionRecorder);
 
-            viewHolder.tvProRecordat.setEnabled(true);
-            String productionRecordat = getItem(position).getRecordat();
-            viewHolder.tvProRecordat.setText(productionRecordat);
-            spUtils.put(context,"productionRecordat",productionRecordat);
+                viewHolder.tvProRemarks.setEnabled(true);
+                final EditText editTexRemarks = viewHolder.tvProRemarks;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexRemarks.getTag() instanceof TextWatcher) {
+                    editTexRemarks.removeTextChangedListener((TextWatcher) editTexRemarks.getTag());
+                }
+                editTexRemarks.setText(getItem(position).getMemo());
+                editTexRemarks.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            index = position;
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                        return false;
+                    }
+                });
+                TextWatcher TvRemarks = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        Log.d(TAG, "beforeTextChanged");
+                    }
 
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        Log.d(TAG, "onTextChanged");
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        Log.d(TAG, "afterTextChanged");
+                        String proitem = viewHolder.tvProRemarks.getText().toString();
+                        spUtils.put(context, "productionRemarks", proitem);
+                        ToastUtils.ShowToastMessage(proitem, context);
+                    }
+                };
+                editTexRemarks.addTextChangedListener(TvRemarks);
+                editTexRemarks.setTag(TvRemarks);
+            /*光标放置在文本最后*/
+                viewHolder.tvProRemarks.setSelection(viewHolder.tvProRemarks.length());
+
+                viewHolder.tvProRecorder.setEnabled(true);
+                String productionRecorder = getItem(position).getRecorder();
+                viewHolder.tvProRecorder.setText(productionRecorder);
+
+                viewHolder.tvProRecordat.setEnabled(true);
+                String productionRecordat = getItem(position).getRecordat();
+                viewHolder.tvProRecordat.setText(productionRecordat);
+            } else {
+                viewHolder.tv_data.setEnabled(false);
+                viewHolder.tv_data.setText(getItem(position).getItem());
+
+                viewHolder.tvProDocumentary.setEnabled(false);
+                viewHolder.tvProDocumentary.setText(getItem(position).getPrddocumentary());
+
+                viewHolder.tvProFactory.setEnabled(false);
+                viewHolder.tvProFactory.setText(getItem(position).getSubfactory());
+
+                viewHolder.tvProDepartment.setEnabled(false);
+                viewHolder.tvProDepartment.setText(getItem(position).getSubfactoryTeams());
+
+                viewHolder.tvProProcedure.setEnabled(false);
+                viewHolder.tvProProcedure.setText(getItem(position).getWorkingProcedure());
+
+                viewHolder.tvProOthers.setEnabled(false);
+                final EditText editTexOthers = viewHolder.tvProOthers;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexOthers.getTag() instanceof TextWatcher) {
+                    editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
+                }
+                editTexOthers.setText(getItem(position).getWorkers());
+
+                viewHolder.tvProSingularSystem.setEnabled(false);
+                viewHolder.tvProSingularSystem.setText(getItem(position).getPqty());
+
+                viewHolder.tvProColor.setEnabled(false);
+                viewHolder.tvProColor.setText(getItem(position).getProdcol());
+
+                viewHolder.tvProTaskNumber.setEnabled(false);
+                final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexTaskNumber.getTag() instanceof TextWatcher) {
+                    editTexTaskNumber.removeTextChangedListener((TextWatcher) editTexTaskNumber.getTag());
+                }
+                editTexTaskNumber.setText(getItem(position).getTaskqty());
+
+                viewHolder.tvProSize.setEnabled(false);
+                viewHolder.tvProSize.setText(getItem(position).getMdl());
+
+                viewHolder.tvProClippingNumber.setEnabled(false);
+                viewHolder.tvProClippingNumber.setText(getItem(position).getFactcutqty());
+
+                viewHolder.tvProCompletedLastMonth.setEnabled(false);
+                final EditText editTexCompletedLastMonth = viewHolder.tvProCompletedLastMonth;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexCompletedLastMonth.getTag() instanceof TextWatcher) {
+                    editTexCompletedLastMonth.removeTextChangedListener((TextWatcher) editTexCompletedLastMonth.getTag());
+                }
+                editTexCompletedLastMonth.setText(getItem(position).getLastMonQty());
+
+                viewHolder.tvProTotalCompletion.setEnabled(false);
+                viewHolder.tvProTotalCompletion.setText(getItem(position).getSumCompletedQty());
+
+                viewHolder.tvProBalanceAmount.setEnabled(false);
+                viewHolder.tvProBalanceAmount.setText(getItem(position).getLeftQty());
+
+                viewHolder.tvProState.setEnabled(false);
+                viewHolder.tvProState.setText(getItem(position).getPrdstatus());
+
+                viewHolder.tvProYear.setEnabled(false);
+                viewHolder.tvProYear.setText(getItem(position).getYear());
+
+                viewHolder.tvProMonth.setEnabled(false);
+                viewHolder.tvProMonth.setText(getItem(position).getMonth());
+
+                viewHolder.tvProOneDay.setEnabled(false);
+                final EditText editTexOneDay = viewHolder.tvProOneDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexOneDay.getTag() instanceof TextWatcher) {
+                    editTexOneDay.removeTextChangedListener((TextWatcher) editTexOneDay.getTag());
+                }
+                editTexOneDay.setText(getItem(position).getDay1());
+
+                viewHolder.tvProTwoDay.setEnabled(false);
+                final EditText editTexTwoDay = viewHolder.tvProTwoDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexTwoDay.getTag() instanceof TextWatcher) {
+                    editTexTwoDay.removeTextChangedListener((TextWatcher) editTexTwoDay.getTag());
+                }
+                editTexTwoDay.setText(getItem(position).getDay2());
+
+                viewHolder.tvProThreeDay.setEnabled(false);
+                final EditText editTexThreeDay = viewHolder.tvProThreeDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexThreeDay.getTag() instanceof TextWatcher) {
+                    editTexThreeDay.removeTextChangedListener((TextWatcher) editTexThreeDay.getTag());
+                }
+                editTexThreeDay.setText(getItem(position).getDay3());
+
+                viewHolder.tvProForeDay.setEnabled(false);
+                final EditText editTexForeDay = viewHolder.tvProForeDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexForeDay.getTag() instanceof TextWatcher) {
+                    editTexForeDay.removeTextChangedListener((TextWatcher) editTexForeDay.getTag());
+                }
+                editTexForeDay.setText(getItem(position).getDay4());
+
+                viewHolder.tvProFiveDay.setEnabled(false);
+                final EditText editTexFiveDay = viewHolder.tvProFiveDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexFiveDay.getTag() instanceof TextWatcher) {
+                    editTexFiveDay.removeTextChangedListener((TextWatcher) editTexFiveDay.getTag());
+                }
+                editTexFiveDay.setText(getItem(position).getDay5());
+
+                viewHolder.tvProSixDay.setEnabled(false);
+                final EditText editTexSixDay = viewHolder.tvProSixDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexSixDay.getTag() instanceof TextWatcher) {
+                    editTexSixDay.removeTextChangedListener((TextWatcher) editTexSixDay.getTag());
+                }
+                editTexSixDay.setText(getItem(position).getDay6());
+
+                viewHolder.tvProSevenDay.setEnabled(false);
+                final EditText editTexSevenDay = viewHolder.tvProSevenDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexSevenDay.getTag() instanceof TextWatcher) {
+                    editTexSevenDay.removeTextChangedListener((TextWatcher) editTexSevenDay.getTag());
+                }
+                editTexSevenDay.setText(getItem(position).getDay7());
+
+                viewHolder.tvProEightDay.setEnabled(false);
+                final EditText editTexEightDay = viewHolder.tvProEightDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexEightDay.getTag() instanceof TextWatcher) {
+                    editTexEightDay.removeTextChangedListener((TextWatcher) editTexEightDay.getTag());
+                }
+                editTexEightDay.setText(getItem(position).getDay8());
+
+                viewHolder.tvProNineDay.setEnabled(false);
+                final EditText editTexNineDay = viewHolder.tvProNineDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexNineDay.getTag() instanceof TextWatcher) {
+                    editTexNineDay.removeTextChangedListener((TextWatcher) editTexNineDay.getTag());
+                }
+                editTexNineDay.setText(getItem(position).getDay9());
+
+                viewHolder.tvProTenDay.setEnabled(false);
+                final EditText editTexTenDay = viewHolder.tvProTenDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexTenDay.getTag() instanceof TextWatcher) {
+                    editTexTenDay.removeTextChangedListener((TextWatcher) editTexTenDay.getTag());
+                }
+                editTexTenDay.setText(getItem(position).getDay10());
+
+                viewHolder.tvProElevenDay.setEnabled(false);
+                final EditText editTexElevenDay = viewHolder.tvProElevenDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexElevenDay.getTag() instanceof TextWatcher) {
+                    editTexElevenDay.removeTextChangedListener((TextWatcher) editTexElevenDay.getTag());
+                }
+                editTexElevenDay.setText(getItem(position).getDay11());
+
+                viewHolder.tvProTwelveDay.setEnabled(false);
+                final EditText editTexTwelveDay = viewHolder.tvProTwelveDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexTwelveDay.getTag() instanceof TextWatcher) {
+                    editTexTwelveDay.removeTextChangedListener((TextWatcher) editTexTwelveDay.getTag());
+                }
+                editTexTwelveDay.setText(getItem(position).getDay12());
+
+                viewHolder.tvProThirteenDay.setEnabled(false);
+                final EditText editTexThirteenDay = viewHolder.tvProThirteenDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexThirteenDay.getTag() instanceof TextWatcher) {
+                    editTexThirteenDay.removeTextChangedListener((TextWatcher) editTexThirteenDay.getTag());
+                }
+                editTexThirteenDay.setText(getItem(position).getDay13());
+
+                viewHolder.tvProFourteenDay.setEnabled(false);
+                final EditText editTexFourteenDay = viewHolder.tvProFourteenDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexFourteenDay.getTag() instanceof TextWatcher) {
+                    editTexFourteenDay.removeTextChangedListener((TextWatcher) editTexFourteenDay.getTag());
+                }
+                editTexFourteenDay.setText(getItem(position).getDay14());
+
+                viewHolder.tvProFifteenDay.setEnabled(false);
+                final EditText editTexFifteenDay = viewHolder.tvProFifteenDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexFifteenDay.getTag() instanceof TextWatcher) {
+                    editTexFifteenDay.removeTextChangedListener((TextWatcher) editTexFifteenDay.getTag());
+                }
+                editTexFifteenDay.setText(getItem(position).getDay15());
+
+                viewHolder.tvProSixteenDay.setEnabled(false);
+                final EditText editTexSixteenDay = viewHolder.tvProSixteenDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexSixteenDay.getTag() instanceof TextWatcher) {
+                    editTexSixteenDay.removeTextChangedListener((TextWatcher) editTexSixteenDay.getTag());
+                }
+                editTexSixteenDay.setText(getItem(position).getDay16());
+
+                viewHolder.tvProSeventeenDay.setEnabled(false);
+                final EditText editTexSeventeenDay = viewHolder.tvProSeventeenDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexSeventeenDay.getTag() instanceof TextWatcher) {
+                    editTexSeventeenDay.removeTextChangedListener((TextWatcher) editTexSeventeenDay.getTag());
+                }
+                editTexSeventeenDay.setText(getItem(position).getDay17());
+
+                viewHolder.tvProEighteenDay.setEnabled(false);
+                final EditText editTexEighteenDay = viewHolder.tvProEighteenDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexEighteenDay.getTag() instanceof TextWatcher) {
+                    editTexEighteenDay.removeTextChangedListener((TextWatcher) editTexEighteenDay.getTag());
+                }
+                editTexEighteenDay.setText(getItem(position).getDay18());
+
+                viewHolder.tvProNineteenDay.setEnabled(false);
+                final EditText editTexNineteenDay = viewHolder.tvProNineteenDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexNineteenDay.getTag() instanceof TextWatcher) {
+                    editTexNineteenDay.removeTextChangedListener((TextWatcher) editTexNineteenDay.getTag());
+                }
+                editTexNineteenDay.setText(getItem(position).getDay19());
+
+                viewHolder.tvProTwentyDay.setEnabled(false);
+                final EditText editTexTwentyDay = viewHolder.tvProTwentyDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexTwentyDay.getTag() instanceof TextWatcher) {
+                    editTexTwentyDay.removeTextChangedListener((TextWatcher) editTexTwentyDay.getTag());
+                }
+                editTexTwentyDay.setText(getItem(position).getDay20());
+
+                viewHolder.tvProTwentyOneDay.setEnabled(false);
+                final EditText editTexTwentyOneDay = viewHolder.tvProTwentyOneDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexTwentyOneDay.getTag() instanceof TextWatcher) {
+                    editTexTwentyOneDay.removeTextChangedListener((TextWatcher) editTexTwentyOneDay.getTag());
+                }
+                editTexTwentyOneDay.setText(getItem(position).getDay21());
+
+                viewHolder.tvProTwentyTwoDay.setEnabled(false);
+                final EditText editTexTwentyTwoDay = viewHolder.tvProTwentyTwoDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexTwentyTwoDay.getTag() instanceof TextWatcher) {
+                    editTexTwentyTwoDay.removeTextChangedListener((TextWatcher) editTexTwentyTwoDay.getTag());
+                }
+                editTexTwentyTwoDay.setText(getItem(position).getDay22());
+
+                viewHolder.tvProTwentyThreeDay.setEnabled(false);
+                final EditText editTexTwentyThreeDay = viewHolder.tvProTwentyThreeDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexTwentyThreeDay.getTag() instanceof TextWatcher) {
+                    editTexTwentyThreeDay.removeTextChangedListener((TextWatcher) editTexTwentyThreeDay.getTag());
+                }
+                editTexTwentyThreeDay.setText(getItem(position).getDay23());
+
+                viewHolder.tvProTwentyForeDay.setEnabled(false);
+                final EditText editTexTwentyForeDay = viewHolder.tvProTwentyForeDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexTwentyForeDay.getTag() instanceof TextWatcher) {
+                    editTexTwentyForeDay.removeTextChangedListener((TextWatcher) editTexTwentyForeDay.getTag());
+                }
+                editTexTwentyForeDay.setText(getItem(position).getDay24());
+
+                viewHolder.tvProTwentyFiveDay.setEnabled(false);
+                final EditText editTexTwentyFiveDay = viewHolder.tvProTwentyFiveDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexTwentyFiveDay.getTag() instanceof TextWatcher) {
+                    editTexTwentyFiveDay.removeTextChangedListener((TextWatcher) editTexTwentyFiveDay.getTag());
+                }
+                editTexTwentyFiveDay.setText(getItem(position).getDay25());
+
+                viewHolder.tvProTwentySixDay.setEnabled(false);
+                final EditText editTexTwentySixDay = viewHolder.tvProTwentySixDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexTwentySixDay.getTag() instanceof TextWatcher) {
+                    editTexTwentySixDay.removeTextChangedListener((TextWatcher) editTexTwentySixDay.getTag());
+                }
+                editTexTwentySixDay.setText(getItem(position).getDay26());
+
+                viewHolder.tvProTwentySevenDay.setEnabled(false);
+                final EditText editTexTwentySevenDay = viewHolder.tvProTwentySevenDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexTwentySevenDay.getTag() instanceof TextWatcher) {
+                    editTexTwentySevenDay.removeTextChangedListener((TextWatcher) editTexTwentySevenDay.getTag());
+                }
+                editTexTwentySevenDay.setText(getItem(position).getDay27());
+
+                viewHolder.tvProTwentyEightDay.setEnabled(false);
+                final EditText editTexTwentyEightDay = viewHolder.tvProTwentyEightDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexTwentyEightDay.getTag() instanceof TextWatcher) {
+                    editTexTwentyEightDay.removeTextChangedListener((TextWatcher) editTexTwentyEightDay.getTag());
+                }
+                editTexTwentyEightDay.setText(getItem(position).getDay28());
+
+                viewHolder.tvProTwentyNineDay.setEnabled(false);
+                final EditText editTexTwentyNineDay = viewHolder.tvProTwentyNineDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexTwentyNineDay.getTag() instanceof TextWatcher) {
+                    editTexTwentyNineDay.removeTextChangedListener((TextWatcher) editTexTwentyNineDay.getTag());
+                }
+                editTexTwentyNineDay.setText(getItem(position).getDay29());
+
+                viewHolder.tvProThirtyDay.setEnabled(false);
+                final EditText editTexThirtyDay = viewHolder.tvProThirtyDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexThirtyDay.getTag() instanceof TextWatcher) {
+                    editTexThirtyDay.removeTextChangedListener((TextWatcher) editTexThirtyDay.getTag());
+                }
+                editTexThirtyDay.setText(getItem(position).getDay30());
+
+                viewHolder.tvProThirtyOneDay.setEnabled(false);
+                final EditText editTexThirtyOneDay = viewHolder.tvProThirtyOneDay;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexThirtyOneDay.getTag() instanceof TextWatcher) {
+                    editTexThirtyOneDay.removeTextChangedListener((TextWatcher) editTexThirtyOneDay.getTag());
+                }
+                editTexThirtyOneDay.setText(getItem(position).getDay31());
+
+                viewHolder.tvProRemarks.setEnabled(false);
+                final EditText editTexRemarks = viewHolder.tvProRemarks;
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexRemarks.getTag() instanceof TextWatcher) {
+                    editTexRemarks.removeTextChangedListener((TextWatcher) editTexRemarks.getTag());
+                }
+                editTexRemarks.setText(getItem(position).getMemo());
+
+                viewHolder.tvProRecorder.setEnabled(false);
+                viewHolder.tvProRecorder.setText(getItem(position).getRecorder());
+
+                viewHolder.tvProRecordat.setEnabled(false);
+                viewHolder.tvProRecordat.setText(getItem(position).getRecordat());
+            }
         } else {
             viewHolder.tv_data.setEnabled(false);
             viewHolder.tv_data.setText(getItem(position).getItem());
@@ -2042,6 +2361,7 @@ public class ProductionAdapter extends BaseAdapter {
             viewHolder.tvProRecordat.setText(getItem(position).getRecordat());
         }
 
+
         viewHolder.tvProMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -2184,6 +2504,7 @@ public class ProductionAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
+        LinearLayout lin_content;
         TextView tv_data;//款号
         TextView tvProDocumentary,//跟单
                 tvProFactory;//工厂

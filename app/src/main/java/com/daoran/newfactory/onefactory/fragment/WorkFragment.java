@@ -95,8 +95,9 @@ public class WorkFragment extends Fragment{
         tbarWrok.setTitle("");
         Bundle bundle = getActivity().getIntent().getExtras();
         String name = bundle.getString("u_name");
-        spUtils.put(getActivity(), "u_name", name);
+        spUtils.put(mactivity, "u_name", name);
         idworkname.setText(name);
+        spUtils.put(mactivity,"usernamerecoder",name);
     }
 
     private void setPhoneMenu() {
