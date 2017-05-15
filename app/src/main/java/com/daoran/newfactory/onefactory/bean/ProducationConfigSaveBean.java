@@ -1,13 +1,12 @@
 package com.daoran.newfactory.onefactory.bean;
 
 /**
- *  生产日报保存实体
- * Created by lizhipeng on 2017/5/12.
+ * Created by lizhipeng on 2017/5/13.
  */
 
-public class ProducationSaveBean {
-    private int ID;
-    private int salesid;//引用的排单计划表id
+public class ProducationConfigSaveBean {
+    private String ID;
+    private String salesid;//引用的排单计划表id
     private String planid;//引用的工厂计划id
     private int sn;//序列号
     private String contractno;//销售合同号
@@ -93,11 +92,19 @@ public class ProducationSaveBean {
     private String day31;
     private boolean isdiffc;//是否分色
 
-    public int getSalesid() {
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public String getSalesid() {
         return salesid;
     }
 
-    public void setSalesid(int salesid) {
+    public void setSalesid(String salesid) {
         this.salesid = salesid;
     }
 
@@ -109,12 +116,12 @@ public class ProducationSaveBean {
         this.planid = planid;
     }
 
-    public int getID() {
-        return ID;
+    public int getSn() {
+        return sn;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setSn(int sn) {
+        this.sn = sn;
     }
 
     public String getContractno() {
@@ -125,12 +132,12 @@ public class ProducationSaveBean {
         this.contractno = contractno;
     }
 
-    public int getSn() {
-        return sn;
+    public String getArea() {
+        return area;
     }
 
-    public void setSn(int sn) {
-        this.sn = sn;
+    public void setArea(String area) {
+        this.area = area;
     }
 
     public String getInbill() {
@@ -139,14 +146,6 @@ public class ProducationSaveBean {
 
     public void setInbill(String inbill) {
         this.inbill = inbill;
-    }
-
-    public String getArea() {
-        return area;
-    }
-
-    public void setArea(String area) {
-        this.area = area;
     }
 
     public String getCompanytxt() {
@@ -181,20 +180,20 @@ public class ProducationSaveBean {
         this.item = item;
     }
 
-    public String getMdl() {
-        return mdl;
-    }
-
-    public void setMdl(String mdl) {
-        this.mdl = mdl;
-    }
-
     public String getCtmid() {
         return ctmid;
     }
 
     public void setCtmid(String ctmid) {
         this.ctmid = ctmid;
+    }
+
+    public String getMdl() {
+        return mdl;
+    }
+
+    public void setMdl(String mdl) {
+        this.mdl = mdl;
     }
 
     public String getCtmtxt() {
@@ -253,6 +252,14 @@ public class ProducationSaveBean {
         this.fsaler = fsaler;
     }
 
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
     public String getPsaler() {
         return psaler;
     }
@@ -267,14 +274,6 @@ public class ProducationSaveBean {
 
     public void setPqty(String pqty) {
         this.pqty = pqty;
-    }
-
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
     }
 
     public String getUnit() {
@@ -341,20 +340,20 @@ public class ProducationSaveBean {
         this.workingProcedure = workingProcedure;
     }
 
-    public String getWorkers() {
-        return workers;
-    }
-
-    public void setWorkers(String workers) {
-        this.workers = workers;
-    }
-
     public String getSubfactoryTeams() {
         return subfactoryTeams;
     }
 
     public void setSubfactoryTeams(String subfactoryTeams) {
         this.subfactoryTeams = subfactoryTeams;
+    }
+
+    public String getWorkers() {
+        return workers;
+    }
+
+    public void setWorkers(String workers) {
+        this.workers = workers;
     }
 
     public String getFactcutqty() {
@@ -445,14 +444,6 @@ public class ProducationSaveBean {
         this.perMachineQty = perMachineQty;
     }
 
-    public String getPrdstatus() {
-        return prdstatus;
-    }
-
-    public void setPrdstatus(String prdstatus) {
-        this.prdstatus = prdstatus;
-    }
-
     public String getSumMachineQty() {
         return sumMachineQty;
     }
@@ -461,12 +452,20 @@ public class ProducationSaveBean {
         this.sumMachineQty = sumMachineQty;
     }
 
-    public String getPrdmaster() {
-        return prdmaster;
+    public String getPrdstatus() {
+        return prdstatus;
     }
 
-    public void setPrdmaster(String prdmaster) {
-        this.prdmaster = prdmaster;
+    public void setPrdstatus(String prdstatus) {
+        this.prdstatus = prdstatus;
+    }
+
+    public String getSumCompletedQty() {
+        return sumCompletedQty;
+    }
+
+    public void setSumCompletedQty(String sumCompletedQty) {
+        this.sumCompletedQty = sumCompletedQty;
     }
 
     public String getTaskqty() {
@@ -485,12 +484,12 @@ public class ProducationSaveBean {
         this.prddocumentary = prddocumentary;
     }
 
-    public String getSumCompletedQty() {
-        return sumCompletedQty;
+    public String getPrdmaster() {
+        return prdmaster;
     }
 
-    public void setSumCompletedQty(String sumCompletedQty) {
-        this.sumCompletedQty = sumCompletedQty;
+    public void setPrdmaster(String prdmaster) {
+        this.prdmaster = prdmaster;
     }
 
     public String getLeftQty() {
@@ -501,20 +500,20 @@ public class ProducationSaveBean {
         this.leftQty = leftQty;
     }
 
-    public String getYear() {
-        return year;
-    }
-
-    public void setYear(String year) {
-        this.year = year;
-    }
-
     public String getLastMonQty() {
         return lastMonQty;
     }
 
     public void setLastMonQty(String lastMonQty) {
         this.lastMonQty = lastMonQty;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 
     public String getMonth() {
@@ -573,20 +572,20 @@ public class ProducationSaveBean {
         this.day6 = day6;
     }
 
-    public String getDay8() {
-        return day8;
-    }
-
-    public void setDay8(String day8) {
-        this.day8 = day8;
-    }
-
     public String getDay7() {
         return day7;
     }
 
     public void setDay7(String day7) {
         this.day7 = day7;
+    }
+
+    public String getDay8() {
+        return day8;
+    }
+
+    public void setDay8(String day8) {
+        this.day8 = day8;
     }
 
     public String getDay9() {
@@ -621,20 +620,20 @@ public class ProducationSaveBean {
         this.day12 = day12;
     }
 
-    public String getDay13() {
-        return day13;
-    }
-
-    public void setDay13(String day13) {
-        this.day13 = day13;
-    }
-
     public String getDay14() {
         return day14;
     }
 
     public void setDay14(String day14) {
         this.day14 = day14;
+    }
+
+    public String getDay13() {
+        return day13;
+    }
+
+    public void setDay13(String day13) {
+        this.day13 = day13;
     }
 
     public String getDay15() {
@@ -669,20 +668,20 @@ public class ProducationSaveBean {
         this.day18 = day18;
     }
 
-    public String getDay20() {
-        return day20;
-    }
-
-    public void setDay20(String day20) {
-        this.day20 = day20;
-    }
-
     public String getDay19() {
         return day19;
     }
 
     public void setDay19(String day19) {
         this.day19 = day19;
+    }
+
+    public String getDay20() {
+        return day20;
+    }
+
+    public void setDay20(String day20) {
+        this.day20 = day20;
     }
 
     public String getDay21() {
@@ -780,6 +779,4 @@ public class ProducationSaveBean {
     public void setIsdiffc(boolean isdiffc) {
         this.isdiffc = isdiffc;
     }
-
-
 }

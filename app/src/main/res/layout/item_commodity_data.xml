@@ -16,7 +16,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="1"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -31,7 +31,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="2"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -46,7 +46,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="3"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -61,7 +61,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="4"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -76,7 +76,8 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="5"
+            android:text=""
+            android:numeric="integer"
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -92,7 +93,7 @@
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:text="6"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -108,7 +109,7 @@
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:text="7"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -123,7 +124,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="8"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -138,7 +139,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="9"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -153,7 +154,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="10"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -169,7 +170,7 @@
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:text="11"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -185,7 +186,7 @@
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:text="12"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -200,7 +201,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="13"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -215,7 +216,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="14"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -230,7 +231,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="15"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -245,7 +246,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="16"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -260,7 +261,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="17"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -275,7 +276,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="18"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -291,7 +292,7 @@
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:text="19"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -307,7 +308,7 @@
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:text="20"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -322,7 +323,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="21"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -338,7 +339,7 @@
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:text="22"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -354,7 +355,7 @@
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:text="23"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -369,7 +370,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="24"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -385,7 +386,7 @@
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:text="25"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -401,7 +402,7 @@
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:text="26"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -416,7 +417,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="27"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -432,7 +433,7 @@
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:text="28"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -448,7 +449,7 @@
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:text="29"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -463,7 +464,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="30"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -479,7 +480,7 @@
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:text="31"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -495,7 +496,7 @@
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:text="32"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -511,7 +512,7 @@
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:text="33"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -526,7 +527,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="34"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -541,7 +542,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="35"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -557,7 +558,7 @@
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:text="36"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -572,7 +573,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="37"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -587,7 +588,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="38"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -603,7 +604,7 @@
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:text="39"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -618,7 +619,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="40"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -633,7 +634,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="41"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -648,7 +649,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="42"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -663,7 +664,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="43"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
@@ -679,7 +680,7 @@
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
             android:gravity="center"
-            android:text="44"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 

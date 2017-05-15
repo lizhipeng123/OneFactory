@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,19 +16,23 @@ import android.widget.TextView;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.adapter.ProductionAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
+import com.daoran.newfactory.onefactory.bean.ProducationConfigSaveBean;
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
 import com.daoran.newfactory.onefactory.bean.ProducationSaveBean;
 import com.daoran.newfactory.onefactory.bean.Propostbean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
+import com.daoran.newfactory.onefactory.util.Listener.SelectItemInterface;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.util.file.NullStringToEmptyAdapterFactory;
 import com.daoran.newfactory.onefactory.view.dialog.ProcationDialog;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -42,9 +47,8 @@ import okhttp3.MediaType;
  * 生产日报页面
  * Created by lizhipeng on 2017/3/29.
  */
-
 public class ProductionActivity extends BaseFrangmentActivity
-        implements View.OnClickListener {
+        implements View.OnClickListener, SelectItemInterface {
 
     private NoscrollListView mData;
     private ProcationDialog procationDialog;
@@ -57,6 +61,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     private ProducationDetailBean detailBean;
     private ProductionAdapter adapter;
     List<ProducationSaveBean> saveBeen = new ArrayList<ProducationSaveBean>();
+    List<ProducationConfigSaveBean> configSaveBeen = new ArrayList<ProducationConfigSaveBean>();
 
     private EditText etSqlDetail;
     private TextView tvSignPage;
@@ -68,6 +73,9 @@ public class ProductionActivity extends BaseFrangmentActivity
     private SPUtils spUtils;
     private int pageCount;
     private int pageIndex = 0;
+    private int last_item = -1;
+    private TextView oldView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +84,6 @@ public class ProductionActivity extends BaseFrangmentActivity
         initView();
         setData();
         setListener();
-
     }
 
     /**
@@ -255,8 +262,8 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     tvSignPage.setText(count);
                                     adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                     mData.setAdapter(adapter);
-                                    ResponseDialog.closeLoading();
                                     adapter.notifyDataSetChanged();
+                                    ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
                                     ResponseDialog.closeLoading();
@@ -325,10 +332,11 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     tvSignPage.setText(count);
                                     adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                     mData.setAdapter(adapter);
-                                    ResponseDialog.closeLoading();
                                     adapter.notifyDataSetChanged();
+                                    ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
+                                    ResponseDialog.closeLoading();
                                 }
                             }
                         });
@@ -561,7 +569,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             if (productionRemarks == "" || productionRemarks.equals("")) {
                 productionRemarks = null;
             }
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory()).create();
             String urlid = sp.getString("prouriid", "");
             ProducationSaveBean saveBean = new ProducationSaveBean();
             if (urlid == proid || urlid.equals(proid)) {
@@ -638,7 +646,8 @@ public class ProductionActivity extends BaseFrangmentActivity
                                 System.out.print(ression);
                                 int resindex = Integer.parseInt(ression);
                                 if (resindex > 3) {
-                                    ToastUtils.ShowToastMessage("保存成功，请刷新页面", ProductionActivity.this);
+                                    ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
+                                    setData();
                                     ResponseDialog.closeLoading();
                                 } else if (ression == "3" || ression.equals("3")) {
                                     ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
@@ -656,6 +665,137 @@ public class ProductionActivity extends BaseFrangmentActivity
                 ToastUtils.ShowToastMessage("请选择当前行，再进行修改保存",
                         ProductionActivity.this);
             }
+        } else {
+            ToastUtils.ShowToastMessage(R.string.noHttp, ProductionActivity.this);
+        }
+    }
+
+    /**
+     * 复制
+     */
+    private void setCopy() {
+        String strcopy = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
+        if (NetWork.isNetWorkAvailable(this)) {
+            ResponseDialog.showLoading(this);
+            sp = this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+            String itemid = "";
+            String prosalesid = sp.getString("prosalesid", "");
+            String item = sp.getString("copyitem", "");
+            String copyDocumentary = sp.getString("copyDocumentary", "");
+            String copyFactory = sp.getString("copyFactory", "");
+            String copyDepartment = sp.getString("copyDepartment", "");
+            String copyProcedure = sp.getString("copyProcedure", "");
+            String copyOthers = sp.getString("copyOthers", "");
+            String copySingularSystem = sp.getString("copySingularSystem", "");
+            String copyColor = sp.getString("copyColor", "");
+            String copyTaskNumber = sp.getString("copyTaskNumber", "");
+            String copySize = sp.getString("copySize", "");
+            String copyClippingNumber = sp.getString("copyCompletedLastMonth", "");
+            String copyCompletedLastMonth = sp.getString("copyCompletedLastMonth", "");
+            String copyTotalCompletion = sp.getString("copyTotalCompletion", "");
+            String copyBalanceAmount = sp.getString("copyBalanceAmount", "");
+            String copyState = sp.getString("copyState", "");
+            String copyProYear = sp.getString("copyProYear", "");
+            String copyMonth = sp.getString("copyMonth", "");
+            String copyRemarks = sp.getString("copyRemarks", "");
+            String copyRecorder = sp.getString("copyRecorder", "");
+            String copyRecordat = sp.getString("copyRecordat", "");
+
+            Gson gson = new Gson();
+            ProducationConfigSaveBean saveBean = new ProducationConfigSaveBean();
+            saveBean.setID(itemid);
+            saveBean.setSalesid(prosalesid);
+            saveBean.setItem(item);
+            saveBean.setPrddocumentary(copyDocumentary);
+            saveBean.setSubfactory(copyFactory);
+            saveBean.setSubfactoryTeams(copyDepartment);
+            saveBean.setWorkingProcedure(copyProcedure);
+            saveBean.setWorkers(copyOthers);
+            saveBean.setPqty(copySingularSystem);
+            saveBean.setProdcol(copyColor);
+            saveBean.setTaskqty(copyTaskNumber);
+            saveBean.setMdl(copySize);
+            saveBean.setFactcutqty(copyClippingNumber);
+            saveBean.setLastMonQty(copyCompletedLastMonth);
+            saveBean.setSumCompletedQty(copyTotalCompletion);
+            saveBean.setLeftQty(copyBalanceAmount);
+            saveBean.setPrdstatus(copyState);
+            saveBean.setYear(copyProYear);
+            saveBean.setMonth(copyMonth);
+            saveBean.setDay1("");
+            saveBean.setDay2("");
+            saveBean.setDay3("");
+            saveBean.setDay4("");
+            saveBean.setDay5("");
+            saveBean.setDay6("");
+            saveBean.setDay7("");
+            saveBean.setDay8("");
+            saveBean.setDay9("");
+            saveBean.setDay10("");
+            saveBean.setDay11("");
+            saveBean.setDay12("");
+            saveBean.setDay13("");
+            saveBean.setDay14("");
+            saveBean.setDay15("");
+            saveBean.setDay16("");
+            saveBean.setDay17("");
+            saveBean.setDay18("");
+            saveBean.setDay19("");
+            saveBean.setDay20("");
+            saveBean.setDay21("");
+            saveBean.setDay22("");
+            saveBean.setDay23("");
+            saveBean.setDay24("");
+            saveBean.setDay25("");
+            saveBean.setDay26("");
+            saveBean.setDay27("");
+            saveBean.setDay28("");
+            saveBean.setDay29("");
+            saveBean.setDay30("");
+            saveBean.setDay31("");
+            saveBean.setMemo(copyRemarks);
+            saveBean.setRecorder(copyRecorder);
+            saveBean.setRecordat(copyRecordat);
+            configSaveBeen.add(saveBean);
+            String configsave = gson.toJson(configSaveBeen);
+            String dateee = configsave.replace("\"\"", "null");
+            OkHttpUtils.postString()
+                    .url(strcopy)
+                    .content(dateee)
+                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            System.out.print(response);
+                            String ression = StringUtil.sideTrim(response, "\"");
+                            System.out.print(ression);
+                            int resindex = Integer.parseInt(ression);
+                            if (resindex > 4) {
+                                ToastUtils.ShowToastMessage("保存成功",
+                                        ProductionActivity.this);
+                                setData();
+                                ResponseDialog.closeLoading();
+                            } else if (resindex == 3) {
+                                ToastUtils.ShowToastMessage("保存失败",
+                                        ProductionActivity.this);
+                                ResponseDialog.closeLoading();
+                            } else if (resindex == 4) {
+                                ToastUtils.ShowToastMessage("数据错误，请重试",
+                                        ProductionActivity.this);
+                                ResponseDialog.closeLoading();
+                            } else {
+                                ToastUtils.ShowToastMessage("未知错误，请联系管理员",
+                                        ProductionActivity.this);
+                                ResponseDialog.closeLoading();
+                            }
+                        }
+                    });
         } else {
             ToastUtils.ShowToastMessage(R.string.noHttp, ProductionActivity.this);
         }
@@ -714,7 +854,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                 ProductionNewlyBuildActivity.class));
                         break;
                     case "复制":
-
+                        setCopy();
                         break;
                     case "刷新":
                         setData();
@@ -727,7 +867,6 @@ public class ProductionActivity extends BaseFrangmentActivity
         popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override
             public void onDismiss(PopupMenu menu) {
-//                Toast.makeText(getApplicationContext(), "关闭PopupMenu", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -737,5 +876,15 @@ public class ProductionActivity extends BaseFrangmentActivity
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    @Override
+    public void setSelectedItem(final int position) {
+        mData.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mData.setSelection(position);
+            }
+        }, 1000);
     }
 }

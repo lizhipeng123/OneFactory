@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 根据角色返回的菜单加载页面
+ * 根据角色返回的菜单加载页面适配
  * Created by lizhipeng on 2017/5/10.
  */
 

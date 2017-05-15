@@ -99,6 +99,8 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 flag = true;
+                String salesid = getItem(position).getID();
+                spUtils.put(context,"tvnewlysalesid",salesid);
                 spUtils.put(context,"tvflag",flag);
                 ToastUtils.ShowToastMessage("点击的是"+position,context);
                 String tvdate = getItem(position).getItem();

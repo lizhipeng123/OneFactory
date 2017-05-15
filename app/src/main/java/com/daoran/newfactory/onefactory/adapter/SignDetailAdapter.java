@@ -9,13 +9,10 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.bean.SignDetailBean;
-import com.daoran.newfactory.onefactory.bean.SqlCarApplyBean;
-//import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 签到查询适配
  * Created by lizhipeng on 2017/4/5.
  */
 
@@ -67,7 +64,6 @@ public class SignDetailAdapter extends BaseAdapter {
         holder.tvSignRemarks.setText(getItem(position).getMemo());
         return convertView;
     }
-
 
     class ViewHolder {
         TextView tvData;

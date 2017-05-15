@@ -129,8 +129,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 showPopuphdMenu(holder.tvCommoOurAfter);
             }
         });
-
-
+        
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -140,13 +139,12 @@ public class CommoditySqlAdapter extends BaseAdapter {
         });
 
         /*判断item中制单人是否是登录用户，是为可改，否为不可改*/
-        sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
-        String nameid = sp.getString("username", "");
+        sp = context.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        String nameid = sp.getString("usernamerecoder", "");
         String documentary = getItem(position).getPrddocumentary();
         String master = getItem(position).getPrdmaster();
         if (documentary != null && !documentary.equals("")) {
             if (documentary.equals("吕玉如") || master.equals(nameid)) {
-
                 holder.lin_content.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -205,7 +203,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         Log.d(TAG, "afterTextChanged");
                         String proitem = holder.tvCommoQCMasterScore.getText().toString();
                         spUtils.put(context, "CommodityQCMasterScore", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTextQCMasterScore.addTextChangedListener(TvQCMasterScore);
@@ -350,7 +347,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         Log.d(TAG, "afterTextChanged");
                         String proitem = holder.tvCommoPreMemo.getText().toString();
                         spUtils.put(context, "CommodityPreMemo", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTextPreMemo.addTextChangedListener(TvPreMemo);
@@ -479,7 +475,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         Log.d(TAG, "afterTextChanged");
                         String proitem = holder.tvCommoPredoc.getText().toString();
                         spUtils.put(context, "CommodityPredoc", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTextPredoc.addTextChangedListener(TvPredoc);
@@ -522,7 +517,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         Log.d(TAG, "afterTextChanged");
                         String proitem = holder.tvCommoFabricsok.getText().toString();
                         spUtils.put(context, "CommodityFabricsok", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTextFabricsok.addTextChangedListener(TvFabricsok);
@@ -565,7 +559,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         Log.d(TAG, "afterTextChanged");
                         String proitem = holder.tvCommoAccessoriesok.getText().toString();
                         spUtils.put(context, "CommodityAccessoriesok", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTextAccessoriesok.addTextChangedListener(TvAccessoriesok);
@@ -608,7 +601,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         Log.d(TAG, "afterTextChanged");
                         String proitem = holder.tvCommoSpcproDec.getText().toString();
                         spUtils.put(context, "CommoditySpcproDec", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTextSpcproDec.addTextChangedListener(TvSpcproDec);
@@ -651,7 +643,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         Log.d(TAG, "afterTextChanged");
                         String proitem = holder.tvCommoSpcproMemo.getText().toString();
                         spUtils.put(context, "CommoditySpcproMemo", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTextSpcproMemo.addTextChangedListener(TvSpcproMemo);
@@ -694,7 +685,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         Log.d(TAG, "afterTextChanged");
                         String proitem = holder.tvCommoCutqty.getText().toString();
                         spUtils.put(context, "CommodityCutqty", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTextCutqty.addTextChangedListener(TvCutqty);
@@ -913,7 +903,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         Log.d(TAG, "afterTextChanged");
                         String proitem = holder.tvCommoQCbdtDoc.getText().toString();
                         spUtils.put(context, "CommodityQCbdtDoc", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTextQCbdtDoc.addTextChangedListener(TvQCbdtDoc);
@@ -1043,7 +1032,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         Log.d(TAG, "afterTextChanged");
                         String proitem = holder.tvCommoQCmdtDoc.getText().toString();
                         spUtils.put(context, "CommodityQCmdtDoc", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTextQCmdtDoc.addTextChangedListener(TvQCmdtDoc);
@@ -1173,7 +1161,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         Log.d(TAG, "afterTextChanged");
                         String proitem = holder.tvCommoQCedtDoc.getText().toString();
                         spUtils.put(context, "CommodityQCedtDoc", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTextQCedtDoc.addTextChangedListener(TvQCedtDoc);
@@ -1346,7 +1333,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         Log.d(TAG, "afterTextChanged");
                         String proitem = holder.tvCommoPackqty2.getText().toString();
                         spUtils.put(context, "CommodityPackqty2", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTextPackqty2.addTextChangedListener(TvPackqty2);
@@ -1389,7 +1375,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         Log.d(TAG, "afterTextChanged");
                         String proitem = holder.tvCommoQCMemo.getText().toString();
                         spUtils.put(context, "CommodityQCMemo", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTextQCMemo.addTextChangedListener(TvQCMemo);
@@ -1474,7 +1459,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         Log.d(TAG, "afterTextChanged");
                         String proitem = holder.tvCommoBatchid.getText().toString();
                         spUtils.put(context, "CommodityBatchid", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTextBatchid.addTextChangedListener(TvBatchid);
@@ -1562,7 +1546,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         Log.d(TAG, "afterTextChanged");
                         String proitem = holder.tvCommoIPQCPedt.getText().toString();
                         spUtils.put(context, "CommodityIPQCPedt", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTextIPQCPedt.addTextChangedListener(TvIPQCPedt);
@@ -1605,7 +1588,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         Log.d(TAG, "afterTextChanged");
                         String proitem = holder.tvCommoIPQCmdt.getText().toString();
                         spUtils.put(context, "CommodityIPQCmdt", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTextIPQCmdt.addTextChangedListener(TvIPQCmdt);
@@ -1648,7 +1630,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         Log.d(TAG, "afterTextChanged");
                         String proitem = holder.tvCommoQAname.getText().toString();
                         spUtils.put(context, "CommodityQAname", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTextQAname.addTextChangedListener(TvQAname);
@@ -1691,7 +1672,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         Log.d(TAG, "afterTextChanged");
                         String proitem = holder.tvCommoQAScore.getText().toString();
                         spUtils.put(context, "CommodityQAScore", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTextQAScore.addTextChangedListener(TvQAScore);
@@ -2196,7 +2176,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
         @Override
         public void onClick(View v) {
             String ss = sp.getString("strposition", "");
-            ToastUtils.ShowToastMessage("点击是" + ss, context);
+//            ToastUtils.ShowToastMessage("点击是" + ss, context);
         }
     };
 
@@ -2215,7 +2195,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 sp = context.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
                 String title = item.getTitle().toString();
                 spUtils.put(context, "commohdTitle", title);
-                ToastUtils.ShowToastMessage("点击的是：" + title, context);
                 return false;
             }
         });

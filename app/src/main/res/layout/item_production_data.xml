@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/data_ll_vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -16,9 +17,9 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textSize="@dimen/dimen_40sp"
+            android:text=""
             android:textColor="@color/black"
-            android:text="" />
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -30,10 +31,10 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:gravity="center"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -45,10 +46,10 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:gravity="center"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -60,10 +61,10 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:gravity="center"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -75,10 +76,10 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:gravity="center"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -90,10 +91,11 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -105,10 +107,10 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:gravity="center"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -120,10 +122,10 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:gravity="center"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -134,11 +136,12 @@
             android:id="@+id/tvProTaskNumber"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -150,10 +153,10 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:gravity="center"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -164,11 +167,11 @@
             android:id="@+id/tvProClippingNumber"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -179,11 +182,12 @@
             android:id="@+id/tvProCompletedLastMonth"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -194,11 +198,11 @@
             android:id="@+id/tvProTotalCompletion"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -209,11 +213,11 @@
             android:id="@+id/tvProBalanceAmount"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -224,11 +228,11 @@
             android:id="@+id/tvProState"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -239,11 +243,11 @@
             android:id="@+id/tvProYear"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -254,11 +258,11 @@
             android:id="@+id/tvProMonth"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -269,11 +273,12 @@
             android:id="@+id/tvProOneDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -284,11 +289,12 @@
             android:id="@+id/tvProTwoDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -299,11 +305,12 @@
             android:id="@+id/tvProThreeDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -314,11 +321,12 @@
             android:id="@+id/tvProForeDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -329,11 +337,12 @@
             android:id="@+id/tvProFiveDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -344,11 +353,12 @@
             android:id="@+id/tvProSixDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -359,11 +369,12 @@
             android:id="@+id/tvProSevenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -374,11 +385,12 @@
             android:id="@+id/tvProEightDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -389,11 +401,12 @@
             android:id="@+id/tvProNineDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -404,11 +417,12 @@
             android:id="@+id/tvProTenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -419,11 +433,12 @@
             android:id="@+id/tvProElevenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -434,11 +449,12 @@
             android:id="@+id/tvProTwelveDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -449,11 +465,12 @@
             android:id="@+id/tvProThirteenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -464,11 +481,12 @@
             android:id="@+id/tvProFourteenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -479,11 +497,12 @@
             android:id="@+id/tvProFifteenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -494,11 +513,12 @@
             android:id="@+id/tvProSixteenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -509,11 +529,12 @@
             android:id="@+id/tvProSeventeenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -524,11 +545,12 @@
             android:id="@+id/tvProEighteenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -539,11 +561,12 @@
             android:id="@+id/tvProNineteenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -554,11 +577,12 @@
             android:id="@+id/tvProTwentyDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -569,11 +593,12 @@
             android:id="@+id/tvProTwentyOneDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -584,11 +609,12 @@
             android:id="@+id/tvProTwentyTwoDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -599,11 +625,12 @@
             android:id="@+id/tvProTwentyThreeDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -614,11 +641,12 @@
             android:id="@+id/tvProTwentyForeDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -629,11 +657,12 @@
             android:id="@+id/tvProTwentyFiveDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -644,11 +673,12 @@
             android:id="@+id/tvProTwentySixDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
@@ -659,109 +689,122 @@
             android:id="@+id/tvProTwentySevenDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
+
         <EditText
             android:id="@+id/tvProTwentyEightDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
+
         <EditText
             android:id="@+id/tvProTwentyNineDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
+
         <EditText
             android:id="@+id/tvProThirtyDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
+
         <EditText
             android:id="@+id/tvProThirtyOneDay"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
+
         <EditText
             android:id="@+id/tvProRemarks"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
+
         <TextView
             android:id="@+id/tvProRecorder"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
         <View
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
+
         <TextView
             android:id="@+id/tvProRecordat"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:textSize="@dimen/dimen_40sp"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
         <View
             android:layout_width="1px"
             android:layout_height="50dp"

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 用车申请单刷新适配
  * Created by lizhipeng on 2017/4/19.
  */
 
