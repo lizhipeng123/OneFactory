@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.bean;
 
 /**
+ * 用车单司机实体
  * Created by lizhipeng on 2017/4/21.
  */
 

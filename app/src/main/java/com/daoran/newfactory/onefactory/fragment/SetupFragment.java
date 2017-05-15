@@ -18,14 +18,10 @@ import com.daoran.newfactory.onefactory.bean.VerCodeBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.StringUtil;
-import com.daoran.newfactory.onefactory.util.ToastUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import okhttp3.Call;
 
@@ -124,6 +120,5 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         } else {
             ToastUtils.ShowToastMessage("当前网络不可用，请重新尝试", mactivity);
         }
-
     }
 }

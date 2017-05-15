@@ -10,6 +10,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+/**
+ * 格式转换
+ */
 public class BitmapTools {
     public static String compressWidthAndHeight(String srcPath, int width, int height, String savePath) {
         if (srcPath == null || srcPath.trim().equals("")) {

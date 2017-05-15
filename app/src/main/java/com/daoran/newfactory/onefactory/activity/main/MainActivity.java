@@ -2,7 +2,6 @@ package com.daoran.newfactory.onefactory.activity.main;
 
 import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,28 +21,15 @@ import com.daoran.newfactory.onefactory.fragment.InformationFragment;
 import com.daoran.newfactory.onefactory.fragment.OfficeFragment;
 import com.daoran.newfactory.onefactory.fragment.SetupFragment;
 import com.daoran.newfactory.onefactory.fragment.WorkFragment;
-import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
-import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
-import com.daoran.newfactory.onefactory.util.Http.NetUtil;
-import com.daoran.newfactory.onefactory.util.Http.RequestParams;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
-import com.daoran.newfactory.onefactory.util.StringUtil;
-import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.FragmentTabHost;
-import com.google.gson.Gson;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.apache.http.NameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.Call;
-
+/**
+ * 主框架
+ */
 public class MainActivity extends BaseFrangmentActivity {
 
     private FragmentTabHost mTabHost;
@@ -58,7 +44,6 @@ public class MainActivity extends BaseFrangmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getViews();
-//        setPhoneMenu();
     }
 
     @Override
@@ -75,11 +60,8 @@ public class MainActivity extends BaseFrangmentActivity {
             isExit.setButton2("取消", listener);
             // 显示对话框
             isExit.show();
-
         }
-
         return false;
-
     }
 
     /**

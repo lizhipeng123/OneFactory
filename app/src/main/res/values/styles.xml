@@ -72,4 +72,8 @@
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
+    <style name="tagging_edittext_style" >
+        <item name="android:textColorHint">@color/public_anhui_color</item>
+        <item name="android:textColor">@color/form_text_color_tagging</item>
+    </style>
 </resources>

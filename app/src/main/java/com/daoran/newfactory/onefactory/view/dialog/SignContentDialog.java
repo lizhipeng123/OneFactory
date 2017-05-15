@@ -25,6 +25,7 @@ import com.daoran.newfactory.onefactory.util.ToastUtils;
 import java.util.Calendar;
 
 /**
+ * 签到条件查询dialog
  * Created by lizhipeng on 2017/4/20.
  */
 

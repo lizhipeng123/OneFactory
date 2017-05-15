@@ -1,7 +1,7 @@
 package com.daoran.newfactory.onefactory.bean;
 
 /**
- * 车牌
+ * 车牌实体
  * Created by lizhipeng on 2017/4/21.
  */
 

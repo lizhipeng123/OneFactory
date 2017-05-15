@@ -1,7 +1,8 @@
 package com.daoran.newfactory.onefactory.view.dialog;
 
 /**
- * Created by ww on 2016/3/26.
+ * 自定义dialog
+ * Created by lizhipeng on 2017/3/26.
  */
 
 import android.app.Dialog;
@@ -55,29 +56,6 @@ public class CustomDialog extends Dialog {
             this.message = (String) context.getText(message);
             return this;
         }
-
-//        /**
-//         * Set the Dialog title from resource
-//         *
-//         * @param title
-//         * @return
-//         */
-//        public Builder setTitle(int title) {
-//            this.title = (String) context.getText(title);
-//            return this;
-//        }
-//
-//        /**
-//         * Set the Dialog title from String
-//         *
-//         * @param title
-//         * @return
-//         */
-//
-//        public Builder setTitle(String title) {
-//            this.title = title;
-//            return this;
-//        }
 
         public Builder setContentView(View v) {
             this.contentView = v;

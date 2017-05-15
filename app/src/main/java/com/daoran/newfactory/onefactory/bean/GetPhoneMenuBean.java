@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.bean;
 
 /**
+ * 角色菜单实体
  * Created by lizhipeng on 2017/4/25.
  */
 

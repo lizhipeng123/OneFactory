@@ -56,4 +56,6 @@
     <string name="txt_route_via_there">添加途经点3</string>
     <string name="txt_route_end">添加结束点</string>
     <string name="no_result">对不起，没有搜索到相关数据！</string>
+    <color name="form_text_color_tagging">#333</color>
+    <color name="public_anhui_color">#dddddd</color>
 </resources>

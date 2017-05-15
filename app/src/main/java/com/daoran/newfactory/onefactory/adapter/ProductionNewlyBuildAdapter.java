@@ -18,9 +18,9 @@ import com.daoran.newfactory.onefactory.util.ToastUtils;
 import java.util.List;
 
 /**
+ * 生产日报新建适配
  * Created by lizhipeng on 2017/5/5.
  */
-
 public class ProductionNewlyBuildAdapter extends BaseAdapter {
     private Context context;
     private List<ProNewlyBuildBean.DataBean> dataBeen;

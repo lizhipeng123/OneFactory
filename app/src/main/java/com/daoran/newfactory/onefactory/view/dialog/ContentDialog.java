@@ -26,6 +26,7 @@ import com.daoran.newfactory.onefactory.util.ToastUtils;
 import java.util.Calendar;
 
 /**
+ * 用车申请单条件查询弹框
  * Created by lizhipeng on 2017/3/28.
  */
 
@@ -78,7 +79,6 @@ public class ContentDialog extends Dialog {
         tvInitialDate.setText(tvdate);
         String tvend = sp.getString("endtime", "");
         tvEndDate.setText(tvend);
-//        System.out.print(tvdate);
         Display display = m.getDefaultDisplay();
         WindowManager.LayoutParams p = dialogWindow.getAttributes();
         p.width = (int) (display.getWidth() * 0.8);
@@ -94,7 +94,6 @@ public class ContentDialog extends Dialog {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] lanages = content.getResources().getStringArray(R.array.languages);
                 spUtils.put(content, "spinnerPosition", lanages[position]);
-                ToastUtils.ShowToastMessage("点击的是：" + lanages[position], content);
             }
 
             @Override
@@ -184,12 +183,8 @@ public class ContentDialog extends Dialog {
                             }
                         });
                 datePickerDialog.show();
-
             }
         });
-
         this.setCancelable(true);
     }
-
-
 }

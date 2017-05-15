@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -208,7 +207,6 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                     mData.setAdapter(adapter);
                                     ResponseDialog.closeLoading();
-//                                    adapter.notifyDataSetChanged();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
                                     ResponseDialog.closeLoading();

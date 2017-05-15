@@ -32,7 +32,7 @@ import okhttp3.Call;
 import okhttp3.Request;
 
 /**
- * 出车单
+ * 出车单详情
  * Created by lizhipeng on 2017/4/19.
  */
 

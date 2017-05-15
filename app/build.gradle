@@ -45,7 +45,6 @@ android {
         maven {
             url "https://jitpack.io"
         }
-
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
@@ -87,4 +86,6 @@ dependencies {
     compile 'com.github.hotchemi:permissionsdispatcher:2.3.1'
     apt 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
     compile files('libry/json-lib-0.9.jar')
+    compile files('baidulibry/baidumapapi_v3_2_0.jar')
+    compile files('baidulibry/locSDK_5.01.jar')
 }

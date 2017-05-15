@@ -9,12 +9,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.login.LoginDebugActivity;
 import com.daoran.newfactory.onefactory.adapter.GuideFragmentAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
-import com.daoran.newfactory.onefactory.base.Common;
 
 import java.util.ArrayList;
 
@@ -24,8 +22,6 @@ import java.util.ArrayList;
  */
 
 public class GuideActivity extends BaseFrangmentActivity implements View.OnClickListener {
-
-    private Common common = new Common();
     private ViewPager vpGuide;//引导页面viewpager
     private TextView tvLoginbtn;//开始
     private GuideFragmentAdapter mAdapter;
@@ -92,7 +88,6 @@ public class GuideActivity extends BaseFrangmentActivity implements View.OnClick
         for (int i = 0; i < mViews.size(); i++) {
             guideDots[i] = (ImageView) linearLayout.getChildAt(i);
             guideDots[i].setSelected(false);
-
         }
         //初始化第一个小点为选中状态
         currentIndex = 0;

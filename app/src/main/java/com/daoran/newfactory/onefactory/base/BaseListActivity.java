@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * Pull To Refresh Listview
- * Created by Steven on 12/23/14.
+ * Created by lizhipeng on 17/3/19.
  * <p/>
  * 支持PullToRefreshListView 和 普通的Listview
  * <p/>
@@ -83,7 +83,6 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
         if (listView != null) {
             listView.setMode(PullToRefreshBase.Mode.DISABLED);
         }
-
     }
 
     public Adapter getAdapter() {
@@ -131,7 +130,6 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
      */
     public abstract void getData(int pageIndex);
 
-
     /**
      * listview 点击回调
      *
@@ -160,9 +158,6 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
                 if (adapter instanceof SqlCarApplyAdapter) {
                     ((SqlCarApplyAdapter) adapter).clear();
                 }
-//                else if(adapter instanceof SignDetailAdapter){
-//                    ((SignDetailAdapter) adapter).clear();
-//                }
                 setEmptyView();
             } else {
                 Toast.makeText(this, "没有更多数据了", Toast.LENGTH_SHORT).show();
@@ -175,20 +170,13 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
                 if (adapter instanceof SqlCarApplyAdapter) {
                     ((SqlCarApplyAdapter) adapter).replaceAll(datas);
                 }
-//                else if(adapter instanceof SignDetailAdapter){
-//                    ((SignDetailAdapter) adapter).replaceAll(datas);
-//                }
             } else {
                 if (adapter instanceof SqlCarApplyAdapter) {
                     ((SqlCarApplyAdapter) adapter).addAll(datas);
                 }
-//                else if(adapter instanceof SignDetailAdapter){
-//                    ((SignDetailAdapter) adapter).addAll(datas);
-//                }
             }
             pageIndex++;
         }
-
     }
 
     /**
@@ -200,39 +188,18 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
         isRefreshing = false;
         if (datas == null || datas.size() == 0) {
             if (pageIndex == defaultPageIndex) {
-//                if (adapter instanceof QuickAdapter) {
-//                    ((QuickAdapter) adapter).clear();
-//                } else
-//                if (adapter instanceof SignDetailAdapter) {
-//                    ((SignDetailAdapter) adapter).clear();
-//                }
             } else {
                 Toast.makeText(this, "没有更多数据了", Toast.LENGTH_SHORT).show();
             }
         } else {
             if (adapter == null)
                 return;
-
             hideEmptyView();
-
             if (pageIndex == defaultPageIndex) {
-//                if(adapter instanceof QuickAdapter){
-//                    ((QuickAdapter) adapter).replaceAll(datas);
-//                }else
-//                if (adapter instanceof SignDetailAdapter) {
-//                    ((SignDetailAdapter) adapter).replaceAll(datas);
-//                }
             } else {
-//                if(adapter instanceof QuickAdapter){
-//                    ((QuickAdapter) adapter).addAll(datas);
-//                }else
-//                if (adapter instanceof SignDetailAdapter) {
-//                    ((SignDetailAdapter) adapter).addAll(datas);
-//                }
             }
             pageIndex++;
         }
-
     }
 
     /**

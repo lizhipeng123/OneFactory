@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.bean;
 
 /**
+ *  生产日报新建保存实体
  * Created by lizhipeng on 2017/5/13.
  */
 

@@ -25,6 +25,7 @@ import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.util.file.JsonUtil;
+import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -118,8 +119,8 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
      */
     private void setCardetail() {
         String str = HttpUrl.debugoneUrl + "UCarsApply/GetUCarsApplyModel/"+id;
-
         if (NetWork.isNetWorkAvailable(this)) {
+            ResponseDialog.showLoading(this);
             NetUtil.getAsyncHttpClient().post(str,new AsyncHttpResponseHandler(){
                 @Override
                 public void onSuccess(String content) {
@@ -127,7 +128,6 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
                     System.out.print(content);
                     carDetailBean = new Gson().fromJson(content,CarDetailBean.class);
                     System.out.print(carDetailBean);
-
                     tvCarcode.setText(carDetailBean.getCode());
                     tvCarrecorder.setText(carDetailBean.getRecorder());
                     tvCarroad.setText(carDetailBean.getRoad());
@@ -135,16 +135,19 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
                     tvCarreason.setText(carDetailBean.getReason());
                     tvCardepartureBdt.setText(carDetailBean.getDepartureBdt());
                     tvCardepartureEdt.setText(carDetailBean.getDepartureEdt());
+                    ResponseDialog.closeLoading();
                 }
 
                 @Override
                 public void onFailure(Throwable error, String content) {
                     super.onFailure(error, content);
+                    ResponseDialog.closeLoading();
                 }
 
                 @Override
                 public void onFinish() {
                     super.onFinish();
+                    ResponseDialog.closeLoading();
                 }
             });
         }

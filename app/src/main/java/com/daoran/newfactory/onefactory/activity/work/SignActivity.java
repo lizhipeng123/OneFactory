@@ -194,7 +194,6 @@ public class SignActivity extends BaseFrangmentActivity
         spinnnerfileTune = (Spinner) findViewById(R.id.spinnnerfileTune);
         getSpinner();
         getDate();
-
     }
 
     private void init() {
@@ -243,7 +242,6 @@ public class SignActivity extends BaseFrangmentActivity
             //启动定位
             mapLocationClient.startLocation();
         }
-
     }
 
     private void setUp() {
@@ -272,7 +270,6 @@ public class SignActivity extends BaseFrangmentActivity
                         }
                         doSearch();
                     }
-
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
@@ -526,9 +523,7 @@ public class SignActivity extends BaseFrangmentActivity
     }
 
     private void getDate() {
-//        String timedate =  DateUtils.currentTime();
-//        System.out.print(timedate);
-        Time t = new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
+        Time t = new Time(); // or Time t=new Time("GMT+8");
         t.setToNow(); // 取得系统时间。
         year = t.year;
         month = t.month;
@@ -559,7 +554,6 @@ public class SignActivity extends BaseFrangmentActivity
                 aMapLocation.getStreetNum();//街道门牌号信息
                 aMapLocation.getCityCode();//城市编码
                 aMapLocation.getAdCode();//地区编码
-
                 // 如果不设置标志位，此时再拖动地图时，它会不断将地图移动到当前的位置
                 if (isFirstLoc) {
                     //设置缩放级别
@@ -583,7 +577,6 @@ public class SignActivity extends BaseFrangmentActivity
                     isFirstLoc = false;
                 }
             } else {
-
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                 Log.e("AmapError", "location Error, ErrCode:"
                         + aMapLocation.getErrorCode() + ", errInfo:"
@@ -629,7 +622,6 @@ public class SignActivity extends BaseFrangmentActivity
                     Log.e(TAG, "无结果");
                 }
             }
-
         } else if (rCode == 27) {
             Log.e(TAG, "error_network");
         } else if (rCode == 32) {
@@ -639,5 +631,4 @@ public class SignActivity extends BaseFrangmentActivity
         }
         adapter.notifyDataSetChanged();
     }
-
 }

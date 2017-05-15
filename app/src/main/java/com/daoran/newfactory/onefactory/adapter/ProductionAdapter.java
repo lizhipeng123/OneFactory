@@ -156,7 +156,7 @@ public class ProductionAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
 
-//                        viewHolder.lin_content.setBackgroundResource(R.drawable.bill_record_historylist);
+                        viewHolder.lin_content.setBackgroundResource(R.drawable.bill_record_historylist);
                         String proid = String.valueOf(getItem(position).getID());
                         spUtils.put(context, "proadapterid", proid);
                         String urlid = String.valueOf(getItem(position).getID());

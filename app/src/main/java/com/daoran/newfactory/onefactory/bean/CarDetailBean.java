@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.bean;
 
 /**
+ * 用车单详情实体类
  * Created by lizhipeng on 2017/4/26.
  */
 

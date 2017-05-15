@@ -22,11 +22,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.SignActivity;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
-import com.daoran.newfactory.onefactory.util.ToastUtils;
 
 /**
+ *  生产日报条件查询dialog
  * Created by lizhipeng on 2017/4/26.
  */
 

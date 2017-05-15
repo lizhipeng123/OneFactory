@@ -86,10 +86,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
-        <!-- 用车查询 -->
-
-        <!-- 外勤签到查询 -->
-
         <!-- 外勤签到查询测试类 -->
         <activity
             android:name=".activity.work.SignDetailActivity"
@@ -108,8 +104,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
-        <!-- 公交查询测试类 -->
-
         <!-- 外勤签到测试类 -->
         <activity
             android:name=".activity.work.SignActivity"
@@ -121,29 +115,34 @@
             android:name=".activity.login.LoginDebugActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
+        <!-- 公交路线 -->
         <activity
             android:name=".activity.work.DebugGaodeActivity"
             android:screenOrientation="portrait" />
 
+        <!-- 用车单详情 -->
         <activity
             android:name=".activity.work.car.SqlcarApplyActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
+        <!-- 搜索地址 -->
         <activity
             android:name=".activity.work.SearchViaPointActivity"
             android:screenOrientation="portrait" />
 
+        <!-- 新建生产日报 -->
         <activity
             android:name=".activity.work.production.ProductionNewlyBuildActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
+        <!-- 新建保存 -->
         <activity
             android:name=".activity.work.production.ProductionNewlyComfigActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-
         <!-- 测试 -->
         <service android:name="com.amap.api.location.APSService"/>
         <meta-data

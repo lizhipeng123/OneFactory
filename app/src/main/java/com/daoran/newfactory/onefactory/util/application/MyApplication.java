@@ -9,12 +9,10 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.https.HttpsUtils;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
 
-
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
 import okhttp3.OkHttpClient;
-
 
 /**
  * Created by lizhipeng on 2017/3/23.

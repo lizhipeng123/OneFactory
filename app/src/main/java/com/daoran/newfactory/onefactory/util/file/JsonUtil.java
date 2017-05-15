@@ -6,9 +6,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
+ *  Json帮助类
  * Created by lizhipeng on 2017/4/5.
  */
 

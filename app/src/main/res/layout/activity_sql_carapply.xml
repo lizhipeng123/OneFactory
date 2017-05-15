@@ -19,8 +19,10 @@
 
             <ImageView
                 android:id="@+id/ivBack"
-                android:layout_width="@dimen/dimen_50"
-                android:layout_height="@dimen/dimen_50"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
                 android:src="@mipmap/title_back_gray" />
 
             <TextView
@@ -30,6 +32,7 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="出车单展示"
+                android:layout_centerVertical="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_60sp" />
 
@@ -37,6 +40,7 @@
                 android:id="@+id/ivSearch"
                 android:layout_width="@dimen/dimen_70"
                 android:layout_height="@dimen/dimen_70"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/dimen_30"
                 android:src="@mipmap/search" />

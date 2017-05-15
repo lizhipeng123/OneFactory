@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -38,10 +37,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 登录
+ * 登录页
  * Created by lizhipeng on 2017/4/10.
  */
-
 public class LoginDebugActivity extends BaseFrangmentActivity {
 
     private Button btnLogin;
@@ -106,18 +104,14 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
      * @param editText
      */
     public static void setEditTextInhibitInputSpeChat(EditText editText) {
-
         InputFilter filter = new InputFilter() {
             @Override
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
                 String speChat = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
                 Pattern pattern = Pattern.compile(speChat);
                 Matcher matcher = pattern.matcher(source.toString());
-
                 if (matcher.find()) return "";
-
                 else return null;
-
             }
         };
         editText.setFilters(new InputFilter[]{filter});
@@ -169,19 +163,18 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
     }
 
     /**
-     * 登录
+     * 登录请求
      */
     private void postLogin() {
         String loginuserUrl = HttpUrl.debugoneUrl + "Login/UserLogin/";
         if (NetWork.isNetWorkAvailable(this)) {
-
+            ResponseDialog.showLoading(this, "登录中");
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(NetUtil.createParam("Logid", etUsername.getText().toString()));
             params.add(NetUtil.createParam("pwd", etPassword.getText().toString()));
             params.add(NetUtil.createParam("Ischeckpwd", true));
             params.add(NetUtil.createParam("Company", "杭州道然进出口有限公司"));
             RequestParams requestParams = new RequestParams(params);
-            ResponseDialog.showLoading(this, "登录中");
             NetUtil.getAsyncHttpClient().post(loginuserUrl, requestParams, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String content) {
@@ -201,7 +194,6 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                         } else {
                             editor.putBoolean("remember", false);
                         }
-                        //
                         if (checkboxopen.isChecked()) {
                             editor.putBoolean("autologin", true);
                         } else {
@@ -214,9 +206,10 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                         bundle.putString("u_name", userBean.getU_name());
                         intent.putExtras(bundle);
                         startActivity(intent);
+                        ResponseDialog.closeLoading();
                     } else {
                         ToastUtils.ShowToastMessage("用户名密码错误，请重新输入", LoginDebugActivity.this);
-//                        ResponseDialog.closeLoading();
+                        ResponseDialog.closeLoading();
                     }
                 }
 
@@ -224,19 +217,18 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                 public void onFailure(Throwable error, String content) {
                     super.onFailure(error, content);
                     ToastUtils.ShowToastMessage("登录失败", LoginDebugActivity.this);
-//                    ResponseDialog.closeLoading();
+                    ResponseDialog.closeLoading();
                 }
 
                 @Override
                 public void onFinish() {
                     super.onFinish();
+                    ResponseDialog.closeLoading();
                 }
             });
         } else {
             ToastUtils.ShowToastMessage(getString(R.string.noHttp), LoginDebugActivity.this);
-
         }
-
     }
 
     @Override

@@ -109,7 +109,6 @@ public class ProductionNewlyBuildActivity
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);
         etNewbuildDetail.setSelection(etNewbuildDetail.getText().length());
-
     }
 
     /**
@@ -424,8 +423,6 @@ public class ProductionNewlyBuildActivity
             TextView textView = (TextView) view;
             textView.setBackgroundColor(Color.YELLOW);
             buildAdapter.setSelectItem(position);//记录当前选中的item
-//            ToastUtils.ShowToastMessage("点击的是" + position, ProductionNewlyBuildActivity.this);
-
             buildAdapter.notifyDataSetInvalidated();
         }
     };

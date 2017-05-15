@@ -52,9 +52,7 @@ public class CLApplication extends Application {
             } catch (Exception e) {
                 user = new UsergetBean();
             }
-
         }
         return user;
     }
-
 }

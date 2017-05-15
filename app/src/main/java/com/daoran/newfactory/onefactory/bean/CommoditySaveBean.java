@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.bean;
 
 /**
+ * 查货跟踪修改保存实体
  * Created by lizhipeng on 2017/5/12.
  */
 

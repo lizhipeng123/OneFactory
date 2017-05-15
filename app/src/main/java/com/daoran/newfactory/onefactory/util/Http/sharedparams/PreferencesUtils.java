@@ -3,6 +3,9 @@ package com.daoran.newfactory.onefactory.util.Http.sharedparams;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+/**
+ * 存储
+ */
 public class PreferencesUtils {
 
     public static String PREFERENCE_NAME = "CommonSharedPreference";

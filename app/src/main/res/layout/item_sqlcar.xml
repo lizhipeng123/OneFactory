@@ -14,10 +14,10 @@
         android:gravity="center"
         android:paddingTop="@dimen/dimen_20"
         android:paddingBottom="@dimen/dimen_20"
-        android:text="1"
+        android:text=""
         android:textColor="@color/black"
         android:textSize="@dimen/dimen_55sp" />
-    <!-- 编号 -->
+    <!-- 申请人 -->
     <TextView
         android:id="@+id/tvSqlApplyName"
         android:layout_width="0dp"
@@ -27,7 +27,7 @@
         android:gravity="center"
         android:paddingTop="@dimen/dimen_20"
         android:paddingBottom="@dimen/dimen_20"
-        android:text="1"
+        android:text=""
         android:textColor="@color/black"
         android:textSize="@dimen/dimen_55sp" />
     <!-- 出车日期 -->
@@ -40,7 +40,7 @@
         android:paddingBottom="@dimen/dimen_20"
         android:background="@color/white"
         android:gravity="center"
-        android:text="1"
+        android:text=""
         android:textColor="@color/black"
         android:textSize="@dimen/dimen_55sp" />
 </LinearLayout>

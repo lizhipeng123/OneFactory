@@ -16,11 +16,9 @@ import java.util.Map;
 public class SharedHelper {
 
     private Context context;
-
     public SharedHelper() {
 
     }
-
     public SharedHelper(Context context) {
         this.context = context;
     }

@@ -18,7 +18,8 @@ import com.daoran.newfactory.onefactory.util.Http.sharedparams.PreferencesUtils;
 import java.util.List;
 
 /**
- * Created by ww on 2015/5/29.
+ * activity父框架
+ * Created by lizhipeng on 2017/3/29.
  */
 public class BaseFrangmentActivity extends FragmentActivity {
     public static String token = "";
@@ -89,10 +90,6 @@ public class BaseFrangmentActivity extends FragmentActivity {
         }
     }
 
-
-
-
-
     private static final String TAG = "BaseActivity";
 
     @Override
@@ -117,7 +114,6 @@ public class BaseFrangmentActivity extends FragmentActivity {
             return;
         }
     }
-
 
     /**
      * 递归调用，对所有子Fragement生效

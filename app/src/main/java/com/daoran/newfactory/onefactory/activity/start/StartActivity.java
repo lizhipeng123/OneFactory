@@ -22,8 +22,6 @@ public class StartActivity extends BaseFrangmentActivity {
     private Handler handler = new Handler();
     private ImageView ivStart;
     private boolean auto_login;
-    private Common common = new Common();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,9 +64,5 @@ public class StartActivity extends BaseFrangmentActivity {
                 finish();
             }
         }, time);
-    }
-
-    private void login() {
-
     }
 }

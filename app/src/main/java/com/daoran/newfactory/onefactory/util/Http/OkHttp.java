@@ -3,7 +3,6 @@ package com.daoran.newfactory.onefactory.util.Http;
 import android.os.Handler;
 import android.os.Looper;
 
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,7 +10,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -21,7 +19,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
-//import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * Created by lizhipeng on 2017/3/23.
@@ -33,12 +30,10 @@ public class OkHttp {
      */
     private static OkHttp sOkHttpManager;
 
-
     /**
      * okhttpclient实例
      */
     private OkHttpClient mClient;
-
 
     /**
      * 因为我们请求数据一般都是子线程中请求，在这里我们使用了handler
