@@ -150,7 +150,10 @@ public class ProductionAdapter extends BaseAdapter {
         sp = context.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
         String nameid = sp.getString("usernamerecoder", "");
         String recorder = getItem(position).getRecorder();
-        if (recorder != null && !recorder.equals("")) {
+        if(recorder==null){
+            recorder="";
+        }
+        if (!recorder.equals("")) {
             if (recorder.equals(nameid)) {
                 viewHolder.lin_content.setOnClickListener(new View.OnClickListener() {
                     @Override
