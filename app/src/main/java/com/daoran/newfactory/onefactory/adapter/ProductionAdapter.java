@@ -2734,33 +2734,6 @@ public class ProductionAdapter extends BaseAdapter {
         return convertView;
     }
 
-    /**
-     * 弹出月份选择菜单
-     *
-     * @param view
-     */
-    private void showPopupMonthMenu(View view) {
-        PopupMenu popupMenu = new PopupMenu(context, view);
-        popupMenu.getMenuInflater().inflate(R.menu.menu_pro_mouth, popupMenu.getMenu());
-        // menu的item点击事件
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                sp = context.getSharedPreferences("userInfo", 0);
-                String title = item.getTitle().toString();
-                spUtils.put(context, "proadapterMonthTitle", title);
-                return false;
-            }
-        });
-        // PopupMenu关闭事件
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-            @Override
-            public void onDismiss(PopupMenu menu) {
-            }
-        });
-        popupMenu.show();
-    }
-
     class ViewHolder {
         View data_ll_vertical;
         LinearLayout lin_content;

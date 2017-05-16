@@ -3,14 +3,12 @@ package com.daoran.newfactory.onefactory.activity.work;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
@@ -128,7 +126,6 @@ public class SignActivity extends BaseFrangmentActivity
     private SharedPreferences sp;
     private SPUtils spUtils;
     private MarkerOptions mMarkerOptions;
-
     protected String[] needPermissions = {
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -136,9 +133,7 @@ public class SignActivity extends BaseFrangmentActivity
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.READ_PHONE_STATE
     };
-
     private static final int PERMISSON_REQUESTCODE = 0;
-
     /**
      * 判断是否需要检测，防止不停的弹框
      */
@@ -149,7 +144,6 @@ public class SignActivity extends BaseFrangmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign);
         mapView = (MapView) findViewById(R.id.mapSigngaode);
-//        mapLocationClient = new AMapLocationClient(getApplicationContext());
         mapView.onCreate(savedInstanceState);
         if (aMap == null) {
             aMap = mapView.getMap();
@@ -222,6 +216,9 @@ public class SignActivity extends BaseFrangmentActivity
         getDate();
     }
 
+    /**
+     * 定位处理
+     */
     private void init() {
         if (mapLocationClient == null) {
             mapLocationClient = new AMapLocationClient(getApplicationContext());
@@ -278,6 +275,9 @@ public class SignActivity extends BaseFrangmentActivity
         aMap.moveCamera(CameraUpdateFactory.zoomTo(17.5f));
     }
 
+    /**
+     * 遍历查询周边地址特征
+     */
     private void initSpinner() {
         final String[] str = new String[]{"SDK默认的deepType", "汽车服务", "汽车销售", "汽车维修",
                 "摩托车服务", "餐饮服务", "购物服务", "生活服务", "体育休闲服务", "医疗保健服务",
@@ -303,6 +303,9 @@ public class SignActivity extends BaseFrangmentActivity
         );
     }
 
+    /**
+     * 根据poi搜索出的结果填充周边地址
+     */
     private void initSign() {
         spinnerfineTune.setAdapter(new ArrayAdapter<>(SignActivity.this, android.R.layout.simple_spinner_dropdown_item, locationList));
         spinnerfineTune.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -313,7 +316,6 @@ public class SignActivity extends BaseFrangmentActivity
                 tvSignAddress = (TextView) findViewById(R.id.tvSignAddress);
                 tvSignAddress.setText(str);
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -321,6 +323,9 @@ public class SignActivity extends BaseFrangmentActivity
         });
     }
 
+    /**
+     * poi搜索周边
+     */
     private void doSearch() {
         aMap.setOnMapClickListener(null);//进行poi搜索时清除掉地图点击事件
         query = new PoiSearch.Query("", deepType, cityCode);
@@ -354,15 +359,12 @@ public class SignActivity extends BaseFrangmentActivity
 
     /**
      * 显示提示信息
-     *
      * @since 2.5.0
-     *
      */
     private void showMissingPermissionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.notifyTitle);
         builder.setMessage(R.string.notifyMsg);
-
         // 拒绝, 退出应用
         builder.setNegativeButton(R.string.cancel,
                 new DialogInterface.OnClickListener() {
@@ -371,7 +373,6 @@ public class SignActivity extends BaseFrangmentActivity
                         finish();
                     }
                 });
-
         builder.setPositiveButton(R.string.setting,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -379,9 +380,7 @@ public class SignActivity extends BaseFrangmentActivity
                         startAppSettings();
                     }
                 });
-
         builder.setCancelable(false);
-
         builder.show();
     }
 
@@ -393,7 +392,6 @@ public class SignActivity extends BaseFrangmentActivity
         }
         return super.onKeyDown(keyCode, event);
     }
-
 
     /**
      *  启动应用的设置
@@ -430,6 +428,9 @@ public class SignActivity extends BaseFrangmentActivity
         });
     }
 
+    /**
+     * 截屏保存图片
+     */
     private void getpicture(){
         aMap.getMapScreenShot(new AMap.OnMapScreenShotListener() {
             @Override
@@ -507,7 +508,7 @@ public class SignActivity extends BaseFrangmentActivity
     }
 
     /**
-     *
+     * 适配7.0权限
      * @param
      * @since 2.5.0
      *
@@ -525,7 +526,6 @@ public class SignActivity extends BaseFrangmentActivity
 
     /**
      * 获取权限集中需要申请权限的列表
-     *
      * @param permissions
      * @return
      * @since 2.5.0
@@ -587,7 +587,6 @@ public class SignActivity extends BaseFrangmentActivity
             mapView = null;
         }
         mapLocationClient.onDestroy();//销毁定位客户端。
-
     }
 
     @Override
@@ -667,6 +666,9 @@ public class SignActivity extends BaseFrangmentActivity
         super.onStart();
     }
 
+    /**
+     * 获取系统时间
+     */
     private void getDate() {
         Time t = new Time(); // or Time t=new Time("GMT+8");
         t.setToNow(); // 取得系统时间。

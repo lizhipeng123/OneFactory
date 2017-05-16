@@ -10,6 +10,7 @@ import java.io.File;
 import java.net.URISyntaxException;
 
 /**
+ * 公交路线
  * Created by lizhipeng on 2017/4/14.
  */
 
@@ -30,6 +31,9 @@ public class DebugGaodeActivity extends
         setUpGaodeAppByMine();
     }
 
+    /**
+     * 调用高德地图
+     */
     private void setUpGaodeAppByMine(){
         try {
             Intent intent = Intent.getIntent(
@@ -55,5 +59,4 @@ public class DebugGaodeActivity extends
     private boolean isInstallByread(String packageName) {
         return new File("/data/data/" + packageName).exists();
     }
-
 }

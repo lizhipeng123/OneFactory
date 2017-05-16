@@ -1,6 +1,5 @@
 package com.daoran.newfactory.onefactory.activity.work.commo;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -525,7 +524,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                 saveBean.setQAMemo(dateQAMemotimesign);
                 saveBeen.add(saveBean);
                 String commjson = gson.toJson(saveBeen);
-
                 OkHttpUtils.postString()
                         .url(saveurl)
                         .content(commjson)
@@ -557,7 +555,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                 ToastUtils.ShowToastMessage("请选择当前行，再进行修改保存",
                         CommoditySqlActivity.this);
             }
-
 
         } else {
             ToastUtils.ShowToastMessage(R.string.noHttp, CommoditySqlActivity.this);

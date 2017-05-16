@@ -72,7 +72,6 @@ public class ScrollWrokAdapter extends BaseAdapter {
                     case "外勤签到":
                         context.startActivity(new Intent(context, SignActivity.class));
                         break;
-
                     case "签到查询":
                         context.startActivity(new Intent(context, SignDetailActivity.class));
                         break;

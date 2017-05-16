@@ -9,7 +9,6 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.guide.GuideActivity;
 import com.daoran.newfactory.onefactory.activity.main.MainActivity;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
-import com.daoran.newfactory.onefactory.base.Common;
 import com.daoran.newfactory.onefactory.util.settings.Comfig;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.PreferencesUtils;
 
@@ -27,11 +26,6 @@ public class StartActivity extends BaseFrangmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         initViews();
-        getViews();
-    }
-
-    private void getViews() {
-
     }
 
     private void initViews() {

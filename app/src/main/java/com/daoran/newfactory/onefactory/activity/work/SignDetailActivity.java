@@ -1,15 +1,8 @@
 package com.daoran.newfactory.onefactory.activity.work;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.InputFilter;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,20 +11,16 @@ import android.widget.TextView;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.adapter.SignDetailAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
-import com.daoran.newfactory.onefactory.base.BaseListActivity;
 import com.daoran.newfactory.onefactory.bean.SignDetailBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
-import com.daoran.newfactory.onefactory.util.Http.OkHttp;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
-import com.daoran.newfactory.onefactory.util.ToastUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.dialog.SignContentDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.google.gson.JsonSyntaxException;
-import com.i5tong.epubreaderlib.view.pulltorefresh.PullToRefreshListView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -49,13 +38,10 @@ import okhttp3.Call;
 
 public class SignDetailActivity extends BaseFrangmentActivity implements View.OnClickListener {
     private NoscrollListView mLeft;
-
     private NoscrollListView mData;
     private SignDetailAdapter detailAdapter;
-
     private SyncHorizontalScrollView mHeaderHorizontal;
     private SyncHorizontalScrollView mDataHorizontal;
-
     private List<SignDetailBean.DataBean> mListData = new ArrayList<SignDetailBean.DataBean>();
     private SignDetailBean signBean;
     private ImageView ivSiganSqlDetail;
@@ -74,14 +60,15 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         ResponseDialog.showLoading(this);
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.debug_activity_detail);
-
         initView();
         getViews();
         setSignDetail();
     }
 
+    /**
+     * 实例化控件
+     */
     private void initView() {
         ivSiganSqlDetail = (ImageView) findViewById(R.id.ivSiganSqlDetail);
         mData = (NoscrollListView) findViewById(R.id.lv_data);
@@ -90,13 +77,14 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         ivSearch = (ImageView) findViewById(R.id.ivSearch);
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);
-
         etSqlDetail = (EditText) findViewById(R.id.etSqlDetail);
         tvSignPage = (TextView) findViewById(R.id.tvSignPage);
         btnSignPage = (Button) findViewById(R.id.btnSignPage);
-
     }
 
+    /**
+     * 操作控件
+     */
     private void getViews() {
         ivSiganSqlDetail.setOnClickListener(this);
         ivSearch.setOnClickListener(this);

@@ -472,7 +472,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
             String tvnewly = String.valueOf(mdate.get(position).get("tvnewlydate"));
             System.out.print(tvnewly);
             viewHolder.tv_data.setText(tvnewly);
-
             sp = getSharedPreferences("my_sp", 0);
             String nameid = sp.getString("usernamerecoder", "");
             String tvnewlyDocumen = String.valueOf(mdate.get(position).get("tvnewlyDocumentary"));
@@ -499,7 +498,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
             month = month + 1;
 
             if (nameid != null && !nameid.equals("")) {
-
                 viewHolder.tvProDocumentary.setText(tvnewlyDocumen);
                 viewHolder.tvProFactory.setText(tvnewlyFactory);
                 viewHolder.tvProDepartment.setText(tvnewlyDepartment);
@@ -509,9 +507,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 viewHolder.tvProSize.setText(tvnewTaskNumber);
                 viewHolder.tvProColor.setText(tvnewlySize);
                 viewHolder.tvProClippingNumber.setText(tvnewlyClippingNumber);
-
                 viewHolder.tvProRecordat.setText(year + "/" + month + "/" + datetime);
-
                 String comfigitem = viewHolder.tv_data.getText().toString();
                 spUtils.put(context, "comfigitem", comfigitem);
 

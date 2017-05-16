@@ -25,25 +25,23 @@ import com.daoran.newfactory.onefactory.view.MyEditText;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchViaPointActivity extends AppCompatActivity implements Inputtips.InputtipsListener{
-
+/**
+ * 搜索定位
+ */
+public class SearchViaPointActivity extends
+        AppCompatActivity implements Inputtips.InputtipsListener{
     //搜索
     private MyEditText txt_search_rally_point;
     //删除按钮
     private LinearLayout layout_delete;
     private Context context;
-
     private ListView listView;
     //位置的适配器
     private ChooseLocationAdapter chooseLocationAdapter;
-
     List<Tip> tipList;
-
     private int currentShowPoint;
     private Intent intent;
-
     public static final int SEARCH_VIA_POINT_FOR_RESULT = 165;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,17 +151,13 @@ public class SearchViaPointActivity extends AppCompatActivity implements Inputti
     }
 
     public class ChooseLocationAdapter extends BaseAdapter {
-
         private Context mcontext;
         ArrayList<Tip> poiItemList = new ArrayList<Tip>();
-
         public ChooseLocationAdapter(Context context) {
             mcontext = context;
         }
-
         //数据操作方法
         public void setData(List<Tip> data) {
-
             if (data != null) {
                 poiItemList = (ArrayList<Tip>) data;
             }
@@ -210,22 +204,15 @@ public class SearchViaPointActivity extends AppCompatActivity implements Inputti
 //                    + "" + tip.getPoiID()
 //                    + "" + tip.getPoint()
 //            );
-
-
             return convertView;
         }
 
-
         public class ChooseLocationViewHolder {
-
             private LinearLayout layout_choose_location;
             //具体位置
             private TextView txt_location_detail;
             //附近
             private TextView txt_location;
-
         }
-
     }
-
 }

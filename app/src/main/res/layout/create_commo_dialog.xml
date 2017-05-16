@@ -144,7 +144,9 @@
             <CheckBox
                 android:id="@+id/checkboxNull"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/chk_agee_provision_background"
+                android:button="@null" />
 
             <TextView
                 android:layout_width="wrap_content"

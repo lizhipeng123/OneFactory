@@ -1,6 +1,5 @@
 package com.daoran.newfactory.onefactory.activity.work.production;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -426,8 +425,4 @@ public class ProductionNewlyBuildActivity
             buildAdapter.notifyDataSetInvalidated();
         }
     };
-
-    public void setOnItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
 }
