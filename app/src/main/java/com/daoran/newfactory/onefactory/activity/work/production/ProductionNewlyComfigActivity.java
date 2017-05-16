@@ -121,7 +121,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
      * @return
      */
     private List<Map<String, Object>> getData() {
-        sp = getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        sp = getSharedPreferences("my_sp", 0);
         String tvnewlydate = sp.getString("tvnewlydate", "");//款号
         String tvnewlyDocumentary = sp.getString("tvnewlyDocumentary", "");//跟单
         String tvnewlyFactory = sp.getString("tvnewlyFactory", "");//工厂
@@ -171,7 +171,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
      */
     private void setSave() {
         String saveurl = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
-        sp = this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        sp = this.getSharedPreferences("my_sp", 0);
         String proid = null;
         String salesid = sp.getString("tvnewlysalesid", "");
         String proColumnTitle = sp.getString("ComfigPrdstatus", "");//部门
@@ -473,7 +473,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
             System.out.print(tvnewly);
             viewHolder.tv_data.setText(tvnewly);
 
-            sp = getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+            sp = getSharedPreferences("my_sp", 0);
             String nameid = sp.getString("usernamerecoder", "");
             String tvnewlyDocumen = String.valueOf(mdate.get(position).get("tvnewlyDocumentary"));
             String tvnewlyFactory = String.valueOf(mdate.get(position).get("tvnewlyFactory"));
@@ -556,7 +556,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
-                                sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
+                                sp = context.getSharedPreferences("userInfo", 0);
                                 String title = item.getTitle().toString();
                                 spUtils.put(context, "ConfigProcedure", title);
                                 viewHolder.tvProProcedure.setText(title);

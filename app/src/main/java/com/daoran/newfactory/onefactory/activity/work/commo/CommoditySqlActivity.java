@@ -191,7 +191,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
      */
     private void setData() {
         String str = HttpUrl.debugoneUrl + "QACwork/BindSearchQACworkAPP/";
-        sp = CommoditySqlActivity.this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        sp = CommoditySqlActivity.this.getSharedPreferences("my_sp", 0);
         String Style = sp.getString("commoStyle", "");//款号
         String Factory = sp.getString("commoFactory", "");//跟单
         String Recode = sp.getString("commoRecode", "");//巡检
@@ -256,7 +256,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private void setPageDetail() {
         ResponseDialog.showLoading(this);
         String str = HttpUrl.debugoneUrl + "QACwork/BindSearchQACworkAPP/";
-        sp = CommoditySqlActivity.this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        sp = CommoditySqlActivity.this.getSharedPreferences("my_sp", 0);
         String Style = sp.getString("commoStyle", "");//款号
         String Factory = sp.getString("commoFactory", "");//跟单
         String Recode = sp.getString("commoRecode", "");//巡检
@@ -324,7 +324,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private void setCommoSave() {
         if (NetWork.isNetWorkAvailable(this)) {
             String saveurl = HttpUrl.debugoneUrl + "QACwork/SaveQACwork/";
-            sp = this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+            sp = this.getSharedPreferences("my_sp", 0);
             String commoproid = sp.getString("commoproid", "");//id
             String CommodityQCMasterScore = sp.getString("CommodityQCMasterScore", "");//主管评分
             if (CommodityQCMasterScore == "" || CommodityQCMasterScore.equals("")) {

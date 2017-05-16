@@ -66,7 +66,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
         });
         getViews();
         initViews();
-        sp = this.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
+        sp = this.getSharedPreferences("userInfo", 0);
         String name = sp.getString("username", "");
         String passwd = sp.getString("passwd", "");
         boolean choseRemember = sp.getBoolean("remember", false);

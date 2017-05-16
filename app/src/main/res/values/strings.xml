@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">测试项目</string>
+    <string name="app_name">dfApp</string>
 
     <string name="loginusername">请输入账号</string>
     <string name="loginpassword">请输入密码</string>
@@ -58,4 +58,7 @@
     <string name="no_result">对不起，没有搜索到相关数据！</string>
     <color name="form_text_color_tagging">#333</color>
     <color name="public_anhui_color">#dddddd</color>
+    <string name="notifyTitle">提示</string>
+    <string name="notifyMsg">当前应用缺少必要权限。\n\n请点击\"设置\"-\"权限\"-打开所需权限。</string>
+    <string name="setting">设置</string>
 </resources>

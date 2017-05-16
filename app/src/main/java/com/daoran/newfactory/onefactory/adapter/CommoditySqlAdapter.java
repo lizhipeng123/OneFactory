@@ -139,7 +139,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
         });
 
         /*判断item中制单人是否是登录用户，是为可改，否为不可改*/
-        sp = context.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        sp = context.getSharedPreferences("my_sp", 0);
         String nameid = sp.getString("usernamerecoder", "");
         String documentary = getItem(position).getPrddocumentary();
         String master = getItem(position).getPrdmaster();
@@ -2303,7 +2303,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                sp = context.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+                sp = context.getSharedPreferences("my_sp", 0);
                 String title = item.getTitle().toString();
                 spUtils.put(context, "commohdTitle", title);
                 return false;

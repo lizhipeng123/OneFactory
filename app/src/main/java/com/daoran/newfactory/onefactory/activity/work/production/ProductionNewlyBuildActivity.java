@@ -405,7 +405,7 @@ public class ProductionNewlyBuildActivity
                 break;
             /*款号选择之后确定新增*/
             case R.id.btnNewbuildConfirm:
-                sp = getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+                sp = getSharedPreferences("my_sp", 0);
                 boolean b = sp.getBoolean("tvflag",true);
                 if(b==true){
                     ToastUtils.ShowToastMessage("输入结果是"+b,ProductionNewlyBuildActivity.this);

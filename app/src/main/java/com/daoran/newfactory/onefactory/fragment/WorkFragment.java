@@ -97,7 +97,7 @@ public class WorkFragment extends Fragment {
      * 查询角色相关菜单
      */
     private void setPhoneMenu() {
-        sp = mactivity.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
+        sp = mactivity.getSharedPreferences("userInfo", 0);
         String name = sp.getString("username", "");
         String strmenu = HttpUrl.debugoneUrl + "login/getphonemenu/" + name;
         NetUtil.getAsyncHttpClient().get(strmenu, new AsyncHttpResponseHandler() {

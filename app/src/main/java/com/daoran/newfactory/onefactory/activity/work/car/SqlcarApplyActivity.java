@@ -76,7 +76,7 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
     @Override
     public void getData(int pageIndex) {
         String sqlcar = HttpUrl.debugoneUrl + "UCarsApply/UCarsApplySearch/";
-        sp = SqlcarApplyActivity.this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        sp = SqlcarApplyActivity.this.getSharedPreferences("my_sp", 0);
         String datetime = sp.getString("datetime", "");
         String endtime = sp.getString("endtime", "");
         String spinnerPosition = sp.getString("spinnerPosition", "");

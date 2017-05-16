@@ -137,7 +137,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
      */
     private void setSignDetail() {
         String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
-        sp = SignDetailActivity.this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        sp = SignDetailActivity.this.getSharedPreferences("my_sp", 0);
         String name = sp.getString("name", "");
         String datetime = sp.getString("datetimesign", "");
         String endtime = sp.getString("endtimesign", "");
@@ -195,7 +195,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
      */
     private void setPageSignDetail() {
         String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
-        sp = SignDetailActivity.this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        sp = SignDetailActivity.this.getSharedPreferences("my_sp",0);
         String name = sp.getString("name", "");
         String datetime = sp.getString("datetimesign", "");
         String endtime = sp.getString("endtimesign", "");

@@ -2,7 +2,6 @@ package com.daoran.newfactory.onefactory.adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -22,9 +21,7 @@ import android.widget.TextView;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
-import com.daoran.newfactory.onefactory.util.Listener.SelectItemInterface;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -147,7 +144,7 @@ public class ProductionAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
          /*判断item中制单人是否是登录用户，是为可改，否为不可改*/
-        sp = context.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        sp = context.getSharedPreferences("my_sp", 0);
         String nameid = sp.getString("usernamerecoder", "");
         String recorder = getItem(position).getRecorder();
         if(recorder==null){
@@ -2640,7 +2637,7 @@ public class ProductionAdapter extends BaseAdapter {
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
+                        sp = context.getSharedPreferences("userInfo", 0);
                         String title = item.getTitle().toString();
                         spUtils.put(context, "proadapterMonthTitle", title);
                         viewHolder.tvProMonth.setText(title);
@@ -2666,7 +2663,7 @@ public class ProductionAdapter extends BaseAdapter {
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
+                        sp = context.getSharedPreferences("userInfo", 0);
                         String title = item.getTitle().toString();
                         spUtils.put(context, "proColumnTitle", title);
                         viewHolder.tvProDepartment.setText(title);
@@ -2692,7 +2689,7 @@ public class ProductionAdapter extends BaseAdapter {
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
+                        sp = context.getSharedPreferences("userInfo", 0);
                         String title = item.getTitle().toString();
                         spUtils.put(context, "proProcedureTitle", title);
                         viewHolder.tvProProcedure.setText(title);
@@ -2718,7 +2715,7 @@ public class ProductionAdapter extends BaseAdapter {
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
+                        sp = context.getSharedPreferences("userInfo", 0);
                         String title = item.getTitle().toString();
                         spUtils.put(context, "proadapterPrdstatusTitle", title);
                         viewHolder.tvProState.setText(title);
@@ -2749,7 +2746,7 @@ public class ProductionAdapter extends BaseAdapter {
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                sp = context.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
+                sp = context.getSharedPreferences("userInfo", 0);
                 String title = item.getTitle().toString();
                 spUtils.put(context, "proadapterMonthTitle", title);
                 return false;

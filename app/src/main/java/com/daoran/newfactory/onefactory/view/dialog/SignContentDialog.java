@@ -67,7 +67,7 @@ public class SignContentDialog extends Dialog {
     }
 
     private void initViews() {
-        sp = content.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        sp = content.getSharedPreferences("my_sp", 0);
         Window dialogWindow = this.getWindow();
         WindowManager m = content.getWindowManager();
         Display display = m.getDefaultDisplay();

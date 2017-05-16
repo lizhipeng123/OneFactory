@@ -156,7 +156,7 @@ public class ProductionActivity extends BaseFrangmentActivity
      */
     private void setData() {
         String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
-        sp = ProductionActivity.this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        sp = ProductionActivity.this.getSharedPreferences("my_sp", 0);
         String Style = sp.getString("etprodialogStyle", "");
         String Factory = sp.getString("etprodialogFactory", "");
         String Recode = sp.getString("etprodialogRecode", "");
@@ -279,7 +279,7 @@ public class ProductionActivity extends BaseFrangmentActivity
      */
     private void setPageDetail() {
         String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
-        sp = ProductionActivity.this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+        sp = ProductionActivity.this.getSharedPreferences("my_sp", 0);
         String Style = sp.getString("etprodialogStyle", "");
         String Factory = sp.getString("etprodialogFactory", "");
         String Recode = sp.getString("etprodialogRecode", "");
@@ -408,7 +408,7 @@ public class ProductionActivity extends BaseFrangmentActivity
         if (NetWork.isNetWorkAvailable(this)) {
             ResponseDialog.showLoading(this);
             String saveurl = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
-            sp = this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+            sp = this.getSharedPreferences("my_sp", 0);
             String proid = sp.getString("proadapterid", "");
             String salesid = sp.getString("prosalesid", "");
             String proColumnTitle = sp.getString("proColumnTitle", "");//部门
@@ -675,7 +675,7 @@ public class ProductionActivity extends BaseFrangmentActivity
         String strcopy = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
         if (NetWork.isNetWorkAvailable(this)) {
             ResponseDialog.showLoading(this);
-            sp = this.getSharedPreferences("my_sp", Context.MODE_WORLD_READABLE);
+            sp = this.getSharedPreferences("my_sp", 0);
             String itemid = "";
             String prosalesid = sp.getString("prosalesid", "");
             String item = sp.getString("copyitem", "");
