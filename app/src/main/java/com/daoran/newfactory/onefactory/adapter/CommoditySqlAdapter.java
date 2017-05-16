@@ -129,7 +129,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 showPopuphdMenu(holder.tvCommoOurAfter);
             }
         });
-        
+
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -143,8 +143,10 @@ public class CommoditySqlAdapter extends BaseAdapter {
         String nameid = sp.getString("usernamerecoder", "");
         String documentary = getItem(position).getPrddocumentary();
         String master = getItem(position).getPrdmaster();
-        if (documentary != null && !documentary.equals("")) {
-            if (documentary.equals("吕玉如") || master.equals(nameid)) {
+        if(documentary==null){
+            documentary="";
+        }
+            if (documentary.equals(nameid) || master.equals(nameid)) {
                 holder.lin_content.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -1746,9 +1748,21 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
                 holder.tvCommoSealedrev.setEnabled(false);
                 holder.tvCommoSealedrev.setText(getItem(position).getSealedrev());
+                holder.tvCommoSealedrev.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
                 holder.tvCommoDocback.setEnabled(false);
                 holder.tvCommoDocback.setText(getItem(position).getDocback());
+                holder.tvCommoDocback.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
                 holder.tvCommoLcdat.setEnabled(false);
                 holder.tvCommoLcdat.setText(getItem(position).getLcdat());
@@ -1766,9 +1780,21 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
                 holder.tvCommoPredocdt.setEnabled(false);
                 holder.tvCommoPredocdt.setText(getItem(position).getPredocdt());
+                holder.tvCommoPredocdt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
                 holder.tvCommoPred.setEnabled(false);
                 holder.tvCommoPred.setText(getItem(position).getPredocdt());
+                holder.tvCommoPred.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
                 holder.tvCommoPredoc.setEnabled(false);
                 final EditText editTextPredoc = holder.tvCommoPredoc;
@@ -1820,18 +1846,42 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
                 holder.tvCommoSewFdt.setEnabled(false);
                 holder.tvCommoSewFdt.setText(getItem(position).getSewFdt());
+                holder.tvCommoSewFdt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
                 holder.tvCommoSewMdt.setEnabled(false);
                 holder.tvCommoSewMdt.setText(getItem(position).getSewMdt());
+                holder.tvCommoSewMdt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
                 holder.tvCommoSubfactory.setEnabled(false);
                 holder.tvCommoSubfactory.setText(getItem(position).getSubfactory());
 
                 holder.tvCommoPrebdt.setEnabled(false);
                 holder.tvCommoPrebdt.setText(getItem(position).getPrebdt());
+                holder.tvCommoPrebdt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
                 holder.tvCommoQCbdt.setEnabled(false);
                 holder.tvCommoQCbdt.setText(getItem(position).getQCbdt());
+                holder.tvCommoQCbdt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
                 holder.tvCommoQCbdtDoc.setEnabled(false);
                 final EditText editTextQCbdtDoc = holder.tvCommoQCbdtDoc;
@@ -1843,9 +1893,21 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
                 holder.tvCommoPremdt.setEnabled(false);
                 holder.tvCommoPremdt.setText(getItem(position).getPremdt());
+                holder.tvCommoPremdt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
                 holder.tvCommoQCmdt.setEnabled(false);
                 holder.tvCommoQCmdt.setText(getItem(position).getQCmdt());
+                holder.tvCommoQCmdt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
                 holder.tvCommoQCmdtDoc.setEnabled(false);
                 final EditText editTextQCmdtDoc = holder.tvCommoQCmdtDoc;
@@ -1857,9 +1919,21 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
                 holder.tvCommoPreedt.setEnabled(false);
                 holder.tvCommoPreedt.setText(getItem(position).getPreedt());
+                holder.tvCommoPreedt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
                 holder.tvCommoQCMedt.setEnabled(false);
                 holder.tvCommoQCMedt.setText(getItem(position).getQCMedt());
+                holder.tvCommoQCMedt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
                 holder.tvCommoQCedtDoc.setEnabled(false);
                 final EditText editTextQCedtDoc = holder.tvCommoQCedtDoc;
@@ -1871,12 +1945,30 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
                 holder.tvCommoFctmdt.setEnabled(false);
                 holder.tvCommoFctmdt.setText(getItem(position).getFctmdt());
+                holder.tvCommoFctmdt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
                 holder.tvCommoFctedt.setEnabled(false);
                 holder.tvCommoFctedt.setText(getItem(position).getFctedt());
+                holder.tvCommoFctedt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
                 holder.tvCommoPackbdat.setEnabled(false);
                 holder.tvCommoPackbdat.setText(getItem(position).getPackbdat());
+                holder.tvCommoPackbdat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
                 holder.tvCommoPackqty2.setEnabled(false);
                 final EditText editTextPackqty2 = holder.tvCommoPackqty2;
@@ -1896,6 +1988,12 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
                 holder.tvCommoFactlcdat.setEnabled(false);
                 holder.tvCommoFactlcdat.setText(getItem(position).getFactlcdat());
+                holder.tvCommoFactlcdat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
                 holder.tvCommoBatchid.setEnabled(false);
                 final EditText editTextBatchid = holder.tvCommoBatchid;
@@ -1909,6 +2007,12 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
                 holder.tvCommoCtmchkdt.setEnabled(false);
                 holder.tvCommoCtmchkdt.setText(getItem(position).getCtmchkdt());
+                holder.tvCommoCtmchkdt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
                 holder.tvCommoIPQCPedt.setEnabled(false);
                 final EditText editTextIPQCPedt = holder.tvCommoIPQCPedt;
@@ -1944,231 +2048,238 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
                 holder.tvCommoQAMemo.setEnabled(false);
                 holder.tvCommoQAMemo.setText(getItem(position).getQAMemo());
+                holder.tvCommoQAMemo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
 
             }
 
-        } else {
-            holder.tvCommoItem.setEnabled(false);
-            holder.tvCommoItem.setText(getItem(position).getItem());
-
-            holder.tvCommoCtmtxt.setEnabled(false);
-            holder.tvCommoCtmtxt.setText(getItem(position).getCtmtxt());
-
-            holder.tvCommoPrddocumentary.setEnabled(false);
-            holder.tvCommoPrddocumentary.setText(getItem(position).getPrddocumentary());
-
-            holder.tvCommoprdmaster.setEnabled(false);
-            holder.tvCommoprdmaster.setText(getItem(position).getPrdmaster());
-
-            holder.tvCommoQCMasterScore.setEnabled(false);
-            final EditText editTextQCMasterScore = holder.tvCommoQCMasterScore;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextQCMasterScore.getTag() instanceof TextWatcher) {
-                editTextQCMasterScore.removeTextChangedListener((TextWatcher) editTextQCMasterScore.getTag());
-            }
-            editTextQCMasterScore.setText(getItem(position).getQCMasterScore());
-
-            holder.tvCommoSealedrev.setEnabled(false);
-            holder.tvCommoSealedrev.setText(getItem(position).getSealedrev());
-
-            holder.tvCommoDocback.setEnabled(false);
-            holder.tvCommoDocback.setText(getItem(position).getDocback());
-
-            holder.tvCommoLcdat.setEnabled(false);
-            holder.tvCommoLcdat.setText(getItem(position).getLcdat());
-
-            holder.tvCommoTaskqty.setEnabled(false);
-            holder.tvCommoTaskqty.setText(getItem(position).getTaskqty());
-
-            holder.tvCommoPreMemo.setEnabled(false);
-            final EditText editTextPreMemo = holder.tvCommoPreMemo;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextPreMemo.getTag() instanceof TextWatcher) {
-                editTextPreMemo.removeTextChangedListener((TextWatcher) editTextPreMemo.getTag());
-            }
-            editTextPreMemo.setText(getItem(position).getPreMemo());
-
-            holder.tvCommoPredocdt.setEnabled(false);
-            holder.tvCommoPredocdt.setText(getItem(position).getPredocdt());
-
-            holder.tvCommoPred.setEnabled(false);
-            holder.tvCommoPred.setText(getItem(position).getPredocdt());
-
-            holder.tvCommoPredoc.setEnabled(false);
-            final EditText editTextPredoc = holder.tvCommoPredoc;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextPredoc.getTag() instanceof TextWatcher) {
-                editTextPredoc.removeTextChangedListener((TextWatcher) editTextPredoc.getTag());
-            }
-            editTextPredoc.setText(getItem(position).getPredoc());
-
-            holder.tvCommoFabricsok.setEnabled(false);
-            final EditText editTextFabricsok = holder.tvCommoFabricsok;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextFabricsok.getTag() instanceof TextWatcher) {
-                editTextFabricsok.removeTextChangedListener((TextWatcher) editTextFabricsok.getTag());
-            }
-            editTextFabricsok.setText(getItem(position).getFabricsok());
-
-            holder.tvCommoAccessoriesok.setEnabled(false);
-            final EditText editTextAccessoriesok = holder.tvCommoAccessoriesok;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextAccessoriesok.getTag() instanceof TextWatcher) {
-                editTextAccessoriesok.removeTextChangedListener((TextWatcher) editTextAccessoriesok.getTag());
-            }
-            editTextAccessoriesok.setText(getItem(position).getAccessoriesok());
-
-            holder.tvCommoSpcproDec.setEnabled(false);
-            final EditText editTextSpcproDec = holder.tvCommoSpcproDec;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextSpcproDec.getTag() instanceof TextWatcher) {
-                editTextSpcproDec.removeTextChangedListener((TextWatcher) editTextSpcproDec.getTag());
-            }
-            editTextSpcproDec.setText(getItem(position).getSpcproDec());
-
-            holder.tvCommoSpcproMemo.setEnabled(false);
-            final EditText editTextSpcproMemo = holder.tvCommoSpcproMemo;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextSpcproMemo.getTag() instanceof TextWatcher) {
-                editTextSpcproMemo.removeTextChangedListener((TextWatcher) editTextSpcproMemo.getTag());
-            }
-            editTextSpcproMemo.setText(getItem(position).getSpcproMemo());
-
-            holder.tvCommoCutqty.setEnabled(false);
-            final EditText editTextCutqty = holder.tvCommoCutqty;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextCutqty.getTag() instanceof TextWatcher) {
-                editTextCutqty.removeTextChangedListener((TextWatcher) editTextCutqty.getTag());
-            }
-            editTextCutqty.setText(getItem(position).getCutqty());
-
-            holder.tvCommoSewFdt.setEnabled(false);
-            holder.tvCommoSewFdt.setText(getItem(position).getSewFdt());
-
-            holder.tvCommoSewMdt.setEnabled(false);
-            holder.tvCommoSewMdt.setText(getItem(position).getSewMdt());
-
-            holder.tvCommoSubfactory.setEnabled(false);
-            holder.tvCommoSubfactory.setText(getItem(position).getSubfactory());
-
-            holder.tvCommoPrebdt.setEnabled(false);
-            holder.tvCommoPrebdt.setText(getItem(position).getPrebdt());
-
-            holder.tvCommoQCbdt.setEnabled(false);
-            holder.tvCommoQCbdt.setText(getItem(position).getQCbdt());
-
-            holder.tvCommoQCbdtDoc.setEnabled(false);
-            final EditText editTextQCbdtDoc = holder.tvCommoQCbdtDoc;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextQCbdtDoc.getTag() instanceof TextWatcher) {
-                editTextQCbdtDoc.removeTextChangedListener((TextWatcher) editTextQCbdtDoc.getTag());
-            }
-            editTextQCbdtDoc.setText(getItem(position).getQCbdtDoc());
-
-            holder.tvCommoPremdt.setEnabled(false);
-            holder.tvCommoPremdt.setText(getItem(position).getPremdt());
-
-            holder.tvCommoQCmdt.setEnabled(false);
-            holder.tvCommoQCmdt.setText(getItem(position).getQCmdt());
-
-            holder.tvCommoQCmdtDoc.setEnabled(false);
-            final EditText editTextQCmdtDoc = holder.tvCommoQCmdtDoc;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextQCmdtDoc.getTag() instanceof TextWatcher) {
-                editTextQCmdtDoc.removeTextChangedListener((TextWatcher) editTextQCmdtDoc.getTag());
-            }
-            editTextQCmdtDoc.setText(getItem(position).getQCmdtDoc());
-
-            holder.tvCommoPreedt.setEnabled(false);
-            holder.tvCommoPreedt.setText(getItem(position).getPreedt());
-
-            holder.tvCommoQCMedt.setEnabled(false);
-            holder.tvCommoQCMedt.setText(getItem(position).getQCMedt());
-
-            holder.tvCommoQCedtDoc.setEnabled(false);
-            final EditText editTextQCedtDoc = holder.tvCommoQCedtDoc;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextQCedtDoc.getTag() instanceof TextWatcher) {
-                editTextQCedtDoc.removeTextChangedListener((TextWatcher) editTextQCedtDoc.getTag());
-            }
-            editTextQCedtDoc.setText(getItem(position).getQCedtDoc());
-
-            holder.tvCommoFctmdt.setEnabled(false);
-            holder.tvCommoFctmdt.setText(getItem(position).getFctmdt());
-
-            holder.tvCommoFctedt.setEnabled(false);
-            holder.tvCommoFctedt.setText(getItem(position).getFctedt());
-
-            holder.tvCommoPackbdat.setEnabled(false);
-            holder.tvCommoPackbdat.setText(getItem(position).getPackbdat());
-
-            holder.tvCommoPackqty2.setEnabled(false);
-            final EditText editTextPackqty2 = holder.tvCommoPackqty2;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextPackqty2.getTag() instanceof TextWatcher) {
-                editTextPackqty2.removeTextChangedListener((TextWatcher) editTextPackqty2.getTag());
-            }
-            editTextPackqty2.setText(getItem(position).getPackqty2());
-
-            holder.tvCommoQCMemo.setEnabled(false);
-            final EditText editTextQCMemo = holder.tvCommoQCMemo;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextQCMemo.getTag() instanceof TextWatcher) {
-                editTextQCMemo.removeTextChangedListener((TextWatcher) editTextQCMemo.getTag());
-            }
-            editTextQCMemo.setText(getItem(position).getQCMemo());
-
-            holder.tvCommoFactlcdat.setEnabled(false);
-            holder.tvCommoFactlcdat.setText(getItem(position).getFactlcdat());
-
-            holder.tvCommoBatchid.setEnabled(false);
-            final EditText editTextBatchid = holder.tvCommoBatchid;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextBatchid.getTag() instanceof TextWatcher) {
-                editTextBatchid.removeTextChangedListener((TextWatcher) editTextBatchid.getTag());
-            }
-            editTextBatchid.setText(getItem(position).getBatchid());
-
-            holder.tvCommoOurAfter.setEnabled(false);
-
-            holder.tvCommoCtmchkdt.setEnabled(false);
-            holder.tvCommoCtmchkdt.setText(getItem(position).getCtmchkdt());
-
-            holder.tvCommoIPQCPedt.setEnabled(false);
-            final EditText editTextIPQCPedt = holder.tvCommoIPQCPedt;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextIPQCPedt.getTag() instanceof TextWatcher) {
-                editTextIPQCPedt.removeTextChangedListener((TextWatcher) editTextIPQCPedt.getTag());
-            }
-            editTextIPQCPedt.setText(getItem(position).getIPQCPedt());
-
-            holder.tvCommoIPQCmdt.setEnabled(false);
-            final EditText editTextIPQCmdt = holder.tvCommoIPQCmdt;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextIPQCmdt.getTag() instanceof TextWatcher) {
-                editTextIPQCmdt.removeTextChangedListener((TextWatcher) editTextIPQCmdt.getTag());
-            }
-            editTextIPQCmdt.setText(getItem(position).getIPQCmdt());
-
-            holder.tvCommoQAname.setEnabled(false);
-            final EditText editTextQAname = holder.tvCommoQAname;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextQAname.getTag() instanceof TextWatcher) {
-                editTextQAname.removeTextChangedListener((TextWatcher) editTextQAname.getTag());
-            }
-            editTextQAname.setText(getItem(position).getQAname());
-
-            holder.tvCommoQAScore.setEnabled(false);
-            final EditText editTextQAScore = holder.tvCommoQAScore;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTextQAScore.getTag() instanceof TextWatcher) {
-                editTextQAScore.removeTextChangedListener((TextWatcher) editTextQAScore.getTag());
-            }
-            editTextQAScore.setText(getItem(position).getQAScore());
-
-            holder.tvCommoQAMemo.setEnabled(false);
-            holder.tvCommoQAMemo.setText(getItem(position).getQAMemo());
-        }
+//        } else {
+//            holder.tvCommoItem.setEnabled(false);
+//            holder.tvCommoItem.setText(getItem(position).getItem());
+//
+//            holder.tvCommoCtmtxt.setEnabled(false);
+//            holder.tvCommoCtmtxt.setText(getItem(position).getCtmtxt());
+//
+//            holder.tvCommoPrddocumentary.setEnabled(false);
+//            holder.tvCommoPrddocumentary.setText(getItem(position).getPrddocumentary());
+//
+//            holder.tvCommoprdmaster.setEnabled(false);
+//            holder.tvCommoprdmaster.setText(getItem(position).getPrdmaster());
+//
+//            holder.tvCommoQCMasterScore.setEnabled(false);
+//            final EditText editTextQCMasterScore = holder.tvCommoQCMasterScore;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextQCMasterScore.getTag() instanceof TextWatcher) {
+//                editTextQCMasterScore.removeTextChangedListener((TextWatcher) editTextQCMasterScore.getTag());
+//            }
+//            editTextQCMasterScore.setText(getItem(position).getQCMasterScore());
+//
+//            holder.tvCommoSealedrev.setEnabled(false);
+//            holder.tvCommoSealedrev.setClickable(false);
+//            holder.tvCommoSealedrev.setText(getItem(position).getSealedrev());
+//
+//            holder.tvCommoDocback.setEnabled(false);
+//            holder.tvCommoDocback.setText(getItem(position).getDocback());
+//
+//            holder.tvCommoLcdat.setEnabled(false);
+//            holder.tvCommoLcdat.setText(getItem(position).getLcdat());
+//
+//            holder.tvCommoTaskqty.setEnabled(false);
+//            holder.tvCommoTaskqty.setText(getItem(position).getTaskqty());
+//
+//            holder.tvCommoPreMemo.setEnabled(false);
+//            final EditText editTextPreMemo = holder.tvCommoPreMemo;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextPreMemo.getTag() instanceof TextWatcher) {
+//                editTextPreMemo.removeTextChangedListener((TextWatcher) editTextPreMemo.getTag());
+//            }
+//            editTextPreMemo.setText(getItem(position).getPreMemo());
+//
+//            holder.tvCommoPredocdt.setEnabled(false);
+//            holder.tvCommoPredocdt.setText(getItem(position).getPredocdt());
+//
+//            holder.tvCommoPred.setEnabled(false);
+//            holder.tvCommoPred.setText(getItem(position).getPredocdt());
+//
+//            holder.tvCommoPredoc.setEnabled(false);
+//            final EditText editTextPredoc = holder.tvCommoPredoc;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextPredoc.getTag() instanceof TextWatcher) {
+//                editTextPredoc.removeTextChangedListener((TextWatcher) editTextPredoc.getTag());
+//            }
+//            editTextPredoc.setText(getItem(position).getPredoc());
+//
+//            holder.tvCommoFabricsok.setEnabled(false);
+//            final EditText editTextFabricsok = holder.tvCommoFabricsok;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextFabricsok.getTag() instanceof TextWatcher) {
+//                editTextFabricsok.removeTextChangedListener((TextWatcher) editTextFabricsok.getTag());
+//            }
+//            editTextFabricsok.setText(getItem(position).getFabricsok());
+//
+//            holder.tvCommoAccessoriesok.setEnabled(false);
+//            final EditText editTextAccessoriesok = holder.tvCommoAccessoriesok;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextAccessoriesok.getTag() instanceof TextWatcher) {
+//                editTextAccessoriesok.removeTextChangedListener((TextWatcher) editTextAccessoriesok.getTag());
+//            }
+//            editTextAccessoriesok.setText(getItem(position).getAccessoriesok());
+//
+//            holder.tvCommoSpcproDec.setEnabled(false);
+//            final EditText editTextSpcproDec = holder.tvCommoSpcproDec;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextSpcproDec.getTag() instanceof TextWatcher) {
+//                editTextSpcproDec.removeTextChangedListener((TextWatcher) editTextSpcproDec.getTag());
+//            }
+//            editTextSpcproDec.setText(getItem(position).getSpcproDec());
+//
+//            holder.tvCommoSpcproMemo.setEnabled(false);
+//            final EditText editTextSpcproMemo = holder.tvCommoSpcproMemo;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextSpcproMemo.getTag() instanceof TextWatcher) {
+//                editTextSpcproMemo.removeTextChangedListener((TextWatcher) editTextSpcproMemo.getTag());
+//            }
+//            editTextSpcproMemo.setText(getItem(position).getSpcproMemo());
+//
+//            holder.tvCommoCutqty.setEnabled(false);
+//            final EditText editTextCutqty = holder.tvCommoCutqty;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextCutqty.getTag() instanceof TextWatcher) {
+//                editTextCutqty.removeTextChangedListener((TextWatcher) editTextCutqty.getTag());
+//            }
+//            editTextCutqty.setText(getItem(position).getCutqty());
+//
+//            holder.tvCommoSewFdt.setEnabled(false);
+//            holder.tvCommoSewFdt.setText(getItem(position).getSewFdt());
+//
+//            holder.tvCommoSewMdt.setEnabled(false);
+//            holder.tvCommoSewMdt.setText(getItem(position).getSewMdt());
+//
+//            holder.tvCommoSubfactory.setEnabled(false);
+//            holder.tvCommoSubfactory.setText(getItem(position).getSubfactory());
+//
+//            holder.tvCommoPrebdt.setEnabled(false);
+//            holder.tvCommoPrebdt.setText(getItem(position).getPrebdt());
+//
+//            holder.tvCommoQCbdt.setEnabled(false);
+//            holder.tvCommoQCbdt.setText(getItem(position).getQCbdt());
+//
+//            holder.tvCommoQCbdtDoc.setEnabled(false);
+//            final EditText editTextQCbdtDoc = holder.tvCommoQCbdtDoc;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextQCbdtDoc.getTag() instanceof TextWatcher) {
+//                editTextQCbdtDoc.removeTextChangedListener((TextWatcher) editTextQCbdtDoc.getTag());
+//            }
+//            editTextQCbdtDoc.setText(getItem(position).getQCbdtDoc());
+//
+//            holder.tvCommoPremdt.setEnabled(false);
+//            holder.tvCommoPremdt.setText(getItem(position).getPremdt());
+//
+//            holder.tvCommoQCmdt.setEnabled(false);
+//            holder.tvCommoQCmdt.setText(getItem(position).getQCmdt());
+//
+//            holder.tvCommoQCmdtDoc.setEnabled(false);
+//            final EditText editTextQCmdtDoc = holder.tvCommoQCmdtDoc;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextQCmdtDoc.getTag() instanceof TextWatcher) {
+//                editTextQCmdtDoc.removeTextChangedListener((TextWatcher) editTextQCmdtDoc.getTag());
+//            }
+//            editTextQCmdtDoc.setText(getItem(position).getQCmdtDoc());
+//
+//            holder.tvCommoPreedt.setEnabled(false);
+//            holder.tvCommoPreedt.setText(getItem(position).getPreedt());
+//
+//            holder.tvCommoQCMedt.setEnabled(false);
+//            holder.tvCommoQCMedt.setText(getItem(position).getQCMedt());
+//
+//            holder.tvCommoQCedtDoc.setEnabled(false);
+//            final EditText editTextQCedtDoc = holder.tvCommoQCedtDoc;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextQCedtDoc.getTag() instanceof TextWatcher) {
+//                editTextQCedtDoc.removeTextChangedListener((TextWatcher) editTextQCedtDoc.getTag());
+//            }
+//            editTextQCedtDoc.setText(getItem(position).getQCedtDoc());
+//
+//            holder.tvCommoFctmdt.setEnabled(false);
+//            holder.tvCommoFctmdt.setText(getItem(position).getFctmdt());
+//
+//            holder.tvCommoFctedt.setEnabled(false);
+//            holder.tvCommoFctedt.setText(getItem(position).getFctedt());
+//
+//            holder.tvCommoPackbdat.setEnabled(false);
+//            holder.tvCommoPackbdat.setText(getItem(position).getPackbdat());
+//
+//            holder.tvCommoPackqty2.setEnabled(false);
+//            final EditText editTextPackqty2 = holder.tvCommoPackqty2;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextPackqty2.getTag() instanceof TextWatcher) {
+//                editTextPackqty2.removeTextChangedListener((TextWatcher) editTextPackqty2.getTag());
+//            }
+//            editTextPackqty2.setText(getItem(position).getPackqty2());
+//
+//            holder.tvCommoQCMemo.setEnabled(false);
+//            final EditText editTextQCMemo = holder.tvCommoQCMemo;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextQCMemo.getTag() instanceof TextWatcher) {
+//                editTextQCMemo.removeTextChangedListener((TextWatcher) editTextQCMemo.getTag());
+//            }
+//            editTextQCMemo.setText(getItem(position).getQCMemo());
+//
+//            holder.tvCommoFactlcdat.setEnabled(false);
+//            holder.tvCommoFactlcdat.setText(getItem(position).getFactlcdat());
+//
+//            holder.tvCommoBatchid.setEnabled(false);
+//            final EditText editTextBatchid = holder.tvCommoBatchid;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextBatchid.getTag() instanceof TextWatcher) {
+//                editTextBatchid.removeTextChangedListener((TextWatcher) editTextBatchid.getTag());
+//            }
+//            editTextBatchid.setText(getItem(position).getBatchid());
+//
+//            holder.tvCommoOurAfter.setEnabled(false);
+//
+//            holder.tvCommoCtmchkdt.setEnabled(false);
+//            holder.tvCommoCtmchkdt.setText(getItem(position).getCtmchkdt());
+//
+//            holder.tvCommoIPQCPedt.setEnabled(false);
+//            final EditText editTextIPQCPedt = holder.tvCommoIPQCPedt;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextIPQCPedt.getTag() instanceof TextWatcher) {
+//                editTextIPQCPedt.removeTextChangedListener((TextWatcher) editTextIPQCPedt.getTag());
+//            }
+//            editTextIPQCPedt.setText(getItem(position).getIPQCPedt());
+//
+//            holder.tvCommoIPQCmdt.setEnabled(false);
+//            final EditText editTextIPQCmdt = holder.tvCommoIPQCmdt;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextIPQCmdt.getTag() instanceof TextWatcher) {
+//                editTextIPQCmdt.removeTextChangedListener((TextWatcher) editTextIPQCmdt.getTag());
+//            }
+//            editTextIPQCmdt.setText(getItem(position).getIPQCmdt());
+//
+//            holder.tvCommoQAname.setEnabled(false);
+//            final EditText editTextQAname = holder.tvCommoQAname;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextQAname.getTag() instanceof TextWatcher) {
+//                editTextQAname.removeTextChangedListener((TextWatcher) editTextQAname.getTag());
+//            }
+//            editTextQAname.setText(getItem(position).getQAname());
+//
+//            holder.tvCommoQAScore.setEnabled(false);
+//            final EditText editTextQAScore = holder.tvCommoQAScore;
+//                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTextQAScore.getTag() instanceof TextWatcher) {
+//                editTextQAScore.removeTextChangedListener((TextWatcher) editTextQAScore.getTag());
+//            }
+//            editTextQAScore.setText(getItem(position).getQAScore());
+//
+//            holder.tvCommoQAMemo.setEnabled(false);
+//            holder.tvCommoQAMemo.setText(getItem(position).getQAMemo());
+//        }
         return convertView;
     }
 
