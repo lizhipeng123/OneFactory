@@ -1,6 +1,5 @@
 package com.daoran.newfactory.onefactory.activity.work.car;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
@@ -21,8 +22,10 @@ import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.RefreshLayout;
 import com.daoran.newfactory.onefactory.view.dialog.ContentDialog;
+import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.i5tong.epubreaderlib.view.pulltorefresh.PullToRefreshListView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -44,6 +47,9 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
     private TextView tvTbarTitle;
     private TextView tvInitialDate;
     private ContentDialog dialog;
+    private LinearLayout ll_visibi;
+    private TextView tv_visibi;
+    private PullToRefreshListView listview;
 
     private SqlCarApplyBean.DataBean dataBean;
     private SharedPreferences sp;
@@ -64,6 +70,9 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivSearch = (ImageView) findViewById(R.id.ivSearch);
         tvInitialDate = (TextView) findViewById(R.id.tvInitialDate);
+        ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
+        tv_visibi = (TextView) findViewById(R.id.tv_visibi);
+        listview = (PullToRefreshListView) findViewById(R.id.listview);
         ivBack.setOnClickListener(this);
         ivSearch.setOnClickListener(this);
     }
@@ -82,6 +91,7 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
         String spinnerPosition = sp.getString("spinnerPosition", "");
         System.out.print(datetime);
         if (NetWork.isNetWorkAvailable(this)) {
+            ResponseDialog.showLoading(this);
             OkHttpUtils
                     .post()
                     .url(sqlcar)
@@ -113,11 +123,22 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                             try {
                                 System.out.print(response);
                                 SqlCarApplyBean carApplyBean = new Gson().fromJson(response, SqlCarApplyBean.class);
-                                setListData(carApplyBean.getData());
+                                if(carApplyBean.getTotalCount()!=0){
+                                    ll_visibi.setVisibility(View.GONE);
+                                    listView.setVisibility(View.VISIBLE);
+                                    setListData(carApplyBean.getData());
+                                }else{
+                                    ll_visibi.setVisibility(View.VISIBLE);
+                                    listview.setVisibility(View.GONE);
+                                    tv_visibi.setText("没有更多数据");
+                                }
+                                ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 setListData(new ArrayList());
+                                ResponseDialog.closeLoading();
                             } catch (Exception e) {
                                 setListData(new ArrayList());
+                                ResponseDialog.closeLoading();
                             }
                         }
                     });

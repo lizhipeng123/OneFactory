@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
@@ -59,6 +61,9 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private EditText etSqlDetail;
     private Button btnSignPage;
     private Button btnCommoRefresh, btnCommoSave;
+    private LinearLayout ll_visibi;
+    private TextView tv_visibi;
+    private ScrollView scroll_content;
 
     private SharedPreferences sp;
     private SPUtils spUtils;
@@ -89,6 +94,9 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         etSqlDetail = (EditText) findViewById(R.id.etSqlDetail);
         btnCommoRefresh = (Button) findViewById(R.id.btnCommoRefresh);
         btnCommoSave = (Button) findViewById(R.id.btnCommoSave);
+        ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
+        tv_visibi = (TextView) findViewById(R.id.tv_visibi);
+        scroll_content = (ScrollView) findViewById(R.id.scroll_content);
     }
 
     /**
@@ -232,12 +240,20 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                 System.out.print(ression);
                                 commoditydetailBean = new Gson().fromJson(ression, CommoditydetailBean.class);
                                 dataBeen = commoditydetailBean.getData();
-                                System.out.print(dataBeen);
-                                pageCount = commoditydetailBean.getTotalCount();
-                                String count = String.valueOf(pageCount / 10);
-                                tvSignPage.setText(count);
-                                sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this, dataBeen);
-                                mData.setAdapter(sqlAdapter);
+                                if(commoditydetailBean.getTotalCount()!=0){
+                                    ll_visibi.setVisibility(View.GONE);
+                                    scroll_content.setVisibility(View.VISIBLE);
+                                    System.out.print(dataBeen);
+                                    pageCount = commoditydetailBean.getTotalCount();
+                                    String count = String.valueOf(pageCount / 10);
+                                    tvSignPage.setText(count);
+                                    sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this, dataBeen);
+                                    mData.setAdapter(sqlAdapter);
+                                }else{
+                                    ll_visibi.setVisibility(View.VISIBLE);
+                                    scroll_content.setVisibility(View.GONE);
+                                    tv_visibi.setText("没有更多数据");
+                                }
                                 ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
@@ -299,12 +315,20 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                 System.out.print(ression);
                                 commoditydetailBean = new Gson().fromJson(ression, CommoditydetailBean.class);
                                 dataBeen = commoditydetailBean.getData();
-                                System.out.print(dataBeen);
-                                pageCount = commoditydetailBean.getTotalCount();
-                                String count = String.valueOf(pageCount / 10);
-                                tvSignPage.setText(count);
-                                sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this, dataBeen);
-                                mData.setAdapter(sqlAdapter);
+                                if(commoditydetailBean.getTotalCount()!=0){
+                                    ll_visibi.setVisibility(View.GONE);
+                                    scroll_content.setVisibility(View.VISIBLE);
+                                    System.out.print(dataBeen);
+                                    pageCount = commoditydetailBean.getTotalCount();
+                                    String count = String.valueOf(pageCount / 10);
+                                    tvSignPage.setText(count);
+                                    sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this, dataBeen);
+                                    mData.setAdapter(sqlAdapter);
+                                }else{
+                                    ll_visibi.setVisibility(View.VISIBLE);
+                                    scroll_content.setVisibility(View.GONE);
+                                    tv_visibi.setText("没有更多信息");
+                                }
                                 ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();

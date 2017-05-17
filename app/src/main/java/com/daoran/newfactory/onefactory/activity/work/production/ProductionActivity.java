@@ -10,7 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
@@ -75,6 +77,9 @@ public class ProductionActivity extends BaseFrangmentActivity
     private int pageIndex = 0;
     private int last_item = -1;
     private TextView oldView;
+    private LinearLayout ll_visibi;
+    private TextView tv_visibi;
+    private ScrollView scroll_content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +105,9 @@ public class ProductionActivity extends BaseFrangmentActivity
         btnSignPage = (Button) findViewById(R.id.btnSignPage);
         btnProSave = (Button) findViewById(R.id.btnProSave);
         spinnermenu = (Button) findViewById(R.id.spinnermenu);
+        ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
+        tv_visibi = (TextView) findViewById(R.id.tv_visibi);
+        scroll_content = (ScrollView) findViewById(R.id.scroll_content);
     }
 
     /**
@@ -201,12 +209,20 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     System.out.print(ression);
                                     detailBean = new Gson().fromJson(ression, ProducationDetailBean.class);
                                     detailBeenList = detailBean.getData();
-                                    System.out.print(detailBeenList);
-                                    pageCount = detailBean.getTotalCount();
-                                    String count = String.valueOf(pageCount / 10);
-                                    tvSignPage.setText(count);
-                                    adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
-                                    mData.setAdapter(adapter);
+                                    if (detailBean.getTotalCount() != 0) {
+                                        ll_visibi.setVisibility(View.GONE);
+                                        scroll_content.setVisibility(View.VISIBLE);
+                                        System.out.print(detailBeenList);
+                                        pageCount = detailBean.getTotalCount();
+                                        String count = String.valueOf(pageCount / 10);
+                                        tvSignPage.setText(count);
+                                        adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
+                                        mData.setAdapter(adapter);
+                                    } else {
+                                        ll_visibi.setVisibility(View.VISIBLE);
+                                        scroll_content.setVisibility(View.GONE);
+                                        tv_visibi.setText("没有更多信息");
+                                    }
                                     ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
@@ -255,13 +271,21 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     System.out.print(ression);
                                     detailBean = new Gson().fromJson(ression, ProducationDetailBean.class);
                                     detailBeenList = detailBean.getData();
-                                    System.out.print(detailBeenList);
-                                    pageCount = detailBean.getTotalCount();
-                                    String count = String.valueOf(pageCount / 10);
-                                    tvSignPage.setText(count);
-                                    adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
-                                    mData.setAdapter(adapter);
-                                    adapter.notifyDataSetChanged();
+                                    if (detailBean.getTotalCount() != 0) {
+                                        ll_visibi.setVisibility(View.GONE);
+                                        scroll_content.setVisibility(View.VISIBLE);
+                                        System.out.print(detailBeenList);
+                                        pageCount = detailBean.getTotalCount();
+                                        String count = String.valueOf(pageCount / 10);
+                                        tvSignPage.setText(count);
+                                        adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
+                                        mData.setAdapter(adapter);
+                                        adapter.notifyDataSetChanged();
+                                    } else {
+                                        ll_visibi.setVisibility(View.VISIBLE);
+                                        scroll_content.setVisibility(View.GONE);
+                                        tv_visibi.setText("没有更多信息");
+                                    }
                                     ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
@@ -325,13 +349,22 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     System.out.print(ression);
                                     detailBean = new Gson().fromJson(ression, ProducationDetailBean.class);
                                     detailBeenList = detailBean.getData();
-                                    System.out.print(detailBeenList);
-                                    pageCount = detailBean.getTotalCount();
-                                    String count = String.valueOf(pageCount / 10);
-                                    tvSignPage.setText(count);
-                                    adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
-                                    mData.setAdapter(adapter);
-                                    adapter.notifyDataSetChanged();
+                                    if (detailBean.getTotalCount() != 0) {
+                                        ll_visibi.setVisibility(View.GONE);
+                                        scroll_content.setVisibility(View.VISIBLE);
+                                        System.out.print(detailBeenList);
+                                        pageCount = detailBean.getTotalCount();
+                                        String count = String.valueOf(pageCount / 10);
+                                        tvSignPage.setText(count);
+                                        adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
+                                        mData.setAdapter(adapter);
+                                        adapter.notifyDataSetChanged();
+                                    } else {
+                                        ll_visibi.setVisibility(View.VISIBLE);
+                                        scroll_content.setVisibility(View.GONE);
+                                        tv_visibi.setText("没有更多信息");
+                                    }
+
                                     ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
@@ -382,14 +415,22 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     System.out.print(ression);
                                     detailBean = new Gson().fromJson(ression, ProducationDetailBean.class);
                                     detailBeenList = detailBean.getData();
-                                    System.out.print(detailBeenList);
-                                    pageCount = detailBean.getTotalCount();
-                                    String count = String.valueOf(pageCount / 10);
-                                    tvSignPage.setText(count);
-                                    adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
-                                    mData.setAdapter(adapter);
+                                    if (detailBean.getTotalCount() != 0) {
+                                        ll_visibi.setVisibility(View.GONE);
+                                        scroll_content.setVisibility(View.VISIBLE);
+                                        System.out.print(detailBeenList);
+                                        pageCount = detailBean.getTotalCount();
+                                        String count = String.valueOf(pageCount / 10);
+                                        tvSignPage.setText(count);
+                                        adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
+                                        mData.setAdapter(adapter);
+                                        adapter.notifyDataSetChanged();
+                                    } else {
+                                        ll_visibi.setVisibility(View.VISIBLE);
+                                        scroll_content.setVisibility(View.GONE);
+                                        tv_visibi.setText("没有更多信息");
+                                    }
                                     ResponseDialog.closeLoading();
-                                    adapter.notifyDataSetChanged();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
                                     ResponseDialog.closeLoading();
@@ -571,7 +612,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             String urlid = sp.getString("prouriid", "");
             ProducationSaveBean saveBean = new ProducationSaveBean();
             if (urlid == proid || urlid.equals(proid)) {
-                if(!proid.equals("")){
+                if (!proid.equals("")) {
                     ResponseDialog.showLoading(this);
                     saveBean.setID(Integer.parseInt(proid));
                     saveBean.setSalesid(Integer.parseInt(salesid));
@@ -661,7 +702,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     }
                                 }
                             });
-                }else{
+                } else {
                     new AlertDialog.Builder(ProductionActivity.this).setTitle("提示信息")
                             .setMessage("请修改数据，再进行保存")
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -768,7 +809,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             configSaveBeen.add(saveBean);
             String configsave = gson.toJson(configSaveBeen);
             String dateee = configsave.replace("\"\"", "null");
-            if(!itemid.equals("")){
+            if (!itemid.equals("")) {
                 ResponseDialog.showLoading(this);
                 OkHttpUtils.postString()
                         .url(strcopy)
@@ -807,7 +848,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                 }
                             }
                         });
-            }else{
+            } else {
                 new AlertDialog.Builder(ProductionActivity.this).setTitle("提示信息")
                         .setMessage("请选择款号，再进行复制保存")
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {

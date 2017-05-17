@@ -12,8 +12,10 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
@@ -26,6 +28,7 @@ import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -68,6 +71,10 @@ public class ProductionNewlyBuildActivity
     private List<ProNewlyBuildBean.DataBean> dataBeen =
             new ArrayList<ProNewlyBuildBean.DataBean>();
 
+    private LinearLayout ll_visibi;
+    private TextView tv_visibi;
+    private ScrollView scroll_content;
+
     private int pageCount;
     private int pageIndex = 0;
 
@@ -85,7 +92,7 @@ public class ProductionNewlyBuildActivity
         lv_newbuild_data.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ToastUtils.ShowToastMessage("点击的是"+position,ProductionNewlyBuildActivity.this);
+                ToastUtils.ShowToastMessage("点击的是" + position, ProductionNewlyBuildActivity.this);
             }
 
             @Override
@@ -110,6 +117,9 @@ public class ProductionNewlyBuildActivity
         btnNewbuildPage = (Button) findViewById(R.id.btnNewbuildPage);
         tvNewbuildPage = (TextView) findViewById(R.id.tvNewbuildPage);
         lv_newbuild_data = (ListView) findViewById(R.id.lv_newbuild_data);
+        ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
+        tv_visibi = (TextView) findViewById(R.id.tv_visibi);
+        scroll_content = (ScrollView) findViewById(R.id.scroll_content);
     }
 
     /**
@@ -147,6 +157,7 @@ public class ProductionNewlyBuildActivity
         buildBean.setPageSize(10);
         final String bean = gson.toJson(buildBean);
         if (NetWork.isNetWorkAvailable(this)) {
+            ResponseDialog.showLoading(this);
             OkHttpUtils.postString()
                     .url(urlDaily)
                     .content(bean)
@@ -168,16 +179,25 @@ public class ProductionNewlyBuildActivity
                                 System.out.print(ression);
                                 newlyBuildBean = new Gson().fromJson(ression, ProNewlyBuildBean.class);
                                 dataBeen = newlyBuildBean.getData();
-                                System.out.print(dataBeen);
-                                pageCount = newlyBuildBean.getTotalCount();
-                                String count = String.valueOf(pageCount / 10);
-                                tvNewbuildPage.setText(count);
-                                buildAdapter = new ProductionNewlyBuildAdapter(
-                                        ProductionNewlyBuildActivity.this, dataBeen);
-                                lv_newbuild_data.setAdapter(buildAdapter);
-
+                                if (newlyBuildBean.getTotalCount() != 0) {
+                                    ll_visibi.setVisibility(View.GONE);
+                                    scroll_content.setVisibility(View.VISIBLE);
+                                    System.out.print(dataBeen);
+                                    pageCount = newlyBuildBean.getTotalCount();
+                                    String count = String.valueOf(pageCount / 10);
+                                    tvNewbuildPage.setText(count);
+                                    buildAdapter = new ProductionNewlyBuildAdapter(
+                                            ProductionNewlyBuildActivity.this, dataBeen);
+                                    lv_newbuild_data.setAdapter(buildAdapter);
+                                } else {
+                                    ll_visibi.setVisibility(View.VISIBLE);
+                                    scroll_content.setVisibility(View.GONE);
+                                    tv_visibi.setText("没有更多数据");
+                                }
+                                ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
+                                ResponseDialog.closeLoading();
                             }
                         }
                     });
@@ -213,6 +233,7 @@ public class ProductionNewlyBuildActivity
             buildBean.setPageSize(10);
             final String bean = gson.toJson(buildBean);
             if (NetWork.isNetWorkAvailable(this)) {
+                ResponseDialog.showLoading(this);
                 OkHttpUtils.postString()
                         .url(urlDaily)
                         .content(bean)
@@ -234,16 +255,26 @@ public class ProductionNewlyBuildActivity
                                     System.out.print(ression);
                                     newlyBuildBean = new Gson().fromJson(ression, ProNewlyBuildBean.class);
                                     dataBeen = newlyBuildBean.getData();
-                                    System.out.print(dataBeen);
-                                    pageCount = newlyBuildBean.getTotalCount();
-                                    String count = String.valueOf(pageCount / 10);
-                                    tvNewbuildPage.setText(count);
-                                    buildAdapter = new ProductionNewlyBuildAdapter(
-                                            ProductionNewlyBuildActivity.this, dataBeen);
-                                    lv_newbuild_data.setAdapter(buildAdapter);
-                                    buildAdapter.notifyDataSetChanged();
+                                    if (newlyBuildBean.getTotalCount() != 0) {
+                                        ll_visibi.setVisibility(View.GONE);
+                                        scroll_content.setVisibility(View.VISIBLE);
+                                        System.out.print(dataBeen);
+                                        pageCount = newlyBuildBean.getTotalCount();
+                                        String count = String.valueOf(pageCount / 10);
+                                        tvNewbuildPage.setText(count);
+                                        buildAdapter = new ProductionNewlyBuildAdapter(
+                                                ProductionNewlyBuildActivity.this, dataBeen);
+                                        lv_newbuild_data.setAdapter(buildAdapter);
+                                        buildAdapter.notifyDataSetChanged();
+                                    } else {
+                                        ll_visibi.setVisibility(View.VISIBLE);
+                                        scroll_content.setVisibility(View.GONE);
+                                        tv_visibi.setText("没有更多数据");
+                                    }
+                                    ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
+                                    ResponseDialog.closeLoading();
                                 }
                             }
                         });
@@ -273,6 +304,7 @@ public class ProductionNewlyBuildActivity
             buildBean.setPageSize(10);
             final String bean = gson.toJson(buildBean);
             if (NetWork.isNetWorkAvailable(this)) {
+                ResponseDialog.showLoading(this);
                 OkHttpUtils.postString()
                         .url(urlDaily)
                         .content(bean)
@@ -294,16 +326,26 @@ public class ProductionNewlyBuildActivity
                                     System.out.print(ression);
                                     newlyBuildBean = new Gson().fromJson(ression, ProNewlyBuildBean.class);
                                     dataBeen = newlyBuildBean.getData();
-                                    System.out.print(dataBeen);
-                                    pageCount = newlyBuildBean.getTotalCount();
-                                    String count = String.valueOf(pageCount / 10);
-                                    tvNewbuildPage.setText(count);
-                                    buildAdapter = new ProductionNewlyBuildAdapter(
-                                            ProductionNewlyBuildActivity.this, dataBeen);
-                                    lv_newbuild_data.setAdapter(buildAdapter);
-                                    buildAdapter.notifyDataSetChanged();
+                                    if(newlyBuildBean.getTotalCount()!=0){
+                                        ll_visibi.setVisibility(View.GONE);
+                                        scroll_content.setVisibility(View.VISIBLE);
+                                        System.out.print(dataBeen);
+                                        pageCount = newlyBuildBean.getTotalCount();
+                                        String count = String.valueOf(pageCount / 10);
+                                        tvNewbuildPage.setText(count);
+                                        buildAdapter = new ProductionNewlyBuildAdapter(
+                                                ProductionNewlyBuildActivity.this, dataBeen);
+                                        lv_newbuild_data.setAdapter(buildAdapter);
+                                        buildAdapter.notifyDataSetChanged();
+                                    }else{
+                                        ll_visibi.setVisibility(View.VISIBLE);
+                                        scroll_content.setVisibility(View.GONE);
+                                        tv_visibi.setText("没有更多数据");
+                                    }
+                                    ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
+                                    ResponseDialog.closeLoading();
                                 }
                             }
                         });
@@ -342,14 +384,22 @@ public class ProductionNewlyBuildActivity
                                     System.out.print(ression);
                                     newlyBuildBean = new Gson().fromJson(ression, ProNewlyBuildBean.class);
                                     dataBeen = newlyBuildBean.getData();
-                                    System.out.print(dataBeen);
-                                    pageCount = newlyBuildBean.getTotalCount();
-                                    String count = String.valueOf(pageCount / 10);
-                                    tvNewbuildPage.setText(count);
-                                    buildAdapter = new ProductionNewlyBuildAdapter(
-                                            ProductionNewlyBuildActivity.this, dataBeen);
-                                    lv_newbuild_data.setAdapter(buildAdapter);
-                                    buildAdapter.notifyDataSetChanged();
+                                    if(newlyBuildBean.getTotalCount()!=0){
+                                        ll_visibi.setVisibility(View.GONE);
+                                        scroll_content.setVisibility(View.VISIBLE);
+                                        System.out.print(dataBeen);
+                                        pageCount = newlyBuildBean.getTotalCount();
+                                        String count = String.valueOf(pageCount / 10);
+                                        tvNewbuildPage.setText(count);
+                                        buildAdapter = new ProductionNewlyBuildAdapter(
+                                                ProductionNewlyBuildActivity.this, dataBeen);
+                                        lv_newbuild_data.setAdapter(buildAdapter);
+                                        buildAdapter.notifyDataSetChanged();
+                                    }else{
+                                        ll_visibi.setVisibility(View.VISIBLE);
+                                        scroll_content.setVisibility(View.GONE);
+                                        tv_visibi.setText("没有更多数据");
+                                    }
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
                                 }
@@ -411,10 +461,10 @@ public class ProductionNewlyBuildActivity
             /*款号选择之后确定新增*/
             case R.id.btnNewbuildConfirm:
                 sp = getSharedPreferences("my_sp", 0);
-                String tvnewlydate = sp.getString("tvnewlydate","");
-                if(!tvnewlydate.equals("")){
-                    startActivity(new Intent(this,ProductionNewlyComfigActivity.class));
-                }else{
+                String tvnewlydate = sp.getString("tvnewlydate", "");
+                if (!tvnewlydate.equals("")) {
+                    startActivity(new Intent(this, ProductionNewlyComfigActivity.class));
+                } else {
                     new AlertDialog.Builder(ProductionNewlyBuildActivity.this).setTitle("提示信息")
                             .setMessage("请选择款号,再点击确定按钮")
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {

@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
@@ -50,6 +52,9 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     private EditText etSqlDetail;
     private TextView tvSignPage;
     private Button btnSignPage;
+    private LinearLayout ll_visibi;
+    private TextView tv_visibi;
+    private ScrollView scroll_content;
 
     private SharedPreferences sp;
     private SPUtils spUtils;
@@ -80,6 +85,9 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         etSqlDetail = (EditText) findViewById(R.id.etSqlDetail);
         tvSignPage = (TextView) findViewById(R.id.tvSignPage);
         btnSignPage = (Button) findViewById(R.id.btnSignPage);
+        ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
+        tv_visibi = (TextView) findViewById(R.id.tv_visibi);
+        scroll_content = (ScrollView) findViewById(R.id.scroll_content);
     }
 
     /**
@@ -154,15 +162,24 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                 Gson gson = new Gson();
                                 signBean = gson.fromJson(response, SignDetailBean.class);
                                 mListData = signBean.getData();
-                                pageCount = signBean.getTotalCount();
-                                spUtils.put(SignDetailActivity.this, "pageCount", pageCount);
-                                System.out.print(pageCount);
-                                String count = String.valueOf(pageCount / 20);
-                                System.out.print(count);
-                                tvSignPage.setText(count);
-                                detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
-                                mData.setAdapter(detailAdapter);
-                                detailAdapter.notifyDataSetChanged();
+                                if(signBean.getTotalCount()!=0){
+                                    ll_visibi.setVisibility(View.GONE);
+                                    scroll_content.setVisibility(View.VISIBLE);
+                                    pageCount = signBean.getTotalCount();
+                                    spUtils.put(SignDetailActivity.this, "pageCount", pageCount);
+                                    System.out.print(pageCount);
+                                    String count = String.valueOf(pageCount / 20);
+                                    System.out.print(count);
+                                    tvSignPage.setText(count);
+                                    detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
+                                    mData.setAdapter(detailAdapter);
+                                    detailAdapter.notifyDataSetChanged();
+                                }else{
+                                    ll_visibi.setVisibility(View.VISIBLE);
+                                    scroll_content.setVisibility(View.GONE);
+                                    tv_visibi.setText("没有更多信息");
+                                }
+
                                 ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
@@ -215,15 +232,23 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                 Gson gson = new Gson();
                                 signBean = gson.fromJson(response, SignDetailBean.class);
                                 mListData = signBean.getData();
-                                pageCount = signBean.getTotalCount();
-                                spUtils.put(SignDetailActivity.this, "pagesqlCount", pageCount);
-                                System.out.print(pageCount);
-                                String count = String.valueOf(pageCount / 20);
-                                System.out.print(count);
-                                tvSignPage.setText(count);
-                                detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
-                                mData.setAdapter(detailAdapter);
-                                detailAdapter.notifyDataSetChanged();
+                                if(signBean.getTotalCount()!=0){
+                                    ll_visibi.setVisibility(View.GONE);
+                                    scroll_content.setVisibility(View.VISIBLE);
+                                    pageCount = signBean.getTotalCount();
+                                    spUtils.put(SignDetailActivity.this, "pagesqlCount", pageCount);
+                                    System.out.print(pageCount);
+                                    String count = String.valueOf(pageCount / 20);
+                                    System.out.print(count);
+                                    tvSignPage.setText(count);
+                                    detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
+                                    mData.setAdapter(detailAdapter);
+                                    detailAdapter.notifyDataSetChanged();
+                                }else{
+                                    ll_visibi.setVisibility(View.VISIBLE);
+                                    scroll_content.setVisibility(View.GONE);
+                                    tv_visibi.setText("没有更多信息");
+                                }
                                 ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);

@@ -707,6 +707,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/ll_visibi"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_gravity="center">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/null_comm_img"/>
+            <TextView
+                android:id="@+id/tv_visibi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_marginTop="30dp"
+                android:textSize="15sp"
+                android:textColor="#FFCBCBCB"/>
+        </LinearLayout>
         <ScrollView
             android:id="@+id/scroll_content"
             android:layout_width="match_parent"
