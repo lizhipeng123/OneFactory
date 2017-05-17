@@ -46,7 +46,6 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
     private EditText etStartDataClick, etEndDataClick;
     private int id;
     private Spinner spinnerdriver,spinnerNumberBind;
-
     private List<DriverBindBean> bindBeen = new ArrayList<DriverBindBean>();
     private List<CarNumberBindBean> bindBeencar = new ArrayList<CarNumberBindBean>();
     private DriverBindBean driverBindBean;

@@ -187,6 +187,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                                 System.out.print(apkpath);
                                 String reason = codeBean.getReason();
                                 System.out.print(reason);
+                                spUtils.put(mactivity,"vercodeupdate",vercode);
                                 spUtils.put(mactivity,"apkpath",apkpath);
                                 spUtils.put(mactivity,"reason",reason);
                                 String versioncode = String.valueOf(curVersionName);
@@ -223,13 +224,14 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     public void showNoticeDialog(int focuseUpdate, boolean slience) {
         sp = mactivity.getSharedPreferences("my_sp", 0);
         String reason = sp.getString("reason","");
+        String reaid = sp.getString("vercodeupdate","");
         if (Comfig.isDebug) {
             System.out.println(focuseUpdate);
         }
         if (focuseUpdate == 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mactivity);
-            builder.setTitle("软件版本更新");
-            builder.setMessage("发现新版本:  " + reason);
+            builder.setTitle("发现新版本： "+reaid);
+            builder.setMessage("更新日志:   " + reason);
             builder.setPositiveButton("立即更新",
                     new DialogInterface.OnClickListener() {
                         @Override

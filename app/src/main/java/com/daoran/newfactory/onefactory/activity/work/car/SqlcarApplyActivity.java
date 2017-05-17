@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
@@ -66,7 +65,6 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
     }
 
     private void getViews() {
-        btnSqlopen = (Button) findViewById(R.id.btnSqlopen);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivSearch = (ImageView) findViewById(R.id.ivSearch);
         tvInitialDate = (TextView) findViewById(R.id.tvInitialDate);
@@ -122,16 +120,12 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                         public void onResponse(String response, int id) {
                             try {
                                 System.out.print(response);
-                                SqlCarApplyBean carApplyBean = new Gson().fromJson(response, SqlCarApplyBean.class);
-                                if(carApplyBean.getTotalCount()!=0){
-                                    ll_visibi.setVisibility(View.GONE);
-                                    listView.setVisibility(View.VISIBLE);
-                                    setListData(carApplyBean.getData());
-                                }else{
-                                    ll_visibi.setVisibility(View.VISIBLE);
-                                    listview.setVisibility(View.GONE);
-                                    tv_visibi.setText("没有更多数据");
-                                }
+                                SqlCarApplyBean carApplyBean =
+                                        new Gson().fromJson(response,
+                                                SqlCarApplyBean.class);
+                                ll_visibi.setVisibility(View.GONE);
+                                listView.setVisibility(View.VISIBLE);
+                                setListData(carApplyBean.getData());
                                 ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 setListData(new ArrayList());
@@ -151,8 +145,8 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
     public void onListItemClick(Object o) {
         System.out.print(o);
         dataBean = (SqlCarApplyBean.DataBean) o;
-        startActivity(new Intent(SqlcarApplyActivity.this,CarapplyActivity.class)
-        .putExtra("id",dataBean.getId()));
+        startActivity(new Intent(SqlcarApplyActivity.this, CarapplyActivity.class)
+                .putExtra("id", dataBean.getId()));
     }
 
     @Override

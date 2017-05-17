@@ -117,21 +117,4 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/lltitle" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/listview"
-        android:background="@color/white"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnSqlopen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="直接进入"
-            android:textColor="@color/black"
-            android:textSize="@dimen/dimen_60sp" />
-    </LinearLayout>
 </RelativeLayout>
