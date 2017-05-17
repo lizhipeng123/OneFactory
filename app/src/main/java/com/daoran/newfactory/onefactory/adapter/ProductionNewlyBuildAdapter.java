@@ -11,10 +11,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
 import com.daoran.newfactory.onefactory.bean.ProNewlyBuildBean;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -98,51 +100,58 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
         viewHolder.lin_content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String getid = String.valueOf(v.getId());
+                List<String> stingid = new ArrayList<String>();
+                stingid.add(getid);
                 flag = true;
                 String salesid = getItem(position).getID();
-                spUtils.put(context,"tvnewlysalesid",salesid);
-                spUtils.put(context,"tvflag",flag);
-                ToastUtils.ShowToastMessage("点击的是"+position,context);
+                spUtils.put(context, "tvnewlysalesid", salesid);
+                spUtils.put(context, "tvflag", flag);
                 String tvdate = getItem(position).getItem();
-                spUtils.put(context,"tvnewlydate",tvdate);//款号
+                spUtils.put(context, "tvnewlydate", tvdate);//款号
 
                 String tvProDocumentary = getItem(position).getPrddocumentary();
-                spUtils.put(context,"tvnewlyDocumentary",tvProDocumentary);//跟单
+                spUtils.put(context, "tvnewlyDocumentary", tvProDocumentary);//跟单
 
                 String tvProFactory = getItem(position).getSubfactory();
-                spUtils.put(context,"tvnewlyFactory",tvProFactory);//工厂
+                spUtils.put(context, "tvnewlyFactory", tvProFactory);//工厂
 
                 String tvProDepartment = getItem(position).getSubfactoryTeams();
-                spUtils.put(context,"tvnewlyDepartment",tvProDepartment);//部门
+                spUtils.put(context, "tvnewlyDepartment", tvProDepartment);//部门
 
                 String tvProProcedure = getItem(position).getWorkingProcedure();
-                spUtils.put(context,"tvnewlyProcedure",tvProProcedure);//工序
+                spUtils.put(context, "tvnewlyProcedure", tvProProcedure);//工序
 
                 String tvProOthers = getItem(position).getWorkers();
-                spUtils.put(context,"tvnewlyOthers",tvProOthers);//组别人数
+                spUtils.put(context, "tvnewlyOthers", tvProOthers);//组别人数
 
                 String tvProSingularSystem = getItem(position).getPqty();
-                spUtils.put(context,"tvnewSingularSystem",tvProSingularSystem);//制单数
+                spUtils.put(context, "tvnewSingularSystem", tvProSingularSystem);//制单数
 
                 String tvProColor = getItem(position).getTaskqty();
-                spUtils.put(context,"tvColorTaskqty",tvProColor);//任务数
+                spUtils.put(context, "tvColorTaskqty", tvProColor);//任务数
 
                 String tvProTaskNumber = getItem(position).getMdl();
-                spUtils.put(context,"tvnewTaskNumber",tvProTaskNumber);//尺码
+                spUtils.put(context, "tvnewTaskNumber", tvProTaskNumber);//尺码
 
                 String tvProSize = getItem(position).getProdcol();
-                spUtils.put(context,"tvnewlySize",tvProSize);//花色
+                spUtils.put(context, "tvnewlySize", tvProSize);//花色
 
                 String tvProClippingNumber = getItem(position).getFactcutqty();
-                spUtils.put(context,"tvnewlyClippingNumber",tvProClippingNumber);//实裁数
+                spUtils.put(context, "tvnewlyClippingNumber", tvProClippingNumber);//实裁数
 
                 String tvProCompletedLastMonth = getItem(position).getSumCompletedQty();
-                spUtils.put(context,"tvnewlyCompletedLastMonth",tvProCompletedLastMonth);//总完工数
+                spUtils.put(context, "tvnewlyCompletedLastMonth", tvProCompletedLastMonth);//总完工数
 
                 String tvProTotalCompletion = getItem(position).getPrdstatus();
-                spUtils.put(context,"tvnewlyTotalCompletion",tvProTotalCompletion);//状态
+                spUtils.put(context, "tvnewlyTotalCompletion", tvProTotalCompletion);//状态
 
-                viewHolder.lin_content.setBackgroundColor(Color.YELLOW);
+                viewHolder.lin_content.setBackgroundResource(R.drawable.bill_record_item);
+
+                System.out.print("");
+                sp = context.getSharedPreferences("my_sp", 0);
+                String itemm = sp.getString("tvnewlydate", "");
+                System.out.print(itemm);
             }
         });
         return convertView;

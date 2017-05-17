@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -27,6 +28,7 @@ import com.daoran.newfactory.onefactory.activity.login.LoginDebugActivity;
 import com.daoran.newfactory.onefactory.bean.VerCodeBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
+import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.util.settings.Comfig;
@@ -81,6 +83,9 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     protected String apkFilePath;
     protected String tmpFilePath;
 
+    private SharedPreferences sp;
+    private SPUtils spUtils;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -98,12 +103,18 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * 实例化控件
+     */
     private void getViews() {
         rlAgainLogin = (RelativeLayout) view.findViewById(R.id.rlAgainLogin);
         rlEditionUpdate = (RelativeLayout) view.findViewById(R.id.rlEditionUpdate);
         tvVersion = (TextView) view.findViewById(R.id.tvVersion);
     }
 
+    /**
+     * 操作控件
+     */
     private void initViews() {
         rlAgainLogin.setOnClickListener(this);
         rlEditionUpdate.setOnClickListener(this);
@@ -120,15 +131,19 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
 
                 break;
             case R.id.tvVersion:
-//                checkAppVersion(true);
+                checkAppVersion(true);
                 break;
         }
     }
 
+    /**
+     * 获取本机版本号
+     */
     private void getCurrentVersion() {
         try {
             PackageInfo info =
-                    mactivity.getPackageManager().getPackageInfo(mactivity.getPackageName(), 0);
+                    mactivity.getPackageManager().
+                            getPackageInfo(mactivity.getPackageName(), 0);
             curVersionName = info.versionName;
             curVersionCode = info.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
@@ -172,11 +187,14 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                                 System.out.print(apkpath);
                                 String reason = codeBean.getReason();
                                 System.out.print(reason);
-                                int code = Integer.parseInt(vercode);
-                                if (code > curVersionCode) {
-                                    ToastUtils.ShowToastMessage("需要更新", mactivity);
-                                    ToastUtils.ShowToastMessage("code" + code + "," +
-                                            "curversion" + curVersionCode, mactivity);
+                                spUtils.put(mactivity,"apkpath",apkpath);
+                                spUtils.put(mactivity,"reason",reason);
+                                String versioncode = String.valueOf(curVersionName);
+                                if (!versioncode.equals(vercode)) {
+//                                    ToastUtils.ShowToastMessage("需要更新", mactivity);
+//                                    ToastUtils.ShowToastMessage("code:" + vercode + "," +
+//                                            "curversion:" + curVersionCode, mactivity);
+                                    showNoticeDialog(0,slience);
                                 } else {
                                     if (!slience) {
                                         new AlertDialog.Builder(mactivity)
@@ -203,13 +221,15 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
      * focuseUpdate 0:自己服务端更新 1：自己服务端强制更新
      */
     public void showNoticeDialog(int focuseUpdate, boolean slience) {
+        sp = mactivity.getSharedPreferences("my_sp", 0);
+        String reason = sp.getString("reason","");
         if (Comfig.isDebug) {
             System.out.println(focuseUpdate);
         }
         if (focuseUpdate == 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mactivity);
             builder.setTitle("软件版本更新");
-            builder.setMessage("发现新版本  " + bean.getReason());
+            builder.setMessage("发现新版本:  " + reason);
             builder.setPositiveButton("立即更新",
                     new DialogInterface.OnClickListener() {
                         @Override
@@ -230,7 +250,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         } else if (focuseUpdate == 1) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mactivity);
             builder.setTitle("软件版本更新");
-            builder.setMessage("发现新版本  " + bean.getReason() + ",您必须安装此版本更新才能继续使用");
+            builder.setMessage("发现新版本  " + reason + ",您必须安装此版本更新才能继续使用");
             builder.setPositiveButton("立即更新",
                     new DialogInterface.OnClickListener() {
                         @Override
@@ -252,21 +272,19 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     private void showDownloadDialog(int focuseUpdate) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mactivity);
         builder.setTitle("正在下载新版本");
-
         final LayoutInflater inflater = LayoutInflater.from(mactivity);
         View v = inflater.inflate(R.layout.update_progress, null);
         mProgress = (ProgressBar) v.findViewById(R.id.update_progress);
         mProgressText = (TextView) v.findViewById(R.id.update_progress_text);
-
         builder.setView(v);
         if (focuseUpdate == 0) {
-            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    interceptFlag = true;
-                }
-            });
+//            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    dialog.dismiss();
+////                    interceptFlag = true;
+//                }
+//            });
             builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
@@ -304,8 +322,10 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         ;
     };
 
+    /**
+     * 开启线程更新app
+     */
     private Runnable mdownApkRunnable = new Runnable() {
-
         @Override
         public void run() {
             try {
@@ -344,8 +364,9 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 // 输出临时下载文件
                 File tmpFile = new File(tmpFilePath);
                 FileOutputStream fos = new FileOutputStream(tmpFile);
-
-                URL url = new URL(bean.getApkPath());
+                sp = mactivity.getSharedPreferences("my_sp",0);
+                String apkpath = sp.getString("apkpath","");
+                URL url = new URL(apkpath);
                 HttpURLConnection conn = (HttpURLConnection) url
                         .openConnection();
                 conn.connect();

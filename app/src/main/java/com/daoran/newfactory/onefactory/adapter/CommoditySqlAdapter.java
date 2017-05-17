@@ -1723,15 +1723,39 @@ public class CommoditySqlAdapter extends BaseAdapter {
         } else {
             holder.tvCommoItem.setEnabled(false);
             holder.tvCommoItem.setText(getItem(position).getItem());
+            holder.tvCommoItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoCtmtxt.setEnabled(false);
             holder.tvCommoCtmtxt.setText(getItem(position).getCtmtxt());
+            holder.tvCommoCtmtxt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoPrddocumentary.setEnabled(false);
             holder.tvCommoPrddocumentary.setText(getItem(position).getPrddocumentary());
+            holder.tvCommoPrddocumentary.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoprdmaster.setEnabled(false);
             holder.tvCommoprdmaster.setText(getItem(position).getPrdmaster());
+            holder.tvCommoprdmaster.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoQCMasterScore.setEnabled(false);
             final EditText editTextQCMasterScore = holder.tvCommoQCMasterScore;
@@ -1740,6 +1764,12 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextQCMasterScore.removeTextChangedListener((TextWatcher) editTextQCMasterScore.getTag());
             }
             editTextQCMasterScore.setText(getItem(position).getQCMasterScore());
+            holder.tvCommoQCMasterScore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoSealedrev.setEnabled(false);
             holder.tvCommoSealedrev.setText(getItem(position).getSealedrev());
@@ -1749,6 +1779,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
                 }
             });
+
 
             holder.tvCommoDocback.setEnabled(false);
             holder.tvCommoDocback.setText(getItem(position).getDocback());
@@ -1761,9 +1792,21 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoLcdat.setEnabled(false);
             holder.tvCommoLcdat.setText(getItem(position).getLcdat());
+            holder.tvCommoLcdat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoTaskqty.setEnabled(false);
             holder.tvCommoTaskqty.setText(getItem(position).getTaskqty());
+            holder.tvCommoTaskqty.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoPreMemo.setEnabled(false);
             final EditText editTextPreMemo = holder.tvCommoPreMemo;
@@ -1772,6 +1815,12 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextPreMemo.removeTextChangedListener((TextWatcher) editTextPreMemo.getTag());
             }
             editTextPreMemo.setText(getItem(position).getPreMemo());
+            holder.tvCommoPreMemo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoPredocdt.setEnabled(false);
             holder.tvCommoPredocdt.setText(getItem(position).getPredocdt());
@@ -1798,6 +1847,12 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextPredoc.removeTextChangedListener((TextWatcher) editTextPredoc.getTag());
             }
             editTextPredoc.setText(getItem(position).getPredoc());
+            holder.tvCommoPredoc.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoFabricsok.setEnabled(false);
             final EditText editTextFabricsok = holder.tvCommoFabricsok;
@@ -1806,6 +1861,12 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextFabricsok.removeTextChangedListener((TextWatcher) editTextFabricsok.getTag());
             }
             editTextFabricsok.setText(getItem(position).getFabricsok());
+            holder.tvCommoFabricsok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoAccessoriesok.setEnabled(false);
             final EditText editTextAccessoriesok = holder.tvCommoAccessoriesok;
@@ -1814,6 +1875,12 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextAccessoriesok.removeTextChangedListener((TextWatcher) editTextAccessoriesok.getTag());
             }
             editTextAccessoriesok.setText(getItem(position).getAccessoriesok());
+            holder.tvCommoAccessoriesok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoSpcproDec.setEnabled(false);
             final EditText editTextSpcproDec = holder.tvCommoSpcproDec;
@@ -1822,6 +1889,12 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextSpcproDec.removeTextChangedListener((TextWatcher) editTextSpcproDec.getTag());
             }
             editTextSpcproDec.setText(getItem(position).getSpcproDec());
+            holder.tvCommoSpcproDec.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoSpcproMemo.setEnabled(false);
             final EditText editTextSpcproMemo = holder.tvCommoSpcproMemo;
@@ -1830,6 +1903,12 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextSpcproMemo.removeTextChangedListener((TextWatcher) editTextSpcproMemo.getTag());
             }
             editTextSpcproMemo.setText(getItem(position).getSpcproMemo());
+            holder.tvCommoSpcproMemo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoCutqty.setEnabled(false);
             final EditText editTextCutqty = holder.tvCommoCutqty;
@@ -1838,6 +1917,12 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextCutqty.removeTextChangedListener((TextWatcher) editTextCutqty.getTag());
             }
             editTextCutqty.setText(getItem(position).getCutqty());
+            holder.tvCommoCutqty.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoSewFdt.setEnabled(false);
             holder.tvCommoSewFdt.setText(getItem(position).getSewFdt());
@@ -1885,6 +1970,12 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextQCbdtDoc.removeTextChangedListener((TextWatcher) editTextQCbdtDoc.getTag());
             }
             editTextQCbdtDoc.setText(getItem(position).getQCbdtDoc());
+            holder.tvCommoQCbdtDoc.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoPremdt.setEnabled(false);
             holder.tvCommoPremdt.setText(getItem(position).getPremdt());
@@ -1997,8 +2088,20 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextBatchid.removeTextChangedListener((TextWatcher) editTextBatchid.getTag());
             }
             editTextBatchid.setText(getItem(position).getBatchid());
+            holder.tvCommoBatchid.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoOurAfter.setEnabled(false);
+            holder.tvCommoOurAfter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoCtmchkdt.setEnabled(false);
             holder.tvCommoCtmchkdt.setText(getItem(position).getCtmchkdt());
@@ -2016,6 +2119,12 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextIPQCPedt.removeTextChangedListener((TextWatcher) editTextIPQCPedt.getTag());
             }
             editTextIPQCPedt.setText(getItem(position).getIPQCPedt());
+            holder.tvCommoIPQCPedt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoIPQCmdt.setEnabled(false);
             final EditText editTextIPQCmdt = holder.tvCommoIPQCmdt;
@@ -2024,6 +2133,12 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextIPQCmdt.removeTextChangedListener((TextWatcher) editTextIPQCmdt.getTag());
             }
             editTextIPQCmdt.setText(getItem(position).getIPQCmdt());
+            holder.tvCommoIPQCmdt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoQAname.setEnabled(false);
             final EditText editTextQAname = holder.tvCommoQAname;
@@ -2032,6 +2147,12 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextQAname.removeTextChangedListener((TextWatcher) editTextQAname.getTag());
             }
             editTextQAname.setText(getItem(position).getQAname());
+            holder.tvCommoQAname.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoQAScore.setEnabled(false);
             final EditText editTextQAScore = holder.tvCommoQAScore;
@@ -2040,6 +2161,12 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextQAScore.removeTextChangedListener((TextWatcher) editTextQAScore.getTag());
             }
             editTextQAScore.setText(getItem(position).getQAScore());
+            holder.tvCommoQAScore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoQAMemo.setEnabled(false);
             holder.tvCommoQAMemo.setText(getItem(position).getQAMemo());

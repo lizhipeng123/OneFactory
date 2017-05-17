@@ -471,7 +471,7 @@ public class SignActivity extends BaseFrangmentActivity
                         buffer.append( "地图未渲染完成，截屏有网格");
                     }
                     System.out.print(buffer.toString());
-                    ToastUtils.ShowToastMessage(buffer.toString(),getApplicationContext());
+//                    ToastUtils.ShowToastMessage(buffer.toString(),getApplicationContext());
                     topBg.setImageBitmap(bitmap);
                     String picurl = BitmapTools.convertIconToString(bitmap);
                     spUtils.put(SignActivity.this, "picurl", picurl);

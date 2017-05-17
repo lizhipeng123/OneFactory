@@ -82,6 +82,17 @@ public class ProductionNewlyBuildActivity
         initViews();
         setListener();
         setDate();
+        lv_newbuild_data.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ToastUtils.ShowToastMessage("点击的是"+position,ProductionNewlyBuildActivity.this);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     /**
@@ -164,12 +175,7 @@ public class ProductionNewlyBuildActivity
                                 buildAdapter = new ProductionNewlyBuildAdapter(
                                         ProductionNewlyBuildActivity.this, dataBeen);
                                 lv_newbuild_data.setAdapter(buildAdapter);
-                                lv_newbuild_data.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        ToastUtils.ShowToastMessage("点击的是" + position, ProductionNewlyBuildActivity.this);
-                                    }
-                                });
+
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
                             }
@@ -405,12 +411,18 @@ public class ProductionNewlyBuildActivity
             /*款号选择之后确定新增*/
             case R.id.btnNewbuildConfirm:
                 sp = getSharedPreferences("my_sp", 0);
-                boolean b = sp.getBoolean("tvflag",true);
-                if(b==true){
-                    ToastUtils.ShowToastMessage("输入结果是"+b,ProductionNewlyBuildActivity.this);
+                String tvnewlydate = sp.getString("tvnewlydate","");
+                if(!tvnewlydate.equals("")){
                     startActivity(new Intent(this,ProductionNewlyComfigActivity.class));
                 }else{
-                    ToastUtils.ShowToastMessage("请选择款号，再点击确定",ProductionNewlyBuildActivity.this);
+                    new AlertDialog.Builder(ProductionNewlyBuildActivity.this).setTitle("提示信息")
+                            .setMessage("请选择款号,再点击确定按钮")
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();//相应事件
                 }
                 break;
         }

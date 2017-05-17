@@ -477,84 +477,91 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
             Gson gson = new Gson();
             CommoditySaveBean saveBean = new CommoditySaveBean();
             if (uriid == commoproid || uriid.equals(commoproid)) {
-                saveBean.setID(Integer.parseInt(commoproid));
-                saveBean.setItem(null);
-                saveBean.setCtmtxt(null);
-                saveBean.setPrddocumentary(null);
-                saveBean.setPrdmaster(null);
-                saveBean.setQCMasterScore(CommodityQCMasterScore);
-                saveBean.setSealedrev(dateSealedrewtimesign);
-                saveBean.setDocback(dateDocbacktimesign);
-                saveBean.setLcdat(null);
-                saveBean.setTaskqty(null);
-                saveBean.setPreMemo(CommodityPreMemo);
-                saveBean.setPredocdt(datePredocdttimesign);
-                saveBean.setPredt(datePredtimesign);
-                saveBean.setPredoc(CommodityPredoc);
-                saveBean.setFabricsok(CommodityFabricsok);
-                saveBean.setAccessoriesok(CommodityAccessoriesok);
-                saveBean.setSpcproDec(CommoditySpcproDec);
-                saveBean.setSpcproMemo(CommoditySpcproMemo);
-                saveBean.setCutqty(CommodityCutqty);
-                saveBean.setSewFdt(dateSewFdttimesign);
-                saveBean.setSewMdt(dateSewMdttimesign);
-                saveBean.setSubfactory(null);
-                saveBean.setPrebdt(datePrebdttimesign);
-                saveBean.setQCbdt(dateQCbdttimesign);
-                saveBean.setQCbdtDoc(CommodityQCbdtDoc);
-                saveBean.setPremdt(datePremdttimesign);
-                saveBean.setQCmdt(dateQCmdttimesign);
-                saveBean.setQCmdtDoc(CommodityQCmdtDoc);
-                saveBean.setPreedt(datePreedttimesign);
-                saveBean.setQCMedt(dateQCMedttimesign);
-                saveBean.setQCedtDoc(CommodityQCedtDoc);
-                saveBean.setFctmdt(dateFctmdttimesign);
-                saveBean.setFctedt(dateFctedttimesign);
-                saveBean.setPackbdat(datePackbdattimesign);
-                saveBean.setPackqty2(CommodityPackqty2);
-                saveBean.setQCMemo(CommodityQCMemo);
-                saveBean.setFactlcdat(dateFactlcdattimesign);
-                saveBean.setBatchid(CommodityBatchid);
-                saveBean.setOurAfter(tvCommoOurAfter);
-                saveBean.setCtmchkdt(dateCtmchkdttimesign);
-                saveBean.setIPQCPedt(CommodityIPQCPedt);
-                saveBean.setIPQCmdt(CommodityIPQCmdt);
-                saveBean.setQAname(CommodityQAname);
-                saveBean.setQAScore(CommodityQAScore);
-                saveBean.setQAMemo(dateQAMemotimesign);
-                saveBeen.add(saveBean);
-                String commjson = gson.toJson(saveBeen);
-                OkHttpUtils.postString()
-                        .url(saveurl)
-                        .content(commjson)
-                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                e.printStackTrace();
-                                ResponseDialog.closeLoading();
-                            }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                System.out.print(response);
-                                response = response.replace("\\", "");
-                                String ression = StringUtil.sideTrim(response, "\"");
-                                System.out.print(ression);
-                                if (ression.equals("true")) {
+                if (!commoproid.equals("")) {
+                    ResponseDialog.showLoading(this);
+                    saveBean.setID(Integer.parseInt(commoproid));
+                    saveBean.setItem(null);
+                    saveBean.setCtmtxt(null);
+                    saveBean.setPrddocumentary(null);
+                    saveBean.setPrdmaster(null);
+                    saveBean.setQCMasterScore(CommodityQCMasterScore);
+                    saveBean.setSealedrev(dateSealedrewtimesign);
+                    saveBean.setDocback(dateDocbacktimesign);
+                    saveBean.setLcdat(null);
+                    saveBean.setTaskqty(null);
+                    saveBean.setPreMemo(CommodityPreMemo);
+                    saveBean.setPredocdt(datePredocdttimesign);
+                    saveBean.setPredt(datePredtimesign);
+                    saveBean.setPredoc(CommodityPredoc);
+                    saveBean.setFabricsok(CommodityFabricsok);
+                    saveBean.setAccessoriesok(CommodityAccessoriesok);
+                    saveBean.setSpcproDec(CommoditySpcproDec);
+                    saveBean.setSpcproMemo(CommoditySpcproMemo);
+                    saveBean.setCutqty(CommodityCutqty);
+                    saveBean.setSewFdt(dateSewFdttimesign);
+                    saveBean.setSewMdt(dateSewMdttimesign);
+                    saveBean.setSubfactory(null);
+                    saveBean.setPrebdt(datePrebdttimesign);
+                    saveBean.setQCbdt(dateQCbdttimesign);
+                    saveBean.setQCbdtDoc(CommodityQCbdtDoc);
+                    saveBean.setPremdt(datePremdttimesign);
+                    saveBean.setQCmdt(dateQCmdttimesign);
+                    saveBean.setQCmdtDoc(CommodityQCmdtDoc);
+                    saveBean.setPreedt(datePreedttimesign);
+                    saveBean.setQCMedt(dateQCMedttimesign);
+                    saveBean.setQCedtDoc(CommodityQCedtDoc);
+                    saveBean.setFctmdt(dateFctmdttimesign);
+                    saveBean.setFctedt(dateFctedttimesign);
+                    saveBean.setPackbdat(datePackbdattimesign);
+                    saveBean.setPackqty2(CommodityPackqty2);
+                    saveBean.setQCMemo(CommodityQCMemo);
+                    saveBean.setFactlcdat(dateFactlcdattimesign);
+                    saveBean.setBatchid(CommodityBatchid);
+                    saveBean.setOurAfter(tvCommoOurAfter);
+                    saveBean.setCtmchkdt(dateCtmchkdttimesign);
+                    saveBean.setIPQCPedt(CommodityIPQCPedt);
+                    saveBean.setIPQCmdt(CommodityIPQCmdt);
+                    saveBean.setQAname(CommodityQAname);
+                    saveBean.setQAScore(CommodityQAScore);
+                    saveBean.setQAMemo(dateQAMemotimesign);
+                    saveBeen.add(saveBean);
+                    String commjson = gson.toJson(saveBeen);
+                    OkHttpUtils.postString()
+                            .url(saveurl)
+                            .content(commjson)
+                            .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                            .build()
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onError(Call call, Exception e, int id) {
+                                    e.printStackTrace();
                                     ResponseDialog.closeLoading();
-                                    ToastUtils.ShowToastMessage("保存成功", CommoditySqlActivity.this);
-                                } else {
-                                    ResponseDialog.closeLoading();
-                                    ToastUtils.ShowToastMessage("保存失败", CommoditySqlActivity.this);
                                 }
-                            }
-                        });
-            } else {
+
+                                @Override
+                                public void onResponse(String response, int id) {
+                                    System.out.print(response);
+                                    response = response.replace("\\", "");
+                                    String ression = StringUtil.sideTrim(response, "\"");
+                                    System.out.print(ression);
+                                    if (ression.equals("true")) {
+                                        ResponseDialog.closeLoading();
+                                        ToastUtils.ShowToastMessage("保存成功", CommoditySqlActivity.this);
+                                    } else {
+                                        ResponseDialog.closeLoading();
+                                        ToastUtils.ShowToastMessage("保存失败", CommoditySqlActivity.this);
+                                    }
+                                }
+                            });
+                } else{
+                    ToastUtils.ShowToastMessage("请修改数据，再进行保存",
+                            CommoditySqlActivity.this);
+                }
+            }else {
                 ToastUtils.ShowToastMessage("请选择当前行，再进行修改保存",
                         CommoditySqlActivity.this);
             }
+
 
         } else {
             ToastUtils.ShowToastMessage(R.string.noHttp, CommoditySqlActivity.this);

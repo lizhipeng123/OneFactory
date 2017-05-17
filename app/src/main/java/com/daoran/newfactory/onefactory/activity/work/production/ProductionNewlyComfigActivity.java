@@ -303,23 +303,23 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             System.out.print(ression);
                             int resindex = Integer.parseInt(ression);
                             if (resindex > 4) {
-                                ResponseDialog.closeLoading();
                                 ToastUtils.ShowToastMessage("保存成功，请刷新页面",
                                         ProductionNewlyComfigActivity.this);
                                 startActivity(new Intent(ProductionNewlyComfigActivity.this,
                                         ProductionActivity.class));
-                            } else if (resindex == 3) {
                                 ResponseDialog.closeLoading();
+                            } else if (resindex == 3) {
                                 ToastUtils.ShowToastMessage("保存失败",
                                         ProductionNewlyComfigActivity.this);
-                            } else if (resindex == 4) {
                                 ResponseDialog.closeLoading();
+                            } else if (resindex == 4) {
                                 ToastUtils.ShowToastMessage("数据错误，请重试",
                                         ProductionNewlyComfigActivity.this);
-                            } else {
                                 ResponseDialog.closeLoading();
+                            } else {
                                 ToastUtils.ShowToastMessage("未知错误，请联系管理员",
                                         ProductionNewlyComfigActivity.this);
+                                ResponseDialog.closeLoading();
                             }
                         }
                     });
@@ -529,7 +529,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 String title = item.getTitle().toString();
                                 spUtils.put(context, "Configdepartment", title);
                                 viewHolder.tvProDepartment.setText(title);
-                                ToastUtils.ShowToastMessage("点击的是：" + title, context);
                                 return false;
                             }
                         });
@@ -556,7 +555,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 String title = item.getTitle().toString();
                                 spUtils.put(context, "ConfigProcedure", title);
                                 viewHolder.tvProProcedure.setText(title);
-                                ToastUtils.ShowToastMessage("点击的是：" + title, context);
                                 return false;
                             }
                         });
@@ -602,7 +600,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProOthers.getText().toString();
                         spUtils.put(context, "ConfigOthers", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexOthers.addTextChangedListener(TvOthers);
@@ -649,7 +646,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProTaskNumber.getText().toString();
                         spUtils.put(context, "ConfigTaskNumber", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexTaskNumber.addTextChangedListener(TvTaskNumber);
@@ -696,7 +692,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProCompletedLastMonth.getText().toString();
                         spUtils.put(context, "ConfigTaskNumber", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexLastMonth.addTextChangedListener(TvLastMonth);
@@ -724,7 +719,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 String title = item.getTitle().toString();
                                 spUtils.put(context, "ComfigPrdstatus", title);
                                 viewHolder.tvProState.setText(title);
-                                ToastUtils.ShowToastMessage("点击的是：" + title, context);
                                 return false;
                             }
                         });
@@ -755,7 +749,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 String title = item.getTitle().toString();
                                 spUtils.put(context, "ComfigMonth", title);
                                 viewHolder.tvProMonth.setText(title);
-                                ToastUtils.ShowToastMessage("点击的是：" + title, context);
                                 return false;
                             }
                         });
@@ -802,7 +795,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProOneDay.getText().toString();
                         spUtils.put(context, "configOneDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexOneDay.addTextChangedListener(TvOneDay);
@@ -844,7 +836,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProTwoDay.getText().toString();
                         spUtils.put(context, "configTwoDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexTwoDay.addTextChangedListener(TvTwoDay);
@@ -886,7 +877,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProThreeDay.getText().toString();
                         spUtils.put(context, "configThreeDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexThreeDay.addTextChangedListener(TvThreeDay);
@@ -928,7 +918,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProForeDay.getText().toString();
                         spUtils.put(context, "configForeDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexForeDay.addTextChangedListener(TvForeDay);
@@ -970,7 +959,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProFiveDay.getText().toString();
                         spUtils.put(context, "configFiveDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexFiveDay.addTextChangedListener(TvFiveDay);
@@ -1012,7 +1000,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProSixDay.getText().toString();
                         spUtils.put(context, "configSixDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexSixDay.addTextChangedListener(TvSixDay);
@@ -1054,7 +1041,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProSevenDay.getText().toString();
                         spUtils.put(context, "configSevenDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexSevenDay.addTextChangedListener(TvSevenDay);
@@ -1096,7 +1082,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProEightDay.getText().toString();
                         spUtils.put(context, "configEightDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexEightDay.addTextChangedListener(TvEightDay);
@@ -1138,7 +1123,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProNineDay.getText().toString();
                         spUtils.put(context, "configNineDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexNineDay.addTextChangedListener(TvNineDay);
@@ -1180,7 +1164,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProTenDay.getText().toString();
                         spUtils.put(context, "configTenDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexTenDay.addTextChangedListener(TvTenDay);
@@ -1222,7 +1205,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProElevenDay.getText().toString();
                         spUtils.put(context, "configElevenDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexElevenDay.addTextChangedListener(TvElevenDay);
@@ -1264,7 +1246,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProTwelveDay.getText().toString();
                         spUtils.put(context, "configTwelveDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexTwelveDay.addTextChangedListener(TvTwelveDay);
@@ -1306,7 +1287,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProThirteenDay.getText().toString();
                         spUtils.put(context, "configThirteenDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexThirteenDay.addTextChangedListener(TvThirteenDay);
@@ -1348,7 +1328,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProFourteenDay.getText().toString();
                         spUtils.put(context, "configFourteenDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexFourteenDay.addTextChangedListener(TvFourteenDay);
@@ -1390,7 +1369,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProFifteenDay.getText().toString();
                         spUtils.put(context, "configFifteenDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexFifteenDay.addTextChangedListener(TvFifteenDay);
@@ -1432,7 +1410,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProSixteenDay.getText().toString();
                         spUtils.put(context, "configSixteenDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexSixteenDay.addTextChangedListener(TvSixteenDay);
@@ -1474,7 +1451,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProSeventeenDay.getText().toString();
                         spUtils.put(context, "configSeventeenDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexSeventeenDay.addTextChangedListener(TvSeventeenDay);
@@ -1516,7 +1492,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProEighteenDay.getText().toString();
                         spUtils.put(context, "configEighteenDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexEighteenDay.addTextChangedListener(TvEighteenDay);
@@ -1558,7 +1533,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProNineteenDay.getText().toString();
                         spUtils.put(context, "configNineteenDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexNineteenDay.addTextChangedListener(TvNineteenDay);
@@ -1600,7 +1574,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProTwentyDay.getText().toString();
                         spUtils.put(context, "configTwentyDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexTwentyDay.addTextChangedListener(TvTwentyDay);
@@ -1642,7 +1615,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProTwentyOneDay.getText().toString();
                         spUtils.put(context, "configTwentyOneDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexTwentyOneDay.addTextChangedListener(TvTwentyOneDay);
@@ -1684,7 +1656,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProTwentyTwoDay.getText().toString();
                         spUtils.put(context, "configTwentyTwoDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexTwentyTwoDay.addTextChangedListener(TvTwentyTwoDay);
@@ -1726,7 +1697,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProTwentyThreeDay.getText().toString();
                         spUtils.put(context, "configTwentyThreeDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexTwentyThreeDay.addTextChangedListener(TvTwentyThreeDay);
@@ -1768,7 +1738,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProTwentyForeDay.getText().toString();
                         spUtils.put(context, "configTwentyForeDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexTwentyForeDay.addTextChangedListener(TvTwentyForeDay);
@@ -1810,7 +1779,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProTwentyFiveDay.getText().toString();
                         spUtils.put(context, "configTwentyFiveDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexTwentyFiveDay.addTextChangedListener(TvTwentyFiveDay);
@@ -1852,7 +1820,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProTwentySixDay.getText().toString();
                         spUtils.put(context, "configTwentySixDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexTwentySixDay.addTextChangedListener(TvTwentySixDay);
@@ -1894,7 +1861,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProTwentySevenDay.getText().toString();
                         spUtils.put(context, "configTwentySevenDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexTwentySevenDay.addTextChangedListener(TvTwentySevenDay);
@@ -1936,7 +1902,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProTwentyEightDay.getText().toString();
                         spUtils.put(context, "configTwentyEightDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexTwentyEightDay.addTextChangedListener(TvTwentyEightDay);
@@ -1978,7 +1943,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProTwentyNineDay.getText().toString();
                         spUtils.put(context, "configTwentyNineDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexTwentyNineDay.addTextChangedListener(TvTwentyNineDay);
@@ -2020,7 +1984,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProThirtyDay.getText().toString();
                         spUtils.put(context, "configThirtyDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexThirtyDay.addTextChangedListener(TvThirtyDay);
@@ -2062,7 +2025,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProThirtyOneDay.getText().toString();
                         spUtils.put(context, "configThirtyOneDay", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexThirtyOneDay.addTextChangedListener(TvThirtyOneDay);
@@ -2103,7 +2065,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         Log.d(TAG, "afterTextChanged");
                         String proitem = viewHolder.tvProRemarks.getText().toString();
                         spUtils.put(context, "configRemarks", proitem);
-                        ToastUtils.ShowToastMessage(proitem, context);
                     }
                 };
                 editTexRemarks.addTextChangedListener(TvRemarks);

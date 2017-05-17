@@ -1,8 +1,10 @@
 package com.daoran.newfactory.onefactory.activity.work.production;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -405,7 +407,6 @@ public class ProductionActivity extends BaseFrangmentActivity
      */
     private void setSave() {
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this);
             String saveurl = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
             sp = this.getSharedPreferences("my_sp", 0);
             String proid = sp.getString("proadapterid", "");
@@ -570,94 +571,107 @@ public class ProductionActivity extends BaseFrangmentActivity
             String urlid = sp.getString("prouriid", "");
             ProducationSaveBean saveBean = new ProducationSaveBean();
             if (urlid == proid || urlid.equals(proid)) {
-                saveBean.setID(Integer.parseInt(proid));
-                saveBean.setSalesid(Integer.parseInt(salesid));
-                saveBean.setItem(null);
-                saveBean.setPrddocumentary(null);
-                saveBean.setSubfactory(null);
-                saveBean.setSubfactoryTeams(proColumnTitle);
-                saveBean.setWorkingProcedure(proProcedureTitle);
-                saveBean.setWorkers(productionOthers);
-                saveBean.setPqty(null);
-                saveBean.setProdcol(null);
-                saveBean.setTaskqty(productionTaskNumber);
-                saveBean.setMdl(null);
-                saveBean.setFactcutqty(null);
-                saveBean.setLastMonQty(productionCompletedLastMonth);
-                saveBean.setSumCompletedQty(null);
-                saveBean.setLeftQty(null);
-                saveBean.setPrdstatus(proPrdstatusTitle);
-                saveBean.setYear(null);
-                saveBean.setMonth(productionMonth);
-                saveBean.setDay1(productionOneDay);
-                saveBean.setDay2(productionTwoDay);
-                saveBean.setDay3(productionThreeDay);
-                saveBean.setDay4(productionForeDay);
-                saveBean.setDay5(productionFiveDay);
-                saveBean.setDay6(productionSixDay);
-                saveBean.setDay7(productionSevenDay);
-                saveBean.setDay8(productionEightDay);
-                saveBean.setDay9(productionNineDay);
-                saveBean.setDay10(productionTenDay);
-                saveBean.setDay11(productionElevenDay);
-                saveBean.setDay12(productionTwelveDay);
-                saveBean.setDay13(productionThirteenDay);
-                saveBean.setDay14(productionFourteenDay);
-                saveBean.setDay15(productionFifteenDay);
-                saveBean.setDay16(productionSixteenDay);
-                saveBean.setDay17(productionSeventeenDay);
-                saveBean.setDay18(productionEighteenDay);
-                saveBean.setDay19(productionNineteenDay);
-                saveBean.setDay20(productionTwentyDay);
-                saveBean.setDay21(productionTwentyOneDay);
-                saveBean.setDay22(productionTwentyTwoDay);
-                saveBean.setDay23(productionTwentyThreeDay);
-                saveBean.setDay24(productionTwentyForeDay);
-                saveBean.setDay25(productionTwentyFiveDay);
-                saveBean.setDay26(productionTwentySixDay);
-                saveBean.setDay27(productionTwentySevenDay);
-                saveBean.setDay28(productionTwentyEightDay);
-                saveBean.setDay29(productionTwentyNineDay);
-                saveBean.setDay30(productionThirtyDay);
-                saveBean.setDay31(productionThirtyOneDay);
-                saveBean.setMemo(productionRemarks);
-                saveBean.setRecorder(null);
-                saveBean.setRecordat(null);
-                saveBeen.add(saveBean);
-                String detailb = gson.toJson(saveBeen);
-                OkHttpUtils.postString().
-                        url(saveurl)
-                        .content(detailb)
-                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                e.printStackTrace();
-                            }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                System.out.print(response);
-                                String ression = StringUtil.sideTrim(response, "\"");
-                                System.out.print(ression);
-                                int resindex = Integer.parseInt(ression);
-                                if (resindex > 3) {
-                                    ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
-                                    setData();
-                                    ResponseDialog.closeLoading();
-                                } else if (ression == "3" || ression.equals("3")) {
-                                    ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
-                                    ResponseDialog.closeLoading();
-                                } else if (ression == "4" || ression.equals("4")) {
-                                    ToastUtils.ShowToastMessage("数据错误，请重试", ProductionActivity.this);
-                                    ResponseDialog.closeLoading();
-                                } else {
-                                    ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
-                                    ResponseDialog.closeLoading();
+                if(!proid.equals("")){
+                    ResponseDialog.showLoading(this);
+                    saveBean.setID(Integer.parseInt(proid));
+                    saveBean.setSalesid(Integer.parseInt(salesid));
+                    saveBean.setItem(null);
+                    saveBean.setPrddocumentary(null);
+                    saveBean.setSubfactory(null);
+                    saveBean.setSubfactoryTeams(proColumnTitle);
+                    saveBean.setWorkingProcedure(proProcedureTitle);
+                    saveBean.setWorkers(productionOthers);
+                    saveBean.setPqty(null);
+                    saveBean.setProdcol(null);
+                    saveBean.setTaskqty(productionTaskNumber);
+                    saveBean.setMdl(null);
+                    saveBean.setFactcutqty(null);
+                    saveBean.setLastMonQty(productionCompletedLastMonth);
+                    saveBean.setSumCompletedQty(null);
+                    saveBean.setLeftQty(null);
+                    saveBean.setPrdstatus(proPrdstatusTitle);
+                    saveBean.setYear(null);
+                    saveBean.setMonth(productionMonth);
+                    saveBean.setDay1(productionOneDay);
+                    saveBean.setDay2(productionTwoDay);
+                    saveBean.setDay3(productionThreeDay);
+                    saveBean.setDay4(productionForeDay);
+                    saveBean.setDay5(productionFiveDay);
+                    saveBean.setDay6(productionSixDay);
+                    saveBean.setDay7(productionSevenDay);
+                    saveBean.setDay8(productionEightDay);
+                    saveBean.setDay9(productionNineDay);
+                    saveBean.setDay10(productionTenDay);
+                    saveBean.setDay11(productionElevenDay);
+                    saveBean.setDay12(productionTwelveDay);
+                    saveBean.setDay13(productionThirteenDay);
+                    saveBean.setDay14(productionFourteenDay);
+                    saveBean.setDay15(productionFifteenDay);
+                    saveBean.setDay16(productionSixteenDay);
+                    saveBean.setDay17(productionSeventeenDay);
+                    saveBean.setDay18(productionEighteenDay);
+                    saveBean.setDay19(productionNineteenDay);
+                    saveBean.setDay20(productionTwentyDay);
+                    saveBean.setDay21(productionTwentyOneDay);
+                    saveBean.setDay22(productionTwentyTwoDay);
+                    saveBean.setDay23(productionTwentyThreeDay);
+                    saveBean.setDay24(productionTwentyForeDay);
+                    saveBean.setDay25(productionTwentyFiveDay);
+                    saveBean.setDay26(productionTwentySixDay);
+                    saveBean.setDay27(productionTwentySevenDay);
+                    saveBean.setDay28(productionTwentyEightDay);
+                    saveBean.setDay29(productionTwentyNineDay);
+                    saveBean.setDay30(productionThirtyDay);
+                    saveBean.setDay31(productionThirtyOneDay);
+                    saveBean.setMemo(productionRemarks);
+                    saveBean.setRecorder(null);
+                    saveBean.setRecordat(null);
+                    saveBeen.add(saveBean);
+                    String detailb = gson.toJson(saveBeen);
+                    OkHttpUtils.postString().
+                            url(saveurl)
+                            .content(detailb)
+                            .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                            .build()
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onError(Call call, Exception e, int id) {
+                                    e.printStackTrace();
                                 }
-                            }
-                        });
+
+                                @Override
+                                public void onResponse(String response, int id) {
+                                    System.out.print(response);
+                                    String ression = StringUtil.sideTrim(response, "\"");
+                                    System.out.print(ression);
+                                    int resindex = Integer.parseInt(ression);
+                                    if (resindex > 3) {
+                                        ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
+                                        setData();
+                                        ResponseDialog.closeLoading();
+                                    } else if (ression == "3" || ression.equals("3")) {
+                                        ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
+                                        ResponseDialog.closeLoading();
+                                    } else if (ression == "4" || ression.equals("4")) {
+                                        ToastUtils.ShowToastMessage("数据错误，请重试", ProductionActivity.this);
+                                        ResponseDialog.closeLoading();
+                                    } else {
+                                        ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
+                                        ResponseDialog.closeLoading();
+                                    }
+                                }
+                            });
+                }else{
+                    new AlertDialog.Builder(ProductionActivity.this).setTitle("提示信息")
+                            .setMessage("请修改数据，再进行保存")
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();//相应事件
+                }
+
             } else {
                 ToastUtils.ShowToastMessage("请选择当前行，再进行修改保存",
                         ProductionActivity.this);
@@ -673,7 +687,6 @@ public class ProductionActivity extends BaseFrangmentActivity
     private void setCopy() {
         String strcopy = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this);
             sp = this.getSharedPreferences("my_sp", 0);
             String itemid = "";
             String prosalesid = sp.getString("prosalesid", "");
@@ -697,7 +710,6 @@ public class ProductionActivity extends BaseFrangmentActivity
             String copyRemarks = sp.getString("copyRemarks", "");
             String copyRecorder = sp.getString("copyRecorder", "");
             String copyRecordat = sp.getString("copyRecordat", "");
-
             Gson gson = new Gson();
             ProducationConfigSaveBean saveBean = new ProducationConfigSaveBean();
             saveBean.setID(itemid);
@@ -756,43 +768,55 @@ public class ProductionActivity extends BaseFrangmentActivity
             configSaveBeen.add(saveBean);
             String configsave = gson.toJson(configSaveBeen);
             String dateee = configsave.replace("\"\"", "null");
-            OkHttpUtils.postString()
-                    .url(strcopy)
-                    .content(dateee)
-                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            e.printStackTrace();
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-                            System.out.print(response);
-                            String ression = StringUtil.sideTrim(response, "\"");
-                            System.out.print(ression);
-                            int resindex = Integer.parseInt(ression);
-                            if (resindex > 4) {
-                                ToastUtils.ShowToastMessage("保存成功",
-                                        ProductionActivity.this);
-                                setData();
-                                ResponseDialog.closeLoading();
-                            } else if (resindex == 3) {
-                                ToastUtils.ShowToastMessage("保存失败",
-                                        ProductionActivity.this);
-                                ResponseDialog.closeLoading();
-                            } else if (resindex == 4) {
-                                ToastUtils.ShowToastMessage("数据错误，请重试",
-                                        ProductionActivity.this);
-                                ResponseDialog.closeLoading();
-                            } else {
-                                ToastUtils.ShowToastMessage("未知错误，请联系管理员",
-                                        ProductionActivity.this);
-                                ResponseDialog.closeLoading();
+            if(!itemid.equals("")){
+                ResponseDialog.showLoading(this);
+                OkHttpUtils.postString()
+                        .url(strcopy)
+                        .content(dateee)
+                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                e.printStackTrace();
                             }
-                        }
-                    });
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                System.out.print(response);
+                                String ression = StringUtil.sideTrim(response, "\"");
+                                System.out.print(ression);
+                                int resindex = Integer.parseInt(ression);
+                                if (resindex > 4) {
+                                    ToastUtils.ShowToastMessage("保存成功",
+                                            ProductionActivity.this);
+                                    setData();
+                                    ResponseDialog.closeLoading();
+                                } else if (resindex == 3) {
+                                    ToastUtils.ShowToastMessage("保存失败",
+                                            ProductionActivity.this);
+                                    ResponseDialog.closeLoading();
+                                } else if (resindex == 4) {
+                                    ToastUtils.ShowToastMessage("数据错误，请重试",
+                                            ProductionActivity.this);
+                                    ResponseDialog.closeLoading();
+                                } else {
+                                    ToastUtils.ShowToastMessage("未知错误，请联系管理员",
+                                            ProductionActivity.this);
+                                    ResponseDialog.closeLoading();
+                                }
+                            }
+                        });
+            }else{
+                new AlertDialog.Builder(ProductionActivity.this).setTitle("提示信息")
+                        .setMessage("请选择款号，再进行复制保存")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();//相应事件
+            }
         } else {
             ToastUtils.ShowToastMessage(R.string.noHttp, ProductionActivity.this);
         }
