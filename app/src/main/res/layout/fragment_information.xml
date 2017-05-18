@@ -19,24 +19,28 @@
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_60sp" />
     </android.support.v7.widget.Toolbar>
-
-    <LinearLayout
+    <com.daoran.newfactory.onefactory.view.listview.BounceScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/null_comm_img"/>
-        <TextView
-            android:id="@+id/tv_visibi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:layout_marginTop="30dp"
-            android:textSize="15sp"
-            android:textColor="#fff"/>
-    </LinearLayout>
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/null_comm_img"/>
+            <TextView
+                android:id="@+id/tv_visibi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_marginTop="30dp"
+                android:textSize="15sp"
+                android:textColor="#fff"/>
+        </LinearLayout>
+    </com.daoran.newfactory.onefactory.view.listview.BounceScrollView>
 </LinearLayout>

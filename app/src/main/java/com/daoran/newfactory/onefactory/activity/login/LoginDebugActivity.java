@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.daoran.newfactory.onefactory.R;
@@ -25,8 +26,10 @@ import com.daoran.newfactory.onefactory.util.Http.RequestParams;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SharedHelper;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.view.CropSquareTransformation;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
 
@@ -48,6 +51,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
     private CheckBox checkBoxPw, checkboxopen;
     private SharedPreferences sp;
     private String userNameValue, passwordValue;
+    private ImageView image_login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +94,17 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
         etPassword = (EditText) findViewById(R.id.etPassword);
         checkBoxPw = (CheckBox) findViewById(R.id.checkBoxPw);
         checkboxopen = (CheckBox) findViewById(R.id.checkboxopen);
+        image_login = (ImageView) findViewById(R.id.image_login);
     }
 
     private void initViews() {
         setEditTextInhibitInputSpeChat(etUsername);
         setEditTextInhibitInputSpeChat(etPassword);
+        Picasso.with(LoginDebugActivity.this)
+                .load(R.mipmap.daoran)
+                .error(R.mipmap.daoran)
+                .transform(new CropSquareTransformation())
+                .into(image_login);
     }
 
     /**

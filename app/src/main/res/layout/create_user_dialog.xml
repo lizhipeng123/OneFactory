@@ -50,10 +50,11 @@
             <Spinner
                 android:id="@+id/spinnerAudit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="37dp"
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:background="@drawable/shape_text_sql_boild"
                 android:layout_marginLeft="@dimen/dimen_50"
                 android:entries="@array/languages"/>
         </LinearLayout>

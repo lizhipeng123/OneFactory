@@ -98,6 +98,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         ivSearch.setOnClickListener(this);
         btnSignPage.setOnClickListener(this);
         etSqlDetail.setOnClickListener(this);
+        etSqlDetail.setSelection(etSqlDetail.getText().length());
     }
 
     @Override
@@ -162,7 +163,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                 Gson gson = new Gson();
                                 signBean = gson.fromJson(response, SignDetailBean.class);
                                 mListData = signBean.getData();
-                                if(signBean.getTotalCount()!=0){
+                                if (signBean.getTotalCount() != 0) {
                                     ll_visibi.setVisibility(View.GONE);
                                     scroll_content.setVisibility(View.VISIBLE);
                                     pageCount = signBean.getTotalCount();
@@ -174,7 +175,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                     detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
                                     mData.setAdapter(detailAdapter);
                                     detailAdapter.notifyDataSetChanged();
-                                }else{
+                                } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
                                     scroll_content.setVisibility(View.GONE);
                                     tv_visibi.setText("没有更多信息");
@@ -200,7 +201,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
      */
     private void setPageSignDetail() {
         String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
-        sp = SignDetailActivity.this.getSharedPreferences("my_sp",0);
+        sp = SignDetailActivity.this.getSharedPreferences("my_sp", 0);
         String name = sp.getString("name", "");
         String datetime = sp.getString("datetimesign", "");
         String endtime = sp.getString("endtimesign", "");
@@ -232,7 +233,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                 Gson gson = new Gson();
                                 signBean = gson.fromJson(response, SignDetailBean.class);
                                 mListData = signBean.getData();
-                                if(signBean.getTotalCount()!=0){
+                                if (signBean.getTotalCount() != 0) {
                                     ll_visibi.setVisibility(View.GONE);
                                     scroll_content.setVisibility(View.VISIBLE);
                                     pageCount = signBean.getTotalCount();
@@ -244,7 +245,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                     detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
                                     mData.setAdapter(detailAdapter);
                                     detailAdapter.notifyDataSetChanged();
-                                }else{
+                                } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
                                     scroll_content.setVisibility(View.GONE);
                                     tv_visibi.setText("没有更多信息");

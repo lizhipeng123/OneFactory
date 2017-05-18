@@ -34,17 +34,24 @@
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
-    <LinearLayout
+    <com.daoran.newfactory.onefactory.view.listview.BounceScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:scrollbars="none">
 
-        <com.daoran.newfactory.onefactory.view.ScrollGridView
-            android:id="@+id/sgv_gridview"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:numColumns="2"
-            android:stretchMode="columnWidth" />
-    </LinearLayout>
+            android:orientation="vertical">
+
+            <com.daoran.newfactory.onefactory.view.ScrollGridView
+                android:id="@+id/sgv_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:numColumns="2"
+                android:stretchMode="columnWidth" />
+        </LinearLayout>
+    </com.daoran.newfactory.onefactory.view.listview.BounceScrollView>
+
 </LinearLayout>
