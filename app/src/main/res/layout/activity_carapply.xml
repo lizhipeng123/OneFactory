@@ -11,14 +11,29 @@
         android:background="@color/white"
         android:minHeight="?attr/actionBarSize">
 
-        <TextView
-            android:id="@+id/tvTbarTitle"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="出车单展示"
-            android:textColor="@color/black"
-            android:textSize="@dimen/dimen_60sp" />
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:src="@mipmap/title_back_gray" />
+            <TextView
+                android:id="@+id/tvTbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_centerInParent="true"
+                android:text="出车单展示"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_60sp" />
+        </RelativeLayout>
+
     </android.support.v7.widget.Toolbar>
 
     <ScrollView

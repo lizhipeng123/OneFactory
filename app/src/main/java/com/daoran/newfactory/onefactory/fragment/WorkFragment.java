@@ -2,7 +2,6 @@ package com.daoran.newfactory.onefactory.fragment;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;

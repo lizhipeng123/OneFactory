@@ -125,7 +125,13 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rlAgainLogin:
-                startActivity(new Intent(getActivity(), LoginDebugActivity.class));
+                AlertDialog dialog = new AlertDialog.Builder(mactivity).create();
+                dialog.setTitle("系统提示");
+                dialog.setMessage("确定重新登录吗");
+                dialog.setButton("确定",listener);
+                dialog.setButton2("取消",listener);
+                dialog.show();
+
                 break;
             case R.id.rlEditionUpdate:
 
@@ -135,6 +141,23 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+
+    /**
+     * 监听对话框里面的button点击事件
+     */
+    DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case AlertDialog.BUTTON_POSITIVE:// "确认"按钮退出程序
+                    startActivity(new Intent(getActivity(), LoginDebugActivity.class));
+                    break;
+                case AlertDialog.BUTTON_NEGATIVE:// "取消"第二个按钮取消对话框
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     /**
      * 获取本机版本号
@@ -158,7 +181,8 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         getCurrentVersion();
         String strversion = HttpUrl.debugoneUrl + "AppVersion/GetAppVersion";
         if (NetWork.isNetWorkAvailable(mactivity)) {
-            OkHttpUtils.get().url(strversion)
+            OkHttpUtils.get()
+                    .url(strversion)
                     .build()
                     .execute(new StringCallback() {
                         @Override

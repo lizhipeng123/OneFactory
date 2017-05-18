@@ -1,1 +1,1 @@
-include ':app', ':myrecycleview', ':epubReader', ':youkuPlayerOpenSDK', ':appp', ':mylibrary'
+include ':app', ':myrecycleview', ':epubReader', ':youkuPlayerOpenSDK', ':appp', ':mylibrary', ':zz-excel-creator', ':myapplication', ':mylibraryone'

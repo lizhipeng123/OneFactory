@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -54,6 +55,7 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
     private List<CarDetailBean> carDetailBeen = new ArrayList<CarDetailBean>();
     private CarDetailBean carDetailBean;
     private String[] attr;
+    private ImageView ivBack;
     private TextView tvCarcode,//编号
             tvCarrecorder,//申请人
             tvCarroad,//地点
@@ -74,6 +76,9 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
         setCarNumberBind();
     }
 
+    /**
+     * 实例化控件
+     */
     private void getViews() {
         id = getIntent().getIntExtra("id", 0);
         tbarCarapply = (Toolbar) findViewById(R.id.tbarCarapply);
@@ -88,22 +93,19 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
         tvCarreason = (TextView) findViewById(R.id.tvCarreason);
         tvCardepartureBdt = (TextView) findViewById(R.id.tvCardepartureBdt);
         tvCardepartureEdt = (TextView) findViewById(R.id.tvCardepartureEdt);
+        ivBack = (ImageView) findViewById(R.id.ivBack);
     }
 
+    /**
+     * 操作控件
+     */
     private void initViews() {
-        tbarCarapply.setNavigationIcon(R.mipmap.button_cross);
-        tbarCarapply.setTitle("");
         etStartDataClick.setOnClickListener(this);
         etEndDataClick.setOnClickListener(this);
+        ivBack.setOnClickListener(this);
     }
 
     private void setListener() {
-        tbarCarapply.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
     private void showEditClickPopupWindow() {
@@ -258,6 +260,9 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
         switch (v.getId()) {
             case R.id.etStartDataClick:
                 showEditClickPopupWindow();
+                break;
+            case R.id.ivBack:
+                finish();
                 break;
         }
     }

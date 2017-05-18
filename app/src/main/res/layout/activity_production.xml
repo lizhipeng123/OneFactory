@@ -659,7 +659,7 @@
                         android:background="#cccccc" />
 
                     <TextView
-                        android:layout_width="100dp"
+                        android:layout_width="170dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:gravity="center"
