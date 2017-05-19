@@ -2,12 +2,16 @@ package com.daoran.newfactory.onefactory.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -18,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,6 +36,7 @@ import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.util.file.DataCleanManager;
 import com.daoran.newfactory.onefactory.util.settings.Comfig;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -69,6 +75,10 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     private TextView mProgressText;
     protected boolean interceptFlag;
     private AlertDialog downloadDialog;
+    private TextView tv_clean;
+    private RelativeLayout rlClean;
+    private RelativeLayout rlwifi;
+    private TextView tvwifimanager,tvwifissid;
 
     private static final int DOWN_NOSDCARD = 0;
     private static final int DOWN_UPDATE = 1;
@@ -83,6 +93,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     protected String apkFilePath;
     protected String tmpFilePath;
 
+    private Dialog progressDialog;
     private SharedPreferences sp;
     private SPUtils spUtils;
 
@@ -110,6 +121,13 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         rlAgainLogin = (RelativeLayout) view.findViewById(R.id.rlAgainLogin);
         rlEditionUpdate = (RelativeLayout) view.findViewById(R.id.rlEditionUpdate);
         tvVersion = (TextView) view.findViewById(R.id.tvVersion);
+        rlClean = (RelativeLayout) view.findViewById(R.id.rlClean);
+        tv_clean = (TextView) view.findViewById(R.id.tv_clean);
+        rlwifi = (RelativeLayout) view.findViewById(R.id.rlwifi);
+        tvwifimanager = (TextView) view.findViewById(R.id.tvwifimanager);
+        tvwifissid = (TextView) view.findViewById(R.id.tvwifissid);
+        String cleanmana = getAppCacheSize();
+        tv_clean.setText(cleanmana);
     }
 
     /**
@@ -119,6 +137,8 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         rlAgainLogin.setOnClickListener(this);
         rlEditionUpdate.setOnClickListener(this);
         tvVersion.setOnClickListener(this);
+        rlClean.setOnClickListener(this);
+        rlwifi.setOnClickListener(this);
     }
 
     @Override
@@ -131,13 +151,23 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 dialog.setButton("确定",listener);
                 dialog.setButton2("取消",listener);
                 dialog.show();
-
                 break;
             case R.id.rlEditionUpdate:
 
                 break;
             case R.id.tvVersion:
                 checkAppVersion(true);
+                break;
+            case R.id.rlClean:
+                AlertDialog dialog1 = new AlertDialog.Builder(mactivity).create();
+                dialog1.setTitle("系统提示");
+                dialog1.setMessage("确定清除缓存吗");
+                dialog1.setButton("确定",listenerClean);
+                dialog1.setButton2("取消",listenerClean);
+                dialog1.show();
+                break;
+            case R.id.rlwifi:
+                startWifi();
                 break;
         }
     }
@@ -152,6 +182,21 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                     startActivity(new Intent(getActivity(), LoginDebugActivity.class));
                     break;
                 case AlertDialog.BUTTON_NEGATIVE:// "取消"第二个按钮取消对话框
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+    DialogInterface.OnClickListener listenerClean = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which){
+                case AlertDialog.BUTTON_POSITIVE://确定
+                    showClearDialog();
+                    break;
+                case AlertDialog.BUTTON_NEGATIVE://取消
                     break;
                 default:
                     break;
@@ -437,6 +482,14 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     };
     private Thread downLoadThread;
 
+    private void startWifi(){
+        WifiManager wifiManager = (WifiManager) mactivity.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        String infossid = wifiInfo.getSSID();
+        tvwifimanager.setText(wifiManager.toString());
+        tvwifissid.setText(infossid);
+    }
+
     /**
      * 下载apk
      */
@@ -459,4 +512,50 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         startActivity(i);
     }
 
+    /**
+     * 检测缓存大小
+     * @return
+     */
+    private String getAppCacheSize() {
+        try {
+            long cacheSize = DataCleanManager.getFolderSize(mactivity.getApplicationContext().getCacheDir()) +
+                    DataCleanManager.getFolderSize(mactivity.getApplicationContext().getExternalCacheDir());
+            return DataCleanManager.getFormatSize(cacheSize);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "--B";
+    }
+
+    /**
+     * 清除缓存
+     */
+    private void showClearDialog() {
+        progressDialog = new Dialog(mactivity, R.style.CustomProgressDialog);
+        progressDialog.setContentView(R.layout.set_clearcache_dialog);
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        TextView msg = (TextView) progressDialog.findViewById(R.id.message);
+        Button cancelButton = (Button) progressDialog.findViewById(R.id.cancelButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressDialog.dismiss();
+            }
+        });
+        msg.setText("清理中，请稍后…");
+        progressDialog.show();
+        Boolean b1 = DataCleanManager.deleteDir(mactivity.getApplicationContext().getCacheDir());
+        Boolean b2 = DataCleanManager.deleteDir(mactivity.getApplicationContext().getExternalCacheDir());
+        if (b1 && b2) {
+            final String cachesize = getAppCacheSize();
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    tv_clean.setText(cachesize);
+                    progressDialog.dismiss();
+                }
+            }, 1000);
+        }
+    }
 }

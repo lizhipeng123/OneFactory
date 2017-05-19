@@ -206,6 +206,19 @@ public class ProductionNewlyBuildActivity
         }
     }
 
+    DialogInterface.OnClickListener listenerwifi = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case android.app.AlertDialog.BUTTON_POSITIVE://确定
+                    finish();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
     /**
      * 根据工序及款号查找信息
      */

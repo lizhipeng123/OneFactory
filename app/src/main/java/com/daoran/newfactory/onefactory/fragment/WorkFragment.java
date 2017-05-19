@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +54,8 @@ public class WorkFragment extends Fragment {
     private String workitemview;
     private String sl;
 
+    private DrawerFragment drawerFragment;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +92,15 @@ public class WorkFragment extends Fragment {
         String name = bundle.getString("u_name");
         spUtils.put(mactivity, "u_name", name);
         idworkname.setText(name);
+        /*需要的时候可以加上*/
+//        drawerFragment = (DrawerFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+//        drawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) getActivity().findViewById(R.id.activity_main));
+        idworkname.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                drawerFragment.openDeawer();
+            }
+        });
         spUtils.put(mactivity, "usernamerecoder", name);
     }
 

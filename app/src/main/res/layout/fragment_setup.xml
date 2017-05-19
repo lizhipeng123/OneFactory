@@ -83,6 +83,32 @@
                 android:layout_height="1dip"
                 android:background="#FF909090"/>
             <RelativeLayout
+                android:id="@+id/rlClean"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dimen_30"
+                android:paddingTop="@dimen/dimen_30">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="清除缓存"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_60sp" />
+                <TextView
+                    android:id="@+id/tv_clean"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:textSize="@dimen/dimen_50sp"
+                    android:text=""/>
+            </RelativeLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="#FF909090"/>
+            <RelativeLayout
                 android:id="@+id/rlAgainLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -100,6 +126,42 @@
                 android:layout_width="fill_parent"
                 android:layout_height="1dip"
                 android:background="#FF909090"/>
+            <RelativeLayout
+                android:id="@+id/rlwifi"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dimen_30"
+                android:paddingTop="@dimen/dimen_30">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="wifi"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_60sp" />
+            </RelativeLayout>
+
+
+
+            <View
+                android:visibility="gone"
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="#FF909090"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvwifimanager"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_below="@+id/tvwifimanager"
+                    android:id="@+id/tvwifissid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
         </LinearLayout>
     </com.daoran.newfactory.onefactory.view.listview.BounceScrollView>
 

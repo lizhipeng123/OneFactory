@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.GetPhoneMenuBean;
 import com.daoran.newfactory.onefactory.bean.TabHostBean;
+import com.daoran.newfactory.onefactory.fragment.DrawerFragment;
 import com.daoran.newfactory.onefactory.fragment.InformationFragment;
 import com.daoran.newfactory.onefactory.fragment.OfficeFragment;
 import com.daoran.newfactory.onefactory.fragment.SetupFragment;
@@ -38,6 +41,8 @@ public class MainActivity extends BaseFrangmentActivity {
     private SharedPreferences sp;
     private SPUtils spUtils;
     private GetPhoneMenuBean getPhoneMenuBeen;
+    private DrawerFragment drawerFragment;
+    private Fragment navigation_drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,10 +97,18 @@ public class MainActivity extends BaseFrangmentActivity {
     };
 
     private void getViews() {
-        TabHostBean tab_work = new TabHostBean(R.string.work, R.drawable.selector_icon_work, WorkFragment.class);
-        TabHostBean tab_office = new TabHostBean(R.string.office, R.drawable.selector_icon_message, OfficeFragment.class);
-        TabHostBean tab_information = new TabHostBean(R.string.information, R.drawable.selector_icon_people, InformationFragment.class);
-        TabHostBean tab_setup = new TabHostBean(R.string.setup, R.drawable.selector_icon_my, SetupFragment.class);
+//        drawerFragment = (DrawerFragment) getSupportFragmentManager().
+//                findFragmentById(R.id.navigation_drawer);
+//        drawerFragment.setUp(R.id.navigation_drawer,
+//                (DrawerLayout) findViewById(R.id.activity_main));
+        TabHostBean tab_work = new TabHostBean(R.string.work,
+                R.drawable.selector_icon_work, WorkFragment.class);
+        TabHostBean tab_office = new TabHostBean(R.string.office,
+                R.drawable.selector_icon_message, OfficeFragment.class);
+        TabHostBean tab_information = new TabHostBean(R.string.information,
+                R.drawable.selector_icon_people, InformationFragment.class);
+        TabHostBean tab_setup = new TabHostBean(R.string.setup,
+                R.drawable.selector_icon_my, SetupFragment.class);
         mTabs.add(tab_work);
         mTabs.add(tab_office);
         mTabs.add(tab_information);
@@ -115,7 +128,6 @@ public class MainActivity extends BaseFrangmentActivity {
         View view = mInflater.inflate(R.layout.tabitem_home, null);
         ImageView imageView = (ImageView) view.findViewById(R.id.tab_icon);
         imageView.setImageResource(bean.getIcon());
-
         TextView textView = (TextView) view.findViewById(R.id.tab_title);
         textView.setText(bean.getTitle());
         return view;

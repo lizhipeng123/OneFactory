@@ -1,7 +1,11 @@
 package com.daoran.newfactory.onefactory.activity.work.car;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.BaseAdapter;
@@ -89,57 +93,83 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
         String spinnerPosition = sp.getString("spinnerPosition", "");
         System.out.print(datetime);
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this);
-            OkHttpUtils
-                    .post()
-                    .url(sqlcar)
-                    .addParams("start", datetime)
-                    .addParams("endtime", endtime)
-                    .addParams("title", spinnerPosition)
-                    .addParams("pageNum", pageIndex + "0")
-                    .addParams("pageSize", "10")
-                    .build()
-                    .execute(new StringCallback() {
+//            /*检测是否为可用WiFi*/
+//            WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+//            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+//            String infossid = wifiInfo.getSSID();
+//            infossid = infossid.replace("\"", "");
+//            if (!infossid.equals("taoxinxi")) {
+//                android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(this).create();
+//                dialog.setTitle("系统提示");
+//                dialog.setMessage("当前WiFi为公共网络，运行请转到测试WiFi状态");
+//                dialog.setButton("确定", listenerwifi);
+//                dialog.show();
+//            } else {
+                ResponseDialog.showLoading(this);
+                OkHttpUtils
+                        .post()
+                        .url(sqlcar)
+                        .addParams("start", datetime)
+                        .addParams("endtime", endtime)
+                        .addParams("title", spinnerPosition)
+                        .addParams("pageNum", pageIndex + "0")
+                        .addParams("pageSize", "10")
+                        .build()
+                        .execute(new StringCallback() {
 
-                        @Override
-                        public void onBefore(Request request, int id) {
-                            super.onBefore(request, id);
-                        }
-
-                        @Override
-                        public void onAfter(int id) {
-                            super.onAfter(id);
-                        }
-
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            ToastUtils.ShowToastMessage("获取失败，请稍后再试", SqlcarApplyActivity.this);
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-                            try {
-                                System.out.print(response);
-                                SqlCarApplyBean carApplyBean =
-                                        new Gson().fromJson(response,
-                                                SqlCarApplyBean.class);
-                                ll_visibi.setVisibility(View.GONE);
-                                listView.setVisibility(View.VISIBLE);
-                                setListData(carApplyBean.getData());
-                                ResponseDialog.closeLoading();
-                            } catch (JsonSyntaxException e) {
-                                setListData(new ArrayList());
-                                ResponseDialog.closeLoading();
-                            } catch (Exception e) {
-                                setListData(new ArrayList());
-                                ResponseDialog.closeLoading();
+                            @Override
+                            public void onBefore(Request request, int id) {
+                                super.onBefore(request, id);
                             }
-                        }
-                    });
+
+                            @Override
+                            public void onAfter(int id) {
+                                super.onAfter(id);
+                            }
+
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                ToastUtils.ShowToastMessage("获取失败，请稍后再试", SqlcarApplyActivity.this);
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                try {
+                                    System.out.print(response);
+                                    SqlCarApplyBean carApplyBean =
+                                            new Gson().fromJson(response,
+                                                    SqlCarApplyBean.class);
+                                    ll_visibi.setVisibility(View.GONE);
+                                    listView.setVisibility(View.VISIBLE);
+                                    setListData(carApplyBean.getData());
+                                    ResponseDialog.closeLoading();
+                                } catch (JsonSyntaxException e) {
+                                    setListData(new ArrayList());
+                                    ResponseDialog.closeLoading();
+                                } catch (Exception e) {
+                                    setListData(new ArrayList());
+                                    ResponseDialog.closeLoading();
+                                }
+                            }
+                        });
+//            }
         } else {
             ToastUtils.ShowToastMessage(getString(R.string.noHttp), SqlcarApplyActivity.this);
         }
     }
+
+    DialogInterface.OnClickListener listenerwifi = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case android.app.AlertDialog.BUTTON_POSITIVE://确定
+                    finish();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onListItemClick(Object o) {

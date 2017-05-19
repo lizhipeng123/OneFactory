@@ -1,6 +1,11 @@
 package com.daoran.newfactory.onefactory.activity.work;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -139,62 +144,88 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         String datetime = sp.getString("datetimesign", "");
         String endtime = sp.getString("endtimesign", "");
         if (NetWork.isNetWorkAvailable(this)) {
-            OkHttpUtils
-                    .post()
-                    .url(str)
-                    .addParams("pageNum", "0")
-                    .addParams("pageSize", "20")
-                    .addParams("recorder", name)
-                    .addParams("recordat_start", datetime)
-                    .addParams("recordat_end", endtime)
-                    .addParams("recordplace", "")
-                    .addParams("memo", "")
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            e.printStackTrace();
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-                            System.out.print(response);
-                            try {
-                                Gson gson = new Gson();
-                                signBean = gson.fromJson(response, SignDetailBean.class);
-                                mListData = signBean.getData();
-                                if (signBean.getTotalCount() != 0) {
-                                    ll_visibi.setVisibility(View.GONE);
-                                    scroll_content.setVisibility(View.VISIBLE);
-                                    pageCount = signBean.getTotalCount();
-                                    spUtils.put(SignDetailActivity.this, "pageCount", pageCount);
-                                    System.out.print(pageCount);
-                                    String count = String.valueOf(pageCount / 20);
-                                    System.out.print(count);
-                                    tvSignPage.setText(count);
-                                    detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
-                                    mData.setAdapter(detailAdapter);
-                                    detailAdapter.notifyDataSetChanged();
-                                } else {
-                                    ll_visibi.setVisibility(View.VISIBLE);
-                                    scroll_content.setVisibility(View.GONE);
-                                    tv_visibi.setText("没有更多信息");
-                                }
-
-                                ResponseDialog.closeLoading();
-                            } catch (JsonSyntaxException e) {
-                                ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
-                                ResponseDialog.closeLoading();
-                            } catch (Exception e) {
+//             /*检测是否为可用WiFi*/
+//            WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+//            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+//            String infossid = wifiInfo.getSSID();
+//            infossid = infossid.replace("\"", "");
+//            if (!infossid.equals("taoxinxi")) {
+//                AlertDialog dialog = new AlertDialog.Builder(this).create();
+//                dialog.setTitle("系统提示");
+//                dialog.setMessage("当前WiFi为公共网络，运行请转到测试WiFi状态");
+//                dialog.setButton("确定", listenerwifi);
+//                dialog.show();
+//            } else {
+                ResponseDialog.showLoading(this);
+                OkHttpUtils
+                        .post()
+                        .url(str)
+                        .addParams("pageNum", "0")
+                        .addParams("pageSize", "20")
+                        .addParams("recorder", name)
+                        .addParams("recordat_start", datetime)
+                        .addParams("recordat_end", endtime)
+                        .addParams("recordplace", "")
+                        .addParams("memo", "")
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
                                 e.printStackTrace();
-                                ResponseDialog.closeLoading();
                             }
-                        }
-                    });
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                System.out.print(response);
+                                try {
+                                    Gson gson = new Gson();
+                                    signBean = gson.fromJson(response, SignDetailBean.class);
+                                    mListData = signBean.getData();
+                                    if (signBean.getTotalCount() != 0) {
+                                        ll_visibi.setVisibility(View.GONE);
+                                        scroll_content.setVisibility(View.VISIBLE);
+                                        pageCount = signBean.getTotalCount();
+                                        spUtils.put(SignDetailActivity.this, "pageCount", pageCount);
+                                        System.out.print(pageCount);
+                                        String count = String.valueOf(pageCount / 20);
+                                        System.out.print(count);
+                                        tvSignPage.setText(count);
+                                        detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
+                                        mData.setAdapter(detailAdapter);
+                                        detailAdapter.notifyDataSetChanged();
+                                    } else {
+                                        ll_visibi.setVisibility(View.VISIBLE);
+                                        scroll_content.setVisibility(View.GONE);
+                                        tv_visibi.setText("没有更多信息");
+                                    }
+                                    ResponseDialog.closeLoading();
+                                } catch (JsonSyntaxException e) {
+                                    ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
+                                    ResponseDialog.closeLoading();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    ResponseDialog.closeLoading();
+                                }
+                            }
+                        });
+//            }
         } else {
             ToastUtils.ShowToastMessage(R.string.disNetworking, SignDetailActivity.this);
         }
     }
+
+    DialogInterface.OnClickListener listenerwifi = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case AlertDialog.BUTTON_POSITIVE://确定
+                    finish();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     /**
      * 翻页查找
@@ -208,58 +239,71 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
         String index = String.valueOf(pageIndex - 1);
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this);
-            OkHttpUtils
-                    .post()
-                    .url(str)
-                    .addParams("pageNum", index)
-                    .addParams("pageSize", "20")
-                    .addParams("recorder", name)
-                    .addParams("recordat_start", datetime)
-                    .addParams("recordat_end", endtime)
-                    .addParams("recordplace", "")
-                    .addParams("memo", "")
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            e.printStackTrace();
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-                            System.out.print(response);
-                            try {
-                                Gson gson = new Gson();
-                                signBean = gson.fromJson(response, SignDetailBean.class);
-                                mListData = signBean.getData();
-                                if (signBean.getTotalCount() != 0) {
-                                    ll_visibi.setVisibility(View.GONE);
-                                    scroll_content.setVisibility(View.VISIBLE);
-                                    pageCount = signBean.getTotalCount();
-                                    spUtils.put(SignDetailActivity.this, "pagesqlCount", pageCount);
-                                    System.out.print(pageCount);
-                                    String count = String.valueOf(pageCount / 20);
-                                    System.out.print(count);
-                                    tvSignPage.setText(count);
-                                    detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
-                                    mData.setAdapter(detailAdapter);
-                                    detailAdapter.notifyDataSetChanged();
-                                } else {
-                                    ll_visibi.setVisibility(View.VISIBLE);
-                                    scroll_content.setVisibility(View.GONE);
-                                    tv_visibi.setText("没有更多信息");
-                                }
-                                ResponseDialog.closeLoading();
-                            } catch (JsonSyntaxException e) {
-                                ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
-                                ResponseDialog.closeLoading();
-                            } catch (Exception e) {
+//             /*检测是否为可用WiFi*/
+//            WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+//            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+//            String infossid = wifiInfo.getSSID();
+//            infossid = infossid.replace("\"", "");
+//            if (!infossid.equals("taoxinxi")) {
+//                AlertDialog dialog = new AlertDialog.Builder(this).create();
+//                dialog.setTitle("系统提示");
+//                dialog.setMessage("当前WiFi为公共网络，运行请转到测试WiFi状态");
+//                dialog.setButton("确定", listenerwifi);
+//                dialog.show();
+//            } else {
+                ResponseDialog.showLoading(this);
+                OkHttpUtils
+                        .post()
+                        .url(str)
+                        .addParams("pageNum", index)
+                        .addParams("pageSize", "20")
+                        .addParams("recorder", name)
+                        .addParams("recordat_start", datetime)
+                        .addParams("recordat_end", endtime)
+                        .addParams("recordplace", "")
+                        .addParams("memo", "")
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
                                 e.printStackTrace();
-                                ResponseDialog.closeLoading();
                             }
-                        }
-                    });
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                System.out.print(response);
+                                try {
+                                    Gson gson = new Gson();
+                                    signBean = gson.fromJson(response, SignDetailBean.class);
+                                    mListData = signBean.getData();
+                                    if (signBean.getTotalCount() != 0) {
+                                        ll_visibi.setVisibility(View.GONE);
+                                        scroll_content.setVisibility(View.VISIBLE);
+                                        pageCount = signBean.getTotalCount();
+                                        spUtils.put(SignDetailActivity.this, "pagesqlCount", pageCount);
+                                        System.out.print(pageCount);
+                                        String count = String.valueOf(pageCount / 20);
+                                        System.out.print(count);
+                                        tvSignPage.setText(count);
+                                        detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
+                                        mData.setAdapter(detailAdapter);
+                                        detailAdapter.notifyDataSetChanged();
+                                    } else {
+                                        ll_visibi.setVisibility(View.VISIBLE);
+                                        scroll_content.setVisibility(View.GONE);
+                                        tv_visibi.setText("没有更多信息");
+                                    }
+                                    ResponseDialog.closeLoading();
+                                } catch (JsonSyntaxException e) {
+                                    ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
+                                    ResponseDialog.closeLoading();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    ResponseDialog.closeLoading();
+                                }
+                            }
+                        });
+//            }
         } else {
             ToastUtils.ShowToastMessage(R.string.disNetworking, SignDetailActivity.this);
         }
