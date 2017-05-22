@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -19,10 +21,17 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
+import com.daoran.newfactory.onefactory.bean.ProducationSaveBean;
+import com.daoran.newfactory.onefactory.util.Http.sharedparams.PhoneSaveUtil;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
+import com.daoran.newfactory.onefactory.util.file.ACache;
+import com.daoran.newfactory.onefactory.view.dialog.EditDialog;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 生产日报适配器
@@ -147,15 +156,14 @@ public class ProductionAdapter extends BaseAdapter {
         sp = context.getSharedPreferences("my_sp", 0);
         String nameid = sp.getString("usernamerecoder", "");
         String recorder = getItem(position).getRecorder();
-        if(recorder==null){
-            recorder="";
+        if (recorder == null) {
+            recorder = "";
         }
         if (!recorder.equals("")) {
-            if (recorder.equals(nameid)) {
+            if (recorder.equals("方亮平")) {
                 viewHolder.lin_content.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         viewHolder.lin_content.setBackgroundResource(R.drawable.bill_record_historylist);
                         String proid = String.valueOf(getItem(position).getID());
                         spUtils.put(context, "proadapterid", proid);
@@ -214,6 +222,11 @@ public class ProductionAdapter extends BaseAdapter {
                         String copyRecordat = getItem(position).getRecordat();
                         spUtils.put(context, "copyRecordat", copyRecordat);
 
+                        ArrayList<String> list = new ArrayList<String>();
+                        list.add(copyitem);
+                        Intent intent = new Intent(context, ProductionActivity.class);
+                        intent.putStringArrayListExtra("copyitemlist", list);
+
                     }
                 });
 
@@ -239,23 +252,30 @@ public class ProductionAdapter extends BaseAdapter {
 
                 viewHolder.tvProOthers.setEnabled(true);
                 final EditText editTexOthers = viewHolder.tvProOthers;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                if (editTexOthers.getTag() instanceof TextWatcher) {
-                    editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
-                }
-                editTexOthers.setText(getItem(position).getWorkers());
-
-                editTexOthers.setOnTouchListener(new View.OnTouchListener() {
+//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//                if (editTexOthers.getTag() instanceof TextWatcher) {
+//                    editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
+//                }
+                viewHolder.tvProOthers.setText(getItem(position).getWorkers());
+                editTexOthers.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
+                    public void onClick(View v) {
+                        final EditDialog editDialog = new EditDialog(context);
+                        editDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        editDialog.show();
                     }
                 });
+//                editTexOthers.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvOthers = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -276,7 +296,7 @@ public class ProductionAdapter extends BaseAdapter {
                 };
                 editTexOthers.addTextChangedListener(TvOthers);
                 editTexOthers.setTag(TvOthers);
-            /*光标放置在文本最后*/
+//            /*光标放置在文本最后*/
                 viewHolder.tvProOthers.setSelection(viewHolder.tvProOthers.length());
 
                 viewHolder.tvProSingularSystem.setEnabled(true);
@@ -294,17 +314,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexTaskNumber.removeTextChangedListener((TextWatcher) editTexTaskNumber.getTag());
                 }
                 editTexTaskNumber.setText(getItem(position).getTaskqty());
-                editTexTaskNumber.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexTaskNumber.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvTaskNumber = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -349,17 +369,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexCompletedLastMonth.removeTextChangedListener((TextWatcher) editTexCompletedLastMonth.getTag());
                 }
                 editTexCompletedLastMonth.setText(getItem(position).getLastMonQty());
-                editTexCompletedLastMonth.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexCompletedLastMonth.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvCompletedLastMonth = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -407,17 +427,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexOneDay.removeTextChangedListener((TextWatcher) editTexOneDay.getTag());
                 }
                 editTexOneDay.setText(getItem(position).getDay1());
-                editTexOneDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexOneDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvOneDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -450,17 +470,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexTwoDay.removeTextChangedListener((TextWatcher) editTexTwoDay.getTag());
                 }
                 editTexTwoDay.setText(getItem(position).getDay2());
-                editTexTwoDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexTwoDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvTwoDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -492,17 +512,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexThreeDay.removeTextChangedListener((TextWatcher) editTexThreeDay.getTag());
                 }
                 editTexThreeDay.setText(getItem(position).getDay3());
-                editTexThreeDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexThreeDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvThreeDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -534,17 +554,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexForeDay.removeTextChangedListener((TextWatcher) editTexForeDay.getTag());
                 }
                 editTexForeDay.setText(getItem(position).getDay4());
-                editTexForeDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexForeDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvForeDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -577,17 +597,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexFiveDay.removeTextChangedListener((TextWatcher) editTexFiveDay.getTag());
                 }
                 editTexFiveDay.setText(getItem(position).getDay5());
-                editTexFiveDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexFiveDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvFiveDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -620,17 +640,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexSixDay.removeTextChangedListener((TextWatcher) editTexSixDay.getTag());
                 }
                 editTexSixDay.setText(getItem(position).getDay6());
-                editTexSixDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexSixDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvSixDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -662,17 +682,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexSevenDay.removeTextChangedListener((TextWatcher) editTexSevenDay.getTag());
                 }
                 editTexSevenDay.setText(getItem(position).getDay7());
-                editTexSevenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexSevenDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvSevenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -704,17 +724,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexEightDay.removeTextChangedListener((TextWatcher) editTexEightDay.getTag());
                 }
                 editTexEightDay.setText(getItem(position).getDay8());
-                editTexEightDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexEightDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvEightDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -746,17 +766,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexNineDay.removeTextChangedListener((TextWatcher) editTexNineDay.getTag());
                 }
                 editTexNineDay.setText(getItem(position).getDay9());
-                editTexNineDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexNineDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvNineDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -788,17 +808,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexTenDay.removeTextChangedListener((TextWatcher) editTexTenDay.getTag());
                 }
                 editTexTenDay.setText(getItem(position).getDay10());
-                editTexTenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexTenDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvTenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -830,17 +850,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexElevenDay.removeTextChangedListener((TextWatcher) editTexElevenDay.getTag());
                 }
                 editTexElevenDay.setText(getItem(position).getDay11());
-                editTexElevenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexElevenDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvElevenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -872,17 +892,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexTwelveDay.removeTextChangedListener((TextWatcher) editTexTwelveDay.getTag());
                 }
                 editTexTwelveDay.setText(getItem(position).getDay12());
-                editTexTwelveDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexTwelveDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvTwelveDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -914,17 +934,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexThirteenDay.removeTextChangedListener((TextWatcher) editTexThirteenDay.getTag());
                 }
                 editTexThirteenDay.setText(getItem(position).getDay13());
-                editTexThirteenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexThirteenDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvThirteenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -956,17 +976,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexFourteenDay.removeTextChangedListener((TextWatcher) editTexFourteenDay.getTag());
                 }
                 editTexFourteenDay.setText(getItem(position).getDay14());
-                editTexFourteenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexFourteenDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvFourteenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -998,17 +1018,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexFifteenDay.removeTextChangedListener((TextWatcher) editTexFifteenDay.getTag());
                 }
                 editTexFifteenDay.setText(getItem(position).getDay15());
-                editTexFifteenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexFifteenDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvFifteenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1040,17 +1060,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexSixteenDay.removeTextChangedListener((TextWatcher) editTexSixteenDay.getTag());
                 }
                 editTexSixteenDay.setText(getItem(position).getDay16());
-                editTexSixteenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexSixteenDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvSixteenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1082,17 +1102,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexSeventeenDay.removeTextChangedListener((TextWatcher) editTexSeventeenDay.getTag());
                 }
                 editTexSeventeenDay.setText(getItem(position).getDay17());
-                editTexSeventeenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexSeventeenDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvSeventeenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1124,17 +1144,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexEighteenDay.removeTextChangedListener((TextWatcher) editTexEighteenDay.getTag());
                 }
                 editTexEighteenDay.setText(getItem(position).getDay18());
-                editTexEighteenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexEighteenDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvEighteenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1166,17 +1186,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexNineteenDay.removeTextChangedListener((TextWatcher) editTexNineteenDay.getTag());
                 }
                 editTexNineteenDay.setText(getItem(position).getDay19());
-                editTexNineteenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexNineteenDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvNineteenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1208,17 +1228,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexTwentyDay.removeTextChangedListener((TextWatcher) editTexTwentyDay.getTag());
                 }
                 editTexTwentyDay.setText(getItem(position).getDay20());
-                editTexTwentyDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexTwentyDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvTwentyDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1250,17 +1270,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexTwentyOneDay.removeTextChangedListener((TextWatcher) editTexTwentyOneDay.getTag());
                 }
                 editTexTwentyOneDay.setText(getItem(position).getDay21());
-                editTexTwentyOneDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexTwentyOneDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvTwentyOneDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1292,17 +1312,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexTwentyTwoDay.removeTextChangedListener((TextWatcher) editTexTwentyTwoDay.getTag());
                 }
                 editTexTwentyTwoDay.setText(getItem(position).getDay22());
-                editTexTwentyTwoDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexTwentyTwoDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvTwentyTwoDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1334,17 +1354,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexTwentyThreeDay.removeTextChangedListener((TextWatcher) editTexTwentyThreeDay.getTag());
                 }
                 editTexTwentyThreeDay.setText(getItem(position).getDay23());
-                editTexTwentyThreeDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexTwentyThreeDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvTwentyThreeDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1376,17 +1396,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexTwentyForeDay.removeTextChangedListener((TextWatcher) editTexTwentyForeDay.getTag());
                 }
                 editTexTwentyForeDay.setText(getItem(position).getDay24());
-                editTexTwentyForeDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexTwentyForeDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvTwentyForeDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1418,17 +1438,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexTwentyFiveDay.removeTextChangedListener((TextWatcher) editTexTwentyFiveDay.getTag());
                 }
                 editTexTwentyFiveDay.setText(getItem(position).getDay25());
-                editTexTwentyFiveDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexTwentyFiveDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvTwentyFiveDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1460,17 +1480,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexTwentySixDay.removeTextChangedListener((TextWatcher) editTexTwentySixDay.getTag());
                 }
                 editTexTwentySixDay.setText(getItem(position).getDay26());
-                editTexTwentySixDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexTwentySixDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvTwentySixDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1502,17 +1522,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexTwentySevenDay.removeTextChangedListener((TextWatcher) editTexTwentySevenDay.getTag());
                 }
                 editTexTwentySevenDay.setText(getItem(position).getDay27());
-                editTexTwentySevenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexTwentySevenDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvTwentySevenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1544,17 +1564,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexTwentyEightDay.removeTextChangedListener((TextWatcher) editTexTwentyEightDay.getTag());
                 }
                 editTexTwentyEightDay.setText(getItem(position).getDay28());
-                editTexTwentyEightDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexTwentyEightDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvTwentyEightDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1586,17 +1606,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexTwentyNineDay.removeTextChangedListener((TextWatcher) editTexTwentyNineDay.getTag());
                 }
                 editTexTwentyNineDay.setText(getItem(position).getDay29());
-                editTexTwentyNineDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexTwentyNineDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvTwentyNineDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1628,17 +1648,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexThirtyDay.removeTextChangedListener((TextWatcher) editTexThirtyDay.getTag());
                 }
                 editTexThirtyDay.setText(getItem(position).getDay30());
-                editTexThirtyDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexThirtyDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvThirtyDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1670,17 +1690,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexThirtyOneDay.removeTextChangedListener((TextWatcher) editTexThirtyOneDay.getTag());
                 }
                 editTexThirtyOneDay.setText(getItem(position).getDay31());
-                editTexThirtyOneDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexThirtyOneDay.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvThirtyOneDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1712,17 +1732,17 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexRemarks.removeTextChangedListener((TextWatcher) editTexRemarks.getTag());
                 }
                 editTexRemarks.setText(getItem(position).getMemo());
-                editTexRemarks.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
+//                editTexRemarks.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(View v, MotionEvent event) {
+//                        v.getParent().requestDisallowInterceptTouchEvent(true);
+//                        if (event.getAction() == MotionEvent.ACTION_UP) {
+//                            index = position;
+//                            v.getParent().requestDisallowInterceptTouchEvent(false);
+//                        }
+//                        return false;
+//                    }
+//                });
                 TextWatcher TvRemarks = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1770,12 +1790,17 @@ public class ProductionAdapter extends BaseAdapter {
                 viewHolder.tvProProcedure.setText(getItem(position).getWorkingProcedure());
 
                 viewHolder.tvProOthers.setEnabled(false);
-                final EditText editTexOthers = viewHolder.tvProOthers;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                if (editTexOthers.getTag() instanceof TextWatcher) {
-                    editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
-                }
-                editTexOthers.setText(getItem(position).getWorkers());
+//                final EditText editTexOthers = viewHolder.tvProOthers;
+//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//                if (editTexOthers.getTag() instanceof TextWatcher) {
+//                    editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
+//                }
+                viewHolder.tvProOthers.setText(getItem(position).getWorkers());
+                viewHolder.tvProOthers.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                });
 
                 viewHolder.tvProSingularSystem.setEnabled(false);
                 viewHolder.tvProSingularSystem.setText(getItem(position).getPqty());
@@ -2315,12 +2340,17 @@ public class ProductionAdapter extends BaseAdapter {
             viewHolder.tvProProcedure.setText(getItem(position).getWorkingProcedure());
 
             viewHolder.tvProOthers.setEnabled(false);
-            final EditText editTexOthers = viewHolder.tvProOthers;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-            if (editTexOthers.getTag() instanceof TextWatcher) {
-                editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
-            }
-            editTexOthers.setText(getItem(position).getWorkers());
+//            final EditText editTexOthers = viewHolder.tvProOthers;
+//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+//            if (editTexOthers.getTag() instanceof TextWatcher) {
+//                editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
+//            }
+            viewHolder.tvProOthers.setText(getItem(position).getWorkers());
+            viewHolder.tvProOthers.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                }
+            });
 
             viewHolder.tvProSingularSystem.setEnabled(false);
             viewHolder.tvProSingularSystem.setText(getItem(position).getPqty());
@@ -2665,6 +2695,7 @@ public class ProductionAdapter extends BaseAdapter {
                     public boolean onMenuItemClick(MenuItem item) {
                         sp = context.getSharedPreferences("userInfo", 0);
                         String title = item.getTitle().toString();
+
                         spUtils.put(context, "proColumnTitle", title);
                         viewHolder.tvProDepartment.setText(title);
                         return false;
@@ -2731,6 +2762,9 @@ public class ProductionAdapter extends BaseAdapter {
                 popupMenu.show();
             }
         });
+
+
+
         return convertView;
     }
 
@@ -2740,10 +2774,11 @@ public class ProductionAdapter extends BaseAdapter {
         TextView tv_data;//款号
         TextView tvProDocumentary,//跟单
                 tvProFactory;//工厂
-        TextView tvProDepartment,//部门/组别
+        TextView
+                tvProDepartment,//部门/组别
                 tvProState,//状态
                 tvProProcedure;//工序
-        EditText tvProOthers,//组别人
+        EditText tvProOthers, //组别人
                 tvProCompletedLastMonth,//上月完工
                 tvProTaskNumber;//任务数;
         TextView tvProSingularSystem,//制单数

@@ -11,6 +11,7 @@ import java.util.Map;
  */
 
 public class SPUtils {
+    private Context mContext;
     /**
      * 保存在手机里的SP文件名
      */
@@ -66,6 +67,31 @@ public class SPUtils {
         editor.commit();
     }
 
+    public String[] getSharedPreference(String key) {
+        String regularEx = "#";
+        String[] str = null;
+        SharedPreferences sp = mContext.getSharedPreferences("data", 0);
+        String values;
+        values = sp.getString(key, "");
+        str = values.split(regularEx);
+
+        return str;
+    }
+
+    public void setSharedPreference(String key, String[] values) {
+        String regularEx = "#";
+        String str = "";
+        SharedPreferences sp = mContext.getSharedPreferences("data", 0);
+        if (values != null && values.length > 0) {
+            for (String value : values) {
+                str += value;
+                str += regularEx;
+            }
+            SharedPreferences.Editor et = sp.edit();
+            et.putString(key, str);
+            et.commit();
+        }
+    }
 
     /**
      * 返回所有键值对

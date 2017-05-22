@@ -31,6 +31,7 @@ import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.Listener.SelectItemInterface;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.util.file.ACache;
 import com.daoran.newfactory.onefactory.util.file.NullStringToEmptyAdapterFactory;
 import com.daoran.newfactory.onefactory.view.dialog.ProcationDialog;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
@@ -519,6 +520,12 @@ public class ProductionActivity extends BaseFrangmentActivity
                 sp = this.getSharedPreferences("my_sp", 0);
                 String proid = sp.getString("proadapterid", "");
                 String salesid = sp.getString("prosalesid", "");
+
+            ACache aCache = ACache.get(this);
+            ArrayList<ProducationSaveBean> producationSaveBeen =
+                    (ArrayList<ProducationSaveBean>) aCache.getAsObject("titlelist");
+            System.out.print(producationSaveBeen);
+
                 String proColumnTitle = sp.getString("proColumnTitle", "");//部门
                 if (proColumnTitle == "" || proColumnTitle.equals("")) {
                     proColumnTitle = null;

@@ -68,7 +68,7 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.zhy:okhttputils:2.6.2'
     compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.android.support:recyclerview-v7:25.2.0'
+
     compile files('libry/PullToRefreshListView.jar')
     compile files('libry/PullToRefreshListView.jar')
     compile files('libry/pulltorefresh-3.2.2.jar')
@@ -84,6 +84,7 @@ dependencies {
     compile 'com.github.hotchemi:permissionsdispatcher:2.0.0'
     compile project(':epubReader')
     compile project(':youkuPlayerOpenSDK')
+    compile project(':library')
     compile 'com.github.hotchemi:permissionsdispatcher:2.3.1'
     apt 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
     compile files('libry/json-lib-0.9.jar')
