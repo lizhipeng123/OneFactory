@@ -9,7 +9,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -795,6 +794,12 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoSubfactory.setEnabled(true);
             holder.tvCommoSubfactory.setText(getItem(position).getSubfactory());
+            holder.tvCommoSubfactory.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoPrebdt.setEnabled(true);
             holder.tvCommoPrebdt.setText(getItem(position).getPrebdt());
@@ -1961,6 +1966,12 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoSubfactory.setEnabled(false);
             holder.tvCommoSubfactory.setText(getItem(position).getSubfactory());
+            holder.tvCommoSubfactory.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             holder.tvCommoPrebdt.setEnabled(false);
             holder.tvCommoPrebdt.setText(getItem(position).getPrebdt());

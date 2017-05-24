@@ -269,7 +269,7 @@ public class ProductionAdapter extends BaseAdapter {
                                     s = String.valueOf(MAX_MARK_OTHER);
                                     editTexOthers.setText(s);
                                     editTexOthers.setSelection(editTexOthers.length());
-                                } else if (num < 0) {
+                                } else if (num < MIN_MARK_OTHER) {
                                     s = String.valueOf(MIN_MARK_OTHER);
                                     return;
                                 }
@@ -277,7 +277,7 @@ public class ProductionAdapter extends BaseAdapter {
                         }
                         InputFilter[] filters = {new InputFilter.LengthFilter(MAX_MARK_OTHER)};
                         viewHolder.tvProTaskNumber.setFilters(filters);
-                        ToastUtils.ShowToastMessage("输入超过了制单数", context);
+//                        ToastUtils.ShowToastMessage("输入超过了限制人数", context);
                     }
 
                     @Override
@@ -291,16 +291,16 @@ public class ProductionAdapter extends BaseAdapter {
                                 } catch (NumberFormatException e) {
                                     markVal = 0;
                                 }
-                                if (MIN_MARK_OTHER > MAX_MARK_OTHER) {
+                                if (markVal > MAX_MARK_OTHER) {
                                     ToastUtils.ShowToastMessage("大小不能超过200", context);
                                     editTexOthers.setText(String.valueOf(MAX_MARK_OTHER));
                                     editTexOthers.setSelection(editTexOthers.length());
                                 }
-
+                                return;
                             }
                         }
-
                         String proitem = viewHolder.tvProOthers.getText().toString();
+                        viewHolder.tvProOthers.setSelection(viewHolder.tvProOthers.length());
                         spUtils.put(context, "productionsaveOthers", proitem);
                     }
                 };
@@ -338,6 +338,9 @@ public class ProductionAdapter extends BaseAdapter {
 //                        return false;
 //                    }
 //                });
+                /**
+                 * 任务数不能大于制单数
+                 */
                 TextWatcher TvTaskNumber = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -354,7 +357,7 @@ public class ProductionAdapter extends BaseAdapter {
                                     s = String.valueOf(singular);
                                     editTexTaskNumber.setText(s);
                                     editTexTaskNumber.setSelection(editTexTaskNumber.length());
-                                } else if (num < 0) {
+                                } else if (num < MIN_MARK) {
                                     s = String.valueOf(MIN_MARK);
                                     return;
                                 }
@@ -376,15 +379,14 @@ public class ProductionAdapter extends BaseAdapter {
                                 } catch (NumberFormatException e) {
                                     markVal = 0;
                                 }
-                                if (MIN_MARK > singular) {
+                                if (markVal > singular) {
                                     ToastUtils.ShowToastMessage("大小不能超过制单数", context);
                                     editTexTaskNumber.setText(singular);
                                     editTexTaskNumber.setSelection(editTexTaskNumber.length());
                                 }
-
+                                return;
                             }
                         }
-
                         String proitem = viewHolder.tvProTaskNumber.getText().toString();
                         viewHolder.tvProTaskNumber.setSelection(viewHolder.tvProTaskNumber.length());
                         spUtils.put(context, "productionTaskNumber", proitem);
@@ -406,23 +408,14 @@ public class ProductionAdapter extends BaseAdapter {
                 viewHolder.tvProClippingNumber.setText(productionClippingNumber);
 
                 viewHolder.tvProCompletedLastMonth.setEnabled(true);
+                final int MIN_MARK_LASTMONTH = 0;
+//                final int lastmonth_MAX =
                 final EditText editTexCompletedLastMonth = viewHolder.tvProCompletedLastMonth;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                 if (editTexCompletedLastMonth.getTag() instanceof TextWatcher) {
                     editTexCompletedLastMonth.removeTextChangedListener((TextWatcher) editTexCompletedLastMonth.getTag());
                 }
                 editTexCompletedLastMonth.setText(getItem(position).getLastMonQty());
-//                editTexCompletedLastMonth.setOnTouchListener(new View.OnTouchListener() {
-//                    @Override
-//                    public boolean onTouch(View v, MotionEvent event) {
-//                        v.getParent().requestDisallowInterceptTouchEvent(true);
-//                        if (event.getAction() == MotionEvent.ACTION_UP) {
-//                            index = position;
-//                            v.getParent().requestDisallowInterceptTouchEvent(false);
-//                        }
-//                        return false;
-//                    }
-//                });
                 TextWatcher TvCompletedLastMonth = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -2342,7 +2335,9 @@ public class ProductionAdapter extends BaseAdapter {
             } else {
                 day31 = Integer.parseInt(dayThirtyOne);
             }
-
+            /**
+             * 计算总完工数（每月数量相加）
+             */
             int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
                     + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
                     + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
@@ -2362,6 +2357,9 @@ public class ProductionAdapter extends BaseAdapter {
             } else {
                 countmon = Integer.parseInt(Completion);
             }
+            /**
+             * 计算结余数量（任务数-总完工数）
+             */
             int Amount = skNumber - countmon;
             String BalanceAmount = String.valueOf(Amount);
             viewHolder.tvProBalanceAmount.setText(BalanceAmount);
