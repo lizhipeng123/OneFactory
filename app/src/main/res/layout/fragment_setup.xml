@@ -72,6 +72,7 @@
                     android:textSize="@dimen/dimen_60sp" />
 
                 <TextView
+                    android:id="@+id/tvNewVersion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"

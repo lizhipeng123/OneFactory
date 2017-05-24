@@ -199,8 +199,9 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private void setData() {
         String str = HttpUrl.debugoneUrl + "QACwork/BindSearchQACworkAPP/";
         sp = CommoditySqlActivity.this.getSharedPreferences("my_sp", 0);
+        String recodename = sp.getString("commoname","");//跟单
         String Style = sp.getString("commoStyle", "");//款号
-        String Factory = sp.getString("commoFactory", "");//跟单
+//        String Factory = sp.getString("commoFactory", "");//跟单
         String Recode = sp.getString("commoRecode", "");//巡检
         String etprodialogProcedure = sp.getString("etprodialogProcedure", "");//生产主管
         String ischeck = sp.getString("ischeckedd", "");//是否可为空
@@ -209,7 +210,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         CommodityPostBean postBean = new CommodityPostBean();
         CommodityPostBean.Conditions conditions = postBean.new Conditions();
         conditions.setItem(Style);
-        conditions.setPrddocumentary(Factory);
+        conditions.setPrddocumentary(recodename);
         conditions.setPrdmaster(etprodialogProcedure);
         conditions.setIPQC(Recode);
         conditions.setPrdmasterisnull(stris);
@@ -240,7 +241,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                 System.out.print(ression);
                                 commoditydetailBean = new Gson().fromJson(ression, CommoditydetailBean.class);
                                 dataBeen = commoditydetailBean.getData();
-                                if(commoditydetailBean.getTotalCount()!=0){
+                                if (commoditydetailBean.getTotalCount() != 0) {
                                     ll_visibi.setVisibility(View.GONE);
                                     scroll_content.setVisibility(View.VISIBLE);
                                     System.out.print(dataBeen);
@@ -249,7 +250,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                     tvSignPage.setText(count);
                                     sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this, dataBeen);
                                     mData.setAdapter(sqlAdapter);
-                                }else{
+                                } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
                                     scroll_content.setVisibility(View.GONE);
                                     tv_visibi.setText("没有更多数据");
@@ -272,8 +273,9 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         ResponseDialog.showLoading(this);
         String str = HttpUrl.debugoneUrl + "QACwork/BindSearchQACworkAPP/";
         sp = CommoditySqlActivity.this.getSharedPreferences("my_sp", 0);
+        String recodename = sp.getString("commoname","");//跟单
         String Style = sp.getString("commoStyle", "");//款号
-        String Factory = sp.getString("commoFactory", "");//跟单
+//        String Factory = sp.getString("commoFactory", "");//跟单
         String Recode = sp.getString("commoRecode", "");//巡检
         String etprodialogProcedure = sp.getString("etproProcedure", "");//生产主管
         String ischeck = sp.getString("ischeckedd", "");//是否可为空
@@ -284,7 +286,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         CommodityPostBean postBean = new CommodityPostBean();
         CommodityPostBean.Conditions conditions = postBean.new Conditions();
         conditions.setItem(Style);
-        conditions.setPrddocumentary(Factory);
+        conditions.setPrddocumentary(recodename);
         conditions.setPrdmaster(etprodialogProcedure);
         conditions.setIPQC(Recode);
         conditions.setPrdmasterisnull(stris);
@@ -315,7 +317,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                 System.out.print(ression);
                                 commoditydetailBean = new Gson().fromJson(ression, CommoditydetailBean.class);
                                 dataBeen = commoditydetailBean.getData();
-                                if(commoditydetailBean.getTotalCount()!=0){
+                                if (commoditydetailBean.getTotalCount() != 0) {
                                     ll_visibi.setVisibility(View.GONE);
                                     scroll_content.setVisibility(View.VISIBLE);
                                     System.out.print(dataBeen);
@@ -324,7 +326,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                     tvSignPage.setText(count);
                                     sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this, dataBeen);
                                     mData.setAdapter(sqlAdapter);
-                                }else{
+                                } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
                                     scroll_content.setVisibility(View.GONE);
                                     tv_visibi.setText("没有更多信息");
@@ -348,6 +350,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         if (NetWork.isNetWorkAvailable(this)) {
             String saveurl = HttpUrl.debugoneUrl + "QACwork/SaveQACwork/";
             sp = this.getSharedPreferences("my_sp", 0);
+            SharedPreferences.Editor editorone = sp.edit();
             String commoproid = sp.getString("commoproid", "");//id
             String CommodityQCMasterScore = sp.getString("CommodityQCMasterScore", "");//主管评分
             if (CommodityQCMasterScore == "" || CommodityQCMasterScore.equals("")) {
@@ -549,7 +552,47 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                     saveBean.setQAScore(CommodityQAScore);
                     saveBean.setQAMemo(dateQAMemotimesign);
                     saveBeen.add(saveBean);
-                    String commjson = gson.toJson(saveBeen);
+                    String commjson = gson.toJson(saveBeen);//转换json字符串
+//                    String dateee = commjson.replace("\"\"", "null");
+                    editorone.remove("commoproid");
+                    editorone.remove("CommodityQCMasterScore");
+                    editorone.remove("dateSealedrewtimesign");
+                    editorone.remove("dateDocbacktimesign");
+                    editorone.remove("CommodityPreMemo");
+                    editorone.remove("datePredocdttimesign");
+                    editorone.remove("datePredtimesign");
+                    editorone.remove("CommodityPredoc");
+                    editorone.remove("CommodityFabricsok");
+                    editorone.remove("CommodityAccessoriesok");
+                    editorone.remove("CommoditySpcproDec");
+                    editorone.remove("CommoditySpcproMemo");
+                    editorone.remove("CommodityCutqty");
+                    editorone.remove("dateSewFdttimesign");
+                    editorone.remove("dateSewMdttimesign");
+                    editorone.remove("datePrebdttimesign");
+                    editorone.remove("dateQCbdttimesign");
+                    editorone.remove("CommodityQCbdtDoc");
+                    editorone.remove("datePremdttimesign");
+                    editorone.remove("dateQCmdttimesign");
+                    editorone.remove("CommodityQCmdtDoc");
+                    editorone.remove("datePreedttimesign");
+                    editorone.remove("dateQCMedttimesign");
+                    editorone.remove("CommodityQCedtDoc");
+                    editorone.remove("dateFctmdttimesign");
+                    editorone.remove("dateFctedttimesign");
+                    editorone.remove("datePackbdattimesign");
+                    editorone.remove("CommodityPackqty2");
+                    editorone.remove("CommodityQCMemo");
+                    editorone.remove("dateFactlcdattimesign");
+                    editorone.remove("CommodityBatchid");
+                    editorone.remove("commohdTitle");
+                    editorone.remove("dateCtmchkdttimesign");
+                    editorone.remove("CommodityIPQCPedt");
+                    editorone.remove("CommodityIPQCmdt");
+                    editorone.remove("CommodityQAname");
+                    editorone.remove("CommodityQAScore");
+                    editorone.remove("dateQAMemotimesign");
+                    editorone.commit();
                     OkHttpUtils.postString()
                             .url(saveurl)
                             .content(commjson)
@@ -560,6 +603,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                 public void onError(Call call, Exception e, int id) {
                                     e.printStackTrace();
                                     ResponseDialog.closeLoading();
+                                    ToastUtils.ShowToastMessage("数据错误，请重新输入",CommoditySqlActivity.this);
                                 }
 
                                 @Override
@@ -571,22 +615,21 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                     if (ression.equals("true")) {
                                         ResponseDialog.closeLoading();
                                         ToastUtils.ShowToastMessage("保存成功", CommoditySqlActivity.this);
+                                        setData();
                                     } else {
                                         ResponseDialog.closeLoading();
                                         ToastUtils.ShowToastMessage("保存失败", CommoditySqlActivity.this);
                                     }
                                 }
                             });
-                } else{
+                } else {
                     ToastUtils.ShowToastMessage("请修改数据，再进行保存",
                             CommoditySqlActivity.this);
                 }
-            }else {
+            } else {
                 ToastUtils.ShowToastMessage("请选择当前行，再进行修改保存",
                         CommoditySqlActivity.this);
             }
-
-
         } else {
             ToastUtils.ShowToastMessage(R.string.noHttp, CommoditySqlActivity.this);
         }
@@ -595,5 +638,54 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    /**
+     * 退出界面后删除轻量级存储my_sp中的数据
+     */
+    @Override
+    protected void onDestroy() {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.remove("commoproid");
+        editor.remove("CommodityQCMasterScore");
+        editor.remove("dateSealedrewtimesign");
+        editor.remove("dateDocbacktimesign");
+        editor.remove("CommodityPreMemo");
+        editor.remove("datePredocdttimesign");
+        editor.remove("datePredtimesign");
+        editor.remove("CommodityPredoc");
+        editor.remove("CommodityFabricsok");
+        editor.remove("CommodityAccessoriesok");
+        editor.remove("CommoditySpcproDec");
+        editor.remove("CommoditySpcproMemo");
+        editor.remove("CommodityCutqty");
+        editor.remove("dateSewFdttimesign");
+        editor.remove("dateSewMdttimesign");
+        editor.remove("datePrebdttimesign");
+        editor.remove("dateQCbdttimesign");
+        editor.remove("CommodityQCbdtDoc");
+        editor.remove("datePremdttimesign");
+        editor.remove("dateQCmdttimesign");
+        editor.remove("CommodityQCmdtDoc");
+        editor.remove("datePreedttimesign");
+        editor.remove("dateQCMedttimesign");
+        editor.remove("CommodityQCedtDoc");
+        editor.remove("dateFctmdttimesign");
+        editor.remove("dateFctedttimesign");
+        editor.remove("datePackbdattimesign");
+        editor.remove("CommodityPackqty2");
+        editor.remove("CommodityQCMemo");
+        editor.remove("dateFactlcdattimesign");
+        editor.remove("CommodityBatchid");
+        editor.remove("commohdTitle");
+        editor.remove("dateCtmchkdttimesign");
+        editor.remove("CommodityIPQCPedt");
+        editor.remove("CommodityIPQCmdt");
+        editor.remove("CommodityQAname");
+        editor.remove("CommodityQAScore");
+        editor.remove("dateQAMemotimesign");
+        editor.commit();
+        super.onDestroy();
+
     }
 }

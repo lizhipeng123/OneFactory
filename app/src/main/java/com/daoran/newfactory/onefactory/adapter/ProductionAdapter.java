@@ -10,10 +10,8 @@ import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,15 +21,11 @@ import android.widget.TextView;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
-import com.daoran.newfactory.onefactory.bean.ProducationSaveBean;
-import com.daoran.newfactory.onefactory.util.Http.sharedparams.PhoneSaveUtil;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
-import com.daoran.newfactory.onefactory.util.file.ACache;
-import com.daoran.newfactory.onefactory.view.dialog.EditDialog;
+import com.daoran.newfactory.onefactory.util.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 生产日报适配器
@@ -160,7 +154,7 @@ public class ProductionAdapter extends BaseAdapter {
             recorder = "";
         }
         if (!recorder.equals("")) {
-            if (recorder.equals("方亮平")) {
+            if (recorder.equals(nameid)) {
                 viewHolder.lin_content.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -252,30 +246,13 @@ public class ProductionAdapter extends BaseAdapter {
 
                 viewHolder.tvProOthers.setEnabled(true);
                 final EditText editTexOthers = viewHolder.tvProOthers;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-//                if (editTexOthers.getTag() instanceof TextWatcher) {
-//                    editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
-//                }
+                final int MIN_MARK_OTHER = 0;
+                final int MAX_MARK_OTHER = 200;
+                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                if (editTexOthers.getTag() instanceof TextWatcher) {
+                    editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
+                }
                 viewHolder.tvProOthers.setText(getItem(position).getWorkers());
-                editTexOthers.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        final EditDialog editDialog = new EditDialog(context);
-                        editDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        editDialog.show();
-                    }
-                });
-//                editTexOthers.setOnTouchListener(new View.OnTouchListener() {
-//                    @Override
-//                    public boolean onTouch(View v, MotionEvent event) {
-//                        v.getParent().requestDisallowInterceptTouchEvent(true);
-//                        if (event.getAction() == MotionEvent.ACTION_UP) {
-//                            index = position;
-//                            v.getParent().requestDisallowInterceptTouchEvent(false);
-//                        }
-//                        return false;
-//                    }
-//                });
                 TextWatcher TvOthers = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -285,19 +262,53 @@ public class ProductionAdapter extends BaseAdapter {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         Log.d(TAG, "onTextChanged");
+                        if (start > 1) {
+                            if (MIN_MARK_OTHER != -1 && MAX_MARK_OTHER != -1) {
+                                int num = Integer.parseInt(s.toString());
+                                if (num > MAX_MARK_OTHER) {
+                                    s = String.valueOf(MAX_MARK_OTHER);
+                                    editTexOthers.setText(s);
+                                    editTexOthers.setSelection(editTexOthers.length());
+                                } else if (num < 0) {
+                                    s = String.valueOf(MIN_MARK_OTHER);
+                                    return;
+                                }
+                            }
+                        }
+                        InputFilter[] filters = {new InputFilter.LengthFilter(MAX_MARK_OTHER)};
+                        viewHolder.tvProTaskNumber.setFilters(filters);
+                        ToastUtils.ShowToastMessage("输入超过了制单数", context);
                     }
 
                     @Override
                     public void afterTextChanged(Editable s) {
                         Log.d(TAG, "afterTextChanged");
+                        if (s != null && s.equals("")) {
+                            if (MIN_MARK_OTHER != -1 && MAX_MARK_OTHER != -1) {
+                                int markVal = 0;
+                                try {
+                                    markVal = Integer.parseInt(s.toString());
+                                } catch (NumberFormatException e) {
+                                    markVal = 0;
+                                }
+                                if (MIN_MARK_OTHER > MAX_MARK_OTHER) {
+                                    ToastUtils.ShowToastMessage("大小不能超过200", context);
+                                    editTexOthers.setText(String.valueOf(MAX_MARK_OTHER));
+                                    editTexOthers.setSelection(editTexOthers.length());
+                                }
+
+                            }
+                        }
+
                         String proitem = viewHolder.tvProOthers.getText().toString();
-                        spUtils.put(context, "productionOthers", proitem);
+                        spUtils.put(context, "productionsaveOthers", proitem);
                     }
                 };
                 editTexOthers.addTextChangedListener(TvOthers);
                 editTexOthers.setTag(TvOthers);
 //            /*光标放置在文本最后*/
                 viewHolder.tvProOthers.setSelection(viewHolder.tvProOthers.length());
+
 
                 viewHolder.tvProSingularSystem.setEnabled(true);
                 String productionadapterSingularSystem = getItem(position).getPqty();
@@ -308,6 +319,8 @@ public class ProductionAdapter extends BaseAdapter {
                 viewHolder.tvProColor.setText(productionColor);
 
                 viewHolder.tvProTaskNumber.setEnabled(true);
+                final int singular = Integer.parseInt(viewHolder.tvProSingularSystem.getText().toString());
+                final int MIN_MARK = 0;
                 final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                 if (editTexTaskNumber.getTag() instanceof TextWatcher) {
@@ -334,18 +347,48 @@ public class ProductionAdapter extends BaseAdapter {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         Log.d(TAG, "onTextChanged");
-                        int singular = Integer.parseInt(viewHolder.tvProSingularSystem.getText().toString());
+                        if (start > 1) {
+                            if (MIN_MARK != -1 && singular != -1) {
+                                int num = Integer.parseInt(s.toString());
+                                if (num > singular) {
+                                    s = String.valueOf(singular);
+                                    editTexTaskNumber.setText(s);
+                                    editTexTaskNumber.setSelection(editTexTaskNumber.length());
+                                } else if (num < 0) {
+                                    s = String.valueOf(MIN_MARK);
+                                    return;
+                                }
+                            }
+                        }
                         InputFilter[] filters = {new InputFilter.LengthFilter(singular)};
                         viewHolder.tvProTaskNumber.setFilters(filters);
+                        ToastUtils.ShowToastMessage("输入超过了制单数", context);
                     }
 
                     @Override
                     public void afterTextChanged(Editable s) {
                         Log.d(TAG, "afterTextChanged");
+                        if (s != null && s.equals("")) {
+                            if (MIN_MARK != -1 && singular != -1) {
+                                int markVal = 0;
+                                try {
+                                    markVal = Integer.parseInt(s.toString());
+                                } catch (NumberFormatException e) {
+                                    markVal = 0;
+                                }
+                                if (MIN_MARK > singular) {
+                                    ToastUtils.ShowToastMessage("大小不能超过制单数", context);
+                                    editTexTaskNumber.setText(singular);
+                                    editTexTaskNumber.setSelection(editTexTaskNumber.length());
+                                }
 
+                            }
+                        }
 
                         String proitem = viewHolder.tvProTaskNumber.getText().toString();
+                        viewHolder.tvProTaskNumber.setSelection(viewHolder.tvProTaskNumber.length());
                         spUtils.put(context, "productionTaskNumber", proitem);
+
 
                     }
                 };
@@ -2762,7 +2805,6 @@ public class ProductionAdapter extends BaseAdapter {
                 popupMenu.show();
             }
         });
-
 
 
         return convertView;

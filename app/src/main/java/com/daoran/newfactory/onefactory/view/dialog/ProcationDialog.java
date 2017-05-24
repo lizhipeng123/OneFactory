@@ -76,8 +76,9 @@ public class ProcationDialog extends Dialog {
         WindowManager.LayoutParams p = dialogWindow.getAttributes();
         p.width = (int) (display.getWidth() * 0.8);
         dialogWindow.setAttributes(p);
-        String etaa = sp.getString("etprodialogRecode","");
-        etprodialogRecode.setText(etaa);
+        String etaaname = sp.getString("proname","");
+//        String etaa = sp.getString("etprodialogRecode","");
+        etprodialogRecode.setText(etaaname);
         String Factory = sp.getString("etprodialogFactory","");
         etprodialogFactory.setText(Factory);
         String style = sp.getString("etprodialogStyle","");
@@ -191,7 +192,7 @@ public class ProcationDialog extends Dialog {
             System.out.println("-1-onTextChanged-->"
                     + etprodialogRecode.getText().toString() + "<--");
             String textchanged = etprodialogRecode.getText().toString();
-            spUtils.put(content, "etprodialogRecode", textchanged);
+            spUtils.put(content, "proname", textchanged);
         }
 
         @Override

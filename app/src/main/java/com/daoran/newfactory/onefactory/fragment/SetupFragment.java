@@ -64,7 +64,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     private Toolbar tbarSetup;
     private View view;
     private RelativeLayout rlAgainLogin, rlEditionUpdate;
-    private TextView tvVersion;
+    private TextView tvVersion,tvNewVersion;
     private VerCodeBean codeBean;
 
     private String curVersionName;
@@ -126,6 +126,10 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         rlwifi = (RelativeLayout) view.findViewById(R.id.rlwifi);
         tvwifimanager = (TextView) view.findViewById(R.id.tvwifimanager);
         tvwifissid = (TextView) view.findViewById(R.id.tvwifissid);
+        tvNewVersion = (TextView) view.findViewById(R.id.tvNewVersion);
+        sp = mactivity.getSharedPreferences("my_sp",0);
+        String vercode = sp.getString("Applicationscode","");
+        tvNewVersion.setText(vercode);
         String cleanmana = getAppCacheSize();
         tv_clean.setText(cleanmana);
     }
@@ -250,23 +254,25 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                             System.out.print(strfram);
                             try {
                                 codeBean = new Gson().fromJson(strfram, VerCodeBean.class);
-                                String vercode = codeBean.getVerCode();
+                                String vercode = codeBean.getVerCode();//版本号
                                 System.out.print(vercode);
-                                String apkpath = codeBean.getApkPath();
+                                String apkpath = codeBean.getApkPath();//版本地址
                                 System.out.print(apkpath);
-                                String reason = codeBean.getReason();
+                                String reason = codeBean.getReason();//版本说明
                                 System.out.print(reason);
                                 spUtils.put(mactivity,"vercodeupdate",vercode);
                                 spUtils.put(mactivity,"apkpath",apkpath);
                                 spUtils.put(mactivity,"reason",reason);
                                 String versioncode = String.valueOf(curVersionName);
                                 if (!versioncode.equals(vercode)) {
+//                                    tvNewVersion.setText("需要更新到"+vercode);
 //                                    ToastUtils.ShowToastMessage("需要更新", mactivity);
 //                                    ToastUtils.ShowToastMessage("code:" + vercode + "," +
 //                                            "curversion:" + curVersionCode, mactivity);
                                     showNoticeDialog(0,slience);
                                 } else {
                                     if (!slience) {
+//                                        tvNewVersion.setText("已经是最新版本");
                                         new AlertDialog.Builder(mactivity)
                                                 .setTitle("检查新版本")
                                                 .setMessage("您所使用的已经是最新版")

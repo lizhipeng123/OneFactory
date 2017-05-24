@@ -12,11 +12,11 @@ public class Propostbean {
     private int pageSize;
 
     public class Conditions {
-        private String item;
-        private String prddocumentary;
-        private String subfactory;
-        private String workingProcedure;
-        private Boolean prddocumentaryisnull;
+        private String item;//款号
+        private String prddocumentary;//制单人
+        private String subfactory;//工厂
+        private String workingProcedure;//车间
+        private Boolean prddocumentaryisnull;//是否为空
 
         public String getItem() {
             return item;

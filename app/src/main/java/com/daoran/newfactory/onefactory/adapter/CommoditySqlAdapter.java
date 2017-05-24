@@ -175,37 +175,54 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextQCMasterScore.removeTextChangedListener((TextWatcher) editTextQCMasterScore.getTag());
             }
             editTextQCMasterScore.setText(getItem(position).getQCMasterScore());
-            editTextQCMasterScore.setOnTouchListener(new View.OnTouchListener() {
+//            editTextQCMasterScore.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    v.getParent().requestDisallowInterceptTouchEvent(true);
+//                    if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        index = position;
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                    }
+//                    return false;
+//                }
+//            });
+            holder.tvCommoQCMasterScore.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if(hasFocus){
+                        //得到焦点
+                        sp = context.getSharedPreferences("my_sp",0);
+                        String qcmaster = sp.getString("CommodityQCMasterScore","");
+                        System.out.print(qcmaster);
+                        spUtils.put(context,"debugQCMasterScore",qcmaster);
+                        TextWatcher TvQCMasterScore = new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                                Log.d(TAG, "beforeTextChanged");
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                Log.d(TAG, "onTextChanged");
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+                                Log.d(TAG, "afterTextChanged");
+                                String proitem = holder.tvCommoQCMasterScore.getText().toString();
+                                spUtils.put(context, "CommodityQCMasterScore", proitem);
+                            }
+                        };
+                        editTextQCMasterScore.addTextChangedListener(TvQCMasterScore);
+                        editTextQCMasterScore.setTag(TvQCMasterScore);
+                    }else{
+                        //失去焦点
+                        String qcmastertwoo = holder.tvCommoQCMasterScore.getText().toString();
+                        System.out.print(qcmastertwoo);
+                        spUtils.put(context,"CommodityQCMasterScore",qcmastertwoo);
                     }
-                    return false;
                 }
             });
-            TextWatcher TvQCMasterScore = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    Log.d(TAG, "beforeTextChanged");
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Log.d(TAG, "onTextChanged");
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Log.d(TAG, "afterTextChanged");
-                    String proitem = holder.tvCommoQCMasterScore.getText().toString();
-                    spUtils.put(context, "CommodityQCMasterScore", proitem);
-                }
-            };
-            editTextQCMasterScore.addTextChangedListener(TvQCMasterScore);
-            editTextQCMasterScore.setTag(TvQCMasterScore);
             /*光标放置在文本最后*/
             holder.tvCommoQCMasterScore.setSelection(holder.tvCommoQCMasterScore.length());
 
@@ -317,17 +334,17 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextPreMemo.removeTextChangedListener((TextWatcher) editTextPreMemo.getTag());
             }
             editTextPreMemo.setText(getItem(position).getPreMemo());
-            editTextPreMemo.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
+//            editTextPreMemo.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    v.getParent().requestDisallowInterceptTouchEvent(true);
+//                    if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        index = position;
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                    }
+//                    return false;
+//                }
+//            });
             TextWatcher TvPreMemo = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -445,17 +462,17 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextPredoc.removeTextChangedListener((TextWatcher) editTextPredoc.getTag());
             }
             editTextPredoc.setText(getItem(position).getPredoc());
-            editTextPredoc.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
+//            editTextPredoc.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    v.getParent().requestDisallowInterceptTouchEvent(true);
+//                    if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        index = position;
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                    }
+//                    return false;
+//                }
+//            });
             TextWatcher TvPredoc = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -487,17 +504,17 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextFabricsok.removeTextChangedListener((TextWatcher) editTextFabricsok.getTag());
             }
             editTextFabricsok.setText(getItem(position).getFabricsok());
-            editTextFabricsok.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
+//            editTextFabricsok.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    v.getParent().requestDisallowInterceptTouchEvent(true);
+//                    if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        index = position;
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                    }
+//                    return false;
+//                }
+//            });
             TextWatcher TvFabricsok = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -529,17 +546,17 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextAccessoriesok.removeTextChangedListener((TextWatcher) editTextAccessoriesok.getTag());
             }
             editTextAccessoriesok.setText(getItem(position).getAccessoriesok());
-            editTextAccessoriesok.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
+//            editTextAccessoriesok.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    v.getParent().requestDisallowInterceptTouchEvent(true);
+//                    if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        index = position;
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                    }
+//                    return false;
+//                }
+//            });
             TextWatcher TvAccessoriesok = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -571,17 +588,17 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextSpcproDec.removeTextChangedListener((TextWatcher) editTextSpcproDec.getTag());
             }
             editTextSpcproDec.setText(getItem(position).getSpcproDec());
-            editTextSpcproDec.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
+//            editTextSpcproDec.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    v.getParent().requestDisallowInterceptTouchEvent(true);
+//                    if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        index = position;
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                    }
+//                    return false;
+//                }
+//            });
             TextWatcher TvSpcproDec = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -613,17 +630,17 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextSpcproMemo.removeTextChangedListener((TextWatcher) editTextSpcproMemo.getTag());
             }
             editTextSpcproMemo.setText(getItem(position).getSpcproMemo());
-            editTextSpcproMemo.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
+//            editTextSpcproMemo.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    v.getParent().requestDisallowInterceptTouchEvent(true);
+//                    if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        index = position;
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                    }
+//                    return false;
+//                }
+//            });
             TextWatcher TvSpcproMemo = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -655,17 +672,17 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextCutqty.removeTextChangedListener((TextWatcher) editTextCutqty.getTag());
             }
             editTextCutqty.setText(getItem(position).getCutqty());
-            editTextCutqty.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
+//            editTextCutqty.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    v.getParent().requestDisallowInterceptTouchEvent(true);
+//                    if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        index = position;
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                    }
+//                    return false;
+//                }
+//            });
             TextWatcher TvCutqty = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -873,17 +890,17 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextQCbdtDoc.removeTextChangedListener((TextWatcher) editTextQCbdtDoc.getTag());
             }
             editTextQCbdtDoc.setText(getItem(position).getQCbdtDoc());
-            editTextQCbdtDoc.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
+//            editTextQCbdtDoc.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    v.getParent().requestDisallowInterceptTouchEvent(true);
+//                    if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        index = position;
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                    }
+//                    return false;
+//                }
+//            });
             TextWatcher TvQCbdtDoc = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1002,17 +1019,17 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextQCmdtDoc.removeTextChangedListener((TextWatcher) editTextQCmdtDoc.getTag());
             }
             editTextQCmdtDoc.setText(getItem(position).getQCmdtDoc());
-            editTextQCmdtDoc.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
+//            editTextQCmdtDoc.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    v.getParent().requestDisallowInterceptTouchEvent(true);
+//                    if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        index = position;
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                    }
+//                    return false;
+//                }
+//            });
             TextWatcher TvQCmdtDoc = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1131,17 +1148,17 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextQCedtDoc.removeTextChangedListener((TextWatcher) editTextQCedtDoc.getTag());
             }
             editTextQCedtDoc.setText(getItem(position).getQCedtDoc());
-            editTextQCedtDoc.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
+//            editTextQCedtDoc.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    v.getParent().requestDisallowInterceptTouchEvent(true);
+//                    if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        index = position;
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                    }
+//                    return false;
+//                }
+//            });
             TextWatcher TvQCedtDoc = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1303,17 +1320,17 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextPackqty2.removeTextChangedListener((TextWatcher) editTextPackqty2.getTag());
             }
             editTextPackqty2.setText(getItem(position).getPackqty2());
-            editTextPackqty2.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
+//            editTextPackqty2.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    v.getParent().requestDisallowInterceptTouchEvent(true);
+//                    if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        index = position;
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                    }
+//                    return false;
+//                }
+//            });
             TextWatcher TvPackqty2 = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1345,17 +1362,17 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextQCMemo.removeTextChangedListener((TextWatcher) editTextQCMemo.getTag());
             }
             editTextQCMemo.setText(getItem(position).getQCMemo());
-            editTextQCMemo.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
+//            editTextQCMemo.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    v.getParent().requestDisallowInterceptTouchEvent(true);
+//                    if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        index = position;
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                    }
+//                    return false;
+//                }
+//            });
             TextWatcher TvQCMemo = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1429,17 +1446,17 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextBatchid.removeTextChangedListener((TextWatcher) editTextBatchid.getTag());
             }
             editTextBatchid.setText(getItem(position).getBatchid());
-            editTextBatchid.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
+//            editTextBatchid.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    v.getParent().requestDisallowInterceptTouchEvent(true);
+//                    if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        index = position;
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                    }
+//                    return false;
+//                }
+//            });
             TextWatcher TvBatchid = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1516,17 +1533,17 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextIPQCPedt.removeTextChangedListener((TextWatcher) editTextIPQCPedt.getTag());
             }
             editTextIPQCPedt.setText(getItem(position).getIPQCPedt());
-            editTextIPQCPedt.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
+//            editTextIPQCPedt.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    v.getParent().requestDisallowInterceptTouchEvent(true);
+//                    if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        index = position;
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                    }
+//                    return false;
+//                }
+//            });
             TextWatcher TvIPQCPedt = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1558,17 +1575,17 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextIPQCmdt.removeTextChangedListener((TextWatcher) editTextIPQCmdt.getTag());
             }
             editTextIPQCmdt.setText(getItem(position).getIPQCmdt());
-            editTextIPQCmdt.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
+//            editTextIPQCmdt.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    v.getParent().requestDisallowInterceptTouchEvent(true);
+//                    if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        index = position;
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                    }
+//                    return false;
+//                }
+//            });
             TextWatcher TvIPQCmdt = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1600,17 +1617,17 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextQAname.removeTextChangedListener((TextWatcher) editTextQAname.getTag());
             }
             editTextQAname.setText(getItem(position).getQAname());
-            editTextQAname.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
+//            editTextQAname.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    v.getParent().requestDisallowInterceptTouchEvent(true);
+//                    if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        index = position;
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                    }
+//                    return false;
+//                }
+//            });
             TextWatcher TvQAname = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1642,17 +1659,17 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextQAScore.removeTextChangedListener((TextWatcher) editTextQAScore.getTag());
             }
             editTextQAScore.setText(getItem(position).getQAScore());
-            editTextQAScore.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        index = position;
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                    }
-                    return false;
-                }
-            });
+//            editTextQAScore.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    v.getParent().requestDisallowInterceptTouchEvent(true);
+//                    if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        index = position;
+//                        v.getParent().requestDisallowInterceptTouchEvent(false);
+//                    }
+//                    return false;
+//                }
+//            });
             TextWatcher TvQAScore = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {

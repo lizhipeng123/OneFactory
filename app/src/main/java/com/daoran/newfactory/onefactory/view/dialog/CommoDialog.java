@@ -80,8 +80,9 @@ public class CommoDialog extends Dialog {
         dialogWindow.setAttributes(p);
         String style = sp.getString("commoStyle", "");
         etprodialogStyle.setText(style);
-        String factory = sp.getString("commoFactory", "");
-        etprodialogFactory.setText(factory);
+//        String factory = sp.getString("commoFactory", "");
+        String factoryname = sp.getString("commoname","");
+        etprodialogFactory.setText(factoryname);
         String recode = sp.getString("commoRecode", "");
         etprodialogRecode.setText(recode);
         String precedure = sp.getString("etproProcedure", "");
@@ -142,7 +143,7 @@ public class CommoDialog extends Dialog {
             System.out.println("-1-onTextChanged-->"
                     + etprodialogFactory.getText().toString() + "<--");
             String textchanged = etprodialogFactory.getText().toString();
-            spUtils.put(content, "commoFactory", textchanged);
+            spUtils.put(content, "commoname", textchanged);
         }
 
         @Override
