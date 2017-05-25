@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +23,8 @@ import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.view.ScrollGridView;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +32,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
 
 
 /**
@@ -55,6 +58,12 @@ public class WorkFragment extends Fragment {
     private String sl;
 
     private DrawerFragment drawerFragment;
+    private String[] intimage = {String.valueOf(R.mipmap.count_500),
+            String.valueOf(R.mipmap.daily),
+            String.valueOf(R.mipmap.navigation_20),
+            String.valueOf(R.mipmap.prd_220),
+            String.valueOf(R.mipmap.regedit_220),
+            String.valueOf(R.mipmap.ucar_220)};
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,42 +120,39 @@ public class WorkFragment extends Fragment {
         sp = mactivity.getSharedPreferences("userInfo", 0);
         String name = sp.getString("username", "");
         String strmenu = HttpUrl.debugoneUrl + "login/getphonemenu/" + name;
-        NetUtil.getAsyncHttpClient().get(strmenu, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(String content) {
-                super.onSuccess(content);
-                String ress = content.replace("\\", "");
-                String ression = StringUtil.sideTrim(ress, "\"");
-                String resscontent = ression.replace("\'", "\"");
-                System.out.print(resscontent);
-                try {
-                    JSONArray temp = new JSONArray(resscontent);
-                    for (int i = 0; i < temp.length(); i++) {
-                        String Stringcar = temp.getString(i);
-                        String txt = new JSONObject(Stringcar).getString("text");
-                        String phoneurl = new JSONObject(Stringcar).getString("PhoneUrl");
-                        String img = new JSONObject(Stringcar).getString("img");
-                        workBeen.add(new WorkBean(phoneurl, txt, img));
+        OkHttpUtils.get()
+                .url(strmenu)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        e.printStackTrace();
                     }
-                    sl = temp.getString(0);
-                    JSONObject jsonObject = new JSONObject(sl);
-                    workitemview = jsonObject.getString("text");
-                    sgv_gridview = (ScrollGridView) view.findViewById(R.id.sgv_gridview);
-                    sgv_gridview.setAdapter(new ScrollWrokAdapter(getActivity(), workBeen));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
 
-            @Override
-            public void onFinish() {
-                super.onFinish();
-            }
-
-            @Override
-            public void onFailure(Throwable error, String content) {
-                super.onFailure(error, content);
-            }
-        });
+                    @Override
+                    public void onResponse(String response, int id) {
+                        String ress = response.replace("\\", "");
+                        String ression = StringUtil.sideTrim(ress, "\"");
+                        String resscontent = ression.replace("\'", "\"");
+                        System.out.print(resscontent);
+                        try {
+                            JSONArray temp = new JSONArray(resscontent);
+                            for (int i = 0; i < temp.length(); i++) {
+                                String Stringcar = temp.getString(i);
+                                String txt = new JSONObject(Stringcar).getString("text");
+                                String phoneurl = new JSONObject(Stringcar).getString("PhoneUrl");
+                                String img = new JSONObject(Stringcar).getString("img");
+                                workBeen.add(new WorkBean(phoneurl, txt, img));
+                            }
+                            sl = temp.getString(0);
+                            JSONObject jsonObject = new JSONObject(sl);
+                            workitemview = jsonObject.getString("text");
+                            sgv_gridview = (ScrollGridView) view.findViewById(R.id.sgv_gridview);
+                            sgv_gridview.setAdapter(new ScrollWrokAdapter(getActivity(), workBeen));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 }

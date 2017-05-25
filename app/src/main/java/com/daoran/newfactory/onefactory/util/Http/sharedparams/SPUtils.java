@@ -21,7 +21,7 @@ public class SPUtils {
      * 保存数据
      */
     public static void put(Context context, String key, Object obj) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, 0);
         SharedPreferences.Editor editor = sp.edit();
         if (obj instanceof Boolean) {
             editor.putBoolean(key, (Boolean) obj);
@@ -42,7 +42,7 @@ public class SPUtils {
      * 获取指定数据
      */
     public static Object get(Context context, String key, Object defaultObj) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, 0);
         if (defaultObj instanceof Boolean) {
             return sp.getBoolean(key, (Boolean) defaultObj);
         } else if (defaultObj instanceof Float) {
@@ -61,7 +61,7 @@ public class SPUtils {
      * 删除指定数据
      */
     public static void remove(Context context, String key) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, 0);
         SharedPreferences.Editor editor = sp.edit();
         editor.remove(key);
         editor.commit();
@@ -97,7 +97,7 @@ public class SPUtils {
      * 返回所有键值对
      */
     public static Map<String, ?> getAll(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, 0);
         Map<String, ?> map = sp.getAll();
         return map;
     }
@@ -106,7 +106,7 @@ public class SPUtils {
      * 删除所有数据
      */
     public static void clear(Context context) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, 0);
         SharedPreferences.Editor editor = sp.edit();
         editor.clear();
         editor.commit();
@@ -116,7 +116,7 @@ public class SPUtils {
      * 检查key对应的数据是否存在
      */
     public static boolean contains(Context context, String key) {
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences(FILE_NAME, 0);
         return sp.contains(key);
     }
 }

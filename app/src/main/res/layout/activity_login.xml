@@ -18,8 +18,8 @@
 
             <ImageView
                 android:id="@+id/image_login"
-                android:layout_width="@dimen/dimen_250"
-                android:layout_height="@dimen/dimen_250"
+                android:layout_width="@dimen/dimen_300"
+                android:layout_height="@dimen/dimen_300"
                 android:scaleType="fitXY"/>
 
         </LinearLayout>

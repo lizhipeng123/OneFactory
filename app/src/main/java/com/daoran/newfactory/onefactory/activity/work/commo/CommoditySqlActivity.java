@@ -1,7 +1,9 @@
 package com.daoran.newfactory.onefactory.activity.work.commo;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +13,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
 import com.daoran.newfactory.onefactory.adapter.CommoditySqlAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.CommodityPostBean;
@@ -48,11 +51,11 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private SyncHorizontalScrollView mDataHorizontal;
     private ImageView ivProductionBack;
     private boolean prdmasterisnull = false;
-    private CommoDialog commoDialog;
+    private CommoDialog commoDialog;//查货条件查询弹出框
     private ImageView ivSearch;
 
     private List<CommoditydetailBean.DataBean> dataBeen
-            = new ArrayList<CommoditydetailBean.DataBean>();
+            = new ArrayList<CommoditydetailBean.DataBean>();//查货信息实体集合
     private CommoditydetailBean commoditydetailBean;
     private CommoditySqlAdapter sqlAdapter;
     List<CommoditySaveBean> saveBeen = new ArrayList<CommoditySaveBean>();
@@ -503,8 +506,8 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
             String uriid = sp.getString("uriid", "");
             Gson gson = new Gson();
             CommoditySaveBean saveBean = new CommoditySaveBean();
-            if (uriid == commoproid || uriid.equals(commoproid)) {
-                if (!commoproid.equals("")) {
+            if (uriid == commoproid || uriid.equals(commoproid)) {//判断选中的是否是同一行
+                if (!commoproid.equals("")) {//选中当前行
                     ResponseDialog.showLoading(this);
                     saveBean.setID(Integer.parseInt(commoproid));
                     saveBean.setItem(null);
@@ -623,8 +626,14 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                 }
                             });
                 } else {
-                    ToastUtils.ShowToastMessage("请修改数据，再进行保存",
-                            CommoditySqlActivity.this);
+                    new AlertDialog.Builder(CommoditySqlActivity.this).setTitle("提示信息")
+                            .setMessage("请修改数据，再进行保存")
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();//相应事件
                 }
             } else {
                 ToastUtils.ShowToastMessage("请选择当前行，再进行修改保存",

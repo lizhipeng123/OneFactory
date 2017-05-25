@@ -171,10 +171,10 @@ public class ProductionActivity extends BaseFrangmentActivity
     private void setData() {
         String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
         sp = ProductionActivity.this.getSharedPreferences("my_sp", 0);
-        String namedure = sp.getString("proname","");
+        String namedure = sp.getString("proname","");//制单人
         String Style = sp.getString("etprodialogStyle", "");//款号
         String Factory = sp.getString("etprodialogFactory", "");//工厂
-        String Recode = sp.getString("etprodialogRecode", "");//制单人
+//        String Recode = sp.getString("etprodialogRecode", "");//制单人
         String Procedure = sp.getString("Procedure", "");//工序
         String stis = sp.getString("ischeckedd", "");//是否为空
         if (Procedure.equals("全部")) {
@@ -340,7 +340,7 @@ public class ProductionActivity extends BaseFrangmentActivity
         String namedure = sp.getString("proname","");
         String Style = sp.getString("etprodialogStyle", "");
         String Factory = sp.getString("etprodialogFactory", "");
-        String Recode = sp.getString("etprodialogRecode", "");
+//        String Recode = sp.getString("etprodialogRecode", "");
         String Procedure = sp.getString("Procedure", "");
         String stis = sp.getString("ischeckedd", "");
         if (Procedure.equals("全部")) {

@@ -38,7 +38,7 @@ public class DebugGaodeActivity extends
         try {
             Intent intent = Intent.getIntent(
                     "androidamap://route?sourceApplication=softname&sname=我的位置&dlat="
-                    +LATITUDE_B+"&dlon="+LONGTITUDE_B+"&dname="+"东郡华城广场|A座"+"&dev=0&m=0&t=1");
+                    +LATITUDE_B+"&dlon="+LONGTITUDE_B+"&dname="+"杭州道然进出口有限公司"+"&dev=0&m=0&t=1");
             if(isInstallByread("com.autonavi.minimap")){
                 startActivity(intent);
                 Log.e(TAG, "高德地图客户端已经安装") ;

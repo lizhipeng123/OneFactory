@@ -129,13 +129,17 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
         boolean choseAutoLogin = sp.getBoolean("autologin", false);
         if (choseRemember == true) {
             etUsername.setText(name);
+            etUsername.setSelection(etUsername.length());
             etPassword.setText(passwd);
+            etPassword.setSelection(etPassword.length());
             checkBoxPw.setChecked(true);
         }
         if (choseAutoLogin) {
             checkboxopen.setChecked(true);
             etUsername.setText(name);
+            etUsername.setSelection(etUsername.length());
             etPassword.setText(passwd);
+            etPassword.setSelection(etPassword.length());
             if (etUsername.getText().toString() != null) {
                 postLogin();
             }

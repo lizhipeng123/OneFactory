@@ -30,7 +30,7 @@ public class SharedHelper {
      * @param passwd
      */
     public void save(String username, String passwd) {
-        SharedPreferences sp = context.getSharedPreferences("mysp", Context.MODE_APPEND);//存储到mysp.xml文件
+        SharedPreferences sp = context.getSharedPreferences("mysp", 0);//存储到mysp.xml文件
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("username", username);
         editor.putString("passwd", passwd);
@@ -41,7 +41,7 @@ public class SharedHelper {
     //定义一个读取SP文件的方法
     public Map<String, String> read() {
         Map<String, String> data = new HashMap<String, String>();
-        SharedPreferences sp = context.getSharedPreferences("mysp", Context.MODE_PRIVATE);
+        SharedPreferences sp = context.getSharedPreferences("mysp", 0);
         data.put("username", sp.getString("username", ""));
         data.put("passwd", sp.getString("passwd", ""));
         return data;

@@ -233,7 +233,6 @@ public class ProductionAdapter extends BaseAdapter {
                 String productionadapterDocumentary = getItem(position).getPrddocumentary();
                 viewHolder.tvProDocumentary.setText(productionadapterDocumentary);
 
-
                 viewHolder.tvProFactory.setEnabled(true);
                 String productionFactory = getItem(position).getSubfactory();
                 viewHolder.tvProFactory.setText(productionFactory);
@@ -306,7 +305,7 @@ public class ProductionAdapter extends BaseAdapter {
                 };
                 editTexOthers.addTextChangedListener(TvOthers);
                 editTexOthers.setTag(TvOthers);
-//            /*光标放置在文本最后*/
+                /*光标放置在文本最后*/
                 viewHolder.tvProOthers.setSelection(viewHolder.tvProOthers.length());
 
 

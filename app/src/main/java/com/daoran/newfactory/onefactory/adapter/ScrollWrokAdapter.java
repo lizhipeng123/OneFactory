@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
@@ -56,13 +58,35 @@ public class ScrollWrokAdapter extends BaseAdapter {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_grid_work, null);
             holder.tvOpenCarDetail = (TextView) convertView.findViewById(R.id.tvOpenCarDetail);
+            holder.ivopenCarDetail = (ImageView) convertView.findViewById(R.id.ivopenCarDetail);
+            holder.llOpenCarDetail = (LinearLayout) convertView.findViewById(R.id.llOpenCarDetail);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
         final String itemtitle = workBeen.get(position).getText();
         holder.tvOpenCarDetail.setText(itemtitle);
-        holder.tvOpenCarDetail.setOnClickListener(new View.OnClickListener() {
+        switch (itemtitle){
+            case "用车申请单":
+                holder.ivopenCarDetail.setImageResource(R.mipmap.ucar_220);
+                break;
+            case "外勤签到":
+                holder.ivopenCarDetail.setImageResource(R.mipmap.regedit_220);
+                break;
+            case "签到查询":
+                holder.ivopenCarDetail.setImageResource(R.mipmap.count_500);
+                break;
+            case "公交路线":
+                holder.ivopenCarDetail.setImageResource(R.mipmap.navigation_20);
+                break;
+            case "生产日报表":
+                holder.ivopenCarDetail.setImageResource(R.mipmap.daily);
+                break;
+            case "查货跟踪表":
+                holder.ivopenCarDetail.setImageResource(R.mipmap.prd_220);
+                break;
+        }
+        holder.llOpenCarDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (itemtitle){
@@ -92,5 +116,7 @@ public class ScrollWrokAdapter extends BaseAdapter {
 
     class ViewHolder {
         TextView tvOpenCarDetail;
+        ImageView ivopenCarDetail;
+        LinearLayout llOpenCarDetail;
     }
 }
