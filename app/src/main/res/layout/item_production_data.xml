@@ -3,6 +3,7 @@
     android:id="@+id/data_ll_vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
     android:orientation="vertical">
 
     <LinearLayout

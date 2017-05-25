@@ -64,7 +64,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     private Toolbar tbarSetup;
     private View view;
     private RelativeLayout rlAgainLogin, rlEditionUpdate;
-    private TextView tvVersion,tvNewVersion;
+    private TextView tvVersion, tvNewVersion;
     private VerCodeBean codeBean;
 
     private String curVersionName;
@@ -78,7 +78,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     private TextView tv_clean;
     private RelativeLayout rlClean;
     private RelativeLayout rlwifi;
-    private TextView tvwifimanager,tvwifissid;
+    private TextView tvwifimanager, tvwifissid;
 
     private static final int DOWN_NOSDCARD = 0;
     private static final int DOWN_UPDATE = 1;
@@ -127,11 +127,12 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         tvwifimanager = (TextView) view.findViewById(R.id.tvwifimanager);
         tvwifissid = (TextView) view.findViewById(R.id.tvwifissid);
         tvNewVersion = (TextView) view.findViewById(R.id.tvNewVersion);
-        sp = mactivity.getSharedPreferences("my_sp",0);
-        String vercode = sp.getString("Applicationscode","");
+        sp = mactivity.getSharedPreferences("my_sp", 0);
+        String vercode = sp.getString("Applicationscode", "");
         tvNewVersion.setText(vercode);
         String cleanmana = getAppCacheSize();
         tv_clean.setText(cleanmana);
+        spUtils.put(mactivity, "cleanmana", cleanmana);
     }
 
     /**
@@ -152,8 +153,8 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 AlertDialog dialog = new AlertDialog.Builder(mactivity).create();
                 dialog.setTitle("系统提示");
                 dialog.setMessage("确定重新登录吗");
-                dialog.setButton("确定",listener);
-                dialog.setButton2("取消",listener);
+                dialog.setButton("确定", listener);
+                dialog.setButton2("取消", listener);
                 dialog.show();
                 break;
             case R.id.rlEditionUpdate:
@@ -166,8 +167,8 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 AlertDialog dialog1 = new AlertDialog.Builder(mactivity).create();
                 dialog1.setTitle("系统提示");
                 dialog1.setMessage("确定清除缓存吗");
-                dialog1.setButton("确定",listenerClean);
-                dialog1.setButton2("取消",listenerClean);
+                dialog1.setButton("确定", listenerClean);
+                dialog1.setButton2("取消", listenerClean);
                 dialog1.show();
                 break;
             case R.id.rlwifi:
@@ -196,7 +197,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     DialogInterface.OnClickListener listenerClean = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
-            switch (which){
+            switch (which) {
                 case AlertDialog.BUTTON_POSITIVE://确定
                     showClearDialog();
                     break;
@@ -260,16 +261,16 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                                 System.out.print(apkpath);
                                 String reason = codeBean.getReason();//版本说明
                                 System.out.print(reason);
-                                spUtils.put(mactivity,"vercodeupdate",vercode);
-                                spUtils.put(mactivity,"apkpath",apkpath);
-                                spUtils.put(mactivity,"reason",reason);
+                                spUtils.put(mactivity, "vercodeupdate", vercode);
+                                spUtils.put(mactivity, "apkpath", apkpath);
+                                spUtils.put(mactivity, "reason", reason);
                                 String versioncode = String.valueOf(curVersionName);
                                 if (!versioncode.equals(vercode)) {
 //                                    tvNewVersion.setText("需要更新到"+vercode);
 //                                    ToastUtils.ShowToastMessage("需要更新", mactivity);
 //                                    ToastUtils.ShowToastMessage("code:" + vercode + "," +
 //                                            "curversion:" + curVersionCode, mactivity);
-                                    showNoticeDialog(0,slience);
+                                    showNoticeDialog(0, slience);
                                 } else {
                                     if (!slience) {
 //                                        tvNewVersion.setText("已经是最新版本");
@@ -298,14 +299,14 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
      */
     public void showNoticeDialog(int focuseUpdate, boolean slience) {
         sp = mactivity.getSharedPreferences("my_sp", 0);
-        String reason = sp.getString("reason","");
-        String reaid = sp.getString("vercodeupdate","");
+        String reason = sp.getString("reason", "");
+        String reaid = sp.getString("vercodeupdate", "");
         if (Comfig.isDebug) {
             System.out.println(focuseUpdate);
         }
         if (focuseUpdate == 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mactivity);
-            builder.setTitle("发现新版本： "+reaid);
+            builder.setTitle("发现新版本： " + reaid);
             builder.setMessage("更新日志:   " + reason);
             builder.setPositiveButton("立即更新",
                     new DialogInterface.OnClickListener() {
@@ -441,8 +442,8 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 // 输出临时下载文件
                 File tmpFile = new File(tmpFilePath);
                 FileOutputStream fos = new FileOutputStream(tmpFile);
-                sp = mactivity.getSharedPreferences("my_sp",0);
-                String apkpath = sp.getString("apkpath","");
+                sp = mactivity.getSharedPreferences("my_sp", 0);
+                String apkpath = sp.getString("apkpath", "");
                 URL url = new URL(apkpath);
                 HttpURLConnection conn = (HttpURLConnection) url
                         .openConnection();
@@ -488,7 +489,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     };
     private Thread downLoadThread;
 
-    private void startWifi(){
+    private void startWifi() {
         WifiManager wifiManager = (WifiManager) mactivity.getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         String infossid = wifiInfo.getSSID();
@@ -520,6 +521,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
 
     /**
      * 检测缓存大小
+     *
      * @return
      */
     private String getAppCacheSize() {
@@ -559,6 +561,12 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
                     tv_clean.setText(cachesize);
+                    sp = mactivity.getSharedPreferences("my_sp", 0);
+                    SharedPreferences.Editor editor = sp.edit();
+                    String spcleanmana = sp.getString("cleanmana", "");
+                    ToastUtils.ShowToastMessage("清理了" + spcleanmana + "数据", mactivity);
+                    editor.remove("cleanmana");
+                    editor.commit();
                     progressDialog.dismiss();
                 }
             }, 1000);
