@@ -149,6 +149,10 @@
             android:name=".activity.work.production.ProductionNewlyComfigActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.work.production.ProductionDemoActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
 
         <!-- 测试 -->
         <service android:name="com.amap.api.location.APSService"/>

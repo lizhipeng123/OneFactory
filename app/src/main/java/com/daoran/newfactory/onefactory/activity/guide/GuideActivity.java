@@ -32,6 +32,7 @@ public class GuideActivity extends BaseFrangmentActivity implements View.OnClick
 
     private ImageView[] guideDots;//底部导航小点
     private int currentIndex;//记录当前的图片
+    private LinearLayout llYt;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,13 +61,26 @@ public class GuideActivity extends BaseFrangmentActivity implements View.OnClick
     private void getViews() {
         tvLoginbtn = (TextView) findViewById(R.id.tvLoginbtn);
         tvLoginbtn.setOnClickListener(this);
+        llYt = (LinearLayout) findViewById(R.id.llYt);
         vpGuide = (ViewPager) findViewById(R.id.vpGuide);
         mViews = new ArrayList<View>();
         for (int i = 0; i < images.length; i++) {
             ImageView imageView = new ImageView(GuideActivity.this);
             imageView.setImageResource(images[i]);
+
             mViews.add(imageView);
         }
+//        switch (i){
+//            case 0:
+//                llYt.setVisibility(View.GONE);
+//                break;
+//            case 1:
+//                llYt.setVisibility(View.GONE);
+//                break;
+//            case 2:
+//                llYt.setVisibility(View.VISIBLE);
+//                break;
+//        }
         mAdapter = new GuideFragmentAdapter(mViews);
         vpGuide.setAdapter(mAdapter);
     }

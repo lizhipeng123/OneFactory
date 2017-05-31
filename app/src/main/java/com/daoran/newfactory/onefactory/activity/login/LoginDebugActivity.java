@@ -39,7 +39,6 @@ import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.RequestParams;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
-import com.daoran.newfactory.onefactory.util.Http.sharedparams.SharedHelper;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.util.settings.Comfig;
@@ -75,7 +74,7 @@ import okhttp3.Call;
 public class LoginDebugActivity extends BaseFrangmentActivity {
     private Button btnLogin;
     private EditText etUsername, etPassword;
-    private SharedHelper sh;
+//    private SharedHelper sh;
     private SPUtils spUtils;
     private CheckBox checkBoxPw, checkboxopen;
     private SharedPreferences sp;
@@ -112,7 +111,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
         getViews();
         initViews();
         checkAppVersion(true);
-        sh = new SharedHelper(this);
+//        sh = new SharedHelper(this);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +121,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                 }
             }
         });
-        sp = this.getSharedPreferences("userInfo", 0);
+        sp = this.getSharedPreferences("my_sp", 0);
         String name = sp.getString("username", "");
         String passwd = sp.getString("passwd", "");
         boolean choseRemember = sp.getBoolean("remember", false);
@@ -276,18 +275,18 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                         Gson gson = new Gson();
                         UsergetBean userBean = gson.fromJson(content, UsergetBean.class);
                         if (userBean.isStatus() == true) {
-                            editor.putString("username", userNameValue);
-                            editor.putString("passwd", passwordValue);
+                            spUtils.put(LoginDebugActivity.this,"username",userNameValue);
+                            spUtils.put(LoginDebugActivity.this,"passwd",passwordValue);
                             //记住密码
                             if (checkBoxPw.isChecked()) {
-                                editor.putBoolean("remember", true);
+                                spUtils.put(LoginDebugActivity.this,"remember",true);
                             } else {
-                                editor.putBoolean("remember", false);
+                                spUtils.put(LoginDebugActivity.this,"remember",false);
                             }
                             if (checkboxopen.isChecked()) {
-                                editor.putBoolean("autologin", true);
+                                spUtils.put(LoginDebugActivity.this,"autologin",true);
                             } else {
-                                editor.putBoolean("autologin", false);
+                                spUtils.put(LoginDebugActivity.this,"autologin",false);
                             }
                             editor.commit();
                             spUtils.put(getApplicationContext(), "name", userBean.getU_name());
@@ -411,7 +410,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
      * 显示版本更新通知对话框
      * focuseUpdate 0:自己服务端更新 1：自己服务端强制更新
      */
-    public void showNoticeDialog(int focuseUpdate, boolean slience) {
+    public void showNoticeDialog(int focuseUpdate, boolean slience)  {
         sp = getSharedPreferences("my_sp", 0);
         String reason = sp.getString("applicationreason","");
         String reaid = sp.getString("applicationvercodeupdate","");

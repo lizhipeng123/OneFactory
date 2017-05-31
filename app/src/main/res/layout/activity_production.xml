@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!--<include layout="@layout/toolbar" />-->
+
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -14,19 +16,19 @@
 
             <ImageView
                 android:id="@+id/ivProductionBack"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:src="@mipmap/title_back_gray" />
+                android:layout_centerVertical="true"
+                android:src="@mipmap/btn_back" />
 
             <TextView
                 android:id="@+id/tvProTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="生产日报"
                 android:layout_centerInParent="true"
+                android:text="生产日报"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_60sp" />
 
@@ -34,27 +36,30 @@
                 android:id="@+id/ivSearch"
                 android:layout_width="@dimen/dimen_70"
                 android:layout_height="@dimen/dimen_70"
-                android:layout_toLeftOf="@+id/tvProTitle"
-                android:layout_marginRight="@dimen/dimen_30"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dimen_30"
+                android:layout_toLeftOf="@+id/tvProTitle"
                 android:src="@mipmap/search" />
+
             <Button
                 android:id="@+id/btnProSave"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/spinnermenu"
-                android:text="保存"/>
+                android:text="保存" />
+
             <Button
                 android:id="@+id/spinnermenu"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="菜单"/>
+                android:text="菜单" />
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -707,27 +712,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/ll_visibi"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:visibility="gone"
-            android:layout_gravity="center">
+            android:orientation="vertical"
+            android:visibility="gone">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/null_comm_img"/>
+                android:src="@mipmap/null_comm_img" />
+
             <TextView
                 android:id="@+id/tv_visibi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
                 android:layout_marginTop="30dp"
-                android:textSize="15sp"
-                android:textColor="#FFCBCBCB"/>
+                android:text=""
+                android:textColor="#FFCBCBCB"
+                android:textSize="15sp" />
         </LinearLayout>
+
         <ScrollView
             android:id="@+id/scroll_content"
             android:layout_width="match_parent"
@@ -741,6 +750,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
                 android:orientation="horizontal">
+
                 <LinearLayout
                     android:id="@+id/lin_data_content"
                     android:layout_width="match_parent"
@@ -764,44 +774,46 @@
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="9"
-            android:gravity="center_horizontal"
-            android:background="@color/gray">
+            android:background="@color/gray"
+            android:gravity="center_horizontal">
 
             <EditText
                 android:id="@+id/etSqlDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/shape_text_sql_boild"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
                 android:inputType="phone|number"
                 android:numeric="integer"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:text="1"
                 android:textSize="20sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
                 android:layout_marginLeft="5dp"
-                android:text="/" />
+                android:text="/"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tvSignPage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
                 android:layout_marginLeft="5dp"
-                android:text="0" />
+                android:text="0"
+                android:textSize="20sp" />
+
             <Button
                 android:id="@+id/btnSignPage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="确定"/>
+                android:text="确定" />
         </LinearLayout>
     </LinearLayout>
 

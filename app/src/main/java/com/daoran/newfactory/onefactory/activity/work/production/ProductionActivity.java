@@ -536,9 +536,9 @@ public class ProductionActivity extends BaseFrangmentActivity
             if (proPrdstatusTitle == "" || proPrdstatusTitle.equals("")) {
                 proPrdstatusTitle = null;
             }
-            String productionOthers = sp.getString("productionsaveOthers", "");//组别人
-            if (productionOthers == "" || productionOthers.equals("")) {
-                productionOthers = null;
+            String productionsaveOthers = sp.getString("productionsaveOthers", "");//组别人
+            if (productionsaveOthers == "" || productionsaveOthers.equals("")) {
+                productionsaveOthers = null;
             }
             String productionTaskNumber = sp.getString("productionTaskNumber", "");//任务数
             if (productionTaskNumber == "" || productionTaskNumber.equals("")) {
@@ -702,7 +702,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                     saveBean.setSubfactory(null);
                     saveBean.setSubfactoryTeams(proColumnTitle);
                     saveBean.setWorkingProcedure(proProcedureTitle);
-                    saveBean.setWorkers(productionOthers);
+                    saveBean.setWorkers(productionsaveOthers);
                     saveBean.setPqty(null);
                     saveBean.setProdcol(null);
                     saveBean.setTaskqty(productionTaskNumber);
@@ -756,6 +756,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                     editorone.remove("proProcedureTitle");
                     editorone.remove("proadapterPrdstatusTitle");
                     editorone.remove("productionsaveOthers");
+                    editorone.remove("productionOthers");
                     editorone.remove("productionTaskNumber");
                     editorone.remove("productionCompletedLastMonth");
                     editorone.remove("proadapterMonthTitle");
@@ -826,6 +827,49 @@ public class ProductionActivity extends BaseFrangmentActivity
                                 }
                             });
                 } else {
+                    editorone.remove("prouriid");
+                    editorone.remove("prosalesid");
+                    editorone.remove("proColumnTitle");
+                    editorone.remove("proProcedureTitle");
+                    editorone.remove("proadapterPrdstatusTitle");
+                    editorone.remove("productionsaveOthers");
+                    editorone.remove("productionOthers");
+                    editorone.remove("productionTaskNumber");
+                    editorone.remove("productionCompletedLastMonth");
+                    editorone.remove("proadapterMonthTitle");
+                    editorone.remove("productionOneDay");
+                    editorone.remove("productionTwoDay");
+                    editorone.remove("productionThreeDay");
+                    editorone.remove("productionForeDay");
+                    editorone.remove("productionFiveDay");
+                    editorone.remove("productionSixDay");
+                    editorone.remove("productionSevenDay");
+                    editorone.remove("productionEightDay");
+                    editorone.remove("productionNineDay");
+                    editorone.remove("productionTenDay");
+                    editorone.remove("productionElevenDay");
+                    editorone.remove("productionTwelveDay");
+                    editorone.remove("productionThirteenDay");
+                    editorone.remove("productionFourteenDay");
+                    editorone.remove("productionFifteenDay");
+                    editorone.remove("productionSixteenDay");
+                    editorone.remove("productionSeventeenDay");
+                    editorone.remove("productionEighteenDay");
+                    editorone.remove("productionNineteenDay");
+                    editorone.remove("productionTwentyDay");
+                    editorone.remove("productionTwentyOneDay");
+                    editorone.remove("productionTwentyTwoDay");
+                    editorone.remove("productionTwentyThreeDay");
+                    editorone.remove("productionTwentyForeDay");
+                    editorone.remove("productionTwentyFiveDay");
+                    editorone.remove("productionTwentySixDay");
+                    editorone.remove("productionTwentySevenDay");
+                    editorone.remove("productionTwentyEightDay");
+                    editorone.remove("productionTwentyNineDay");
+                    editorone.remove("productionThirtyDay");
+                    editorone.remove("productionThirtyOneDay");
+                    editorone.remove("productionRemarks");
+                    editorone.commit();
                     new AlertDialog.Builder(ProductionActivity.this).setTitle("提示信息")
                             .setMessage("请修改数据，再进行保存")
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -1114,6 +1158,7 @@ public class ProductionActivity extends BaseFrangmentActivity
         editor.remove("proProcedureTitle");
         editor.remove("proadapterPrdstatusTitle");
         editor.remove("productionsaveOthers");
+        editor.remove("productionOthers");
         editor.remove("productionTaskNumber");
         editor.remove("productionCompletedLastMonth");
         editor.remove("proadapterMonthTitle");

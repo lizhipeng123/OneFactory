@@ -10,7 +10,7 @@
         android:id="@+id/llOpenCarDetail"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:background="@drawable/shape_text_sql_boild"
+        android:background="@drawable/shape_text_menu"
         android:gravity="center"
         android:layout_gravity="center"
         android:orientation="vertical">

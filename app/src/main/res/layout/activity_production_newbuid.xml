@@ -14,11 +14,11 @@
 
             <ImageView
                 android:id="@+id/ivProductionBack"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:src="@mipmap/title_back_gray" />
+                android:src="@mipmap/btn_back" />
 
             <TextView
                 android:layout_width="wrap_content"

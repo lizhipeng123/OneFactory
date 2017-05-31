@@ -10,19 +10,19 @@ import java.io.File;
 import java.net.URISyntaxException;
 
 /**
- * 公交路线
+ * 路线规划（调用高德地图）
  * Created by lizhipeng on 2017/4/14.
  */
 
 public class DebugGaodeActivity extends
         BaseFrangmentActivity {
     private static final String TAG = "DebugGaodeActivity";
-    //--------------以下都是高德坐标系的坐标-------------------//
+    //--------------以下都是高德坐标系的坐标-------30.324328,120.188428------------//
     private static final double LATITUDE_A = 28.1903;  //起点纬度
     private static final double LONGTITUDE_A = 113.031738;  //起点经度
 
-    private static final double LATITUDE_B = 28.187519;  //终点纬度
-    private static final double LONGTITUDE_B = 113.029713;  //终点经度
+    private static final double LATITUDE_B = 30.324328;  //终点纬度
+    private static final double LONGTITUDE_B = 120.188428;  //终点经度
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

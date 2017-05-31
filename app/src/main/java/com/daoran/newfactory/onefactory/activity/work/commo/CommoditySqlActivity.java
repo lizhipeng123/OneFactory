@@ -626,6 +626,45 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                 }
                             });
                 } else {
+                    editorone.remove("commoproid");
+                    editorone.remove("CommodityQCMasterScore");
+                    editorone.remove("dateSealedrewtimesign");
+                    editorone.remove("dateDocbacktimesign");
+                    editorone.remove("CommodityPreMemo");
+                    editorone.remove("datePredocdttimesign");
+                    editorone.remove("datePredtimesign");
+                    editorone.remove("CommodityPredoc");
+                    editorone.remove("CommodityFabricsok");
+                    editorone.remove("CommodityAccessoriesok");
+                    editorone.remove("CommoditySpcproDec");
+                    editorone.remove("CommoditySpcproMemo");
+                    editorone.remove("CommodityCutqty");
+                    editorone.remove("dateSewFdttimesign");
+                    editorone.remove("dateSewMdttimesign");
+                    editorone.remove("datePrebdttimesign");
+                    editorone.remove("dateQCbdttimesign");
+                    editorone.remove("CommodityQCbdtDoc");
+                    editorone.remove("datePremdttimesign");
+                    editorone.remove("dateQCmdttimesign");
+                    editorone.remove("CommodityQCmdtDoc");
+                    editorone.remove("datePreedttimesign");
+                    editorone.remove("dateQCMedttimesign");
+                    editorone.remove("CommodityQCedtDoc");
+                    editorone.remove("dateFctmdttimesign");
+                    editorone.remove("dateFctedttimesign");
+                    editorone.remove("datePackbdattimesign");
+                    editorone.remove("CommodityPackqty2");
+                    editorone.remove("CommodityQCMemo");
+                    editorone.remove("dateFactlcdattimesign");
+                    editorone.remove("CommodityBatchid");
+                    editorone.remove("commohdTitle");
+                    editorone.remove("dateCtmchkdttimesign");
+                    editorone.remove("CommodityIPQCPedt");
+                    editorone.remove("CommodityIPQCmdt");
+                    editorone.remove("CommodityQAname");
+                    editorone.remove("CommodityQAScore");
+                    editorone.remove("dateQAMemotimesign");
+                    editorone.commit();
                     new AlertDialog.Builder(CommoditySqlActivity.this).setTitle("提示信息")
                             .setMessage("请修改数据，再进行保存")
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {

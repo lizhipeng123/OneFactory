@@ -51,6 +51,14 @@ public class GuideFragmentAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(View container, int position) {
         ((ViewPager) container).addView(mViews.get(position), 0);
+        switch (position){
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+        }
         return mViews.get(position);
     }
 

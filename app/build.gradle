@@ -91,4 +91,5 @@ dependencies {
     compile files('baidulibry/baidumapapi_v3_2_0.jar')
     compile files('baidulibry/locSDK_5.01.jar')
     compile 'com.android.support:multidex:'
+    compile 'com.nineoldandroids:library:2.4.0'
 }

@@ -66,7 +66,7 @@ public class ScrollWrokAdapter extends BaseAdapter {
         }
         final String itemtitle = workBeen.get(position).getText();
         holder.tvOpenCarDetail.setText(itemtitle);
-        switch (itemtitle){
+        switch (itemtitle) {
             case "用车申请单":
                 holder.ivopenCarDetail.setImageResource(R.mipmap.ucar_220);
                 break;
@@ -89,7 +89,7 @@ public class ScrollWrokAdapter extends BaseAdapter {
         holder.llOpenCarDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (itemtitle){
+                switch (itemtitle) {
                     case "用车申请单":
                         context.startActivity(new Intent(context, SqlcarApplyActivity.class));
                         break;
