@@ -14,6 +14,7 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.work.DebugGaodeActivity;
 import com.daoran.newfactory.onefactory.activity.work.SignActivity;
 import com.daoran.newfactory.onefactory.activity.work.SignDetailActivity;
+import com.daoran.newfactory.onefactory.activity.work.SignOpenActivity;
 import com.daoran.newfactory.onefactory.activity.work.car.SqlcarApplyActivity;
 import com.daoran.newfactory.onefactory.activity.work.commo.CommoditySqlActivity;
 import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
@@ -94,7 +95,7 @@ public class ScrollWrokAdapter extends BaseAdapter {
                         context.startActivity(new Intent(context, SqlcarApplyActivity.class));
                         break;
                     case "外勤签到":
-                        context.startActivity(new Intent(context, SignActivity.class));
+                        context.startActivity(new Intent(context, SignOpenActivity.class));
                         break;
                     case "签到查询":
                         context.startActivity(new Intent(context, SignDetailActivity.class));

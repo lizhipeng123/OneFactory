@@ -22,7 +22,7 @@
 
     <View
         android:layout_width="fill_parent"
-        android:layout_height="1dip"
+        android:layout_height="1px"
         android:background="#FF909090" />
 
     <LinearLayout
@@ -160,7 +160,7 @@
 
     <View
         android:layout_width="fill_parent"
-        android:layout_height="1dip"
+        android:layout_height="1px"
         android:background="#FF909090" />
 
     <LinearLayout
@@ -177,6 +177,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/shape_btn_sql_boild"
+            android:textColor="@color/white"
             android:text="取消" />
 
         <Button
@@ -184,6 +186,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dimen_200"
+            android:background="@drawable/shape_btn_sql_boild"
+            android:textColor="@color/white"
             android:layout_weight="1"
             android:text="确定" />
     </LinearLayout>

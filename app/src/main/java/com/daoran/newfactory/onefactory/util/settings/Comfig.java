@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.util.settings;
 
 
+import com.daoran.newfactory.onefactory.R;
 
 /**
  * Created by lizhipeng on 2017/3/21.
@@ -42,7 +43,9 @@ public class Comfig {
 
     public static String key = "token值";
 
-
+    public static int[] getGuiderResIds() {
+        return new int[]{R.drawable.welcome_01, R.drawable.welcome_02, R.drawable.welcome_03};
+    }
 
     public static final String OTHER_FIRST_LETTER = "#";
 }

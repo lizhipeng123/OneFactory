@@ -5,48 +5,44 @@
     android:background="#ffffff"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/dimen_150"
+        android:gravity="center">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/ivSiganSqlDetail"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:layout_alignParentLeft="true"
+            android:src="@mipmap/btn_back" />
 
-            <ImageView
-                android:id="@+id/ivSiganSqlDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:src="@mipmap/btn_back" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="签到查询"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_60sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="签到查询"
-                android:layout_centerVertical="true"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_60sp" />
-
-            <ImageView
-                android:id="@+id/ivSearch"
-                android:layout_width="@dimen/dimen_70"
-                android:layout_height="@dimen/dimen_70"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/dimen_30"
-                android:src="@mipmap/search" />
-        </RelativeLayout>
-
-    </android.support.v7.widget.Toolbar>
+        <ImageView
+            android:id="@+id/ivSearch"
+            android:layout_width="@dimen/dimen_70"
+            android:layout_height="@dimen/dimen_70"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_30"
+            android:src="@mipmap/search" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/lightblue"
         android:orientation="horizontal">
+
         <LinearLayout
             android:id="@+id/lin_header_content"
             android:layout_width="0dp"
@@ -153,27 +149,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/ll_visibi"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:visibility="gone"
-            android:layout_gravity="center">
+            android:orientation="vertical"
+            android:visibility="gone">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/null_comm_img"/>
+                android:src="@mipmap/null_comm_img" />
+
             <TextView
                 android:id="@+id/tv_visibi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
                 android:layout_marginTop="30dp"
-                android:textSize="15sp"
-                android:textColor="#FFCBCBCB"/>
+                android:text=""
+                android:textColor="#FFCBCBCB"
+                android:textSize="15sp" />
         </LinearLayout>
+
         <ScrollView
             android:id="@+id/scroll_content"
             android:layout_width="match_parent"
@@ -217,40 +217,44 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="9"
-            android:gravity="center_horizontal"
-            android:background="@color/gray">
+            android:background="@color/lightblue"
+            android:gravity="center_horizontal">
 
             <EditText
                 android:id="@+id/etSqlDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/shape_text_sql_boild"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
                 android:inputType="phone|number"
                 android:numeric="integer"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:text="1"
                 android:textSize="20sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
                 android:layout_marginLeft="5dp"
-                android:text="/" />
+                android:text="/"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tvSignPage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
                 android:layout_marginLeft="5dp"
-                android:text="0" />
+                android:text="0"
+                android:textSize="20sp" />
+
             <Button
                 android:id="@+id/btnSignPage"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/dimen_130"
                 android:layout_height="wrap_content"
-                android:text="确定"/>
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dimen_30"
+                android:background="@color/aliceblue"
+                android:text="确定" />
         </LinearLayout>
     </LinearLayout>
 

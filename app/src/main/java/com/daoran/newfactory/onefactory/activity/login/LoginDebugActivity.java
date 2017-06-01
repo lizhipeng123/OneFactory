@@ -43,6 +43,7 @@ import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.util.settings.Comfig;
 import com.daoran.newfactory.onefactory.view.CropSquareTransformation;
+import com.daoran.newfactory.onefactory.view.EditTextWithDelete;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -73,8 +74,7 @@ import okhttp3.Call;
  */
 public class LoginDebugActivity extends BaseFrangmentActivity {
     private Button btnLogin;
-    private EditText etUsername, etPassword;
-//    private SharedHelper sh;
+    private EditTextWithDelete etUsername, etPassword;
     private SPUtils spUtils;
     private CheckBox checkBoxPw, checkboxopen;
     private SharedPreferences sp;
@@ -111,7 +111,6 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
         getViews();
         initViews();
         checkAppVersion(true);
-//        sh = new SharedHelper(this);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +144,9 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
         }
     }
 
+    /**
+     * wifi监听弹出事件
+     */
     DialogInterface.OnClickListener listenerwifi = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
@@ -157,14 +159,20 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
         }
     };
 
+    /**
+     * 实例化控件
+     */
     private void getViews() {
-        etUsername = (EditText) findViewById(R.id.etUsername);
-        etPassword = (EditText) findViewById(R.id.etPassword);
+        etUsername = (EditTextWithDelete) findViewById(R.id.etUsername);
+        etPassword = (EditTextWithDelete) findViewById(R.id.etPassword);
         checkBoxPw = (CheckBox) findViewById(R.id.checkBoxPw);
         checkboxopen = (CheckBox) findViewById(R.id.checkboxopen);
         image_login = (ImageView) findViewById(R.id.image_login);
     }
 
+    /**
+     * 操作控件
+     */
     private void initViews() {
         setEditTextInhibitInputSpeChat(etUsername);
         setEditTextInhibitInputSpeChat(etPassword);
@@ -210,6 +218,11 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
         editText.setFilters(new InputFilter[]{filter});
     }
 
+    /**
+     * 非空验证
+     *
+     * @return
+     */
     private boolean validate() {
         boolean result = true;
         String message = "";
@@ -245,11 +258,11 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
     private void postLogin() {
         String loginuserUrl = HttpUrl.debugoneUrl + "Login/UserLogin/";
         if (NetWork.isNetWorkAvailable(this)) {
-            /*检测是否为可用WiFi*/
-            WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            String infossid = wifiInfo.getSSID();
-            infossid = infossid.replace("\"", "");
+//            /*检测是否为可用WiFi*/
+//            WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+//            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+//            String infossid = wifiInfo.getSSID();
+//            infossid = infossid.replace("\"", "");
 //            if (!infossid.equals("taoxinxi")) {
 //                AlertDialog dialog = new AlertDialog.Builder(this).create();
 //                dialog.setTitle("系统提示");
@@ -257,66 +270,66 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
 //                dialog.setButton("确定", listenerwifi);
 //                dialog.show();
 //            } else {
-                ResponseDialog.showLoading(this, "登录中");
-                List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(NetUtil.createParam("Logid", etUsername.getText().toString()));
-                params.add(NetUtil.createParam("pwd", etPassword.getText().toString()));
-                params.add(NetUtil.createParam("Ischeckpwd", true));
-                params.add(NetUtil.createParam("Company", "杭州道然进出口有限公司"));
-                RequestParams requestParams = new RequestParams(params);
-                NetUtil.getAsyncHttpClient().post(loginuserUrl, requestParams, new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(String content) {
-                        super.onSuccess(content);
-                        System.out.print(content);
-                        userNameValue = etUsername.getText().toString();
-                        passwordValue = etPassword.getText().toString();
-                        Editor editor = sp.edit();
-                        Gson gson = new Gson();
-                        UsergetBean userBean = gson.fromJson(content, UsergetBean.class);
-                        if (userBean.isStatus() == true) {
-                            spUtils.put(LoginDebugActivity.this,"username",userNameValue);
-                            spUtils.put(LoginDebugActivity.this,"passwd",passwordValue);
-                            //记住密码
-                            if (checkBoxPw.isChecked()) {
-                                spUtils.put(LoginDebugActivity.this,"remember",true);
-                            } else {
-                                spUtils.put(LoginDebugActivity.this,"remember",false);
-                            }
-                            if (checkboxopen.isChecked()) {
-                                spUtils.put(LoginDebugActivity.this,"autologin",true);
-                            } else {
-                                spUtils.put(LoginDebugActivity.this,"autologin",false);
-                            }
-                            editor.commit();
-                            spUtils.put(getApplicationContext(), "name", userBean.getU_name());
-                            spUtils.put(getApplicationContext(),"proname",userBean.getU_name());
-                            spUtils.put(getApplicationContext(),"commoname",userBean.getU_name());
-                            Intent intent = new Intent(LoginDebugActivity.this, MainActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putString("u_name", userBean.getU_name());
-                            intent.putExtras(bundle);
-                            startActivity(intent);
-                            ResponseDialog.closeLoading();
+            ResponseDialog.showLoading(this, "登录中");
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(NetUtil.createParam("Logid", etUsername.getText().toString()));
+            params.add(NetUtil.createParam("pwd", etPassword.getText().toString()));
+            params.add(NetUtil.createParam("Ischeckpwd", true));
+            params.add(NetUtil.createParam("Company", "杭州道然进出口有限公司"));
+            RequestParams requestParams = new RequestParams(params);
+            NetUtil.getAsyncHttpClient().post(loginuserUrl, requestParams, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(String content) {
+                    super.onSuccess(content);
+                    System.out.print(content);
+                    userNameValue = etUsername.getText().toString();
+                    passwordValue = etPassword.getText().toString();
+                    Editor editor = sp.edit();
+                    Gson gson = new Gson();
+                    UsergetBean userBean = gson.fromJson(content, UsergetBean.class);
+                    if (userBean.isStatus() == true) {
+                        spUtils.put(LoginDebugActivity.this, "username", userNameValue);
+                        spUtils.put(LoginDebugActivity.this, "passwd", passwordValue);
+                        //记住密码
+                        if (checkBoxPw.isChecked()) {
+                            spUtils.put(LoginDebugActivity.this, "remember", true);
                         } else {
-                            ToastUtils.ShowToastMessage("用户名密码错误，请重新输入", LoginDebugActivity.this);
-                            ResponseDialog.closeLoading();
+                            spUtils.put(LoginDebugActivity.this, "remember", false);
                         }
-                    }
-
-                    @Override
-                    public void onFailure(Throwable error, String content) {
-                        super.onFailure(error, content);
-                        ToastUtils.ShowToastMessage("登录失败", LoginDebugActivity.this);
+                        if (checkboxopen.isChecked()) {
+                            spUtils.put(LoginDebugActivity.this, "autologin", true);
+                        } else {
+                            spUtils.put(LoginDebugActivity.this, "autologin", false);
+                        }
+                        editor.commit();
+                        spUtils.put(getApplicationContext(), "name", userBean.getU_name());
+                        spUtils.put(getApplicationContext(), "proname", userBean.getU_name());
+                        spUtils.put(getApplicationContext(), "commoname", userBean.getU_name());
+                        Intent intent = new Intent(LoginDebugActivity.this, MainActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("u_name", userBean.getU_name());
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        ResponseDialog.closeLoading();
+                    } else {
+                        ToastUtils.ShowToastMessage("用户名密码错误，请重新输入", LoginDebugActivity.this);
                         ResponseDialog.closeLoading();
                     }
+                }
 
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        ResponseDialog.closeLoading();
-                    }
-                });
+                @Override
+                public void onFailure(Throwable error, String content) {
+                    super.onFailure(error, content);
+                    ToastUtils.ShowToastMessage("登录失败", LoginDebugActivity.this);
+                    ResponseDialog.closeLoading();
+                }
+
+                @Override
+                public void onFinish() {
+                    super.onFinish();
+                    ResponseDialog.closeLoading();
+                }
+            });
 //            }
         } else {
             ToastUtils.ShowToastMessage(getString(R.string.noHttp), LoginDebugActivity.this);
@@ -375,18 +388,18 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                                 System.out.print(apkpath);
                                 String reason = codeBean.getReason();//版本说明
                                 System.out.print(reason);
-                                spUtils.put(getApplicationContext(),"applicationvercodeupdate",vercode);
-                                spUtils.put(LoginDebugActivity.this,"applicationapkpath",apkpath);
-                                spUtils.put(LoginDebugActivity.this,"applicationreason",reason);
+                                spUtils.put(getApplicationContext(), "applicationvercodeupdate", vercode);
+                                spUtils.put(LoginDebugActivity.this, "applicationapkpath", apkpath);
+                                spUtils.put(LoginDebugActivity.this, "applicationreason", reason);
                                 String versioncode = String.valueOf(curVersionName);
                                 if (!versioncode.equals(vercode)) {
-                                    String scode = "需要更新到"+vercode;
-                                    spUtils.put(getApplicationContext(),"Applicationscode",scode);
-                                    showNoticeDialog(0,slience);
+                                    String scode = "需要更新到" + vercode;
+                                    spUtils.put(getApplicationContext(), "Applicationscode", scode);
+                                    showNoticeDialog(0, slience);
                                 } else {
                                     if (!slience) {
-                                        String scode = "已经是最新版本"+vercode;
-                                        spUtils.put(getApplicationContext(),"Applicationscode",scode);
+                                        String scode = "已经是最新版本" + vercode;
+                                        spUtils.put(getApplicationContext(), "Applicationscode", scode);
                                         new AlertDialog.Builder(LoginDebugActivity.this)
                                                 .setTitle("检查新版本")
                                                 .setMessage("您所使用的已经是最新版")
@@ -410,16 +423,16 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
      * 显示版本更新通知对话框
      * focuseUpdate 0:自己服务端更新 1：自己服务端强制更新
      */
-    public void showNoticeDialog(int focuseUpdate, boolean slience)  {
+    public void showNoticeDialog(int focuseUpdate, boolean slience) {
         sp = getSharedPreferences("my_sp", 0);
-        String reason = sp.getString("applicationreason","");
-        String reaid = sp.getString("applicationvercodeupdate","");
+        String reason = sp.getString("applicationreason", "");
+        String reaid = sp.getString("applicationvercodeupdate", "");
         if (Comfig.isDebug) {
             System.out.println(focuseUpdate);
         }
         if (focuseUpdate == 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(LoginDebugActivity.this);
-            builder.setTitle("发现新版本： "+reaid);
+            builder.setTitle("发现新版本： " + reaid);
             builder.setMessage("更新日志:   " + reason);
             builder.setPositiveButton("立即更新",
                     new DialogInterface.OnClickListener() {
@@ -469,13 +482,6 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
         mProgressText = (TextView) v.findViewById(R.id.update_progress_text);
         builder.setView(v);
         if (focuseUpdate == 0) {
-//            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    dialog.dismiss();
-////                    interceptFlag = true;
-//                }
-//            });
             builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
@@ -536,42 +542,35 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                     apkFilePath = savePath + apkName;
                     tmpFilePath = savePath + tmpApk;
                 }
-
                 // 没有挂载SD卡，无法下载文件
                 if (apkFilePath == null || apkFilePath == "") {
                     mHandler.sendEmptyMessage(DOWN_NOSDCARD);
                     return;
                 }
-
                 File ApkFile = new File(apkFilePath);
-
                 // 是否已下载更新文件
                 if (ApkFile.exists()) {
                     downloadDialog.dismiss();
                     installApk();
                     return;
                 }
-
                 // 输出临时下载文件
                 File tmpFile = new File(tmpFilePath);
                 FileOutputStream fos = new FileOutputStream(tmpFile);
-                sp = getSharedPreferences("my_sp",0);
-                String apkpath = sp.getString("applicationapkpath","");
+                sp = getSharedPreferences("my_sp", 0);
+                String apkpath = sp.getString("applicationapkpath", "");
                 URL url = new URL(apkpath);
                 HttpURLConnection conn = (HttpURLConnection) url
                         .openConnection();
                 conn.connect();
                 int length = conn.getContentLength();
                 InputStream is = conn.getInputStream();
-
                 // 显示文件大小格式：2个小数点显示
                 DecimalFormat df = new DecimalFormat("0.00");
                 // 进度条下面显示的总文件大小
                 apkFileSize = df.format((float) length / 1024 / 1024) + "MB";
-
                 int count = 0;
                 byte buf[] = new byte[1024];
-
                 do {
                     int numread = is.read(buf);
                     count += numread;
@@ -601,7 +600,6 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
         }
     };
     private Thread downLoadThread;
-
 //    private void startWifi(){
 //        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 //        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
@@ -631,7 +629,6 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                 "application/vnd.android.package-archive");
         startActivity(i);
     }
-
 
     @Override
     protected void onStart() {

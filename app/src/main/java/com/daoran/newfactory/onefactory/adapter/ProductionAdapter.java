@@ -154,7 +154,7 @@ public class ProductionAdapter extends BaseAdapter {
             recorder = "";
         }
         if (!recorder.equals("")) {
-            if (recorder.equals(nameid)) {
+            if (recorder.equals("杨黑妮")) {
                 viewHolder.lin_content.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -223,7 +223,12 @@ public class ProductionAdapter extends BaseAdapter {
 
                     }
                 });
-
+                String proid = String.valueOf(getItem(position).getID());
+                spUtils.put(context, "proadaptersaveid", proid);
+                String urlid = String.valueOf(getItem(position).getID());
+                spUtils.put(context, "prourisaveid", urlid);
+                String salesid = String.valueOf(getItem(position).getSalesid());
+                spUtils.put(context, "prosalessaveid", salesid);
 
                 viewHolder.tv_data.setEnabled(true);
                 String productionItem = getItem(position).getItem();
@@ -326,17 +331,7 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexTaskNumber.removeTextChangedListener((TextWatcher) editTexTaskNumber.getTag());
                 }
                 editTexTaskNumber.setText(getItem(position).getTaskqty());
-//                editTexTaskNumber.setOnTouchListener(new View.OnTouchListener() {
-//                    @Override
-//                    public boolean onTouch(View v, MotionEvent event) {
-//                        v.getParent().requestDisallowInterceptTouchEvent(true);
-//                        if (event.getAction() == MotionEvent.ACTION_UP) {
-//                            index = position;
-//                            v.getParent().requestDisallowInterceptTouchEvent(false);
-//                        }
-//                        return false;
-//                    }
-//                });
+//
                 /**
                  * 任务数不能大于制单数
                  */
@@ -462,17 +457,7 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexOneDay.removeTextChangedListener((TextWatcher) editTexOneDay.getTag());
                 }
                 editTexOneDay.setText(getItem(position).getDay1());
-//                editTexOneDay.setOnTouchListener(new View.OnTouchListener() {
-//                    @Override
-//                    public boolean onTouch(View v, MotionEvent event) {
-//                        v.getParent().requestDisallowInterceptTouchEvent(true);
-//                        if (event.getAction() == MotionEvent.ACTION_UP) {
-//                            index = position;
-//                            v.getParent().requestDisallowInterceptTouchEvent(false);
-//                        }
-//                        return false;
-//                    }
-//                });
+
                 TextWatcher TvOneDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -505,17 +490,7 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexTwoDay.removeTextChangedListener((TextWatcher) editTexTwoDay.getTag());
                 }
                 editTexTwoDay.setText(getItem(position).getDay2());
-//                editTexTwoDay.setOnTouchListener(new View.OnTouchListener() {
-//                    @Override
-//                    public boolean onTouch(View v, MotionEvent event) {
-//                        v.getParent().requestDisallowInterceptTouchEvent(true);
-//                        if (event.getAction() == MotionEvent.ACTION_UP) {
-//                            index = position;
-//                            v.getParent().requestDisallowInterceptTouchEvent(false);
-//                        }
-//                        return false;
-//                    }
-//                });
+
                 TextWatcher TvTwoDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -547,17 +522,7 @@ public class ProductionAdapter extends BaseAdapter {
                     editTexThreeDay.removeTextChangedListener((TextWatcher) editTexThreeDay.getTag());
                 }
                 editTexThreeDay.setText(getItem(position).getDay3());
-//                editTexThreeDay.setOnTouchListener(new View.OnTouchListener() {
-//                    @Override
-//                    public boolean onTouch(View v, MotionEvent event) {
-//                        v.getParent().requestDisallowInterceptTouchEvent(true);
-//                        if (event.getAction() == MotionEvent.ACTION_UP) {
-//                            index = position;
-//                            v.getParent().requestDisallowInterceptTouchEvent(false);
-//                        }
-//                        return false;
-//                    }
-//                });
+
                 TextWatcher TvThreeDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {

@@ -21,7 +21,7 @@
     </LinearLayout>
     <View
         android:layout_width="fill_parent"
-        android:layout_height="1dip"
+        android:layout_height="1px"
         android:background="#FF909090"/>
 
     <LinearLayout
@@ -30,7 +30,7 @@
         android:paddingBottom="@dimen/dimen_70"
         android:paddingLeft="@dimen/dimen_70"
         android:paddingRight="@dimen/dimen_70"
-        android:paddingTop="@dimen/dimen_70"
+        android:paddingTop="@dimen/dimen_50"
         android:orientation="vertical">
 
         <LinearLayout
@@ -110,7 +110,7 @@
     </LinearLayout>
     <View
         android:layout_width="fill_parent"
-        android:layout_height="1dip"
+        android:layout_height="1px"
         android:background="#FF909090"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -124,16 +124,20 @@
         <Button
             android:id="@+id/btnCancle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dimen_90"
             android:layout_weight="1"
+            android:textColor="@color/white"
+            android:background="@drawable/shape_btn_sql_boild"
             android:text="取消" />
 
         <Button
             android:id="@+id/btnComfirm"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dimen_90"
             android:layout_marginLeft="@dimen/dimen_200"
+            android:background="@drawable/shape_btn_sql_boild"
             android:layout_weight="1"
+            android:textColor="@color/white"
             android:text="确定" />
     </LinearLayout>
 </LinearLayout>

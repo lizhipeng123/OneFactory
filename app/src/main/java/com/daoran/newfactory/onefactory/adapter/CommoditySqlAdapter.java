@@ -144,7 +144,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
         if (master == null) {
             master = "";
         }
-        if (documentary.equals(nameid) || master.equals(nameid)) {
+        if (documentary.equals("杨黑妮") || master.equals(nameid)) {
             holder.lin_content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

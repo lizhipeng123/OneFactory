@@ -13,7 +13,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
 import com.daoran.newfactory.onefactory.adapter.CommoditySqlAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.CommodityPostBean;
@@ -202,7 +201,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private void setData() {
         String str = HttpUrl.debugoneUrl + "QACwork/BindSearchQACworkAPP/";
         sp = CommoditySqlActivity.this.getSharedPreferences("my_sp", 0);
-        String recodename = sp.getString("commoname","");//跟单
+        String recodename = sp.getString("commoname", "");//跟单
         String Style = sp.getString("commoStyle", "");//款号
 //        String Factory = sp.getString("commoFactory", "");//跟单
         String Recode = sp.getString("commoRecode", "");//巡检
@@ -276,7 +275,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         ResponseDialog.showLoading(this);
         String str = HttpUrl.debugoneUrl + "QACwork/BindSearchQACworkAPP/";
         sp = CommoditySqlActivity.this.getSharedPreferences("my_sp", 0);
-        String recodename = sp.getString("commoname","");//跟单
+        String recodename = sp.getString("commoname", "");//跟单
         String Style = sp.getString("commoStyle", "");//款号
 //        String Factory = sp.getString("commoFactory", "");//跟单
         String Recode = sp.getString("commoRecode", "");//巡检
@@ -340,7 +339,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                             }
                         }
                     });
-
         } else {
             ToastUtils.ShowToastMessage("当前网络不可用,请稍后再试", CommoditySqlActivity.this);
         }
@@ -606,7 +604,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                 public void onError(Call call, Exception e, int id) {
                                     e.printStackTrace();
                                     ResponseDialog.closeLoading();
-                                    ToastUtils.ShowToastMessage("数据错误，请重新输入",CommoditySqlActivity.this);
+                                    ToastUtils.ShowToastMessage("数据错误，请重新输入", CommoditySqlActivity.this);
                                 }
 
                                 @Override
@@ -734,6 +732,5 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         editor.remove("dateQAMemotimesign");
         editor.commit();
         super.onDestroy();
-
     }
 }

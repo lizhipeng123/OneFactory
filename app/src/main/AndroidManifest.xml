@@ -150,7 +150,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.work.production.ProductionDemoActivity"
+            android:name=".activity.work.SignOpenActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 

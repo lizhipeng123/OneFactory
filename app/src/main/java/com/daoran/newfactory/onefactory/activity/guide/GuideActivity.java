@@ -1,46 +1,99 @@
 package com.daoran.newfactory.onefactory.activity.guide;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.login.LoginDebugActivity;
-import com.daoran.newfactory.onefactory.adapter.GuideFragmentAdapter;
+import com.daoran.newfactory.onefactory.adapter.GuiderFragmentPagerAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
-
-import java.util.ArrayList;
+import com.daoran.newfactory.onefactory.fragment.GuiderFragment;
+import com.daoran.newfactory.onefactory.util.settings.Comfig;
+import com.daoran.newfactory.onefactory.view.IndicatorView;
 
 /**
  * 引导页
  * Created by lizhipeng on 2017/3/21.
  */
 
-public class GuideActivity extends BaseFrangmentActivity implements View.OnClickListener {
-    private ViewPager vpGuide;//引导页面viewpager
-    private TextView tvLoginbtn;//开始
-    private GuideFragmentAdapter mAdapter;
-    private ArrayList<View> mViews;//页面图片列表
-    //图片资源
-    private final int images[] = {
-            R.drawable.welcome_01, R.drawable.welcome_02, R.drawable.welcome_03};
-
-    private ImageView[] guideDots;//底部导航小点
-    private int currentIndex;//记录当前的图片
-    private LinearLayout llYt;
+public class GuideActivity extends BaseFrangmentActivity
+        implements GuiderFragment.OnLoginRegisterListener {
+    private ViewPager vpGuider;
+    private IndicatorView vIndicator;
+    private GuiderFragmentPagerAdapter mAdapter;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_guide);
+        //是否第一次打开app，如果是则进入引导页，否则进入登录页
+        SharedPreferences sp = this.getSharedPreferences("guider", MODE_PRIVATE);
+        boolean isFirstOpen = sp.getBoolean("isFirstOpen", true);
+        if (!isFirstOpen) {
+            Intent intent = new Intent(this, LoginDebugActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
         getViews();
-        initDatas();
-        vpGuide.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        initViews();
+        setListeners();
+    }
+
+    /**
+     * 获取View
+     */
+    private void getViews() {
+        vpGuider = (ViewPager) this.findViewById(R.id.vpGuider);
+        vIndicator = (IndicatorView) this.findViewById(R.id.vIndicator);
+    }
+
+    /**
+     * 初始化View
+     */
+    private void initViews() {
+        int[] resIds = Comfig.getGuiderResIds();
+        mAdapter = new GuiderFragmentPagerAdapter(getSupportFragmentManager());
+        mAdapter.setResIds(resIds);
+        vpGuider.setAdapter(mAdapter);
+        vIndicator.setIndicatorCount(resIds.length);
+    }
+
+    /**
+     * 设置监听
+     */
+    private void setListeners() {
+        vpGuider.setPageTransformer(false, new ViewPager.PageTransformer() {
+            @Override
+            public void transformPage(View page, float position) {
+                float pageWidth = page.getWidth();
+                if (position < -1) {
+                    page.setAlpha(0);
+                } else if (position >= -1 && position < 0) {
+                    page.setAlpha(1);
+                    page.setTranslationX(0);
+                    page.setScaleX(1);
+                    page.setScaleY(1);
+                } else if (position >= 0 && position <= 1) {
+                    page.setAlpha(1 - position);
+                    page.setTranslationX(-position * pageWidth);
+                    page.setScaleX((float) (position * -0.25 + 1));
+                    page.setScaleY((float) (position * -0.25 + 1));
+                } else {
+                    page.setAlpha(0);
+                }
+            }
+        });
+
+        vpGuider.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -48,7 +101,7 @@ public class GuideActivity extends BaseFrangmentActivity implements View.OnClick
 
             @Override
             public void onPageSelected(int position) {
-                setCurrentDot(position);
+                vIndicator.setSelected(position);
             }
 
             @Override
@@ -58,77 +111,22 @@ public class GuideActivity extends BaseFrangmentActivity implements View.OnClick
         });
     }
 
-    private void getViews() {
-        tvLoginbtn = (TextView) findViewById(R.id.tvLoginbtn);
-        tvLoginbtn.setOnClickListener(this);
-        llYt = (LinearLayout) findViewById(R.id.llYt);
-        vpGuide = (ViewPager) findViewById(R.id.vpGuide);
-        mViews = new ArrayList<View>();
-        for (int i = 0; i < images.length; i++) {
-            ImageView imageView = new ImageView(GuideActivity.this);
-            imageView.setImageResource(images[i]);
-
-            mViews.add(imageView);
-        }
-//        switch (i){
-//            case 0:
-//                llYt.setVisibility(View.GONE);
-//                break;
-//            case 1:
-//                llYt.setVisibility(View.GONE);
-//                break;
-//            case 2:
-//                llYt.setVisibility(View.VISIBLE);
-//                break;
-//        }
-        mAdapter = new GuideFragmentAdapter(mViews);
-        vpGuide.setAdapter(mAdapter);
-    }
-
-    /**
-     * 监听
-     */
-    private void setListener() {
-
-    }
-
-    /**
-     * 初始化导航小点
-     */
-    private void initDatas() {
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.llGuideDots);
-        guideDots = new ImageView[mViews.size()];//初始化小点数组
-        //使每个小点处于正常状态
-        for (int i = 0; i < mViews.size(); i++) {
-            guideDots[i] = (ImageView) linearLayout.getChildAt(i);
-            guideDots[i].setSelected(false);
-        }
-        //初始化第一个小点为选中状态
-        currentIndex = 0;
-        guideDots[currentIndex].setSelected(true);
-    }
-
-    /**
-     * 页面更换时，更新小点状态
-     *
-     * @param position
-     */
-    private void setCurrentDot(int position) {
-        if (position < 0 || position > mViews.size() - 1 || currentIndex == position) {
-            return;
-        }
-        guideDots[position].setSelected(true);
-        guideDots[currentIndex].setSelected(false);
-        currentIndex = position;
-    }
-
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.tvLoginbtn:
-                startActivity(new Intent(this,LoginDebugActivity.class));
-                finish();
-                break;
-        }
+    public void login() {
+        setSharedPreferences();
+        //进入登录页
+        Intent intent = new Intent(this, LoginDebugActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    /**
+     * 设置为非第一次打开app
+     */
+    private void setSharedPreferences() {
+        SharedPreferences sp = this.getSharedPreferences("guider", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("isFirstOpen", false);
+        editor.apply();
     }
 }

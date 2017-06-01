@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.guide.GuideActivity">
+
+    <ImageView
+        android:id="@+id/ivGuider"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/llytLoginRegister"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_144"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/guider_login_register"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvLoginbtn"
+            android:layout_width="@dimen/dimen_400"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/dimen_60sp"
+            android:background="@drawable/login_red_btn_selector"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:visibility="visible"
+            android:text="@string/open"/>
+    </LinearLayout>
+</RelativeLayout>

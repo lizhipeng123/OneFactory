@@ -16,14 +16,14 @@
 #   public *;
 #}
 
-#保留support下的所有类以及内部类
--keep class android.support.**{*;}
-
-#保留继承的
--keep public class * extends android.support.v4.**
--keep public class * extends android.support.v7.**
--keep public class * extends android.support.annotation.**
-
-#保留r下面的资源
--keep class **.R$*{*;}
+##保留support下的所有类以及内部类
+#-keep class android.support.**{*;}
+#
+##保留继承的
+#-keep public class * extends android.support.v4.**
+#-keep public class * extends android.support.v7.**
+#-keep public class * extends android.support.annotation.**
+#
+##保留r下面的资源
+#-keep class **.R$*{*;}
 

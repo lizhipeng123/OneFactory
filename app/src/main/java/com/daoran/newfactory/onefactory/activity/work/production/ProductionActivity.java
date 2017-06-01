@@ -171,7 +171,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     private void setData() {
         String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
         sp = ProductionActivity.this.getSharedPreferences("my_sp", 0);
-        String namedure = sp.getString("proname","");//制单人
+        String namedure = sp.getString("proname", "");//制单人
         String Style = sp.getString("etprodialogStyle", "");//款号
         String Factory = sp.getString("etprodialogFactory", "");//工厂
 //        String Recode = sp.getString("etprodialogRecode", "");//制单人
@@ -337,7 +337,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     private void setPageDetail() {
         String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
         sp = ProductionActivity.this.getSharedPreferences("my_sp", 0);
-        String namedure = sp.getString("proname","");
+        String namedure = sp.getString("proname", "");
         String Style = sp.getString("etprodialogStyle", "");
         String Factory = sp.getString("etprodialogFactory", "");
 //        String Recode = sp.getString("etprodialogRecode", "");
@@ -684,14 +684,14 @@ public class ProductionActivity extends BaseFrangmentActivity
             String urlid = sp.getString("prouriid", "");
             ProducationSaveBean saveBean = new ProducationSaveBean();
 
-            List<String> prolist = new ArrayList<String>();
-            prolist.add(proid);
-            int proint = prolist.size();
-            if(proint==1){
-                System.out.print(proint);
-            }else{
-                System.out.print(proint);
-            }
+//            List<String> prolist = new ArrayList<String>();
+//            prolist.add(proid);
+//            int proint = prolist.size();
+//            if (proint == 1) {
+//                System.out.print(proint);
+//            } else {
+//                System.out.print(proint);
+//            }
             if (urlid == proid || urlid.equals(proid)) {
                 if (!proid.equals("")) {
                     ResponseDialog.showLoading(this);
@@ -879,7 +879,6 @@ public class ProductionActivity extends BaseFrangmentActivity
                                 }
                             }).show();//相应事件
                 }
-
             } else {
                 ToastUtils.ShowToastMessage("请选择当前行，再进行修改保存",
                         ProductionActivity.this);
@@ -1097,7 +1096,7 @@ public class ProductionActivity extends BaseFrangmentActivity
      * @param view
      */
     private void showPopupMenu(View view) {
-        PopupMenu popupMenu = new PopupMenu(this, view);
+        PopupMenu popupMenu = new PopupMenu(ProductionActivity.this, view);
         popupMenu.getMenuInflater().inflate(R.menu.menu_pro, popupMenu.getMenu());
         // menu的item点击事件
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

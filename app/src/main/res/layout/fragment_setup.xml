@@ -7,7 +7,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/tbarSetup"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dimen_150"
         android:background="@color/white"
         android:minHeight="?attr/actionBarSize">
 
@@ -25,20 +25,21 @@
         android:layout_height="match_parent"
         android:background="@color/lightblue"
         android:scrollbars="none">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/lightblue"
+            android:orientation="vertical"
             android:paddingLeft="@dimen/dimen_30"
-            android:paddingRight="@dimen/dimen_30"
-            android:orientation="vertical">
+            android:paddingRight="@dimen/dimen_30">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/dimen_30"
-                android:visibility="gone"
-                android:paddingTop="@dimen/dimen_30">
+                android:paddingTop="@dimen/dimen_30"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -50,12 +51,15 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"/>
+                    android:layout_alignParentRight="true" />
             </RelativeLayout>
+
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="1dip"
-                android:background="#FF909090"/>
+                android:layout_height="1px"
+                android:background="#FF909090"
+                android:visibility="gone" />
+
             <RelativeLayout
                 android:id="@+id/rlEditionUpdate"
                 android:layout_width="match_parent"
@@ -79,10 +83,12 @@
                     android:text="已是最新版本"
                     android:textSize="@dimen/dimen_50sp" />
             </RelativeLayout>
+
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="1dip"
-                android:background="#FF909090"/>
+                android:layout_height="1px"
+                android:background="#FF909090" />
+
             <RelativeLayout
                 android:id="@+id/rlClean"
                 android:layout_width="match_parent"
@@ -96,19 +102,22 @@
                     android:text="清除缓存"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen_60sp" />
+
                 <TextView
                     android:id="@+id/tv_clean"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:textSize="@dimen/dimen_50sp"
-                    android:text=""/>
+                    android:text=""
+                    android:textSize="@dimen/dimen_50sp" />
             </RelativeLayout>
+
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="1dip"
-                android:background="#FF909090"/>
+                android:layout_height="1px"
+                android:background="#FF909090" />
+
             <RelativeLayout
                 android:id="@+id/rlAgainLogin"
                 android:layout_width="match_parent"
@@ -123,17 +132,19 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen_60sp" />
             </RelativeLayout>
+
             <View
                 android:layout_width="fill_parent"
-                android:layout_height="1dip"
-                android:background="#FF909090"/>
+                android:layout_height="1px"
+                android:background="#FF909090" />
+
             <RelativeLayout
                 android:id="@+id/rlwifi"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/dimen_30"
-                android:paddingTop="@dimen/dimen_30">
+                android:paddingTop="@dimen/dimen_30"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -143,27 +154,27 @@
                     android:textSize="@dimen/dimen_60sp" />
             </RelativeLayout>
 
-
-
             <View
-                android:visibility="gone"
                 android:layout_width="fill_parent"
-                android:layout_height="1dip"
-                android:background="#FF909090"/>
+                android:layout_height="1px"
+                android:background="#FF909090"
+                android:visibility="gone" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:id="@+id/tvwifimanager"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+
                 <TextView
-                    android:layout_below="@+id/tvwifimanager"
                     android:id="@+id/tvwifissid"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvwifimanager" />
             </RelativeLayout>
         </LinearLayout>
     </com.daoran.newfactory.onefactory.view.listview.BounceScrollView>
-
 </LinearLayout>

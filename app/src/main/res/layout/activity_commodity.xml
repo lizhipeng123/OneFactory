@@ -4,62 +4,74 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/dimen_150">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/ivCommoditySql"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/btn_back" />
+        <View
+            android:id="@+id/viewtitletwo"
+            android:layout_width="1px"
+            android:layout_height="@dimen/dimen_100"
+            android:layout_toRightOf="@+id/ivCommoditySql"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_20"
+            android:background="#FF909090"/>
+        <TextView
+            android:id="@+id/tvCommoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="查货跟踪单"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_60sp" />
 
-            <ImageView
-                android:id="@+id/ivCommoditySql"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:src="@mipmap/btn_back"/>
-
-            <TextView
-                android:id="@+id/tvCommoTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="查货跟踪单"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_60sp" />
-
-            <ImageView
-                android:id="@+id/ivSearch"
-                android:layout_width="@dimen/dimen_70"
-                android:layout_height="@dimen/dimen_70"
-                android:layout_toLeftOf="@+id/tvCommoTitle"
-                android:layout_marginRight="@dimen/dimen_30"
-                android:layout_centerVertical="true"
-                android:src="@mipmap/search" />
-            <Button
-                android:id="@+id/btnCommoRefresh"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/btnCommoSave"
-                android:text="刷新"/>
-            <Button
-                android:id="@+id/btnCommoSave"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="保存"/>
-        </RelativeLayout>
-
-    </android.support.v7.widget.Toolbar>
+        <ImageView
+            android:id="@+id/ivSearch"
+            android:layout_width="@dimen/dimen_70"
+            android:layout_height="@dimen/dimen_70"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_30"
+            android:layout_toRightOf="@+id/viewtitletwo"
+            android:src="@mipmap/search" />
+        <Button
+            android:id="@+id/btnCommoRefresh"
+            android:layout_width="@dimen/dimen_150"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@color/transparent"
+            android:layout_toLeftOf="@+id/viewtitle"
+            android:text="刷新" />
+        <View
+            android:id="@+id/viewtitle"
+            android:layout_width="1px"
+            android:layout_height="@dimen/dimen_100"
+            android:layout_toLeftOf="@+id/btnCommoSave"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_20"
+            android:background="#FF909090"/>
+        <Button
+            android:id="@+id/btnCommoSave"
+            android:layout_width="@dimen/dimen_150"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@color/transparent"
+            android:text="保存" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/lightblue"
         android:orientation="horizontal">
+
         <LinearLayout
             android:id="@+id/lin_header_content"
             android:layout_width="0dp"
@@ -616,33 +628,37 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="#cccccc"/>
+        android:background="#cccccc" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/ll_visibi"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:visibility="gone"
-            android:layout_gravity="center">
+            android:orientation="vertical"
+            android:visibility="gone">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/null_comm_img"/>
+                android:src="@mipmap/null_comm_img" />
+
             <TextView
                 android:id="@+id/tv_visibi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
                 android:layout_marginTop="30dp"
-                android:textSize="15sp"
-                android:textColor="#FFCBCBCB"/>
+                android:text=""
+                android:textColor="#FFCBCBCB"
+                android:textSize="15sp" />
         </LinearLayout>
+
         <ScrollView
             android:id="@+id/scroll_content"
             android:layout_width="match_parent"
@@ -675,49 +691,54 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:overScrollMode="never"
-                            android:scrollbars="none"/>
+                            android:scrollbars="none" />
                     </com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="9"
-            android:gravity="center_horizontal"
-            android:background="@color/gray">
+            android:background="@color/lightblue"
+            android:gravity="center_horizontal">
 
             <EditText
                 android:id="@+id/etSqlDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/shape_text_sql_boild"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
                 android:inputType="phone|number"
                 android:numeric="integer"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:text="1"
                 android:textSize="20sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
                 android:layout_marginLeft="5dp"
-                android:text="/" />
+                android:text="/"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tvSignPage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
                 android:layout_marginLeft="5dp"
-                android:text="0" />
+                android:text="0"
+                android:textSize="20sp" />
+
             <Button
                 android:id="@+id/btnSignPage"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/dimen_130"
                 android:layout_height="wrap_content"
-                android:text="确定"/>
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dimen_30"
+                android:background="@color/aliceblue"
+                android:text="确定" />
         </LinearLayout>
     </LinearLayout>
 

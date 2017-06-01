@@ -5,60 +5,75 @@
     android:orientation="vertical">
 
     <!--<include layout="@layout/toolbar" />-->
-
-    <android.support.v7.widget.Toolbar
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/ivProductionBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/btn_back" />
 
-            <ImageView
-                android:id="@+id/ivProductionBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:src="@mipmap/btn_back" />
+        <View
+            android:id="@+id/viewtitletwo"
+            android:layout_width="1px"
+            android:layout_height="@dimen/dimen_100"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_20"
+            android:layout_toRightOf="@+id/ivProductionBack"
+            android:background="#FF909090" />
 
-            <TextView
-                android:id="@+id/tvProTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerInParent="true"
-                android:text="生产日报"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_60sp" />
+        <TextView
+            android:id="@+id/tvProTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:text="生产日报"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_60sp" />
 
-            <ImageView
-                android:id="@+id/ivSearch"
-                android:layout_width="@dimen/dimen_70"
-                android:layout_height="@dimen/dimen_70"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/dimen_30"
-                android:layout_toLeftOf="@+id/tvProTitle"
-                android:src="@mipmap/search" />
+        <ImageView
+            android:id="@+id/ivSearch"
+            android:layout_width="@dimen/dimen_70"
+            android:layout_height="@dimen/dimen_70"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_30"
+            android:layout_toRightOf="@+id/viewtitletwo"
+            android:src="@mipmap/search" />
 
-            <Button
-                android:id="@+id/btnProSave"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/spinnermenu"
-                android:text="保存" />
+        <Button
+            android:id="@+id/btnProSave"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/viewtitle"
+            android:background="@color/transparent"
+            android:text="保存" />
 
-            <Button
-                android:id="@+id/spinnermenu"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="菜单" />
-        </RelativeLayout>
+        <View
+            android:id="@+id/viewtitle"
+            android:layout_width="1px"
+            android:layout_height="@dimen/dimen_100"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_20"
+            android:layout_toLeftOf="@+id/spinnermenu"
+            android:background="#FF909090" />
 
-    </android.support.v7.widget.Toolbar>
+        <Button
+            android:id="@+id/spinnermenu"
+            android:layout_width="@dimen/dimen_80"
+            android:layout_height="@dimen/dimen_80"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_30"
+            android:layout_marginRight="@dimen/dimen_30"
+            android:background="@mipmap/em_add"
+            android:text="" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -779,7 +794,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="9"
-            android:background="@color/gray"
+            android:background="@color/lightblue"
             android:gravity="center_horizontal">
 
             <EditText
@@ -811,8 +826,11 @@
 
             <Button
                 android:id="@+id/btnSignPage"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/dimen_130"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dimen_30"
+                android:background="@color/aliceblue"
                 android:text="确定" />
         </LinearLayout>
     </LinearLayout>

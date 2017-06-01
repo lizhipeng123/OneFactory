@@ -9,4 +9,10 @@
     <dimen name="divider_height">1dp</dimen>
     <dimen name="menu_text_size">15sp</dimen>
     <dimen name="tool_bar_height">56dp</dimen>
+
+    <!-- 引导页 -->
+    <!-- 引导页中indicator跟底部的距离-->
+    <dimen name="guider_indicator">30dp</dimen>
+    <!-- 引导页中登录、注册按钮跟底部的距离-->
+    <dimen name="guider_login_register">80dp</dimen>
 </resources>

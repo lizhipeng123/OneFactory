@@ -11,6 +11,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -52,11 +54,11 @@ import com.amap.api.services.poisearch.PoiSearch;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.SignDetailBean;
-import com.daoran.newfactory.onefactory.util.image.BitmapTools;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.util.image.BitmapTools;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -74,14 +76,13 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 /**
- * 外勤签到
- * Created by lizhipeng on 2017/3/31.
+ * Created by lizhipeng on 2017/6/1.
  */
 @RuntimePermissions
-public class SignActivity extends BaseFrangmentActivity
+public class SignOpenActivity extends BaseFrangmentActivity
         implements View.OnClickListener, PoiSearch.OnPoiSearchListener,
         LocationSource, AMapLocationListener, AMap.OnCameraChangeListener
-,ActivityCompat.OnRequestPermissionsResultCallback{
+        ,ActivityCompat.OnRequestPermissionsResultCallback{
     private MapView mapView;
     private AMap aMap;
     private AMapLocationClient mapLocationClient;
@@ -111,11 +112,12 @@ public class SignActivity extends BaseFrangmentActivity
 
     private String cityCode;
 
+    private TextView tvSqltexttime;
+    private LinearLayout btnSignOk;
     private Button btnCount
-//            , btnSignCancle
+//            ,btnSignCancle
 //            , btnSignOk
             ;
-    private LinearLayout btnSignOk;
     private TextView tvSignAddress, tvSignDate;
     private Spinner SpinnerSign, spinnerfineTune;
     private EditText etRemark;
@@ -144,10 +146,14 @@ public class SignActivity extends BaseFrangmentActivity
      */
     private boolean isNeedCheck = true;
 
+    private static final int msgKey1 = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign);
+        tvSqltexttime = (TextView) findViewById(R.id.tvSqltexttime);
+        new TimeThread().start();
         mapView = (MapView) findViewById(R.id.mapSigngaode);
         mapView.onCreate(savedInstanceState);
         if (aMap == null) {
@@ -163,11 +169,47 @@ public class SignActivity extends BaseFrangmentActivity
         mMarkerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.guidepoint_red));
         getViews();
         initViews();
-//        initSpinner();
-//        init();
+        initSpinner();
+        init();
         sp = this.getSharedPreferences("my_sp", 0);
-        SignActivityPermissionsDispatcher.startLocationWithCheck(this);
+        SignOpenActivityPermissionsDispatcher.startLocationWithCheck(this);
     }
+
+    public class TimeThread extends Thread{
+        @Override
+        public void run() {
+            super.run();
+            do{
+                try {
+                    Thread.sleep(1000);
+                    Message msg = new Message();
+                    msg.what = msgKey1;
+                    mHandler.sendMessage(msg);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }while (true);
+        }
+    }
+
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case msgKey1:
+                    long time = System.currentTimeMillis();
+                    Date date = new Date(time);
+                    SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+
+                    tvSqltexttime.setText(format.format(date));
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     @NeedsPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
     void startLocation() {
@@ -292,7 +334,7 @@ public class SignActivity extends BaseFrangmentActivity
                 "住宿服务", "风景名胜", "商务住宅", "政府机构及社会团体", "科教文化服务", "交通设施服务",
                 "金融保险服务", "公司企业", "道路附属设施", "地名地址信息", "公共设施"};
 
-        spinnnerfileTune.setAdapter(new ArrayAdapter<>(SignActivity.this, android.R.layout.simple_spinner_dropdown_item, str));
+        spinnnerfileTune.setAdapter(new ArrayAdapter<>(SignOpenActivity.this, android.R.layout.simple_spinner_dropdown_item, str));
         spinnnerfileTune.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -315,12 +357,12 @@ public class SignActivity extends BaseFrangmentActivity
      * 根据poi搜索出的结果填充周边地址
      */
     private void initSign() {
-        spinnerfineTune.setAdapter(new ArrayAdapter<>(SignActivity.this, android.R.layout.simple_spinner_dropdown_item, locationList));
+        spinnerfineTune.setAdapter(new ArrayAdapter<>(SignOpenActivity.this, android.R.layout.simple_spinner_dropdown_item, locationList));
         spinnerfineTune.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String str = (String) spinnerfineTune.getSelectedItem();
-                spUtils.put(SignActivity.this, "addressItem", str);
+                spUtils.put(SignOpenActivity.this, "addressItem", str);
                 tvSignAddress = (TextView) findViewById(R.id.tvSignAddress);
                 tvSignAddress.setText(str);
             }
@@ -356,7 +398,7 @@ public class SignActivity extends BaseFrangmentActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        SignActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+        SignOpenActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
         if (requestCode == PERMISSON_REQUESTCODE) {
             if (!verifyPermissions(grantResults)) {
                 showMissingPermissionDialog();
@@ -426,7 +468,7 @@ public class SignActivity extends BaseFrangmentActivity
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] languages = getResources().getStringArray(R.array.signSpinner);
-                spUtils.put(SignActivity.this, "languages", languages[position]);
+                spUtils.put(SignOpenActivity.this, "languages", languages[position]);
             }
 
             @Override
@@ -482,7 +524,7 @@ public class SignActivity extends BaseFrangmentActivity
 //                    ToastUtils.ShowToastMessage(buffer.toString(),getApplicationContext());
                     topBg.setImageBitmap(bitmap);
                     String picurl = BitmapTools.convertIconToString(bitmap);
-                    spUtils.put(SignActivity.this, "picurl", picurl);
+                    spUtils.put(SignOpenActivity.this, "picurl", picurl);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -497,7 +539,7 @@ public class SignActivity extends BaseFrangmentActivity
                 finish();
                 break;
             case R.id.btnCount:
-                startActivity(new Intent(SignActivity.this, SignDetailActivity.class));
+                startActivity(new Intent(SignOpenActivity.this, SignDetailActivity.class));
                 break;
             case R.id.etRemark:
                 etRemark.setFocusableInTouchMode(true);
@@ -634,7 +676,7 @@ public class SignActivity extends BaseFrangmentActivity
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
-                            ToastUtils.ShowToastMessage("上传错误" + e, SignActivity.this);
+                            ToastUtils.ShowToastMessage("上传错误" + e, SignOpenActivity.this);
                         }
 
                         @Override
@@ -644,9 +686,9 @@ public class SignActivity extends BaseFrangmentActivity
                                 String strresponse = String.valueOf(response.charAt(1));
                                 System.out.print(strresponse);
                                 if (strresponse.equals("1")) {
-                                    ToastUtils.ShowToastMessage(R.string.Uploadsuccess, SignActivity.this);
+                                    ToastUtils.ShowToastMessage(R.string.Uploadsuccess, SignOpenActivity.this);
                                 } else {
-                                    ToastUtils.ShowToastMessage(R.string.Uploadfailed, SignActivity.this);
+                                    ToastUtils.ShowToastMessage(R.string.Uploadfailed, SignOpenActivity.this);
                                     ResponseDialog.closeLoading();
                                 }
                             } catch (Exception e) {
@@ -655,7 +697,7 @@ public class SignActivity extends BaseFrangmentActivity
                         }
                     });
         } else {
-            ToastUtils.ShowToastMessage(R.string.disNetworking, SignActivity.this);
+            ToastUtils.ShowToastMessage(R.string.disNetworking, SignOpenActivity.this);
         }
     }
 
@@ -686,6 +728,8 @@ public class SignActivity extends BaseFrangmentActivity
         hour = t.hour; // 0-23
         minute = t.minute;
         second = t.second;
+        tvSqltexttime = (TextView) findViewById(R.id.tvSqltexttime);
+        tvSqltexttime.setText(hour+":"+minute+":"+second);
     }
 
     @Override
@@ -728,7 +772,7 @@ public class SignActivity extends BaseFrangmentActivity
                             + aMapLocation.getStreetNum());
                     StringBuffer buffer1 = new StringBuffer();
                     buffer1.append(aMapLocation.getLatitude() + "," + aMapLocation.getLongitude());
-                    spUtils.put(SignActivity.this, "latitude", buffer1.toString());
+                    spUtils.put(SignOpenActivity.this, "latitude", buffer1.toString());
                     isFirstLoc = false;
                 }
             } else {
@@ -736,7 +780,7 @@ public class SignActivity extends BaseFrangmentActivity
                 Log.e("AmapError", "location Error, ErrCode:"
                         + aMapLocation.getErrorCode() + ", errInfo:"
                         + aMapLocation.getErrorInfo());
-                ToastUtils.ShowToastMessage("定位失败", SignActivity.this);
+                ToastUtils.ShowToastMessage("定位失败", SignOpenActivity.this);
             }
         }
     }
@@ -769,7 +813,7 @@ public class SignActivity extends BaseFrangmentActivity
                             Log.i(TAG, "getTitle = " + p.getTitle());
                             locationList.add(p.getTitle() + "(" + p.getSnippet() + ")");
                             String snippet = p.getSnippet();
-                            spUtils.put(SignActivity.this, "snippet", snippet);
+                            spUtils.put(SignOpenActivity.this, "snippet", snippet);
                             initSign();
                         }
                     }

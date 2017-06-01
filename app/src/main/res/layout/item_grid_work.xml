@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/llOpenCarDetail"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         android:background="@drawable/shape_text_menu"
         android:gravity="center"
         android:layout_gravity="center"
@@ -19,7 +19,7 @@
             android:id="@+id/ivopenCarDetail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="20dp"
+            android:paddingTop="10dp"
             android:clickable="false"
             android:layout_weight="1"
             android:src="@mipmap/daoran"
