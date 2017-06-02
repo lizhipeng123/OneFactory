@@ -26,6 +26,7 @@ public class SqlCarApplyAdapter extends BaseAdapter {
         this.dataBeen = new ArrayList<>();
         this.context = context;
     }
+
     public void clear() {
         dataBeen.clear();
         notifyDataSetChanged();
@@ -40,6 +41,7 @@ public class SqlCarApplyAdapter extends BaseAdapter {
         dataBeen.clear();
         addAll(_c);
     }
+
     @Override
     public int getCount() {
         return dataBeen.size();

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.daoran.newfactory.onefactory.util;
 
 import android.text.Html;

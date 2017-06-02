@@ -431,7 +431,7 @@
 
             <Button
                 android:id="@+id/btnNewbuildPage"
-                android:layout_width="@dimen/dimen_130"
+                android:layout_width="@dimen/dimen_170"
                 android:layout_height="@dimen/dimen_90"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/dimen_30"

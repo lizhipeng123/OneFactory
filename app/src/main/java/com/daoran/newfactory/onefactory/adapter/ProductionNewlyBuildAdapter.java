@@ -14,7 +14,6 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
 import com.daoran.newfactory.onefactory.bean.ProNewlyBuildBean;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
-import com.daoran.newfactory.onefactory.util.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;

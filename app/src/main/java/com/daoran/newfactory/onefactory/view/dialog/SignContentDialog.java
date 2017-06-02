@@ -20,8 +20,6 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
-import com.daoran.newfactory.onefactory.util.ToastUtils;
-
 import java.util.Calendar;
 
 /**
@@ -30,7 +28,6 @@ import java.util.Calendar;
  */
 
 public class SignContentDialog extends Dialog {
-
     Activity content;
     private TextView tvInitialDate, tvEndDate;
     private Button btnCancle, btnComfirm;
@@ -74,16 +71,16 @@ public class SignContentDialog extends Dialog {
         WindowManager.LayoutParams p = dialogWindow.getAttributes();
         p.width = (int) (display.getWidth() * 0.8);
         dialogWindow.setAttributes(p);
-        String etaa = sp.getString("name","");
+        String etaa = sp.getString("name", "");
         etAudit.setText(etaa);
+        etAudit.setSelection(etAudit.getText().length());
         etAudit.addTextChangedListener(textWatcher);
-        String tvInitial = sp.getString("datetimesign","");
+        String tvInitial = sp.getString("datetimesign", "");
         tvInitialDate.setText(tvInitial);
-        String tvend = sp.getString("endtimesign","");
+        String tvend = sp.getString("endtimesign", "");
         tvEndDate.setText(tvend);
         btnComfirm.setOnClickListener(mClickListener);
         btnCancle.setOnClickListener(mCancleLinstener);
-
         tvInitialDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,8 +99,8 @@ public class SignContentDialog extends Dialog {
                                 int month = datePicker.getMonth();
                                 int day = datePicker.getDayOfMonth();
                                 String datetime = year + "/" + (month + 1) + "/" + day;
-                                String etaudit= etAudit.getText().toString();
-                                spUtils.put(content,"etaudit",etaudit);
+                                String etaudit = etAudit.getText().toString();
+                                spUtils.put(content, "etaudit", etaudit);
                                 tvInitialDate.setText(datetime);
                                 spUtils.put(content, "datetimesign", datetime);
                             }
@@ -114,8 +111,8 @@ public class SignContentDialog extends Dialog {
                             public void onClick(DialogInterface dialog, int which) {
                                 tvInitialDate.setText("");
                                 spUtils.put(content, "datetimesign", "");
-                                String etaudit= etAudit.getText().toString();
-                                spUtils.put(content,"etaudit","");
+                                String etaudit = etAudit.getText().toString();
+                                spUtils.put(content, "etaudit", "");
                             }
                         });
                 datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -151,8 +148,8 @@ public class SignContentDialog extends Dialog {
                                 String endtime = year + "/" + (month + 1) + "/" + day;
                                 tvEndDate.setText(endtime);
                                 spUtils.put(content, "endtimesign", endtime);
-                                String etaudit= etAudit.getText().toString();
-                                spUtils.put(content,"etaudit",etaudit);
+                                String etaudit = etAudit.getText().toString();
+                                spUtils.put(content, "etaudit", etaudit);
                                 System.out.print(endtime);
                                 System.out.print(datetime);
                             }
@@ -164,8 +161,8 @@ public class SignContentDialog extends Dialog {
                                 System.out.println("BUTTON_NEGATIVE~~");
                                 tvEndDate.setText("");
                                 spUtils.put(content, "endtimesign", "");
-                                String etaudit= etAudit.getText().toString();
-                                spUtils.put(content,"etaudit","");
+                                String etaudit = etAudit.getText().toString();
+                                spUtils.put(content, "etaudit", "");
                             }
                         });
                 datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -193,7 +190,7 @@ public class SignContentDialog extends Dialog {
             System.out.println("-1-onTextChanged-->"
                     + etAudit.getText().toString() + "<--");
             String textchanged = etAudit.getText().toString();
-            spUtils.put(content,"name",textchanged);
+            spUtils.put(content, "name", textchanged);
         }
 
         @Override
@@ -202,7 +199,4 @@ public class SignContentDialog extends Dialog {
                     + etAudit.getText().toString() + "<--");
         }
     };
-
-
-
 }

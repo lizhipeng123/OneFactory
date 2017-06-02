@@ -1,12 +1,10 @@
 package com.daoran.newfactory.onefactory.fragment;
 
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +15,7 @@ import android.widget.TextView;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.adapter.ScrollWrokAdapter;
 import com.daoran.newfactory.onefactory.bean.WorkBean;
-import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
-import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.view.ScrollGridView;
@@ -35,7 +31,6 @@ import java.util.List;
 
 import okhttp3.Call;
 
-
 /**
  * 工作模块
  * Created by lizhipeng on 2017/3/22.
@@ -43,11 +38,10 @@ import okhttp3.Call;
 
 public class WorkFragment extends Fragment {
     Activity mactivity;
-//    private Toolbar tbarWrok;
     private View view;
-    private LinearLayout llOpenCarDetail, llOpenSign, llOPenSqlSign, llOpenBusRoute, llProduction, llSqlgoods;
-    private TextView tvOpenCarDetail, tvSign, tvSqlSign, tvBusRoute, tvProduction, tvSqlgoods;
-    private ImageView ivopenCarDetail, ivOpenSign, tvOpenSqlSign, ivOpenBusRoute, ivProduction, ivSqlgoods;
+    private LinearLayout llOpenCarDetail;
+    private TextView tvOpenCarDetail;
+    private ImageView ivopenCarDetail;
     private TextView idworkname;
     private SharedPreferences sp;
     private SPUtils spUtils;
@@ -101,7 +95,6 @@ public class WorkFragment extends Fragment {
      * 实例化控件
      */
     private void getViews() {
-//        tbarWrok = (Toolbar) view.findViewById(R.id.tbarWrok);
         tvOpenCarDetail = (TextView) view.findViewById(R.id.tvOpenCarDetail);
         idworkname = (TextView) view.findViewById(R.id.idworkname);
         ivopenCarDetail = (ImageView) view.findViewById(R.id.ivopenCarDetail);
@@ -112,17 +105,15 @@ public class WorkFragment extends Fragment {
      * 操作控件
      */
     private void initViews() {
-//        tbarWrok.setTitle("");
-//        /*需要的时候可以加上*/
+        /*需要的时候可以加上*/
 ////        drawerFragment = (DrawerFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 ////        drawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) getActivity().findViewById(R.id.activity_main));
     }
 
-    private void setListener(){
+    private void setListener() {
         idworkname.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-
                 return false;
             }
         });
@@ -169,5 +160,10 @@ public class WorkFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

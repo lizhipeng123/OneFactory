@@ -8,7 +8,6 @@
     <color name="color_bule">#2F9BFF</color>
     <color name="color_bule2">#40B3F0</color>
     <color name="color_bule3">#99ddff</color>
-
     <!-- 白色 -->
     <color name="ivory">#fffff0</color>
     <!-- 象牙色 -->
@@ -321,15 +320,12 @@
     <color name="login_button">#ff775025</color>
     <color name="reg1color1">#DEDFE0</color>
 
-
-
     <color name="app_green">#ff45c01a</color>
     <color name="app_green_alpha">#7f45c01a</color>
 
+    <item name="green_btn_color_normal" type="color">@color/app_green</item>
 
-    <item type="color" name="green_btn_color_normal">@color/app_green</item>
-
-    <item type="color" name="green_btn_color_disable">@color/app_green_alpha</item>
+    <item name="green_btn_color_disable" type="color">@color/app_green_alpha</item>
 
     <color name="green_btn_color_pressed">#ff298409</color>
     <color name="red_btn_color_normal">#ffff5454</color>

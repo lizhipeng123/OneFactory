@@ -128,8 +128,8 @@
             android:layout_height="@dimen/dimen_90"
             android:layout_weight="1"
             android:background="@drawable/shape_btn_sql_boild"
-            android:textColor="@color/white"
-            android:text="取消" />
+            android:text="取消"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btnComfirm"
@@ -138,7 +138,7 @@
             android:layout_marginLeft="@dimen/dimen_200"
             android:layout_weight="1"
             android:background="@drawable/shape_btn_sql_boild"
-            android:textColor="@color/white"
-            android:text="确定" />
+            android:text="确定"
+            android:textColor="@color/white" />
     </LinearLayout>
 </LinearLayout>

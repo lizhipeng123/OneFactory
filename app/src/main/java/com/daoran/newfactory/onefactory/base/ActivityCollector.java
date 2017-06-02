@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ww on 2015/5/29.
+ * 管理所有的activity
+ * Created by lizhipeng on 2015/5/29.
  */
 public class ActivityCollector {
     public static List<Activity> acticities = new ArrayList<Activity>();
@@ -26,5 +27,4 @@ public class ActivityCollector {
             }
         }
     }
-
 }

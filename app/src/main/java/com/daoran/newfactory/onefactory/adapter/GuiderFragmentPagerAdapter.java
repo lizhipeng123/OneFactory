@@ -6,8 +6,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.daoran.newfactory.onefactory.fragment.GuiderFragment;
 
+/**
+ * 引导页面适配
+ */
 public class GuiderFragmentPagerAdapter extends FragmentPagerAdapter {
-
     private int[] resIds = null;
 
     public GuiderFragmentPagerAdapter(FragmentManager fm) {

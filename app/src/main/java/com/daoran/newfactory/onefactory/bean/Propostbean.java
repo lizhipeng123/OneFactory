@@ -84,5 +84,4 @@ public class Propostbean {
         this.pageSize = pageSize;
     }
 
-
 }

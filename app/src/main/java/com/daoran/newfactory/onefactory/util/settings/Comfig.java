@@ -4,6 +4,7 @@ package com.daoran.newfactory.onefactory.util.settings;
 import com.daoran.newfactory.onefactory.R;
 
 /**
+ *  手动配置
  * Created by lizhipeng on 2017/3/21.
  */
 

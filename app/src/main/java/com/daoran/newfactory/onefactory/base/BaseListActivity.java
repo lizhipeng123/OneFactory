@@ -1,6 +1,5 @@
 package com.daoran.newfactory.onefactory.base;
 
-
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -14,12 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.adapter.SignDetailAdapter;
 import com.daoran.newfactory.onefactory.adapter.SqlCarApplyAdapter;
 import com.i5tong.epubreaderlib.view.pulltorefresh.ILoadingLayout;
 import com.i5tong.epubreaderlib.view.pulltorefresh.PullToRefreshBase;
 import com.i5tong.epubreaderlib.view.pulltorefresh.PullToRefreshListView;
-
 
 import java.util.List;
 
@@ -65,7 +62,6 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
             endLabels.setReleaseLabel("松开加载");
             endLabels.setRefreshingLabel("正在加载");
         }
-
     }
 
     public void setPullToRefreshListViewModePullup() {
@@ -76,7 +72,6 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
             endLabels.setReleaseLabel("松开加载");
             endLabels.setRefreshingLabel("正在加载");
         }
-
     }
 
     public void setNoListViewMode() {
@@ -150,7 +145,6 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
         this.datas = datas;
         listView.onRefreshComplete();
         isRefreshing = false;
-
         //填充数据
         //无数据
         if (datas == null || datas.size() == 0) {

@@ -38,6 +38,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         contentView.addView(View.inflate(this, getContentView(), null));
         afterView();
     }
+
     //获取中间布局
     protected abstract int getContentView();
 
@@ -56,19 +57,22 @@ public abstract class BaseActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(title);
         }
     }
+
     /**
      * 设置TitleBar是否显示
+     *
      * @param visible
      */
     public void setToolBarVisible(Boolean visible) {
-        if (toolBar!=null) {
+        if (toolBar != null) {
             if (visible) {
                 toolBar.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 toolBar.setVisibility(View.GONE);
             }
         }
     }
+
     @Override
     protected void onResume() {
         /**

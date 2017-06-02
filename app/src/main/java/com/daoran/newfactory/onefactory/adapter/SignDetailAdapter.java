@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.bean.SignDetailBean;
+
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ public class SignDetailAdapter extends BaseAdapter {
     private List<SignDetailBean.DataBean> signdata;
     private Context context;
 
-    public SignDetailAdapter(List<SignDetailBean.DataBean> signdata,Context context) {
+    public SignDetailAdapter(List<SignDetailBean.DataBean> signdata, Context context) {
         this.signdata = signdata;
         this.context = context;
     }

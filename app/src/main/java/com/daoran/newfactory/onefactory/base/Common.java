@@ -8,9 +8,8 @@ import android.content.Intent;
  */
 
 public class Common extends BaseFrangmentActivity {
-
-    public void skipActivity(Class<?> clazz){
-        Intent intent = new Intent(this,clazz);
+    public void skipActivity(Class<?> clazz) {
+        Intent intent = new Intent(this, clazz);
         startActivity(intent);
         this.finish();
     }

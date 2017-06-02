@@ -7,7 +7,6 @@ package com.daoran.newfactory.onefactory.bean;
 
 public class CarDetailBean {
 
-
     /**
      * id : 6895
      * code : CA170419001

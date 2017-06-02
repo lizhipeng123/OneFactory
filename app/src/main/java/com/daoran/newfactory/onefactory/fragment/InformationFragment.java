@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 
-
 /**
  * 资讯模块
  * Created by lizhipeng on 2017/3/22.
