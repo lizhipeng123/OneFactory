@@ -365,4 +365,5 @@
     <color name="divider_color">#b5b5b5</color>
     <color name="menu_fragment_background">#B3000000</color>
     <color name="menu_item_background">#f2f2f2</color>
+    <color name="title_view_boild">#FF909090</color>
 </resources>

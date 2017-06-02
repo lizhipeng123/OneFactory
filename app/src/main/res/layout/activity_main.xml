@@ -1,27 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.main.MainActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <FrameLayout
             android:id="@+id/flLayoutTabcontent"
             android:layout_width="fill_parent"
             android:layout_height="0dip"
-            android:background="@color/lightblue"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@color/lightblue" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#FF909090" />
 
         <com.daoran.newfactory.onefactory.view.FragmentTabHost
             android:id="@android:id/tabhost"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:background="@color/white">
 
             <FrameLayout
                 android:id="@android:id/tabcontent"
@@ -33,10 +40,10 @@
     </LinearLayout>
 
     <!--<fragment-->
-        <!--android:id="@+id/navigation_drawer"-->
-        <!--class="com.daoran.newfactory.onefactory.fragment.DrawerFragment"-->
-        <!--android:layout_width="@dimen/dimen_850"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_gravity="start"-->
-        <!--tools:layout="@layout/fragment_navigation_drawer_menu" />-->
+    <!--android:id="@+id/navigation_drawer"-->
+    <!--class="com.daoran.newfactory.onefactory.fragment.DrawerFragment"-->
+    <!--android:layout_width="@dimen/dimen_850"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_gravity="start"-->
+    <!--tools:layout="@layout/fragment_navigation_drawer_menu" />-->
 </android.support.v4.widget.DrawerLayout>

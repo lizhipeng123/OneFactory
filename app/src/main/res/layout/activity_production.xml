@@ -7,7 +7,8 @@
     <!--<include layout="@layout/toolbar" />-->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/lightblue">
 
         <ImageView
             android:id="@+id/ivProductionBack"
@@ -47,11 +48,11 @@
 
         <Button
             android:id="@+id/btnProSave"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dimen_170"
+            android:layout_height="@dimen/dimen_90"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/viewtitle"
-            android:background="@color/transparent"
+            android:background="@drawable/shape_btn_newsbuild_boild"
             android:text="保存" />
 
         <View
@@ -59,9 +60,9 @@
             android:layout_width="1px"
             android:layout_height="@dimen/dimen_100"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_20"
+            android:layout_marginLeft="@dimen/dimen_30"
             android:layout_toLeftOf="@+id/spinnermenu"
-            android:background="#FF909090" />
+            android:background="@color/title_view_boild" />
 
         <Button
             android:id="@+id/spinnermenu"
@@ -74,6 +75,11 @@
             android:background="@mipmap/em_add"
             android:text="" />
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/darkgray" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -112,7 +118,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -124,7 +130,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -136,7 +142,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -148,7 +154,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -160,7 +166,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -172,7 +178,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -184,7 +190,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -196,7 +202,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -208,7 +214,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -220,7 +226,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -232,7 +238,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -244,7 +250,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -256,7 +262,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -268,7 +274,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -280,7 +286,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -292,7 +298,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -304,7 +310,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -316,7 +322,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -328,7 +334,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -340,7 +346,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -352,7 +358,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -364,7 +370,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -376,7 +382,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -388,7 +394,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -400,7 +406,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -412,7 +418,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -424,7 +430,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -436,7 +442,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -448,7 +454,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -460,7 +466,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -472,7 +478,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -484,7 +490,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -496,7 +502,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -508,7 +514,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -520,7 +526,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -532,7 +538,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -544,7 +550,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -556,7 +562,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -568,7 +574,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -580,7 +586,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -592,7 +598,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -604,7 +610,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -616,7 +622,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -628,7 +634,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -640,7 +646,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -652,7 +658,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -664,7 +670,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -676,7 +682,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="170dp"
@@ -688,7 +694,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -700,7 +706,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -712,7 +718,7 @@
                     <View
                         android:layout_width="1px"
                         android:layout_height="50dp"
-                        android:background="#cccccc" />
+                        android:background="@color/darkgray" />
                 </LinearLayout>
             </com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView>
         </LinearLayout>
@@ -721,7 +727,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="#cccccc" />
+        android:background="@color/darkgray" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -733,6 +739,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:background="@color/lightblue"
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="gone">
@@ -748,7 +755,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:text=""
-                android:textColor="#FFCBCBCB"
+                android:textColor="@color/white"
                 android:textSize="15sp" />
         </LinearLayout>
 
@@ -790,18 +797,23 @@
             </LinearLayout>
         </ScrollView>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/darkgray" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="9"
             android:background="@color/lightblue"
-            android:gravity="center_horizontal">
+            android:gravity="center">
 
             <EditText
                 android:id="@+id/etSqlDetail"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/shape_text_sql_boild"
+                android:layout_height="@dimen/dimen_90"
+                android:background="@drawable/shape_edittext_sql_boild"
                 android:inputType="phone|number"
                 android:numeric="integer"
                 android:paddingLeft="15dp"
@@ -827,12 +839,11 @@
             <Button
                 android:id="@+id/btnSignPage"
                 android:layout_width="@dimen/dimen_130"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dimen_90"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/dimen_30"
-                android:background="@color/aliceblue"
+                android:background="@drawable/shape_btn_newsbuild_boild"
                 android:text="确定" />
         </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

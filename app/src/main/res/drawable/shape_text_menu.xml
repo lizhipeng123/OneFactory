@@ -7,7 +7,7 @@
     </item>
     <item android:top="1px" android:left="1px" android:right="1px">
         <shape>
-            <solid android:color="@color/aliceblue"></solid>
+            <solid android:color="@color/white"></solid>
         </shape>
     </item>
 </layer-list>

@@ -43,7 +43,7 @@ import okhttp3.Call;
 
 public class WorkFragment extends Fragment {
     Activity mactivity;
-    private Toolbar tbarWrok;
+//    private Toolbar tbarWrok;
     private View view;
     private LinearLayout llOpenCarDetail, llOpenSign, llOPenSqlSign, llOpenBusRoute, llProduction, llSqlgoods;
     private TextView tvOpenCarDetail, tvSign, tvSqlSign, tvBusRoute, tvProduction, tvSqlgoods;
@@ -81,11 +81,27 @@ public class WorkFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Bundle bundle = getActivity().getIntent().getExtras();
+        String name = bundle.getString("u_name");
+        spUtils.put(mactivity, "u_name", name);
+        idworkname.setText(name);
+        idworkname.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                drawerFragment.openDeawer();
+            }
+        });
+        spUtils.put(mactivity, "usernamerecoder", name);
+    }
+
     /**
      * 实例化控件
      */
     private void getViews() {
-        tbarWrok = (Toolbar) view.findViewById(R.id.tbarWrok);
+//        tbarWrok = (Toolbar) view.findViewById(R.id.tbarWrok);
         tvOpenCarDetail = (TextView) view.findViewById(R.id.tvOpenCarDetail);
         idworkname = (TextView) view.findViewById(R.id.idworkname);
         ivopenCarDetail = (ImageView) view.findViewById(R.id.ivopenCarDetail);
@@ -96,21 +112,20 @@ public class WorkFragment extends Fragment {
      * 操作控件
      */
     private void initViews() {
-        tbarWrok.setTitle("");
-        Bundle bundle = getActivity().getIntent().getExtras();
-        String name = bundle.getString("u_name");
-        spUtils.put(mactivity, "u_name", name);
-        idworkname.setText(name);
-        /*需要的时候可以加上*/
-//        drawerFragment = (DrawerFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-//        drawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) getActivity().findViewById(R.id.activity_main));
-        idworkname.setOnClickListener(new View.OnClickListener() {
+//        tbarWrok.setTitle("");
+//        /*需要的时候可以加上*/
+////        drawerFragment = (DrawerFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+////        drawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) getActivity().findViewById(R.id.activity_main));
+    }
+
+    private void setListener(){
+        idworkname.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
-//                drawerFragment.openDeawer();
+            public boolean onLongClick(View v) {
+
+                return false;
             }
         });
-        spUtils.put(mactivity, "usernamerecoder", name);
     }
 
     /**

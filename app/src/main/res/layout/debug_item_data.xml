@@ -16,7 +16,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="1" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -29,7 +29,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="2" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -42,7 +42,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="3" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -55,7 +55,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="4" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -68,7 +68,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="5" />
+            android:text="" />
 
         <View
             android:layout_width="1px"
@@ -81,7 +81,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="6" />
+            android:text="" />
 
         <View
             android:layout_width="1px"

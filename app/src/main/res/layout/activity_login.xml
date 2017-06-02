@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/lightblue"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="wrap_content"
@@ -37,9 +37,11 @@
                 android:id="@+id/etUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
+                android:background="@drawable/shape_edittext_sql_boild"
                 android:gravity="center|left"
                 android:hint="@string/loginusername"
+                android:layout_marginLeft="@dimen/dimen_100"
+                android:layout_marginRight="@dimen/dimen_100"
                 android:maxLength="10"
                 android:paddingBottom="@dimen/dimen_30"
                 android:paddingLeft="@dimen/dimen_42"
@@ -55,10 +57,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_42"
-                android:background="@null"
+                android:background="@drawable/shape_edittext_sql_boild"
                 android:gravity="center|left"
                 android:hint="@string/loginpassword"
                 android:maxLength="20"
+                android:layout_marginLeft="@dimen/dimen_100"
+                android:layout_marginRight="@dimen/dimen_100"
                 android:paddingBottom="@dimen/dimen_30"
                 android:paddingLeft="@dimen/dimen_42"
                 android:paddingRight="@dimen/dimen_42"
@@ -78,7 +82,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen_42"
+                    android:layout_marginLeft="@dimen/dimen_100"
                     android:orientation="horizontal">
 
                     <CheckBox
@@ -101,7 +105,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/dimen_42"
+                    android:layout_marginRight="@dimen/dimen_100"
                     android:orientation="horizontal">
 
                     <CheckBox
@@ -126,8 +130,8 @@
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_42"
-                android:layout_marginRight="@dimen/dimen_42"
+                android:layout_marginLeft="@dimen/dimen_100"
+                android:layout_marginRight="@dimen/dimen_100"
                 android:layout_marginTop="@dimen/dimen_60"
                 android:background="@drawable/shape_btn_sql_boild"
                 android:text="@string/login"

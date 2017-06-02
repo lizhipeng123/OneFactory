@@ -8,7 +8,7 @@
         android:id="@+id/tbarSetup"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_150"
-        android:background="@color/white"
+        android:background="@color/lightblue"
         android:minHeight="?attr/actionBarSize">
 
         <TextView
@@ -18,7 +18,13 @@
             android:text="@string/setupSystem"
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_60sp" />
+
     </android.support.v7.widget.Toolbar>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="#FF909090" />
 
     <com.daoran.newfactory.onefactory.view.listview.BounceScrollView
         android:layout_width="match_parent"
@@ -128,7 +134,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="重新登录"
+                    android:text="退出登录"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen_60sp" />
             </RelativeLayout>

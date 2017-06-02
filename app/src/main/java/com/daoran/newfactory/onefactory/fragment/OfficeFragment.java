@@ -35,7 +35,7 @@ public class OfficeFragment extends Fragment {
         tbarOffice = (Toolbar) view.findViewById(R.id.tbarOffice);
         tv_visibi = (TextView) view.findViewById(R.id.tv_visibi);
         tbarOffice.setTitle("");
-        tv_visibi.setText("功能正在完善。。。");
+        tv_visibi.setText("功能正在完善");
         getViews();
         initViews();
         return view;

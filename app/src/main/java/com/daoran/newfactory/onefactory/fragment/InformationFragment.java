@@ -31,7 +31,7 @@ public class InformationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_information, container, false);
         tbarInformation = (Toolbar) view.findViewById(R.id.tbarInformation);
         tv_visibi = (TextView) view.findViewById(R.id.tv_visibi);
-        tv_visibi.setText("功能正在完善。。。");
+        tv_visibi.setText("功能正在完善");
         tbarInformation.setTitle("");
         return view;
     }
