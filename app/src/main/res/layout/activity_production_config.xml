@@ -33,8 +33,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"
-            android:layout_toRightOf="@+id/viewtitletwo"
             android:layout_marginLeft="@dimen/dimen_50"
+            android:layout_toRightOf="@+id/viewtitletwo"
             android:text="新建保存"
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_60sp" />
@@ -659,7 +659,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
-                        android:layout_width="100dp"
+                        android:layout_width="170dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:gravity="center"

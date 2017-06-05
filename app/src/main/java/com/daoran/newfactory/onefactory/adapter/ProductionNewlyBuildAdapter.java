@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
+import com.daoran.newfactory.onefactory.activity.work.production.ProductionNewlyComfigActivity;
 import com.daoran.newfactory.onefactory.bean.ProNewlyBuildBean;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 
@@ -150,6 +152,9 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
                 System.out.print("");
                 sp = context.getSharedPreferences("my_sp", 0);
                 String itemm = sp.getString("tvnewlydate", "");
+                Intent intent = new Intent(context,
+                        ProductionNewlyComfigActivity.class);
+                context.startActivity(intent);
                 System.out.print(itemm);
             }
         });

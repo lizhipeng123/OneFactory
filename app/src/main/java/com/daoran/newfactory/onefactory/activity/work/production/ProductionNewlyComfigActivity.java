@@ -573,17 +573,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexOthers.getTag() instanceof TextWatcher) {
                     editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
                 }
-                editTexOthers.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvOthers = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -619,17 +608,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     editTexTaskNumber.removeTextChangedListener((TextWatcher) editTexTaskNumber.getTag());
                 }
                 viewHolder.tvProTaskNumber.setText(tvdate);
-                editTexTaskNumber.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvTaskNumber = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -665,17 +643,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     editTexLastMonth.removeTextChangedListener((TextWatcher) editTexLastMonth.getTag());
                 }
                 viewHolder.tvProCompletedLastMonth.setText(tvnewlyCompletedLastMonth);
-                editTexLastMonth.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvLastMonth = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -768,17 +735,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexOneDay.getTag() instanceof TextWatcher) {
                     editTexOneDay.removeTextChangedListener((TextWatcher) editTexOneDay.getTag());
                 }
-                editTexOneDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvOneDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -809,17 +765,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexTwoDay.getTag() instanceof TextWatcher) {
                     editTexTwoDay.removeTextChangedListener((TextWatcher) editTexTwoDay.getTag());
                 }
-                editTexTwoDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvTwoDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -850,17 +795,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexThreeDay.getTag() instanceof TextWatcher) {
                     editTexThreeDay.removeTextChangedListener((TextWatcher) editTexThreeDay.getTag());
                 }
-                editTexThreeDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvThreeDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -891,17 +825,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexForeDay.getTag() instanceof TextWatcher) {
                     editTexForeDay.removeTextChangedListener((TextWatcher) editTexForeDay.getTag());
                 }
-                editTexForeDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvForeDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -932,17 +855,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexFiveDay.getTag() instanceof TextWatcher) {
                     editTexFiveDay.removeTextChangedListener((TextWatcher) editTexFiveDay.getTag());
                 }
-                editTexFiveDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvFiveDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -973,17 +885,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexSixDay.getTag() instanceof TextWatcher) {
                     editTexSixDay.removeTextChangedListener((TextWatcher) editTexSixDay.getTag());
                 }
-                editTexSixDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvSixDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1014,17 +915,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexSevenDay.getTag() instanceof TextWatcher) {
                     editTexSevenDay.removeTextChangedListener((TextWatcher) editTexSevenDay.getTag());
                 }
-                editTexSevenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvSevenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1055,17 +945,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexEightDay.getTag() instanceof TextWatcher) {
                     editTexEightDay.removeTextChangedListener((TextWatcher) editTexEightDay.getTag());
                 }
-                editTexEightDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvEightDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1096,17 +975,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexNineDay.getTag() instanceof TextWatcher) {
                     editTexNineDay.removeTextChangedListener((TextWatcher) editTexNineDay.getTag());
                 }
-                editTexNineDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvNineDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1137,17 +1005,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexTenDay.getTag() instanceof TextWatcher) {
                     editTexTenDay.removeTextChangedListener((TextWatcher) editTexTenDay.getTag());
                 }
-                editTexTenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvTenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1178,17 +1035,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexElevenDay.getTag() instanceof TextWatcher) {
                     editTexElevenDay.removeTextChangedListener((TextWatcher) editTexElevenDay.getTag());
                 }
-                editTexElevenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvElevenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1219,17 +1065,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexTwelveDay.getTag() instanceof TextWatcher) {
                     editTexTwelveDay.removeTextChangedListener((TextWatcher) editTexTwelveDay.getTag());
                 }
-                editTexTwelveDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvTwelveDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1260,17 +1095,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexThirteenDay.getTag() instanceof TextWatcher) {
                     editTexThirteenDay.removeTextChangedListener((TextWatcher) editTexThirteenDay.getTag());
                 }
-                editTexThirteenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvThirteenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1301,17 +1125,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexFourteenDay.getTag() instanceof TextWatcher) {
                     editTexFourteenDay.removeTextChangedListener((TextWatcher) editTexFourteenDay.getTag());
                 }
-                editTexFourteenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvFourteenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1342,17 +1155,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexFifteenDay.getTag() instanceof TextWatcher) {
                     editTexFifteenDay.removeTextChangedListener((TextWatcher) editTexFifteenDay.getTag());
                 }
-                editTexFifteenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvFifteenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1383,17 +1185,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexSixteenDay.getTag() instanceof TextWatcher) {
                     editTexSixteenDay.removeTextChangedListener((TextWatcher) editTexSixteenDay.getTag());
                 }
-                editTexSixteenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvSixteenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1424,17 +1215,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexSeventeenDay.getTag() instanceof TextWatcher) {
                     editTexSeventeenDay.removeTextChangedListener((TextWatcher) editTexSeventeenDay.getTag());
                 }
-                editTexSeventeenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvSeventeenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1465,17 +1245,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexEighteenDay.getTag() instanceof TextWatcher) {
                     editTexEighteenDay.removeTextChangedListener((TextWatcher) editTexEighteenDay.getTag());
                 }
-                editTexEighteenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvEighteenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1506,17 +1275,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexNineteenDay.getTag() instanceof TextWatcher) {
                     editTexNineteenDay.removeTextChangedListener((TextWatcher) editTexNineteenDay.getTag());
                 }
-                editTexNineteenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvNineteenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1547,17 +1305,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexTwentyDay.getTag() instanceof TextWatcher) {
                     editTexTwentyDay.removeTextChangedListener((TextWatcher) editTexTwentyDay.getTag());
                 }
-                editTexTwentyDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvTwentyDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1588,17 +1335,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexTwentyOneDay.getTag() instanceof TextWatcher) {
                     editTexTwentyOneDay.removeTextChangedListener((TextWatcher) editTexTwentyOneDay.getTag());
                 }
-                editTexTwentyOneDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvTwentyOneDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1629,17 +1365,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexTwentyTwoDay.getTag() instanceof TextWatcher) {
                     editTexTwentyTwoDay.removeTextChangedListener((TextWatcher) editTexTwentyTwoDay.getTag());
                 }
-                editTexTwentyTwoDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvTwentyTwoDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1670,17 +1395,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexTwentyThreeDay.getTag() instanceof TextWatcher) {
                     editTexTwentyThreeDay.removeTextChangedListener((TextWatcher) editTexTwentyThreeDay.getTag());
                 }
-                editTexTwentyThreeDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvTwentyThreeDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1711,17 +1425,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexTwentyForeDay.getTag() instanceof TextWatcher) {
                     editTexTwentyForeDay.removeTextChangedListener((TextWatcher) editTexTwentyForeDay.getTag());
                 }
-                editTexTwentyForeDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvTwentyForeDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1752,17 +1455,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexTwentyFiveDay.getTag() instanceof TextWatcher) {
                     editTexTwentyFiveDay.removeTextChangedListener((TextWatcher) editTexTwentyFiveDay.getTag());
                 }
-                editTexTwentyFiveDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvTwentyFiveDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1793,17 +1485,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexTwentySixDay.getTag() instanceof TextWatcher) {
                     editTexTwentySixDay.removeTextChangedListener((TextWatcher) editTexTwentySixDay.getTag());
                 }
-                editTexTwentySixDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvTwentySixDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1834,17 +1515,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexTwentySevenDay.getTag() instanceof TextWatcher) {
                     editTexTwentySevenDay.removeTextChangedListener((TextWatcher) editTexTwentySevenDay.getTag());
                 }
-                editTexTwentySevenDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvTwentySevenDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1875,17 +1545,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexTwentyEightDay.getTag() instanceof TextWatcher) {
                     editTexTwentyEightDay.removeTextChangedListener((TextWatcher) editTexTwentyEightDay.getTag());
                 }
-                editTexTwentyEightDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvTwentyEightDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1916,17 +1575,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexTwentyNineDay.getTag() instanceof TextWatcher) {
                     editTexTwentyNineDay.removeTextChangedListener((TextWatcher) editTexTwentyNineDay.getTag());
                 }
-                editTexTwentyNineDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvTwentyNineDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1957,17 +1605,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexThirtyDay.getTag() instanceof TextWatcher) {
                     editTexThirtyDay.removeTextChangedListener((TextWatcher) editTexThirtyDay.getTag());
                 }
-                editTexThirtyDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvThirtyDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1998,17 +1635,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexThirtyOneDay.getTag() instanceof TextWatcher) {
                     editTexThirtyOneDay.removeTextChangedListener((TextWatcher) editTexThirtyOneDay.getTag());
                 }
-                editTexThirtyOneDay.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvThirtyOneDay = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -2038,17 +1664,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 if (editTexRemarks.getTag() instanceof TextWatcher) {
                     editTexRemarks.removeTextChangedListener((TextWatcher) editTexRemarks.getTag());
                 }
-                editTexRemarks.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        if (event.getAction() == MotionEvent.ACTION_UP) {
-                            index = position;
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                        }
-                        return false;
-                    }
-                });
                 TextWatcher TvRemarks = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {

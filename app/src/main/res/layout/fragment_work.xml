@@ -62,7 +62,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:numColumns="3"
+            android:numColumns="2"
             android:padding="20dp"
             android:stretchMode="columnWidth" />
     </com.daoran.newfactory.onefactory.view.listview.BounceScrollView>
