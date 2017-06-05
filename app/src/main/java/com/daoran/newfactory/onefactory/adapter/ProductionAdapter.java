@@ -223,8 +223,9 @@ public class ProductionAdapter extends BaseAdapter {
 
                     }
                 });
-                String proid = String.valueOf(getItem(position).getID());
-                spUtils.put(context, "proadaptersaveid", proid);
+                String proid = sp.getString("proadapterid", "");
+
+                spUtils.put(context, "proadapterid", proid);
                 String urlid = String.valueOf(getItem(position).getID());
                 spUtils.put(context, "prourisaveid", urlid);
                 String salesid = String.valueOf(getItem(position).getSalesid());
@@ -304,6 +305,10 @@ public class ProductionAdapter extends BaseAdapter {
                             }
                         }
                         String proitem = viewHolder.tvProOthers.getText().toString();
+                        String proid = String.valueOf(getItem(position).getID());
+                        spUtils.put(context, "proadapterid", proid);
+                        String urlid = String.valueOf(getItem(position).getID());
+                        spUtils.put(context, "prouriid", urlid);
                         viewHolder.tvProOthers.setSelection(viewHolder.tvProOthers.length());
                         spUtils.put(context, "productionsaveOthers", proitem);
                     }

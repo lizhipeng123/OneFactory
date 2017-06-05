@@ -339,7 +339,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/white"
+                            android:background="@color/lightsteelblue"
                             android:focusableInTouchMode="false"
                             android:textSize="@dimen/dimen_58sp" />
                     </LinearLayout>
@@ -360,7 +360,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/white"
+                            android:background="@color/lightsteelblue"
                             android:focusableInTouchMode="false"
                             android:textSize="@dimen/dimen_58sp" />
                     </LinearLayout>
@@ -391,7 +391,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/white"
+                            android:background="@color/lightsteelblue"
                             android:focusableInTouchMode="false"
                             android:textSize="@dimen/dimen_58sp" />
                     </LinearLayout>
@@ -412,7 +412,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/white"
+                            android:background="@color/lightsteelblue"
                             android:focusableInTouchMode="false"
                             android:textSize="@dimen/dimen_58sp" />
                     </LinearLayout>
@@ -443,7 +443,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/white"
+                            android:background="@color/lightsteelblue"
                             android:focusableInTouchMode="false"
                             android:textSize="@dimen/dimen_58sp" />
                     </LinearLayout>
@@ -463,7 +463,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/white"
+                            android:background="@color/lightsteelblue"
                             android:focusableInTouchMode="false"
                             android:textColor="@color/black"
                             android:textSize="@dimen/dimen_58sp" />
@@ -499,7 +499,7 @@
                             android:id="@+id/etStartDataClick"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/white"
+                            android:background="@color/lightsteelblue"
                             android:focusableInTouchMode="false" />
                     </LinearLayout>
 
@@ -522,7 +522,7 @@
                             android:id="@+id/etEndDataClick"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/white"
+                            android:background="@color/lightsteelblue"
                             android:focusableInTouchMode="false" />
                     </LinearLayout>
                 </LinearLayout>
@@ -552,7 +552,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/white"
+                            android:background="@color/lightsteelblue"
                             android:focusableInTouchMode="false"
                             android:textSize="@dimen/dimen_58sp" />
                     </LinearLayout>
@@ -584,7 +584,10 @@
 
                         <CheckBox
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:focusableInTouchMode="false"
+                            android:checked="false"
+                            android:focusable="false"/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -614,7 +617,7 @@
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/white"
+                            android:background="@color/lightsteelblue"
                             android:focusableInTouchMode="false"
                             android:textSize="@dimen/dimen_58sp" />
                     </LinearLayout>

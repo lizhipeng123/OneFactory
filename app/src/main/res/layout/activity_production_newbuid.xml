@@ -43,6 +43,7 @@
             android:layout_centerVertical="true"
             android:background="@drawable/shape_btn_newsbuild_boild"
             android:text="确定"
+            android:visibility="gone"
             android:layout_marginRight="10dp"
             android:textSize="@dimen/dimen_40sp" />
     </RelativeLayout>

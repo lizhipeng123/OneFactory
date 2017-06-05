@@ -8,6 +8,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -120,8 +121,8 @@ public class ProductionActivity extends BaseFrangmentActivity
      */
     private void initView() {
         mDataHorizontal.setSrollView(mHeaderHorizontal);
-        mHeaderHorizontal.setSrollView(mDataHorizontal);
-        etSqlDetail.setSelection(etSqlDetail.getText().length());
+        mHeaderHorizontal.setSrollView(mDataHorizontal);//横竖SyncHorizontalScrollView适配
+        etSqlDetail.setSelection(etSqlDetail.getText().length());//将光标移到文本最后
     }
 
     /**
@@ -138,12 +139,15 @@ public class ProductionActivity extends BaseFrangmentActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            /*返回按钮*/
             case R.id.ivProductionBack:
                 finish();
                 break;
+            /*条件查询弹出框*/
             case R.id.ivSearch:
                 ShowDialog(v);
                 break;
+            /*按页查询*/
             case R.id.btnSignPage:
                 String txt = etSqlDetail.getText().toString();
                 String txtcount = tvSignPage.getText().toString();
@@ -156,9 +160,11 @@ public class ProductionActivity extends BaseFrangmentActivity
                     setPageDetail();
                 }
                 break;
+            /*menu菜单*/
             case R.id.spinnermenu:
                 showPopupMenu(spinnermenu);
                 break;
+            /*保存按钮*/
             case R.id.btnProSave:
                 setSave();
                 break;
@@ -190,6 +196,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             propostbean.setConditions(conditions);
             propostbean.setPageNum(0);
             propostbean.setPageSize(10);
+
             String gsonbeanStr = gson.toJson(propostbean);
             if (NetWork.isNetWorkAvailable(this)) {
 //                /*检测是否为可用WiFi*/
@@ -220,6 +227,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                             @Override
                             public void onResponse(String response, int id) {
                                 try {
+                                    /*成功返回的结果*/
                                     System.out.print(response);
                                     String ress = response.replace("\\", "");
                                     System.out.print(ress);
@@ -265,7 +273,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             propostbean.setConditions(conditions);
             propostbean.setPageNum(0);
             propostbean.setPageSize(10);
-            String gsonbeanStr = gson.toJson(propostbean);
+            String gsonbeanStr = gson.toJson(propostbean);/*字符串转为json字符串*/
             if (NetWork.isNetWorkAvailable(this)) {
 //                /*检测是否为可用WiFi*/
 //                WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
@@ -359,6 +367,8 @@ public class ProductionActivity extends BaseFrangmentActivity
             propostbean.setPageNum(index);
             propostbean.setPageSize(10);
             String gsonbeanStr = gson.toJson(propostbean);
+            Log.e("you wanted", "[" + gsonbeanStr + "," + gsonbeanStr + "+]");
+            //你打log看看是不是你想要的结构
             if (NetWork.isNetWorkAvailable(this)) {
 //                 /*检测是否为可用WiFi*/
 //                WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
@@ -683,7 +693,6 @@ public class ProductionActivity extends BaseFrangmentActivity
             Gson gson = new GsonBuilder().registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory()).create();
             String urlid = sp.getString("prouriid", "");
             ProducationSaveBean saveBean = new ProducationSaveBean();
-
 //            List<String> prolist = new ArrayList<String>();
 //            prolist.add(proid);
 //            int proint = prolist.size();
@@ -693,7 +702,7 @@ public class ProductionActivity extends BaseFrangmentActivity
 //                System.out.print(proint);
 //            }
             if (urlid == proid || urlid.equals(proid)) {
-                if (!proid.equals("")) {
+                if (!proid.equals("")) {//如果款号id不为空，那么就给实体类添加传过来的数据
                     ResponseDialog.showLoading(this);
                     saveBean.setID(Integer.parseInt(proid));
                     saveBean.setSalesid(Integer.parseInt(salesid));
@@ -749,7 +758,9 @@ public class ProductionActivity extends BaseFrangmentActivity
                     saveBean.setRecorder(null);
                     saveBean.setRecordat(null);
                     saveBeen.add(saveBean);
-                    String detailb = gson.toJson(saveBeen);
+                    String detailb = gson.toJson(saveBeen);//将实体类中的数据转变为json字符串，并由string类型请求
+                    String date = detailb + detailb;
+                    System.out.print(date);
                     editorone.remove("prouriid");
                     editorone.remove("prosalesid");
                     editorone.remove("proColumnTitle");

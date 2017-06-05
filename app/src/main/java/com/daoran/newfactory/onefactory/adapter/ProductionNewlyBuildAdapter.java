@@ -152,6 +152,7 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
                 System.out.print("");
                 sp = context.getSharedPreferences("my_sp", 0);
                 String itemm = sp.getString("tvnewlydate", "");
+                /*从点击item中进入新建数据界面*/
                 Intent intent = new Intent(context,
                         ProductionNewlyComfigActivity.class);
                 context.startActivity(intent);
