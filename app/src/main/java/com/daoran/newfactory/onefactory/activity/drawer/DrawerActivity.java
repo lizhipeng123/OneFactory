@@ -1,5 +1,7 @@
 package com.daoran.newfactory.onefactory.activity.drawer;
 
+import android.os.Bundle;
+
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 
 /**
@@ -8,5 +10,9 @@ import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 
 public class DrawerActivity extends BaseFrangmentActivity {
 
-
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        System.out.print("ttt");
+    }
 }
