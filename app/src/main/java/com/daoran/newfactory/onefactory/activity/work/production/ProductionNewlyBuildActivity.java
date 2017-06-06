@@ -58,25 +58,25 @@ public class ProductionNewlyBuildActivity
     private TextView spinnerNewbuild;//选择工序
     private EditText
             etNewbuildetNewbuildSql,
-            etNewbuildDetail;
+            etNewbuildDetail;//页数输入框
     private Button
-            etNewbuildSql,
-            btnNewbuildPage;
-    private TextView tvNewbuildPage;
-    private EditText etNewbuild;
+            etNewbuildSql,//查找按钮
+            btnNewbuildPage;//翻页确定按钮
+    private TextView tvNewbuildPage;//
+    private EditText etNewbuild;//款号输入框
 
-    private ListView lv_newbuild_data;
-    private ProductionNewlyBuildAdapter buildAdapter;
-    private ProNewlyBuildBean newlyBuildBean;
+    private ListView lv_newbuild_data;//款号信息列表
+    private ProductionNewlyBuildAdapter buildAdapter;//款号信息列表适配
+    private ProNewlyBuildBean newlyBuildBean;//新建数据实体bean
     private List<ProNewlyBuildBean.DataBean> dataBeen =
-            new ArrayList<ProNewlyBuildBean.DataBean>();
+            new ArrayList<ProNewlyBuildBean.DataBean>();//新建数据实体list
 
-    private LinearLayout ll_visibi;
+    private LinearLayout ll_visibi;//隐藏的不存在数据的页面
     private TextView tv_visibi;
     private ScrollView scroll_content;
 
-    private int pageCount;
-    private int pageIndex = 0;
+    private int pageCount;//请求获取的总页数
+    private int pageIndex = 0;//初始页数
 
     private SharedPreferences sp;//轻量级存储
     private SPUtils spUtils;//保存在手机中的目录
@@ -339,7 +339,7 @@ public class ProductionNewlyBuildActivity
                                     System.out.print(ression);
                                     newlyBuildBean = new Gson().fromJson(ression, ProNewlyBuildBean.class);
                                     dataBeen = newlyBuildBean.getData();
-                                    if(newlyBuildBean.getTotalCount()!=0){
+                                    if (newlyBuildBean.getTotalCount() != 0) {
                                         ll_visibi.setVisibility(View.GONE);
                                         scroll_content.setVisibility(View.VISIBLE);
                                         System.out.print(dataBeen);
@@ -350,7 +350,7 @@ public class ProductionNewlyBuildActivity
                                                 ProductionNewlyBuildActivity.this, dataBeen);
                                         lv_newbuild_data.setAdapter(buildAdapter);
                                         buildAdapter.notifyDataSetChanged();
-                                    }else{
+                                    } else {
                                         ll_visibi.setVisibility(View.VISIBLE);
                                         scroll_content.setVisibility(View.GONE);
                                         tv_visibi.setText("没有更多数据");
@@ -397,7 +397,7 @@ public class ProductionNewlyBuildActivity
                                     System.out.print(ression);
                                     newlyBuildBean = new Gson().fromJson(ression, ProNewlyBuildBean.class);
                                     dataBeen = newlyBuildBean.getData();
-                                    if(newlyBuildBean.getTotalCount()!=0){
+                                    if (newlyBuildBean.getTotalCount() != 0) {
                                         ll_visibi.setVisibility(View.GONE);
                                         scroll_content.setVisibility(View.VISIBLE);
                                         System.out.print(dataBeen);
@@ -408,7 +408,7 @@ public class ProductionNewlyBuildActivity
                                                 ProductionNewlyBuildActivity.this, dataBeen);
                                         lv_newbuild_data.setAdapter(buildAdapter);
                                         buildAdapter.notifyDataSetChanged();
-                                    }else{
+                                    } else {
                                         ll_visibi.setVisibility(View.VISIBLE);
                                         scroll_content.setVisibility(View.GONE);
                                         tv_visibi.setText("没有更多数据");
@@ -474,7 +474,7 @@ public class ProductionNewlyBuildActivity
             /*款号选择之后确定新增*/
             case R.id.btnNewbuildConfirm:
                 sp = getSharedPreferences("my_sp", 0);
-                String tvnewlydate = sp.getString("tvnewlydate", "");
+                String tvnewlydate = sp.getString("tvnewlydate", "");//newlybuildadapter中款号
                 if (!tvnewlydate.equals("")) {
                     startActivity(new Intent(this, ProductionNewlyComfigActivity.class));
                 } else {

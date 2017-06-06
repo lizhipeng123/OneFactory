@@ -25,7 +25,9 @@ import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * 生产日报适配器
@@ -38,6 +40,8 @@ public class ProductionAdapter extends BaseAdapter {
     private List<ProducationDetailBean.DataBean> dataBeen;
     private SharedPreferences sp;
     private SPUtils spUtils;
+
+    private Vector<Collection> collections;
 
     private boolean flag = false;
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -58,39 +60,41 @@ import okhttp3.MediaType;
 public class ProductionActivity extends BaseFrangmentActivity
         implements View.OnClickListener, SelectItemInterface {
 
-    private NoscrollListView mData;
-    private ProcationDialog procationDialog;
+    private NoscrollListView mData;//listview的列表
+    private ProcationDialog procationDialog;//条件查询的dialog
 
-    private SyncHorizontalScrollView mHeaderHorizontal;
-    private SyncHorizontalScrollView mDataHorizontal;
-    private ImageView ivProductionBack, ivSearch;
+    private SyncHorizontalScrollView mHeaderHorizontal;//标题scrollview
+    private SyncHorizontalScrollView mDataHorizontal;//列表scrollview
+    private ImageView ivProductionBack, ivSearch;//返回与条件查询
     private List<ProducationDetailBean.DataBean> detailBeenList =
-            new ArrayList<ProducationDetailBean.DataBean>();
-    private ProducationDetailBean detailBean;
-    private ProductionAdapter adapter;
-    List<ProducationSaveBean> saveBeen = new ArrayList<ProducationSaveBean>();
-    List<ProducationConfigSaveBean> configSaveBeen = new ArrayList<ProducationConfigSaveBean>();
+            new ArrayList<ProducationDetailBean.DataBean>();//列表实体list
+    private ProducationDetailBean detailBean;//列表实体bean
+    private ProductionAdapter adapter;//列表适配
+    List<ProducationSaveBean> saveBeen =
+            new ArrayList<ProducationSaveBean>();//保存
+    List<ProducationConfigSaveBean> configSaveBeen =
+            new ArrayList<ProducationConfigSaveBean>();//新建
 
-    private EditText etSqlDetail;
-    private TextView tvSignPage;
-    private Button btnSignPage, btnProSave, spinnermenu;
+    private EditText etSqlDetail;//底部页码输入框
+    private TextView tvSignPage;//页数显示
+    private Button btnSignPage, btnProSave, spinnermenu;//翻页确定、保存确定，菜单menu
     private TextView spinnerNewbuild;
     private EditText etNewbuild;
 
-    private SharedPreferences sp;
+    private SharedPreferences sp;//存储
     private SPUtils spUtils;
-    private int pageCount;
-    private int pageIndex = 0;
+    private int pageCount;//总页数int
+    private int pageIndex = 0;//初始页数0
     private int last_item = -1;
     private TextView oldView;
-    private LinearLayout ll_visibi;
+    private LinearLayout ll_visibi;//
     private TextView tv_visibi;
     private ScrollView scroll_content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_production);
+        setContentView(R.layout.activity_production);//显示主页面
         getViews();
         initView();
         setData();
@@ -134,6 +138,7 @@ public class ProductionActivity extends BaseFrangmentActivity
         btnSignPage.setOnClickListener(this);
         btnProSave.setOnClickListener(this);
         spinnermenu.setOnClickListener(this);
+
     }
 
     @Override
@@ -345,6 +350,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     private void setPageDetail() {
         String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
         sp = ProductionActivity.this.getSharedPreferences("my_sp", 0);
+        /*获取条件查询dialog中输入的信息字段*/
         String namedure = sp.getString("proname", "");
         String Style = sp.getString("etprodialogStyle", "");
         String Factory = sp.getString("etprodialogFactory", "");
@@ -368,7 +374,6 @@ public class ProductionActivity extends BaseFrangmentActivity
             propostbean.setPageSize(10);
             String gsonbeanStr = gson.toJson(propostbean);
             Log.e("you wanted", "[" + gsonbeanStr + "," + gsonbeanStr + "+]");
-            //你打log看看是不是你想要的结构
             if (NetWork.isNetWorkAvailable(this)) {
 //                 /*检测是否为可用WiFi*/
 //                WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
@@ -532,6 +537,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             String saveurl = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
             sp = this.getSharedPreferences("my_sp", 0);
             SharedPreferences.Editor editorone = sp.edit();
+            /*获取ProductionAdapter中监听输入框中的字段*/
             String proid = sp.getString("prouriid", "");
             String salesid = sp.getString("prosalesid", "");
             String proColumnTitle = sp.getString("proColumnTitle", "");//部门
@@ -919,6 +925,8 @@ public class ProductionActivity extends BaseFrangmentActivity
 //                dialog.show();
 //            } else {
             sp = this.getSharedPreferences("my_sp", 0);
+            SharedPreferences.Editor editor = sp.edit();
+            /*调用ProducationAdapter中点击item后取得的字段*/
             String itemid = "";
             String prosalesid = sp.getString("prosalesid", "");
             String item = sp.getString("copyitem", "");
@@ -999,6 +1007,28 @@ public class ProductionActivity extends BaseFrangmentActivity
             configSaveBeen.add(saveBean);
             String configsave = gson.toJson(configSaveBeen);
             String dateee = configsave.replace("\"\"", "null");
+            /*删除本地存储的之前点击item获取的字段*/
+            editor.remove("prosalesid");
+            editor.remove("copyitem");
+            editor.remove("copyDocumentary");
+            editor.remove("copyFactory");
+            editor.remove("copyDepartment");
+            editor.remove("copyOthers");
+            editor.remove("copySingularSystem");
+            editor.remove("copyColor");
+            editor.remove("copyTaskNumber");
+            editor.remove("copySize");
+            editor.remove("copyCompletedLastMonth");
+            editor.remove("copyCompletedLastMonth");
+            editor.remove("copyTotalCompletion");
+            editor.remove("copyBalanceAmount");
+            editor.remove("copyState");
+            editor.remove("copyProYear");
+            editor.remove("copyMonth");
+            editor.remove("copyRemarks");
+            editor.remove("copyRecorder");
+            editor.remove("copyRecordat");
+            editor.commit();
             if (!itemid.equals("")) {
                 ResponseDialog.showLoading(this);
                 OkHttpUtils.postString()
@@ -1054,6 +1084,9 @@ public class ProductionActivity extends BaseFrangmentActivity
         }
     }
 
+    /**
+     *
+     */
     DialogInterface.OnClickListener listenerwifi = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
@@ -1078,6 +1111,9 @@ public class ProductionActivity extends BaseFrangmentActivity
         procationDialog.show();
     }
 
+    /**
+     * 确定
+     */
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -1090,6 +1126,9 @@ public class ProductionActivity extends BaseFrangmentActivity
         }
     };
 
+    /**
+     * 取消
+     */
     private View.OnClickListener onCancleListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -1162,6 +1201,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     @Override
     protected void onDestroy() {
         SharedPreferences.Editor editor = sp.edit();
+        /*关闭界面后，删除本地存储的字段*/
         editor.remove("prouriid");
         editor.remove("prosalesid");
         editor.remove("proColumnTitle");
@@ -1206,5 +1246,15 @@ public class ProductionActivity extends BaseFrangmentActivity
         editor.remove("productionRemarks");
         editor.commit();
         super.onDestroy();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO) {
+            ToastUtils.ShowToastMessage("弹出状态", ProductionActivity.this);
+        } else if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES) {
+            ToastUtils.ShowToastMessage("隐藏状态", ProductionActivity.this);
+        }
     }
 }

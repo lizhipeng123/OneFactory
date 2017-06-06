@@ -44,38 +44,38 @@ import okhttp3.MediaType;
  */
 public class CommoditySqlActivity extends BaseFrangmentActivity
         implements View.OnClickListener {
-    private NoscrollListView mData;
+    private NoscrollListView mData;//列表
 
     private SyncHorizontalScrollView mHeaderHorizontal;
     private SyncHorizontalScrollView mDataHorizontal;
-    private ImageView ivProductionBack;
-    private boolean prdmasterisnull = false;
+    private ImageView ivProductionBack;//返回按钮
+    private boolean prdmasterisnull = false;//判断是否选中
     private CommoDialog commoDialog;//查货条件查询弹出框
-    private ImageView ivSearch;
+    private ImageView ivSearch;//条件查询
 
     private List<CommoditydetailBean.DataBean> dataBeen
             = new ArrayList<CommoditydetailBean.DataBean>();//查货信息实体集合
-    private CommoditydetailBean commoditydetailBean;
-    private CommoditySqlAdapter sqlAdapter;
-    List<CommoditySaveBean> saveBeen = new ArrayList<CommoditySaveBean>();
+    private CommoditydetailBean commoditydetailBean;//列表实体bean
+    private CommoditySqlAdapter sqlAdapter;//列表适配
+    List<CommoditySaveBean> saveBeen = new ArrayList<CommoditySaveBean>();//实体list
 
-    private TextView tvSignPage;
-    private EditText etSqlDetail;
-    private Button btnSignPage;
-    private Button btnCommoRefresh, btnCommoSave;
+    private TextView tvSignPage;//显示的总页数
+    private EditText etSqlDetail;//输入的页数
+    private Button btnSignPage;//翻页确认
+    private Button btnCommoRefresh, btnCommoSave;//刷新，保存
     private LinearLayout ll_visibi;
     private TextView tv_visibi;
     private ScrollView scroll_content;
 
-    private SharedPreferences sp;
+    private SharedPreferences sp;//轻量级存储本地数据
     private SPUtils spUtils;
-    private int pageCount;
-    private int pageIndex = 0;
+    private int pageCount;//查询获取的总页数
+    private int pageIndex = 0;//初始显示的页数
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_commodity);
+        setContentView(R.layout.activity_commodity);//加载主页面
         getViews();
         initView();
         setData();
@@ -352,6 +352,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
             String saveurl = HttpUrl.debugoneUrl + "QACwork/SaveQACwork/";
             sp = this.getSharedPreferences("my_sp", 0);
             SharedPreferences.Editor editorone = sp.edit();
+            /*获取CommoditySqlAdapter中输入框或时间选择信息*/
             String commoproid = sp.getString("commoproid", "");//id
             String CommodityQCMasterScore = sp.getString("CommodityQCMasterScore", "");//主管评分
             if (CommodityQCMasterScore == "" || CommodityQCMasterScore.equals("")) {
@@ -555,6 +556,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                     saveBeen.add(saveBean);
                     String commjson = gson.toJson(saveBeen);//转换json字符串
 //                    String dateee = commjson.replace("\"\"", "null");
+                    /*删除本地存储中的适配器中输入框的信息*/
                     editorone.remove("commoproid");
                     editorone.remove("CommodityQCMasterScore");
                     editorone.remove("dateSealedrewtimesign");
@@ -681,6 +683,9 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         }
     }
 
+    /**
+     * 启动
+     */
     @Override
     protected void onStart() {
         super.onStart();
