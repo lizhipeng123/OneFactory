@@ -227,13 +227,13 @@ public class ProductionAdapter extends BaseAdapter {
 
                     }
                 });
-                String proid = sp.getString("proadapterid", "");
-
-                spUtils.put(context, "proadapterid", proid);
-                String urlid = String.valueOf(getItem(position).getID());
-                spUtils.put(context, "prourisaveid", urlid);
-                String salesid = String.valueOf(getItem(position).getSalesid());
-                spUtils.put(context, "prosalessaveid", salesid);
+//                String proid = sp.getString("proadapterid", "");
+//
+//                spUtils.put(context, "proadapterid", proid);
+//                String urlid = String.valueOf(getItem(position).getID());
+//                spUtils.put(context, "prourisaveid", urlid);
+//                String salesid = String.valueOf(getItem(position).getSalesid());
+//                spUtils.put(context, "prosalessaveid", salesid);
 
                 viewHolder.tv_data.setEnabled(true);
                 String productionItem = getItem(position).getItem();
@@ -309,10 +309,10 @@ public class ProductionAdapter extends BaseAdapter {
                             }
                         }
                         String proitem = viewHolder.tvProOthers.getText().toString();
-                        String proid = String.valueOf(getItem(position).getID());
-                        spUtils.put(context, "proadapterid", proid);
-                        String urlid = String.valueOf(getItem(position).getID());
-                        spUtils.put(context, "prouriid", urlid);
+//                        String proid = String.valueOf(getItem(position).getID());
+//                        spUtils.put(context, "proadapterid", proid);
+//                        String urlid = String.valueOf(getItem(position).getID());
+//                        spUtils.put(context, "prouriid", urlid);
                         viewHolder.tvProOthers.setSelection(viewHolder.tvProOthers.length());
                         spUtils.put(context, "productionsaveOthers", proitem);
                     }

@@ -708,7 +708,7 @@ public class ProductionActivity extends BaseFrangmentActivity
 //                System.out.print(proint);
 //            }
             if (urlid == proid || urlid.equals(proid)) {
-                if (!proid.equals("")) {//如果款号id不为空，那么就给实体类添加传过来的数据
+                if (!proid.equals("")&&!salesid.equals("")) {//如果款号id不为空，那么就给实体类添加传过来的数据
                     ResponseDialog.showLoading(this);
                     saveBean.setID(Integer.parseInt(proid));
                     saveBean.setSalesid(Integer.parseInt(salesid));
