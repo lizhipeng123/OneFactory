@@ -58,7 +58,8 @@ import okhttp3.MediaType;
  * Created by lizhipeng on 2017/3/29.
  */
 public class ProductionActivity extends BaseFrangmentActivity
-        implements View.OnClickListener, SelectItemInterface {
+        implements View.OnClickListener, SelectItemInterface
+        ,View.OnLayoutChangeListener{
 
     private NoscrollListView mData;//listview的列表
     private ProcationDialog procationDialog;//条件查询的dialog
@@ -90,11 +91,15 @@ public class ProductionActivity extends BaseFrangmentActivity
     private LinearLayout ll_visibi;//
     private TextView tv_visibi;
     private ScrollView scroll_content;
+    int keyHeight = 0;
+    int screenHeight = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_production);//显示主页面
+        screenHeight = this.getWindowManager().getDefaultDisplay().getHeight();
+        keyHeight = screenHeight/3;
         getViews();
         initView();
         setData();
@@ -888,7 +893,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                     editorone.remove("productionRemarks");
                     editorone.commit();
                     new AlertDialog.Builder(ProductionActivity.this).setTitle("提示信息")
-                            .setMessage("请修改数据，再进行保存")
+                            .setMessage("请选择当前行，再进行保存")
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -1255,6 +1260,15 @@ public class ProductionActivity extends BaseFrangmentActivity
             ToastUtils.ShowToastMessage("弹出状态", ProductionActivity.this);
         } else if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES) {
             ToastUtils.ShowToastMessage("隐藏状态", ProductionActivity.this);
+        }
+    }
+
+    @Override
+    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+        if(oldBottom!=0&&bottom!=0&&(oldBottom-bottom>keyHeight)){
+            ToastUtils.ShowToastMessage("软键盘弹起啦",ProductionActivity.this);
+        }else{
+            ToastUtils.ShowToastMessage("回去了",ProductionActivity.this);
         }
     }
 }

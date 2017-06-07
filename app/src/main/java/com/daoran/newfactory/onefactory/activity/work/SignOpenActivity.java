@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -46,6 +47,7 @@ import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.geocoder.GeocodeSearch;
@@ -82,7 +84,7 @@ import permissions.dispatcher.RuntimePermissions;
 public class SignOpenActivity extends BaseFrangmentActivity
         implements View.OnClickListener, PoiSearch.OnPoiSearchListener,
         LocationSource, AMapLocationListener, AMap.OnCameraChangeListener
-        ,ActivityCompat.OnRequestPermissionsResultCallback{
+        , ActivityCompat.OnRequestPermissionsResultCallback {
     private MapView mapView;
     private AMap aMap;
     private AMapLocationClient mapLocationClient;
@@ -104,6 +106,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
     private LatLonPoint latLonPoint;
     private GeocodeSearch geocodeSearch;
     private Spinner spinner, spinnnerfileTune;
+    private MyLocationStyle myLocationStyle;
 
     private static final String TAG = "TAG";
     public static final String KEY_LAT = "lat";
@@ -167,19 +170,23 @@ public class SignOpenActivity extends BaseFrangmentActivity
         mMarkerOptions = new MarkerOptions();
         mMarkerOptions.draggable(false);//可拖放性
         mMarkerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.guidepoint_red));
+
         getViews();
         initViews();
         initSpinner();
         init();
+        myLocationStyle = new MyLocationStyle();
+        myLocationStyle.strokeColor(Color.argb(0, 0, 0, 0));
+        myLocationStyle.radiusFillColor(Color.argb(0, 0, 0, 0));
         sp = this.getSharedPreferences("my_sp", 0);
         SignOpenActivityPermissionsDispatcher.startLocationWithCheck(this);
     }
 
-    public class TimeThread extends Thread{
+    public class TimeThread extends Thread {
         @Override
         public void run() {
             super.run();
-            do{
+            do {
                 try {
                     Thread.sleep(1000);
                     Message msg = new Message();
@@ -189,15 +196,15 @@ public class SignOpenActivity extends BaseFrangmentActivity
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }while (true);
+            } while (true);
         }
     }
 
-    private Handler mHandler = new Handler(){
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case msgKey1:
                     long time = System.currentTimeMillis();
                     Date date = new Date(time);
@@ -223,7 +230,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
     private void initViews() {
         ivSignBack.setOnClickListener(this);
         btnCount.setOnClickListener(this);
-        month =month+1;
+        month = month + 1;
         tvSignDate.setText(String.valueOf(year + "/" + month + "/" + date));
         View v = mapView.getChildAt(0);
         //解决scrollview与mapview滑动冲突
@@ -340,12 +347,13 @@ public class SignOpenActivity extends BaseFrangmentActivity
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         if (position == 0) {
-                            deepType = str[5] + "|" + str[7] + "|" + str[12] + "|" + str[17];
+                            deepType = str[17];
                         } else {
                             deepType = (String) spinnnerfileTune.getSelectedItem();
                         }
                         doSearch();
                     }
+
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
@@ -366,6 +374,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
                 tvSignAddress = (TextView) findViewById(R.id.tvSignAddress);
                 tvSignAddress.setText(str);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -409,6 +418,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
 
     /**
      * 显示提示信息
+     *
      * @since 2.5.0
      */
     private void showMissingPermissionDialog() {
@@ -436,7 +446,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK){
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             this.finish();
             return true;
         }
@@ -444,10 +454,9 @@ public class SignOpenActivity extends BaseFrangmentActivity
     }
 
     /**
-     *  启动应用的设置
+     * 启动应用的设置
      *
      * @since 2.5.0
-     *
      */
     private void startAppSettings() {
         Intent intent = new Intent(
@@ -481,7 +490,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
     /**
      * 截屏保存图片
      */
-    private void getpicture(){
+    private void getpicture() {
         aMap.getMapScreenShot(new AMap.OnMapScreenShotListener() {
             @Override
             public void onMapScreenShot(Bitmap bitmap) {
@@ -491,7 +500,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
             @Override
             public void onMapScreenShot(Bitmap bitmap, int status) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-                if(null == bitmap){
+                if (null == bitmap) {
                     return;
                 }
                 try {
@@ -518,7 +527,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
                     if (status != 0)
                         buffer.append("地图渲染完成，截屏无网格");
                     else {
-                        buffer.append( "地图未渲染完成，截屏有网格");
+                        buffer.append("地图未渲染完成，截屏有网格");
                     }
                     System.out.print(buffer.toString());
 //                    ToastUtils.ShowToastMessage(buffer.toString(),getApplicationContext());
@@ -559,9 +568,9 @@ public class SignOpenActivity extends BaseFrangmentActivity
 
     /**
      * 适配7.0权限
+     *
      * @param
      * @since 2.5.0
-     *
      */
     private void checkPermissions(String... permissions) {
         List<String> needRequestPermissonList = findDeniedPermissions(permissions);
@@ -576,10 +585,10 @@ public class SignOpenActivity extends BaseFrangmentActivity
 
     /**
      * 获取权限集中需要申请权限的列表
+     *
      * @param permissions
      * @return
      * @since 2.5.0
-     *
      */
     private List<String> findDeniedPermissions(String[] permissions) {
         List<String> needRequestPermissonList = new ArrayList<String>();
@@ -596,10 +605,10 @@ public class SignOpenActivity extends BaseFrangmentActivity
 
     /**
      * 检测是否说有的权限都已经授权
+     *
      * @param grantResults
      * @return
      * @since 2.5.0
-     *
      */
     private boolean verifyPermissions(int[] grantResults) {
         for (int result : grantResults) {
@@ -616,7 +625,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
         if (mapView != null) {
             mapView.onResume();
         }
-        if(isNeedCheck){
+        if (isNeedCheck) {
             checkPermissions(needPermissions);
         }
     }
@@ -729,7 +738,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
         minute = t.minute;
         second = t.second;
         tvSqltexttime = (TextView) findViewById(R.id.tvSqltexttime);
-        tvSqltexttime.setText(hour+":"+minute+":"+second);
+        tvSqltexttime.setText(hour + ":" + minute + ":" + second);
     }
 
     @Override

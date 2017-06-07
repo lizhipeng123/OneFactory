@@ -666,7 +666,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                     editorone.remove("dateQAMemotimesign");
                     editorone.commit();
                     new AlertDialog.Builder(CommoditySqlActivity.this).setTitle("提示信息")
-                            .setMessage("请修改数据，再进行保存")
+                            .setMessage("请选择当前行，再进行保存")
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

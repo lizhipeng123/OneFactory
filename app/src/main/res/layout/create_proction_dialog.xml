@@ -46,14 +46,19 @@
                 android:text="款号"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_50sp" />
-
-            <EditText
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="    "
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_50sp" />
+            <com.daoran.newfactory.onefactory.view.EditTextWithDelete
                 android:id="@+id/etprodialogStyle"
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/dimen_50"
-                android:background="@drawable/shape_text_sql_boild"
+                android:background="@drawable/shape_edittext_sql_boild"
                 android:gravity="center"
                 android:textColor="@color/black" />
 
@@ -73,7 +78,12 @@
                 android:text="工序"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_50sp" />
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="    "
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_50sp" />
             <Spinner
                 android:id="@+id/tvprodialogProcedure"
                 android:layout_width="match_parent"
@@ -97,13 +107,18 @@
                 android:text="工厂"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_50sp" />
-
-            <EditText
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="    "
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_50sp" />
+            <com.daoran.newfactory.onefactory.view.EditTextWithDelete
                 android:id="@+id/etprodialogFactory"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_100"
                 android:layout_marginLeft="@dimen/dimen_50"
-                android:background="@drawable/shape_text_sql_boild"
+                android:background="@drawable/shape_edittext_sql_boild"
                 android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_50sp" />
@@ -123,12 +138,12 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_50sp" />
 
-            <EditText
+            <com.daoran.newfactory.onefactory.view.EditTextWithDelete
                 android:id="@+id/etprodialogRecode"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_100"
                 android:layout_marginLeft="@dimen/dimen_50"
-                android:background="@drawable/shape_text_sql_boild"
+                android:background="@drawable/shape_edittext_sql_boild"
                 android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_50sp" />

@@ -181,11 +181,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <EditText
+                <com.daoran.newfactory.onefactory.view.EditTextWithDelete
                     android:id="@+id/etRemark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_text_sql_boild"
+                    android:background="@drawable/shape_edittext_sql_boild"
                     android:focusableInTouchMode="false"
                     android:gravity="top|left"
                     android:hint="填写备注"

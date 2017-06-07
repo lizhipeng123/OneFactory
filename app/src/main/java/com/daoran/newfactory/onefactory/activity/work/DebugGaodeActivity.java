@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
+
 import java.io.File;
 import java.net.URISyntaxException;
 
@@ -34,17 +35,18 @@ public class DebugGaodeActivity extends
     /**
      * 调用高德地图
      */
-    private void setUpGaodeAppByMine(){
+    private void setUpGaodeAppByMine() {
         try {
             Intent intent = Intent.getIntent(
                     "androidamap://route?sourceApplication=softname&sname=我的位置&dlat="
-                    +LATITUDE_B+"&dlon="+LONGTITUDE_B+"&dname="+"杭州道然进出口有限公司"+"&dev=0&m=0&t=1");
-            if(isInstallByread("com.autonavi.minimap")){
+                            + LATITUDE_B + "&dlon=" + LONGTITUDE_B + "&dname="
+                            + "杭州道然进出口有限公司" + "&dev=0&m=0&t=1");
+            if (isInstallByread("com.autonavi.minimap")) {
                 startActivity(intent);
-                Log.e(TAG, "高德地图客户端已经安装") ;
+                Log.e(TAG, "高德地图客户端已经安装");
                 finish();
-            }else {
-                Log.e(TAG, "没有安装高德地图客户端") ;
+            } else {
+                Log.e(TAG, "没有安装高德地图客户端");
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -53,6 +55,7 @@ public class DebugGaodeActivity extends
 
     /**
      * 判断是否安装目标应用
+     *
      * @param packageName 目标应用安装后的包名
      * @return 是否已安装目标应用
      */

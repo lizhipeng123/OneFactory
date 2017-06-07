@@ -40,20 +40,30 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="审核状态"
+                android:layout_gravity="center"
                 android:textColor="@color/black"
-                android:layout_weight="1"
                 android:textSize="@dimen/dimen_50sp" />
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="    "
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_50sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="    "
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_50sp" />
             <Spinner
                 android:id="@+id/spinnerAudit"
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:layout_weight="1"
                 android:background="@drawable/shape_text_sql_boild"
                 android:layout_marginLeft="@dimen/dimen_50"
                 android:entries="@array/languages"/>
