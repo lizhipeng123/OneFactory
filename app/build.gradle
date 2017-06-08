@@ -54,7 +54,34 @@ android {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
     }
+    productFlavors {
+        yingyongbao {
+            manifestPlaceholders = [APP_NAME: "dfAPP_yyb", APP_CHANNEL: "yingyongbao"]
+        }
+        qh360 {
+            manifestPlaceholders = [APP_NAME: "dfAPP_qh360", APP_CHANNEL: "qh360"]
+        }
+        ali {
+            manifestPlaceholders = [APP_NAME: "dfAPP_ali", APP_CHANNEL: "ali"]
+        }
+        baidu {
+            manifestPlaceholders = [APP_NAME: "dfAPP_baidu", APP_CHANNEL: "baidu"]
+        }
+    }
+    applicationVariants.all {
+        variant ->
+            variant.outputs.each { output ->
+                def outputFile = output.outputFile
+                if (outputFile != null && outputFile.name.endsWith(".apk")) {
+                    def fileName = "dfAPP_${releaseTime()}_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
+                    output.outputFile = new File(outputFile.parent, fileName)
+                }
+            }
+    }
+}
 
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
 
 dependencies {
@@ -76,6 +103,7 @@ dependencies {
     compile files('libry/xUtils-2.6.14.jar')
     compile files('libry/fastjson-1.1.46.jar')
     compile files('libry/picasso-2.5.2.jar')
+    compile 'me.rawnhwang.library:smart-refresh-layout:1.0.0-rc'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
     compile 'com.github.Aspsine:SwipeToLoadLayout:1.0.4'
     compile 'com.jakewharton:butterknife:7.0.0'
@@ -91,4 +119,5 @@ dependencies {
     compile 'com.android.support:multidex:'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.android.support:support-annotations:23.4.0'
+    compile files('libry/core-3.2.1.jar')
 }

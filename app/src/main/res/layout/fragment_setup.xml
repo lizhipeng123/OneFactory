@@ -118,7 +118,26 @@
                     android:text=""
                     android:textSize="@dimen/dimen_50sp" />
             </RelativeLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#FF909090" />
 
+            <RelativeLayout
+                android:id="@+id/rlCore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dimen_30"
+                android:paddingTop="@dimen/dimen_30">
+
+                <TextView
+                    android:id="@+id/tvcoregener"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="生成下载二维码"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_60sp" />
+            </RelativeLayout>
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1px"
@@ -181,6 +200,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tvwifimanager" />
             </RelativeLayout>
+
         </LinearLayout>
     </com.daoran.newfactory.onefactory.view.listview.BounceScrollView>
 </LinearLayout>

@@ -28,7 +28,7 @@ public class DebugGaodeActivity extends
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_debug_gaode);
+        setContentView(R.layout.activity_gaodemap);
         setUpGaodeAppByMine();
     }
 

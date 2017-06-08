@@ -14,7 +14,7 @@ import java.util.Locale;
  * Created by lizhipeng on 2017/5/18.
  */
 
-public class ProductionDebugActivity extends BaseFrangmentActivity {
+public class ProductionTestActivity extends BaseFrangmentActivity {
     public static final SimpleDateFormat DAY_UI_MONTH_DAY_FORMAT
             = new SimpleDateFormat("MM-dd");
     public static final SimpleDateFormat WEEK_FORMAT
@@ -23,7 +23,7 @@ public class ProductionDebugActivity extends BaseFrangmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_production_debugtwo);
+        setContentView(R.layout.activity_production_testpanel);
         final ScrollablePanel scrollablePanel = (ScrollablePanel) findViewById(R.id.scrollable_panel);
     }
 

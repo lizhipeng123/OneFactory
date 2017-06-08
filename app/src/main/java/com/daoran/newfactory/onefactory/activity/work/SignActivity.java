@@ -163,8 +163,8 @@ public class SignActivity extends BaseFrangmentActivity
         mMarkerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.guidepoint_red));
         getViews();
         initViews();
-//        initSpinner();
-//        init();
+        initSpinner();
+        init();
         sp = this.getSharedPreferences("my_sp", 0);
         SignActivityPermissionsDispatcher.startLocationWithCheck(this);
     }
@@ -298,7 +298,7 @@ public class SignActivity extends BaseFrangmentActivity
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         if (position == 0) {
-                            deepType = str[5] + "|" + str[7] + "|" + str[12] + "|" + str[17];
+                            deepType = str[17];
                         } else {
                             deepType = (String) spinnnerfileTune.getSelectedItem();
                         }

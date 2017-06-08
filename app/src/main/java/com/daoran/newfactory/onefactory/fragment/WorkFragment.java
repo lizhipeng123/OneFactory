@@ -3,8 +3,11 @@ package com.daoran.newfactory.onefactory.fragment;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,7 @@ import com.daoran.newfactory.onefactory.bean.WorkBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
+import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.ScrollGridView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -36,8 +40,9 @@ import okhttp3.Call;
  * Created by lizhipeng on 2017/3/22.
  */
 
-public class WorkFragment extends Fragment {
+public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     Activity mactivity;
+    private static final int REFRESH_COMPLETE = 0X110;
     private View view;
     private LinearLayout llOpenCarDetail;
     private TextView tvOpenCarDetail;
@@ -45,6 +50,8 @@ public class WorkFragment extends Fragment {
     private TextView idworkname;
     private SharedPreferences sp;
     private SPUtils spUtils;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    ScrollWrokAdapter adapter;
 
     private List<WorkBean> workBeen = new ArrayList<WorkBean>();
     private ScrollGridView sgv_gridview;
@@ -59,6 +66,18 @@ public class WorkFragment extends Fragment {
             String.valueOf(R.mipmap.regedit_220),
             String.valueOf(R.mipmap.ucar_220)};
 
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case REFRESH_COMPLETE:
+//                    setPhoneMenu();
+                    swipeRefreshLayout.setRefreshing(false);
+                    break;
+            }
+        }
+    };
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +91,7 @@ public class WorkFragment extends Fragment {
         setPhoneMenu();
         getViews();
         initViews();
+        setListener();
         return view;
     }
 
@@ -99,6 +119,7 @@ public class WorkFragment extends Fragment {
         idworkname = (TextView) view.findViewById(R.id.idworkname);
         ivopenCarDetail = (ImageView) view.findViewById(R.id.ivopenCarDetail);
         llOpenCarDetail = (LinearLayout) view.findViewById(R.id.llOpenCarDetail);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.id_swipe_ly);
     }
 
     /**
@@ -111,12 +132,13 @@ public class WorkFragment extends Fragment {
     }
 
     private void setListener() {
-        idworkname.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                return false;
-            }
-        });
+//        idworkname.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                return false;
+//            }
+//        });
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
 
     /**
@@ -165,5 +187,11 @@ public class WorkFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onRefresh() {
+        mHandler.sendEmptyMessageDelayed(REFRESH_COMPLETE, 2000);
+        ToastUtils.ShowToastMessage("刷新了", getActivity());
     }
 }

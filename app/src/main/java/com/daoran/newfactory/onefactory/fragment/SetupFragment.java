@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.login.LoginDebugActivity;
+import com.daoran.newfactory.onefactory.activity.work.CoreActivity;
 import com.daoran.newfactory.onefactory.bean.VerCodeBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
@@ -78,6 +79,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     private TextView tv_clean;
     private RelativeLayout rlClean;
     private RelativeLayout rlwifi;
+    private RelativeLayout rlCore;
     private TextView tvwifimanager, tvwifissid;
 
     private static final int DOWN_NOSDCARD = 0;
@@ -127,6 +129,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         tvwifimanager = (TextView) view.findViewById(R.id.tvwifimanager);
         tvwifissid = (TextView) view.findViewById(R.id.tvwifissid);
         tvNewVersion = (TextView) view.findViewById(R.id.tvNewVersion);
+        rlCore = (RelativeLayout) view.findViewById(R.id.rlCore);
         sp = mactivity.getSharedPreferences("my_sp", 0);
         String vercode = sp.getString("Applicationscode", "");
         tvNewVersion.setText(vercode);
@@ -144,6 +147,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         tvVersion.setOnClickListener(this);
         rlClean.setOnClickListener(this);
         rlwifi.setOnClickListener(this);
+        rlCore.setOnClickListener(this);
     }
 
     @Override
@@ -173,6 +177,10 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.rlwifi:
                 startWifi();
+                break;
+            case R.id.rlCore:
+                Intent intent = new Intent(getActivity(),CoreActivity.class);
+                mactivity.startActivity(intent);
                 break;
         }
     }

@@ -50,11 +50,11 @@
         android:layout_height="1px"
         android:background="#FF909090" />
 
-    <com.daoran.newfactory.onefactory.view.listview.BounceScrollView
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/id_swipe_ly"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:scrollbars="none">
+        android:layout_height="match_parent">
 
         <com.daoran.newfactory.onefactory.view.ScrollGridView
             android:id="@+id/sgv_gridview"
@@ -65,5 +65,5 @@
             android:numColumns="2"
             android:padding="20dp"
             android:stretchMode="columnWidth" />
-    </com.daoran.newfactory.onefactory.view.listview.BounceScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>
