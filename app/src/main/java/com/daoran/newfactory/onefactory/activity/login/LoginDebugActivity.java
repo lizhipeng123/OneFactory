@@ -111,6 +111,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        sp = getSharedPreferences("my_sp", 0);
         if(Build.VERSION.SDK_INT>=21){
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -120,17 +121,8 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
         }
         getViews();
         initViews();
-        checkAppVersion(true);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (validate()) {
-                    postLogin();
-                }
-            }
-        });
-        sp = this.getSharedPreferences("my_sp", 0);
+        checkAppVersion(false);
+
         String name = sp.getString("username", "");
         String passwd = sp.getString("passwd", "");
         boolean choseRemember = sp.getBoolean("remember", false);
@@ -152,6 +144,14 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                 postLogin();
             }
         }
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (validate()) {
+                    postLogin();
+                }
+            }
+        });
     }
 
     /**
@@ -176,6 +176,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
         etUsername = (EditTextWithDelete) findViewById(R.id.etUsername);
         etPassword = (EditTextWithDelete) findViewById(R.id.etPassword);
         checkBoxPw = (CheckBox) findViewById(R.id.checkBoxPw);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
         checkboxopen = (CheckBox) findViewById(R.id.checkboxopen);
         image_login = (ImageView) findViewById(R.id.image_login);
     }
@@ -420,6 +421,8 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
                             } catch (NumberFormatException e) {
+                                e.printStackTrace();
+                            }catch (Exception e){
                                 e.printStackTrace();
                             }
                         }

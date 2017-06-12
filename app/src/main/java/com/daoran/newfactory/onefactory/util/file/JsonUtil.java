@@ -1,9 +1,14 @@
 package com.daoran.newfactory.onefactory.util.file;
 
+import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -54,5 +59,29 @@ public class JsonUtil {
             list.add(gson.fromJson(elem, cls));
         }
         return list;
+    }
+    public static String changeArrayDateToJson(
+            ArrayList<ProducationDetailBean.DataBean> dataBeenlist){
+        try {
+            JSONArray array = new JSONArray();
+            JSONObject object = new JSONObject();
+            int length = dataBeenlist.size();
+            for(int i = 0;i<length;i++){
+                ProducationDetailBean.DataBean stone = dataBeenlist.get(i);
+                int id = stone.getID();
+                int salesid = stone.getSalesid();
+                String item = stone.getWorkers();
+                JSONObject stoneobject =new JSONObject();
+                stoneobject.put("workers",item);
+                stoneobject.put("ID",id);
+                stoneobject.put("salesid",salesid);
+                array.put(stoneobject);
+            }
+            object.put("DataBean",array);
+            return object.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

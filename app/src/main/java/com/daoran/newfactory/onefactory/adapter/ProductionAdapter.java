@@ -23,6 +23,11 @@ import com.daoran.newfactory.onefactory.activity.work.production.ProductionActiv
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.util.file.JsonUtil;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -309,7 +314,22 @@ public class ProductionAdapter extends BaseAdapter {
                             }
                         }
                         String proitem = viewHolder.tvProOthers.getText().toString();
-//                        String proid = String.valueOf(getItem(position).getID());
+
+                        int proid = getItem(position).getID();
+                        int sriid = getItem(position).getSalesid();
+                        ArrayList<ProducationDetailBean.DataBean> list =
+                                new ArrayList<ProducationDetailBean.DataBean>();
+                        for (int i = 0; i < dataBeen.size(); i++) {
+                            ProducationDetailBean.DataBean dataBean =
+                                    new ProducationDetailBean.DataBean();
+                            dataBean.setID(proid);
+                            dataBean.setSalesid(sriid);
+                            dataBean.setWorkers(proitem);
+                            list.add(dataBean);
+                        }
+                        String json = JsonUtil.changeArrayDateToJson(list);
+                        System.out.print(json);
+
 //                        spUtils.put(context, "proadapterid", proid);
 //                        String urlid = String.valueOf(getItem(position).getID());
 //                        spUtils.put(context, "prouriid", urlid);
@@ -2780,6 +2800,7 @@ public class ProductionAdapter extends BaseAdapter {
 
         return convertView;
     }
+
 
     class ViewHolder {
         View data_ll_vertical;

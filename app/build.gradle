@@ -120,4 +120,7 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.android.support:support-annotations:23.4.0'
     compile files('libry/core-3.2.1.jar')
+    compile 'com.squareup.okio:okio:1.13.0'
+    compile files('libry/mta-sdk-1.6.2.jar')
+    compile files('libry/open_sdk_r5788.jar')
 }
