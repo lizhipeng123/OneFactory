@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:text="生产单查询"
             android:textColor="@color/black"
-            android:textSize="@dimen/dimen_60sp" />
+            android:textSize="@dimen/dimen_55sp" />
     </LinearLayout>
 
     <View

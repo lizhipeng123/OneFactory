@@ -19,7 +19,7 @@ package com.daoran.newfactory.onefactory.util.decode;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.daoran.newfactory.onefactory.activity.work.CaptureActivity;
+import com.daoran.newfactory.onefactory.activity.work.setting.CaptureActivity;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 

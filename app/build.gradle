@@ -89,12 +89,28 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.2.0'
+
     testCompile 'junit:junit:4.12'
+
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:support-annotations:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.squareup.okhttp3:okhttp:3.4.2'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.zhy:okhttputils:2.6.2'
     compile 'com.google.code.gson:gson:2.3.1'
+    compile 'me.rawnhwang.library:smart-refresh-layout:1.0.0-rc'
+    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    compile 'com.github.Aspsine:SwipeToLoadLayout:1.0.4'
+    compile 'com.jakewharton:butterknife:7.0.0'
+    compile 'com.github.hotchemi:permissionsdispatcher:2.0.0'
+    compile 'com.github.hotchemi:permissionsdispatcher:2.3.1'
+    compile 'com.android.support:multidex:'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.squareup.okio:okio:1.13.0'
+
+    compile files('libry/mta-sdk-1.6.2.jar')
+    compile files('libry/open_sdk_r5788.jar')
     compile files('libry/PullToRefreshListView.jar')
     compile files('libry/pulltorefresh-3.2.2.jar')
     compile files('libry/commons-logging-1.1.1.jar')
@@ -103,24 +119,15 @@ dependencies {
     compile files('libry/xUtils-2.6.14.jar')
     compile files('libry/fastjson-1.1.46.jar')
     compile files('libry/picasso-2.5.2.jar')
-    compile 'me.rawnhwang.library:smart-refresh-layout:1.0.0-rc'
-    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
-    compile 'com.github.Aspsine:SwipeToLoadLayout:1.0.4'
-    compile 'com.jakewharton:butterknife:7.0.0'
-    compile 'com.github.hotchemi:permissionsdispatcher:2.0.0'
-    compile project(':epubReader')
-    compile project(':youkuPlayerOpenSDK')
-    compile project(':library')
-    compile 'com.github.hotchemi:permissionsdispatcher:2.3.1'
-    apt 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
     compile files('libry/json-lib-0.9.jar')
     compile files('baidulibry/baidumapapi_v3_2_0.jar')
     compile files('baidulibry/locSDK_5.01.jar')
-    compile 'com.android.support:multidex:'
-    compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.android.support:support-annotations:23.4.0'
     compile files('libry/core-3.2.1.jar')
-    compile 'com.squareup.okio:okio:1.13.0'
-    compile files('libry/mta-sdk-1.6.2.jar')
-    compile files('libry/open_sdk_r5788.jar')
+
+    compile project(':epubReader')
+    compile project(':youkuPlayerOpenSDK')
+    compile project(':library')
+
+    apt 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
+
 }

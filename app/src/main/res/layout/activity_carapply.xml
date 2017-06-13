@@ -37,7 +37,7 @@
             android:layout_marginLeft="@dimen/dimen_50"
             android:text="出车单详情"
             android:textColor="@color/black"
-            android:textSize="@dimen/dimen_60sp" />
+            android:textSize="@dimen/dimen_55sp" />
     </RelativeLayout>
 
     <View

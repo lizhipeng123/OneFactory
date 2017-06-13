@@ -22,7 +22,7 @@
             android:gravity="center"
             android:text="出车单展示"
             android:textColor="@color/black"
-            android:textSize="@dimen/dimen_60sp" />
+            android:textSize="@dimen/dimen_55sp" />
 
         <ImageView
             android:id="@+id/ivSearch"

@@ -40,6 +40,7 @@ import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
+import com.daoran.newfactory.onefactory.util.Http.OkHttp;
 import com.daoran.newfactory.onefactory.util.Http.RequestParams;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
@@ -112,7 +113,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         sp = getSharedPreferences("my_sp", 0);
-        if(Build.VERSION.SDK_INT>=21){
+        if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
@@ -269,6 +270,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
     private void postLogin() {
         String loginuserUrl = HttpUrl.debugoneUrl + "Login/UserLogin/";
         if (NetWork.isNetWorkAvailable(this)) {
+            /*登录是否设置保存时间，以及加密*/
 //            /*检测是否为可用WiFi*/
 //            WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
 //            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
@@ -369,64 +371,125 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
         getCurrentVersion();
         String strversion = HttpUrl.debugoneUrl + "AppVersion/GetAppVersion";
         if (NetWork.isNetWorkAvailable(this)) {
-            OkHttpUtils.get()
-                    .url(strversion)
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            e.printStackTrace();
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-                            System.out.print(response);
-                            response = response.replace("{", "{\"");
-                            System.out.print(response);
-                            response = response.replace("\'", "\"");
-                            System.out.print(response);
-                            response = response.replace(",", ",\"");
-                            System.out.print(response);
-                            response = response.replace(":\"", "\":\"");
-                            System.out.print(response);
-                            String strfram = StringUtil.sideTrim(response, "\"");
-                            System.out.print(strfram);
-                            try {
-                                codeBean = new Gson().fromJson(strfram, VerCodeBean.class);
-                                String vercode = codeBean.getVerCode();//版本号
-                                System.out.print(vercode);
-                                String apkpath = codeBean.getApkPath();//版本地址
-                                System.out.print(apkpath);
-                                String reason = codeBean.getReason();//版本说明
-                                System.out.print(reason);
-                                spUtils.put(getApplicationContext(), "applicationvercodeupdate", vercode);
-                                spUtils.put(LoginDebugActivity.this, "applicationapkpath", apkpath);
-                                spUtils.put(LoginDebugActivity.this, "applicationreason", reason);
-                                String versioncode = String.valueOf(curVersionName);
-                                if (!versioncode.equals(vercode)) {
-                                    String scode = "需要更新到" + vercode;
-                                    spUtils.put(getApplicationContext(), "Applicationscode", scode);
-                                    showNoticeDialog(0, slience);
-                                } else {
-                                    if (!slience) {
-                                        String scode = "已经是最新版本" + vercode;
-                                        spUtils.put(getApplicationContext(), "Applicationscode", scode);
-                                        new AlertDialog.Builder(LoginDebugActivity.this)
-                                                .setTitle("检查新版本")
-                                                .setMessage("您所使用的已经是最新版")
-                                                .setPositiveButton("OK", null).create()
-                                                .show();
-                                    }
-                                }
-                            } catch (JsonSyntaxException e) {
-                                e.printStackTrace();
-                            } catch (NumberFormatException e) {
-                                e.printStackTrace();
-                            }catch (Exception e){
-                                e.printStackTrace();
+            NetUtil.getAsyncHttpClient().get(strversion, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(String content) {
+                    super.onSuccess(content);
+                    System.out.print(content);
+                    content = content.replace("{", "{\"");
+                    System.out.print(content);
+                    content = content.replace("\'", "\"");
+                    System.out.print(content);
+                    content = content.replace(",", ",\"");
+                    System.out.print(content);
+                    content = content.replace(":\"", "\":\"");
+                    System.out.print(content);
+                    String strfram = StringUtil.sideTrim(content, "\"");
+                    System.out.print(strfram);
+                    try {
+                        codeBean = new Gson().fromJson(strfram, VerCodeBean.class);
+                        String vercode = codeBean.getVerCode();//版本号
+                        System.out.print(vercode);
+                        String apkpath = codeBean.getApkPath();//版本地址
+                        System.out.print(apkpath);
+                        String reason = codeBean.getReason();//版本说明
+                        System.out.print(reason);
+                        spUtils.put(getApplicationContext(), "applicationvercodeupdate", vercode);
+                        spUtils.put(LoginDebugActivity.this, "applicationapkpath", apkpath);
+                        spUtils.put(LoginDebugActivity.this, "applicationreason", reason);
+                        String versioncode = String.valueOf(curVersionName);
+                        if (!versioncode.equals(vercode)) {
+                            String scode = "需要更新到" + vercode;
+                            spUtils.put(getApplicationContext(), "Applicationscode", scode);
+                            showNoticeDialog(0, slience);
+                        } else {
+                            if (!slience) {
+                                String scode = "已经是最新版本" + vercode;
+                                spUtils.put(getApplicationContext(), "Applicationscode", scode);
+                                new AlertDialog.Builder(LoginDebugActivity.this)
+                                        .setTitle("检查新版本")
+                                        .setMessage("您所使用的已经是最新版")
+                                        .setPositiveButton("OK", null).create()
+                                        .show();
                             }
                         }
-                    });
+                    } catch (JsonSyntaxException e) {
+                        e.printStackTrace();
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFinish() {
+                    super.onFinish();
+                }
+
+                @Override
+                public void onFailure(Throwable error, String content) {
+                    super.onFailure(error, content);
+                }
+            });
+//            OkHttpUtils.get()
+//                    .url(strversion)
+//                    .build()
+//                    .execute(new StringCallback() {
+//                        @Override
+//                        public void onError(Call call, Exception e, int id) {
+//                            e.printStackTrace();
+//                        }
+//
+//                        @Override
+//                        public void onResponse(String response, int id) {
+//                            System.out.print(response);
+//                            response = response.replace("{", "{\"");
+//                            System.out.print(response);
+//                            response = response.replace("\'", "\"");
+//                            System.out.print(response);
+//                            response = response.replace(",", ",\"");
+//                            System.out.print(response);
+//                            response = response.replace(":\"", "\":\"");
+//                            System.out.print(response);
+//                            String strfram = StringUtil.sideTrim(response, "\"");
+//                            System.out.print(strfram);
+//                            try {
+//                                codeBean = new Gson().fromJson(strfram, VerCodeBean.class);
+//                                String vercode = codeBean.getVerCode();//版本号
+//                                System.out.print(vercode);
+//                                String apkpath = codeBean.getApkPath();//版本地址
+//                                System.out.print(apkpath);
+//                                String reason = codeBean.getReason();//版本说明
+//                                System.out.print(reason);
+//                                spUtils.put(getApplicationContext(), "applicationvercodeupdate", vercode);
+//                                spUtils.put(LoginDebugActivity.this, "applicationapkpath", apkpath);
+//                                spUtils.put(LoginDebugActivity.this, "applicationreason", reason);
+//                                String versioncode = String.valueOf(curVersionName);
+//                                if (!versioncode.equals(vercode)) {
+//                                    String scode = "需要更新到" + vercode;
+//                                    spUtils.put(getApplicationContext(), "Applicationscode", scode);
+//                                    showNoticeDialog(0, slience);
+//                                } else {
+//                                    if (!slience) {
+//                                        String scode = "已经是最新版本" + vercode;
+//                                        spUtils.put(getApplicationContext(), "Applicationscode", scode);
+//                                        new AlertDialog.Builder(LoginDebugActivity.this)
+//                                                .setTitle("检查新版本")
+//                                                .setMessage("您所使用的已经是最新版")
+//                                                .setPositiveButton("OK", null).create()
+//                                                .show();
+//                                    }
+//                                }
+//                            } catch (JsonSyntaxException e) {
+//                                e.printStackTrace();
+//                            } catch (NumberFormatException e) {
+//                                e.printStackTrace();
+//                            }catch (Exception e){
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    });
         } else {
             ToastUtils.ShowToastMessage("当前网络不可用，请重新尝试", LoginDebugActivity.this);
         }

@@ -18,7 +18,9 @@ import android.widget.TextView;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.adapter.ScrollWrokAdapter;
 import com.daoran.newfactory.onefactory.bean.WorkBean;
+import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
+import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
@@ -148,40 +150,77 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         sp = getContext().getSharedPreferences("my_sp", 0);
         String name = sp.getString("username", "");
         String strmenu = HttpUrl.debugoneUrl + "login/getphonemenu/" + name;
-        OkHttpUtils.get()
-                .url(strmenu)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        e.printStackTrace();
+        NetUtil.getAsyncHttpClient().get(strmenu,new AsyncHttpResponseHandler(){
+            @Override
+            public void onSuccess(String content) {
+                super.onSuccess(content);
+                String ress = content.replace("\\", "");
+                String ression = StringUtil.sideTrim(ress, "\"");
+                String resscontent = ression.replace("\'", "\"");
+                System.out.print(resscontent);
+                try {
+                    JSONArray temp = new JSONArray(resscontent);
+                    for (int i = 0; i < temp.length(); i++) {
+                        String Stringcar = temp.getString(i);
+                        String txt = new JSONObject(Stringcar).getString("text");
+                        String phoneurl = new JSONObject(Stringcar).getString("PhoneUrl");
+                        String img = new JSONObject(Stringcar).getString("img");
+                        workBeen.add(new WorkBean(phoneurl, txt, img));
                     }
+                    sl = temp.getString(0);
+                    JSONObject jsonObject = new JSONObject(sl);
+                    workitemview = jsonObject.getString("text");
+                    sgv_gridview = (ScrollGridView) view.findViewById(R.id.sgv_gridview);
+                    sgv_gridview.setAdapter(new ScrollWrokAdapter(getActivity(), workBeen));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        String ress = response.replace("\\", "");
-                        String ression = StringUtil.sideTrim(ress, "\"");
-                        String resscontent = ression.replace("\'", "\"");
-                        System.out.print(resscontent);
-                        try {
-                            JSONArray temp = new JSONArray(resscontent);
-                            for (int i = 0; i < temp.length(); i++) {
-                                String Stringcar = temp.getString(i);
-                                String txt = new JSONObject(Stringcar).getString("text");
-                                String phoneurl = new JSONObject(Stringcar).getString("PhoneUrl");
-                                String img = new JSONObject(Stringcar).getString("img");
-                                workBeen.add(new WorkBean(phoneurl, txt, img));
-                            }
-                            sl = temp.getString(0);
-                            JSONObject jsonObject = new JSONObject(sl);
-                            workitemview = jsonObject.getString("text");
-                            sgv_gridview = (ScrollGridView) view.findViewById(R.id.sgv_gridview);
-                            sgv_gridview.setAdapter(new ScrollWrokAdapter(getActivity(), workBeen));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+            @Override
+            public void onFailure(Throwable error, String content) {
+                super.onFailure(error, content);
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+            }
+        });
+//        OkHttpUtils.get()
+//                .url(strmenu)
+//                .build()
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onError(Call call, Exception e, int id) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    @Override
+//                    public void onResponse(String response, int id) {
+//                        String ress = response.replace("\\", "");
+//                        String ression = StringUtil.sideTrim(ress, "\"");
+//                        String resscontent = ression.replace("\'", "\"");
+//                        System.out.print(resscontent);
+//                        try {
+//                            JSONArray temp = new JSONArray(resscontent);
+//                            for (int i = 0; i < temp.length(); i++) {
+//                                String Stringcar = temp.getString(i);
+//                                String txt = new JSONObject(Stringcar).getString("text");
+//                                String phoneurl = new JSONObject(Stringcar).getString("PhoneUrl");
+//                                String img = new JSONObject(Stringcar).getString("img");
+//                                workBeen.add(new WorkBean(phoneurl, txt, img));
+//                            }
+//                            sl = temp.getString(0);
+//                            JSONObject jsonObject = new JSONObject(sl);
+//                            workitemview = jsonObject.getString("text");
+//                            sgv_gridview = (ScrollGridView) view.findViewById(R.id.sgv_gridview);
+//                            sgv_gridview.setAdapter(new ScrollWrokAdapter(getActivity(), workBeen));
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
     }
 
     @Override

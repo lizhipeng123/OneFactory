@@ -37,7 +37,7 @@
             android:layout_toRightOf="@+id/viewtitletwo"
             android:text="签到查询"
             android:textColor="@color/black"
-            android:textSize="@dimen/dimen_60sp" />
+            android:textSize="@dimen/dimen_55sp" />
 
         <ImageView
             android:id="@+id/ivSearch"

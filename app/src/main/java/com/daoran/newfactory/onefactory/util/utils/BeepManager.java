@@ -27,7 +27,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.CaptureActivity;
+import com.daoran.newfactory.onefactory.activity.work.setting.CaptureActivity;
 
 import java.io.Closeable;
 import java.io.IOException;

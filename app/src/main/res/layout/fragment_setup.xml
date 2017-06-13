@@ -17,7 +17,7 @@
             android:gravity="center"
             android:text="@string/setupSystem"
             android:textColor="@color/black"
-            android:textSize="@dimen/dimen_60sp" />
+            android:textSize="@dimen/dimen_55sp" />
 
     </android.support.v7.widget.Toolbar>
 
@@ -36,9 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/lightblue"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/dimen_30"
-            android:paddingRight="@dimen/dimen_30">
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -70,16 +68,19 @@
                 android:id="@+id/rlEditionUpdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/dimen_30"
-                android:paddingTop="@dimen/dimen_30">
+                android:background="@color/aliceblue"
+                android:paddingBottom="@dimen/dimen_40"
+                android:paddingLeft="@dimen/dimen_30"
+                android:paddingRight="@dimen/dimen_30"
+                android:paddingTop="@dimen/dimen_40">
 
                 <TextView
                     android:id="@+id/tvVersion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="版本更新"
+                    android:text="检查新版本"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dimen_60sp" />
+                    android:textSize="@dimen/dimen_55sp" />
 
                 <TextView
                     android:id="@+id/tvNewVersion"
@@ -99,15 +100,18 @@
                 android:id="@+id/rlClean"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/dimen_30"
-                android:paddingTop="@dimen/dimen_30">
+                android:background="@color/aliceblue"
+                android:paddingBottom="@dimen/dimen_40"
+                android:paddingLeft="@dimen/dimen_30"
+                android:paddingRight="@dimen/dimen_30"
+                android:paddingTop="@dimen/dimen_40">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="清除缓存"
+                    android:text="清理缓存"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dimen_60sp" />
+                    android:textSize="@dimen/dimen_55sp" />
 
                 <TextView
                     android:id="@+id/tv_clean"
@@ -118,6 +122,7 @@
                     android:text=""
                     android:textSize="@dimen/dimen_50sp" />
             </RelativeLayout>
+
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1px"
@@ -127,8 +132,11 @@
                 android:id="@+id/rlCore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/dimen_30"
-                android:paddingTop="@dimen/dimen_30">
+                android:background="@color/aliceblue"
+                android:paddingBottom="@dimen/dimen_40"
+                android:paddingLeft="@dimen/dimen_30"
+                android:paddingRight="@dimen/dimen_30"
+                android:paddingTop="@dimen/dimen_40">
 
                 <TextView
                     android:id="@+id/tvcoregener"
@@ -136,8 +144,47 @@
                     android:layout_height="wrap_content"
                     android:text="二维码"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dimen_60sp" />
+                    android:textSize="@dimen/dimen_55sp" />
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_43"
+                    android:layout_height="@dimen/dimen_43"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/setting_three" />
             </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="#FF909090" />
+
+            <RelativeLayout
+                android:id="@+id/rlAbout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/aliceblue"
+                android:paddingBottom="@dimen/dimen_40"
+                android:paddingLeft="@dimen/dimen_30"
+                android:paddingRight="@dimen/dimen_30"
+                android:paddingTop="@dimen/dimen_40">
+
+                <TextView
+                    android:id="@+id/tvAbout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="关于DFAPP"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_55sp" />
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_43"
+                    android:layout_height="@dimen/dimen_43"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/setting_three" />
+            </RelativeLayout>
+
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1px"
@@ -147,15 +194,22 @@
                 android:id="@+id/rlAgainLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/dimen_30"
-                android:paddingTop="@dimen/dimen_30">
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dimen_30"
+                android:background="@color/aliceblue"
+                android:gravity="center"
+                android:paddingBottom="@dimen/dimen_40"
+                android:paddingLeft="@dimen/dimen_30"
+                android:paddingRight="@dimen/dimen_30"
+                android:paddingTop="@dimen/dimen_40">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="退出登录"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/dimen_60sp" />
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/dimen_55sp" />
             </RelativeLayout>
 
             <View

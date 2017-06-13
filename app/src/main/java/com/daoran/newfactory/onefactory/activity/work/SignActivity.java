@@ -52,6 +52,9 @@ import com.amap.api.services.poisearch.PoiSearch;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.SignDetailBean;
+import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
+import com.daoran.newfactory.onefactory.util.Http.NetUtil;
+import com.daoran.newfactory.onefactory.util.Http.RequestParams;
 import com.daoran.newfactory.onefactory.util.image.BitmapTools;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
@@ -60,6 +63,8 @@ import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.apache.http.NameValuePair;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -617,43 +622,85 @@ public class SignActivity extends BaseFrangmentActivity
         String picstr = sp.getString("picurl", "");
         String address = sp.getString("addressItem", "");
         if (NetWork.isNetWorkAvailable(this)) {
-            OkHttpUtils.post()
-                    .url(url)
-                    .addParams("id", "")
-                    .addParams("pic", picstr)
-                    .addParams("code", "")
-                    .addParams("memo", etRemark.getText().toString())
-                    .addParams("recorder", recodername)
-                    .addParams("recorderID", userna)
-                    .addParams("recordat", tvSignDate.getText().toString())
-                    .addParams("recordplace", address)
-                    .addParams("LNGLAT", Latitude)
-                    .addParams("regedittyp", languages)
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            e.printStackTrace();
-                            ToastUtils.ShowToastMessage("上传错误" + e, SignActivity.this);
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(NetUtil.createParam("id",""));
+            params.add(NetUtil.createParam("pic",picstr));
+            params.add(NetUtil.createParam("code",""));
+            params.add(NetUtil.createParam("memo",etRemark.getText().toString()));
+            params.add(NetUtil.createParam("recorder",recodername));
+            params.add(NetUtil.createParam("recorderID",userna));
+            params.add(NetUtil.createParam("recordat",tvSignDate.getText().toString()));
+            params.add(NetUtil.createParam("recordplace",address));
+            params.add(NetUtil.createParam("LNGLAT",Latitude));
+            params.add(NetUtil.createParam("regedittyp",languages));
+            RequestParams requestParams = new RequestParams(params);
+            NetUtil.getAsyncHttpClient().post(url,requestParams,new AsyncHttpResponseHandler(){
+                @Override
+                public void onSuccess(String content) {
+                    super.onSuccess(content);
+                    try {
+                        System.out.print(content);
+                        String strresponse = String.valueOf(content.charAt(1));
+                        System.out.print(strresponse);
+                        if (strresponse.equals("1")) {
+                            ToastUtils.ShowToastMessage(R.string.Uploadsuccess, SignActivity.this);
+                        } else {
+                            ToastUtils.ShowToastMessage(R.string.Uploadfailed, SignActivity.this);
+                            ResponseDialog.closeLoading();
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 
-                        @Override
-                        public void onResponse(String response, int id) {
-                            try {
-                                System.out.print(response);
-                                String strresponse = String.valueOf(response.charAt(1));
-                                System.out.print(strresponse);
-                                if (strresponse.equals("1")) {
-                                    ToastUtils.ShowToastMessage(R.string.Uploadsuccess, SignActivity.this);
-                                } else {
-                                    ToastUtils.ShowToastMessage(R.string.Uploadfailed, SignActivity.this);
-                                    ResponseDialog.closeLoading();
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
+                @Override
+                public void onFinish() {
+                    super.onFinish();
+                }
+
+                @Override
+                public void onFailure(Throwable error, String content) {
+                    super.onFailure(error, content);
+                    ToastUtils.ShowToastMessage("上传错误" + error, SignActivity.this);
+                }
+            });
+//            OkHttpUtils.post()
+//                    .url(url)
+//                    .addParams("id", "")
+//                    .addParams("pic", picstr)
+//                    .addParams("code", "")
+//                    .addParams("memo", etRemark.getText().toString())
+//                    .addParams("recorder", recodername)
+//                    .addParams("recorderID", userna)
+//                    .addParams("recordat", tvSignDate.getText().toString())
+//                    .addParams("recordplace", address)
+//                    .addParams("LNGLAT", Latitude)
+//                    .addParams("regedittyp", languages)
+//                    .build()
+//                    .execute(new StringCallback() {
+//                        @Override
+//                        public void onError(Call call, Exception e, int id) {
+//                            e.printStackTrace();
+//                            ToastUtils.ShowToastMessage("上传错误" + e, SignActivity.this);
+//                        }
+//
+//                        @Override
+//                        public void onResponse(String response, int id) {
+//                            try {
+//                                System.out.print(response);
+//                                String strresponse = String.valueOf(response.charAt(1));
+//                                System.out.print(strresponse);
+//                                if (strresponse.equals("1")) {
+//                                    ToastUtils.ShowToastMessage(R.string.Uploadsuccess, SignActivity.this);
+//                                } else {
+//                                    ToastUtils.ShowToastMessage(R.string.Uploadfailed, SignActivity.this);
+//                                    ResponseDialog.closeLoading();
+//                                }
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    });
         } else {
             ToastUtils.ShowToastMessage(R.string.disNetworking, SignActivity.this);
         }

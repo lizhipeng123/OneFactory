@@ -30,9 +30,12 @@ import android.widget.Toast;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.login.LoginDebugActivity;
-import com.daoran.newfactory.onefactory.activity.work.CoreActivity;
+import com.daoran.newfactory.onefactory.activity.work.setting.AboutActivity;
+import com.daoran.newfactory.onefactory.activity.work.setting.CoreActivity;
 import com.daoran.newfactory.onefactory.bean.VerCodeBean;
+import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
+import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
@@ -41,8 +44,6 @@ import com.daoran.newfactory.onefactory.util.file.DataCleanManager;
 import com.daoran.newfactory.onefactory.util.settings.Comfig;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -52,8 +53,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
-
-import okhttp3.Call;
 
 /**
  * 设置模块
@@ -80,6 +79,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout rlClean;
     private RelativeLayout rlwifi;
     private RelativeLayout rlCore;
+    private RelativeLayout rlAbout;
     private TextView tvwifimanager, tvwifissid;
 
     private static final int DOWN_NOSDCARD = 0;
@@ -130,6 +130,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         tvwifissid = (TextView) view.findViewById(R.id.tvwifissid);
         tvNewVersion = (TextView) view.findViewById(R.id.tvNewVersion);
         rlCore = (RelativeLayout) view.findViewById(R.id.rlCore);
+        rlAbout = (RelativeLayout) view.findViewById(R.id.rlAbout);
         sp = mactivity.getSharedPreferences("my_sp", 0);
         String vercode = sp.getString("Applicationscode", "");
         tvNewVersion.setText(vercode);
@@ -148,6 +149,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         rlClean.setOnClickListener(this);
         rlwifi.setOnClickListener(this);
         rlCore.setOnClickListener(this);
+        rlAbout.setOnClickListener(this);
     }
 
     @Override
@@ -179,8 +181,12 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 startWifi();
                 break;
             case R.id.rlCore:
-                Intent intent = new Intent(getActivity(),CoreActivity.class);
+                Intent intent = new Intent(mactivity,CoreActivity.class);
                 mactivity.startActivity(intent);
+                break;
+            case R.id.rlAbout:
+                Intent intentAbout = new Intent(mactivity, AboutActivity.class);
+                mactivity.startActivity(intentAbout);
                 break;
         }
     }
@@ -239,63 +245,123 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         getCurrentVersion();
         String strversion = HttpUrl.debugoneUrl + "AppVersion/GetAppVersion";
         if (NetWork.isNetWorkAvailable(mactivity)) {
-            OkHttpUtils.get()
-                    .url(strversion)
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            e.printStackTrace();
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-                            System.out.print(response);
-                            response = response.replace("{", "{\"");
-                            System.out.print(response);
-                            response = response.replace("\'", "\"");
-                            System.out.print(response);
-                            response = response.replace(",", ",\"");
-                            System.out.print(response);
-                            response = response.replace(":\"", "\":\"");
-                            System.out.print(response);
-                            String strfram = StringUtil.sideTrim(response, "\"");
-                            System.out.print(strfram);
-                            try {
-                                codeBean = new Gson().fromJson(strfram, VerCodeBean.class);
-                                String vercode = codeBean.getVerCode();//版本号
-                                System.out.print(vercode);
-                                String apkpath = codeBean.getApkPath();//版本地址
-                                System.out.print(apkpath);
-                                String reason = codeBean.getReason();//版本说明
-                                System.out.print(reason);
-                                spUtils.put(mactivity, "vercodeupdate", vercode);
-                                spUtils.put(mactivity, "apkpath", apkpath);
-                                spUtils.put(mactivity, "reason", reason);
-                                String versioncode = String.valueOf(curVersionName);
-                                if (!versioncode.equals(vercode)) {
+            NetUtil.getAsyncHttpClient().get(strversion,new AsyncHttpResponseHandler(){
+                @Override
+                public void onSuccess(String content) {
+                    super.onSuccess(content);
+                    System.out.print(content);
+                    content = content.replace("{", "{\"");
+                    System.out.print(content);
+                    content = content.replace("\'", "\"");
+                    System.out.print(content);
+                    content = content.replace(",", ",\"");
+                    System.out.print(content);
+                    content = content.replace(":\"", "\":\"");
+                    System.out.print(content);
+                    String strfram = StringUtil.sideTrim(content, "\"");
+                    System.out.print(strfram);
+                    try {
+                        codeBean = new Gson().fromJson(strfram, VerCodeBean.class);
+                        String vercode = codeBean.getVerCode();//版本号
+                        System.out.print(vercode);
+                        String apkpath = codeBean.getApkPath();//版本地址
+                        System.out.print(apkpath);
+                        String reason = codeBean.getReason();//版本说明
+                        System.out.print(reason);
+                        spUtils.put(mactivity, "vercodeupdate", vercode);
+                        spUtils.put(mactivity, "apkpath", apkpath);
+                        spUtils.put(mactivity, "reason", reason);
+                        String versioncode = String.valueOf(curVersionName);
+                        if (!versioncode.equals(vercode)) {
 //                                    tvNewVersion.setText("需要更新到"+vercode);
 //                                    ToastUtils.ShowToastMessage("需要更新", mactivity);
 //                                    ToastUtils.ShowToastMessage("code:" + vercode + "," +
 //                                            "curversion:" + curVersionCode, mactivity);
-                                    showNoticeDialog(0, slience);
-                                } else {
-                                    if (!slience) {
+                            showNoticeDialog(0, slience);
+                        } else {
+                            if (!slience) {
 //                                        tvNewVersion.setText("已经是最新版本");
-                                        new AlertDialog.Builder(mactivity)
-                                                .setTitle("检查新版本")
-                                                .setMessage("您所使用的已经是最新版")
-                                                .setPositiveButton("OK", null).create()
-                                                .show();
-                                    }
-                                }
-                            } catch (JsonSyntaxException e) {
-                                e.printStackTrace();
-                            } catch (NumberFormatException e) {
-                                e.printStackTrace();
+                                new AlertDialog.Builder(mactivity)
+                                        .setTitle("检查新版本")
+                                        .setMessage("您所使用的已经是最新版")
+                                        .setPositiveButton("OK", null).create()
+                                        .show();
                             }
                         }
-                    });
+                    } catch (JsonSyntaxException e) {
+                        e.printStackTrace();
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFinish() {
+                    super.onFinish();
+                }
+
+                @Override
+                public void onFailure(Throwable error, String content) {
+                    super.onFailure(error, content);
+                }
+            });
+//            OkHttpUtils.get()
+//                    .url(strversion)
+//                    .build()
+//                    .execute(new StringCallback() {
+//                        @Override
+//                        public void onError(Call call, Exception e, int id) {
+//                            e.printStackTrace();
+//                        }
+//
+//                        @Override
+//                        public void onResponse(String response, int id) {
+//                            System.out.print(response);
+//                            response = response.replace("{", "{\"");
+//                            System.out.print(response);
+//                            response = response.replace("\'", "\"");
+//                            System.out.print(response);
+//                            response = response.replace(",", ",\"");
+//                            System.out.print(response);
+//                            response = response.replace(":\"", "\":\"");
+//                            System.out.print(response);
+//                            String strfram = StringUtil.sideTrim(response, "\"");
+//                            System.out.print(strfram);
+//                            try {
+//                                codeBean = new Gson().fromJson(strfram, VerCodeBean.class);
+//                                String vercode = codeBean.getVerCode();//版本号
+//                                System.out.print(vercode);
+//                                String apkpath = codeBean.getApkPath();//版本地址
+//                                System.out.print(apkpath);
+//                                String reason = codeBean.getReason();//版本说明
+//                                System.out.print(reason);
+//                                spUtils.put(mactivity, "vercodeupdate", vercode);
+//                                spUtils.put(mactivity, "apkpath", apkpath);
+//                                spUtils.put(mactivity, "reason", reason);
+//                                String versioncode = String.valueOf(curVersionName);
+//                                if (!versioncode.equals(vercode)) {
+////                                    tvNewVersion.setText("需要更新到"+vercode);
+////                                    ToastUtils.ShowToastMessage("需要更新", mactivity);
+////                                    ToastUtils.ShowToastMessage("code:" + vercode + "," +
+////                                            "curversion:" + curVersionCode, mactivity);
+//                                    showNoticeDialog(0, slience);
+//                                } else {
+//                                    if (!slience) {
+////                                        tvNewVersion.setText("已经是最新版本");
+//                                        new AlertDialog.Builder(mactivity)
+//                                                .setTitle("检查新版本")
+//                                                .setMessage("您所使用的已经是最新版")
+//                                                .setPositiveButton("OK", null).create()
+//                                                .show();
+//                                    }
+//                                }
+//                            } catch (JsonSyntaxException e) {
+//                                e.printStackTrace();
+//                            } catch (NumberFormatException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    });
         } else {
             ToastUtils.ShowToastMessage("当前网络不可用，请重新尝试", mactivity);
         }

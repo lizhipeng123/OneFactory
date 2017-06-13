@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:text="用车单查询"
             android:textColor="@color/black"
-            android:textSize="@dimen/dimen_60sp" />
+            android:textSize="@dimen/dimen_55sp" />
     </LinearLayout>
     <View
         android:layout_width="fill_parent"
@@ -64,7 +64,7 @@
                 android:layout_height="37dp"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:background="@drawable/shape_text_sql_boild"
+                android:background="@drawable/spinner_bg"
                 android:layout_marginLeft="@dimen/dimen_50"
                 android:entries="@array/languages"/>
         </LinearLayout>

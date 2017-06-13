@@ -25,7 +25,7 @@ import android.os.Looper;
 import android.os.Message;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.CaptureActivity;
+import com.daoran.newfactory.onefactory.activity.work.setting.CaptureActivity;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.MultiFormatReader;

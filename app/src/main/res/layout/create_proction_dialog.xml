@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:text="日报表查询"
             android:textColor="@color/black"
-            android:textSize="@dimen/dimen_60sp" />
+            android:textSize="@dimen/dimen_55sp" />
     </LinearLayout>
 
     <View
@@ -89,7 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
                 android:layout_marginLeft="@dimen/dimen_50"
-                android:background="@drawable/shape_text_sql_boild"
+                android:background="@drawable/spinner_bg"
                 android:gravity="center"
                 android:textSize="@dimen/dimen_50sp" />
         </LinearLayout>

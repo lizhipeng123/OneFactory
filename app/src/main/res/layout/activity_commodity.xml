@@ -33,7 +33,7 @@
             android:layout_centerInParent="true"
             android:text="查货跟踪单"
             android:textColor="@color/black"
-            android:textSize="@dimen/dimen_60sp" />
+            android:textSize="@dimen/dimen_55sp" />
 
         <ImageView
             android:id="@+id/ivSearch"

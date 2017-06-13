@@ -1,4 +1,4 @@
-package com.daoran.newfactory.onefactory.activity.work;
+package com.daoran.newfactory.onefactory.activity.work.setting;
 
 import android.Manifest;
 import android.app.Activity;
@@ -11,7 +11,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;

@@ -37,7 +37,7 @@
             android:layout_toRightOf="@+id/viewtitletwo"
             android:text="新建保存"
             android:textColor="@color/black"
-            android:textSize="@dimen/dimen_60sp" />
+            android:textSize="@dimen/dimen_55sp" />
 
         <Button
             android:id="@+id/btnProSave"

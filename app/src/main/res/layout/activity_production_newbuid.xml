@@ -33,7 +33,7 @@
             android:layout_marginLeft="@dimen/dimen_50"
             android:text="款号选择"
             android:textColor="@color/black"
-            android:textSize="@dimen/dimen_60sp" />
+            android:textSize="@dimen/dimen_55sp" />
 
         <Button
             android:id="@+id/btnNewbuildConfirm"
@@ -69,7 +69,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_weight="3"
-            android:background="@drawable/shape_btn_newsbuild_boild"
+            android:background="@drawable/spinner_bg"
             android:gravity="center"
             android:text="选择工序"
             android:textColor="@color/black"

@@ -161,11 +161,15 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.work.CoreActivity"
+            android:name=".activity.work.setting.CoreActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.work.CaptureActivity"
+            android:name=".activity.work.setting.CaptureActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.work.setting.AboutActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity android:name="com.tencent.tauth.AuthActivity"

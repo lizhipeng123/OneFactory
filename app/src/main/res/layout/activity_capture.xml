@@ -40,7 +40,7 @@
             android:gravity="center"
             android:text="二维码"
             android:textColor="@color/black"
-            android:textSize="@dimen/dimen_60sp" />
+            android:textSize="@dimen/dimen_55sp" />
 
         <TextView
             android:id="@+id/tvPhotoSearch"
