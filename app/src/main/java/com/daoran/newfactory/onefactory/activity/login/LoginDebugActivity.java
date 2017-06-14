@@ -359,6 +359,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                             getPackageInfo(getPackageName(), 0);
             curVersionName = info.versionName;
             curVersionCode = info.versionCode;
+            spUtils.put(LoginDebugActivity.this,"curVersionCode",curVersionName);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace(System.err);
         }

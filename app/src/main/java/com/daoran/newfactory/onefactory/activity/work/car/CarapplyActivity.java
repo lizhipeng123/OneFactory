@@ -2,6 +2,7 @@ package com.daoran.newfactory.onefactory.activity.work.car;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.StatFs;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -46,7 +47,7 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
     private Toolbar tbarCarapply;
     private EditText etStartDataClick, etEndDataClick;
     private int id;
-    private Spinner spinnerdriver,spinnerNumberBind;
+    private Spinner spinnerdriver, spinnerNumberBind;
     private List<DriverBindBean> bindBeen = new ArrayList<DriverBindBean>();
     private List<CarNumberBindBean> bindBeencar = new ArrayList<CarNumberBindBean>();
     private DriverBindBean driverBindBean;
@@ -119,15 +120,15 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
      * 根据id查询用车详细信息
      */
     private void setCardetail() {
-        String str = HttpUrl.debugoneUrl + "UCarsApply/GetUCarsApplyModel/"+id;
+        String str = HttpUrl.debugoneUrl + "UCarsApply/GetUCarsApplyModel/" + id;
         if (NetWork.isNetWorkAvailable(this)) {
             ResponseDialog.showLoading(this);
-            NetUtil.getAsyncHttpClient().post(str,new AsyncHttpResponseHandler(){
+            NetUtil.getAsyncHttpClient().post(str, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String content) {
                     super.onSuccess(content);
                     System.out.print(content);
-                    carDetailBean = new Gson().fromJson(content,CarDetailBean.class);
+                    carDetailBean = new Gson().fromJson(content, CarDetailBean.class);
                     System.out.print(carDetailBean);
                     tvCarcode.setText(carDetailBean.getCode());
                     tvCarrecorder.setText(carDetailBean.getRecorder());
@@ -151,8 +152,7 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
                     ResponseDialog.closeLoading();
                 }
             });
-        }
-    else {
+        } else {
             ToastUtils.ShowToastMessage("当前网络不可用，请稍后再试", CarapplyActivity.this);
         }
     }
@@ -163,7 +163,7 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
     private void setDriverBind() {
         String strDriver = HttpUrl.debugoneUrl + "UCarsExamine/DriverBind/";
         if (NetWork.isNetWorkAvailable(this)) {
-            NetUtil.getAsyncHttpClient().post(strDriver,new AsyncHttpResponseHandler(){
+            NetUtil.getAsyncHttpClient().post(strDriver, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String content) {
                     super.onSuccess(content);
@@ -176,7 +176,7 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
                     System.out.print(bindBeen);
                     String[] spinnerr = getResources().getStringArray(R.array.driver);
                     ArrayAdapter<String> adapter = new
-                            ArrayAdapter<String>(CarapplyActivity.this,android.R.layout.simple_spinner_item,spinnerr);
+                            ArrayAdapter<String>(CarapplyActivity.this, android.R.layout.simple_spinner_item, spinnerr);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerdriver.setAdapter(adapter);
                     spinnerdriver.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -254,7 +254,7 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
     private void setCarNumberBind() {
         String strCarNumber = HttpUrl.debugoneUrl + "UCarsExamine/CarNumberBind/";
         if (NetWork.isNetWorkAvailable(this)) {
-            NetUtil.getAsyncHttpClient().post(strCarNumber,new AsyncHttpResponseHandler(){
+            NetUtil.getAsyncHttpClient().post(strCarNumber, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String content) {
                     super.onSuccess(content);
@@ -263,11 +263,11 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
                     System.out.print(ress);
                     String ression = StringUtil.sideTrim(ress, "\"");
                     System.out.print(ression);
-                    bindBeencar = JsonUtil.stringToList(ression,CarNumberBindBean.class);
+                    bindBeencar = JsonUtil.stringToList(ression, CarNumberBindBean.class);
                     System.out.print(bindBeencar);
                     String[] spinnerr = getResources().getStringArray(R.array.CarNumberBind);
                     ArrayAdapter<String> adapter = new
-                            ArrayAdapter<String>(CarapplyActivity.this,android.R.layout.simple_spinner_item,spinnerr);
+                            ArrayAdapter<String>(CarapplyActivity.this, android.R.layout.simple_spinner_item, spinnerr);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerNumberBind.setAdapter(adapter);
                     spinnerNumberBind.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -334,6 +334,20 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
         } else {
             ToastUtils.ShowToastMessage(R.string.noHttp, CarapplyActivity.this);
         }
+    }
+
+    /**
+     * 获取SD可用容量
+     * @param context
+     * @return
+     */
+    private static long getAvailableStorage(Context context) {
+        String root = context.getExternalFilesDir(null).getPath();
+        StatFs statFs = new StatFs(root);
+        long blockSize = statFs.getBlockSize();
+        long availableBlocks = statFs.getAvailableBlocks();
+        long availableSize = blockSize * availableBlocks;
+        return availableSize;
     }
 
     @Override

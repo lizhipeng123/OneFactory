@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
+apply plugin: 'maven'
 
 android {
     signingConfigs {
@@ -89,9 +90,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     testCompile 'junit:junit:4.12'
-
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:support-annotations:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
@@ -108,7 +107,6 @@ dependencies {
     compile 'com.android.support:multidex:'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.squareup.okio:okio:1.13.0'
-
     compile files('libry/mta-sdk-1.6.2.jar')
     compile files('libry/open_sdk_r5788.jar')
     compile files('libry/PullToRefreshListView.jar')
@@ -123,11 +121,10 @@ dependencies {
     compile files('baidulibry/baidumapapi_v3_2_0.jar')
     compile files('baidulibry/locSDK_5.01.jar')
     compile files('libry/core-3.2.1.jar')
-
     compile project(':epubReader')
     compile project(':youkuPlayerOpenSDK')
     compile project(':library')
-
     apt 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
-
+    compile files('libry/poi-3.16.jar')
+    compile files('libry/jxl.jar')
 }

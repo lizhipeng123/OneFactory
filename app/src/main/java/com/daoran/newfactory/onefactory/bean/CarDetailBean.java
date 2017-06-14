@@ -1,11 +1,13 @@
 package com.daoran.newfactory.onefactory.bean;
 
+import java.io.Serializable;
+
 /**
  * 用车单详情实体类
  * Created by lizhipeng on 2017/4/26.
  */
 
-public class CarDetailBean {
+public class CarDetailBean implements Serializable {
 
     /**
      * id : 6895
@@ -508,6 +510,76 @@ public class CarDetailBean {
     }
 
     public void setIsprivate(boolean isprivate) {
+        this.isprivate = isprivate;
+    }
+
+    public CarDetailBean(int id, String code, String compytxt,
+                         String recordt, String recorder,
+                         String recordid, String handler, String handlid,
+                         String appstatus, String ctemp1, String ctemp2,
+                         String isend, String isMsgCompleted, String assememo,
+                         String memo, String road, String withcarpsn,
+                         String preoutdate, String reason, String driver,
+                         String plateNumber, String departureDate,
+                         String departureBdt, String departureEdt,
+                         String bKG, String eKG, String curKG, String islong,
+                         String isrange, String roadamount, String stopamount,
+                         String authorizeamount, String otheramount,
+                         String asseid1, String asser1, String assedat1,
+                         String asseid2, String asser2, String assedat2,
+                         String asseid3, String asser3, String assedat3,
+                         String asseid4, String asser4, String assedat4,
+                         String asseid5, String asser5, String assedat5,
+                         String printmemo, boolean isprivate) {
+        this.id = id;
+        this.code = code;
+        this.compytxt = compytxt;
+        this.recordt = recordt;
+        this.recorder = recorder;
+        this.recordid = recordid;
+        this.handler = handler;
+        this.handlid = handlid;
+        this.appstatus = appstatus;
+        this.ctemp1 = ctemp1;
+        this.ctemp2 = ctemp2;
+        this.isend = isend;
+        this.isMsgCompleted = isMsgCompleted;
+        this.assememo = assememo;
+        this.memo = memo;
+        this.road = road;
+        this.withcarpsn = withcarpsn;
+        this.preoutdate = preoutdate;
+        this.reason = reason;
+        this.driver = driver;
+        this.plateNumber = plateNumber;
+        this.departureDate = departureDate;
+        this.departureBdt = departureBdt;
+        this.departureEdt = departureEdt;
+        this.bKG = bKG;
+        this.eKG = eKG;
+        this.curKG = curKG;
+        this.islong = islong;
+        this.isrange = isrange;
+        this.roadamount = roadamount;
+        this.stopamount = stopamount;
+        this.authorizeamount = authorizeamount;
+        this.otheramount = otheramount;
+        this.asseid1 = asseid1;
+        this.asser1 = asser1;
+        this.assedat1 = assedat1;
+        this.asseid2 = asseid2;
+        this.asser2 = asser2;
+        this.assedat2 = assedat2;
+        this.asseid3 = asseid3;
+        this.asser3 = asser3;
+        this.assedat3 = assedat3;
+        this.asseid4 = asseid4;
+        this.asser4 = asser4;
+        this.assedat4 = assedat4;
+        this.asseid5 = asseid5;
+        this.asser5 = asser5;
+        this.assedat5 = assedat5;
+        this.printmemo = printmemo;
         this.isprivate = isprivate;
     }
 }

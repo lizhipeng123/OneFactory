@@ -14,7 +14,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.adapter.SqlCarApplyAdapter;
 import com.daoran.newfactory.onefactory.base.BaseListActivity;
@@ -23,6 +26,7 @@ import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.util.file.ExcelUtil;
 import com.daoran.newfactory.onefactory.view.RefreshLayout;
 import com.daoran.newfactory.onefactory.view.dialog.ContentDialog;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
@@ -32,7 +36,19 @@ import com.i5tong.epubreaderlib.view.pulltorefresh.PullToRefreshListView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Date;
 
 import okhttp3.Call;
 import okhttp3.Request;
@@ -49,14 +65,17 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
     private ImageView ivBack, ivSearch;
     private TextView tvTbarTitle;
     private TextView tvInitialDate;
-    private ContentDialog dialog;
-    private LinearLayout ll_visibi;
+    private ContentDialog dialog;//条件查询dialog弹出框
+    private LinearLayout ll_visibi;//隐藏的空页面
     private TextView tv_visibi;
-    private PullToRefreshListView listview;
+    private PullToRefreshListView listview;//可刷新的listview
 
-    private SqlCarApplyBean.DataBean dataBean;
-    private SharedPreferences sp;
-    private SPUtils spUtils;
+    private SqlCarApplyBean.DataBean dataBean;//列表显示的实体
+    private List<SqlCarApplyBean.DataBean> dataBeenlist =
+            new ArrayList<SqlCarApplyBean.DataBean>();//保存excel文件的list集合
+    private SharedPreferences sp;//取值地址
+    private SPUtils spUtils;//存储上传地址
+    private Button btnExcel;//点击保存Excel控件
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +87,9 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
         getData();
     }
 
+    /**
+     * 实例化控件
+     */
     private void getViews() {
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivSearch = (ImageView) findViewById(R.id.ivSearch);
@@ -75,8 +97,10 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
         ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
         tv_visibi = (TextView) findViewById(R.id.tv_visibi);
         listview = (PullToRefreshListView) findViewById(R.id.listview);
+        btnExcel = (Button) findViewById(R.id.btnExcel);
         ivBack.setOnClickListener(this);
         ivSearch.setOnClickListener(this);
+        btnExcel.setOnClickListener(this);
     }
 
     @Override
@@ -105,53 +129,54 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
 //                dialog.setButton("确定", listenerwifi);
 //                dialog.show();
 //            } else {
-                ResponseDialog.showLoading(this);
-                OkHttpUtils
-                        .post()
-                        .url(sqlcar)
-                        .addParams("start", datetime)
-                        .addParams("endtime", endtime)
-                        .addParams("title", spinnerPosition)
-                        .addParams("pageNum", pageIndex + "0")
-                        .addParams("pageSize", "10")
-                        .build()
-                        .execute(new StringCallback() {
+            ResponseDialog.showLoading(this);
+            OkHttpUtils
+                    .post()
+                    .url(sqlcar)
+                    .addParams("start", datetime)
+                    .addParams("endtime", endtime)
+                    .addParams("title", spinnerPosition)
+                    .addParams("pageNum", pageIndex + "0")
+                    .addParams("pageSize", "10")
+                    .build()
+                    .execute(new StringCallback() {
 
-                            @Override
-                            public void onBefore(Request request, int id) {
-                                super.onBefore(request, id);
-                            }
+                        @Override
+                        public void onBefore(Request request, int id) {
+                            super.onBefore(request, id);
+                        }
 
-                            @Override
-                            public void onAfter(int id) {
-                                super.onAfter(id);
-                            }
+                        @Override
+                        public void onAfter(int id) {
+                            super.onAfter(id);
+                        }
 
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                ToastUtils.ShowToastMessage("获取失败，请稍后再试", SqlcarApplyActivity.this);
-                            }
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            ToastUtils.ShowToastMessage("获取失败，请稍后再试", SqlcarApplyActivity.this);
+                        }
 
-                            @Override
-                            public void onResponse(String response, int id) {
-                                try {
-                                    System.out.print(response);
-                                    SqlCarApplyBean carApplyBean =
-                                            new Gson().fromJson(response,
-                                                    SqlCarApplyBean.class);
-                                    ll_visibi.setVisibility(View.GONE);
-                                    listView.setVisibility(View.VISIBLE);
-                                    setListData(carApplyBean.getData());
-                                    ResponseDialog.closeLoading();
-                                } catch (JsonSyntaxException e) {
-                                    setListData(new ArrayList());
-                                    ResponseDialog.closeLoading();
-                                } catch (Exception e) {
-                                    setListData(new ArrayList());
-                                    ResponseDialog.closeLoading();
-                                }
+                        @Override
+                        public void onResponse(String response, int id) {
+                            try {
+                                System.out.print(response);
+                                SqlCarApplyBean carApplyBean =
+                                        new Gson().fromJson(response,
+                                                SqlCarApplyBean.class);
+                                ll_visibi.setVisibility(View.GONE);
+                                listView.setVisibility(View.VISIBLE);
+                                dataBeenlist = carApplyBean.getData();
+                                setListData(carApplyBean.getData());
+                                ResponseDialog.closeLoading();
+                            } catch (JsonSyntaxException e) {
+                                setListData(new ArrayList());
+                                ResponseDialog.closeLoading();
+                            } catch (Exception e) {
+                                setListData(new ArrayList());
+                                ResponseDialog.closeLoading();
                             }
-                        });
+                        }
+                    });
 //            }
         } else {
             ToastUtils.ShowToastMessage(getString(R.string.noHttp), SqlcarApplyActivity.this);
@@ -184,6 +209,11 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
 
     }
 
+    /**
+     * 条件查询弹出输入框
+     *
+     * @param view
+     */
     public void showEditDialog(View view) {
         dialog =
                 new ContentDialog(this, R.style.dialogstyle, onClickListener, onCancleListener);
@@ -216,11 +246,30 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            /*返回按钮*/
             case R.id.ivBack:
                 finish();
                 break;
+            /*条件查询*/
             case R.id.ivSearch:
                 showEditDialog(v);
+                break;
+            /*保存为excel文件*/
+            case R.id.btnExcel:
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            ExcelUtil.writeExcel(SqlcarApplyActivity.this,
+                                    dataBeenlist,
+                                    "dfexcel+" + new Date().toString());
+                            ToastUtils.ShowToastMessage("写入成功",SqlcarApplyActivity.this);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            ToastUtils.ShowToastMessage("写入失败",SqlcarApplyActivity.this);
+                        }
+                    }
+                }).start();
                 break;
         }
     }
