@@ -76,7 +76,6 @@ public class CoreActivity extends BaseFrangmentActivity
         ivcore = (ImageView) findViewById(R.id.ivcore);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         tvZingtext = (TextView) findViewById(R.id.tvZingtext);
-//        tvFenxiangBtn = (TextView) findViewById(R.id.tvFenxiangBtn);
         tvCoreContext = (TextView) findViewById(R.id.tvCoreContext);
     }
 

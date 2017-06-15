@@ -23,11 +23,13 @@ import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.util.file.NullStringToEmptyAdapterFactory;
 import com.daoran.newfactory.onefactory.view.dialog.CommoDialog;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -350,334 +352,38 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private void setCommoSave() {
         if (NetWork.isNetWorkAvailable(this)) {
             String saveurl = HttpUrl.debugoneUrl + "QACwork/SaveQACwork/";
-            sp = this.getSharedPreferences("my_sp", 0);
-            SharedPreferences.Editor editorone = sp.edit();
-            /*获取CommoditySqlAdapter中输入框或时间选择信息*/
-            String commoproid = sp.getString("commoproid", "");//id
-            String CommodityQCMasterScore = sp.getString("CommodityQCMasterScore", "");//主管评分
-            if (CommodityQCMasterScore == "" || CommodityQCMasterScore.equals("")) {
-                CommodityQCMasterScore = null;
-            }
-            String dateSealedrewtimesign = sp.getString("dateSealedrewtimesign", "");//封样接收时间
-            if (dateSealedrewtimesign == "" || dateSealedrewtimesign.equals("")) {
-                dateSealedrewtimesign = null;
-            }
-            String dateDocbacktimesign = sp.getString("dateDocbacktimesign", "");//大货接收时间
-            if (dateDocbacktimesign == "" || dateDocbacktimesign.equals("")) {
-                dateDocbacktimesign = null;
-            }
-            String CommodityPreMemo = sp.getString("CommodityPreMemo", "");//备注
-            if (CommodityPreMemo == "" || CommodityPreMemo.equals("")) {
-                CommodityPreMemo = null;
-            }
-            String datePredocdttimesign = sp.getString("datePredocdttimesign", "");//预计产前时间
-            if (datePredocdttimesign == "" || datePredocdttimesign.equals("")) {
-                datePredocdttimesign = null;
-            }
-            String datePredtimesign = sp.getString("datePredtimesign", "");//产前会时间
-            if (datePredtimesign == "" || datePredtimesign.equals("")) {
-                datePredtimesign = null;
-            }
-            String CommodityPredoc = sp.getString("CommodityPredoc", "");//产前会报告
-            if (CommodityPredoc == "" || CommodityPredoc.equals("")) {
-                CommodityPredoc = null;
-            }
-            String CommodityFabricsok = sp.getString("CommodityFabricsok", "");//大货面料情况
-            if (CommodityFabricsok == "" || CommodityFabricsok.equals("")) {
-                CommodityFabricsok = null;
-            }
-            String CommodityAccessoriesok = sp.getString("CommodityAccessoriesok", "");//大货辅料情况
-            if (CommodityAccessoriesok == "" || CommodityAccessoriesok.equals("")) {
-                CommodityAccessoriesok = null;
-            }
-            String CommoditySpcproDec = sp.getString("CommoditySpcproDec", "");//大货特殊工艺情况
-            if (CommoditySpcproDec == "" || CommoditySpcproDec.equals("")) {
-                CommoditySpcproDec = null;
-            }
-            String CommoditySpcproMemo = sp.getString("CommoditySpcproMemo", "");//特殊工艺备注
-            if (CommoditySpcproMemo == "" || CommoditySpcproMemo.equals("")) {
-                CommoditySpcproMemo = null;
-            }
-            String CommodityCutqty = sp.getString("CommodityCutqty", "");//实裁数
-            if (CommodityCutqty == "" || CommodityCutqty.equals("")) {
-                CommodityCutqty = null;
-            }
-            String dateSewFdttimesign = sp.getString("dateSewFdttimesign", "");//上线日期
-            if (dateSewFdttimesign == "" || dateSewFdttimesign.equals("")) {
-                dateSewFdttimesign = null;
-            }
-            String dateSewMdttimesign = sp.getString("dateSewMdttimesign", "");//下线日期
-            if (dateSewMdttimesign == "" || dateSewMdttimesign.equals("")) {
-                dateSewMdttimesign = null;
-            }
-            String datePrebdttimesign = sp.getString("datePrebdttimesign", "");//预计早期时间
-            if (datePrebdttimesign == "" || datePrebdttimesign.equals("")) {
-                datePrebdttimesign = null;
-            }
-            String dateQCbdttimesign = sp.getString("dateQCbdttimesign", "");//自查早期时间
-            if (dateQCbdttimesign == "" || dateQCbdttimesign.equals("")) {
-                dateQCbdttimesign = null;
-            }
-            String CommodityQCbdtDoc = sp.getString("CommodityQCbdtDoc", "");//早期报告
-            if (CommodityQCbdtDoc == "" || CommodityQCbdtDoc.equals("")) {
-                CommodityQCbdtDoc = null;
-            }
-            String datePremdttimesign = sp.getString("datePremdttimesign", "");//预计中期时间
-            if (datePremdttimesign == "" || datePremdttimesign.equals("")) {
-                datePremdttimesign = null;
-            }
-            String dateQCmdttimesign = sp.getString("dateQCmdttimesign", "");//自查中期时间
-            if (dateQCmdttimesign == "" || dateQCmdttimesign.equals("")) {
-                dateQCmdttimesign = null;
-            }
-            String CommodityQCmdtDoc = sp.getString("CommodityQCmdtDoc", "");//中期报告
-            if (CommodityQCmdtDoc == "" || CommodityQCmdtDoc.equals("")) {
-                CommodityQCmdtDoc = null;
-            }
-            String datePreedttimesign = sp.getString("datePreedttimesign", "");//预计尾查时间
-            if (datePreedttimesign == "" || datePreedttimesign.equals("")) {
-                datePreedttimesign = null;
-            }
-            String dateQCMedttimesign = sp.getString("dateQCMedttimesign", "");//自查尾期时间
-            if (dateQCMedttimesign == "" || dateQCMedttimesign.equals("")) {
-                dateQCMedttimesign = null;
-            }
-            String CommodityQCedtDoc = sp.getString("CommodityQCedtDoc", "");//尾期报告
-            if (CommodityQCedtDoc == "" || CommodityQCedtDoc.equals("")) {
-                CommodityQCedtDoc = null;
-            }
-            String dateFctmdttimesign = sp.getString("dateFctmdttimesign", "");//客查中期时间
-            if (dateFctmdttimesign == "" || dateFctmdttimesign.equals("")) {
-                dateFctmdttimesign = null;
-            }
-            String dateFctedttimesign = sp.getString("dateFctedttimesign", "");//客查尾期时间
-            if (dateFctedttimesign == "" || dateFctedttimesign.equals("")) {
-                dateFctedttimesign = null;
-            }
-            String datePackbdattimesign = sp.getString("datePackbdattimesign", "");//成品包装日期
-            if (datePackbdattimesign == "" || datePackbdattimesign.equals("")) {
-                datePackbdattimesign = null;
-            }
-            String CommodityPackqty2 = sp.getString("CommodityPackqty2", "");//装箱数量
-            if (CommodityPackqty2 == "" || CommodityPackqty2.equals("")) {
-                CommodityPackqty2 = null;
-            }
-            String CommodityQCMemo = sp.getString("CommodityQCMemo", "");//qc备注
-            if (CommodityQCMemo == "" || CommodityQCMemo.equals("")) {
-                CommodityQCMemo = null;
-            }
-            String dateFactlcdattimesign = sp.getString("dateFactlcdattimesign", "");//离厂日期
-            if (dateFactlcdattimesign == "" || dateFactlcdattimesign.equals("")) {
-                dateFactlcdattimesign = null;
-            }
-            String CommodityBatchid = sp.getString("CommodityBatchid", "");//查货批次
-            if (CommodityBatchid == "" || CommodityBatchid.equals("")) {
-                CommodityBatchid = null;
-            }
-            String tvCommoOurAfter = sp.getString("commohdTitle", "");//后道
-            if (tvCommoOurAfter == "" || tvCommoOurAfter.equals("")) {
-                tvCommoOurAfter = null;
-            }
-            String dateCtmchkdttimesign = sp.getString("dateCtmchkdttimesign", "");//业务员确认客查日期
-            if (dateCtmchkdttimesign == "" || dateCtmchkdttimesign.equals("")) {
-                dateCtmchkdttimesign = null;
-            }
-            String CommodityIPQCPedt = sp.getString("CommodityIPQCPedt", "");//尾查预查
-            if (CommodityIPQCPedt == "" || CommodityIPQCPedt.equals("")) {
-                CommodityIPQCPedt = null;
-            }
-            String CommodityIPQCmdt = sp.getString("CommodityIPQCmdt", "");//巡检中查
-            if (CommodityIPQCmdt == "" || CommodityIPQCmdt.equals("")) {
-                CommodityIPQCmdt = null;
-            }
-            String CommodityQAname = sp.getString("CommodityQAname", "");//qa首扎
-            if (CommodityQAname == "" || CommodityQAname.equals("")) {
-                CommodityQAname = null;
-            }
-            String CommodityQAScore = sp.getString("CommodityQAScore", "");//qa首扎件
-            if (CommodityQAScore == "" || CommodityQAScore.equals("")) {
-                CommodityQAScore = null;
-            }
-            String dateQAMemotimesign = sp.getString("dateQAMemotimesign", "");//qa首扎日
-            if (dateQAMemotimesign == "" || dateQAMemotimesign.equals("")) {
-                dateQAMemotimesign = null;
-            }
-            String uriid = sp.getString("uriid", "");
+            System.out.print(dataBeen);
             Gson gson = new Gson();
-            CommoditySaveBean saveBean = new CommoditySaveBean();
-            if (uriid == commoproid || uriid.equals(commoproid)) {//判断选中的是否是同一行
-                if (!commoproid.equals("")) {//选中当前行
-                    ResponseDialog.showLoading(this);
-                    saveBean.setID(Integer.parseInt(commoproid));
-                    saveBean.setItem(null);
-                    saveBean.setCtmtxt(null);
-                    saveBean.setPrddocumentary(null);
-                    saveBean.setPrdmaster(null);
-                    saveBean.setQCMasterScore(CommodityQCMasterScore);
-                    saveBean.setSealedrev(dateSealedrewtimesign);
-                    saveBean.setDocback(dateDocbacktimesign);
-                    saveBean.setLcdat(null);
-                    saveBean.setTaskqty(null);
-                    saveBean.setPreMemo(CommodityPreMemo);
-                    saveBean.setPredocdt(datePredocdttimesign);
-                    saveBean.setPredt(datePredtimesign);
-                    saveBean.setPredoc(CommodityPredoc);
-                    saveBean.setFabricsok(CommodityFabricsok);
-                    saveBean.setAccessoriesok(CommodityAccessoriesok);
-                    saveBean.setSpcproDec(CommoditySpcproDec);
-                    saveBean.setSpcproMemo(CommoditySpcproMemo);
-                    saveBean.setCutqty(CommodityCutqty);
-                    saveBean.setSewFdt(dateSewFdttimesign);
-                    saveBean.setSewMdt(dateSewMdttimesign);
-                    saveBean.setSubfactory(null);
-                    saveBean.setPrebdt(datePrebdttimesign);
-                    saveBean.setQCbdt(dateQCbdttimesign);
-                    saveBean.setQCbdtDoc(CommodityQCbdtDoc);
-                    saveBean.setPremdt(datePremdttimesign);
-                    saveBean.setQCmdt(dateQCmdttimesign);
-                    saveBean.setQCmdtDoc(CommodityQCmdtDoc);
-                    saveBean.setPreedt(datePreedttimesign);
-                    saveBean.setQCMedt(dateQCMedttimesign);
-                    saveBean.setQCedtDoc(CommodityQCedtDoc);
-                    saveBean.setFctmdt(dateFctmdttimesign);
-                    saveBean.setFctedt(dateFctedttimesign);
-                    saveBean.setPackbdat(datePackbdattimesign);
-                    saveBean.setPackqty2(CommodityPackqty2);
-                    saveBean.setQCMemo(CommodityQCMemo);
-                    saveBean.setFactlcdat(dateFactlcdattimesign);
-                    saveBean.setBatchid(CommodityBatchid);
-                    saveBean.setOurAfter(tvCommoOurAfter);
-                    saveBean.setCtmchkdt(dateCtmchkdttimesign);
-                    saveBean.setIPQCPedt(CommodityIPQCPedt);
-                    saveBean.setIPQCmdt(CommodityIPQCmdt);
-                    saveBean.setQAname(CommodityQAname);
-                    saveBean.setQAScore(CommodityQAScore);
-                    saveBean.setQAMemo(dateQAMemotimesign);
-                    saveBeen.add(saveBean);
-                    String commjson = gson.toJson(saveBeen);//转换json字符串
-//                    String dateee = commjson.replace("\"\"", "null");
-                    /*删除本地存储中的适配器中输入框的信息*/
-                    editorone.remove("commoproid");
-                    editorone.remove("CommodityQCMasterScore");
-                    editorone.remove("dateSealedrewtimesign");
-                    editorone.remove("dateDocbacktimesign");
-                    editorone.remove("CommodityPreMemo");
-                    editorone.remove("datePredocdttimesign");
-                    editorone.remove("datePredtimesign");
-                    editorone.remove("CommodityPredoc");
-                    editorone.remove("CommodityFabricsok");
-                    editorone.remove("CommodityAccessoriesok");
-                    editorone.remove("CommoditySpcproDec");
-                    editorone.remove("CommoditySpcproMemo");
-                    editorone.remove("CommodityCutqty");
-                    editorone.remove("dateSewFdttimesign");
-                    editorone.remove("dateSewMdttimesign");
-                    editorone.remove("datePrebdttimesign");
-                    editorone.remove("dateQCbdttimesign");
-                    editorone.remove("CommodityQCbdtDoc");
-                    editorone.remove("datePremdttimesign");
-                    editorone.remove("dateQCmdttimesign");
-                    editorone.remove("CommodityQCmdtDoc");
-                    editorone.remove("datePreedttimesign");
-                    editorone.remove("dateQCMedttimesign");
-                    editorone.remove("CommodityQCedtDoc");
-                    editorone.remove("dateFctmdttimesign");
-                    editorone.remove("dateFctedttimesign");
-                    editorone.remove("datePackbdattimesign");
-                    editorone.remove("CommodityPackqty2");
-                    editorone.remove("CommodityQCMemo");
-                    editorone.remove("dateFactlcdattimesign");
-                    editorone.remove("CommodityBatchid");
-                    editorone.remove("commohdTitle");
-                    editorone.remove("dateCtmchkdttimesign");
-                    editorone.remove("CommodityIPQCPedt");
-                    editorone.remove("CommodityIPQCmdt");
-                    editorone.remove("CommodityQAname");
-                    editorone.remove("CommodityQAScore");
-                    editorone.remove("dateQAMemotimesign");
-                    editorone.commit();
-                    OkHttpUtils.postString()
-                            .url(saveurl)
-                            .content(commjson)
-                            .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                            .build()
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onError(Call call, Exception e, int id) {
-                                    e.printStackTrace();
-                                    ResponseDialog.closeLoading();
-                                    ToastUtils.ShowToastMessage("数据错误，请重新输入", CommoditySqlActivity.this);
-                                }
+            String commjson = gson.toJson(dataBeen);
+            OkHttpUtils.postString()
+                    .url(saveurl)
+                    .content(commjson)
+                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                            ResponseDialog.closeLoading();
+                            ToastUtils.ShowToastMessage("数据错误，请重新输入", CommoditySqlActivity.this);
+                        }
 
-                                @Override
-                                public void onResponse(String response, int id) {
-                                    System.out.print(response);
-                                    response = response.replace("\\", "");
-                                    String ression = StringUtil.sideTrim(response, "\"");
-                                    System.out.print(ression);
-                                    if (ression.equals("true")) {
-                                        ResponseDialog.closeLoading();
-                                        ToastUtils.ShowToastMessage("保存成功", CommoditySqlActivity.this);
-                                        setData();
-                                    } else {
-                                        ResponseDialog.closeLoading();
-                                        ToastUtils.ShowToastMessage("保存失败", CommoditySqlActivity.this);
-                                    }
-                                }
-                            });
-                } else {
-                    editorone.remove("commoproid");
-                    editorone.remove("CommodityQCMasterScore");
-                    editorone.remove("dateSealedrewtimesign");
-                    editorone.remove("dateDocbacktimesign");
-                    editorone.remove("CommodityPreMemo");
-                    editorone.remove("datePredocdttimesign");
-                    editorone.remove("datePredtimesign");
-                    editorone.remove("CommodityPredoc");
-                    editorone.remove("CommodityFabricsok");
-                    editorone.remove("CommodityAccessoriesok");
-                    editorone.remove("CommoditySpcproDec");
-                    editorone.remove("CommoditySpcproMemo");
-                    editorone.remove("CommodityCutqty");
-                    editorone.remove("dateSewFdttimesign");
-                    editorone.remove("dateSewMdttimesign");
-                    editorone.remove("datePrebdttimesign");
-                    editorone.remove("dateQCbdttimesign");
-                    editorone.remove("CommodityQCbdtDoc");
-                    editorone.remove("datePremdttimesign");
-                    editorone.remove("dateQCmdttimesign");
-                    editorone.remove("CommodityQCmdtDoc");
-                    editorone.remove("datePreedttimesign");
-                    editorone.remove("dateQCMedttimesign");
-                    editorone.remove("CommodityQCedtDoc");
-                    editorone.remove("dateFctmdttimesign");
-                    editorone.remove("dateFctedttimesign");
-                    editorone.remove("datePackbdattimesign");
-                    editorone.remove("CommodityPackqty2");
-                    editorone.remove("CommodityQCMemo");
-                    editorone.remove("dateFactlcdattimesign");
-                    editorone.remove("CommodityBatchid");
-                    editorone.remove("commohdTitle");
-                    editorone.remove("dateCtmchkdttimesign");
-                    editorone.remove("CommodityIPQCPedt");
-                    editorone.remove("CommodityIPQCmdt");
-                    editorone.remove("CommodityQAname");
-                    editorone.remove("CommodityQAScore");
-                    editorone.remove("dateQAMemotimesign");
-                    editorone.commit();
-                    new AlertDialog.Builder(CommoditySqlActivity.this).setTitle("提示信息")
-                            .setMessage("请选择当前行，再进行保存")
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).show();//相应事件
-                }
-            } else {
-                ToastUtils.ShowToastMessage("请选择当前行，再进行修改保存",
-                        CommoditySqlActivity.this);
-            }
+                        @Override
+                        public void onResponse(String response, int id) {
+                            System.out.print(response);
+                            response = response.replace("\\", "");
+                            String ression = StringUtil.sideTrim(response, "\"");
+                            System.out.print(ression);
+                            if (ression.equals("true")) {
+                                ResponseDialog.closeLoading();
+                                ToastUtils.ShowToastMessage("保存成功", CommoditySqlActivity.this);
+                                setData();
+                            } else {
+                                ResponseDialog.closeLoading();
+                                ToastUtils.ShowToastMessage("保存失败", CommoditySqlActivity.this);
+                            }
+                        }
+                    });
         } else {
             ToastUtils.ShowToastMessage(R.string.noHttp, CommoditySqlActivity.this);
         }
@@ -696,46 +402,46 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
      */
     @Override
     protected void onDestroy() {
-        SharedPreferences.Editor editor = sp.edit();
-        editor.remove("commoproid");
-        editor.remove("CommodityQCMasterScore");
-        editor.remove("dateSealedrewtimesign");
-        editor.remove("dateDocbacktimesign");
-        editor.remove("CommodityPreMemo");
-        editor.remove("datePredocdttimesign");
-        editor.remove("datePredtimesign");
-        editor.remove("CommodityPredoc");
-        editor.remove("CommodityFabricsok");
-        editor.remove("CommodityAccessoriesok");
-        editor.remove("CommoditySpcproDec");
-        editor.remove("CommoditySpcproMemo");
-        editor.remove("CommodityCutqty");
-        editor.remove("dateSewFdttimesign");
-        editor.remove("dateSewMdttimesign");
-        editor.remove("datePrebdttimesign");
-        editor.remove("dateQCbdttimesign");
-        editor.remove("CommodityQCbdtDoc");
-        editor.remove("datePremdttimesign");
-        editor.remove("dateQCmdttimesign");
-        editor.remove("CommodityQCmdtDoc");
-        editor.remove("datePreedttimesign");
-        editor.remove("dateQCMedttimesign");
-        editor.remove("CommodityQCedtDoc");
-        editor.remove("dateFctmdttimesign");
-        editor.remove("dateFctedttimesign");
-        editor.remove("datePackbdattimesign");
-        editor.remove("CommodityPackqty2");
-        editor.remove("CommodityQCMemo");
-        editor.remove("dateFactlcdattimesign");
-        editor.remove("CommodityBatchid");
-        editor.remove("commohdTitle");
-        editor.remove("dateCtmchkdttimesign");
-        editor.remove("CommodityIPQCPedt");
-        editor.remove("CommodityIPQCmdt");
-        editor.remove("CommodityQAname");
-        editor.remove("CommodityQAScore");
-        editor.remove("dateQAMemotimesign");
-        editor.commit();
+//        SharedPreferences.Editor editor = sp.edit();
+//        editor.remove("commoproid");
+//        editor.remove("CommodityQCMasterScore");
+//        editor.remove("dateSealedrewtimesign");
+//        editor.remove("dateDocbacktimesign");
+//        editor.remove("CommodityPreMemo");
+//        editor.remove("datePredocdttimesign");
+//        editor.remove("datePredtimesign");
+//        editor.remove("CommodityPredoc");
+//        editor.remove("CommodityFabricsok");
+//        editor.remove("CommodityAccessoriesok");
+//        editor.remove("CommoditySpcproDec");
+//        editor.remove("CommoditySpcproMemo");
+//        editor.remove("CommodityCutqty");
+//        editor.remove("dateSewFdttimesign");
+//        editor.remove("dateSewMdttimesign");
+//        editor.remove("datePrebdttimesign");
+//        editor.remove("dateQCbdttimesign");
+//        editor.remove("CommodityQCbdtDoc");
+//        editor.remove("datePremdttimesign");
+//        editor.remove("dateQCmdttimesign");
+//        editor.remove("CommodityQCmdtDoc");
+//        editor.remove("datePreedttimesign");
+//        editor.remove("dateQCMedttimesign");
+//        editor.remove("CommodityQCedtDoc");
+//        editor.remove("dateFctmdttimesign");
+//        editor.remove("dateFctedttimesign");
+//        editor.remove("datePackbdattimesign");
+//        editor.remove("CommodityPackqty2");
+//        editor.remove("CommodityQCMemo");
+//        editor.remove("dateFactlcdattimesign");
+//        editor.remove("CommodityBatchid");
+//        editor.remove("commohdTitle");
+//        editor.remove("dateCtmchkdttimesign");
+//        editor.remove("CommodityIPQCPedt");
+//        editor.remove("CommodityIPQCmdt");
+//        editor.remove("CommodityQAname");
+//        editor.remove("CommodityQAScore");
+//        editor.remove("dateQAMemotimesign");
+//        editor.commit();
         super.onDestroy();
     }
 }

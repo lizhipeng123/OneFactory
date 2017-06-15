@@ -32,6 +32,7 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.login.LoginDebugActivity;
 import com.daoran.newfactory.onefactory.activity.work.setting.AboutActivity;
 import com.daoran.newfactory.onefactory.activity.work.setting.CoreActivity;
+import com.daoran.newfactory.onefactory.activity.work.setting.ExcelSDActivity;
 import com.daoran.newfactory.onefactory.bean.VerCodeBean;
 import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
@@ -80,6 +81,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout rlwifi;
     private RelativeLayout rlCore;
     private RelativeLayout rlAbout;
+    private RelativeLayout rlExcelSD;
     private TextView tvwifimanager, tvwifissid;
 
     private static final int DOWN_NOSDCARD = 0;
@@ -131,6 +133,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         tvNewVersion = (TextView) view.findViewById(R.id.tvNewVersion);
         rlCore = (RelativeLayout) view.findViewById(R.id.rlCore);
         rlAbout = (RelativeLayout) view.findViewById(R.id.rlAbout);
+        rlExcelSD = (RelativeLayout) view.findViewById(R.id.rlExcelSD);
         sp = mactivity.getSharedPreferences("my_sp", 0);
         String vercode = sp.getString("Applicationscode", "");
         tvNewVersion.setText(vercode);
@@ -150,6 +153,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         rlwifi.setOnClickListener(this);
         rlCore.setOnClickListener(this);
         rlAbout.setOnClickListener(this);
+        rlExcelSD.setOnClickListener(this);
     }
 
     @Override
@@ -187,6 +191,10 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
             case R.id.rlAbout:
                 Intent intentAbout = new Intent(mactivity, AboutActivity.class);
                 mactivity.startActivity(intentAbout);
+                break;
+            case R.id.rlExcelSD:
+                Intent intentExcel = new Intent(mactivity, ExcelSDActivity.class);
+                mactivity.startActivity(intentExcel);
                 break;
         }
     }

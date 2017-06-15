@@ -118,22 +118,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.tvCommoOurAfter.setText(getItem(position).getOurAfter());
-
-        holder.tvCommoOurAfter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPopuphdMenu(holder.tvCommoOurAfter);
-            }
-        });
-
-        convertView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                return false;
-            }
-        });
-
         /*判断item中制单人是否是登录用户，是为可改，否为不可改*/
         sp = context.getSharedPreferences("my_sp", 0);
         String nameid = sp.getString("usernamerecoder", "");
@@ -145,7 +129,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
         if (master == null) {
             master = "";
         }
-        if (documentary.equals("杨黑妮") || master.equals(nameid)) {
+        if (documentary.equals(nameid) || master.equals(nameid)) {
             holder.lin_content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -167,6 +151,34 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoprdmaster.setEnabled(true);
             holder.tvCommoprdmaster.setText(getItem(position).getPrdmaster());
 
+
+            holder.tvCommoOurAfter.setText(getItem(position).getOurAfter());
+
+            holder.tvCommoOurAfter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popupMenu = new PopupMenu(context, v);
+                    popupMenu.getMenuInflater().inflate(R.menu.menu_commo_hd, popupMenu.getMenu());
+                    // menu的item点击事件
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            sp = context.getSharedPreferences("my_sp", 0);
+                            String title = item.getTitle().toString();
+                            getItem(position).setOurAfter(title);
+//                        spUtils.put(context, "commohdTitle", title);
+                            return false;
+                        }
+                    });
+                    // PopupMenu关闭事件
+                    popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+                        @Override
+                        public void onDismiss(PopupMenu menu) {
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
 
             holder.tvCommoQCMasterScore.setEnabled(true);
             final EditText editTextQCMasterScore = holder.tvCommoQCMasterScore;
@@ -199,7 +211,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                             public void afterTextChanged(Editable s) {
                                 Log.d(TAG, "afterTextChanged");
                                 String proitem = holder.tvCommoQCMasterScore.getText().toString();
-                                spUtils.put(context, "CommodityQCMasterScore", proitem);
+                                getItem(position).setQCMasterScore(proitem);
+//                                spUtils.put(context, "CommodityQCMasterScore", proitem);
                             }
                         };
                         editTextQCMasterScore.addTextChangedListener(TvQCMasterScore);
@@ -207,8 +220,9 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     } else {
                         //失去焦点
                         String qcmastertwoo = holder.tvCommoQCMasterScore.getText().toString();
+                        getItem(position).setQCMasterScore(qcmastertwoo);
                         System.out.print(qcmastertwoo);
-                        spUtils.put(context, "CommodityQCMasterScore", qcmastertwoo);
+//                        spUtils.put(context, "CommodityQCMasterScore", qcmastertwoo);
                     }
                 }
             });
@@ -241,7 +255,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                         String datetime = year + "/" + (month + 1) + "/" + day;
                                         holder.tvCommoSealedrev.setText(datetime);
                                         if (attentionArr.contains(position)) {
-                                            spUtils.put(context, "dateSealedrewtimesign", datetime);
+                                            getItem(position).setSealedrev(datetime);
+//                                            spUtils.put(context, "dateSealedrewtimesign", datetime);
                                         }
                                     }
                                 });
@@ -250,7 +265,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         holder.tvCommoSealedrev.setText("");
-                                        spUtils.put(context, "dateSealedrewtimesign", "");
+                                        getItem(position).setSealedrev("");
+//                                        spUtils.put(context, "dateSealedrewtimesign", "");
                                     }
                                 });
                         datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -287,7 +303,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoDocback.setText(datetime);
-                                    spUtils.put(context, "dateDocbacktimesign", datetime);
+                                    getItem(position).setDocback(datetime);
+//                                    spUtils.put(context, "dateDocbacktimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -295,7 +312,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoDocback.setText("");
-                                    spUtils.put(context, "dateDocbacktimesign", "");
+                                    holder.tvCommoDocback.setText("");
+//                                    spUtils.put(context, "dateDocbacktimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -338,7 +356,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoPreMemo.getText().toString();
-                    spUtils.put(context, "CommodityPreMemo", proitem);
+                    getItem(position).setPreMemo(proitem);
+//                    spUtils.put(context, "CommodityPreMemo", proitem);
                 }
             };
             editTextPreMemo.addTextChangedListener(TvPreMemo);
@@ -368,7 +387,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPredocdt.setText(datetime);
-                                    spUtils.put(context, "datePredocdttimesign", datetime);
+                                    getItem(position).setPredocdt(datetime);
+//                                    spUtils.put(context, "datePredocdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -376,7 +396,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPredocdt.setText("");
-                                    spUtils.put(context, "datePredocdttimesign", "");
+                                    getItem(position).setPredocdt("");
+//                                    spUtils.put(context, "datePredocdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -411,7 +432,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPred.setText(datetime);
-                                    spUtils.put(context, "datePredtimesign", datetime);
+                                    getItem(position).setPredocdt(datetime);
+//                                    spUtils.put(context, "datePredtimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -419,7 +441,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPred.setText("");
-                                    spUtils.put(context, "datePredtimesign", "");
+                                    getItem(position).setPredocdt("");
+//                                    spUtils.put(context, "datePredtimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -455,7 +478,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoPredoc.getText().toString();
-                    spUtils.put(context, "CommodityPredoc", proitem);
+                    getItem(position).setPredoc(proitem);
+//                    spUtils.put(context, "CommodityPredoc", proitem);
                 }
             };
             editTextPredoc.addTextChangedListener(TvPredoc);
@@ -486,7 +510,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoFabricsok.getText().toString();
-                    spUtils.put(context, "CommodityFabricsok", proitem);
+                    getItem(position).setFabricsok(proitem);
+//                    spUtils.put(context, "CommodityFabricsok", proitem);
                 }
             };
             editTextFabricsok.addTextChangedListener(TvFabricsok);
@@ -517,7 +542,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoAccessoriesok.getText().toString();
-                    spUtils.put(context, "CommodityAccessoriesok", proitem);
+                    getItem(position).setAccessoriesok(proitem);
+//                    spUtils.put(context, "CommodityAccessoriesok", proitem);
                 }
             };
             editTextAccessoriesok.addTextChangedListener(TvAccessoriesok);
@@ -548,7 +574,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoSpcproDec.getText().toString();
-                    spUtils.put(context, "CommoditySpcproDec", proitem);
+                    getItem(position).setSpcproDec(proitem);
+//                    spUtils.put(context, "CommoditySpcproDec", proitem);
                 }
             };
             editTextSpcproDec.addTextChangedListener(TvSpcproDec);
@@ -579,7 +606,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoSpcproMemo.getText().toString();
-                    spUtils.put(context, "CommoditySpcproMemo", proitem);
+                    getItem(position).setSpcproMemo(proitem);
+//                    spUtils.put(context, "CommoditySpcproMemo", proitem);
                 }
             };
             editTextSpcproMemo.addTextChangedListener(TvSpcproMemo);
@@ -610,7 +638,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoCutqty.getText().toString();
-                    spUtils.put(context, "CommodityCutqty", proitem);
+                    getItem(position).setCutqty(proitem);
+//                    spUtils.put(context, "CommodityCutqty", proitem);
                 }
             };
             editTextCutqty.addTextChangedListener(TvCutqty);
@@ -640,7 +669,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoSewFdt.setText(datetime);
-                                    spUtils.put(context, "dateSewFdttimesign", datetime);
+                                    getItem(position).setSewFdt(datetime);
+//                                    spUtils.put(context, "dateSewFdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -648,7 +678,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoSewFdt.setText("");
-                                    spUtils.put(context, "dateSewFdttimesign", "");
+                                    getItem(position).setSewFdt("");
+//                                    spUtils.put(context, "dateSewFdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -683,7 +714,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoSewMdt.setText(datetime);
-                                    spUtils.put(context, "dateSewMdttimesign", datetime);
+                                    getItem(position).setSewMdt(datetime);
+//                                    spUtils.put(context, "dateSewMdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -691,7 +723,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoSewMdt.setText("");
-                                    spUtils.put(context, "dateSewMdttimesign", "");
+                                    getItem(position).setSewMdt("");
+//                                    spUtils.put(context, "dateSewMdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -735,7 +768,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPrebdt.setText(datetime);
-                                    spUtils.put(context, "datePrebdttimesign", datetime);
+                                    getItem(position).setPrebdt(datetime);
+//                                    spUtils.put(context, "datePrebdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -743,7 +777,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPrebdt.setText("");
-                                    spUtils.put(context, "datePrebdttimesign", "");
+                                    getItem(position).setPrebdt("");
+//                                    spUtils.put(context, "datePrebdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -778,7 +813,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCbdt.setText(datetime);
-                                    spUtils.put(context, "dateQCbdttimesign", datetime);
+                                    getItem(position).setQCbdt(datetime);
+//                                    spUtils.put(context, "dateQCbdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -786,7 +822,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCbdt.setText("");
-                                    spUtils.put(context, "dateQCbdttimesign", "");
+                                    getItem(position).setQCbdt("");
+//                                    spUtils.put(context, "dateQCbdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -823,7 +860,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQCbdtDoc.getText().toString();
-                    spUtils.put(context, "CommodityQCbdtDoc", proitem);
+                    getItem(position).setQCbdtDoc(proitem);
+//                    spUtils.put(context, "CommodityQCbdtDoc", proitem);
                 }
             };
             editTextQCbdtDoc.addTextChangedListener(TvQCbdtDoc);
@@ -853,7 +891,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPremdt.setText(datetime);
-                                    spUtils.put(context, "datePremdttimesign", datetime);
+                                    getItem(position).setPremdt(datetime);
+//                                    spUtils.put(context, "datePremdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -861,7 +900,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPremdt.setText("");
-                                    spUtils.put(context, "datePremdttimesign", "");
+                                    getItem(position).setPremdt("");
+//                                    spUtils.put(context, "datePremdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -896,7 +936,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCmdt.setText(datetime);
-                                    spUtils.put(context, "dateQCmdttimesign", datetime);
+                                    getItem(position).setQCmdt(datetime);
+//                                    spUtils.put(context, "dateQCmdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -904,7 +945,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCmdt.setText("");
-                                    spUtils.put(context, "dateQCmdttimesign", "");
+                                    getItem(position).setQCmdt("");
+//                                    spUtils.put(context, "dateQCmdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -941,7 +983,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQCmdtDoc.getText().toString();
-                    spUtils.put(context, "CommodityQCmdtDoc", proitem);
+                    getItem(position).setQCmdtDoc(proitem);
+//                    spUtils.put(context, "CommodityQCmdtDoc", proitem);
                 }
             };
             editTextQCmdtDoc.addTextChangedListener(TvQCmdtDoc);
@@ -971,7 +1014,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPreedt.setText(datetime);
-                                    spUtils.put(context, "datePreedttimesign", datetime);
+                                    getItem(position).setPreedt(datetime);
+//                                    spUtils.put(context, "datePreedttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -979,7 +1023,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPreedt.setText("");
-                                    spUtils.put(context, "datePreedttimesign", "");
+                                    getItem(position).setPreedt("");
+//                                    spUtils.put(context, "datePreedttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1014,7 +1059,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCMedt.setText(datetime);
-                                    spUtils.put(context, "dateQCMedttimesign", datetime);
+                                    getItem(position).setQCMedt(datetime);
+//                                    spUtils.put(context, "dateQCMedttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1022,7 +1068,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCMedt.setText("");
-                                    spUtils.put(context, "dateQCMedttimesign", "");
+                                    getItem(position).setQCMedt("");
+//                                    spUtils.put(context, "dateQCMedttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1059,7 +1106,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQCedtDoc.getText().toString();
-                    spUtils.put(context, "CommodityQCedtDoc", proitem);
+                    getItem(position).setQCedtDoc(proitem);
+//                    spUtils.put(context, "CommodityQCedtDoc", proitem);
                 }
             };
             editTextQCedtDoc.addTextChangedListener(TvQCedtDoc);
@@ -1089,7 +1137,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFctmdt.setText(datetime);
-                                    spUtils.put(context, "dateFctmdttimesign", datetime);
+                                    getItem(position).setFctmdt(datetime);
+//                                    spUtils.put(context, "dateFctmdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1097,7 +1146,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFctmdt.setText("");
-                                    spUtils.put(context, "dateFctmdttimesign", "");
+                                    getItem(position).setFctmdt("");
+//                                    spUtils.put(context, "dateFctmdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1132,7 +1182,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFctedt.setText(datetime);
-                                    spUtils.put(context, "dateFctedttimesign", datetime);
+                                    getItem(position).setFctedt(datetime);
+//                                    spUtils.put(context, "dateFctedttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1140,7 +1191,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFctedt.setText("");
-                                    spUtils.put(context, "dateFctedttimesign", "");
+                                    getItem(position).setFctedt("");
+//                                    spUtils.put(context, "dateFctedttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1175,7 +1227,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPackbdat.setText(datetime);
-                                    spUtils.put(context, "datePackbdattimesign", datetime);
+                                    getItem(position).setPackbdat(datetime);
+//                                    spUtils.put(context, "datePackbdattimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1183,7 +1236,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPackbdat.setText("");
-                                    spUtils.put(context, "datePackbdattimesign", "");
+                                    getItem(position).setPackbdat("");
+//                                    spUtils.put(context, "datePackbdattimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1220,7 +1274,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoPackqty2.getText().toString();
-                    spUtils.put(context, "CommodityPackqty2", proitem);
+                    getItem(position).setPackqty2(proitem);
+//                    spUtils.put(context, "CommodityPackqty2", proitem);
                 }
             };
             editTextPackqty2.addTextChangedListener(TvPackqty2);
@@ -1251,7 +1306,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQCMemo.getText().toString();
-                    spUtils.put(context, "CommodityQCMemo", proitem);
+                    getItem(position).setQCMemo(proitem);
+//                    spUtils.put(context, "CommodityQCMemo", proitem);
                 }
             };
             editTextQCMemo.addTextChangedListener(TvQCMemo);
@@ -1280,7 +1336,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFactlcdat.setText(datetime);
-                                    spUtils.put(context, "dateFactlcdattimesign", datetime);
+                                    getItem(position).setFactlcdat(datetime);
+//                                    spUtils.put(context, "dateFactlcdattimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1288,7 +1345,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFactlcdat.setText("");
-                                    spUtils.put(context, "dateFactlcdattimesign", "");
+                                    getItem(position).setFactlcdat("");
+//                                    spUtils.put(context, "dateFactlcdattimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1324,7 +1382,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoBatchid.getText().toString();
-                    spUtils.put(context, "CommodityBatchid", proitem);
+                    getItem(position).setBatchid(proitem);
+//                    spUtils.put(context, "CommodityBatchid", proitem);
                 }
             };
             editTextBatchid.addTextChangedListener(TvBatchid);
@@ -1355,7 +1414,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoCtmchkdt.setText(datetime);
-                                    spUtils.put(context, "dateCtmchkdttimesign", datetime);
+                                    getItem(position).setCtmchkdt(datetime);
+//                                    spUtils.put(context, "dateCtmchkdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1363,7 +1423,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoCtmchkdt.setText("");
-                                    spUtils.put(context, "dateCtmchkdttimesign", "");
+                                    getItem(position).setCtmchkdt("");
+//                                    spUtils.put(context, "dateCtmchkdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1400,7 +1461,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoIPQCPedt.getText().toString();
-                    spUtils.put(context, "CommodityIPQCPedt", proitem);
+                    getItem(position).setIPQCPedt(proitem);
+//                    spUtils.put(context, "CommodityIPQCPedt", proitem);
                 }
             };
             editTextIPQCPedt.addTextChangedListener(TvIPQCPedt);
@@ -1431,7 +1493,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoIPQCmdt.getText().toString();
-                    spUtils.put(context, "CommodityIPQCmdt", proitem);
+                    getItem(position).setIPQCmdt(proitem);
+//                    spUtils.put(context, "CommodityIPQCmdt", proitem);
                 }
             };
             editTextIPQCmdt.addTextChangedListener(TvIPQCmdt);
@@ -1462,7 +1525,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQAname.getText().toString();
-                    spUtils.put(context, "CommodityQAname", proitem);
+                    getItem(position).setQAname(proitem);
+//                    spUtils.put(context, "CommodityQAname", proitem);
                 }
             };
             editTextQAname.addTextChangedListener(TvQAname);
@@ -1493,7 +1557,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQAScore.getText().toString();
-                    spUtils.put(context, "CommodityQAScore", proitem);
+                    getItem(position).setQAScore(proitem);
+//                    spUtils.put(context, "CommodityQAScore", proitem);
                 }
             };
             editTextQAScore.addTextChangedListener(TvQAScore);
@@ -1523,7 +1588,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQAMemo.setText(datetime);
-                                    spUtils.put(context, "dateQAMemotimesign", datetime);
+                                    getItem(position).setQAMemo(datetime);
+//                                    spUtils.put(context, "dateQAMemotimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1531,7 +1597,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQAMemo.setText("");
-                                    spUtils.put(context, "dateQAMemotimesign", "");
+                                    getItem(position).setQAMemo("");
+//                                    spUtils.put(context, "dateQAMemotimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2014,36 +2081,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
         @Override
         public void onClick(View v) {
             String ss = sp.getString("strposition", "");
-//            ToastUtils.ShowToastMessage("点击是" + ss, context);
         }
     };
-
-    /**
-     * 弹出后道选择菜单
-     *
-     * @param view
-     */
-    private void showPopuphdMenu(View view) {
-        PopupMenu popupMenu = new PopupMenu(context, view);
-        popupMenu.getMenuInflater().inflate(R.menu.menu_commo_hd, popupMenu.getMenu());
-        // menu的item点击事件
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                sp = context.getSharedPreferences("my_sp", 0);
-                String title = item.getTitle().toString();
-                spUtils.put(context, "commohdTitle", title);
-                return false;
-            }
-        });
-        // PopupMenu关闭事件
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-            @Override
-            public void onDismiss(PopupMenu menu) {
-            }
-        });
-        popupMenu.show();
-    }
 
     class ViewHolder {
         LinearLayout lin_content;

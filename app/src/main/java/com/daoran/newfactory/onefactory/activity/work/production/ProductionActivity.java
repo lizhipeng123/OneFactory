@@ -59,7 +59,7 @@ import okhttp3.MediaType;
  */
 public class ProductionActivity extends BaseFrangmentActivity
         implements View.OnClickListener, SelectItemInterface
-        ,View.OnLayoutChangeListener{
+        , View.OnLayoutChangeListener {
 
     private NoscrollListView mData;//listview的列表
     private ProcationDialog procationDialog;//条件查询的dialog
@@ -99,7 +99,7 @@ public class ProductionActivity extends BaseFrangmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_production);//显示主页面
         screenHeight = this.getWindowManager().getDefaultDisplay().getHeight();
-        keyHeight = screenHeight/3;
+        keyHeight = screenHeight / 3;
         getViews();
         initView();
         setData();
@@ -527,385 +527,45 @@ public class ProductionActivity extends BaseFrangmentActivity
      */
     private void setSave() {
         if (NetWork.isNetWorkAvailable(this)) {
-//            /*检测是否为可用WiFi*/
-//            WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-//            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-//            String infossid = wifiInfo.getSSID();
-//            infossid = infossid.replace("\"", "");
-//            if (!infossid.equals("taoxinxi")) {
-//                android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(this).create();
-//                dialog.setTitle("系统提示");
-//                dialog.setMessage("当前WiFi为公共网络，运行请转到测试WiFi状态");
-//                dialog.setButton("确定", listenerwifi);
-//                dialog.show();
-//            } else {
+            ResponseDialog.showLoading(this);
             String saveurl = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
-            sp = this.getSharedPreferences("my_sp", 0);
-            SharedPreferences.Editor editorone = sp.edit();
-            /*获取ProductionAdapter中监听输入框中的字段*/
-            String proid = sp.getString("prouriid", "");
-            String salesid = sp.getString("prosalesid", "");
-            String proColumnTitle = sp.getString("proColumnTitle", "");//部门
-            if (proColumnTitle == "" || proColumnTitle.equals("")) {
-                proColumnTitle = null;
-            }
-            String proProcedureTitle = sp.getString("proProcedureTitle", "");//工序
-            if (proProcedureTitle == "" || proProcedureTitle.equals("")) {
-                proProcedureTitle = null;
-            }
-            String proPrdstatusTitle = sp.getString("proadapterPrdstatusTitle", "");//状态//
-            if (proPrdstatusTitle == "" || proPrdstatusTitle.equals("")) {
-                proPrdstatusTitle = null;
-            }
-            String productionsaveOthers = sp.getString("productionsaveOthers", "");//组别人
-            if (productionsaveOthers == "" || productionsaveOthers.equals("")) {
-                productionsaveOthers = null;
-            }
-            String productionTaskNumber = sp.getString("productionTaskNumber", "");//任务数
-            if (productionTaskNumber == "" || productionTaskNumber.equals("")) {
-                productionTaskNumber = null;
-            }
-            String productionCompletedLastMonth = sp.getString("productionCompletedLastMonth", "");//上月完工
-            if (productionCompletedLastMonth == "" || productionCompletedLastMonth.equals("")) {
-                productionCompletedLastMonth = null;
-            }
-            String productionMonth = sp.getString("proadapterMonthTitle", "");//月
-            if (productionMonth == "" || productionMonth.equals("")) {
-                productionMonth = null;
-            }
-            String productionOneDay = sp.getString("productionOneDay", "");//1
-            if (productionOneDay == "" || productionOneDay.equals("")) {
-                productionOneDay = null;
-            }
-            String productionTwoDay = sp.getString("productionTwoDay", "");//2
-            if (productionTwoDay == "" || productionTwoDay.equals("")) {
-                productionTwoDay = null;
-            }
-            String productionThreeDay = sp.getString("productionThreeDay", "");//3
-            if (productionThreeDay == "" || productionThreeDay.equals("")) {
-                productionThreeDay = null;
-            }
-            String productionForeDay = sp.getString("productionForeDay", "");//4
-            if (productionForeDay == "" || productionForeDay.equals("")) {
-                productionForeDay = null;
-            }
-            String productionFiveDay = sp.getString("productionFiveDay", "");//5
-            if (productionFiveDay == "" || productionFiveDay.equals("")) {
-                productionFiveDay = null;
-            }
-            String productionSixDay = sp.getString("productionSixDay", "");//6
-            if (productionSixDay == "" || productionSixDay.equals("")) {
-                productionSixDay = null;
-            }
-            String productionSevenDay = sp.getString("productionSevenDay", "");//7
-            if (productionSevenDay == "" || productionSevenDay.equals("")) {
-                productionSevenDay = null;
-            }
-            String productionEightDay = sp.getString("productionEightDay", "");//8
-            if (productionEightDay == "" || productionEightDay.equals("")) {
-                productionEightDay = null;
-            }
-            String productionNineDay = sp.getString("productionNineDay", "");//9
-            if (productionNineDay == "" || productionNineDay.equals("")) {
-                productionNineDay = null;
-            }
-            String productionTenDay = sp.getString("productionTenDay", "");//10
-            if (productionTenDay == "" || productionTenDay.equals("")) {
-                productionTenDay = null;
-            }
-            String productionElevenDay = sp.getString("productionElevenDay", "");//11
-            if (productionElevenDay == "" || productionElevenDay.equals("")) {
-                productionElevenDay = null;
-            }
-            String productionTwelveDay = sp.getString("productionTwelveDay", "");//12
-            if (productionTwelveDay == "" || productionTwelveDay.equals("")) {
-                productionTwelveDay = null;
-            }
-            String productionThirteenDay = sp.getString("productionThirteenDay", "");//13
-            if (productionThirteenDay == "" || productionThirteenDay.equals("")) {
-                productionThirteenDay = null;
-            }
-            String productionFourteenDay = sp.getString("productionFourteenDay", "");//14
-            if (productionFourteenDay == "" || productionFourteenDay.equals("")) {
-                productionFourteenDay = null;
-            }
-            String productionFifteenDay = sp.getString("productionFifteenDay", "");//15
-            if (productionFifteenDay == "" || productionFifteenDay.equals("")) {
-                productionFifteenDay = null;
-            }
-            String productionSixteenDay = sp.getString("productionSixteenDay", "");//16
-            if (productionSixteenDay == "" || productionSixteenDay.equals("")) {
-                productionSixteenDay = null;
-            }
-            String productionSeventeenDay = sp.getString("productionSeventeenDay", "");//17
-            if (productionSeventeenDay == "" || productionSeventeenDay.equals("")) {
-                productionSeventeenDay = null;
-            }
-            String productionEighteenDay = sp.getString("productionEighteenDay", "");//18
-            if (productionEighteenDay == "" || productionEighteenDay.equals("")) {
-                productionEighteenDay = null;
-            }
-            String productionNineteenDay = sp.getString("productionNineteenDay", "");//19
-            if (productionNineteenDay == "" || productionNineteenDay.equals("")) {
-                productionNineteenDay = null;
-            }
-            String productionTwentyDay = sp.getString("productionTwentyDay", "");//20
-            if (productionTwentyDay == "" || productionTwentyDay.equals("")) {
-                productionTwentyDay = null;
-            }
-            String productionTwentyOneDay = sp.getString("productionTwentyOneDay", "");//21
-            if (productionTwentyOneDay == "" || productionTwentyOneDay.equals("")) {
-                productionTwentyOneDay = null;
-            }
-            String productionTwentyTwoDay = sp.getString("productionTwentyTwoDay", "");//22
-            if (productionTwentyTwoDay == "" || productionTwentyTwoDay.equals("")) {
-                productionTwentyTwoDay = null;
-            }
-            String productionTwentyThreeDay = sp.getString("productionTwentyThreeDay", "");//23
-            if (productionTwentyThreeDay == "" || productionTwentyThreeDay.equals("")) {
-                productionTwentyThreeDay = null;
-            }
-            String productionTwentyForeDay = sp.getString("productionTwentyForeDay", "");//24
-            if (productionTwentyForeDay == "" || productionTwentyForeDay.equals("")) {
-                productionTwentyForeDay = null;
-            }
-            String productionTwentyFiveDay = sp.getString("productionTwentyFiveDay", "");//25
-            if (productionTwentyFiveDay == "" || productionTwentyFiveDay.equals("")) {
-                productionTwentyFiveDay = null;
-            }
-            String productionTwentySixDay = sp.getString("productionTwentySixDay", "");//26
-            if (productionTwentySixDay == "" || productionTwentySixDay.equals("")) {
-                productionTwentySixDay = null;
-            }
-            String productionTwentySevenDay = sp.getString("productionTwentySevenDay", "");//27
-            if (productionTwentySevenDay == "" || productionTwentySevenDay.equals("")) {
-                productionTwentySevenDay = null;
-            }
-            String productionTwentyEightDay = sp.getString("productionTwentyEightDay", "");//28
-            if (productionTwentyEightDay == "" || productionTwentyEightDay.equals("")) {
-                productionTwentyEightDay = null;
-            }
-            String productionTwentyNineDay = sp.getString("productionTwentyNineDay", "");//29
-            if (productionTwentyNineDay == "" || productionTwentyNineDay.equals("")) {
-                productionTwentyNineDay = null;
-            }
-            String productionThirtyDay = sp.getString("productionThirtyDay", "");//30
-            if (productionThirtyDay == "" || productionThirtyDay.equals("")) {
-                productionThirtyDay = null;
-            }
-            String productionThirtyOneDay = sp.getString("productionThirtyOneDay", "");//31
-            if (productionThirtyOneDay == "" || productionThirtyOneDay.equals("")) {
-                productionThirtyOneDay = null;
-            }
-            String productionRemarks = sp.getString("productionRemarks", "");//备注
-            if (productionRemarks == "" || productionRemarks.equals("")) {
-                productionRemarks = null;
-            }
+            System.out.print(detailBeenList);
             Gson gson = new GsonBuilder().registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory()).create();
-            String urlid = sp.getString("prouriid", "");
-            ProducationSaveBean saveBean = new ProducationSaveBean();
-//            List<String> prolist = new ArrayList<String>();
-//            prolist.add(proid);
-//            int proint = prolist.size();
-//            if (proint == 1) {
-//                System.out.print(proint);
-//            } else {
-//                System.out.print(proint);
-//            }
-            if (urlid == proid || urlid.equals(proid)) {
-                if (!proid.equals("")&&!salesid.equals("")) {//如果款号id不为空，那么就给实体类添加传过来的数据
-                    ResponseDialog.showLoading(this);
-                    saveBean.setID(Integer.parseInt(proid));
-                    saveBean.setSalesid(Integer.parseInt(salesid));
-                    saveBean.setItem(null);
-                    saveBean.setPrddocumentary(null);
-                    saveBean.setSubfactory(null);
-                    saveBean.setSubfactoryTeams(proColumnTitle);
-                    saveBean.setWorkingProcedure(proProcedureTitle);
-                    saveBean.setWorkers(productionsaveOthers);
-                    saveBean.setPqty(null);
-                    saveBean.setProdcol(null);
-                    saveBean.setTaskqty(productionTaskNumber);
-                    saveBean.setMdl(null);
-                    saveBean.setFactcutqty(null);
-                    saveBean.setLastMonQty(productionCompletedLastMonth);
-                    saveBean.setSumCompletedQty(null);
-                    saveBean.setLeftQty(null);
-                    saveBean.setPrdstatus(proPrdstatusTitle);
-                    saveBean.setYear(null);
-                    saveBean.setMonth(productionMonth);
-                    saveBean.setDay1(productionOneDay);
-                    saveBean.setDay2(productionTwoDay);
-                    saveBean.setDay3(productionThreeDay);
-                    saveBean.setDay4(productionForeDay);
-                    saveBean.setDay5(productionFiveDay);
-                    saveBean.setDay6(productionSixDay);
-                    saveBean.setDay7(productionSevenDay);
-                    saveBean.setDay8(productionEightDay);
-                    saveBean.setDay9(productionNineDay);
-                    saveBean.setDay10(productionTenDay);
-                    saveBean.setDay11(productionElevenDay);
-                    saveBean.setDay12(productionTwelveDay);
-                    saveBean.setDay13(productionThirteenDay);
-                    saveBean.setDay14(productionFourteenDay);
-                    saveBean.setDay15(productionFifteenDay);
-                    saveBean.setDay16(productionSixteenDay);
-                    saveBean.setDay17(productionSeventeenDay);
-                    saveBean.setDay18(productionEighteenDay);
-                    saveBean.setDay19(productionNineteenDay);
-                    saveBean.setDay20(productionTwentyDay);
-                    saveBean.setDay21(productionTwentyOneDay);
-                    saveBean.setDay22(productionTwentyTwoDay);
-                    saveBean.setDay23(productionTwentyThreeDay);
-                    saveBean.setDay24(productionTwentyForeDay);
-                    saveBean.setDay25(productionTwentyFiveDay);
-                    saveBean.setDay26(productionTwentySixDay);
-                    saveBean.setDay27(productionTwentySevenDay);
-                    saveBean.setDay28(productionTwentyEightDay);
-                    saveBean.setDay29(productionTwentyNineDay);
-                    saveBean.setDay30(productionThirtyDay);
-                    saveBean.setDay31(productionThirtyOneDay);
-                    saveBean.setMemo(productionRemarks);
-                    saveBean.setRecorder(null);
-                    saveBean.setRecordat(null);
-                    saveBeen.add(saveBean);
-                    String detailb = gson.toJson(saveBeen);//将实体类中的数据转变为json字符串，并由string类型请求
-                    String date = detailb + detailb;
-                    System.out.print(date);
-                    editorone.remove("prouriid");
-                    editorone.remove("prosalesid");
-                    editorone.remove("proColumnTitle");
-                    editorone.remove("proProcedureTitle");
-                    editorone.remove("proadapterPrdstatusTitle");
-                    editorone.remove("productionsaveOthers");
-                    editorone.remove("productionOthers");
-                    editorone.remove("productionTaskNumber");
-                    editorone.remove("productionCompletedLastMonth");
-                    editorone.remove("proadapterMonthTitle");
-                    editorone.remove("productionOneDay");
-                    editorone.remove("productionTwoDay");
-                    editorone.remove("productionThreeDay");
-                    editorone.remove("productionForeDay");
-                    editorone.remove("productionFiveDay");
-                    editorone.remove("productionSixDay");
-                    editorone.remove("productionSevenDay");
-                    editorone.remove("productionEightDay");
-                    editorone.remove("productionNineDay");
-                    editorone.remove("productionTenDay");
-                    editorone.remove("productionElevenDay");
-                    editorone.remove("productionTwelveDay");
-                    editorone.remove("productionThirteenDay");
-                    editorone.remove("productionFourteenDay");
-                    editorone.remove("productionFifteenDay");
-                    editorone.remove("productionSixteenDay");
-                    editorone.remove("productionSeventeenDay");
-                    editorone.remove("productionEighteenDay");
-                    editorone.remove("productionNineteenDay");
-                    editorone.remove("productionTwentyDay");
-                    editorone.remove("productionTwentyOneDay");
-                    editorone.remove("productionTwentyTwoDay");
-                    editorone.remove("productionTwentyThreeDay");
-                    editorone.remove("productionTwentyForeDay");
-                    editorone.remove("productionTwentyFiveDay");
-                    editorone.remove("productionTwentySixDay");
-                    editorone.remove("productionTwentySevenDay");
-                    editorone.remove("productionTwentyEightDay");
-                    editorone.remove("productionTwentyNineDay");
-                    editorone.remove("productionThirtyDay");
-                    editorone.remove("productionThirtyOneDay");
-                    editorone.remove("productionRemarks");
-                    editorone.commit();
-                    OkHttpUtils.postString().
-                            url(saveurl)
-                            .content(detailb)
-                            .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                            .build()
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onError(Call call, Exception e, int id) {
-                                    e.printStackTrace();
-                                }
+            String detailb = gson.toJson(detailBeenList);
+            System.out.print(detailb);
+            OkHttpUtils.postString().
+                    url(saveurl)
+                    .content(detailb)
+                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                        }
 
-                                @Override
-                                public void onResponse(String response, int id) {
-                                    System.out.print(response);
-                                    String ression = StringUtil.sideTrim(response, "\"");
-                                    System.out.print(ression);
-                                    int resindex = Integer.parseInt(ression);
-                                    if (resindex > 3) {
-                                        ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
-                                        setData();
-                                        ResponseDialog.closeLoading();
-                                    } else if (ression == "3" || ression.equals("3")) {
-                                        ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
-                                        ResponseDialog.closeLoading();
-                                    } else if (ression == "4" || ression.equals("4")) {
-                                        ToastUtils.ShowToastMessage("数据错误，请重试", ProductionActivity.this);
-                                        ResponseDialog.closeLoading();
-                                    } else {
-                                        ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
-                                        ResponseDialog.closeLoading();
-                                    }
-                                }
-                            });
-                } else {
-                    editorone.remove("prouriid");
-                    editorone.remove("prosalesid");
-                    editorone.remove("proColumnTitle");
-                    editorone.remove("proProcedureTitle");
-                    editorone.remove("proadapterPrdstatusTitle");
-                    editorone.remove("productionsaveOthers");
-                    editorone.remove("productionOthers");
-                    editorone.remove("productionTaskNumber");
-                    editorone.remove("productionCompletedLastMonth");
-                    editorone.remove("proadapterMonthTitle");
-                    editorone.remove("productionOneDay");
-                    editorone.remove("productionTwoDay");
-                    editorone.remove("productionThreeDay");
-                    editorone.remove("productionForeDay");
-                    editorone.remove("productionFiveDay");
-                    editorone.remove("productionSixDay");
-                    editorone.remove("productionSevenDay");
-                    editorone.remove("productionEightDay");
-                    editorone.remove("productionNineDay");
-                    editorone.remove("productionTenDay");
-                    editorone.remove("productionElevenDay");
-                    editorone.remove("productionTwelveDay");
-                    editorone.remove("productionThirteenDay");
-                    editorone.remove("productionFourteenDay");
-                    editorone.remove("productionFifteenDay");
-                    editorone.remove("productionSixteenDay");
-                    editorone.remove("productionSeventeenDay");
-                    editorone.remove("productionEighteenDay");
-                    editorone.remove("productionNineteenDay");
-                    editorone.remove("productionTwentyDay");
-                    editorone.remove("productionTwentyOneDay");
-                    editorone.remove("productionTwentyTwoDay");
-                    editorone.remove("productionTwentyThreeDay");
-                    editorone.remove("productionTwentyForeDay");
-                    editorone.remove("productionTwentyFiveDay");
-                    editorone.remove("productionTwentySixDay");
-                    editorone.remove("productionTwentySevenDay");
-                    editorone.remove("productionTwentyEightDay");
-                    editorone.remove("productionTwentyNineDay");
-                    editorone.remove("productionThirtyDay");
-                    editorone.remove("productionThirtyOneDay");
-                    editorone.remove("productionRemarks");
-                    editorone.commit();
-                    new AlertDialog.Builder(ProductionActivity.this).setTitle("提示信息")
-                            .setMessage("请选择当前行，再进行保存")
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).show();//相应事件
-                }
-            } else {
-                ToastUtils.ShowToastMessage("请选择当前行，再进行修改保存",
-                        ProductionActivity.this);
-            }
-//            }
+                        @Override
+                        public void onResponse(String response, int id) {
+                            System.out.print(response);
+                            String ression = StringUtil.sideTrim(response, "\"");
+                            System.out.print(ression);
+                            int resindex = Integer.parseInt(ression);
+                            if (resindex > 3) {
+                                ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
+                                setData();
+                                ResponseDialog.closeLoading();
+                            } else if (ression == "3" || ression.equals("3")) {
+                                ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
+                                ResponseDialog.closeLoading();
+                            } else if (ression == "4" || ression.equals("4")) {
+                                ToastUtils.ShowToastMessage("数据错误，请重试", ProductionActivity.this);
+                                ResponseDialog.closeLoading();
+                            } else {
+                                ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
+                                ResponseDialog.closeLoading();
+                            }
+                        }
+                    });
         } else {
             ToastUtils.ShowToastMessage(R.string.noHttp, ProductionActivity.this);
         }
@@ -1083,7 +743,6 @@ public class ProductionActivity extends BaseFrangmentActivity
                             }
                         }).show();//相应事件
             }
-//            }
         } else {
             ToastUtils.ShowToastMessage(R.string.noHttp, ProductionActivity.this);
         }
@@ -1265,10 +924,10 @@ public class ProductionActivity extends BaseFrangmentActivity
 
     @Override
     public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-        if(oldBottom!=0&&bottom!=0&&(oldBottom-bottom>keyHeight)){
-            ToastUtils.ShowToastMessage("软键盘弹起啦",ProductionActivity.this);
-        }else{
-            ToastUtils.ShowToastMessage("回去了",ProductionActivity.this);
+        if (oldBottom != 0 && bottom != 0 && (oldBottom - bottom > keyHeight)) {
+            ToastUtils.ShowToastMessage("软键盘弹起啦", ProductionActivity.this);
+        } else {
+            ToastUtils.ShowToastMessage("回去了", ProductionActivity.this);
         }
     }
 }
