@@ -76,8 +76,8 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text=""
             android:numeric="integer"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
