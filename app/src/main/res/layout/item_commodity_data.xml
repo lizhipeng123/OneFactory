@@ -150,7 +150,7 @@
 
         <EditText
             android:id="@+id/tvCommoPreMemo"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
@@ -366,7 +366,7 @@
 
         <EditText
             android:id="@+id/tvCommoQCbdtDoc"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
@@ -413,7 +413,7 @@
 
         <EditText
             android:id="@+id/tvCommoQCmdtDoc"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
@@ -460,7 +460,7 @@
 
         <EditText
             android:id="@+id/tvCommoQCedtDoc"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"

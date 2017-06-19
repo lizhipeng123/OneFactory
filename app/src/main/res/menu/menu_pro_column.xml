@@ -4,50 +4,49 @@
     <item
         android:id="@+id/show_Cutting_bed_one"
         android:title="裁床（1）"
-        app:showAsAction="never"/>
-
+        app:showAsAction="never" />
     <item
         android:id="@+id/show_Cutting_bed_two"
         android:title="裁床（2）"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/show_Cutting_bed_three"
         android:title="裁床（3）"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/show_hdone"
         android:title="后道（1）"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/show_hdtwo"
         android:title="后道（2）"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/show_big_hd"
         android:title="大后道"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/show_one_clumn"
         android:title="1组"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/show_two_clumn"
         android:title="2组"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/show_three_clumn"
         android:title="3组"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/show_fore_clumn"
         android:title="4组"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/show_five_clumn"
         android:title="5组"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/show_six_clumn"
         android:title="6组"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 </menu>

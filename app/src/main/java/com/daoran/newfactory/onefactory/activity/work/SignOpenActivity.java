@@ -765,7 +765,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
                 // 如果不设置标志位，此时再拖动地图时，它会不断将地图移动到当前的位置
                 if (isFirstLoc) {
                     //设置缩放级别
-                    aMap.moveCamera(CameraUpdateFactory.zoomTo(19));
+                    aMap.moveCamera(CameraUpdateFactory.zoomTo(17));
                     //将地图移动到定位点
                     aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude())));
                     //点击定位按钮 能够将地图的中心移动到定位点

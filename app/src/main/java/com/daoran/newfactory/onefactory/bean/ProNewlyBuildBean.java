@@ -30,7 +30,7 @@ public class ProNewlyBuildBean {
 
     public static class DataBean {
         /**
-         * ID : 11024
+         * id : 11024
          * salesid :
          * item : PKT1145
          * megitem : PKT1145
@@ -67,7 +67,7 @@ public class ProNewlyBuildBean {
          * sumCompletedQty : null
          */
 
-        private String ID;
+        private String id;
         private String salesid;
         private String item;
         private String megitem;
@@ -104,11 +104,11 @@ public class ProNewlyBuildBean {
         private String sumCompletedQty;
 
         public String getID() {
-            return ID;
+            return id;
         }
 
         public void setID(String ID) {
-            this.ID = ID;
+            this.id = ID;
         }
 
         public String getSalesid() {

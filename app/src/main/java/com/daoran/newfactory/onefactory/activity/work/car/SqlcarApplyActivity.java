@@ -252,8 +252,8 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                                     "dfexcel+" + new Date().toString());
                             ToastUtils.ShowToastMessage("写入成功",SqlcarApplyActivity.this);
                         } catch (Exception e) {
-                            e.printStackTrace();
                             ToastUtils.ShowToastMessage("写入失败",SqlcarApplyActivity.this);
+                            e.printStackTrace();
                         }
                     }
                 }).start();

@@ -1,11 +1,12 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/lightblue</item>
         <item name="colorPrimaryDark">@color/lightblue</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionMenuTextAppearance">@style/myActionButtonStyle</item>
     </style>
 
     <style name="Theme.Start" parent="android:style/Theme.Black.NoTitleBar.Fullscreen">
@@ -88,6 +89,12 @@
         <item name="android:colorBackgroundCacheHint">@android:color/transparent</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
-
+    <!--menu items 间隔设置-->
+    <style name="myActionButtonStyle" parent="Widget.AppCompat.ActionButton">
+        <item name="android:paddingLeft">0dip</item>
+        <item name="android:paddingRight">6dip</item>
+        <item name="android:minWidth">36dp</item>
+        <item name="android:minHeight">36dp</item>
+    </style>
     <style name="TextView" />
 </resources>

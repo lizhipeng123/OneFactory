@@ -227,7 +227,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         String productionRecordat = sp.getString("configrecordat", "");//制单时间
         Gson gson = new Gson();
         ProducationConfigSaveBean saveBean = new ProducationConfigSaveBean();
-        saveBean.setID("");
+        saveBean.setID("0");
         saveBean.setSalesid(salesid);
         saveBean.setItem(productionItem);
         saveBean.setPrddocumentary(productionDocumentary);

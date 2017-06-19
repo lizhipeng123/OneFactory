@@ -147,7 +147,7 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="组别人" />
+                        android:text="组别人数" />
 
                     <View
                         android:layout_width="1px"

@@ -346,6 +346,10 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         }
     }
 
+    private void setColumnRight(){
+        String columnSql = HttpUrl.debugoneUrl+"";
+    }
+
     /**
      * 保存
      */

@@ -101,12 +101,15 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
         viewHolder.lin_content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String getid = String.valueOf(v.getId());
-                List<String> stingid = new ArrayList<String>();
-                stingid.add(getid);
-                flag = true;
+//                String getid = String.valueOf(v.getId());
+//                List<String> stingid = new ArrayList<String>();
+//                stingid.add(getid);
+                sp = context.getSharedPreferences("my_sp", 0);
+
                 String salesid = getItem(position).getID();
+                String said = getItem(position).getSalesid();
                 spUtils.put(context, "tvnewlysalesid", salesid);
+                flag = true;
                 spUtils.put(context, "tvflag", flag);
                 String tvdate = getItem(position).getItem();
                 spUtils.put(context, "tvnewlydate", tvdate);//款号
@@ -150,7 +153,7 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
                 viewHolder.lin_content.setBackgroundResource(R.drawable.bill_record_item);
 
                 System.out.print("");
-                sp = context.getSharedPreferences("my_sp", 0);
+
                 String itemm = sp.getString("tvnewlydate", "");
                 /*从点击item中进入新建数据界面*/
                 Intent intent = new Intent(context,

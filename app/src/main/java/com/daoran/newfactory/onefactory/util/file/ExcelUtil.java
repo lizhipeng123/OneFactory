@@ -40,8 +40,10 @@ public class ExcelUtil {
             Toast.makeText(context, "SD卡不可用", Toast.LENGTH_LONG).show();
             return;
         }
+
         String[] title = {"编号", "申请人", "出车日期"};
         File file;
+        File appDir = new File(Environment.getExternalStorageDirectory(), "DfAPP");
         File dir = new File(context.getExternalFilesDir(null).getPath());
         file = new File(dir, fileName + ".xls");
         if (!dir.exists()) {

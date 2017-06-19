@@ -91,16 +91,17 @@
                     android:textSize="@dimen/dimen_50sp" />
             </RelativeLayout>
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1px"
-                android:background="#FF909090" />
+            <!--<View-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="1px"-->
+                <!--android:background="#FF909090" />-->
 
             <RelativeLayout
                 android:id="@+id/rlClean"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/aliceblue"
+                android:layout_marginTop="@dimen/dimen_20"
                 android:paddingBottom="@dimen/dimen_40"
                 android:paddingLeft="@dimen/dimen_30"
                 android:paddingRight="@dimen/dimen_30"
@@ -123,16 +124,17 @@
                     android:textSize="@dimen/dimen_50sp" />
             </RelativeLayout>
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1px"
-                android:background="#FF909090" />
+            <!--<View-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="1px"-->
+                <!--android:background="#FF909090" />-->
 
             <RelativeLayout
                 android:id="@+id/rlCore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/aliceblue"
+                android:layout_marginTop="@dimen/dimen_20"
                 android:paddingBottom="@dimen/dimen_40"
                 android:paddingLeft="@dimen/dimen_30"
                 android:paddingRight="@dimen/dimen_30"
@@ -154,16 +156,17 @@
                     android:src="@mipmap/setting_three" />
             </RelativeLayout>
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1px"
-                android:background="#FF909090" />
+            <!--<View-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="1px"-->
+                <!--android:background="#FF909090" />-->
 
             <RelativeLayout
                 android:id="@+id/rlExcelSD"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/aliceblue"
+                android:layout_marginTop="@dimen/dimen_20"
                 android:paddingBottom="@dimen/dimen_40"
                 android:paddingLeft="@dimen/dimen_30"
                 android:paddingRight="@dimen/dimen_30"
@@ -173,7 +176,7 @@
                     android:id="@+id/tvExcelSD"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="表格文件"
+                    android:text="Excel文件"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen_55sp" />
 
@@ -185,16 +188,17 @@
                     android:src="@mipmap/setting_three" />
             </RelativeLayout>
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1px"
-                android:background="#FF909090" />
+            <!--<View-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="1px"-->
+                <!--android:background="#FF909090" />-->
 
             <RelativeLayout
                 android:id="@+id/rlAbout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/aliceblue"
+                android:layout_marginTop="@dimen/dimen_20"
                 android:paddingBottom="@dimen/dimen_40"
                 android:paddingLeft="@dimen/dimen_30"
                 android:paddingRight="@dimen/dimen_30"
@@ -216,17 +220,17 @@
                     android:src="@mipmap/setting_three" />
             </RelativeLayout>
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1px"
-                android:background="#FF909090" />
+            <!--<View-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="1px"-->
+                <!--android:background="#FF909090" />-->
 
             <RelativeLayout
                 android:id="@+id/rlAgainLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dimen_30"
+                android:layout_marginTop="@dimen/dimen_50"
                 android:background="@color/aliceblue"
                 android:gravity="center"
                 android:paddingBottom="@dimen/dimen_40"
@@ -243,10 +247,10 @@
                     android:textSize="@dimen/dimen_55sp" />
             </RelativeLayout>
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1px"
-                android:background="#FF909090" />
+            <!--<View-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="1px"-->
+                <!--android:background="#FF909090" />-->
 
             <RelativeLayout
                 android:id="@+id/rlwifi"
