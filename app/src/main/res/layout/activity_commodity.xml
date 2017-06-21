@@ -722,7 +722,9 @@
                 android:id="@+id/etSqlDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen_90"
+                android:layout_gravity="center"
                 android:background="@drawable/shape_edittext_sql_boild"
+                android:gravity="center"
                 android:inputType="phone|number"
                 android:numeric="integer"
                 android:paddingLeft="15dp"
@@ -733,7 +735,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
+                android:gravity="center"
                 android:text="/"
                 android:textSize="20sp" />
 
@@ -741,18 +745,46 @@
                 android:id="@+id/tvSignPage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
+                android:gravity="center"
                 android:text="0"
                 android:textSize="20sp" />
 
             <Button
                 android:id="@+id/btnSignPage"
                 android:layout_width="@dimen/dimen_170"
-                android:layout_height="@dimen/dimen_90"
+                android:layout_height="@dimen/dimen_100"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/dimen_30"
                 android:background="@drawable/shape_btn_newsbuild_boild"
                 android:text="确定" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_30"
+                android:textSize="@dimen/dimen_50sp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="每页显示: "/>
+            <Spinner
+                android:id="@+id/spinnCommoPageClumns"
+                android:layout_width="@dimen/dimen_150"
+                android:layout_height="@dimen/dimen_100"
+                android:layout_marginLeft="@dimen/dimen_30"
+                android:background="@drawable/spinner_bg"
+                android:entries="@array/clumnsCommon"
+                android:gravity="center_vertical"
+                android:text="每页10行"
+                android:textSize="@dimen/dimen_50sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/dimen_30"
+                android:textSize="@dimen/dimen_50sp"
+                android:text="条"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

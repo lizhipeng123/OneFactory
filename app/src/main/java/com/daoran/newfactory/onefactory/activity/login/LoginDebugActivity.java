@@ -318,6 +318,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                         spUtils.put(getApplicationContext(), "name", userBean.getU_name());
                         spUtils.put(getApplicationContext(), "proname", userBean.getU_name());
                         spUtils.put(getApplicationContext(), "commoname", userBean.getU_name());
+                        spUtils.put(getApplicationContext(),"commologinid",userBean.getLogid());
                         Intent intent = new Intent(LoginDebugActivity.this, MainActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("u_name", userBean.getU_name());

@@ -129,8 +129,10 @@ public class CommoditySqlAdapter extends BaseAdapter {
         if (master == null) {
             master = "";
         }
-
-        if (master.equals("陈春英")) {
+        /**
+         * 判断生产主管是否是当前登录用户
+         */
+        if (master.equals(nameid)) {
             holder.lin_content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1518,7 +1520,10 @@ public class CommoditySqlAdapter extends BaseAdapter {
             editTextQCedtDoc.setText(getItem(position).getQCedtDoc());
 
 
-        } else if (documentary.equals("陈春英")) {
+            /**
+             * 判断跟单员是否是当前登录用户
+             */
+        } else if (documentary.equals(nameid)) {
             holder.lin_content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -2903,7 +2908,9 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextQCedtDoc.removeTextChangedListener((TextWatcher) editTextQCedtDoc.getTag());
             }
             editTextQCedtDoc.setText(getItem(position).getQCedtDoc());
-
+            /**
+             * 判断登录人是否是陈慧萍（跟单负责人）
+             */
         } else if (nameid.equals("陈慧萍")) {
             holder.tvCommoItem.setEnabled(true);
             holder.tvCommoItem.setText(getItem(position).getItem());

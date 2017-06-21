@@ -14,15 +14,19 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.commo.CommoditySqlActivity;
 import com.daoran.newfactory.onefactory.adapter.ProductionAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.ProducationConfigSaveBean;
@@ -91,6 +95,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     private LinearLayout ll_visibi;//
     private TextView tv_visibi;
     private ScrollView scroll_content;
+    private Spinner spinnProPageClumns;
     int keyHeight = 0;
     int screenHeight = 0;
 
@@ -123,6 +128,31 @@ public class ProductionActivity extends BaseFrangmentActivity
         ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
         tv_visibi = (TextView) findViewById(R.id.tv_visibi);
         scroll_content = (ScrollView) findViewById(R.id.scroll_content);
+        spinnProPageClumns = (Spinner) findViewById(R.id.spinnProPageClumns);
+        getClumnsSpinner();
+    }
+
+    private void getClumnsSpinner() {
+        String[] spinner = getResources().getStringArray(R.array.clumnsCommon);
+        ArrayAdapter<String> adapterclumns = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, spinner);
+        adapterclumns.setDropDownViewResource(R.layout.dropdown_stytle);
+        spinnProPageClumns.setAdapter(adapterclumns);
+        spinnProPageClumns.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String[] languages = getResources().
+                        getStringArray(R.array.clumnsCommon);
+                spUtils.put(ProductionActivity.this,
+                        "clumnsprospinner", languages[position]);
+                setData();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     /**
@@ -191,6 +221,10 @@ public class ProductionActivity extends BaseFrangmentActivity
         String Style = sp.getString("etprodialogStyle", "");//款号
         String Factory = sp.getString("etprodialogFactory", "");//工厂
 //        String Recode = sp.getString("etprodialogRecode", "");//制单人
+        String getsize = sp.getString("clumnsprospinner", "");
+        if (getsize.equals("")) {
+            getsize = String.valueOf(10);
+        }
         String Procedure = sp.getString("Procedure", "");//工序
         String stis = sp.getString("ischeckedd", "");//是否为空
         if (Procedure.equals("全部")) {
@@ -205,7 +239,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             conditions.setPrddocumentaryisnull(stris);
             propostbean.setConditions(conditions);
             propostbean.setPageNum(0);
-            propostbean.setPageSize(10);
+            propostbean.setPageSize(Integer.parseInt(getsize));
 
             String gsonbeanStr = gson.toJson(propostbean);
             if (NetWork.isNetWorkAvailable(this)) {
@@ -222,6 +256,7 @@ public class ProductionActivity extends BaseFrangmentActivity
 //                    dialog.show();
 //                } else {
                 ResponseDialog.showLoading(this);
+                final int finalGetsize = Integer.parseInt(getsize);
                 OkHttpUtils.postString()
                         .url(str)
                         .content(gsonbeanStr)
@@ -250,7 +285,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         scroll_content.setVisibility(View.VISIBLE);
                                         System.out.print(detailBeenList);
                                         pageCount = detailBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / 10);
+                                        String count = String.valueOf(pageCount / finalGetsize);
                                         tvSignPage.setText(count);
                                         adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                         mData.setAdapter(adapter);
@@ -282,7 +317,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             conditions.setPrddocumentaryisnull(stris);
             propostbean.setConditions(conditions);
             propostbean.setPageNum(0);
-            propostbean.setPageSize(10);
+            propostbean.setPageSize(Integer.parseInt(getsize));
             String gsonbeanStr = gson.toJson(propostbean);/*字符串转为json字符串*/
             if (NetWork.isNetWorkAvailable(this)) {
 //                /*检测是否为可用WiFi*/
@@ -298,6 +333,7 @@ public class ProductionActivity extends BaseFrangmentActivity
 //                    dialog.show();
 //                } else {
                 ResponseDialog.showLoading(this);
+                final int finalGetsize = Integer.parseInt(getsize);
                 OkHttpUtils.postString()
                         .url(str)
                         .content(gsonbeanStr)
@@ -325,7 +361,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         scroll_content.setVisibility(View.VISIBLE);
                                         System.out.print(detailBeenList);
                                         pageCount = detailBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / 10);
+                                        String count = String.valueOf(pageCount / finalGetsize);
                                         tvSignPage.setText(count);
                                         adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                         mData.setAdapter(adapter);
@@ -359,6 +395,10 @@ public class ProductionActivity extends BaseFrangmentActivity
         String namedure = sp.getString("proname", "");
         String Style = sp.getString("etprodialogStyle", "");
         String Factory = sp.getString("etprodialogFactory", "");
+        String getsize = sp.getString("clumnsprospinner", "");
+        if (getsize.equals("")) {
+            getsize = String.valueOf(10);
+        }
 //        String Recode = sp.getString("etprodialogRecode", "");
         String Procedure = sp.getString("Procedure", "");
         String stis = sp.getString("ischeckedd", "");
@@ -376,7 +416,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             conditions.setPrddocumentaryisnull(stris);
             propostbean.setConditions(conditions);
             propostbean.setPageNum(index);
-            propostbean.setPageSize(10);
+            propostbean.setPageSize(Integer.parseInt(getsize));
             String gsonbeanStr = gson.toJson(propostbean);
             Log.e("you wanted", "[" + gsonbeanStr + "," + gsonbeanStr + "+]");
             if (NetWork.isNetWorkAvailable(this)) {
@@ -393,6 +433,7 @@ public class ProductionActivity extends BaseFrangmentActivity
 //                    dialog.show();
 //                } else {
                 ResponseDialog.showLoading(this);
+                final int finalGetsize = Integer.parseInt(getsize);
                 OkHttpUtils.postString()
                         .url(str)
                         .content(gsonbeanStr)
@@ -419,7 +460,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         scroll_content.setVisibility(View.VISIBLE);
                                         System.out.print(detailBeenList);
                                         pageCount = detailBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / 10);
+                                        String count = String.valueOf(pageCount / finalGetsize);
                                         tvSignPage.setText(count);
                                         adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                         mData.setAdapter(adapter);
@@ -455,7 +496,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             conditions.setPrddocumentaryisnull(stris);
             propostbean.setConditions(conditions);
             propostbean.setPageNum(index);
-            propostbean.setPageSize(10);
+            propostbean.setPageSize(Integer.parseInt(getsize));
             String gsonbeanStr = gson.toJson(propostbean);
             if (NetWork.isNetWorkAvailable(this)) {
 //                /*检测是否为可用WiFi*/
@@ -471,6 +512,7 @@ public class ProductionActivity extends BaseFrangmentActivity
 //                    dialog.show();
 //                } else {
                 ResponseDialog.showLoading(this);
+                final int finalGetsize = Integer.parseInt(getsize);
                 OkHttpUtils.postString()
                         .url(str)
                         .content(gsonbeanStr)
@@ -498,7 +540,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         scroll_content.setVisibility(View.VISIBLE);
                                         System.out.print(detailBeenList);
                                         pageCount = detailBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / 10);
+                                        String count = String.valueOf(pageCount / finalGetsize);
                                         tvSignPage.setText(count);
                                         adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                         mData.setAdapter(adapter);

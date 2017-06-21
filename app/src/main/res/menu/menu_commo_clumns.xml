@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+       android:id="@+id/show_commo_clumns_ten"
+        android:title="每页10行"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/show_commo_clumns_ershi"
+        android:title="每页20行"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/show_commo_clumns_sanshi"
+        android:title="每页30行"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/show_commo_clumns_sishi"
+        android:title="每页40行"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/show_commo_clumns_wushi"
+        android:title="每页50行"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/show_commo_clumns_liushi"
+        android:title="每页60行"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/show_commo_clumns_qishi"
+        android:title="每页70行"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/show_commo_clumns_bashi"
+        android:title="每页80行"
+        app:showAsAction="never">
+    </item>
+</menu>

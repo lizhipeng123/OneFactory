@@ -5,16 +5,20 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.adapter.CommoditySqlAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
+import com.daoran.newfactory.onefactory.bean.ClumnsResultBean;
 import com.daoran.newfactory.onefactory.bean.CommodityPostBean;
 import com.daoran.newfactory.onefactory.bean.CommoditySaveBean;
 import com.daoran.newfactory.onefactory.bean.CommoditydetailBean;
@@ -60,6 +64,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private CommoditydetailBean commoditydetailBean;//列表实体bean
     private CommoditySqlAdapter sqlAdapter;//列表适配
     List<CommoditySaveBean> saveBeen = new ArrayList<CommoditySaveBean>();//实体list
+    private ClumnsResultBean resultBean;
 
     private TextView tvSignPage;//显示的总页数
     private EditText etSqlDetail;//输入的页数
@@ -68,6 +73,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private LinearLayout ll_visibi;
     private TextView tv_visibi;
     private ScrollView scroll_content;
+    private Spinner spinnCommoPageClumns;
 
     private SharedPreferences sp;//轻量级存储本地数据
     private SPUtils spUtils;
@@ -82,6 +88,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         initView();
         setData();
         setListener();
+        setColumnRight();
     }
 
     /**
@@ -101,6 +108,31 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
         tv_visibi = (TextView) findViewById(R.id.tv_visibi);
         scroll_content = (ScrollView) findViewById(R.id.scroll_content);
+        spinnCommoPageClumns = (Spinner) findViewById(R.id.spinnCommoPageClumns);
+        getClumnsSpinner();
+    }
+
+    private void getClumnsSpinner() {
+        String[] spinner = getResources().getStringArray(R.array.clumnsCommon);
+        ArrayAdapter<String> adapterclumns = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, spinner);
+        adapterclumns.setDropDownViewResource(R.layout.dropdown_stytle);
+        spinnCommoPageClumns.setAdapter(adapterclumns);
+        spinnCommoPageClumns.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String[] languages = getResources().
+                        getStringArray(R.array.clumnsCommon);
+                spUtils.put(CommoditySqlActivity.this,
+                        "clumnsspinner", languages[position]);
+                setData();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     /**
@@ -206,6 +238,10 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         String recodename = sp.getString("commoname", "");//跟单
         String Style = sp.getString("commoStyle", "");//款号
 //        String Factory = sp.getString("commoFactory", "");//跟单
+        String pagesize = sp.getString("clumnsspinner", "");
+        if (pagesize.equals("")) {
+            pagesize = String.valueOf(10);
+        }
         String Recode = sp.getString("commoRecode", "");//巡检
         String etprodialogProcedure = sp.getString("etprodialogProcedure", "");//生产主管
         String ischeck = sp.getString("ischeckedd", "");//是否可为空
@@ -220,10 +256,11 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         conditions.setPrdmasterisnull(stris);
         postBean.setConditions(conditions);
         postBean.setPageNum(0);
-        postBean.setPageSize(10);
+        postBean.setPageSize(Integer.parseInt(pagesize));
         String stringpost = gson.toJson(postBean);
         if (NetWork.isNetWorkAvailable(this)) {
             ResponseDialog.showLoading(this);
+            final int finalGetsize = Integer.parseInt(pagesize);
             OkHttpUtils.postString()
                     .url(str)
                     .content(stringpost)
@@ -250,7 +287,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                     scroll_content.setVisibility(View.VISIBLE);
                                     System.out.print(dataBeen);
                                     pageCount = commoditydetailBean.getTotalCount();
-                                    String count = String.valueOf(pageCount / 10);
+                                    String count = String.valueOf(pageCount / finalGetsize);
                                     tvSignPage.setText(count);
                                     sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this, dataBeen);
                                     mData.setAdapter(sqlAdapter);
@@ -280,6 +317,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         String recodename = sp.getString("commoname", "");//跟单
         String Style = sp.getString("commoStyle", "");//款号
 //        String Factory = sp.getString("commoFactory", "");//跟单
+        String pagesize = sp.getString("clumnsspinner", "");
         String Recode = sp.getString("commoRecode", "");//巡检
         String etprodialogProcedure = sp.getString("etproProcedure", "");//生产主管
         String ischeck = sp.getString("ischeckedd", "");//是否可为空
@@ -296,10 +334,11 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         conditions.setPrdmasterisnull(stris);
         postBean.setConditions(conditions);
         postBean.setPageNum(Index);
-        postBean.setPageSize(10);
+        postBean.setPageSize(Integer.parseInt(pagesize));
         String stringpost = gson.toJson(postBean);
         if (NetWork.isNetWorkAvailable(this)) {
             ResponseDialog.showLoading(this);
+            final int finalGetsize = Integer.parseInt(pagesize);
             OkHttpUtils.postString()
                     .url(str)
                     .content(stringpost)
@@ -326,7 +365,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                     scroll_content.setVisibility(View.VISIBLE);
                                     System.out.print(dataBeen);
                                     pageCount = commoditydetailBean.getTotalCount();
-                                    String count = String.valueOf(pageCount / 10);
+                                    String count = String.valueOf(pageCount / finalGetsize);
                                     tvSignPage.setText(count);
                                     sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this, dataBeen);
                                     mData.setAdapter(sqlAdapter);
@@ -346,8 +385,35 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         }
     }
 
-    private void setColumnRight(){
-        String columnSql = HttpUrl.debugoneUrl+"";
+    /**
+     * 分配列权限
+     */
+    private void setColumnRight() {
+        String strloginid = sp.getString("commologinid", "");
+        String args = "pd_saleslist,查货跟踪表," + strloginid;
+        String columnSql = HttpUrl.debugoneUrl + "Common/GetClumns/?id=" +
+                escape(args);
+        OkHttpUtils.get()
+                .url(columnSql)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        System.out.print(response);//得到的是pd_saleslist里面的所有数据，
+                        // 一般都是null，0678账号中JsonText字段有json数组
+                        resultBean = new Gson().fromJson(response, ClumnsResultBean.class);
+                        System.out.print(resultBean);
+                        if (resultBean.getJsonText() != null) {//如果JsonText不为空的话，就转义，然后json解析到实体类
+                            String resultJsontext = resultBean.getJsonText().replace("\\", "");
+                            System.out.print(resultJsontext);
+                        }
+                    }
+                });
     }
 
     /**
@@ -391,6 +457,35 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         } else {
             ToastUtils.ShowToastMessage(R.string.noHttp, CommoditySqlActivity.this);
         }
+    }
+
+    /**
+     * escape编解码
+     *
+     * @param src
+     * @return
+     */
+    public static String escape(String src) {
+        int i;
+        char j;
+        StringBuffer tmp = new StringBuffer();
+        tmp.ensureCapacity(src.length() * 6);
+        for (i = 0; i < src.length(); i++) {
+            j = src.charAt(i);
+            if (Character.isDigit(j) || Character.isLowerCase(j)
+                    || Character.isUpperCase(j))
+                tmp.append(j);
+            else if (j < 256) {
+                tmp.append("%");
+                if (j < 16)
+                    tmp.append("0");
+                tmp.append(Integer.toString(j, 16));
+            } else {
+                tmp.append("%u");
+                tmp.append(Integer.toString(j, 16));
+            }
+        }
+        return tmp.toString();
     }
 
     /**

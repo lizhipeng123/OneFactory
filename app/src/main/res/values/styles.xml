@@ -97,4 +97,9 @@
         <item name="android:minHeight">36dp</item>
     </style>
     <style name="TextView" />
+    <style name="popMenu_style" parent="@android:style/Widget.Holo.Light.PopupMenu">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/green</item>
+        <item name="android:height">10dp</item>
+    </style>
 </resources>

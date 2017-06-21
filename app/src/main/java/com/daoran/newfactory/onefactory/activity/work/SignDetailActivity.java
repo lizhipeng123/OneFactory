@@ -8,14 +8,18 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
 import com.daoran.newfactory.onefactory.adapter.SignDetailAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.SignDetailBean;
@@ -60,6 +64,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     private LinearLayout ll_visibi;
     private TextView tv_visibi;
     private ScrollView scroll_content;
+    private Spinner spinnSignPageClumns;
 
     private SharedPreferences sp;
     private SPUtils spUtils;
@@ -93,6 +98,8 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
         tv_visibi = (TextView) findViewById(R.id.tv_visibi);
         scroll_content = (ScrollView) findViewById(R.id.scroll_content);
+        spinnSignPageClumns = (Spinner) findViewById(R.id.spinnSignPageClumns);
+        getClumnsSpinner();
     }
 
     /**
@@ -104,6 +111,29 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         btnSignPage.setOnClickListener(this);
         etSqlDetail.setOnClickListener(this);
         etSqlDetail.setSelection(etSqlDetail.getText().length());
+    }
+
+    private void getClumnsSpinner() {
+        String[] spinner = getResources().getStringArray(R.array.clumnsCommon);
+        ArrayAdapter<String> adapterclumns = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, spinner);
+        adapterclumns.setDropDownViewResource(R.layout.dropdown_stytle);
+        spinnSignPageClumns.setAdapter(adapterclumns);
+        spinnSignPageClumns.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String[] languages = getResources().
+                        getStringArray(R.array.clumnsCommon);
+                spUtils.put(SignDetailActivity.this,
+                        "clumnssignspinner", languages[position]);
+                setSignDetail();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override
@@ -141,6 +171,10 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
         sp = SignDetailActivity.this.getSharedPreferences("my_sp", 0);
         String name = sp.getString("name", "");
+        String getsize = sp.getString("clumnssignspinner", "");
+        if (getsize.equals("")) {
+            getsize = String.valueOf(10);
+        }
         String datetime = sp.getString("datetimesign", "");
         String endtime = sp.getString("endtimesign", "");
         if (NetWork.isNetWorkAvailable(this)) {
@@ -156,58 +190,59 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
 //                dialog.setButton("确定", listenerwifi);
 //                dialog.show();
 //            } else {
-                ResponseDialog.showLoading(this);
-                OkHttpUtils
-                        .post()
-                        .url(str)
-                        .addParams("pageNum", "0")
-                        .addParams("pageSize", "20")
-                        .addParams("recorder", name)
-                        .addParams("recordat_start", datetime)
-                        .addParams("recordat_end", endtime)
-                        .addParams("recordplace", "")
-                        .addParams("memo", "")
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                e.printStackTrace();
-                            }
+            ResponseDialog.showLoading(this);
+            final int finalGetsize = Integer.parseInt(getsize);
+            OkHttpUtils
+                    .post()
+                    .url(str)
+                    .addParams("pageNum", "0")
+                    .addParams("pageSize", getsize)
+                    .addParams("recorder", name)
+                    .addParams("recordat_start", datetime)
+                    .addParams("recordat_end", endtime)
+                    .addParams("recordplace", "")
+                    .addParams("memo", "")
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                        }
 
-                            @Override
-                            public void onResponse(String response, int id) {
-                                System.out.print(response);
-                                try {
-                                    Gson gson = new Gson();
-                                    signBean = gson.fromJson(response, SignDetailBean.class);
-                                    mListData = signBean.getData();
-                                    if (signBean.getTotalCount() != 0) {
-                                        ll_visibi.setVisibility(View.GONE);
-                                        scroll_content.setVisibility(View.VISIBLE);
-                                        pageCount = signBean.getTotalCount();
-                                        spUtils.put(SignDetailActivity.this, "pageCount", pageCount);
-                                        System.out.print(pageCount);
-                                        String count = String.valueOf(pageCount / 20);
-                                        System.out.print(count);
-                                        tvSignPage.setText(count);
-                                        detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
-                                        mData.setAdapter(detailAdapter);
-                                        detailAdapter.notifyDataSetChanged();
-                                    } else {
-                                        ll_visibi.setVisibility(View.VISIBLE);
-                                        scroll_content.setVisibility(View.GONE);
-                                        tv_visibi.setText("没有更多信息");
-                                    }
-                                    ResponseDialog.closeLoading();
-                                } catch (JsonSyntaxException e) {
-                                    ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
-                                    ResponseDialog.closeLoading();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    ResponseDialog.closeLoading();
+                        @Override
+                        public void onResponse(String response, int id) {
+                            System.out.print(response);
+                            try {
+                                Gson gson = new Gson();
+                                signBean = gson.fromJson(response, SignDetailBean.class);
+                                mListData = signBean.getData();
+                                if (signBean.getTotalCount() != 0) {
+                                    ll_visibi.setVisibility(View.GONE);
+                                    scroll_content.setVisibility(View.VISIBLE);
+                                    pageCount = signBean.getTotalCount();
+                                    spUtils.put(SignDetailActivity.this, "pageCount", pageCount);
+                                    System.out.print(pageCount);
+                                    String count = String.valueOf(pageCount / finalGetsize);
+                                    System.out.print(count);
+                                    tvSignPage.setText(count);
+                                    detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
+                                    mData.setAdapter(detailAdapter);
+                                    detailAdapter.notifyDataSetChanged();
+                                } else {
+                                    ll_visibi.setVisibility(View.VISIBLE);
+                                    scroll_content.setVisibility(View.GONE);
+                                    tv_visibi.setText("没有更多信息");
                                 }
+                                ResponseDialog.closeLoading();
+                            } catch (JsonSyntaxException e) {
+                                ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
+                                ResponseDialog.closeLoading();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                ResponseDialog.closeLoading();
                             }
-                        });
+                        }
+                    });
 //            }
         } else {
             ToastUtils.ShowToastMessage(R.string.disNetworking, SignDetailActivity.this);
@@ -236,6 +271,10 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         String name = sp.getString("name", "");
         String datetime = sp.getString("datetimesign", "");
         String endtime = sp.getString("endtimesign", "");
+        String getsize = sp.getString("clumnssignspinner", "");
+        if (getsize.equals("")) {
+            getsize = String.valueOf(10);
+        }
         pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
         String index = String.valueOf(pageIndex - 1);
         if (NetWork.isNetWorkAvailable(this)) {
@@ -251,58 +290,60 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
 //                dialog.setButton("确定", listenerwifi);
 //                dialog.show();
 //            } else {
-                ResponseDialog.showLoading(this);
-                OkHttpUtils
-                        .post()
-                        .url(str)
-                        .addParams("pageNum", index)
-                        .addParams("pageSize", "20")
-                        .addParams("recorder", name)
-                        .addParams("recordat_start", datetime)
-                        .addParams("recordat_end", endtime)
-                        .addParams("recordplace", "")
-                        .addParams("memo", "")
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                e.printStackTrace();
-                            }
+            ResponseDialog.showLoading(this);
+            final int finalGetsize = Integer.parseInt(getsize);
+            OkHttpUtils
+                    .post()
+                    .url(str)
+                    .addParams("pageNum", index)
+                    .addParams("pageSize", getsize)
+                    .addParams("recorder", name)
+                    .addParams("recordat_start", datetime)
+                    .addParams("recordat_end", endtime)
+                    .addParams("recordplace", "")
+                    .addParams("memo", "")
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                        }
 
-                            @Override
-                            public void onResponse(String response, int id) {
-                                System.out.print(response);
-                                try {
-                                    Gson gson = new Gson();
-                                    signBean = gson.fromJson(response, SignDetailBean.class);
-                                    mListData = signBean.getData();
-                                    if (signBean.getTotalCount() != 0) {
-                                        ll_visibi.setVisibility(View.GONE);
-                                        scroll_content.setVisibility(View.VISIBLE);
-                                        pageCount = signBean.getTotalCount();
-                                        spUtils.put(SignDetailActivity.this, "pagesqlCount", pageCount);
-                                        System.out.print(pageCount);
-                                        String count = String.valueOf(pageCount / 20);
-                                        System.out.print(count);
-                                        tvSignPage.setText(count);
-                                        detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
-                                        mData.setAdapter(detailAdapter);
-                                        detailAdapter.notifyDataSetChanged();
-                                    } else {
-                                        ll_visibi.setVisibility(View.VISIBLE);
-                                        scroll_content.setVisibility(View.GONE);
-                                        tv_visibi.setText("没有更多信息");
-                                    }
-                                    ResponseDialog.closeLoading();
-                                } catch (JsonSyntaxException e) {
-                                    ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
-                                    ResponseDialog.closeLoading();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    ResponseDialog.closeLoading();
+                        @Override
+                        public void onResponse(String response, int id) {
+                            System.out.print(response);
+                            try {
+                                Gson gson = new Gson();
+                                signBean = gson.fromJson(response, SignDetailBean.class);
+                                mListData = signBean.getData();
+                                if (signBean.getTotalCount() != 0) {
+                                    ll_visibi.setVisibility(View.GONE);
+                                    scroll_content.setVisibility(View.VISIBLE);
+                                    pageCount = signBean.getTotalCount();
+                                    spUtils.put(SignDetailActivity.this, "pagesqlCount", pageCount);
+                                    System.out.print(pageCount);
+//                                        int pagesign = finalGetsize;
+                                    String count = String.valueOf(pageCount / finalGetsize);
+                                    System.out.print(count);
+                                    tvSignPage.setText(count);
+                                    detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
+                                    mData.setAdapter(detailAdapter);
+                                    detailAdapter.notifyDataSetChanged();
+                                } else {
+                                    ll_visibi.setVisibility(View.VISIBLE);
+                                    scroll_content.setVisibility(View.GONE);
+                                    tv_visibi.setText("没有更多信息");
                                 }
+                                ResponseDialog.closeLoading();
+                            } catch (JsonSyntaxException e) {
+                                ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
+                                ResponseDialog.closeLoading();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                ResponseDialog.closeLoading();
                             }
-                        });
+                        }
+                    });
 //            }
         } else {
             ToastUtils.ShowToastMessage(R.string.disNetworking, SignDetailActivity.this);

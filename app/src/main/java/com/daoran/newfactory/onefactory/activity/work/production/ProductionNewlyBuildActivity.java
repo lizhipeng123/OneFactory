@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,9 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.SignDetailActivity;
 import com.daoran.newfactory.onefactory.adapter.ProductionNewlyBuildAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.ProNewlyBuildBean;
@@ -74,6 +77,7 @@ public class ProductionNewlyBuildActivity
     private LinearLayout ll_visibi;//隐藏的不存在数据的页面
     private TextView tv_visibi;
     private ScrollView scroll_content;
+    private Spinner spinnProNewPageClumns;
 
     private int pageCount;//请求获取的总页数
     private int pageIndex = 0;//初始页数
@@ -88,6 +92,7 @@ public class ProductionNewlyBuildActivity
         getViews();
         initViews();
         setListener();
+        getClumnsSpinner();
         setDate();
         lv_newbuild_data.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -120,6 +125,7 @@ public class ProductionNewlyBuildActivity
         ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
         tv_visibi = (TextView) findViewById(R.id.tv_visibi);
         scroll_content = (ScrollView) findViewById(R.id.scroll_content);
+        spinnProNewPageClumns = (Spinner) findViewById(R.id.spinnProNewPageClumns);
     }
 
     /**
@@ -142,11 +148,39 @@ public class ProductionNewlyBuildActivity
         btnNewbuildConfirm.setOnClickListener(this);
     }
 
+    private void getClumnsSpinner() {
+        String[] spinner = getResources().getStringArray(R.array.clumnsCommon);
+        ArrayAdapter<String> adapterclumns = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, spinner);
+        adapterclumns.setDropDownViewResource(R.layout.dropdown_stytle);
+        spinnProNewPageClumns.setAdapter(adapterclumns);
+        spinnProNewPageClumns.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String[] languages = getResources().
+                        getStringArray(R.array.clumnsCommon);
+                spUtils.put(ProductionNewlyBuildActivity.this,
+                        "clumnspronewspinner", languages[position]);
+                setDate();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
     /**
      * 初始化查询
      */
     private void setDate() {
+        sp = getSharedPreferences("my_sp", 0);
         String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
+        String pagesize = sp.getString("clumnspronewspinner", "");
+        if (pagesize.equals("")) {
+            pagesize = String.valueOf(10);
+        }
         Gson gson = new Gson();
         final PropostNewlyBuildBean buildBean = new PropostNewlyBuildBean();
         PropostNewlyBuildBean.Conditions conditions = buildBean.new Conditions();
@@ -154,10 +188,11 @@ public class ProductionNewlyBuildActivity
         conditions.setWorkingProcedure("");
         buildBean.setConditions(conditions);
         buildBean.setPageNum(0);
-        buildBean.setPageSize(10);
+        buildBean.setPageSize(Integer.parseInt(pagesize));
         final String bean = gson.toJson(buildBean);
         if (NetWork.isNetWorkAvailable(this)) {
             ResponseDialog.showLoading(this);
+            final int finalGetsize = Integer.parseInt(pagesize);
             OkHttpUtils.postString()
                     .url(urlDaily)
                     .content(bean)
@@ -184,7 +219,7 @@ public class ProductionNewlyBuildActivity
                                     scroll_content.setVisibility(View.VISIBLE);
                                     System.out.print(dataBeen);
                                     pageCount = newlyBuildBean.getTotalCount();
-                                    String count = String.valueOf(pageCount / 10);
+                                    String count = String.valueOf(pageCount / finalGetsize);
                                     tvNewbuildPage.setText(count);
                                     buildAdapter = new ProductionNewlyBuildAdapter(
                                             ProductionNewlyBuildActivity.this, dataBeen);
@@ -223,7 +258,12 @@ public class ProductionNewlyBuildActivity
      * 根据工序及款号查找信息
      */
     private void setPageDate() {
+        sp = getSharedPreferences("my_sp", 0);
         String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
+        String pagesize = sp.getString("clumnspronewspinner", "");
+        if (pagesize.equals("")) {
+            pagesize = String.valueOf(10);
+        }
         String spinner = spinnerNewbuild.getText().toString();
         String editNewlyBuild = etNewbuild.getText().toString();//输入款号
         if (spinner.equals("选择工序") || spinner == null) {
@@ -243,10 +283,11 @@ public class ProductionNewlyBuildActivity
             conditions.setWorkingProcedure(spinner);
             buildBean.setConditions(conditions);
             buildBean.setPageNum(0);
-            buildBean.setPageSize(10);
+            buildBean.setPageSize(Integer.parseInt(pagesize));
             final String bean = gson.toJson(buildBean);
             if (NetWork.isNetWorkAvailable(this)) {
                 ResponseDialog.showLoading(this);
+                final int finalGetsize = Integer.parseInt(pagesize);
                 OkHttpUtils.postString()
                         .url(urlDaily)
                         .content(bean)
@@ -273,7 +314,7 @@ public class ProductionNewlyBuildActivity
                                         scroll_content.setVisibility(View.VISIBLE);
                                         System.out.print(dataBeen);
                                         pageCount = newlyBuildBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / 10);
+                                        String count = String.valueOf(pageCount / finalGetsize);
                                         tvNewbuildPage.setText(count);
                                         buildAdapter = new ProductionNewlyBuildAdapter(
                                                 ProductionNewlyBuildActivity.this, dataBeen);
@@ -301,11 +342,16 @@ public class ProductionNewlyBuildActivity
      * 根据工序查询信息
      */
     private void setPagefistDate() {
+        sp = getSharedPreferences("my_sp", 0);
         String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
         String spinner = spinnerNewbuild.getText().toString();//工序
         String editNewlyBuild = etNewbuild.getText().toString();//输入款号
         pageIndex = Integer.parseInt(etNewbuildDetail.getText().toString());
         int ind = pageIndex - 1;
+        String pagesize = sp.getString("clumnspronewspinner", "");
+        if (pagesize.equals("")) {
+            pagesize = String.valueOf(10);
+        }
         if (spinner == "选择工序" || spinner.equals("选择工序")) {
             Gson gson = new Gson();
             final PropostNewlyBuildBean buildBean = new PropostNewlyBuildBean();
@@ -314,10 +360,11 @@ public class ProductionNewlyBuildActivity
             conditions.setWorkingProcedure("");
             buildBean.setConditions(conditions);
             buildBean.setPageNum(ind);
-            buildBean.setPageSize(10);
+            buildBean.setPageSize(Integer.parseInt(pagesize));
             final String bean = gson.toJson(buildBean);
             if (NetWork.isNetWorkAvailable(this)) {
                 ResponseDialog.showLoading(this);
+                final int finalGetsize = Integer.parseInt(pagesize);
                 OkHttpUtils.postString()
                         .url(urlDaily)
                         .content(bean)
@@ -344,7 +391,7 @@ public class ProductionNewlyBuildActivity
                                         scroll_content.setVisibility(View.VISIBLE);
                                         System.out.print(dataBeen);
                                         pageCount = newlyBuildBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / 10);
+                                        String count = String.valueOf(pageCount / finalGetsize);
                                         tvNewbuildPage.setText(count);
                                         buildAdapter = new ProductionNewlyBuildAdapter(
                                                 ProductionNewlyBuildActivity.this, dataBeen);
@@ -373,9 +420,11 @@ public class ProductionNewlyBuildActivity
             conditions.setWorkingProcedure(spinner);
             buildBean.setConditions(conditions);
             buildBean.setPageNum(ind);
-            buildBean.setPageSize(10);
+            buildBean.setPageSize(Integer.parseInt(pagesize));
             final String bean = gson.toJson(buildBean);
             if (NetWork.isNetWorkAvailable(this)) {
+                ResponseDialog.showLoading(this);
+                final int finalGetsize = Integer.parseInt(pagesize);
                 OkHttpUtils.postString()
                         .url(urlDaily)
                         .content(bean)
@@ -402,7 +451,7 @@ public class ProductionNewlyBuildActivity
                                         scroll_content.setVisibility(View.VISIBLE);
                                         System.out.print(dataBeen);
                                         pageCount = newlyBuildBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / 10);
+                                        String count = String.valueOf(pageCount / finalGetsize);
                                         tvNewbuildPage.setText(count);
                                         buildAdapter = new ProductionNewlyBuildAdapter(
                                                 ProductionNewlyBuildActivity.this, dataBeen);
@@ -413,8 +462,10 @@ public class ProductionNewlyBuildActivity
                                         scroll_content.setVisibility(View.GONE);
                                         tv_visibi.setText("没有更多数据");
                                     }
+                                    ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
+                                    ResponseDialog.closeLoading();
                                 }
                             }
                         });
