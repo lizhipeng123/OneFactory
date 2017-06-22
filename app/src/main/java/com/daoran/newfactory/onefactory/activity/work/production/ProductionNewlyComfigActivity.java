@@ -91,7 +91,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         sp = getSharedPreferences("my_sp", 0);
 //        String[] isStringtemp = spUtils.getSharedPreference("tempstring");
 //        System.out.print(isStringtemp);
-        String isprodure = sp.getString("isprodure", "");
+        String isprodure = sp.getString("isprodure",  "");
         if (isprodure.equals("0")) {
             tvconfigone.setVisibility(View.VISIBLE);
             tvconfigtwo.setVisibility(View.VISIBLE);
