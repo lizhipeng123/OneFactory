@@ -3,6 +3,8 @@ package com.daoran.newfactory.onefactory.util.Http.sharedparams;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.json.JSONArray;
+
 import java.util.Map;
 
 /**
@@ -70,7 +72,7 @@ public class SPUtils {
     public String[] getSharedPreference(String key) {
         String regularEx = "#";
         String[] str = null;
-        SharedPreferences sp = mContext.getSharedPreferences("data", 0);
+        SharedPreferences sp = mContext.getSharedPreferences(FILE_NAME, 0);
         String values;
         values = sp.getString(key, "");
         str = values.split(regularEx);
@@ -81,7 +83,7 @@ public class SPUtils {
     public void setSharedPreference(String key, String[] values) {
         String regularEx = "#";
         String str = "";
-        SharedPreferences sp = mContext.getSharedPreferences("data", 0);
+        SharedPreferences sp = mContext.getSharedPreferences(FILE_NAME, 0);
         if (values != null && values.length > 0) {
             for (String value : values) {
                 str += value;
@@ -119,4 +121,41 @@ public class SPUtils {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, 0);
         return sp.contains(key);
     }
+
+    public String[] getSharedPreferencee(String key) {
+        String regularEx = "#";
+        String[] str = null;
+        SharedPreferences sp = mContext.getSharedPreferences(FILE_NAME, 0);
+        String values;
+        values = sp.getString(key, "");
+        str = values.split(regularEx);
+
+        return str;
+    }
+
+    public void setSharedPreferencee(String key, String[] values) {
+        String regularEx = "#";
+        String str = "";
+        SharedPreferences sp = mContext.getSharedPreferences(FILE_NAME, 0);
+        if (values != null && values.length > 0) {
+            for (String value : values) {
+                str += value;
+                str += regularEx;
+            }
+            SharedPreferences.Editor et = sp.edit();
+            et.putString(key, str);
+            et.commit();
+        }
+    }
+    public static void saveApkEnalbleArray(Context context,String[] booleanArray) {
+        SharedPreferences prefs = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        JSONArray jsonArray = new JSONArray();
+        for (String b : booleanArray) {
+            jsonArray.put(b);
+        }
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(FILE_NAME,jsonArray.toString());
+        editor.commit();
+    }
+
 }

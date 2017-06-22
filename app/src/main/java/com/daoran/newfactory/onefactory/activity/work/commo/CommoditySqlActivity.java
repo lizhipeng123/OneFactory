@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.adapter.CommoditySqlAdapter;
+import com.daoran.newfactory.onefactory.adapter.CommoditySqlLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.ClumnsResultBean;
 import com.daoran.newfactory.onefactory.bean.CommodityPostBean;
@@ -51,6 +52,7 @@ import okhttp3.MediaType;
 public class CommoditySqlActivity extends BaseFrangmentActivity
         implements View.OnClickListener {
     private NoscrollListView mData;//列表
+    private NoscrollListView lv_cleft;//左侧款号列表
 
     private SyncHorizontalScrollView mHeaderHorizontal;
     private SyncHorizontalScrollView mDataHorizontal;
@@ -62,6 +64,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private List<CommoditydetailBean.DataBean> dataBeen
             = new ArrayList<CommoditydetailBean.DataBean>();//查货信息实体集合
     private CommoditydetailBean commoditydetailBean;//列表实体bean
+    private CommoditySqlLeftAdapter leftAdapter;
     private CommoditySqlAdapter sqlAdapter;//列表适配
     List<CommoditySaveBean> saveBeen = new ArrayList<CommoditySaveBean>();//实体list
     private ClumnsResultBean resultBean;
@@ -97,6 +100,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private void getViews() {
         ivProductionBack = (ImageView) findViewById(R.id.ivCommoditySql);
         mData = (NoscrollListView) findViewById(R.id.lv_data);
+        lv_cleft = (NoscrollListView) findViewById(R.id.lv_cleft);
         mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
         mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
         ivSearch = (ImageView) findViewById(R.id.ivSearch);
@@ -112,6 +116,9 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         getClumnsSpinner();
     }
 
+    /**
+     * 填充查货跟踪单每页显示条目spinner数据
+     */
     private void getClumnsSpinner() {
         String[] spinner = getResources().getStringArray(R.array.clumnsCommon);
         ArrayAdapter<String> adapterclumns = new ArrayAdapter<String>(this,
@@ -291,6 +298,8 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                     tvSignPage.setText(count);
                                     sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this, dataBeen);
                                     mData.setAdapter(sqlAdapter);
+                                    leftAdapter = new CommoditySqlLeftAdapter(CommoditySqlActivity.this,dataBeen);
+                                    lv_cleft.setAdapter(leftAdapter);
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
                                     scroll_content.setVisibility(View.GONE);
@@ -369,6 +378,8 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                     tvSignPage.setText(count);
                                     sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this, dataBeen);
                                     mData.setAdapter(sqlAdapter);
+                                    leftAdapter = new CommoditySqlLeftAdapter(CommoditySqlActivity.this,dataBeen);
+                                    lv_cleft.setAdapter(leftAdapter);
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
                                     scroll_content.setVisibility(View.GONE);

@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.work.commo.CommoditySqlActivity;
 import com.daoran.newfactory.onefactory.adapter.ProductionAdapter;
+import com.daoran.newfactory.onefactory.adapter.ProductionLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.ProducationConfigSaveBean;
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
@@ -66,7 +67,9 @@ public class ProductionActivity extends BaseFrangmentActivity
         , View.OnLayoutChangeListener {
 
     private NoscrollListView mData;//listview的列表
+    private NoscrollListView lv_left;//左侧编号
     private ProcationDialog procationDialog;//条件查询的dialog
+    private ProductionLeftAdapter mLeftAdapter;
 
     private SyncHorizontalScrollView mHeaderHorizontal;//标题scrollview
     private SyncHorizontalScrollView mDataHorizontal;//列表scrollview
@@ -99,6 +102,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     int keyHeight = 0;
     int screenHeight = 0;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,6 +121,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     private void getViews() {
         ivProductionBack = (ImageView) findViewById(R.id.ivProductionBack);
         mData = (NoscrollListView) findViewById(R.id.lv_data);
+        lv_left = (NoscrollListView) findViewById(R.id.lv_pleft);
         ivSearch = (ImageView) findViewById(R.id.ivSearch);
         mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
         mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
@@ -132,6 +137,9 @@ public class ProductionActivity extends BaseFrangmentActivity
         getClumnsSpinner();
     }
 
+    /**
+     * 填充生产日报每页显示条目数spinner数据
+     */
     private void getClumnsSpinner() {
         String[] spinner = getResources().getStringArray(R.array.clumnsCommon);
         ArrayAdapter<String> adapterclumns = new ArrayAdapter<String>(this,
@@ -162,6 +170,9 @@ public class ProductionActivity extends BaseFrangmentActivity
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);//横竖SyncHorizontalScrollView适配
         etSqlDetail.setSelection(etSqlDetail.getText().length());//将光标移到文本最后
+
+
+
     }
 
     /**
@@ -287,6 +298,8 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         pageCount = detailBean.getTotalCount();
                                         String count = String.valueOf(pageCount / finalGetsize);
                                         tvSignPage.setText(count);
+                                        mLeftAdapter = new ProductionLeftAdapter(ProductionActivity.this,detailBeenList);
+                                        lv_left.setAdapter(mLeftAdapter);
                                         adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                         mData.setAdapter(adapter);
                                     } else {
@@ -363,6 +376,8 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         pageCount = detailBean.getTotalCount();
                                         String count = String.valueOf(pageCount / finalGetsize);
                                         tvSignPage.setText(count);
+                                        mLeftAdapter = new ProductionLeftAdapter(ProductionActivity.this,detailBeenList);
+                                        lv_left.setAdapter(mLeftAdapter);
                                         adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                         mData.setAdapter(adapter);
                                         adapter.notifyDataSetChanged();
@@ -462,9 +477,11 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         pageCount = detailBean.getTotalCount();
                                         String count = String.valueOf(pageCount / finalGetsize);
                                         tvSignPage.setText(count);
+
                                         adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                         mData.setAdapter(adapter);
-                                        adapter.notifyDataSetChanged();
+                                        mLeftAdapter = new ProductionLeftAdapter(ProductionActivity.this,detailBeenList);
+                                        lv_left.setAdapter(mLeftAdapter);
                                     } else {
                                         ll_visibi.setVisibility(View.VISIBLE);
                                         scroll_content.setVisibility(View.GONE);
@@ -544,7 +561,9 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         tvSignPage.setText(count);
                                         adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                         mData.setAdapter(adapter);
-                                        adapter.notifyDataSetChanged();
+                                        mLeftAdapter = new ProductionLeftAdapter(ProductionActivity.this,detailBeenList);
+                                        lv_left.setAdapter(mLeftAdapter);
+//                                        adapter.notifyDataSetChanged();
                                     } else {
                                         ll_visibi.setVisibility(View.VISIBLE);
                                         scroll_content.setVisibility(View.GONE);

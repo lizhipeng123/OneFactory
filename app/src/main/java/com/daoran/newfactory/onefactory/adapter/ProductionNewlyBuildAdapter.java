@@ -31,6 +31,7 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
     private SharedPreferences sp;
     private SPUtils spUtils;
     private boolean flag = false;
+    private int isprodure;
 
     public ProductionNewlyBuildAdapter(Context context, List<ProNewlyBuildBean.DataBean> dataBeen) {
         this.context = context;
@@ -105,7 +106,6 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
 //                List<String> stingid = new ArrayList<String>();
 //                stingid.add(getid);
                 sp = context.getSharedPreferences("my_sp", 0);
-
                 String salesid = getItem(position).getID();
                 String said = getItem(position).getSalesid();
                 spUtils.put(context, "tvnewlysalesid", salesid);
@@ -113,19 +113,21 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
                 spUtils.put(context, "tvflag", flag);
                 String tvdate = getItem(position).getItem();
                 spUtils.put(context, "tvnewlydate", tvdate);//款号
-
                 String tvProDocumentary = getItem(position).getPrddocumentary();
                 spUtils.put(context, "tvnewlyDocumentary", tvProDocumentary);//跟单
-
                 String tvProFactory = getItem(position).getSubfactory();
                 spUtils.put(context, "tvnewlyFactory", tvProFactory);//工厂
-
                 String tvProDepartment = getItem(position).getSubfactoryTeams();
                 spUtils.put(context, "tvnewlyDepartment", tvProDepartment);//部门
-
                 String tvProProcedure = getItem(position).getWorkingProcedure();
                 spUtils.put(context, "tvnewlyProcedure", tvProProcedure);//工序
-
+                if (tvProProcedure.equals("裁床")) {
+                    isprodure = 1;
+                    spUtils.put(context, "isprodure", String.valueOf(isprodure));
+                } else {
+                    isprodure = 0;
+                    spUtils.put(context, "isprodure", String.valueOf(isprodure));
+                }
                 String tvProOthers = getItem(position).getWorkers();
                 spUtils.put(context, "tvnewlyOthers", tvProOthers);//组别人数
 
@@ -139,7 +141,16 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
                 spUtils.put(context, "tvnewTaskNumber", tvProTaskNumber);//尺码
 
                 String tvProSize = getItem(position).getProdcol();
-                spUtils.put(context, "tvnewlySize", tvProSize);//花色
+                if (tvProSize.contains("/")) {
+                    System.out.print(tvProSize);
+                    String[] temp = null;
+                    temp = tvProSize.split("/");
+                    System.out.print(temp);
+//                    spUtils.setSharedPreference("tempstring",temp);
+                } else {
+                    System.out.print(tvProSize);
+//                    spUtils.put(context, "tvnewlySize", tvProSize);//花色
+                }
 
                 String tvProClippingNumber = getItem(position).getFactcutqty();
                 spUtils.put(context, "tvnewlyClippingNumber", tvProClippingNumber);//实裁数

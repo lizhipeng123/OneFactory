@@ -11,8 +11,8 @@ public class PropostNewlyBuildBean {
     private int pageSize;
 
     public class Conditions {
-        private String item;
-        private String workingProcedure;
+        private String item;//款号
+        private String workingProcedure;//工序
 
         public String getItem() {
             return item;

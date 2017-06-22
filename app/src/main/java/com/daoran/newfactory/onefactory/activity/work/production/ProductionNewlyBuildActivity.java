@@ -148,6 +148,9 @@ public class ProductionNewlyBuildActivity
         btnNewbuildConfirm.setOnClickListener(this);
     }
 
+    /**
+     * 填充新建生产日报中每页显示spinner中数据
+     */
     private void getClumnsSpinner() {
         String[] spinner = getResources().getStringArray(R.array.clumnsCommon);
         ArrayAdapter<String> adapterclumns = new ArrayAdapter<String>(this,

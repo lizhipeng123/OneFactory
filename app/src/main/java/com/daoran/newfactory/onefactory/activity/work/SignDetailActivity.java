@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
 import com.daoran.newfactory.onefactory.adapter.SignDetailAdapter;
+import com.daoran.newfactory.onefactory.adapter.SignDetailLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.SignDetailBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
@@ -51,6 +52,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     private NoscrollListView mLeft;
     private NoscrollListView mData;
     private SignDetailAdapter detailAdapter;
+    private SignDetailLeftAdapter leftAdapter;
     private SyncHorizontalScrollView mHeaderHorizontal;
     private SyncHorizontalScrollView mDataHorizontal;
     private List<SignDetailBean.DataBean> mListData = new ArrayList<SignDetailBean.DataBean>();
@@ -87,6 +89,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     private void initView() {
         ivSiganSqlDetail = (ImageView) findViewById(R.id.ivSiganSqlDetail);
         mData = (NoscrollListView) findViewById(R.id.lv_data);
+        mLeft = (NoscrollListView) findViewById(R.id.lv_left);
         mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
         mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
         ivSearch = (ImageView) findViewById(R.id.ivSearch);
@@ -113,6 +116,9 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         etSqlDetail.setSelection(etSqlDetail.getText().length());
     }
 
+    /**
+     * 填充签到查询每页显示条目spinner数据
+     */
     private void getClumnsSpinner() {
         String[] spinner = getResources().getStringArray(R.array.clumnsCommon);
         ArrayAdapter<String> adapterclumns = new ArrayAdapter<String>(this,
@@ -227,6 +233,8 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                     tvSignPage.setText(count);
                                     detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
                                     mData.setAdapter(detailAdapter);
+                                    leftAdapter = new SignDetailLeftAdapter(SignDetailActivity.this, mListData);
+                                    mLeft.setAdapter(leftAdapter);
                                     detailAdapter.notifyDataSetChanged();
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
@@ -328,6 +336,8 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                     tvSignPage.setText(count);
                                     detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
                                     mData.setAdapter(detailAdapter);
+                                    leftAdapter = new SignDetailLeftAdapter(SignDetailActivity.this, mListData);
+                                    mLeft.setAdapter(leftAdapter);
                                     detailAdapter.notifyDataSetChanged();
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);

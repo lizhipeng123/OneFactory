@@ -287,6 +287,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigone"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -299,6 +300,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwo"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -311,6 +313,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigthree"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -323,6 +326,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigfore"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -335,6 +339,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigfive"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -347,6 +352,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigsix"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -359,6 +365,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigseven"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -371,6 +378,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigeight"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -383,6 +391,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfignine"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -395,6 +404,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigten"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -407,6 +417,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigeleven"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -419,6 +430,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwtlve"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -431,6 +443,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwthreeteen"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -443,6 +456,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwforeteen"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -455,6 +469,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwfifteen"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -467,6 +482,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwsixteen"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -479,6 +495,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwseventeen"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -491,6 +508,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtweightteen"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -503,6 +521,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwnineteen"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -515,6 +534,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwTwenty"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -527,6 +547,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwTwentyone"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -539,6 +560,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwTwentytwo"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -551,6 +573,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwTwentythree"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -563,6 +586,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwTwentyfore"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -575,6 +599,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwTwentyfive"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -587,6 +612,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwTwentysix"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -599,6 +625,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwTwentyseven"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -611,6 +638,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwTwentyeight"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -623,6 +651,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwTwentynine"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -635,6 +664,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwThirty"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -647,6 +677,7 @@
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tvconfigtwThirtyone"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"

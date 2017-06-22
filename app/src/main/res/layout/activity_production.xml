@@ -88,6 +88,26 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_id"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="款号" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <LinearLayout
             android:id="@+id/lin_header_content"
             android:layout_width="0dp"
             android:layout_height="50dp"
@@ -106,19 +126,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tv_data"
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="款号" />
-
-                    <View
-                        android:layout_width="1px"
-                        android:layout_height="50dp"
-                        android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
@@ -772,11 +779,23 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
                 android:orientation="horizontal">
+                <com.daoran.newfactory.onefactory.view.listview.NoscrollListView
+                    android:id="@+id/lv_pleft"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:overScrollMode="never"
+                    android:scrollbars="none" />
 
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:background="#cccccc" />
                 <LinearLayout
                     android:id="@+id/lin_data_content"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="3"
                     android:orientation="vertical">
 
                     <com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView
@@ -806,21 +825,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="9"
-            android:orientation="horizontal"
             android:background="@color/lightblue"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal">
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <EditText
                     android:id="@+id/etSqlDetail"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dimen_90"
+                    android:layout_gravity="center"
                     android:background="@drawable/shape_edittext_sql_boild"
                     android:inputType="phone|number"
                     android:numeric="integer"
-                    android:layout_gravity="center"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:text="1"
@@ -829,17 +850,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
                     android:text="/"
-                    android:layout_gravity="center"
                     android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/tvSignPage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
                     android:text="0"
                     android:textSize="20sp" />
 
@@ -851,33 +872,36 @@
                     android:layout_marginLeft="@dimen/dimen_30"
                     android:background="@drawable/shape_btn_newsbuild_boild"
                     android:text="确定" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen_30"
-                    android:textSize="@dimen/dimen_50sp"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dimen_30"
                     android:gravity="center"
-                    android:text="每页显示: "/>
+                    android:text="每页显示: "
+                    android:textSize="@dimen/dimen_50sp" />
+
                 <Spinner
                     android:id="@+id/spinnProPageClumns"
                     android:layout_width="@dimen/dimen_150"
                     android:layout_height="@dimen/dimen_100"
+                    android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dimen_30"
                     android:background="@drawable/spinner_bg"
                     android:entries="@array/clumnsCommon"
                     android:gravity="center_vertical"
-                    android:layout_gravity="center"
                     android:text="每页10行"
                     android:textSize="@dimen/dimen_50sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center"
                     android:layout_marginLeft="@dimen/dimen_30"
-                    android:textSize="@dimen/dimen_50sp"
-                    android:text="条"/>
+                    android:gravity="center"
+                    android:text="条"
+                    android:textSize="@dimen/dimen_50sp" />
             </LinearLayout>
 
         </LinearLayout>

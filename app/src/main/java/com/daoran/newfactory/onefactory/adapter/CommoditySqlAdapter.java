@@ -66,7 +66,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_commodity_data, null);
-            holder.tvCommoItem = (TextView) convertView.findViewById(R.id.tvCommoItem);
+//            holder.tvCommoItem = (TextView) convertView.findViewById(R.id.tvCommoItem);
             holder.tvCommoCtmtxt = (TextView) convertView.findViewById(R.id.tvCommoCtmtxt);
             holder.tvCommoPrddocumentary = (TextView) convertView.findViewById(R.id.tvCommoPrddocumentary);
             holder.tvCommoprdmaster = (TextView) convertView.findViewById(R.id.tvCommoprdmaster);
@@ -142,8 +142,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     spUtils.put(context, "uriid", uriid);
                 }
             });
-            holder.tvCommoItem.setEnabled(true);
-            holder.tvCommoItem.setText(getItem(position).getItem());
+//            holder.tvCommoItem.setEnabled(true);
+//            holder.tvCommoItem.setText(getItem(position).getItem());
 
             holder.tvCommoCtmtxt.setEnabled(true);
             holder.tvCommoCtmtxt.setText(getItem(position).getCtmtxt());
@@ -1533,8 +1533,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     spUtils.put(context, "uriid", uriid);
                 }
             });
-            holder.tvCommoItem.setEnabled(true);
-            holder.tvCommoItem.setText(getItem(position).getItem());
+//            holder.tvCommoItem.setEnabled(true);
+//            holder.tvCommoItem.setText(getItem(position).getItem());
 
             holder.tvCommoCtmtxt.setEnabled(true);
             holder.tvCommoCtmtxt.setText(getItem(position).getCtmtxt());
@@ -2912,8 +2912,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
              * 判断登录人是否是陈慧萍（跟单负责人）
              */
         } else if (nameid.equals("陈慧萍")) {
-            holder.tvCommoItem.setEnabled(true);
-            holder.tvCommoItem.setText(getItem(position).getItem());
+//            holder.tvCommoItem.setEnabled(true);
+//            holder.tvCommoItem.setText(getItem(position).getItem());
 
             holder.tvCommoCtmtxt.setEnabled(true);
             holder.tvCommoCtmtxt.setText(getItem(position).getCtmtxt());
@@ -4385,14 +4385,14 @@ public class CommoditySqlAdapter extends BaseAdapter {
             /*光标放置在文本最后*/
             holder.tvCommoQCedtDoc.setSelection(holder.tvCommoQCedtDoc.length());
         } else {
-            holder.tvCommoItem.setEnabled(false);
-            holder.tvCommoItem.setText(getItem(position).getItem());
-            holder.tvCommoItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
+//            holder.tvCommoItem.setEnabled(false);
+//            holder.tvCommoItem.setText(getItem(position).getItem());
+//            holder.tvCommoItem.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+//                }
+//            });
 
             holder.tvCommoCtmtxt.setEnabled(false);
             holder.tvCommoCtmtxt.setText(getItem(position).getCtmtxt());
