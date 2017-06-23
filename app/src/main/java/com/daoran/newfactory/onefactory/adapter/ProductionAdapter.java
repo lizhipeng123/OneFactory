@@ -376,17 +376,17 @@ public class ProductionAdapter extends BaseAdapter {
                                 int num = Integer.parseInt(s.toString());
                                 if (num > singular) {
                                     s = String.valueOf(singular);
-                                    editTexTaskNumber.setText(s);
+                                    editTexTaskNumber.setText(getItem(position).getTaskqty());
                                     editTexTaskNumber.setSelection(editTexTaskNumber.length());
+                                    InputFilter[] filters = {new InputFilter.LengthFilter(singular)};
+                                    viewHolder.tvProTaskNumber.setFilters(filters);
+                                    ToastUtils.ShowToastMessage("输入超过了制单数", context);
                                 } else if (num < MIN_MARK) {
                                     s = String.valueOf(MIN_MARK);
                                     return;
                                 }
                             }
                         }
-                        InputFilter[] filters = {new InputFilter.LengthFilter(singular)};
-                        viewHolder.tvProTaskNumber.setFilters(filters);
-                        ToastUtils.ShowToastMessage("输入超过了制单数", context);
                     }
 
                     @Override
@@ -402,7 +402,7 @@ public class ProductionAdapter extends BaseAdapter {
                                 }
                                 if (markVal > singular) {
                                     ToastUtils.ShowToastMessage("大小不能超过制单数", context);
-                                    editTexTaskNumber.setText(singular);
+                                    editTexTaskNumber.setText(getItem(position).getTaskqty());
                                     editTexTaskNumber.setSelection(editTexTaskNumber.length());
                                 }
                                 return;

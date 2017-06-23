@@ -285,6 +285,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProOneDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -301,6 +302,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProTwoDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -317,6 +319,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProThreeDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -333,6 +336,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProForeDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -349,6 +353,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProFiveDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -365,6 +370,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProSixDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -381,6 +387,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProSevenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -397,6 +404,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProEightDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -413,6 +421,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProNineDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -429,6 +438,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProTenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -445,6 +455,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProElevenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -461,6 +472,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProTwelveDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -477,6 +489,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProThirteenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -493,6 +506,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProFourteenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -509,6 +523,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProFifteenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -525,6 +540,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProSixteenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -541,6 +557,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProSeventeenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -557,6 +574,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProEighteenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -573,6 +591,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProNineteenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -589,6 +608,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProTwentyDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -605,6 +625,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProTwentyOneDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -621,6 +642,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProTwentyTwoDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -637,6 +659,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProTwentyThreeDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -653,6 +676,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProTwentyForeDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -669,6 +693,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProTwentyFiveDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -685,6 +710,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProTwentySixDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -701,6 +727,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProTwentySevenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -717,6 +744,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProTwentyEightDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -733,6 +761,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProTwentyNineDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -749,6 +778,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProThirtyDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
@@ -765,6 +795,7 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/vProThirtyOneDay"
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />

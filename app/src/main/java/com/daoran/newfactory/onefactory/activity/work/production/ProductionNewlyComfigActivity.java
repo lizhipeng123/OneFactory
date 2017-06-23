@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.format.Time;
 import android.util.Log;
@@ -24,8 +26,10 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.ProducationConfigSaveBean;
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
+import com.daoran.newfactory.onefactory.bean.ProducationNewlyComfigSaveBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
+import com.daoran.newfactory.onefactory.util.Http.sharedparams.PhoneSaveUtil;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
@@ -37,6 +41,7 @@ import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,14 +70,29 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
     private List<ProducationConfigSaveBean> saveBeen =
             new ArrayList<ProducationConfigSaveBean>();
 
+    private List<ProducationNewlyComfigSaveBean> newlyComfigSaveBeen
+            = new ArrayList<ProducationNewlyComfigSaveBean>();
+
     private Button btnProSave;
     private TextView spinnerNewbuild;
     private EditText etNewbuild;
     private MyAdatper comfigAdapter;
     private TextView tvconfigone, tvconfigtwo, tvconfigthree, tvconfigfore, tvconfigfive,
             tvconfigsix, tvconfigseven, tvconfigeight, tvconfignine, tvconfigten, tvconfigeleven,
-            tvconfigtwtlve, tvconfigtwthreeteen, tvconfigtwforeteen, tvconfigtwfifteen, tvconfigtwsixteen, tvconfigtwseventeen, tvconfigtweightteen, tvconfigtwnineteen, tvconfigtwTwenty, tvconfigtwTwentyone, tvconfigtwTwentytwo, tvconfigtwTwentythree, tvconfigtwTwentyfore, tvconfigtwTwentyfive, tvconfigtwTwentysix, tvconfigtwTwentyseven, tvconfigtwTwentyeight, tvconfigtwTwentynine, tvconfigtwThirty, tvconfigtwThirtyone;
-
+            tvconfigtwtlve, tvconfigtwthreeteen, tvconfigtwforeteen, tvconfigtwfifteen,
+            tvconfigtwsixteen, tvconfigtwseventeen, tvconfigtweightteen,
+            tvconfigtwnineteen, tvconfigtwTwenty, tvconfigtwTwentyone,
+            tvconfigtwTwentytwo, tvconfigtwTwentythree, tvconfigtwTwentyfore,
+            tvconfigtwTwentyfive, tvconfigtwTwentysix, tvconfigtwTwentyseven,
+            tvconfigtwTwentyeight, tvconfigtwTwentynine, tvconfigtwThirty, tvconfigtwThirtyone;
+    private View vconfigone, vconfigtwo, vconfigthree, vconfigfore, vconfigfive,
+            vconfigsix, vconfigseven, vconfigeight, vconfignine, vconfigten, vconfigeleven,
+            vconfigtwtlve, vconfigtwthreeteen, vconfigtwforeteen, vconfigtwfifteen,
+            vconfigtwsixteen, vconfigtwseventeen, vconfigtweightteen,
+            vconfigtwnineteen, vconfigtwTwenty, vconfigtwTwentyone,
+            vconfigtwTwentytwo, vconfigtwTwentythree, vconfigtwTwentyfore,
+            vconfigtwTwentyfive, vconfigtwTwentysix, vconfigtwTwentyseven,
+            vconfigtwTwentyeight, vconfigtwTwentynine, vconfigtwThirty, vconfigtwThirtyone;
     private SharedPreferences sp;
     private SPUtils spUtils;
     private int pageCount;
@@ -89,9 +109,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         initViews();
         setListener();
         sp = getSharedPreferences("my_sp", 0);
-//        String[] isStringtemp = spUtils.getSharedPreference("tempstring");
-//        System.out.print(isStringtemp);
-        String isprodure = sp.getString("isprodure",  "");
+        String isprodure = sp.getString("isprodure", "");
         if (isprodure.equals("0")) {
             tvconfigone.setVisibility(View.VISIBLE);
             tvconfigtwo.setVisibility(View.VISIBLE);
@@ -124,6 +142,37 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
             tvconfigtwTwentynine.setVisibility(View.VISIBLE);
             tvconfigtwThirty.setVisibility(View.VISIBLE);
             tvconfigtwThirtyone.setVisibility(View.VISIBLE);
+            vconfigone.setVisibility(View.VISIBLE);
+            vconfigtwo.setVisibility(View.VISIBLE);
+            vconfigthree.setVisibility(View.VISIBLE);
+            vconfigfore.setVisibility(View.VISIBLE);
+            vconfigfive.setVisibility(View.VISIBLE);
+            vconfigsix.setVisibility(View.VISIBLE);
+            vconfigseven.setVisibility(View.VISIBLE);
+            vconfigeight.setVisibility(View.VISIBLE);
+            vconfignine.setVisibility(View.VISIBLE);
+            vconfigten.setVisibility(View.VISIBLE);
+            vconfigeleven.setVisibility(View.VISIBLE);
+            vconfigtwtlve.setVisibility(View.VISIBLE);
+            vconfigtwthreeteen.setVisibility(View.VISIBLE);
+            vconfigtwforeteen.setVisibility(View.VISIBLE);
+            vconfigtwfifteen.setVisibility(View.VISIBLE);
+            vconfigtwsixteen.setVisibility(View.VISIBLE);
+            vconfigtwseventeen.setVisibility(View.VISIBLE);
+            vconfigtweightteen.setVisibility(View.VISIBLE);
+            vconfigtwnineteen.setVisibility(View.VISIBLE);
+            vconfigtwTwenty.setVisibility(View.VISIBLE);
+            vconfigtwTwentyone.setVisibility(View.VISIBLE);
+            vconfigtwTwentytwo.setVisibility(View.VISIBLE);
+            vconfigtwTwentythree.setVisibility(View.VISIBLE);
+            vconfigtwTwentyfore.setVisibility(View.VISIBLE);
+            vconfigtwTwentyfive.setVisibility(View.VISIBLE);
+            vconfigtwTwentysix.setVisibility(View.VISIBLE);
+            vconfigtwTwentyseven.setVisibility(View.VISIBLE);
+            vconfigtwTwentyeight.setVisibility(View.VISIBLE);
+            vconfigtwTwentynine.setVisibility(View.VISIBLE);
+            vconfigtwThirty.setVisibility(View.VISIBLE);
+            vconfigtwThirtyone.setVisibility(View.VISIBLE);
         }
         if (isprodure.equals("1")) {
             tvconfigone.setVisibility(View.GONE);
@@ -157,6 +206,37 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
             tvconfigtwTwentynine.setVisibility(View.GONE);
             tvconfigtwThirty.setVisibility(View.GONE);
             tvconfigtwThirtyone.setVisibility(View.GONE);
+            vconfigone.setVisibility(View.GONE);
+            vconfigtwo.setVisibility(View.GONE);
+            vconfigthree.setVisibility(View.GONE);
+            vconfigfore.setVisibility(View.GONE);
+            vconfigfive.setVisibility(View.GONE);
+            vconfigsix.setVisibility(View.GONE);
+            vconfigseven.setVisibility(View.GONE);
+            vconfigeight.setVisibility(View.GONE);
+            vconfignine.setVisibility(View.GONE);
+            vconfigten.setVisibility(View.GONE);
+            vconfigeleven.setVisibility(View.GONE);
+            vconfigtwtlve.setVisibility(View.GONE);
+            vconfigtwthreeteen.setVisibility(View.GONE);
+            vconfigtwforeteen.setVisibility(View.GONE);
+            vconfigtwfifteen.setVisibility(View.GONE);
+            vconfigtwsixteen.setVisibility(View.GONE);
+            vconfigtwseventeen.setVisibility(View.GONE);
+            vconfigtweightteen.setVisibility(View.GONE);
+            vconfigtwnineteen.setVisibility(View.GONE);
+            vconfigtwTwenty.setVisibility(View.GONE);
+            vconfigtwTwentyone.setVisibility(View.GONE);
+            vconfigtwTwentytwo.setVisibility(View.GONE);
+            vconfigtwTwentythree.setVisibility(View.GONE);
+            vconfigtwTwentyfore.setVisibility(View.GONE);
+            vconfigtwTwentyfive.setVisibility(View.GONE);
+            vconfigtwTwentysix.setVisibility(View.GONE);
+            vconfigtwTwentyseven.setVisibility(View.GONE);
+            vconfigtwTwentyeight.setVisibility(View.GONE);
+            vconfigtwTwentynine.setVisibility(View.GONE);
+            vconfigtwThirty.setVisibility(View.GONE);
+            vconfigtwThirtyone.setVisibility(View.GONE);
         }
     }
 
@@ -199,6 +279,37 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         tvconfigtwTwentynine = (TextView) findViewById(R.id.tvconfigtwTwentynine);
         tvconfigtwThirty = (TextView) findViewById(R.id.tvconfigtwThirty);
         tvconfigtwThirtyone = (TextView) findViewById(R.id.tvconfigtwThirtyone);
+        vconfigone = findViewById(R.id.vconfigone);
+        vconfigtwo = findViewById(R.id.vconfigtwo);
+        vconfigthree = findViewById(R.id.vconfigthree);
+        vconfigfore = findViewById(R.id.vconfigfore);
+        vconfigfive = findViewById(R.id.vconfigfive);
+        vconfigsix = findViewById(R.id.vconfigsix);
+        vconfigseven = findViewById(R.id.vconfigseven);
+        vconfigeight = findViewById(R.id.vconfigeight);
+        vconfignine = findViewById(R.id.vconfignine);
+        vconfigten = findViewById(R.id.vconfigten);
+        vconfigeleven = findViewById(R.id.vconfigeleven);
+        vconfigtwtlve = findViewById(R.id.vconfigtwtlve);
+        vconfigtwthreeteen = findViewById(R.id.vconfigtwthreeteen);
+        vconfigtwforeteen = findViewById(R.id.vconfigtwforeteen);
+        vconfigtwfifteen = findViewById(R.id.vconfigtwfifteen);
+        vconfigtwsixteen = findViewById(R.id.vconfigtwsixteen);
+        vconfigtwseventeen = findViewById(R.id.vconfigtwseventeen);
+        vconfigtweightteen = findViewById(R.id.vconfigtweightteen);
+        vconfigtwnineteen = findViewById(R.id.vconfigtwnineteen);
+        vconfigtwTwenty = findViewById(R.id.vconfigtwTwenty);
+        vconfigtwTwentyone = findViewById(R.id.vconfigtwTwentyone);
+        vconfigtwTwentytwo = findViewById(R.id.vconfigtwTwentytwo);
+        vconfigtwTwentythree = findViewById(R.id.vconfigtwTwentythree);
+        vconfigtwTwentyfore = findViewById(R.id.vconfigtwTwentyfore);
+        vconfigtwTwentyfive = findViewById(R.id.vconfigtwTwentyfive);
+        vconfigtwTwentysix = findViewById(R.id.vconfigtwTwentysix);
+        vconfigtwTwentyseven = findViewById(R.id.vconfigtwTwentyseven);
+        vconfigtwTwentyeight = findViewById(R.id.vconfigtwTwentyeight);
+        vconfigtwTwentynine = findViewById(R.id.vconfigtwTwentynine);
+        vconfigtwThirty = findViewById(R.id.vconfigtwThirty);
+        vconfigtwThirtyone = findViewById(R.id.vconfigtwThirtyone);
     }
 
     /**
@@ -234,7 +345,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         String tvnewlyFactory = sp.getString("tvnewlyFactory", "");//工厂
         String tvnewlyDepartment = sp.getString("tvnewlyDepartment", "");//部门/组别
         String tvnewlyProcedure = sp.getString("tvnewlyProcedure", "");//工序
-        String tvnewlyOthers = sp.getString("tvnewlyOthers", "");//组别人
+        String tvnewlyOthers = sp.getString("tvnewlyOthers", "");//组别人数
         String tvnewSingularSystem = sp.getString("tvnewSingularSystem", "");//制单数
         String tvdate = sp.getString("tvColorTaskqty", "");//任务数
         String tvnewTaskNumber = sp.getString("tvnewTaskNumber", "");//尺码
@@ -258,6 +369,9 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         map.put("tvnewlyCompletedLastMonth", tvnewlyCompletedLastMonth);
         map.put("tvnewlyTotalCompletion", tvnewlyTotalCompletion);
         list.add(map);
+        SharedPreferences.Editor editor =sp.edit();
+        editor.remove("tvnewlySize");
+        editor.commit();
         return list;
     }
 
@@ -279,9 +393,26 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
     private void setSave() {
         String saveurl = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
         sp = this.getSharedPreferences("my_sp", 0);
-        String salesid = sp.getString("tvnewlysalesid", "");
-        String proColumnTitle = sp.getString("ComfigPrdstatus", "");//部门
+        SharedPreferences spes = getSharedPreferences("mylist", 0);
+        String liststr = spes.getString("mylistStr", "");
+        String salesid = sp.getString("tvnewlysalesid", "");//款号id
+        String proColumnTitle = sp.getString("Configdepartment", "");//部门
+        String proadaptertitle = sp.getString("tvnewlyDepartment", "");
+        String columntitle;
+        if (proColumnTitle.equals("")) {
+            columntitle = proadaptertitle;
+        } else {
+            columntitle = proColumnTitle;
+        }
+
         String proProcedureTitle = sp.getString("ConfigProcedure", "");//工序
+        String proprocudureTitle = sp.getString("tvnewlyProcedure","");
+        String procudureTitle;
+        if(proProcedureTitle.equals("")){
+            procudureTitle = proprocudureTitle;
+        }else{
+            procudureTitle = proProcedureTitle;
+        }
         String proPrdstatusTitle = sp.getString("ComfigPrdstatus", "");//状态//
         String productionItem = sp.getString("comfigitem", "");//款号
         String productionDocumentary = sp.getString("configdocument", "");//跟单//
@@ -332,106 +463,208 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         String productionRecorder = sp.getString("configrecorder", "");//制单人
         String productionRecordat = sp.getString("configrecordat", "");//制单时间
         Gson gson = new Gson();
-        ProducationConfigSaveBean saveBean = new ProducationConfigSaveBean();
-        saveBean.setID("0");
-        saveBean.setSalesid(salesid);
-        saveBean.setItem(productionItem);
-        saveBean.setPrddocumentary(productionDocumentary);
-        saveBean.setSubfactory(productionFactory);
-        saveBean.setSubfactoryTeams(proColumnTitle);
-        saveBean.setWorkingProcedure(proProcedureTitle);
-        saveBean.setWorkers(productionOthers);
-        saveBean.setPqty(productionSingularSystem);
-        saveBean.setProdcol(productionColor);
-        saveBean.setTaskqty(productionTaskNumber);
-        saveBean.setMdl(productionSize);
-        saveBean.setFactcutqty(productionClippingNumber);
-        saveBean.setLastMonQty(productionCompletedLastMonth);
-        saveBean.setSumCompletedQty(productionTotalCompletion);
-        saveBean.setLeftQty(productionBalanceAmount);
-        saveBean.setPrdstatus(proPrdstatusTitle);
-        saveBean.setYear(productionYear);
-        saveBean.setMonth(productionMonth);
-        saveBean.setDay1(productionOneDay);
-        saveBean.setDay2(productionTwoDay);
-        saveBean.setDay3(productionThreeDay);
-        saveBean.setDay4(productionForeDay);
-        saveBean.setDay5(productionFiveDay);
-        saveBean.setDay6(productionSixDay);
-        saveBean.setDay7(productionSevenDay);
-        saveBean.setDay8(productionEightDay);
-        saveBean.setDay9(productionNineDay);
-        saveBean.setDay10(productionTenDay);
-        saveBean.setDay11(productionElevenDay);
-        saveBean.setDay12(productionTwelveDay);
-        saveBean.setDay13(productionThirteenDay);
-        saveBean.setDay14(productionFourteenDay);
-        saveBean.setDay15(productionFifteenDay);
-        saveBean.setDay16(productionSixteenDay);
-        saveBean.setDay17(productionSeventeenDay);
-        saveBean.setDay18(productionEighteenDay);
-        saveBean.setDay19(productionNineteenDay);
-        saveBean.setDay20(productionTwentyDay);
-        saveBean.setDay21(productionTwentyOneDay);
-        saveBean.setDay22(productionTwentyTwoDay);
-        saveBean.setDay23(productionTwentyThreeDay);
-        saveBean.setDay24(productionTwentyForeDay);
-        saveBean.setDay25(productionTwentyFiveDay);
-        saveBean.setDay26(productionTwentySixDay);
-        saveBean.setDay27(productionTwentySevenDay);
-        saveBean.setDay28(productionTwentyEightDay);
-        saveBean.setDay29(productionTwentyNineDay);
-        saveBean.setDay30(productionThirtyDay);
-        saveBean.setDay31(productionThirtyOneDay);
-        saveBean.setMemo(productionRemarks);
-        saveBean.setRecorder(productionRecorder);
-        saveBean.setRecordat(productionRecordat);
-        saveBeen.add(saveBean);
-        String detailb = gson.toJson(saveBeen);
-        String dateee = detailb.replace("\"\"", "null");
-        if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this);
-            OkHttpUtils.postString().
-                    url(saveurl)
-                    .content(dateee)
-                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            e.printStackTrace();
-                        }
+        if (proProcedureTitle.equals("裁床")) {
+            if (!TextUtils.isEmpty(liststr)) {
+                try {
+                    List<String> list = PhoneSaveUtil.String2SceneList(liststr);
+                    for (int i = 0; i < list.size(); i++) {
+                        ProducationNewlyComfigSaveBean consaveBean =
+                                new ProducationNewlyComfigSaveBean();
+                        consaveBean.setID("0");
+                        consaveBean.setSalesid(salesid);
+                        consaveBean.setProdcol(list.get(i));
+                        consaveBean.setItem(productionItem);
+                        consaveBean.setPrddocumentary(productionDocumentary);
+                        consaveBean.setSubfactory(productionFactory);
+                        consaveBean.setSubfactoryTeams(columntitle);
+                        consaveBean.setWorkingProcedure(procudureTitle);
+                        consaveBean.setWorkers(productionOthers);
+                        consaveBean.setPqty(productionSingularSystem);
+                        consaveBean.setTaskqty(productionTaskNumber);
+                        consaveBean.setMdl(productionSize);
+                        consaveBean.setFactcutqty(productionClippingNumber);
+                        consaveBean.setSumCompletedQty(productionTotalCompletion);
+                        consaveBean.setLastMonQty(productionCompletedLastMonth);
+                        consaveBean.setLeftQty(productionBalanceAmount);
+                        consaveBean.setPrdstatus(proPrdstatusTitle);
+                        consaveBean.setYear(productionYear);
+                        consaveBean.setMonth(productionMonth);
+                        consaveBean.setMemo(productionRemarks);
+                        consaveBean.setRecorder(productionRecorder);
+                        consaveBean.setRecordat(productionRecordat);
+                        newlyComfigSaveBeen.add(consaveBean);
+                    }
+                    System.out.print(list);
+                    System.out.print(newlyComfigSaveBeen);
+                    String detailb = gson.toJson(newlyComfigSaveBeen);
+                    String dateee = detailb.replace("\"\"", "null");
+                    if (NetWork.isNetWorkAvailable(this)) {
+                        ResponseDialog.showLoading(this);
+                        OkHttpUtils.postString().
+                                url(saveurl)
+                                .content(dateee)
+                                .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                                .build()
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onError(Call call, Exception e, int id) {
+                                        e.printStackTrace();
+                                    }
 
-                        @Override
-                        public void onResponse(String response, int id) {
-                            System.out.print(response);
-                            String ression = StringUtil.sideTrim(response, "\"");
-                            System.out.print(ression);
-                            int resindex = Integer.parseInt(ression);
-                            if (resindex > 4) {
-                                ToastUtils.ShowToastMessage("保存成功，请刷新页面",
-                                        ProductionNewlyComfigActivity.this);
-                                startActivity(new Intent(ProductionNewlyComfigActivity.this,
-                                        ProductionActivity.class));
-                                ResponseDialog.closeLoading();
-                            } else if (resindex == 3) {
-                                ToastUtils.ShowToastMessage("保存失败",
-                                        ProductionNewlyComfigActivity.this);
-                                ResponseDialog.closeLoading();
-                            } else if (resindex == 4) {
-                                ToastUtils.ShowToastMessage("数据错误，请重试",
-                                        ProductionNewlyComfigActivity.this);
-                                ResponseDialog.closeLoading();
-                            } else {
-                                ToastUtils.ShowToastMessage("未知错误，请联系管理员",
-                                        ProductionNewlyComfigActivity.this);
-                                ResponseDialog.closeLoading();
-                            }
-                        }
-                    });
+                                    @Override
+                                    public void onResponse(String response, int id) {
+                                        System.out.print(response);
+                                        String ression = StringUtil.sideTrim(response, "\"");
+                                        System.out.print(ression);
+                                        int resindex = Integer.parseInt(ression);
+                                        if (resindex > 4) {
+                                            ToastUtils.ShowToastMessage("保存成功，请刷新页面",
+                                                    ProductionNewlyComfigActivity.this);
+                                            startActivity(new Intent(ProductionNewlyComfigActivity.this,
+                                                    ProductionActivity.class));
+                                            ResponseDialog.closeLoading();
+                                        } else if (resindex == 3) {
+                                            ToastUtils.ShowToastMessage("保存失败",
+                                                    ProductionNewlyComfigActivity.this);
+                                            ResponseDialog.closeLoading();
+                                        } else if (resindex == 4) {
+                                            ToastUtils.ShowToastMessage("数据错误，请重试",
+                                                    ProductionNewlyComfigActivity.this);
+                                            ResponseDialog.closeLoading();
+                                        } else {
+                                            ToastUtils.ShowToastMessage("未知错误，请联系管理员",
+                                                    ProductionNewlyComfigActivity.this);
+                                            ResponseDialog.closeLoading();
+                                        }
+                                    }
+                                });
+                    } else {
+                        ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyComfigActivity.this);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
         } else {
-            ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyComfigActivity.this);
+            if (!TextUtils.isEmpty(liststr)) {
+                try {
+                    List<String> list = PhoneSaveUtil.String2SceneList(liststr);
+                    for (int i = 0; i < list.size(); i++) {
+                        ProducationNewlyComfigSaveBean consaveBean =
+                                new ProducationNewlyComfigSaveBean();
+                        consaveBean.setID("0");
+                        consaveBean.setSalesid(salesid);
+                        consaveBean.setProdcol(list.get(i));
+                        consaveBean.setItem(productionItem);
+                        consaveBean.setPrddocumentary(productionDocumentary);
+                        consaveBean.setSubfactory(productionFactory);
+                        consaveBean.setSubfactoryTeams(columntitle);
+                        consaveBean.setWorkingProcedure(procudureTitle);
+                        consaveBean.setWorkers(productionOthers);
+                        consaveBean.setPqty(productionSingularSystem);
+                        consaveBean.setTaskqty(productionTaskNumber);
+                        consaveBean.setMdl(productionSize);
+                        consaveBean.setFactcutqty(productionClippingNumber);
+                        consaveBean.setSumCompletedQty(productionTotalCompletion);
+                        consaveBean.setLastMonQty(productionCompletedLastMonth);
+                        consaveBean.setLeftQty(productionBalanceAmount);
+                        consaveBean.setPrdstatus(proPrdstatusTitle);
+                        consaveBean.setYear(productionYear);
+                        consaveBean.setMonth(productionMonth);
+                        consaveBean.setDay1(productionOneDay);
+                        consaveBean.setDay2(productionTwoDay);
+                        consaveBean.setDay3(productionThreeDay);
+                        consaveBean.setDay4(productionForeDay);
+                        consaveBean.setDay5(productionFiveDay);
+                        consaveBean.setDay6(productionSixDay);
+                        consaveBean.setDay7(productionSevenDay);
+                        consaveBean.setDay8(productionEightDay);
+                        consaveBean.setDay9(productionNineDay);
+                        consaveBean.setDay10(productionTenDay);
+                        consaveBean.setDay11(productionElevenDay);
+                        consaveBean.setDay12(productionTwelveDay);
+                        consaveBean.setDay13(productionThirteenDay);
+                        consaveBean.setDay14(productionFourteenDay);
+                        consaveBean.setDay15(productionFifteenDay);
+                        consaveBean.setDay16(productionSixteenDay);
+                        consaveBean.setDay17(productionSeventeenDay);
+                        consaveBean.setDay18(productionEighteenDay);
+                        consaveBean.setDay19(productionNineteenDay);
+                        consaveBean.setDay20(productionTwentyDay);
+                        consaveBean.setDay21(productionTwentyOneDay);
+                        consaveBean.setDay22(productionTwentyTwoDay);
+                        consaveBean.setDay23(productionTwentyThreeDay);
+                        consaveBean.setDay24(productionTwentyForeDay);
+                        consaveBean.setDay25(productionTwentyFiveDay);
+                        consaveBean.setDay26(productionTwentySixDay);
+                        consaveBean.setDay27(productionTwentySevenDay);
+                        consaveBean.setDay28(productionTwentyEightDay);
+                        consaveBean.setDay29(productionTwentyNineDay);
+                        consaveBean.setDay30(productionThirtyDay);
+                        consaveBean.setDay31(productionThirtyOneDay);
+                        consaveBean.setMemo(productionRemarks);
+                        consaveBean.setRecorder(productionRecorder);
+                        consaveBean.setRecordat(productionRecordat);
+                        newlyComfigSaveBeen.add(consaveBean);
+                    }
+                    System.out.print(list);
+                    System.out.print(newlyComfigSaveBeen);
+                    String detailb = gson.toJson(newlyComfigSaveBeen);
+                    String dateee = detailb.replace("\"\"", "null");
+                    if (NetWork.isNetWorkAvailable(this)) {
+                        ResponseDialog.showLoading(this);
+                        OkHttpUtils.postString().
+                                url(saveurl)
+                                .content(dateee)
+                                .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                                .build()
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onError(Call call, Exception e, int id) {
+                                        e.printStackTrace();
+                                    }
+
+                                    @Override
+                                    public void onResponse(String response, int id) {
+                                        System.out.print(response);
+                                        String ression = StringUtil.sideTrim(response, "\"");
+                                        System.out.print(ression);
+                                        int resindex = Integer.parseInt(ression);
+                                        if (resindex > 4) {
+                                            ToastUtils.ShowToastMessage("保存成功，请刷新页面",
+                                                    ProductionNewlyComfigActivity.this);
+                                            startActivity(new Intent(ProductionNewlyComfigActivity.this,
+                                                    ProductionActivity.class));
+                                            ResponseDialog.closeLoading();
+                                        } else if (resindex == 3) {
+                                            ToastUtils.ShowToastMessage("保存失败",
+                                                    ProductionNewlyComfigActivity.this);
+                                            ResponseDialog.closeLoading();
+                                        } else if (resindex == 4) {
+                                            ToastUtils.ShowToastMessage("数据错误，请重试",
+                                                    ProductionNewlyComfigActivity.this);
+                                            ResponseDialog.closeLoading();
+                                        } else {
+                                            ToastUtils.ShowToastMessage("未知错误，请联系管理员",
+                                                    ProductionNewlyComfigActivity.this);
+                                            ResponseDialog.closeLoading();
+                                        }
+                                    }
+                                });
+                    } else {
+                        ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyComfigActivity.this);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
         }
+
+
     }
 
     public final class ViewHolder {
@@ -486,6 +719,37 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 tvProRemarks;//备注
         TextView tvProRecorder,//制单人
                 tvProRecordat;//制单时间
+        View vProOneDay,//1日
+                vProTwoDay,//2
+                vProThreeDay,//3
+                vProForeDay,//4
+                vProFiveDay,//5
+                vProSixDay,//6
+                vProSevenDay,//7
+                vProEightDay,//8
+                vProNineDay,//9
+                vProTenDay,//10
+                vProElevenDay,//11
+                vProTwelveDay,//12
+                vProThirteenDay,//13
+                vProFourteenDay,//14
+                vProFifteenDay,//15
+                vProSixteenDay,//16
+                vProSeventeenDay,//17
+                vProEighteenDay,//18
+                vProNineteenDay,//19
+                vProTwentyDay,//20
+                vProTwentyOneDay,//21
+                vProTwentyTwoDay,//22
+                vProTwentyThreeDay,//23
+                vProTwentyForeDay,//24
+                vProTwentyFiveDay,//25
+                vProTwentySixDay,//26
+                vProTwentySevenDay,//27
+                vProTwentyEightDay,//28
+                vProTwentyNineDay,//29
+                vProThirtyDay,//30
+                vProThirtyOneDay;//31
     }
 
     /**
@@ -494,6 +758,11 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
     public class MyAdatper extends BaseAdapter {
         private Context context;
         private int index = -1;
+        int lastmont, day1, day2, day3, day4, day5, day6, day7, day8, day9,
+                day10, day11, day12, day13, day14, day15, day16, day17, day18,
+                day19, day20, day21, day22, day23, day24, day25, day26, day27,
+                day28, day29, day30, day31;
+        int countmon, skNumber;
 
         public MyAdatper(Context context) {
             this.context = context;
@@ -571,6 +840,37 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 viewHolder.tvProRemarks = (EditText) convertView.findViewById(R.id.tvProRemarks);
                 viewHolder.tvProRecorder = (TextView) convertView.findViewById(R.id.tvProRecorder);
                 viewHolder.tvProRecordat = (TextView) convertView.findViewById(R.id.tvProRecordat);
+                viewHolder.vProOneDay = convertView.findViewById(R.id.vProOneDay);
+                viewHolder.vProTwoDay = convertView.findViewById(R.id.vProTwoDay);
+                viewHolder.vProThreeDay = convertView.findViewById(R.id.vProThreeDay);
+                viewHolder.vProForeDay = convertView.findViewById(R.id.vProForeDay);
+                viewHolder.vProFiveDay = convertView.findViewById(R.id.vProFiveDay);
+                viewHolder.vProSixDay = convertView.findViewById(R.id.vProSixDay);
+                viewHolder.vProSevenDay = convertView.findViewById(R.id.vProSevenDay);
+                viewHolder.vProEightDay = convertView.findViewById(R.id.vProEightDay);
+                viewHolder.vProNineDay = convertView.findViewById(R.id.vProNineDay);
+                viewHolder.vProTenDay = convertView.findViewById(R.id.vProTenDay);
+                viewHolder.vProElevenDay = convertView.findViewById(R.id.vProElevenDay);
+                viewHolder.vProTwelveDay = convertView.findViewById(R.id.vProTwelveDay);
+                viewHolder.vProThirteenDay = convertView.findViewById(R.id.vProThirteenDay);
+                viewHolder.vProFourteenDay = convertView.findViewById(R.id.vProFourteenDay);
+                viewHolder.vProFifteenDay = convertView.findViewById(R.id.vProFifteenDay);
+                viewHolder.vProSixteenDay = convertView.findViewById(R.id.vProSixteenDay);
+                viewHolder.vProSeventeenDay = convertView.findViewById(R.id.vProSeventeenDay);
+                viewHolder.vProEighteenDay = convertView.findViewById(R.id.vProEighteenDay);
+                viewHolder.vProNineteenDay = convertView.findViewById(R.id.vProNineteenDay);
+                viewHolder.vProTwentyDay = convertView.findViewById(R.id.vProTwentyDay);
+                viewHolder.vProTwentyOneDay = convertView.findViewById(R.id.vProTwentyOneDay);
+                viewHolder.vProTwentyTwoDay = convertView.findViewById(R.id.vProTwentyTwoDay);
+                viewHolder.vProTwentyThreeDay = convertView.findViewById(R.id.vProTwentyThreeDay);
+                viewHolder.vProTwentyForeDay = convertView.findViewById(R.id.vProTwentyForeDay);
+                viewHolder.vProTwentyFiveDay = convertView.findViewById(R.id.vProTwentyFiveDay);
+                viewHolder.vProTwentySixDay = convertView.findViewById(R.id.vProTwentySixDay);
+                viewHolder.vProTwentySevenDay = convertView.findViewById(R.id.vProTwentySevenDay);
+                viewHolder.vProTwentyEightDay = convertView.findViewById(R.id.vProTwentyEightDay);
+                viewHolder.vProTwentyNineDay = convertView.findViewById(R.id.vProTwentyNineDay);
+                viewHolder.vProThirtyDay = convertView.findViewById(R.id.vProThirtyDay);
+                viewHolder.vProThirtyOneDay = convertView.findViewById(R.id.vProThirtyOneDay);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
@@ -586,7 +886,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
             String tvnewlyProcedure = String.valueOf(mdate.get(position).get("tvnewlyProcedure"));
             String tvnewlyOthers = String.valueOf(mdate.get(position).get("tvnewlyOthers"));
             String tvnewSingularSystem = String.valueOf(mdate.get(position).get("tvnewSingularSystem"));
-            String tvdate = String.valueOf(mdate.get(position).get("tvColorTaskqty"));
+            final String tvdate = String.valueOf(mdate.get(position).get("tvColorTaskqty"));
             String tvnewTaskNumber = String.valueOf(mdate.get(position).get("tvnewTaskNumber"));
             String tvnewlySize = String.valueOf(mdate.get(position).get("tvnewlySize"));
             String tvnewlyClippingNumber = String.valueOf(mdate.get(position).get("tvnewlyClippingNumber"));
@@ -602,6 +902,8 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
             minute = t.minute;
             second = t.second;
             month = month + 1;
+            final int MIN_MARK_OTHER = 0;
+            final int MAX_MARK_OTHER = 200;
             if (tvnewlyProcedure.equals("裁床")) {
                 isprodure = 1;
                 sp = context.getSharedPreferences("my_sp", 0);
@@ -696,8 +998,25 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         @Override
                         public void afterTextChanged(Editable s) {
                             Log.d(TAG, "afterTextChanged");
+                            if (s != null && s.equals("")) {
+                                if (MIN_MARK_OTHER != -1 && MAX_MARK_OTHER != -1) {
+                                    int markVal = 0;
+                                    try {
+                                        markVal = Integer.parseInt(s.toString());
+                                    } catch (NumberFormatException e) {
+                                        markVal = 0;
+                                    }
+                                    if (markVal > MAX_MARK_OTHER) {
+                                        ToastUtils.ShowToastMessage("大小不能超过200", context);
+                                        editTexOthers.setText(String.valueOf(MAX_MARK_OTHER));
+                                        editTexOthers.setSelection(editTexOthers.length());
+                                    }
+                                    return;
+                                }
+                            }
                             String proitem = viewHolder.tvProOthers.getText().toString();
                             spUtils.put(context, "ConfigOthers", proitem);
+                            viewHolder.tvProOthers.setSelection(viewHolder.tvProOthers.length());
                         }
                     };
                     editTexOthers.addTextChangedListener(TvOthers);
@@ -713,10 +1032,15 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
 
                     final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
 //            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    final int singular = Integer.parseInt(viewHolder.tvProSingularSystem.getText().toString());
+                    final int MIN_MARK = 0;
                     if (editTexTaskNumber.getTag() instanceof TextWatcher) {
                         editTexTaskNumber.removeTextChangedListener((TextWatcher) editTexTaskNumber.getTag());
                     }
                     viewHolder.tvProTaskNumber.setText(tvdate);
+                    /**
+                     * 任务数不能大于制单数
+                     */
                     TextWatcher TvTaskNumber = new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -726,13 +1050,47 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count) {
                             Log.d(TAG, "onTextChanged");
+                            if (start > 1) {
+                                if (MIN_MARK != -1 && singular != -1) {
+                                    int num = Integer.parseInt(s.toString());
+                                    if (num > singular) {
+                                        s = String.valueOf(singular);
+                                        editTexTaskNumber.setText(tvdate);
+                                        editTexTaskNumber.setSelection(editTexTaskNumber.length());
+                                        InputFilter[] filters = {new InputFilter.LengthFilter(singular)};
+                                        viewHolder.tvProTaskNumber.setFilters(filters);
+                                        ToastUtils.ShowToastMessage("输入超过了制单数", context);
+                                    } else if (num < MIN_MARK) {
+                                        s = String.valueOf(MIN_MARK);
+                                        return;
+                                    }
+                                }
+                            }
+
                         }
 
                         @Override
                         public void afterTextChanged(Editable s) {
                             Log.d(TAG, "afterTextChanged");
+                            if (s != null && s.equals("")) {
+                                if (MIN_MARK != -1 && singular != -1) {
+                                    int markVal = 0;
+                                    try {
+                                        markVal = Integer.parseInt(s.toString());
+                                    } catch (NumberFormatException e) {
+                                        markVal = 0;
+                                    }
+                                    if (markVal > singular) {
+                                        ToastUtils.ShowToastMessage("大小不能超过制单数", context);
+                                        editTexTaskNumber.setText(tvdate);
+                                        editTexTaskNumber.setSelection(editTexTaskNumber.length());
+                                    }
+                                    return;
+                                }
+                            }
                             String proitem = viewHolder.tvProTaskNumber.getText().toString();
                             spUtils.put(context, "ConfigTaskNumber", proitem);
+                            viewHolder.tvProTaskNumber.setSelection(viewHolder.tvProTaskNumber.length());
                         }
                     };
                     editTexTaskNumber.addTextChangedListener(TvTaskNumber);
@@ -838,910 +1196,68 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         }
                     });
 
-
-                    final EditText editTexOneDay = viewHolder.tvProOneDay;
                     viewHolder.tvProOneDay.setVisibility(View.GONE);
-
-
-                    viewHolder.tvProTwoDay.setEnabled(true);
-                    final EditText editTexTwoDay = viewHolder.tvProTwoDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexTwoDay.getTag() instanceof TextWatcher) {
-                        editTexTwoDay.removeTextChangedListener((TextWatcher) editTexTwoDay.getTag());
-                    }
-                    TextWatcher TvTwoDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProTwoDay.getText().toString();
-                            spUtils.put(context, "configTwoDay", proitem);
-                        }
-                    };
-                    editTexTwoDay.addTextChangedListener(TvTwoDay);
-                    editTexTwoDay.setTag(TvTwoDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProTwoDay.setSelection(viewHolder.tvProTwoDay.length());
-
-
-                    viewHolder.tvProThreeDay.setEnabled(true);
-                    final EditText editTexThreeDay = viewHolder.tvProThreeDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexThreeDay.getTag() instanceof TextWatcher) {
-                        editTexThreeDay.removeTextChangedListener((TextWatcher) editTexThreeDay.getTag());
-                    }
-                    TextWatcher TvThreeDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProThreeDay.getText().toString();
-                            spUtils.put(context, "configThreeDay", proitem);
-                        }
-                    };
-                    editTexThreeDay.addTextChangedListener(TvThreeDay);
-                    editTexThreeDay.setTag(TvThreeDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProThreeDay.setSelection(viewHolder.tvProThreeDay.length());
-
-
-                    viewHolder.tvProForeDay.setEnabled(true);
-                    final EditText editTexForeDay = viewHolder.tvProForeDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexForeDay.getTag() instanceof TextWatcher) {
-                        editTexForeDay.removeTextChangedListener((TextWatcher) editTexForeDay.getTag());
-                    }
-                    TextWatcher TvForeDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProForeDay.getText().toString();
-                            spUtils.put(context, "configForeDay", proitem);
-                        }
-                    };
-                    editTexForeDay.addTextChangedListener(TvForeDay);
-                    editTexForeDay.setTag(TvForeDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProForeDay.setSelection(viewHolder.tvProForeDay.length());
-
-
-                    viewHolder.tvProFiveDay.setEnabled(true);
-                    final EditText editTexFiveDay = viewHolder.tvProFiveDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexFiveDay.getTag() instanceof TextWatcher) {
-                        editTexFiveDay.removeTextChangedListener((TextWatcher) editTexFiveDay.getTag());
-                    }
-                    TextWatcher TvFiveDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProFiveDay.getText().toString();
-                            spUtils.put(context, "configFiveDay", proitem);
-                        }
-                    };
-                    editTexFiveDay.addTextChangedListener(TvFiveDay);
-                    editTexFiveDay.setTag(TvFiveDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProFiveDay.setSelection(viewHolder.tvProFiveDay.length());
-
-
-                    viewHolder.tvProSixDay.setEnabled(true);
-                    final EditText editTexSixDay = viewHolder.tvProSixDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexSixDay.getTag() instanceof TextWatcher) {
-                        editTexSixDay.removeTextChangedListener((TextWatcher) editTexSixDay.getTag());
-                    }
-                    TextWatcher TvSixDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProSixDay.getText().toString();
-                            spUtils.put(context, "configSixDay", proitem);
-                        }
-                    };
-                    editTexSixDay.addTextChangedListener(TvSixDay);
-                    editTexSixDay.setTag(TvSixDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProSixDay.setSelection(viewHolder.tvProSixDay.length());
-
-
-                    viewHolder.tvProSevenDay.setEnabled(true);
-                    final EditText editTexSevenDay = viewHolder.tvProSevenDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexSevenDay.getTag() instanceof TextWatcher) {
-                        editTexSevenDay.removeTextChangedListener((TextWatcher) editTexSevenDay.getTag());
-                    }
-                    TextWatcher TvSevenDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProSevenDay.getText().toString();
-                            spUtils.put(context, "configSevenDay", proitem);
-                        }
-                    };
-                    editTexSevenDay.addTextChangedListener(TvSevenDay);
-                    editTexSevenDay.setTag(TvSevenDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProSevenDay.setSelection(viewHolder.tvProSevenDay.length());
-
-
-                    viewHolder.tvProEightDay.setEnabled(true);
-                    final EditText editTexEightDay = viewHolder.tvProEightDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexEightDay.getTag() instanceof TextWatcher) {
-                        editTexEightDay.removeTextChangedListener((TextWatcher) editTexEightDay.getTag());
-                    }
-                    TextWatcher TvEightDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProEightDay.getText().toString();
-                            spUtils.put(context, "configEightDay", proitem);
-                        }
-                    };
-                    editTexEightDay.addTextChangedListener(TvEightDay);
-                    editTexEightDay.setTag(TvEightDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProEightDay.setSelection(viewHolder.tvProEightDay.length());
-
-
-                    viewHolder.tvProNineDay.setEnabled(true);
-                    final EditText editTexNineDay = viewHolder.tvProNineDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexNineDay.getTag() instanceof TextWatcher) {
-                        editTexNineDay.removeTextChangedListener((TextWatcher) editTexNineDay.getTag());
-                    }
-                    TextWatcher TvNineDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProNineDay.getText().toString();
-                            spUtils.put(context, "configNineDay", proitem);
-                        }
-                    };
-                    editTexNineDay.addTextChangedListener(TvNineDay);
-                    editTexNineDay.setTag(TvNineDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProNineDay.setSelection(viewHolder.tvProNineDay.length());
-
-
-                    viewHolder.tvProTenDay.setEnabled(true);
-                    final EditText editTexTenDay = viewHolder.tvProTenDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexTenDay.getTag() instanceof TextWatcher) {
-                        editTexTenDay.removeTextChangedListener((TextWatcher) editTexTenDay.getTag());
-                    }
-                    TextWatcher TvTenDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProTenDay.getText().toString();
-                            spUtils.put(context, "configTenDay", proitem);
-                        }
-                    };
-                    editTexTenDay.addTextChangedListener(TvTenDay);
-                    editTexTenDay.setTag(TvTenDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProTenDay.setSelection(viewHolder.tvProTenDay.length());
-
-
-                    viewHolder.tvProElevenDay.setEnabled(true);
-                    final EditText editTexElevenDay = viewHolder.tvProElevenDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexElevenDay.getTag() instanceof TextWatcher) {
-                        editTexElevenDay.removeTextChangedListener((TextWatcher) editTexElevenDay.getTag());
-                    }
-                    TextWatcher TvElevenDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProElevenDay.getText().toString();
-                            spUtils.put(context, "configElevenDay", proitem);
-                        }
-                    };
-                    editTexElevenDay.addTextChangedListener(TvElevenDay);
-                    editTexElevenDay.setTag(TvElevenDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProElevenDay.setSelection(viewHolder.tvProElevenDay.length());
-
-
-                    viewHolder.tvProTwelveDay.setEnabled(true);
-                    final EditText editTexTwelveDay = viewHolder.tvProTwelveDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexTwelveDay.getTag() instanceof TextWatcher) {
-                        editTexTwelveDay.removeTextChangedListener((TextWatcher) editTexTwelveDay.getTag());
-                    }
-                    TextWatcher TvTwelveDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProTwelveDay.getText().toString();
-                            spUtils.put(context, "configTwelveDay", proitem);
-                        }
-                    };
-                    editTexTwelveDay.addTextChangedListener(TvTwelveDay);
-                    editTexTwelveDay.setTag(TvTwelveDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProTwelveDay.setSelection(viewHolder.tvProTwelveDay.length());
-
-
-                    viewHolder.tvProThirteenDay.setEnabled(true);
-                    final EditText editTexThirteenDay = viewHolder.tvProThirteenDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexThirteenDay.getTag() instanceof TextWatcher) {
-                        editTexThirteenDay.removeTextChangedListener((TextWatcher) editTexThirteenDay.getTag());
-                    }
-                    TextWatcher TvThirteenDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProThirteenDay.getText().toString();
-                            spUtils.put(context, "configThirteenDay", proitem);
-                        }
-                    };
-                    editTexThirteenDay.addTextChangedListener(TvThirteenDay);
-                    editTexThirteenDay.setTag(TvThirteenDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProThirteenDay.setSelection(viewHolder.tvProThirteenDay.length());
-
-
-                    viewHolder.tvProFourteenDay.setEnabled(true);
-                    final EditText editTexFourteenDay = viewHolder.tvProFourteenDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexFourteenDay.getTag() instanceof TextWatcher) {
-                        editTexFourteenDay.removeTextChangedListener((TextWatcher) editTexFourteenDay.getTag());
-                    }
-                    TextWatcher TvFourteenDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProFourteenDay.getText().toString();
-                            spUtils.put(context, "configFourteenDay", proitem);
-                        }
-                    };
-                    editTexFourteenDay.addTextChangedListener(TvFourteenDay);
-                    editTexFourteenDay.setTag(TvFourteenDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProFourteenDay.setSelection(viewHolder.tvProFourteenDay.length());
-
-
-                    viewHolder.tvProFifteenDay.setEnabled(true);
-                    final EditText editTexFifteenDay = viewHolder.tvProFifteenDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexFifteenDay.getTag() instanceof TextWatcher) {
-                        editTexFifteenDay.removeTextChangedListener((TextWatcher) editTexFifteenDay.getTag());
-                    }
-                    TextWatcher TvFifteenDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProFifteenDay.getText().toString();
-                            spUtils.put(context, "configFifteenDay", proitem);
-                        }
-                    };
-                    editTexFifteenDay.addTextChangedListener(TvFifteenDay);
-                    editTexFifteenDay.setTag(TvFifteenDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProFifteenDay.setSelection(viewHolder.tvProFifteenDay.length());
-
-
-                    viewHolder.tvProSixteenDay.setEnabled(true);
-                    final EditText editTexSixteenDay = viewHolder.tvProSixteenDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexSixteenDay.getTag() instanceof TextWatcher) {
-                        editTexSixteenDay.removeTextChangedListener((TextWatcher) editTexSixteenDay.getTag());
-                    }
-                    TextWatcher TvSixteenDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProSixteenDay.getText().toString();
-                            spUtils.put(context, "configSixteenDay", proitem);
-                        }
-                    };
-                    editTexSixteenDay.addTextChangedListener(TvSixteenDay);
-                    editTexSixteenDay.setTag(TvSixteenDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProSixteenDay.setSelection(viewHolder.tvProSixteenDay.length());
-
-
-                    viewHolder.tvProSeventeenDay.setEnabled(true);
-                    final EditText editTexSeventeenDay = viewHolder.tvProSeventeenDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexSeventeenDay.getTag() instanceof TextWatcher) {
-                        editTexSeventeenDay.removeTextChangedListener((TextWatcher) editTexSeventeenDay.getTag());
-                    }
-                    TextWatcher TvSeventeenDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProSeventeenDay.getText().toString();
-                            spUtils.put(context, "configSeventeenDay", proitem);
-                        }
-                    };
-                    editTexSeventeenDay.addTextChangedListener(TvSeventeenDay);
-                    editTexSeventeenDay.setTag(TvSeventeenDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProSeventeenDay.setSelection(viewHolder.tvProSeventeenDay.length());
-
-
-                    viewHolder.tvProEighteenDay.setEnabled(true);
-                    final EditText editTexEighteenDay = viewHolder.tvProEighteenDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexEighteenDay.getTag() instanceof TextWatcher) {
-                        editTexEighteenDay.removeTextChangedListener((TextWatcher) editTexEighteenDay.getTag());
-                    }
-                    TextWatcher TvEighteenDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProEighteenDay.getText().toString();
-                            spUtils.put(context, "configEighteenDay", proitem);
-                        }
-                    };
-                    editTexEighteenDay.addTextChangedListener(TvEighteenDay);
-                    editTexEighteenDay.setTag(TvEighteenDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProEighteenDay.setSelection(viewHolder.tvProEighteenDay.length());
-
-
-                    viewHolder.tvProNineteenDay.setEnabled(true);
-                    final EditText editTexNineteenDay = viewHolder.tvProNineteenDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexNineteenDay.getTag() instanceof TextWatcher) {
-                        editTexNineteenDay.removeTextChangedListener((TextWatcher) editTexNineteenDay.getTag());
-                    }
-                    TextWatcher TvNineteenDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProNineteenDay.getText().toString();
-                            spUtils.put(context, "configNineteenDay", proitem);
-                        }
-                    };
-                    editTexNineteenDay.addTextChangedListener(TvNineteenDay);
-                    editTexNineteenDay.setTag(TvNineteenDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProNineteenDay.setSelection(viewHolder.tvProNineteenDay.length());
-
-
-                    viewHolder.tvProTwentyDay.setEnabled(true);
-                    final EditText editTexTwentyDay = viewHolder.tvProTwentyDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexTwentyDay.getTag() instanceof TextWatcher) {
-                        editTexTwentyDay.removeTextChangedListener((TextWatcher) editTexTwentyDay.getTag());
-                    }
-                    TextWatcher TvTwentyDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProTwentyDay.getText().toString();
-                            spUtils.put(context, "configTwentyDay", proitem);
-                        }
-                    };
-                    editTexTwentyDay.addTextChangedListener(TvTwentyDay);
-                    editTexTwentyDay.setTag(TvTwentyDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProTwentyDay.setSelection(viewHolder.tvProTwentyDay.length());
-
-
-                    viewHolder.tvProTwentyOneDay.setEnabled(true);
-                    final EditText editTexTwentyOneDay = viewHolder.tvProTwentyOneDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexTwentyOneDay.getTag() instanceof TextWatcher) {
-                        editTexTwentyOneDay.removeTextChangedListener((TextWatcher) editTexTwentyOneDay.getTag());
-                    }
-                    TextWatcher TvTwentyOneDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProTwentyOneDay.getText().toString();
-                            spUtils.put(context, "configTwentyOneDay", proitem);
-                        }
-                    };
-                    editTexTwentyOneDay.addTextChangedListener(TvTwentyOneDay);
-                    editTexTwentyOneDay.setTag(TvTwentyOneDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProTwentyOneDay.setSelection(viewHolder.tvProTwentyOneDay.length());
-
-
-                    viewHolder.tvProTwentyTwoDay.setEnabled(true);
-                    final EditText editTexTwentyTwoDay = viewHolder.tvProTwentyTwoDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexTwentyTwoDay.getTag() instanceof TextWatcher) {
-                        editTexTwentyTwoDay.removeTextChangedListener((TextWatcher) editTexTwentyTwoDay.getTag());
-                    }
-                    TextWatcher TvTwentyTwoDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProTwentyTwoDay.getText().toString();
-                            spUtils.put(context, "configTwentyTwoDay", proitem);
-                        }
-                    };
-                    editTexTwentyTwoDay.addTextChangedListener(TvTwentyTwoDay);
-                    editTexTwentyTwoDay.setTag(TvTwentyTwoDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProTwentyTwoDay.setSelection(viewHolder.tvProTwentyTwoDay.length());
-
-
-                    viewHolder.tvProTwentyThreeDay.setEnabled(true);
-                    final EditText editTexTwentyThreeDay = viewHolder.tvProTwentyThreeDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexTwentyThreeDay.getTag() instanceof TextWatcher) {
-                        editTexTwentyThreeDay.removeTextChangedListener((TextWatcher) editTexTwentyThreeDay.getTag());
-                    }
-                    TextWatcher TvTwentyThreeDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProTwentyThreeDay.getText().toString();
-                            spUtils.put(context, "configTwentyThreeDay", proitem);
-                        }
-                    };
-                    editTexTwentyThreeDay.addTextChangedListener(TvTwentyThreeDay);
-                    editTexTwentyThreeDay.setTag(TvTwentyThreeDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProTwentyThreeDay.setSelection(viewHolder.tvProTwentyThreeDay.length());
-
-
-                    viewHolder.tvProTwentyForeDay.setEnabled(true);
-                    final EditText editTexTwentyForeDay = viewHolder.tvProTwentyForeDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexTwentyForeDay.getTag() instanceof TextWatcher) {
-                        editTexTwentyForeDay.removeTextChangedListener((TextWatcher) editTexTwentyForeDay.getTag());
-                    }
-                    TextWatcher TvTwentyForeDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProTwentyForeDay.getText().toString();
-                            spUtils.put(context, "configTwentyForeDay", proitem);
-                        }
-                    };
-                    editTexTwentyForeDay.addTextChangedListener(TvTwentyForeDay);
-                    editTexTwentyForeDay.setTag(TvTwentyForeDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProTwentyForeDay.setSelection(viewHolder.tvProTwentyForeDay.length());
-
-
-                    viewHolder.tvProTwentyFiveDay.setEnabled(true);
-                    final EditText editTexTwentyFiveDay = viewHolder.tvProTwentyFiveDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexTwentyFiveDay.getTag() instanceof TextWatcher) {
-                        editTexTwentyFiveDay.removeTextChangedListener((TextWatcher) editTexTwentyFiveDay.getTag());
-                    }
-                    TextWatcher TvTwentyFiveDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProTwentyFiveDay.getText().toString();
-                            spUtils.put(context, "configTwentyFiveDay", proitem);
-                        }
-                    };
-                    editTexTwentyFiveDay.addTextChangedListener(TvTwentyFiveDay);
-                    editTexTwentyFiveDay.setTag(TvTwentyFiveDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProTwentyFiveDay.setSelection(viewHolder.tvProTwentyFiveDay.length());
-
-
-                    viewHolder.tvProTwentySixDay.setEnabled(true);
-                    final EditText editTexTwentySixDay = viewHolder.tvProTwentySixDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexTwentySixDay.getTag() instanceof TextWatcher) {
-                        editTexTwentySixDay.removeTextChangedListener((TextWatcher) editTexTwentySixDay.getTag());
-                    }
-                    TextWatcher TvTwentySixDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProTwentySixDay.getText().toString();
-                            spUtils.put(context, "configTwentySixDay", proitem);
-                        }
-                    };
-                    editTexTwentySixDay.addTextChangedListener(TvTwentySixDay);
-                    editTexTwentySixDay.setTag(TvTwentySixDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProTwentySixDay.setSelection(viewHolder.tvProTwentySixDay.length());
-
-
-                    viewHolder.tvProTwentySevenDay.setEnabled(true);
-                    final EditText editTexTwentySevenDay = viewHolder.tvProTwentySevenDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexTwentySevenDay.getTag() instanceof TextWatcher) {
-                        editTexTwentySevenDay.removeTextChangedListener((TextWatcher) editTexTwentySevenDay.getTag());
-                    }
-                    TextWatcher TvTwentySevenDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProTwentySevenDay.getText().toString();
-                            spUtils.put(context, "configTwentySevenDay", proitem);
-                        }
-                    };
-                    editTexTwentySevenDay.addTextChangedListener(TvTwentySevenDay);
-                    editTexTwentySevenDay.setTag(TvTwentySevenDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProTwentySevenDay.setSelection(viewHolder.tvProTwentySevenDay.length());
-
-
-                    viewHolder.tvProTwentyEightDay.setEnabled(true);
-                    final EditText editTexTwentyEightDay = viewHolder.tvProTwentyEightDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexTwentyEightDay.getTag() instanceof TextWatcher) {
-                        editTexTwentyEightDay.removeTextChangedListener((TextWatcher) editTexTwentyEightDay.getTag());
-                    }
-                    TextWatcher TvTwentyEightDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProTwentyEightDay.getText().toString();
-                            spUtils.put(context, "configTwentyEightDay", proitem);
-                        }
-                    };
-                    editTexTwentyEightDay.addTextChangedListener(TvTwentyEightDay);
-                    editTexTwentyEightDay.setTag(TvTwentyEightDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProTwentyEightDay.setSelection(viewHolder.tvProTwentyEightDay.length());
-
-
-                    viewHolder.tvProTwentyNineDay.setEnabled(true);
-                    final EditText editTexTwentyNineDay = viewHolder.tvProTwentyNineDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexTwentyNineDay.getTag() instanceof TextWatcher) {
-                        editTexTwentyNineDay.removeTextChangedListener((TextWatcher) editTexTwentyNineDay.getTag());
-                    }
-                    TextWatcher TvTwentyNineDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProTwentyNineDay.getText().toString();
-                            spUtils.put(context, "configTwentyNineDay", proitem);
-                        }
-                    };
-                    editTexTwentyNineDay.addTextChangedListener(TvTwentyNineDay);
-                    editTexTwentyNineDay.setTag(TvTwentyNineDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProTwentyNineDay.setSelection(viewHolder.tvProTwentyNineDay.length());
-
-
-                    viewHolder.tvProThirtyDay.setEnabled(true);
-                    final EditText editTexThirtyDay = viewHolder.tvProThirtyDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexThirtyDay.getTag() instanceof TextWatcher) {
-                        editTexThirtyDay.removeTextChangedListener((TextWatcher) editTexThirtyDay.getTag());
-                    }
-                    TextWatcher TvThirtyDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProThirtyDay.getText().toString();
-                            spUtils.put(context, "configThirtyDay", proitem);
-                        }
-                    };
-                    editTexThirtyDay.addTextChangedListener(TvThirtyDay);
-                    editTexThirtyDay.setTag(TvThirtyDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProThirtyDay.setSelection(viewHolder.tvProThirtyDay.length());
-
-
-                    viewHolder.tvProThirtyOneDay.setEnabled(true);
-                    final EditText editTexThirtyOneDay = viewHolder.tvProThirtyOneDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexThirtyOneDay.getTag() instanceof TextWatcher) {
-                        editTexThirtyOneDay.removeTextChangedListener((TextWatcher) editTexThirtyOneDay.getTag());
-                    }
-                    TextWatcher TvThirtyOneDay = new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                            Log.d(TAG, "beforeTextChanged");
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            Log.d(TAG, "onTextChanged");
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-                            Log.d(TAG, "afterTextChanged");
-                            String proitem = viewHolder.tvProThirtyOneDay.getText().toString();
-                            spUtils.put(context, "configThirtyOneDay", proitem);
-                        }
-                    };
-                    editTexThirtyOneDay.addTextChangedListener(TvThirtyOneDay);
-                    editTexThirtyOneDay.setTag(TvThirtyOneDay);
-            /*光标放置在文本最后*/
-                    viewHolder.tvProThirtyOneDay.setSelection(viewHolder.tvProThirtyOneDay.length());
-
+                    viewHolder.tvProTwoDay.setVisibility(View.GONE);
+                    viewHolder.tvProThreeDay.setVisibility(View.GONE);
+                    viewHolder.tvProForeDay.setVisibility(View.GONE);
+                    viewHolder.tvProFiveDay.setVisibility(View.GONE);
+                    viewHolder.tvProSixDay.setVisibility(View.GONE);
+                    viewHolder.tvProSevenDay.setVisibility(View.GONE);
+                    viewHolder.tvProEightDay.setVisibility(View.GONE);
+                    viewHolder.tvProNineDay.setVisibility(View.GONE);
+                    viewHolder.tvProTenDay.setVisibility(View.GONE);
+                    viewHolder.tvProElevenDay.setVisibility(View.GONE);
+                    viewHolder.tvProTwelveDay.setVisibility(View.GONE);
+                    viewHolder.tvProThirteenDay.setVisibility(View.GONE);
+                    viewHolder.tvProFourteenDay.setVisibility(View.GONE);
+                    viewHolder.tvProFifteenDay.setVisibility(View.GONE);
+                    viewHolder.tvProSixteenDay.setVisibility(View.GONE);
+                    viewHolder.tvProSeventeenDay.setVisibility(View.GONE);
+                    viewHolder.tvProEighteenDay.setVisibility(View.GONE);
+                    viewHolder.tvProNineteenDay.setVisibility(View.GONE);
+                    viewHolder.tvProTwentyDay.setVisibility(View.GONE);
+                    viewHolder.tvProTwentyOneDay.setVisibility(View.GONE);
+                    viewHolder.tvProTwentyTwoDay.setVisibility(View.GONE);
+                    viewHolder.tvProTwentyThreeDay.setVisibility(View.GONE);
+                    viewHolder.tvProTwentyForeDay.setVisibility(View.GONE);
+                    viewHolder.tvProTwentyFiveDay.setVisibility(View.GONE);
+                    viewHolder.tvProTwentySixDay.setVisibility(View.GONE);
+                    viewHolder.tvProTwentySevenDay.setVisibility(View.GONE);
+                    viewHolder.tvProTwentyEightDay.setVisibility(View.GONE);
+                    viewHolder.tvProTwentyNineDay.setVisibility(View.GONE);
+                    viewHolder.tvProThirtyDay.setVisibility(View.GONE);
+                    viewHolder.tvProThirtyOneDay.setVisibility(View.GONE);
+                    viewHolder.vProOneDay.setVisibility(View.GONE);
+                    viewHolder.vProTwoDay.setVisibility(View.GONE);
+                    viewHolder.vProThreeDay.setVisibility(View.GONE);
+                    viewHolder.vProForeDay.setVisibility(View.GONE);
+                    viewHolder.vProFiveDay.setVisibility(View.GONE);
+                    viewHolder.vProSixDay.setVisibility(View.GONE);
+                    viewHolder.vProSevenDay.setVisibility(View.GONE);
+                    viewHolder.vProEightDay.setVisibility(View.GONE);
+                    viewHolder.vProNineDay.setVisibility(View.GONE);
+                    viewHolder.vProTenDay.setVisibility(View.GONE);
+                    viewHolder.vProElevenDay.setVisibility(View.GONE);
+                    viewHolder.vProTwelveDay.setVisibility(View.GONE);
+                    viewHolder.vProThirteenDay.setVisibility(View.GONE);
+                    viewHolder.vProFourteenDay.setVisibility(View.GONE);
+                    viewHolder.vProFifteenDay.setVisibility(View.GONE);
+                    viewHolder.vProSixteenDay.setVisibility(View.GONE);
+                    viewHolder.vProSeventeenDay.setVisibility(View.GONE);
+                    viewHolder.vProEighteenDay.setVisibility(View.GONE);
+                    viewHolder.vProNineteenDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentyDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentyOneDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentyTwoDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentyThreeDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentyForeDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentyFiveDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentySixDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentySevenDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentyEightDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentyNineDay.setVisibility(View.GONE);
+                    viewHolder.vProThirtyDay.setVisibility(View.GONE);
+                    viewHolder.vProThirtyOneDay.setVisibility(View.GONE);
 
                     final EditText editTexRemarks = viewHolder.tvProRemarks;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
@@ -1796,6 +1312,8 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     }
                     viewHolder.tvProTaskNumber.setText(tvdate);
 
+                    viewHolder.tvProColor.setText(tvnewlySize);
+
                     final EditText editTexLastMonth = viewHolder.tvProCompletedLastMonth;
 //            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexLastMonth.getTag() instanceof TextWatcher) {
@@ -1803,34 +1321,75 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     }
                     viewHolder.tvProCompletedLastMonth.setText(tvnewlyCompletedLastMonth);
 
-                    final EditText editTexOneDay = viewHolder.tvProOneDay;
                     viewHolder.tvProOneDay.setVisibility(View.GONE);
-
-                    final EditText editTexTwoDay = viewHolder.tvProTwoDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexTwoDay.getTag() instanceof TextWatcher) {
-                        editTexTwoDay.removeTextChangedListener((TextWatcher) editTexTwoDay.getTag());
-                    }
-
-                    final EditText editTexThreeDay = viewHolder.tvProThreeDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexThreeDay.getTag() instanceof TextWatcher) {
-                        editTexThreeDay.removeTextChangedListener((TextWatcher) editTexThreeDay.getTag());
-                    }
-
-                    final EditText editTexForeDay = viewHolder.tvProForeDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexForeDay.getTag() instanceof TextWatcher) {
-                        editTexForeDay.removeTextChangedListener((TextWatcher) editTexForeDay.getTag());
-                    }
-
-                    final EditText editTexFiveDay = viewHolder.tvProFiveDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexFiveDay.getTag() instanceof TextWatcher) {
-                        editTexFiveDay.removeTextChangedListener((TextWatcher) editTexFiveDay.getTag());
-                    }
+                    viewHolder.tvProTwoDay.setVisibility(View.GONE);
+                    viewHolder.tvProThreeDay.setVisibility(View.GONE);
+                    viewHolder.tvProForeDay.setVisibility(View.GONE);
+                    viewHolder.tvProFiveDay.setVisibility(View.GONE);
+                    viewHolder.vProOneDay.setVisibility(View.GONE);
+                    viewHolder.vProTwoDay.setVisibility(View.GONE);
+                    viewHolder.vProThreeDay.setVisibility(View.GONE);
+                    viewHolder.vProForeDay.setVisibility(View.GONE);
+                    viewHolder.vProFiveDay.setVisibility(View.GONE);
+                    viewHolder.vProSixDay.setVisibility(View.GONE);
+                    viewHolder.vProSevenDay.setVisibility(View.GONE);
+                    viewHolder.vProEightDay.setVisibility(View.GONE);
+                    viewHolder.vProNineDay.setVisibility(View.GONE);
+                    viewHolder.vProTenDay.setVisibility(View.GONE);
+                    viewHolder.vProElevenDay.setVisibility(View.GONE);
+                    viewHolder.vProTwelveDay.setVisibility(View.GONE);
+                    viewHolder.vProThirteenDay.setVisibility(View.GONE);
+                    viewHolder.vProFourteenDay.setVisibility(View.GONE);
+                    viewHolder.vProFifteenDay.setVisibility(View.GONE);
+                    viewHolder.vProSixteenDay.setVisibility(View.GONE);
+                    viewHolder.vProSeventeenDay.setVisibility(View.GONE);
+                    viewHolder.vProEighteenDay.setVisibility(View.GONE);
+                    viewHolder.vProNineteenDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentyDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentyOneDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentyTwoDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentyThreeDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentyForeDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentyFiveDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentySixDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentySevenDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentyEightDay.setVisibility(View.GONE);
+                    viewHolder.vProTwentyNineDay.setVisibility(View.GONE);
+                    viewHolder.vProThirtyDay.setVisibility(View.GONE);
+                    viewHolder.vProThirtyOneDay.setVisibility(View.GONE);
                 }
             } else {
+                viewHolder.vProOneDay.setVisibility(View.VISIBLE);
+                viewHolder.vProTwoDay.setVisibility(View.VISIBLE);
+                viewHolder.vProThreeDay.setVisibility(View.VISIBLE);
+                viewHolder.vProForeDay.setVisibility(View.VISIBLE);
+                viewHolder.vProFiveDay.setVisibility(View.VISIBLE);
+                viewHolder.vProSixDay.setVisibility(View.VISIBLE);
+                viewHolder.vProSevenDay.setVisibility(View.VISIBLE);
+                viewHolder.vProEightDay.setVisibility(View.VISIBLE);
+                viewHolder.vProNineDay.setVisibility(View.VISIBLE);
+                viewHolder.vProTenDay.setVisibility(View.VISIBLE);
+                viewHolder.vProElevenDay.setVisibility(View.VISIBLE);
+                viewHolder.vProTwelveDay.setVisibility(View.VISIBLE);
+                viewHolder.vProThirteenDay.setVisibility(View.VISIBLE);
+                viewHolder.vProFourteenDay.setVisibility(View.VISIBLE);
+                viewHolder.vProFifteenDay.setVisibility(View.VISIBLE);
+                viewHolder.vProSixteenDay.setVisibility(View.VISIBLE);
+                viewHolder.vProSeventeenDay.setVisibility(View.VISIBLE);
+                viewHolder.vProEighteenDay.setVisibility(View.VISIBLE);
+                viewHolder.vProNineteenDay.setVisibility(View.VISIBLE);
+                viewHolder.vProTwentyDay.setVisibility(View.VISIBLE);
+                viewHolder.vProTwentyOneDay.setVisibility(View.VISIBLE);
+                viewHolder.vProTwentyTwoDay.setVisibility(View.VISIBLE);
+                viewHolder.vProTwentyThreeDay.setVisibility(View.VISIBLE);
+                viewHolder.vProTwentyForeDay.setVisibility(View.VISIBLE);
+                viewHolder.vProTwentyFiveDay.setVisibility(View.VISIBLE);
+                viewHolder.vProTwentySixDay.setVisibility(View.VISIBLE);
+                viewHolder.vProTwentySevenDay.setVisibility(View.VISIBLE);
+                viewHolder.vProTwentyEightDay.setVisibility(View.VISIBLE);
+                viewHolder.vProTwentyNineDay.setVisibility(View.VISIBLE);
+                viewHolder.vProThirtyDay.setVisibility(View.VISIBLE);
+                viewHolder.vProThirtyOneDay.setVisibility(View.VISIBLE);
                 isprodure = 0;
                 sp = context.getSharedPreferences("my_sp", 0);
                 spUtils.put(context, "strprodure", String.valueOf(isprodure));
@@ -1924,8 +1483,26 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         @Override
                         public void afterTextChanged(Editable s) {
                             Log.d(TAG, "afterTextChanged");
+
+                            if (s != null && s.equals("")) {
+                                if (MIN_MARK_OTHER != -1 && MAX_MARK_OTHER != -1) {
+                                    int markVal = 0;
+                                    try {
+                                        markVal = Integer.parseInt(s.toString());
+                                    } catch (NumberFormatException e) {
+                                        markVal = 0;
+                                    }
+                                    if (markVal > MAX_MARK_OTHER) {
+                                        ToastUtils.ShowToastMessage("大小不能超过200", context);
+                                        editTexOthers.setText(String.valueOf(MAX_MARK_OTHER));
+                                        editTexOthers.setSelection(editTexOthers.length());
+                                    }
+                                    return;
+                                }
+                            }
                             String proitem = viewHolder.tvProOthers.getText().toString();
                             spUtils.put(context, "ConfigOthers", proitem);
+                            viewHolder.tvProOthers.setSelection(viewHolder.tvProOthers.length());
                         }
                     };
                     editTexOthers.addTextChangedListener(TvOthers);
@@ -1941,6 +1518,8 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
 
                     final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
 //            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    final int singular = Integer.parseInt(viewHolder.tvProSingularSystem.getText().toString());
+                    final int MIN_MARK = 0;
                     if (editTexTaskNumber.getTag() instanceof TextWatcher) {
                         editTexTaskNumber.removeTextChangedListener((TextWatcher) editTexTaskNumber.getTag());
                     }
@@ -1954,11 +1533,43 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count) {
                             Log.d(TAG, "onTextChanged");
+                            if (start > 1) {
+                                if (MIN_MARK != -1 && singular != -1) {
+                                    int num = Integer.parseInt(s.toString());
+                                    if (num > singular) {
+                                        s = String.valueOf(singular);
+                                        editTexTaskNumber.setText(tvdate);
+                                        editTexTaskNumber.setSelection(editTexTaskNumber.length());
+                                        InputFilter[] filters = {new InputFilter.LengthFilter(singular)};
+                                        viewHolder.tvProTaskNumber.setFilters(filters);
+                                        ToastUtils.ShowToastMessage("输入超过了制单数", context);
+                                    } else if (num < MIN_MARK) {
+                                        s = String.valueOf(MIN_MARK);
+                                        return;
+                                    }
+                                }
+                            }
                         }
 
                         @Override
                         public void afterTextChanged(Editable s) {
                             Log.d(TAG, "afterTextChanged");
+                            if (s != null && s.equals("")) {
+                                if (MIN_MARK != -1 && singular != -1) {
+                                    int markVal = 0;
+                                    try {
+                                        markVal = Integer.parseInt(s.toString());
+                                    } catch (NumberFormatException e) {
+                                        markVal = 0;
+                                    }
+                                    if (markVal > singular) {
+                                        ToastUtils.ShowToastMessage("大小不能超过制单数", context);
+                                        editTexTaskNumber.setText(tvdate);
+                                        editTexTaskNumber.setSelection(editTexTaskNumber.length());
+                                    }
+                                    return;
+                                }
+                            }
                             String proitem = viewHolder.tvProTaskNumber.getText().toString();
                             spUtils.put(context, "ConfigTaskNumber", proitem);
                         }
@@ -2089,6 +1700,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProOneDay.getText().toString();
                             spUtils.put(context, "configOneDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexOneDay.addTextChangedListener(TvOneDay);
@@ -2119,6 +1931,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProTwoDay.getText().toString();
                             spUtils.put(context, "configTwoDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexTwoDay.addTextChangedListener(TvTwoDay);
@@ -2149,6 +2162,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProThreeDay.getText().toString();
                             spUtils.put(context, "configThreeDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexThreeDay.addTextChangedListener(TvThreeDay);
@@ -2179,6 +2393,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProForeDay.getText().toString();
                             spUtils.put(context, "configForeDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexForeDay.addTextChangedListener(TvForeDay);
@@ -2209,6 +2624,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProFiveDay.getText().toString();
                             spUtils.put(context, "configFiveDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexFiveDay.addTextChangedListener(TvFiveDay);
@@ -2239,6 +2855,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProSixDay.getText().toString();
                             spUtils.put(context, "configSixDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexSixDay.addTextChangedListener(TvSixDay);
@@ -2269,6 +3086,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProSevenDay.getText().toString();
                             spUtils.put(context, "configSevenDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexSevenDay.addTextChangedListener(TvSevenDay);
@@ -2299,6 +3317,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProEightDay.getText().toString();
                             spUtils.put(context, "configEightDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexEightDay.addTextChangedListener(TvEightDay);
@@ -2329,6 +3548,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProNineDay.getText().toString();
                             spUtils.put(context, "configNineDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexNineDay.addTextChangedListener(TvNineDay);
@@ -2359,6 +3779,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProTenDay.getText().toString();
                             spUtils.put(context, "configTenDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexTenDay.addTextChangedListener(TvTenDay);
@@ -2389,6 +4010,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProElevenDay.getText().toString();
                             spUtils.put(context, "configElevenDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexElevenDay.addTextChangedListener(TvElevenDay);
@@ -2419,6 +4241,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProTwelveDay.getText().toString();
                             spUtils.put(context, "configTwelveDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexTwelveDay.addTextChangedListener(TvTwelveDay);
@@ -2449,6 +4472,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProThirteenDay.getText().toString();
                             spUtils.put(context, "configThirteenDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexThirteenDay.addTextChangedListener(TvThirteenDay);
@@ -2479,6 +4703,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProFourteenDay.getText().toString();
                             spUtils.put(context, "configFourteenDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexFourteenDay.addTextChangedListener(TvFourteenDay);
@@ -2509,6 +4934,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProFifteenDay.getText().toString();
                             spUtils.put(context, "configFifteenDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexFifteenDay.addTextChangedListener(TvFifteenDay);
@@ -2539,6 +5165,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProSixteenDay.getText().toString();
                             spUtils.put(context, "configSixteenDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexSixteenDay.addTextChangedListener(TvSixteenDay);
@@ -2569,6 +5396,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProSeventeenDay.getText().toString();
                             spUtils.put(context, "configSeventeenDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexSeventeenDay.addTextChangedListener(TvSeventeenDay);
@@ -2599,6 +5627,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProEighteenDay.getText().toString();
                             spUtils.put(context, "configEighteenDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexEighteenDay.addTextChangedListener(TvEighteenDay);
@@ -2629,6 +5858,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProNineteenDay.getText().toString();
                             spUtils.put(context, "configNineteenDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexNineteenDay.addTextChangedListener(TvNineteenDay);
@@ -2659,6 +6089,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProTwentyDay.getText().toString();
                             spUtils.put(context, "configTwentyDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexTwentyDay.addTextChangedListener(TvTwentyDay);
@@ -2689,6 +6320,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProTwentyOneDay.getText().toString();
                             spUtils.put(context, "configTwentyOneDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexTwentyOneDay.addTextChangedListener(TvTwentyOneDay);
@@ -2719,6 +6551,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProTwentyTwoDay.getText().toString();
                             spUtils.put(context, "configTwentyTwoDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexTwentyTwoDay.addTextChangedListener(TvTwentyTwoDay);
@@ -2749,6 +6782,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProTwentyThreeDay.getText().toString();
                             spUtils.put(context, "configTwentyThreeDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexTwentyThreeDay.addTextChangedListener(TvTwentyThreeDay);
@@ -2779,6 +7013,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProTwentyForeDay.getText().toString();
                             spUtils.put(context, "configTwentyForeDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexTwentyForeDay.addTextChangedListener(TvTwentyForeDay);
@@ -2809,6 +7244,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProTwentyFiveDay.getText().toString();
                             spUtils.put(context, "configTwentyFiveDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexTwentyFiveDay.addTextChangedListener(TvTwentyFiveDay);
@@ -2839,6 +7475,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProTwentySixDay.getText().toString();
                             spUtils.put(context, "configTwentySixDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexTwentySixDay.addTextChangedListener(TvTwentySixDay);
@@ -2869,6 +7706,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProTwentySevenDay.getText().toString();
                             spUtils.put(context, "configTwentySevenDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexTwentySevenDay.addTextChangedListener(TvTwentySevenDay);
@@ -2899,6 +7937,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProTwentyEightDay.getText().toString();
                             spUtils.put(context, "configTwentyEightDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexTwentyEightDay.addTextChangedListener(TvTwentyEightDay);
@@ -2929,6 +8168,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProTwentyNineDay.getText().toString();
                             spUtils.put(context, "configTwentyNineDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexTwentyNineDay.addTextChangedListener(TvTwentyNineDay);
@@ -2959,6 +8399,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProThirtyDay.getText().toString();
                             spUtils.put(context, "configThirtyDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexThirtyDay.addTextChangedListener(TvThirtyDay);
@@ -2989,6 +8630,207 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProThirtyOneDay.getText().toString();
                             spUtils.put(context, "configThirtyOneDay", proitem);
+                            String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
+                            if (lastmonth.equals("")) {
+                                lastmont = 0;
+                            } else {
+                                lastmont = Integer.parseInt(lastmonth);
+                            }
+                            String dayone = viewHolder.tvProOneDay.getText().toString();
+                            if (dayone.equals("")) {
+                                day1 = 0;
+                            } else {
+                                day1 = Integer.parseInt(dayone);
+                            }
+                            String daytwo = viewHolder.tvProTwoDay.getText().toString();
+                            if (daytwo.equals("")) {
+                                day2 = 0;
+                            } else {
+                                day2 = Integer.parseInt(daytwo);
+                            }
+                            String dayThree = viewHolder.tvProThreeDay.getText().toString();
+                            if (dayThree.equals("")) {
+                                day3 = 0;
+                            } else {
+                                day3 = Integer.parseInt(dayThree);
+                            }
+                            String dayfore = viewHolder.tvProForeDay.getText().toString();
+                            if (dayfore.equals("")) {
+                                day4 = 0;
+                            } else {
+                                day4 = Integer.parseInt(dayfore);
+                            }
+                            String dayfive = viewHolder.tvProFiveDay.getText().toString();
+                            if (dayfive.equals("")) {
+                                day5 = 0;
+                            } else {
+                                day5 = Integer.parseInt(dayfive);
+                            }
+                            String daysix = viewHolder.tvProSixDay.getText().toString();
+                            if (daysix.equals("")) {
+                                day6 = 0;
+                            } else {
+                                day6 = Integer.parseInt(daysix);
+                            }
+                            String daySeven = viewHolder.tvProSevenDay.getText().toString();
+                            if (daySeven.equals("")) {
+                                day7 = 0;
+                            } else {
+                                day7 = Integer.parseInt(daySeven);
+                            }
+                            String dayEight = viewHolder.tvProEightDay.getText().toString();
+                            if (dayEight.equals("")) {
+                                day8 = 0;
+                            } else {
+                                day8 = Integer.parseInt(dayEight);
+                            }
+                            String dayNine = viewHolder.tvProNineDay.getText().toString();
+                            if (dayNine.equals("")) {
+                                day9 = 0;
+                            } else {
+                                day9 = Integer.parseInt(dayNine);
+                            }
+                            String dayTen = viewHolder.tvProTenDay.getText().toString();
+                            if (dayTen.equals("")) {
+                                day10 = 0;
+                            } else {
+                                day10 = Integer.parseInt(dayTen);
+                            }
+                            String dayEleven = viewHolder.tvProElevenDay.getText().toString();
+                            if (dayEleven.equals("")) {
+                                day11 = 0;
+                            } else {
+                                day11 = Integer.parseInt(dayEleven);
+                            }
+                            String dayTwelve = viewHolder.tvProTwelveDay.getText().toString();
+                            if (dayTwelve.equals("")) {
+                                day12 = 0;
+                            } else {
+                                day12 = Integer.parseInt(dayTwelve);
+                            }
+                            String dayThirteen = viewHolder.tvProThirteenDay.getText().toString();
+                            if (dayThirteen.equals("")) {
+                                day13 = 0;
+                            } else {
+                                day13 = Integer.parseInt(dayThirteen);
+                            }
+                            String dayFourteen = viewHolder.tvProFourteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day14 = 0;
+                            } else {
+                                day14 = Integer.parseInt(dayFourteen);
+                            }
+                            String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
+                            if (dayFourteen.equals("")) {
+                                day15 = 0;
+                            } else {
+                                day15 = Integer.parseInt(dayFourteen);
+                            }
+                            String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
+                            if (daySixteen.equals("")) {
+                                day16 = 0;
+                            } else {
+                                day16 = Integer.parseInt(daySixteen);
+                            }
+                            String daySeventeen = viewHolder.tvProSeventeenDay.getText().toString();
+                            if (daySeventeen.equals("")) {
+                                day17 = 0;
+                            } else {
+                                day17 = Integer.parseInt(daySeventeen);
+                            }
+                            String dayEighteen = viewHolder.tvProEighteenDay.getText().toString();
+                            if (dayEighteen.equals("")) {
+                                day18 = 0;
+                            } else {
+                                day18 = Integer.parseInt(dayEighteen);
+                            }
+                            String dayNineteen = viewHolder.tvProNineteenDay.getText().toString();
+                            if (dayNineteen.equals("")) {
+                                day19 = 0;
+                            } else {
+                                day19 = Integer.parseInt(dayNineteen);
+                            }
+                            String dayTwenty = viewHolder.tvProTwentyDay.getText().toString();
+                            if (dayTwenty.equals("")) {
+                                day20 = 0;
+                            } else {
+                                day20 = Integer.parseInt(dayTwenty);
+                            }
+                            String dayTwentyOne = viewHolder.tvProTwentyOneDay.getText().toString();
+                            if (dayTwentyOne.equals("")) {
+                                day21 = 0;
+                            } else {
+                                day21 = Integer.parseInt(dayTwentyOne);
+                            }
+                            String dayTwentyTwo = viewHolder.tvProTwentyTwoDay.getText().toString();
+                            if (dayTwentyTwo.equals("")) {
+                                day22 = 0;
+                            } else {
+                                day22 = Integer.parseInt(dayTwentyTwo);
+                            }
+                            String dayTwentyThree = viewHolder.tvProTwentyThreeDay.getText().toString();
+                            if (dayTwentyThree.equals("")) {
+                                day23 = 0;
+                            } else {
+                                day23 = Integer.parseInt(dayTwentyThree);
+                            }
+                            String dayTwentyFore = viewHolder.tvProTwentyForeDay.getText().toString();
+                            if (dayTwentyFore.equals("")) {
+                                day24 = 0;
+                            } else {
+                                day24 = Integer.parseInt(dayTwentyFore);
+                            }
+                            String dayTwentyFive = viewHolder.tvProTwentyFiveDay.getText().toString();
+                            if (dayTwentyFive.equals("")) {
+                                day25 = 0;
+                            } else {
+                                day25 = Integer.parseInt(dayTwentyFive);
+                            }
+                            String dayTwentySix = viewHolder.tvProTwentySixDay.getText().toString();
+                            if (dayTwentySix.equals("")) {
+                                day26 = 0;
+                            } else {
+                                day26 = Integer.parseInt(dayTwentySix);
+                            }
+                            String dayTwentySeven = viewHolder.tvProTwentySevenDay.getText().toString();
+                            if (dayTwentySeven.equals("")) {
+                                day27 = 0;
+                            } else {
+                                day27 = Integer.parseInt(dayTwentySeven);
+                            }
+                            String dayTwentyEight = viewHolder.tvProTwentyEightDay.getText().toString();
+                            if (dayTwentyEight.equals("")) {
+                                day28 = 0;
+                            } else {
+                                day28 = Integer.parseInt(dayTwentyEight);
+                            }
+                            String dayTwentyNine = viewHolder.tvProTwentyNineDay.getText().toString();
+                            if (dayTwentyNine.equals("")) {
+                                day29 = 0;
+                            } else {
+                                day29 = Integer.parseInt(dayTwentyNine);
+                            }
+                            String dayThirty = viewHolder.tvProThirtyDay.getText().toString();
+                            if (dayThirty.equals("")) {
+                                day30 = 0;
+                            } else {
+                                day30 = Integer.parseInt(dayThirty);
+                            }
+                            String dayThirtyOne = viewHolder.tvProThirtyOneDay.getText().toString();
+                            if (dayThirtyOne.equals("")) {
+                                day31 = 0;
+                            } else {
+                                day31 = Integer.parseInt(dayThirtyOne);
+                            }
+                            /**
+                             * 计算总完工数（每月数量相加）
+                             */
+                            int count = lastmont + day1 + day2 + day3 + day4 + day5 + day6 + day7 + day8 + day9
+                                    + day10 + day11 + day12 + day13 + day14 + day15 + day16 + day17 + day18
+                                    + day19 + day20 + day21 + day22 + day23 + day24 + day25 + day26 + day27 + day28
+                                    + day29 + day30 + day31;
+                            String countmonth = String.valueOf(count);
+                            viewHolder.tvProTotalCompletion.setText(countmonth);
                         }
                     };
                     editTexThirtyOneDay.addTextChangedListener(TvThirtyOneDay);
@@ -3095,6 +8937,9 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
 
     @Override
     protected void onDestroy() {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.remove("mylistStr");
+        editor.commit();
         super.onDestroy();
     }
 }

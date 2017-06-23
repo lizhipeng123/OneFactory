@@ -5,7 +5,17 @@ import android.content.SharedPreferences;
 
 import org.json.JSONArray;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.StreamCorruptedException;
+import java.util.List;
 import java.util.Map;
+
+import cn.com.iresearch.mapptracker.base64.org.apache.commons.codec.binary.Base64;
+import nl.siegmann.epublib.util.StringUtil;
 
 /**
  * 保存与修改数据
@@ -122,31 +132,6 @@ public class SPUtils {
         return sp.contains(key);
     }
 
-    public String[] getSharedPreferencee(String key) {
-        String regularEx = "#";
-        String[] str = null;
-        SharedPreferences sp = mContext.getSharedPreferences(FILE_NAME, 0);
-        String values;
-        values = sp.getString(key, "");
-        str = values.split(regularEx);
-
-        return str;
-    }
-
-    public void setSharedPreferencee(String key, String[] values) {
-        String regularEx = "#";
-        String str = "";
-        SharedPreferences sp = mContext.getSharedPreferences(FILE_NAME, 0);
-        if (values != null && values.length > 0) {
-            for (String value : values) {
-                str += value;
-                str += regularEx;
-            }
-            SharedPreferences.Editor et = sp.edit();
-            et.putString(key, str);
-            et.commit();
-        }
-    }
     public static void saveApkEnalbleArray(Context context,String[] booleanArray) {
         SharedPreferences prefs = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         JSONArray jsonArray = new JSONArray();
@@ -156,6 +141,55 @@ public class SPUtils {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(FILE_NAME,jsonArray.toString());
         editor.commit();
+    }
+
+    public static void setData(Context mContext, String tempName, List<?> tempList) {
+        SharedPreferences sps = mContext.getSharedPreferences("base64", Context.MODE_PRIVATE);
+        // 创建字节输出流
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            // 创建对象输出流，并封装字节流
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            // 将对象写入字节流
+            oos.writeObject(tempList);
+            // 将字节流编码成base64的字符串
+            String tempBase64 = new String(Base64.encodeBase64(baos.toByteArray()));
+            SharedPreferences.Editor editor = sps.edit();
+            editor.putString(tempName, tempBase64);
+            editor.commit();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+
+    public static List<?> getData(Context mContext, String tempName, List<?> tempList) {
+        SharedPreferences sps = mContext.getSharedPreferences("base64", Context.MODE_PRIVATE);
+        String tempBase64 = sps.getString(tempName, "");// 初值空
+        if (StringUtil.isBlank(tempBase64)) {
+            return tempList;
+        }
+        // 读取字节
+        byte[] base64 = Base64.decodeBase64(tempBase64.getBytes());
+        // 封装到字节流
+        ByteArrayInputStream bais = new ByteArrayInputStream(base64);
+        try {
+            // 再次封装
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            // 读取对象
+            tempList = (List<?>) ois.readObject();
+        } catch (StreamCorruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return tempList;
+
     }
 
 }

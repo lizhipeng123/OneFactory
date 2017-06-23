@@ -15,9 +15,12 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
 import com.daoran.newfactory.onefactory.activity.work.production.ProductionNewlyComfigActivity;
 import com.daoran.newfactory.onefactory.bean.ProNewlyBuildBean;
+import com.daoran.newfactory.onefactory.util.Http.sharedparams.PhoneSaveUtil;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -63,7 +66,7 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_production_newlybuild, null);
-            viewHolder.tv_data = (TextView) convertView.findViewById(R.id.tv_data);
+//            viewHolder.tv_data = (TextView) convertView.findViewById(R.id.tv_data);
             viewHolder.tvProDocumentary = (TextView) convertView.findViewById(R.id.tvProDocumentary);
             viewHolder.tvProFactory = (TextView) convertView.findViewById(R.id.tvProFactory);
             viewHolder.tvProDepartment = (TextView) convertView.findViewById(R.id.tvProDepartment);
@@ -81,7 +84,7 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.tv_data.setText(getItem(position).getItem());
+//        viewHolder.tv_data.setText(getItem(position).getItem());
         viewHolder.tvProDocumentary.setText(getItem(position).getPrddocumentary());
         viewHolder.tvProFactory.setText(getItem(position).getSubfactory());
         viewHolder.tvProDepartment.setText(getItem(position).getSubfactoryTeams());
@@ -146,10 +149,21 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
                     String[] temp = null;
                     temp = tvProSize.split("/");
                     System.out.print(temp);
-//                    spUtils.setSharedPreference("tempstring",temp);
+                    List<String> list = Arrays.asList(temp);
+                    System.out.print(list);
+                    SharedPreferences spes = context.getSharedPreferences("mylist", 0);
+                    SharedPreferences.Editor editor = spes.edit();
+                    try {
+                        String liststr = PhoneSaveUtil.SceneList2String(list);
+                        editor.putString("mylistStr", liststr);
+                        spUtils.put(context, "tvnewlySize", tvProSize);//花色
+                        editor.commit();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     System.out.print(tvProSize);
-//                    spUtils.put(context, "tvnewlySize", tvProSize);//花色
+                    spUtils.put(context, "tvnewlySize", tvProSize);//花色
                 }
 
                 String tvProClippingNumber = getItem(position).getFactcutqty();

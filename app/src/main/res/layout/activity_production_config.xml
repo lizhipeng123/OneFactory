@@ -295,6 +295,7 @@
                         android:text="1日" />
 
                     <View
+                        android:id="@+id/vconfigone"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -308,6 +309,7 @@
                         android:text="2日" />
 
                     <View
+                        android:id="@+id/vconfigtwo"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -321,6 +323,7 @@
                         android:text="3日" />
 
                     <View
+                        android:id="@+id/vconfigthree"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -334,6 +337,7 @@
                         android:text="4日" />
 
                     <View
+                        android:id="@+id/vconfigfore"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -347,6 +351,7 @@
                         android:text="5日" />
 
                     <View
+                        android:id="@+id/vconfigfive"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -360,6 +365,7 @@
                         android:text="6日" />
 
                     <View
+                        android:id="@+id/vconfigsix"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -373,6 +379,7 @@
                         android:text="7日" />
 
                     <View
+                        android:id="@+id/vconfigseven"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -386,6 +393,7 @@
                         android:text="8日" />
 
                     <View
+                        android:id="@+id/vconfigeight"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -399,6 +407,7 @@
                         android:text="9日" />
 
                     <View
+                        android:id="@+id/vconfignine"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -412,6 +421,7 @@
                         android:text="10日" />
 
                     <View
+                        android:id="@+id/vconfigten"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -425,6 +435,7 @@
                         android:text="11日" />
 
                     <View
+                        android:id="@+id/vconfigeleven"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -438,6 +449,7 @@
                         android:text="12日" />
 
                     <View
+                        android:id="@+id/vconfigtwtlve"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -451,6 +463,7 @@
                         android:text="13日" />
 
                     <View
+                        android:id="@+id/vconfigtwthreeteen"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -464,6 +477,7 @@
                         android:text="14日" />
 
                     <View
+                        android:id="@+id/vconfigtwforeteen"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -477,6 +491,7 @@
                         android:text="15日" />
 
                     <View
+                        android:id="@+id/vconfigtwfifteen"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -490,6 +505,7 @@
                         android:text="16日" />
 
                     <View
+                        android:id="@+id/vconfigtwsixteen"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -503,6 +519,7 @@
                         android:text="17日" />
 
                     <View
+                        android:id="@+id/vconfigtwseventeen"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -516,6 +533,7 @@
                         android:text="18日" />
 
                     <View
+                        android:id="@+id/vconfigtweightteen"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -529,6 +547,7 @@
                         android:text="19日" />
 
                     <View
+                        android:id="@+id/vconfigtwnineteen"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -542,6 +561,7 @@
                         android:text="20日" />
 
                     <View
+                        android:id="@+id/vconfigtwTwenty"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -555,6 +575,7 @@
                         android:text="21日" />
 
                     <View
+                        android:id="@+id/vconfigtwTwentyone"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -568,6 +589,7 @@
                         android:text="22日" />
 
                     <View
+                        android:id="@+id/vconfigtwTwentytwo"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -581,6 +603,7 @@
                         android:text="23日" />
 
                     <View
+                        android:id="@+id/vconfigtwTwentythree"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -594,6 +617,7 @@
                         android:text="24日" />
 
                     <View
+                        android:id="@+id/vconfigtwTwentyfore"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -607,6 +631,7 @@
                         android:text="25日" />
 
                     <View
+                        android:id="@+id/vconfigtwTwentyfive"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -620,6 +645,7 @@
                         android:text="26日" />
 
                     <View
+                        android:id="@+id/vconfigtwTwentysix"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -633,6 +659,7 @@
                         android:text="27日" />
 
                     <View
+                        android:id="@+id/vconfigtwTwentyseven"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -646,6 +673,7 @@
                         android:text="28日" />
 
                     <View
+                        android:id="@+id/vconfigtwTwentyeight"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -659,6 +687,7 @@
                         android:text="29日" />
 
                     <View
+                        android:id="@+id/vconfigtwTwentynine"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -672,6 +701,7 @@
                         android:text="30日" />
 
                     <View
+                        android:id="@+id/vconfigtwThirty"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
@@ -685,6 +715,7 @@
                         android:text="31日" />
 
                     <View
+                        android:id="@+id/vconfigtwThirtyone"
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />

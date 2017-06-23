@@ -188,6 +188,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
     private void initViews() {
         setEditTextInhibitInputSpeChat(etUsername);
         setEditTextInhibitInputSpeChat(etPassword);
+
         Picasso.with(LoginDebugActivity.this)
                 .load(R.mipmap.daoran)
                 .error(R.mipmap.daoran)

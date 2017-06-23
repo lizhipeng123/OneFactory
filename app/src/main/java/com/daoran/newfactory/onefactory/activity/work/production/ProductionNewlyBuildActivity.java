@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.work.SignDetailActivity;
 import com.daoran.newfactory.onefactory.adapter.ProductionNewlyBuildAdapter;
+import com.daoran.newfactory.onefactory.adapter.ProductionNewlyBuildLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.ProNewlyBuildBean;
 import com.daoran.newfactory.onefactory.bean.PropostNewlyBuildBean;
@@ -32,6 +33,7 @@ import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
+import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -68,12 +70,14 @@ public class ProductionNewlyBuildActivity
     private TextView tvNewbuildPage;//
     private EditText etNewbuild;//款号输入框
 
+    private NoscrollListView lv_pleft;
     private ListView lv_newbuild_data;//款号信息列表
     private ProductionNewlyBuildAdapter buildAdapter;//款号信息列表适配
     private ProNewlyBuildBean newlyBuildBean;//新建数据实体bean
     private List<ProNewlyBuildBean.DataBean> dataBeen =
             new ArrayList<ProNewlyBuildBean.DataBean>();//新建数据实体list
 
+    private ProductionNewlyBuildLeftAdapter leftAdapter;
     private LinearLayout ll_visibi;//隐藏的不存在数据的页面
     private TextView tv_visibi;
     private ScrollView scroll_content;
@@ -122,6 +126,7 @@ public class ProductionNewlyBuildActivity
         btnNewbuildPage = (Button) findViewById(R.id.btnNewbuildPage);
         tvNewbuildPage = (TextView) findViewById(R.id.tvNewbuildPage);
         lv_newbuild_data = (ListView) findViewById(R.id.lv_newbuild_data);
+        lv_pleft = (NoscrollListView) findViewById(R.id.lv_pleft);
         ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
         tv_visibi = (TextView) findViewById(R.id.tv_visibi);
         scroll_content = (ScrollView) findViewById(R.id.scroll_content);
@@ -227,6 +232,9 @@ public class ProductionNewlyBuildActivity
                                     buildAdapter = new ProductionNewlyBuildAdapter(
                                             ProductionNewlyBuildActivity.this, dataBeen);
                                     lv_newbuild_data.setAdapter(buildAdapter);
+                                    leftAdapter = new ProductionNewlyBuildLeftAdapter(
+                                            ProductionNewlyBuildActivity.this, dataBeen);
+                                    lv_pleft.setAdapter(leftAdapter);
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
                                     scroll_content.setVisibility(View.GONE);
@@ -322,6 +330,9 @@ public class ProductionNewlyBuildActivity
                                         buildAdapter = new ProductionNewlyBuildAdapter(
                                                 ProductionNewlyBuildActivity.this, dataBeen);
                                         lv_newbuild_data.setAdapter(buildAdapter);
+                                        leftAdapter = new ProductionNewlyBuildLeftAdapter(
+                                                ProductionNewlyBuildActivity.this, dataBeen);
+                                        lv_pleft.setAdapter(leftAdapter);
                                         buildAdapter.notifyDataSetChanged();
                                     } else {
                                         ll_visibi.setVisibility(View.VISIBLE);
@@ -399,6 +410,9 @@ public class ProductionNewlyBuildActivity
                                         buildAdapter = new ProductionNewlyBuildAdapter(
                                                 ProductionNewlyBuildActivity.this, dataBeen);
                                         lv_newbuild_data.setAdapter(buildAdapter);
+                                        leftAdapter = new ProductionNewlyBuildLeftAdapter(
+                                                ProductionNewlyBuildActivity.this, dataBeen);
+                                        lv_pleft.setAdapter(leftAdapter);
                                         buildAdapter.notifyDataSetChanged();
                                     } else {
                                         ll_visibi.setVisibility(View.VISIBLE);
@@ -459,6 +473,9 @@ public class ProductionNewlyBuildActivity
                                         buildAdapter = new ProductionNewlyBuildAdapter(
                                                 ProductionNewlyBuildActivity.this, dataBeen);
                                         lv_newbuild_data.setAdapter(buildAdapter);
+                                        leftAdapter = new ProductionNewlyBuildLeftAdapter(
+                                                ProductionNewlyBuildActivity.this, dataBeen);
+                                        lv_pleft.setAdapter(leftAdapter);
                                         buildAdapter.notifyDataSetChanged();
                                     } else {
                                         ll_visibi.setVisibility(View.VISIBLE);
