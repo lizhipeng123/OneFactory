@@ -6,9 +6,8 @@
         <item name="colorPrimary">@color/lightblue</item>
         <item name="colorPrimaryDark">@color/lightblue</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="actionMenuTextAppearance">@style/myActionButtonStyle</item>
+        <item name="android:popupMenuStyle">@style/popMenu_style</item>
     </style>
-
     <style name="Theme.Start" parent="android:style/Theme.Black.NoTitleBar.Fullscreen">
         <!--<item name="android:windowBackground">@drawable/appstartimg</item>-->
         <item name="android:windowNoTitle">true</item>
@@ -93,13 +92,19 @@
     <style name="myActionButtonStyle" parent="Widget.AppCompat.ActionButton">
         <item name="android:paddingLeft">0dip</item>
         <item name="android:paddingRight">6dip</item>
-        <item name="android:minWidth">36dp</item>
-        <item name="android:minHeight">36dp</item>
+        <item name="android:textSize">10sp</item>
     </style>
-    <style name="TextView" />
+    <style name="myActionMenu">
+        <item name="android:textSize">5sp</item>
+        <item name="android:textColor">@color/red</item>
+    </style>
+    <style name="TextView">
+        <item name="android:textSize">5sp</item>
+        <item name="android:textColor">@color/red</item>
+    </style>
     <style name="popMenu_style" parent="@android:style/Widget.Holo.Light.PopupMenu">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/green</item>
-        <item name="android:height">10dp</item>
+        <item name="android:textSize">5sp</item>
+        <item name="android:listPreferredItemHeight">5dp</item>
+        <item name="android:labelTextSize">5sp</item>
     </style>
 </resources>

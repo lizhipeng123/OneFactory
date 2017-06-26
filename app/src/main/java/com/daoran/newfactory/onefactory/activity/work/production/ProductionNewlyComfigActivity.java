@@ -369,7 +369,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         map.put("tvnewlyCompletedLastMonth", tvnewlyCompletedLastMonth);
         map.put("tvnewlyTotalCompletion", tvnewlyTotalCompletion);
         list.add(map);
-        SharedPreferences.Editor editor =sp.edit();
+        SharedPreferences.Editor editor = sp.edit();
         editor.remove("tvnewlySize");
         editor.commit();
         return list;
@@ -395,6 +395,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         sp = this.getSharedPreferences("my_sp", 0);
         SharedPreferences spes = getSharedPreferences("mylist", 0);
         String liststr = spes.getString("mylistStr", "");
+        String tvnewlySizes = sp.getString("tvnewlySize", "");//花色
         String salesid = sp.getString("tvnewlysalesid", "");//款号id
         String proColumnTitle = sp.getString("Configdepartment", "");//部门
         String proadaptertitle = sp.getString("tvnewlyDepartment", "");
@@ -405,25 +406,31 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
             columntitle = proColumnTitle;
         }
 
-        String proProcedureTitle = sp.getString("ConfigProcedure", "");//工序
-        String proprocudureTitle = sp.getString("tvnewlyProcedure","");
+//        String proProcedureTitle = sp.getString("ConfigProcedure", "");//工序
+        String proprocudureTitle = sp.getString("tvnewlyProcedure", "");
         String procudureTitle;
-        if(proProcedureTitle.equals("")){
+        if (proprocudureTitle.equals("选择工序")) {
+            procudureTitle = "";
+        } else {
             procudureTitle = proprocudureTitle;
-        }else{
-            procudureTitle = proProcedureTitle;
         }
+
+//        if (proProcedureTitle.equals("")) {
+//            procudureTitle = proprocudureTitle;
+//        } else {
+//            procudureTitle = proProcedureTitle;
+//        }
         String proPrdstatusTitle = sp.getString("ComfigPrdstatus", "");//状态//
         String productionItem = sp.getString("comfigitem", "");//款号
         String productionDocumentary = sp.getString("configdocument", "");//跟单//
         String productionFactory = sp.getString("configfactory", "");//工厂
-        String productionOthers = sp.getString("ConfigOthers", "");//组别人
+        String productionOthers = sp.getString("ConfigOthers", "");//组别人数
         String productionSingularSystem = sp.getString("configsingular", "");//制单数//
         String productionColor = sp.getString("configcolor", "");//花色
         String productionTaskNumber = sp.getString("ConfigTaskNumber", "");//任务数
         String productionSize = sp.getString("configsize", "");//尺码
         String productionClippingNumber = sp.getString("configclipping", "");//实裁数
-        String productionCompletedLastMonth = sp.getString("ConfigTaskNumber", "");//上月完工
+        String productionCompletedLastMonth = sp.getString("ConfigLastMonth", "");//上月完工
         String productionTotalCompletion = sp.getString("configcompletion", "");//总完工数
         String productionBalanceAmount = sp.getString("configamount", "");//结余数量
         String productionYear = sp.getString("configyear", "");//年
@@ -463,7 +470,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         String productionRecorder = sp.getString("configrecorder", "");//制单人
         String productionRecordat = sp.getString("configrecordat", "");//制单时间
         Gson gson = new Gson();
-        if (proProcedureTitle.equals("裁床")) {
+        if (procudureTitle.equals("裁床")) {
             if (!TextUtils.isEmpty(liststr)) {
                 try {
                     List<String> list = PhoneSaveUtil.String2SceneList(liststr);
@@ -550,66 +557,62 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         } else {
             if (!TextUtils.isEmpty(liststr)) {
                 try {
-                    List<String> list = PhoneSaveUtil.String2SceneList(liststr);
-                    for (int i = 0; i < list.size(); i++) {
-                        ProducationNewlyComfigSaveBean consaveBean =
-                                new ProducationNewlyComfigSaveBean();
-                        consaveBean.setID("0");
-                        consaveBean.setSalesid(salesid);
-                        consaveBean.setProdcol(list.get(i));
-                        consaveBean.setItem(productionItem);
-                        consaveBean.setPrddocumentary(productionDocumentary);
-                        consaveBean.setSubfactory(productionFactory);
-                        consaveBean.setSubfactoryTeams(columntitle);
-                        consaveBean.setWorkingProcedure(procudureTitle);
-                        consaveBean.setWorkers(productionOthers);
-                        consaveBean.setPqty(productionSingularSystem);
-                        consaveBean.setTaskqty(productionTaskNumber);
-                        consaveBean.setMdl(productionSize);
-                        consaveBean.setFactcutqty(productionClippingNumber);
-                        consaveBean.setSumCompletedQty(productionTotalCompletion);
-                        consaveBean.setLastMonQty(productionCompletedLastMonth);
-                        consaveBean.setLeftQty(productionBalanceAmount);
-                        consaveBean.setPrdstatus(proPrdstatusTitle);
-                        consaveBean.setYear(productionYear);
-                        consaveBean.setMonth(productionMonth);
-                        consaveBean.setDay1(productionOneDay);
-                        consaveBean.setDay2(productionTwoDay);
-                        consaveBean.setDay3(productionThreeDay);
-                        consaveBean.setDay4(productionForeDay);
-                        consaveBean.setDay5(productionFiveDay);
-                        consaveBean.setDay6(productionSixDay);
-                        consaveBean.setDay7(productionSevenDay);
-                        consaveBean.setDay8(productionEightDay);
-                        consaveBean.setDay9(productionNineDay);
-                        consaveBean.setDay10(productionTenDay);
-                        consaveBean.setDay11(productionElevenDay);
-                        consaveBean.setDay12(productionTwelveDay);
-                        consaveBean.setDay13(productionThirteenDay);
-                        consaveBean.setDay14(productionFourteenDay);
-                        consaveBean.setDay15(productionFifteenDay);
-                        consaveBean.setDay16(productionSixteenDay);
-                        consaveBean.setDay17(productionSeventeenDay);
-                        consaveBean.setDay18(productionEighteenDay);
-                        consaveBean.setDay19(productionNineteenDay);
-                        consaveBean.setDay20(productionTwentyDay);
-                        consaveBean.setDay21(productionTwentyOneDay);
-                        consaveBean.setDay22(productionTwentyTwoDay);
-                        consaveBean.setDay23(productionTwentyThreeDay);
-                        consaveBean.setDay24(productionTwentyForeDay);
-                        consaveBean.setDay25(productionTwentyFiveDay);
-                        consaveBean.setDay26(productionTwentySixDay);
-                        consaveBean.setDay27(productionTwentySevenDay);
-                        consaveBean.setDay28(productionTwentyEightDay);
-                        consaveBean.setDay29(productionTwentyNineDay);
-                        consaveBean.setDay30(productionThirtyDay);
-                        consaveBean.setDay31(productionThirtyOneDay);
-                        consaveBean.setMemo(productionRemarks);
-                        consaveBean.setRecorder(productionRecorder);
-                        consaveBean.setRecordat(productionRecordat);
-                        newlyComfigSaveBeen.add(consaveBean);
-                    }
-                    System.out.print(list);
+                    ProducationNewlyComfigSaveBean consaveBean =
+                            new ProducationNewlyComfigSaveBean();
+                    consaveBean.setID("0");
+                    consaveBean.setSalesid(salesid);
+                    consaveBean.setProdcol(productionColor);
+                    consaveBean.setItem(productionItem);
+                    consaveBean.setPrddocumentary(productionDocumentary);
+                    consaveBean.setSubfactory(productionFactory);
+                    consaveBean.setSubfactoryTeams(columntitle);
+                    consaveBean.setWorkingProcedure(procudureTitle);
+                    consaveBean.setWorkers(productionOthers);
+                    consaveBean.setPqty(productionSingularSystem);
+                    consaveBean.setTaskqty(productionTaskNumber);
+                    consaveBean.setMdl(productionSize);
+                    consaveBean.setFactcutqty(productionClippingNumber);
+                    consaveBean.setSumCompletedQty(productionTotalCompletion);
+                    consaveBean.setLastMonQty(productionCompletedLastMonth);
+                    consaveBean.setLeftQty(productionBalanceAmount);
+                    consaveBean.setPrdstatus(proPrdstatusTitle);
+                    consaveBean.setYear(productionYear);
+                    consaveBean.setMonth(productionMonth);
+                    consaveBean.setDay1(productionOneDay);
+                    consaveBean.setDay2(productionTwoDay);
+                    consaveBean.setDay3(productionThreeDay);
+                    consaveBean.setDay4(productionForeDay);
+                    consaveBean.setDay5(productionFiveDay);
+                    consaveBean.setDay6(productionSixDay);
+                    consaveBean.setDay7(productionSevenDay);
+                    consaveBean.setDay8(productionEightDay);
+                    consaveBean.setDay9(productionNineDay);
+                    consaveBean.setDay10(productionTenDay);
+                    consaveBean.setDay11(productionElevenDay);
+                    consaveBean.setDay12(productionTwelveDay);
+                    consaveBean.setDay13(productionThirteenDay);
+                    consaveBean.setDay14(productionFourteenDay);
+                    consaveBean.setDay15(productionFifteenDay);
+                    consaveBean.setDay16(productionSixteenDay);
+                    consaveBean.setDay17(productionSeventeenDay);
+                    consaveBean.setDay18(productionEighteenDay);
+                    consaveBean.setDay19(productionNineteenDay);
+                    consaveBean.setDay20(productionTwentyDay);
+                    consaveBean.setDay21(productionTwentyOneDay);
+                    consaveBean.setDay22(productionTwentyTwoDay);
+                    consaveBean.setDay23(productionTwentyThreeDay);
+                    consaveBean.setDay24(productionTwentyForeDay);
+                    consaveBean.setDay25(productionTwentyFiveDay);
+                    consaveBean.setDay26(productionTwentySixDay);
+                    consaveBean.setDay27(productionTwentySevenDay);
+                    consaveBean.setDay28(productionTwentyEightDay);
+                    consaveBean.setDay29(productionTwentyNineDay);
+                    consaveBean.setDay30(productionThirtyDay);
+                    consaveBean.setDay31(productionThirtyOneDay);
+                    consaveBean.setMemo(productionRemarks);
+                    consaveBean.setRecorder(productionRecorder);
+                    consaveBean.setRecordat(productionRecordat);
+                    newlyComfigSaveBeen.add(consaveBean);
                     System.out.print(newlyComfigSaveBeen);
                     String detailb = gson.toJson(newlyComfigSaveBeen);
                     String dateee = detailb.replace("\"\"", "null");
@@ -656,9 +659,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     } else {
                         ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyComfigActivity.this);
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -1073,6 +1074,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         public void afterTextChanged(Editable s) {
                             Log.d(TAG, "afterTextChanged");
                             if (s != null && s.equals("")) {
+
                                 if (MIN_MARK != -1 && singular != -1) {
                                     int markVal = 0;
                                     try {
@@ -1606,7 +1608,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         public void afterTextChanged(Editable s) {
                             Log.d(TAG, "afterTextChanged");
                             String proitem = viewHolder.tvProCompletedLastMonth.getText().toString();
-                            spUtils.put(context, "ConfigTaskNumber", proitem);
+                            spUtils.put(context, "ConfigLastMonth", proitem);
                         }
                     };
                     editTexLastMonth.addTextChangedListener(TvLastMonth);
@@ -8937,8 +8939,47 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
 
     @Override
     protected void onDestroy() {
+        //关闭界面时清除缓存中可输入的数据
         SharedPreferences.Editor editor = sp.edit();
-        editor.remove("mylistStr");
+        editor.remove("mylistStr");//保存集合
+        editor.remove("tvnewlyProcedure");//工序
+        editor.remove("Configdepartment");//部门
+        editor.remove("ComfigMonth");//月份
+        editor.remove("ConfigOthers");//组别人数
+        editor.remove("configOneDay");//1
+        editor.remove("configTwoDay");//2
+        editor.remove("configThreeDay");//3
+        editor.remove("configForeDay");//4
+        editor.remove("configFiveDay");//5
+        editor.remove("configSixDay");//6
+        editor.remove("configSevenDay");//7
+        editor.remove("configEightDay");//8
+        editor.remove("configNineDay");//9
+        editor.remove("configTenDay");//10
+        editor.remove("configElevenDay");//11
+        editor.remove("configTwelveDay");//12
+        editor.remove("configThirteenDay");//13
+        editor.remove("configFourteenDay");//14
+        editor.remove("configFifteenDay");//15
+        editor.remove("configSixteenDay");//16
+        editor.remove("configSeventeenDay");//17
+        editor.remove("configEighteenDay");//18
+        editor.remove("configNineteenDay");//19
+        editor.remove("configTwentyDay");//20
+        editor.remove("configTwentyOneDay");//21
+        editor.remove("configTwentyTwoDay");//22
+        editor.remove("configTwentyThreeDay");//23
+        editor.remove("configTwentyForeDay");//24
+        editor.remove("configTwentyFiveDay");//25
+        editor.remove("configTwentySixDay");//26
+        editor.remove("configTwentySevenDay");//27
+        editor.remove("configTwentyEightDay");//28
+        editor.remove("configTwentyNineDay");//29
+        editor.remove("configThirtyDay");//30
+        editor.remove("configThirtyOneDay");//31
+        editor.remove("configRemarks");//备注
+        editor.remove("ConfigLastMonth");//上月完工
+        editor.remove("ConfigTaskNumber");//任务数
         editor.commit();
         super.onDestroy();
     }

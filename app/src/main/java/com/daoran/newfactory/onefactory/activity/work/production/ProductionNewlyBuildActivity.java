@@ -186,14 +186,16 @@ public class ProductionNewlyBuildActivity
         sp = getSharedPreferences("my_sp", 0);
         String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
         String pagesize = sp.getString("clumnspronewspinner", "");
+        String editNewlyBuild = etNewbuild.getText().toString();//输入款号
+        String spinner = spinnerNewbuild.getText().toString();
         if (pagesize.equals("")) {
             pagesize = String.valueOf(10);
         }
         Gson gson = new Gson();
         final PropostNewlyBuildBean buildBean = new PropostNewlyBuildBean();
         PropostNewlyBuildBean.Conditions conditions = buildBean.new Conditions();
-        conditions.setItem("");
-        conditions.setWorkingProcedure("");
+        conditions.setItem(editNewlyBuild);
+        conditions.setWorkingProcedure(spinner);
         buildBean.setConditions(conditions);
         buildBean.setPageNum(0);
         buildBean.setPageSize(Integer.parseInt(pagesize));

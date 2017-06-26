@@ -23,11 +23,6 @@ import com.daoran.newfactory.onefactory.activity.work.production.ProductionActiv
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
-import com.daoran.newfactory.onefactory.util.file.JsonUtil;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -93,7 +88,7 @@ public class ProductionAdapter extends BaseAdapter {
      * @return
      */
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
         final ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
@@ -241,7 +236,6 @@ public class ProductionAdapter extends BaseAdapter {
 //                viewHolder.tv_data.setEnabled(true);
 //                String productionItem = getItem(position).getItem();
 //                viewHolder.tv_data.setText(productionItem);
-
                 viewHolder.tvProDocumentary.setEnabled(true);
                 String productionadapterDocumentary = getItem(position).getPrddocumentary();
                 viewHolder.tvProDocumentary.setText(productionadapterDocumentary);
@@ -8640,7 +8634,8 @@ public class ProductionAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 PopupMenu popupMenu = new PopupMenu(context, v);
-                popupMenu.getMenuInflater().inflate(R.menu.menu_pro_mouth, popupMenu.getMenu());
+                popupMenu.getMenuInflater().inflate(R.menu.menu_pro_mouth,
+                        popupMenu.getMenu());
                 // menu的item点击事件
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
