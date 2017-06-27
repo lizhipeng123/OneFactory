@@ -9,6 +9,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -26,6 +27,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.car.SqlcarApplyActivity;
 import com.daoran.newfactory.onefactory.activity.work.commo.CommoditySqlActivity;
 import com.daoran.newfactory.onefactory.adapter.ProductionAdapter;
 import com.daoran.newfactory.onefactory.adapter.ProductionLeftAdapter;
@@ -42,6 +44,7 @@ import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.util.file.ACache;
 import com.daoran.newfactory.onefactory.util.file.NullStringToEmptyAdapterFactory;
+import com.daoran.newfactory.onefactory.util.file.save.ProductionExcelUtil;
 import com.daoran.newfactory.onefactory.view.dialog.ProcationDialog;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
@@ -53,6 +56,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
@@ -101,7 +105,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     private Spinner spinnProPageClumns;
     int keyHeight = 0;
     int screenHeight = 0;
-
+    private int year, month, datetime, hour, minute, second;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,7 +174,6 @@ public class ProductionActivity extends BaseFrangmentActivity
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);//横竖SyncHorizontalScrollView适配
         etSqlDetail.setSelection(etSqlDetail.getText().length());//将光标移到文本最后
-
 
 
     }
@@ -298,7 +301,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         pageCount = detailBean.getTotalCount();
                                         String count = String.valueOf(pageCount / finalGetsize);
                                         tvSignPage.setText(count);
-                                        mLeftAdapter = new ProductionLeftAdapter(ProductionActivity.this,detailBeenList);
+                                        mLeftAdapter = new ProductionLeftAdapter(ProductionActivity.this, detailBeenList);
                                         lv_left.setAdapter(mLeftAdapter);
                                         adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                         mData.setAdapter(adapter);
@@ -376,7 +379,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         pageCount = detailBean.getTotalCount();
                                         String count = String.valueOf(pageCount / finalGetsize);
                                         tvSignPage.setText(count);
-                                        mLeftAdapter = new ProductionLeftAdapter(ProductionActivity.this,detailBeenList);
+                                        mLeftAdapter = new ProductionLeftAdapter(ProductionActivity.this, detailBeenList);
                                         lv_left.setAdapter(mLeftAdapter);
                                         adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                         mData.setAdapter(adapter);
@@ -480,7 +483,7 @@ public class ProductionActivity extends BaseFrangmentActivity
 
                                         adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                         mData.setAdapter(adapter);
-                                        mLeftAdapter = new ProductionLeftAdapter(ProductionActivity.this,detailBeenList);
+                                        mLeftAdapter = new ProductionLeftAdapter(ProductionActivity.this, detailBeenList);
                                         lv_left.setAdapter(mLeftAdapter);
                                     } else {
                                         ll_visibi.setVisibility(View.VISIBLE);
@@ -561,7 +564,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         tvSignPage.setText(count);
                                         adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                         mData.setAdapter(adapter);
-                                        mLeftAdapter = new ProductionLeftAdapter(ProductionActivity.this,detailBeenList);
+                                        mLeftAdapter = new ProductionLeftAdapter(ProductionActivity.this, detailBeenList);
                                         lv_left.setAdapter(mLeftAdapter);
 //                                        adapter.notifyDataSetChanged();
                                     } else {
@@ -650,8 +653,17 @@ public class ProductionActivity extends BaseFrangmentActivity
 //                dialog.setButton("确定", listenerwifi);
 //                dialog.show();
 //            } else {
+            Time t = new Time("GMT+8"); // or Time t=new Time("GMT+8");
+            t.setToNow(); // 取得系统时间。
+            year = t.year;
+            month = t.month;
+            datetime = t.monthDay;
+            hour = t.hour; // 0-23
+            minute = t.minute;
+            second = t.second;
+            month = month + 1;
             sp = this.getSharedPreferences("my_sp", 0);
-            SharedPreferences.Editor editor = sp.edit();
+            final SharedPreferences.Editor editor = sp.edit();
             /*调用ProducationAdapter中点击item后取得的字段*/
             String itemid = "";
             String prosalesid = sp.getString("prosalesid", "");
@@ -675,10 +687,12 @@ public class ProductionActivity extends BaseFrangmentActivity
             String copyRemarks = sp.getString("copyRemarks", "");
             String copyRecorder = sp.getString("copyRecorder", "");
             String copyRecordat = sp.getString("copyRecordat", "");
+            String copyRecordid = sp.getString("username","");
             Gson gson = new Gson();
             ProducationConfigSaveBean saveBean = new ProducationConfigSaveBean();
             saveBean.setID(itemid);
             saveBean.setSalesid(prosalesid);
+            saveBean.setRecordid(copyRecordid);
             saveBean.setItem(item);
             saveBean.setPrddocumentary(copyDocumentary);
             saveBean.setSubfactory(copyFactory);
@@ -694,8 +708,8 @@ public class ProductionActivity extends BaseFrangmentActivity
             saveBean.setSumCompletedQty(copyTotalCompletion);
             saveBean.setLeftQty(copyBalanceAmount);
             saveBean.setPrdstatus(copyState);
-            saveBean.setYear(copyProYear);
-            saveBean.setMonth(copyMonth);
+            saveBean.setYear(String.valueOf(year));
+            saveBean.setMonth(String.valueOf(month));
             saveBean.setDay1("");
             saveBean.setDay2("");
             saveBean.setDay3("");
@@ -727,7 +741,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             saveBean.setDay29("");
             saveBean.setDay30("");
             saveBean.setDay31("");
-            saveBean.setMemo(copyRemarks);
+            saveBean.setMemo("");
             saveBean.setRecorder(copyRecorder);
             saveBean.setRecordat(copyRecordat);
             configSaveBeen.add(saveBean);
@@ -755,7 +769,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             editor.remove("copyRecorder");
             editor.remove("copyRecordat");
             editor.commit();
-            if (!itemid.equals("")) {
+            if (!item.equals("")) {
                 ResponseDialog.showLoading(this);
                 OkHttpUtils.postString()
                         .url(strcopy)
@@ -778,18 +792,22 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     ToastUtils.ShowToastMessage("保存成功",
                                             ProductionActivity.this);
                                     setData();
+                                    configSaveBeen.clear();
                                     ResponseDialog.closeLoading();
                                 } else if (resindex == 3) {
                                     ToastUtils.ShowToastMessage("保存失败",
                                             ProductionActivity.this);
+                                    configSaveBeen.clear();
                                     ResponseDialog.closeLoading();
                                 } else if (resindex == 4) {
                                     ToastUtils.ShowToastMessage("数据错误，请重试",
                                             ProductionActivity.this);
+                                    configSaveBeen.clear();
                                     ResponseDialog.closeLoading();
                                 } else {
                                     ToastUtils.ShowToastMessage("未知错误，请联系管理员",
                                             ProductionActivity.this);
+                                    configSaveBeen.clear();
                                     ResponseDialog.closeLoading();
                                 }
                             }
@@ -803,6 +821,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                 dialog.dismiss();
                             }
                         }).show();//相应事件
+                configSaveBeen.clear();
             }
         } else {
             ToastUtils.ShowToastMessage(R.string.noHttp, ProductionActivity.this);
@@ -889,6 +908,24 @@ public class ProductionActivity extends BaseFrangmentActivity
                     case "刷新":
                         setData();
                         break;
+                    case "保存为Excel":
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    ProductionExcelUtil.writeExcel(ProductionActivity.this,
+                                            detailBeenList,
+                                            "dfProExcel+" + new Date().toString());
+                                    ToastUtils.ShowToastMessage("写入成功",
+                                            ProductionActivity.this);
+                                } catch (Exception e) {
+                                    ToastUtils.ShowToastMessage("写入失败",
+                                            ProductionActivity.this);
+                                    e.printStackTrace();
+                                }
+                            }
+                        }).start();
+                        break;
                 }
                 return false;
             }
@@ -899,7 +936,6 @@ public class ProductionActivity extends BaseFrangmentActivity
             public void onDismiss(PopupMenu menu) {
             }
         });
-
         popupMenu.show();
     }
 

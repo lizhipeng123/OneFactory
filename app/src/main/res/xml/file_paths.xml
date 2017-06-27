@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
     <external-files-path name="bga_upgrade_apk" path="upgrade_apk" />
+    <external-files-path path="Android/data/com.daoran.newfactory.onefactory/"
+        name="files_root" />
+    <external-files-path path="." name="external_storage_root" />
 </paths>

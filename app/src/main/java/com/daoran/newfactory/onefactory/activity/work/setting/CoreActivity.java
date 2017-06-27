@@ -55,7 +55,6 @@ public class CoreActivity extends BaseFrangmentActivity
     private SharedPreferences sp;
     private SPUtils spUtils;
     private Tencent mTencent;
-    //    private TextView tvFenxiangBtn;
     private TextView tvCoreContext;
 
     @Override

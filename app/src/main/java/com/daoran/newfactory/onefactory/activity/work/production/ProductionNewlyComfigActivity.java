@@ -27,6 +27,7 @@ import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.ProducationConfigSaveBean;
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
 import com.daoran.newfactory.onefactory.bean.ProducationNewlyComfigSaveBean;
+import com.daoran.newfactory.onefactory.bean.UsergetBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.PhoneSaveUtil;
@@ -400,26 +401,22 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         String proColumnTitle = sp.getString("Configdepartment", "");//部门
         String proadaptertitle = sp.getString("tvnewlyDepartment", "");
         String columntitle;
+        String recordid = sp.getString("username", "");//制单人id
         if (proColumnTitle.equals("")) {
             columntitle = proadaptertitle;
         } else {
             columntitle = proColumnTitle;
         }
-
-//        String proProcedureTitle = sp.getString("ConfigProcedure", "");//工序
-        String proprocudureTitle = sp.getString("tvnewlyProcedure", "");
-        String procudureTitle;
-        if (proprocudureTitle.equals("选择工序")) {
-            procudureTitle = "";
-        } else {
+        String proProcedureadapterTitle = sp.getString("ConfigProcedure", "");//工序adapter中修改过的
+        String proprocudureTitle = sp.getString("tvnewlyProcedure", "");//从款号选择传过来的工序
+        String procudureTitle;//工序变量
+        if (proprocudureTitle.equals("选择工序")&&proProcedureadapterTitle.equals("")) {
+            procudureTitle="";
+        } else if(!proProcedureadapterTitle.equals("")) {
+            procudureTitle = proProcedureadapterTitle;
+        }else{
             procudureTitle = proprocudureTitle;
         }
-
-//        if (proProcedureTitle.equals("")) {
-//            procudureTitle = proprocudureTitle;
-//        } else {
-//            procudureTitle = proProcedureTitle;
-//        }
         String proPrdstatusTitle = sp.getString("ComfigPrdstatus", "");//状态//
         String productionItem = sp.getString("comfigitem", "");//款号
         String productionDocumentary = sp.getString("configdocument", "");//跟单//
@@ -478,6 +475,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         ProducationNewlyComfigSaveBean consaveBean =
                                 new ProducationNewlyComfigSaveBean();
                         consaveBean.setID("0");
+                        consaveBean.setRecordid(recordid);
                         consaveBean.setSalesid(salesid);
                         consaveBean.setProdcol(list.get(i));
                         consaveBean.setItem(productionItem);
@@ -561,6 +559,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             new ProducationNewlyComfigSaveBean();
                     consaveBean.setID("0");
                     consaveBean.setSalesid(salesid);
+                    consaveBean.setRecordid(recordid);
                     consaveBean.setProdcol(productionColor);
                     consaveBean.setItem(productionItem);
                     consaveBean.setPrddocumentary(productionDocumentary);
@@ -963,7 +962,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                                 @Override
                                 public boolean onMenuItemClick(MenuItem item) {
-                                    sp = context.getSharedPreferences("userInfo", 0);
                                     String title = item.getTitle().toString();
                                     spUtils.put(context, "ConfigProcedure", title);
                                     viewHolder.tvProProcedure.setText(title);
@@ -8945,6 +8943,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         editor.remove("tvnewlyProcedure");//工序
         editor.remove("Configdepartment");//部门
         editor.remove("ComfigMonth");//月份
+        editor.remove("ConfigProcedure");
         editor.remove("ConfigOthers");//组别人数
         editor.remove("configOneDay");//1
         editor.remove("configTwoDay");//2

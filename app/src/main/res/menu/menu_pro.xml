@@ -4,14 +4,17 @@
     <item
         android:id="@+id/show_newsbuild"
         android:title="新建"
-        app:showAsAction="never"/>
-
+        app:showAsAction="never" />
     <item
         android:id="@+id/show_copy"
         android:title="复制"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
     <item
         android:id="@+id/show_reshare"
         android:title="刷新"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/show_excel"
+        android:title="保存为Excel"
+        app:showAsAction="never" />
 </menu>

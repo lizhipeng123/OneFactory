@@ -1,4 +1,4 @@
-package com.daoran.newfactory.onefactory.util.file;
+package com.daoran.newfactory.onefactory.util.file.save;
 
 import android.content.Context;
 import android.os.Environment;
@@ -86,9 +86,10 @@ public class ExcelUtil {
                 try {
                     wwb.write();
                     // 关闭文件
-                    wwb.close();
                     Toast.makeText(context, "写入成功。。。。。",
                             Toast.LENGTH_LONG).show();
+                    wwb.close();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (WriteException e) {

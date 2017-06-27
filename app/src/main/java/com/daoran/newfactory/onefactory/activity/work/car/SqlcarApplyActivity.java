@@ -1,11 +1,8 @@
 package com.daoran.newfactory.onefactory.activity.work.car;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.BaseAdapter;
@@ -23,7 +20,7 @@ import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
-import com.daoran.newfactory.onefactory.util.file.ExcelUtil;
+import com.daoran.newfactory.onefactory.util.file.save.ExcelUtil;
 import com.daoran.newfactory.onefactory.view.RefreshLayout;
 import com.daoran.newfactory.onefactory.view.dialog.ContentDialog;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
@@ -249,7 +246,7 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                         try {
                             ExcelUtil.writeExcel(SqlcarApplyActivity.this,
                                     dataBeenlist,
-                                    "dfexcel+" + new Date().toString());
+                                    "dfcarexcel+" + new Date().toString());
                             ToastUtils.ShowToastMessage("写入成功",SqlcarApplyActivity.this);
                         } catch (Exception e) {
                             ToastUtils.ShowToastMessage("写入失败",SqlcarApplyActivity.this);

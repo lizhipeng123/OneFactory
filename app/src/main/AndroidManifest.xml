@@ -37,11 +37,9 @@
     <uses-permission android:name="android.permission" />
     <uses-permission android:name="android.permission.RESTART_PACKAGES" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
-
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-feature android:name="android.hardware.camera" />
-
 
     <application
         android:allowBackup="true"
@@ -50,19 +48,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:label">
+        <!--声明一个文件广播-->
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.jph.takephoto.fileprovider"
+            android:authorities="com.daoran.newfactory.onefactory.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
         <!-- 开发者申请的Key -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="85547ccec1838f47b9aab22f5582332a" />
+
         <!-- 启动页 -->
         <activity
             android:name=".activity.start.StartActivity"
@@ -76,22 +77,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <!-- 主页 -->
         <activity
             android:name=".activity.main.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
         <!-- 引导页 -->
         <activity
             android:name=".activity.guide.GuideActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
         <!-- 登录 -->
         <!-- 注册 -->
         <activity
             android:name=".activity.resgister.ResgisterActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
         <!-- 出车单展示 -->
         <activity
             android:name=".activity.work.car.CarapplyActivity"
@@ -156,31 +161,38 @@
             android:name=".activity.work.production.ProductionNewlyComfigActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
+        <!--重新写的签到界面-->
         <activity
             android:name=".activity.work.SignOpenActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
+        <!--生成二维码-->
         <activity
             android:name=".activity.work.setting.CoreActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
+        <!--二维码扫描识别-->
         <activity
             android:name=".activity.work.setting.CaptureActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
+        <!--关于-->
         <activity
             android:name=".activity.work.setting.AboutActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
+        <!--excel文件列表-->
         <activity
             android:name=".activity.work.setting.ExcelSDActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
+        <!--qq分享-->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
@@ -195,17 +207,17 @@
             </intent-filter>
         </activity>
 
+        <!--qq分享-->
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <!-- 测试 -->
+        <!-- 高德地图定位服务 -->
         <service android:name="com.amap.api.location.APSService" />
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
     </application>
-
 </manifest>

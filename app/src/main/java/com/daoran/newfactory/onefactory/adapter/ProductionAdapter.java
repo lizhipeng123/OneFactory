@@ -158,7 +158,7 @@ public class ProductionAdapter extends BaseAdapter {
             recorder = "";
         }
         if (!recorder.equals("")) {
-            if (recorder.equals("倪新红")) {
+            if (recorder.equals(nameid)) {
                 viewHolder.lin_content.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
