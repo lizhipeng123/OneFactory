@@ -1,9 +1,11 @@
 package com.daoran.newfactory.onefactory.activity.work.commo;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,11 +13,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
+import com.daoran.newfactory.onefactory.activity.work.production.ProductionNewlyBuildActivity;
 import com.daoran.newfactory.onefactory.adapter.CommoditySqlAdapter;
 import com.daoran.newfactory.onefactory.adapter.CommoditySqlLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
@@ -29,6 +34,8 @@ import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.util.file.NullStringToEmptyAdapterFactory;
+import com.daoran.newfactory.onefactory.util.file.save.CommodityExcelUtil;
+import com.daoran.newfactory.onefactory.util.file.save.ProductionExcelUtil;
 import com.daoran.newfactory.onefactory.view.dialog.CommoDialog;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
@@ -40,6 +47,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
@@ -73,6 +81,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private EditText etSqlDetail;//输入的页数
     private Button btnSignPage;//翻页确认
     private Button btnCommoRefresh, btnCommoSave;//刷新，保存
+    private Button spinnermenu;
     private LinearLayout ll_visibi;
     private TextView tv_visibi;
     private ScrollView scroll_content;
@@ -107,12 +116,13 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         tvSignPage = (TextView) findViewById(R.id.tvSignPage);
         btnSignPage = (Button) findViewById(R.id.btnSignPage);
         etSqlDetail = (EditText) findViewById(R.id.etSqlDetail);
-        btnCommoRefresh = (Button) findViewById(R.id.btnCommoRefresh);
+//        btnCommoRefresh = (Button) findViewById(R.id.btnCommoRefresh);
         btnCommoSave = (Button) findViewById(R.id.btnCommoSave);
         ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
         tv_visibi = (TextView) findViewById(R.id.tv_visibi);
         scroll_content = (ScrollView) findViewById(R.id.scroll_content);
         spinnCommoPageClumns = (Spinner) findViewById(R.id.spinnCommoPageClumns);
+        spinnermenu = (Button) findViewById(R.id.spinnermenu);
         getClumnsSpinner();
     }
 
@@ -158,8 +168,9 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         ivProductionBack.setOnClickListener(this);
         ivSearch.setOnClickListener(this);
         btnSignPage.setOnClickListener(this);
-        btnCommoRefresh.setOnClickListener(this);
+//        btnCommoRefresh.setOnClickListener(this);
         btnCommoSave.setOnClickListener(this);
+        spinnermenu.setOnClickListener(this);
     }
 
     @Override
@@ -185,15 +196,65 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                     setPageDetail();
                 }
                 break;
-            /*刷新*/
-            case R.id.btnCommoRefresh:
-                setData();
-                break;
             /*保存*/
             case R.id.btnCommoSave:
                 setCommoSave();
                 break;
+            case R.id.spinnermenu:
+                showPopupMenu(spinnermenu);
+                break;
         }
+    }
+
+    /**
+     * 弹出选择菜单
+     *
+     * @param view
+     */
+    private void showPopupMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(CommoditySqlActivity.this, view);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_commo, popupMenu.getMenu());
+        // menu的item点击事件
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                String title = item.getTitle().toString();
+                switch (title) {
+                    case "刷新":
+                        setData();
+                        break;
+                    case "保存为Excel":
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    CommodityExcelUtil.writeExcel(CommoditySqlActivity.this,
+                                            dataBeen,
+                                            "dfCommoExcel+" + new Date().toString());
+                                    ToastUtils.ShowToastMessage("写入成功",
+                                            CommoditySqlActivity.this);
+                                } catch (Exception e) {
+                                    ToastUtils.ShowToastMessage("写入失败",
+                                            CommoditySqlActivity.this);
+                                    e.printStackTrace();
+                                }
+                                ToastUtils.ShowToastMessage("写入成功，请在设置中Excel文件中查看",
+                                        CommoditySqlActivity.this);
+                            }
+                        }).start();
+
+                        break;
+                }
+                return false;
+            }
+        });
+        // PopupMenu关闭事件
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu menu) {
+            }
+        });
+        popupMenu.show();
     }
 
     /**

@@ -925,6 +925,8 @@ public class ProductionActivity extends BaseFrangmentActivity
                                 }
                             }
                         }).start();
+                        ToastUtils.ShowToastMessage("写入成功，请在设置中Excel文件中查看",
+                                ProductionActivity.this);
                         break;
                 }
                 return false;

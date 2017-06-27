@@ -44,34 +44,42 @@
             android:layout_toRightOf="@+id/viewtitletwo"
             android:src="@mipmap/search" />
 
+        <!--<Button-->
+            <!--android:id="@+id/btnCommoRefresh"-->
+            <!--android:layout_width="@dimen/dimen_170"-->
+            <!--android:layout_height="@dimen/dimen_90"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginLeft="@dimen/dimen_50"-->
+            <!--android:layout_toLeftOf="@+id/viewtitle"-->
+            <!--android:background="@drawable/shape_btn_newsbuild_boild"-->
+            <!--android:text="刷新" />-->
         <Button
-            android:id="@+id/btnCommoRefresh"
+            android:id="@+id/btnCommoSave"
             android:layout_width="@dimen/dimen_170"
             android:layout_height="@dimen/dimen_90"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_50"
             android:layout_toLeftOf="@+id/viewtitle"
             android:background="@drawable/shape_btn_newsbuild_boild"
-            android:text="刷新" />
-
+            android:text="保存" />
         <View
             android:id="@+id/viewtitle"
             android:layout_width="1px"
             android:layout_height="@dimen/dimen_100"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_20"
-            android:layout_toLeftOf="@+id/btnCommoSave"
+            android:layout_toLeftOf="@+id/spinnermenu"
             android:background="#FF909090" />
 
         <Button
-            android:id="@+id/btnCommoSave"
-            android:layout_width="@dimen/dimen_170"
-            android:layout_height="@dimen/dimen_90"
+            android:id="@+id/spinnermenu"
+            android:layout_width="@dimen/dimen_80"
+            android:layout_height="@dimen/dimen_80"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_20"
-            android:background="@drawable/shape_btn_newsbuild_boild"
-            android:text="保存" />
+            android:layout_marginLeft="@dimen/dimen_30"
+            android:layout_marginRight="@dimen/dimen_30"
+            android:background="@mipmap/em_add" />
     </RelativeLayout>
 
     <View
@@ -635,7 +643,7 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="QA首扎件" />
+                        android:text="QA首扎件数" />
 
                     <View
                         android:layout_width="1px"
