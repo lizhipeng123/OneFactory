@@ -92,7 +92,7 @@ public class CoreActivity extends BaseFrangmentActivity
      */
     private void generate() {
         sp = getSharedPreferences("my_sp", 0);
-        String apkpath = sp.getString("apkpath", "");
+        String apkpath = sp.getString("applicationapkpath", "");
         System.out.print(apkpath);
         if (apkpath.equals("") || "".equals(apkpath)) {
             ToastUtils.ShowToastMessage("没有版本可以生成", CoreActivity.this);
