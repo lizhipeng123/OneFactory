@@ -60,6 +60,7 @@
                 android:layout_marginLeft="@dimen/dimen_50"
                 android:background="@drawable/shape_edittext_sql_boild"
                 android:gravity="center"
+                android:textSize="@dimen/dimen_50sp"
                 android:textColor="@color/black" />
 
 

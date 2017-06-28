@@ -129,6 +129,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
         if (master == null) {
             master = "";
         }
+
         /**
          * 判断生产主管是否是当前登录用户
          */

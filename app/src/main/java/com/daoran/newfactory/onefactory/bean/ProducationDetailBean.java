@@ -145,6 +145,7 @@ public class ProducationDetailBean {
         private String megitem;//合并款号
         private String teamname;//外贸组别
         private String recordat;//制单时间
+        private String recordid;//制单人id
         private String recorder;//制单人
         private String subfactory;//加工厂
         private String workingProcedure;//工序
@@ -206,6 +207,18 @@ public class ProducationDetailBean {
 
         public int getID() {
             return ID;
+        }
+
+        public String getRecordid() {
+            return recordid;
+        }
+
+        public void setRecordid(String recordid) {
+            this.recordid = recordid;
+        }
+
+        public void setLeftQty(String leftQty) {
+            this.leftQty = leftQty;
         }
 
         public void setID(int ID) {

@@ -1,6 +1,8 @@
 package com.daoran.newfactory.onefactory.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +10,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
 import com.daoran.newfactory.onefactory.bean.CommoditydetailBean;
+import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 
 import java.util.List;
 
@@ -20,6 +24,8 @@ import java.util.List;
 public class CommoditySqlLeftAdapter extends BaseAdapter {
     private Context context;
     private List<CommoditydetailBean.DataBean> dataBeen;
+    private SPUtils spUtils;
+    private SharedPreferences sp;
 
     public CommoditySqlLeftAdapter(Context context, List<CommoditydetailBean.DataBean> dataBeen) {
         this.context = context;
@@ -52,8 +58,17 @@ public class CommoditySqlLeftAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        String productionItem = getItem(position).getItem();
+        final String productionItem = getItem(position).getItem();
         holder.tvLeft.setText(productionItem);
+        holder.tvLeft.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent intent = new Intent(context, ProductionActivity.class);
+                spUtils.put(context,"productionleftItem",productionItem);
+                context.startActivity(intent);
+                return true;
+            }
+        });
         return convertView;
     }
 

@@ -467,6 +467,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         String productionRecorder = sp.getString("configrecorder", "");//制单人
         String productionRecordat = sp.getString("configrecordat", "");//制单时间
         Gson gson = new Gson();
+
         if (procudureTitle.equals("裁床")) {
             if (!TextUtils.isEmpty(liststr)) {
                 try {
@@ -503,48 +504,52 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     System.out.print(newlyComfigSaveBeen);
                     String detailb = gson.toJson(newlyComfigSaveBeen);
                     String dateee = detailb.replace("\"\"", "null");
-                    if (NetWork.isNetWorkAvailable(this)) {
-                        ResponseDialog.showLoading(this);
-                        OkHttpUtils.postString().
-                                url(saveurl)
-                                .content(dateee)
-                                .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                                .build()
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onError(Call call, Exception e, int id) {
-                                        e.printStackTrace();
-                                    }
-
-                                    @Override
-                                    public void onResponse(String response, int id) {
-                                        System.out.print(response);
-                                        String ression = StringUtil.sideTrim(response, "\"");
-                                        System.out.print(ression);
-                                        int resindex = Integer.parseInt(ression);
-                                        if (resindex > 4) {
-                                            ToastUtils.ShowToastMessage("保存成功，请刷新页面",
-                                                    ProductionNewlyComfigActivity.this);
-                                            startActivity(new Intent(ProductionNewlyComfigActivity.this,
-                                                    ProductionActivity.class));
-                                            ResponseDialog.closeLoading();
-                                        } else if (resindex == 3) {
-                                            ToastUtils.ShowToastMessage("保存失败",
-                                                    ProductionNewlyComfigActivity.this);
-                                            ResponseDialog.closeLoading();
-                                        } else if (resindex == 4) {
-                                            ToastUtils.ShowToastMessage("数据错误，请重试",
-                                                    ProductionNewlyComfigActivity.this);
-                                            ResponseDialog.closeLoading();
-                                        } else {
-                                            ToastUtils.ShowToastMessage("未知错误，请联系管理员",
-                                                    ProductionNewlyComfigActivity.this);
-                                            ResponseDialog.closeLoading();
+                    if(newlyComfigSaveBeen.equals("")){
+                        ToastUtils.ShowToastMessage("没有数据可以保存",ProductionNewlyComfigActivity.this);
+                    }else{
+                        if (NetWork.isNetWorkAvailable(this)) {
+                            ResponseDialog.showLoading(this);
+                            OkHttpUtils.postString().
+                                    url(saveurl)
+                                    .content(dateee)
+                                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                                    .build()
+                                    .execute(new StringCallback() {
+                                        @Override
+                                        public void onError(Call call, Exception e, int id) {
+                                            e.printStackTrace();
                                         }
-                                    }
-                                });
-                    } else {
-                        ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyComfigActivity.this);
+
+                                        @Override
+                                        public void onResponse(String response, int id) {
+                                            System.out.print(response);
+                                            String ression = StringUtil.sideTrim(response, "\"");
+                                            System.out.print(ression);
+                                            int resindex = Integer.parseInt(ression);
+                                            if (resindex > 4) {
+                                                ToastUtils.ShowToastMessage("保存成功，请刷新页面",
+                                                        ProductionNewlyComfigActivity.this);
+                                                startActivity(new Intent(ProductionNewlyComfigActivity.this,
+                                                        ProductionActivity.class));
+                                                ResponseDialog.closeLoading();
+                                            } else if (resindex == 3) {
+                                                ToastUtils.ShowToastMessage("保存失败",
+                                                        ProductionNewlyComfigActivity.this);
+                                                ResponseDialog.closeLoading();
+                                            } else if (resindex == 4) {
+                                                ToastUtils.ShowToastMessage("数据错误，请重试",
+                                                        ProductionNewlyComfigActivity.this);
+                                                ResponseDialog.closeLoading();
+                                            } else {
+                                                ToastUtils.ShowToastMessage("未知错误，请联系管理员",
+                                                        ProductionNewlyComfigActivity.this);
+                                                ResponseDialog.closeLoading();
+                                            }
+                                        }
+                                    });
+                        } else {
+                            ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyComfigActivity.this);
+                        }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -553,7 +558,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 }
             }
         } else {
-            if (!TextUtils.isEmpty(liststr)) {
+//            if (!TextUtils.isEmpty(liststr)) {
                 try {
                     ProducationNewlyComfigSaveBean consaveBean =
                             new ProducationNewlyComfigSaveBean();
@@ -615,56 +620,58 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     System.out.print(newlyComfigSaveBeen);
                     String detailb = gson.toJson(newlyComfigSaveBeen);
                     String dateee = detailb.replace("\"\"", "null");
-                    if (NetWork.isNetWorkAvailable(this)) {
-                        ResponseDialog.showLoading(this);
-                        OkHttpUtils.postString().
-                                url(saveurl)
-                                .content(dateee)
-                                .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                                .build()
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onError(Call call, Exception e, int id) {
-                                        e.printStackTrace();
-                                    }
-
-                                    @Override
-                                    public void onResponse(String response, int id) {
-                                        System.out.print(response);
-                                        String ression = StringUtil.sideTrim(response, "\"");
-                                        System.out.print(ression);
-                                        int resindex = Integer.parseInt(ression);
-                                        if (resindex > 4) {
-                                            ToastUtils.ShowToastMessage("保存成功，请刷新页面",
-                                                    ProductionNewlyComfigActivity.this);
-                                            startActivity(new Intent(ProductionNewlyComfigActivity.this,
-                                                    ProductionActivity.class));
-                                            ResponseDialog.closeLoading();
-                                        } else if (resindex == 3) {
-                                            ToastUtils.ShowToastMessage("保存失败",
-                                                    ProductionNewlyComfigActivity.this);
-                                            ResponseDialog.closeLoading();
-                                        } else if (resindex == 4) {
-                                            ToastUtils.ShowToastMessage("数据错误，请重试",
-                                                    ProductionNewlyComfigActivity.this);
-                                            ResponseDialog.closeLoading();
-                                        } else {
-                                            ToastUtils.ShowToastMessage("未知错误，请联系管理员",
-                                                    ProductionNewlyComfigActivity.this);
-                                            ResponseDialog.closeLoading();
+                    if(newlyComfigSaveBeen.equals("")){
+                        ToastUtils.ShowToastMessage("没有数据可以保存",ProductionNewlyComfigActivity.this);
+                    }else{
+                        if (NetWork.isNetWorkAvailable(this)) {
+                            ResponseDialog.showLoading(this);
+                            OkHttpUtils.postString().
+                                    url(saveurl)
+                                    .content(dateee)
+                                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                                    .build()
+                                    .execute(new StringCallback() {
+                                        @Override
+                                        public void onError(Call call, Exception e, int id) {
+                                            e.printStackTrace();
                                         }
-                                    }
-                                });
-                    } else {
-                        ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyComfigActivity.this);
+
+                                        @Override
+                                        public void onResponse(String response, int id) {
+                                            System.out.print(response);
+                                            String ression = StringUtil.sideTrim(response, "\"");
+                                            System.out.print(ression);
+                                            int resindex = Integer.parseInt(ression);
+                                            if (resindex > 4) {
+                                                ToastUtils.ShowToastMessage("保存成功，请刷新页面",
+                                                        ProductionNewlyComfigActivity.this);
+                                                startActivity(new Intent(ProductionNewlyComfigActivity.this,
+                                                        ProductionActivity.class));
+                                                ResponseDialog.closeLoading();
+                                            } else if (resindex == 3) {
+                                                ToastUtils.ShowToastMessage("保存失败",
+                                                        ProductionNewlyComfigActivity.this);
+                                                ResponseDialog.closeLoading();
+                                            } else if (resindex == 4) {
+                                                ToastUtils.ShowToastMessage("数据错误，请重试",
+                                                        ProductionNewlyComfigActivity.this);
+                                                ResponseDialog.closeLoading();
+                                            } else {
+                                                ToastUtils.ShowToastMessage("未知错误，请联系管理员",
+                                                        ProductionNewlyComfigActivity.this);
+                                                ResponseDialog.closeLoading();
+                                            }
+                                        }
+                                    });
+                        } else {
+                            ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyComfigActivity.this);
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        }
-
-
+//        }
     }
 
     public final class ViewHolder {

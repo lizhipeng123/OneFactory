@@ -33,6 +33,7 @@ import com.daoran.newfactory.onefactory.adapter.ProductionAdapter;
 import com.daoran.newfactory.onefactory.adapter.ProductionLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.ProducationConfigSaveBean;
+import com.daoran.newfactory.onefactory.bean.ProducationDeleteBean;
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
 import com.daoran.newfactory.onefactory.bean.ProducationSaveBean;
 import com.daoran.newfactory.onefactory.bean.Propostbean;
@@ -233,6 +234,16 @@ public class ProductionActivity extends BaseFrangmentActivity
         sp = ProductionActivity.this.getSharedPreferences("my_sp", 0);
         String namedure = sp.getString("proname", "");//制单人
         String Style = sp.getString("etprodialogStyle", "");//款号
+        String commostyle = sp.getString("productionleftItem", "");
+        String commonamedure;
+        String itemstyle;
+        if (commostyle.equals("")) {
+            itemstyle = Style;
+            commonamedure = namedure;
+        } else {
+            itemstyle = commostyle;
+            commonamedure = "";
+        }
         String Factory = sp.getString("etprodialogFactory", "");//工厂
 //        String Recode = sp.getString("etprodialogRecode", "");//制单人
         String getsize = sp.getString("clumnsprospinner", "");
@@ -246,8 +257,8 @@ public class ProductionActivity extends BaseFrangmentActivity
             Gson gson = new Gson();
             Propostbean propostbean = new Propostbean();
             Propostbean.Conditions conditions = propostbean.new Conditions();
-            conditions.setItem(Style);
-            conditions.setPrddocumentary(namedure);
+            conditions.setItem(itemstyle);
+            conditions.setPrddocumentary(commonamedure);
             conditions.setSubfactory(Factory);
             conditions.setWorkingProcedure("");
             conditions.setPrddocumentaryisnull(stris);
@@ -326,8 +337,8 @@ public class ProductionActivity extends BaseFrangmentActivity
             Gson gson = new Gson();
             Propostbean propostbean = new Propostbean();
             Propostbean.Conditions conditions = propostbean.new Conditions();
-            conditions.setItem(Style);
-            conditions.setPrddocumentary(namedure);
+            conditions.setItem(itemstyle);
+            conditions.setPrddocumentary(commonamedure);
             conditions.setSubfactory(Factory);
             conditions.setWorkingProcedure(Procedure);
             conditions.setPrddocumentaryisnull(stris);
@@ -411,7 +422,17 @@ public class ProductionActivity extends BaseFrangmentActivity
         sp = ProductionActivity.this.getSharedPreferences("my_sp", 0);
         /*获取条件查询dialog中输入的信息字段*/
         String namedure = sp.getString("proname", "");
+        String commonamedure;
         String Style = sp.getString("etprodialogStyle", "");
+        String commostyle = sp.getString("productionleftItem", "");
+        String itemstyle;
+        if (commostyle.equals("")) {
+            itemstyle = Style;
+            commonamedure = namedure;
+        } else {
+            itemstyle = commostyle;
+            commonamedure = "";
+        }
         String Factory = sp.getString("etprodialogFactory", "");
         String getsize = sp.getString("clumnsprospinner", "");
         if (getsize.equals("")) {
@@ -427,8 +448,8 @@ public class ProductionActivity extends BaseFrangmentActivity
             Gson gson = new Gson();
             Propostbean propostbean = new Propostbean();
             Propostbean.Conditions conditions = propostbean.new Conditions();
-            conditions.setItem(Style);
-            conditions.setPrddocumentary(namedure);
+            conditions.setItem(itemstyle);
+            conditions.setPrddocumentary(commonamedure);
             conditions.setSubfactory(Factory);
             conditions.setWorkingProcedure("");
             conditions.setPrddocumentaryisnull(stris);
@@ -509,8 +530,8 @@ public class ProductionActivity extends BaseFrangmentActivity
             Gson gson = new Gson();
             Propostbean propostbean = new Propostbean();
             Propostbean.Conditions conditions = propostbean.new Conditions();
-            conditions.setItem(Style);
-            conditions.setPrddocumentary(namedure);
+            conditions.setItem(itemstyle);
+            conditions.setPrddocumentary(commonamedure);
             conditions.setSubfactory(Factory);
             conditions.setWorkingProcedure(Procedure);
             conditions.setPrddocumentaryisnull(stris);
@@ -597,39 +618,44 @@ public class ProductionActivity extends BaseFrangmentActivity
             Gson gson = new GsonBuilder().registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory()).create();
             String detailb = gson.toJson(detailBeenList);
             System.out.print(detailb);
-            OkHttpUtils.postString().
-                    url(saveurl)
-                    .content(detailb)
-                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            e.printStackTrace();
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-                            System.out.print(response);
-                            String ression = StringUtil.sideTrim(response, "\"");
-                            System.out.print(ression);
-                            int resindex = Integer.parseInt(ression);
-                            if (resindex > 3) {
-                                ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
-                                setData();
-                                ResponseDialog.closeLoading();
-                            } else if (ression == "3" || ression.equals("3")) {
-                                ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
-                                ResponseDialog.closeLoading();
-                            } else if (ression == "4" || ression.equals("4")) {
-                                ToastUtils.ShowToastMessage("数据错误，请重试", ProductionActivity.this);
-                                ResponseDialog.closeLoading();
-                            } else {
-                                ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
-                                ResponseDialog.closeLoading();
+            if (detailb.equals("[]")) {
+                ToastUtils.ShowToastMessage("没有数据可以修改", ProductionActivity.this);
+                ResponseDialog.closeLoading();
+            } else {
+                OkHttpUtils.postString().
+                        url(saveurl)
+                        .content(detailb)
+                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                e.printStackTrace();
                             }
-                        }
-                    });
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                System.out.print(response);
+                                String ression = StringUtil.sideTrim(response, "\"");
+                                System.out.print(ression);
+                                int resindex = Integer.parseInt(ression);
+                                if (resindex > 3) {
+                                    ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
+                                    setData();
+                                    ResponseDialog.closeLoading();
+                                } else if (ression == "3" || ression.equals("3")) {
+                                    ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
+                                    ResponseDialog.closeLoading();
+                                } else if (ression == "4" || ression.equals("4")) {
+                                    ToastUtils.ShowToastMessage("数据错误，请重试", ProductionActivity.this);
+                                    ResponseDialog.closeLoading();
+                                } else {
+                                    ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
+                                    ResponseDialog.closeLoading();
+                                }
+                            }
+                        });
+            }
         } else {
             ToastUtils.ShowToastMessage(R.string.noHttp, ProductionActivity.this);
         }
@@ -687,7 +713,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             String copyRemarks = sp.getString("copyRemarks", "");
             String copyRecorder = sp.getString("copyRecorder", "");
             String copyRecordat = sp.getString("copyRecordat", "");
-            String copyRecordid = sp.getString("username","");
+            String copyRecordid = sp.getString("username", "");
             Gson gson = new Gson();
             ProducationConfigSaveBean saveBean = new ProducationConfigSaveBean();
             saveBean.setID(itemid);
@@ -829,6 +855,94 @@ public class ProductionActivity extends BaseFrangmentActivity
     }
 
     /**
+     * 删除
+     */
+    private void DeleteDate() {
+        sp = getSharedPreferences("my_sp", 0);
+        String id = sp.getString("proadapterid", "");
+        String prosalesid = sp.getString("prosalesid", "");
+        String item = sp.getString("copyitem", "");
+        String copyDocumentary = sp.getString("copyDocumentary", "");
+        String copyFactory = sp.getString("copyFactory", "");
+        String copyDepartment = sp.getString("copyDepartment", "");
+        String copyProcedure = sp.getString("copyProcedure", "");
+        String copyOthers = sp.getString("copyOthers", "");
+        String copySingularSystem = sp.getString("copySingularSystem", "");
+        String copyColor = sp.getString("copyColor", "");
+        String copyTaskNumber = sp.getString("copyTaskNumber", "");
+        String copySize = sp.getString("copySize", "");
+        String copyClippingNumber = sp.getString("copyCompletedLastMonth", "");
+        String copyCompletedLastMonth = sp.getString("copyCompletedLastMonth", "");
+        String copyTotalCompletion = sp.getString("copyTotalCompletion", "");
+        String copyBalanceAmount = sp.getString("copyBalanceAmount", "");
+        String copyState = sp.getString("copyState", "");
+        String copyProYear = sp.getString("copyProYear", "");
+        String copyMonth = sp.getString("copyMonth", "");
+        String copyRemarks = sp.getString("copyRemarks", "");
+        String copyRecorder = sp.getString("copyRecorder", "");
+        String copyRecordat = sp.getString("copyRecordat", "");
+        String copyRecordid = sp.getString("username", "");
+        String prorecorid = sp.getString("prorecorid","");
+        if (id.equals("")) {
+            ToastUtils.ShowToastMessage("未选择当前行", ProductionActivity.this);
+        } else {
+            Gson gson = new Gson();
+            ProducationDeleteBean deleteBean = new ProducationDeleteBean();
+            deleteBean.setID(Integer.parseInt(id));
+            deleteBean.setItem(item);
+            deleteBean.setSalesid(Integer.parseInt(prosalesid));
+            deleteBean.setRecorder(copyRecorder);
+            deleteBean.setCtmtxt("");
+            deleteBean.setPqty("");
+            deleteBean.setPrdtyp("");
+            deleteBean.setPrddocumentary("");
+            deleteBean.setSubfactory("");
+            deleteBean.setWorkingProcedure("");
+            deleteBean.setSubfactoryTeams("");
+            deleteBean.setWorkers("");
+            deleteBean.setMemo("");
+            deleteBean.setCutamount("");
+            deleteBean.setSewamount("");
+            deleteBean.setPackamount("");
+            deleteBean.setAmount("");
+            deleteBean.setPrdstatus("");
+            deleteBean.setProdcol("");
+            deleteBean.setMdl("");
+            deleteBean.setInbill("");
+            deleteBean.setRecordid(prorecorid);
+            String delete = gson.toJson(deleteBean);
+//            String dateee = delete.replace("\"\"", "null");
+            if(NetWork.isNetWorkAvailable(this)){
+                String strdelete = HttpUrl.debugoneUrl + "FactoryPlan/DeletePlanBill/";
+                OkHttpUtils.postString()
+                        .url(strdelete)
+                        .content(delete)
+                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                e.printStackTrace();
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                System.out.print(response);
+                                String result = response;
+                                if(result.equals("false")){
+                                    ToastUtils.ShowToastMessage("删除失败",ProductionActivity.this);
+                                }else{
+                                    ToastUtils.ShowToastMessage("删除成功，刷新页面",ProductionActivity.this);
+                                }
+                            }
+                        });
+            }else{
+                ToastUtils.ShowToastMessage(R.string.noHttp,ProductionActivity.this);
+            }
+        }
+    }
+
+    /**
      *
      */
     DialogInterface.OnClickListener listenerwifi = new DialogInterface.OnClickListener() {
@@ -907,6 +1021,9 @@ public class ProductionActivity extends BaseFrangmentActivity
                         break;
                     case "刷新":
                         setData();
+                        break;
+                    case "删除当前行":
+                        DeleteDate();
                         break;
                     case "保存为Excel":
                         new Thread(new Runnable() {
@@ -1007,6 +1124,7 @@ public class ProductionActivity extends BaseFrangmentActivity
         editor.remove("productionThirtyDay");
         editor.remove("productionThirtyOneDay");
         editor.remove("productionRemarks");
+        editor.remove("productionleftItem");
         editor.commit();
         super.onDestroy();
     }

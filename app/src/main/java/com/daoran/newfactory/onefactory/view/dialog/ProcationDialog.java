@@ -81,8 +81,15 @@ public class ProcationDialog extends Dialog {
         etprodialogRecode.setText(etaaname);
         String Factory = sp.getString("etprodialogFactory","");
         etprodialogFactory.setText(Factory);
-        String style = sp.getString("etprodialogStyle","");
-        etprodialogStyle.setText(style);
+        String productionleftItem = sp.getString("productionleftItem","");
+        etprodialogStyle.setText(productionleftItem);
+        if(productionleftItem.equals("")){
+            etprodialogRecode.setText(etaaname);
+        }else{
+            etprodialogRecode.setText("");
+        }
+//        String style = sp.getString("etprodialogStyle","");
+//        etprodialogStyle.setText(style);
         String[] spinnerProcedure = content.getResources().getStringArray(R.array.Procedure);
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>
