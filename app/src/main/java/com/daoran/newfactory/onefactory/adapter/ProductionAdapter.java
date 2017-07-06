@@ -12,10 +12,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
@@ -164,7 +167,7 @@ public class ProductionAdapter extends BaseAdapter {
                     public void onClick(View v) {
                         viewHolder.lin_content.setBackgroundResource(R.drawable.bill_record_historylist);
                         String prorecorid = getItem(position).getRecordid();
-                        spUtils.put(context,"prorecorid",prorecorid);
+                        spUtils.put(context, "prorecorid", prorecorid);
                         String proid = String.valueOf(getItem(position).getID());
                         spUtils.put(context, "proadapterid", proid);
                         String urlid = String.valueOf(getItem(position).getID());
@@ -473,6 +476,40 @@ public class ProductionAdapter extends BaseAdapter {
 
                 viewHolder.tvProMonth.setEnabled(true);
                 viewHolder.tvProMonth.setText(getItem(position).getMonth());
+
+//                String[] spinnermonththree = context.getResources().getStringArray(R.array.timemonth);
+//                ArrayAdapter<String> adapterthree =
+//                        new ArrayAdapter<String>(context,
+//                                R.layout.adapter_pronewlycomfig_spinner,
+//                                spinnermonththree);
+//                adapterthree.setDropDownViewResource(R.layout.adapter_pronewlycomfig_spinner_item);
+//                viewHolder.tvProMonth.setAdapter(adapterthree);
+//                String monthpro;
+//                if(getItem(position).getMonth()!=null){
+//                    monthpro = getItem(position).getMonth();
+//                    int monthp = Integer.parseInt(monthpro);
+//                    viewHolder.tvProMonth.setSelection(monthp,true);
+//                }else{
+//                    int monthpr = 0;
+//                    viewHolder.tvProMonth.setSelection(monthpr,true);
+//                }
+//
+//                viewHolder.tvProMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                    @Override
+//                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                        String[] languages = context.getResources().getStringArray(R.array.timemonth);
+//                        System.out.print(languages[position]);
+////                        spUtils.put(context, "ComfigMonth", languages[position]);
+//                        String positionlan = languages[position];
+//                        getItem(position).setMonth(positionlan);
+//                    }
+//
+//                    @Override
+//                    public void onNothingSelected(AdapterView<?> parent) {
+//
+//                    }
+//                });
+
 
                 viewHolder.tvProOneDay.setEnabled(true);
                 final EditText editTexOneDay = viewHolder.tvProOneDay;
@@ -7813,6 +7850,39 @@ public class ProductionAdapter extends BaseAdapter {
 
                 viewHolder.tvProMonth.setEnabled(false);
                 viewHolder.tvProMonth.setText(getItem(position).getMonth());
+//                String[] spinnermonthtwo = context.getResources().getStringArray(R.array.timemonth);
+//                ArrayAdapter<String> adaptertwo =
+//                        new ArrayAdapter<String>(context,
+//                                R.layout.adapter_pronewlycomfig_spinner,
+//                                spinnermonthtwo);
+//                adaptertwo.setDropDownViewResource(R.layout.adapter_pronewlycomfig_spinner_item);
+//                viewHolder.tvProMonth.setAdapter(adaptertwo);
+//                String monthpro;
+//                if(getItem(position).getMonth()!=null){
+//                    monthpro = getItem(position).getMonth();
+//                    int monthp = Integer.parseInt(monthpro);
+//                    viewHolder.tvProMonth.setSelection(monthp,true);
+//                }else{
+//                    int monthpr = 0;
+//                    viewHolder.tvProMonth.setSelection(monthpr,true);
+//                }
+////                String monthpro = getItem(position).getMonth();
+////                int monthp = Integer.parseInt(monthpro);
+////                viewHolder.tvProMonth.setSelection(monthp,true);
+//                viewHolder.tvProMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                    @Override
+//                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                        String[] languages = context.getResources().getStringArray(R.array.timemonth);
+//                        System.out.print(languages[position]);
+////                        spUtils.put(context, "ComfigMonth", languages[position]);
+//                        getItem(position).setMonth(languages[position]);
+//                    }
+//
+//                    @Override
+//                    public void onNothingSelected(AdapterView<?> parent) {
+//
+//                    }
+//                });
 
                 viewHolder.tvProOneDay.setEnabled(false);
                 final EditText editTexOneDay = viewHolder.tvProOneDay;
@@ -8368,6 +8438,39 @@ public class ProductionAdapter extends BaseAdapter {
 
             viewHolder.tvProMonth.setEnabled(false);
             viewHolder.tvProMonth.setText(getItem(position).getMonth());
+//            String[] spinnermonthone = context.getResources().getStringArray(R.array.timemonth);
+//            ArrayAdapter<String> adapterone =
+//                    new ArrayAdapter<String>(context,
+//                            R.layout.adapter_pronewlycomfig_spinner,
+//                            spinnermonthone);
+//            adapterone.setDropDownViewResource(R.layout.adapter_pronewlycomfig_spinner_item);
+//            viewHolder.tvProMonth.setAdapter(adapterone);
+//            String monthpro;
+//            if(getItem(position).getMonth()!=null){
+//                monthpro = getItem(position).getMonth();
+//                int monthp = Integer.parseInt(monthpro);
+//                viewHolder.tvProMonth.setSelection(monthp,true);
+//            }else{
+//                int monthpr = 0;
+//                viewHolder.tvProMonth.setSelection(monthpr,true);
+//            }
+////            String monthpro = getItem(position).getMonth();
+////            int monthp = Integer.parseInt(monthpro);
+////            viewHolder.tvProMonth.setSelection(monthp,true);
+//            viewHolder.tvProMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                @Override
+//                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                    String[] languages = context.getResources().getStringArray(R.array.timemonth);
+//                    System.out.print(languages[position]);
+////                        spUtils.put(context, "ComfigMonth", languages[position]);
+//                    getItem(position).setMonth(languages[position]);
+//                }
+//
+//                @Override
+//                public void onNothingSelected(AdapterView<?> parent) {
+//
+//                }
+//            });
 
             viewHolder.tvProOneDay.setEnabled(false);
             final EditText editTexOneDay = viewHolder.tvProOneDay;
@@ -8647,6 +8750,7 @@ public class ProductionAdapter extends BaseAdapter {
 //                        spUtils.put(context, "proadapterMonthTitle", title);
                         viewHolder.tvProMonth.setText(title);
                         getItem(position).setMonth(title);
+                        getItem(position).setMemomonth(title);
                         return false;
                     }
                 });
@@ -8688,6 +8792,9 @@ public class ProductionAdapter extends BaseAdapter {
             }
         });
 
+        /**
+         * 工序菜单事件
+         */
         viewHolder.tvProProcedure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -8698,10 +8805,11 @@ public class ProductionAdapter extends BaseAdapter {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         sp = context.getSharedPreferences("userInfo", 0);
-                        String title = item.getTitle().toString();
-//                        spUtils.put(context, "proProcedureTitle", title);
-                        viewHolder.tvProProcedure.setText(title);
-                        getItem(position).setWorkingProcedure(title);
+                        String title = item.getTitle().toString();//菜单中选择的工序
+                        spUtils.put(context, "probooleanProcedureTitle", title);//传递
+                        viewHolder.tvProProcedure.setText(title);//给界面显示当前修改的值
+                        getItem(position).setMemoprdure(title);//给默认的工序赋值
+                        getItem(position).setWorkingProcedure(title);//改变原来的工序
                         return false;
                     }
                 });
@@ -8763,6 +8871,7 @@ public class ProductionAdapter extends BaseAdapter {
         EditText tvProOthers, //组别人
                 tvProCompletedLastMonth,//上月完工
                 tvProTaskNumber;//任务数;
+//        Spinner tvProMonth;//月份
         TextView tvProSingularSystem,//制单数
                 tvProColor,//花色
                 tvProSize,//尺码

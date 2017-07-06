@@ -136,7 +136,7 @@
 
         <!-- 公交路线 -->
         <activity
-            android:name=".activity.work.DebugGaodeActivity"
+            android:name=".activity.work.GaodeRouteActivity"
             android:screenOrientation="portrait" />
 
         <!-- 用车单详情 -->

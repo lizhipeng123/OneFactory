@@ -12,29 +12,22 @@ import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.adapter.ProductionAdapter;
-import com.daoran.newfactory.onefactory.adapter.ProductionLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.ProducationConfigSaveBean;
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
 import com.daoran.newfactory.onefactory.bean.ProducationNewlyComfigSaveBean;
 import com.daoran.newfactory.onefactory.bean.ProductionNewlybooleanBean;
 import com.daoran.newfactory.onefactory.bean.Propostbean;
-import com.daoran.newfactory.onefactory.bean.UsergetBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.PhoneSaveUtil;
@@ -50,11 +43,8 @@ import com.google.gson.JsonSyntaxException;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.apache.commons.lang.ArrayUtils;
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +57,7 @@ import okhttp3.MediaType;
  * Created by lizhipeng on 2017/5/9.
  */
 
-public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
+public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
         implements View.OnClickListener {
     private static final String TAG = "configtest";
     private NoscrollListView mData;
@@ -91,6 +81,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
     private Button btnProSave;
     private TextView spinnerNewbuild;
     private EditText etNewbuild;
+    private TextView tvProTitle;
     private MyAdatper comfigAdapter;
     private TextView tvconfigone, tvconfigtwo, tvconfigthree, tvconfigfore, tvconfigfive,
             tvconfigsix, tvconfigseven, tvconfigeight, tvconfignine, tvconfigten, tvconfigeleven,
@@ -117,7 +108,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
     private int year, month, datetime, hour, minute, second;
     int isprodure;
     private Object[] array;
-//    private String listItemm, listPrecoder;
+    private String listItemm, listPrecoder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +120,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         setListener();
         sp = getSharedPreferences("my_sp", 0);
         String isprodure = sp.getString("isprodure", "");
-        if (isprodure.equals("0")) {
+        if (isprodure.equals("0")) {//如果是裁床，则隐藏1~31日填写信息
             tvconfigone.setVisibility(View.VISIBLE);
             tvconfigtwo.setVisibility(View.VISIBLE);
             tvconfigthree.setVisibility(View.VISIBLE);
@@ -401,21 +392,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 finish();
                 break;
             case R.id.btnProSave:
+
                 setSave();
                 break;
         }
-    }
-
-    /**
-     * 判断 array1是否包含所有的 array2
-     */
-    private static boolean containsAll(String[] array1, String[] array2) {
-        for (String str : array2) {
-            if (!ArrayUtils.contains(array1, str)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     /**
@@ -423,14 +403,12 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
      */
     private void setSave() {
         String saveurl = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
-        sp = getSharedPreferences("my_sp", 0);
+        sp = this.getSharedPreferences("my_sp", 0);
         SharedPreferences spes = getSharedPreferences("mylist", 0);
         String liststr = spes.getString("mylistStr", "");
         String tvnewlySizes = sp.getString("tvnewlySize", "");//花色
         String salesid = sp.getString("tvnewlysalesid", "");//款号id
         String proColumnTitle = sp.getString("Configdepartment", "");//部门
-        String productionRecorder = sp.getString("configrecorder", "");//制单人
-        String productionMonth = sp.getString("ComfigMonth", "");//月
         String proadaptertitle = sp.getString("tvnewlyDepartment", "");
         String columntitle;
         String recordid = sp.getString("username", "");//制单人id
@@ -442,8 +420,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         String proProcedureadapterTitle = sp.getString("ConfigProcedure", "");//工序adapter中修改过的
         String proprocudureTitle = sp.getString("tvnewlyProcedure", "");//从款号选择传过来的工序
         String procudureTitle;//工序变量
-        //如果工序显示是空值或者为选择工序，则统一赋给变量为空值""，
-        //如果不是的话就把修改的工序赋给变量
         if (proprocudureTitle.equals("选择工序") && proProcedureadapterTitle.equals("")) {
             procudureTitle = "";
         } else if (!proProcedureadapterTitle.equals("")) {
@@ -451,78 +427,15 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         } else {
             procudureTitle = proprocudureTitle;
         }
-
+        String productionRecorder = sp.getString("configrecorder", "");//制单人
         int listsize = booleandatelist.size();
-        if (listsize == 0) {
-            listsize = 1;
-        } else {
-            listsize = booleandatelist.size();
-        }
-        String tvnewlydate = sp.getString("tvnewlydate", "");//
-//        int debeenlength = detailBeenList.size();//初始化集合的大小
-        String[] arrsitem = tvnewlydate.split(",");//修改的款号数组
-        String[] arrspredure = procudureTitle.split(",");//修改的工序数组
-        String[] arrsmonth = productionMonth.split(",");//修改的月份数组
-        String[] arrsdatemonth = new String[listsize];
-        String[] arrsdatepredure = new String[listsize];//符合条件的工序数组
+        sp = getSharedPreferences("my_sp", 0);
+        String tvnewlydate = sp.getString("tvnewlydate", "");
         for (int i = 0; i < listsize; i++) {
-            if (listsize != 0) {
-                if(booleandatelist.get(i).getItem()!=null){
-                    String woritem = booleandatelist.get(i).getItem();
-                    String[] workitempro = woritem.split(",");
-                    boolean probool = containsAll(arrsitem, workitempro);
-                    if (probool == true) {
-                        arrsdatepredure[i] = booleandatelist.get(i).getWorkingProcedure();
-                        arrsdatemonth[i] = booleandatelist.get(i).getMonth();
-                    } else {
-                        arrsdatepredure[i] = "";
-                        arrsdatemonth[i] = "";
-                    }
-                }
-            } else {
-                arrsdatepredure[i] = "";
-                arrsdatemonth[i] = "";
-            }
-        }
-        System.out.print(arrsdatepredure + "");//符合条件的工序
-        System.out.print(arrsdatemonth + "");
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < arrsdatepredure.length; i++) {
-            if ("".equals(arrsdatepredure[i])) {
-                continue;
-            }
-            sb.append(arrsdatepredure[i]);
-            if (i != arrsdatepredure.length - 1) {
-                sb.append(";");
-            }
-        }
-        arrsdatepredure = sb.toString().split(";");
-        for (int i = 0; i < arrsdatepredure.length; i++) {
-            System.out.print(arrsdatepredure[i] + "");
-        }
-        System.out.print(arrsdatepredure + "");
-
-        StringBuffer sb2 = new StringBuffer();
-        for (int i = 0; i < arrsdatemonth.length; i++) {
-            if ("".equals(arrsdatemonth[i])) {
-                continue;
-            }
-            sb2.append(arrsdatemonth[i]);
-            if (i != arrsdatemonth.length - 1) {
-                sb2.append(";");
-            }
-        }
-        arrsdatemonth = sb2.toString().split(";");
-        for (int i = 0; i < arrsdatemonth.length; i++) {
-            System.out.print(arrsdatemonth[i] + "");
-        }
-        System.out.print(arrsdatemonth + "");
-        boolean monthbool = containsAll(arrsdatemonth, arrsmonth);
-        boolean predurebool = containsAll(arrsdatepredure, arrspredure);
-        if (predurebool == true) {
-            if (monthbool == true) {
-                ToastUtils.ShowToastMessage("已存在相同月份，工序的款号", ProductionNewlyComfigActivity.this);
-                ResponseDialog.closeLoading();
+            listItemm = booleandatelist.get(i).getItem();
+            listPrecoder = booleandatelist.get(i).getWorkingProcedure();
+            if (procudureTitle.equals(listPrecoder) && tvnewlydate.equals(listItemm)) {
+                ToastUtils.ShowToastMessage("已存在相同的款号", ProductionNewlyCopyActivity.this);
             } else {
                 String proPrdstatusTitle = sp.getString("ComfigPrdstatus", "");//状态//
                 String productionItem = sp.getString("comfigitem", "");//款号
@@ -538,6 +451,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 String productionTotalCompletion = sp.getString("configcompletion", "");//总完工数
                 String productionBalanceAmount = sp.getString("configamount", "");//结余数量
                 String productionYear = sp.getString("configyear", "");//年
+                String productionMonth = sp.getString("ComfigMonth", "");//月
                 String productionOneDay = sp.getString("configOneDay", "");//1
                 String productionTwoDay = sp.getString("configTwoDay", "");//2
                 String productionThreeDay = sp.getString("configThreeDay", "");//3
@@ -570,8 +484,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 String productionThirtyDay = sp.getString("configThirtyDay", "");//30
                 String productionThirtyOneDay = sp.getString("configThirtyOneDay", "");//31
                 String productionRemarks = sp.getString("configRemarks", "");//备注
+
                 String productionRecordat = sp.getString("configrecordat", "");//制单时间
                 Gson gson = new Gson();
+//        for(int i =0;){}
                 booleandatelist.size();
                 if (procudureTitle.equals("裁床")) {
                     if (!TextUtils.isEmpty(liststr)) {
@@ -610,7 +526,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             String detailb = gson.toJson(newlyComfigSaveBeen);
                             String dateee = detailb.replace("\"\"", "null");
                             if (newlyComfigSaveBeen.equals("")) {
-                                ToastUtils.ShowToastMessage("没有数据可以保存", ProductionNewlyComfigActivity.this);
+                                ToastUtils.ShowToastMessage("没有数据可以保存", ProductionNewlyCopyActivity.this);
                             } else {
                                 if (NetWork.isNetWorkAvailable(this)) {
                                     ResponseDialog.showLoading(this);
@@ -631,34 +547,33 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                                     String ression = StringUtil.sideTrim(response, "\"");
                                                     System.out.print(ression);
                                                     int resindex = Integer.parseInt(ression);
-                                                    setNewlyComfig();
                                                     if (resindex > 4) {
                                                         ToastUtils.ShowToastMessage("保存成功，请刷新页面",
-                                                                ProductionNewlyComfigActivity.this);
-                                                        startActivity(new Intent(ProductionNewlyComfigActivity.this,
+                                                                ProductionNewlyCopyActivity.this);
+                                                        startActivity(new Intent(ProductionNewlyCopyActivity.this,
                                                                 ProductionActivity.class));
                                                         ResponseDialog.closeLoading();
                                                     } else if (resindex == 3) {
                                                         ToastUtils.ShowToastMessage("保存失败",
-                                                                ProductionNewlyComfigActivity.this);
+                                                                ProductionNewlyCopyActivity.this);
                                                         ResponseDialog.closeLoading();
                                                     } else if (resindex == 4) {
                                                         ToastUtils.ShowToastMessage("数据错误，请重试",
-                                                                ProductionNewlyComfigActivity.this);
+                                                                ProductionNewlyCopyActivity.this);
                                                         ResponseDialog.closeLoading();
                                                     } else if (resindex == 2) {
                                                         ToastUtils.ShowToastMessage("该单已存在，无法新建！",
-                                                                ProductionNewlyComfigActivity.this);
+                                                                ProductionNewlyCopyActivity.this);
                                                         ResponseDialog.closeLoading();
                                                     } else {
                                                         ToastUtils.ShowToastMessage("未知错误，请联系管理员",
-                                                                ProductionNewlyComfigActivity.this);
+                                                                ProductionNewlyCopyActivity.this);
                                                         ResponseDialog.closeLoading();
                                                     }
                                                 }
                                             });
                                 } else {
-                                    ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyComfigActivity.this);
+                                    ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyCopyActivity.this);
                                 }
                             }
                         } catch (IOException e) {
@@ -731,7 +646,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         String detailb = gson.toJson(newlyComfigSaveBeen);
                         String dateee = detailb.replace("\"\"", "null");
                         if (newlyComfigSaveBeen.equals("")) {
-                            ToastUtils.ShowToastMessage("没有数据可以保存", ProductionNewlyComfigActivity.this);
+                            ToastUtils.ShowToastMessage("没有数据可以保存", ProductionNewlyCopyActivity.this);
                         } else {
                             if (NetWork.isNetWorkAvailable(this)) {
                                 ResponseDialog.showLoading(this);
@@ -752,30 +667,29 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                                 String ression = StringUtil.sideTrim(response, "\"");
                                                 System.out.print(ression);
                                                 int resindex = Integer.parseInt(ression);
-                                                setNewlyComfig();
                                                 if (resindex > 4) {
                                                     ToastUtils.ShowToastMessage("保存成功，请刷新页面",
-                                                            ProductionNewlyComfigActivity.this);
-                                                    startActivity(new Intent(ProductionNewlyComfigActivity.this,
+                                                            ProductionNewlyCopyActivity.this);
+                                                    startActivity(new Intent(ProductionNewlyCopyActivity.this,
                                                             ProductionActivity.class));
                                                     ResponseDialog.closeLoading();
                                                 } else if (resindex == 3) {
                                                     ToastUtils.ShowToastMessage("保存失败",
-                                                            ProductionNewlyComfigActivity.this);
+                                                            ProductionNewlyCopyActivity.this);
                                                     ResponseDialog.closeLoading();
                                                 } else if (resindex == 4) {
                                                     ToastUtils.ShowToastMessage("数据错误，请重试",
-                                                            ProductionNewlyComfigActivity.this);
+                                                            ProductionNewlyCopyActivity.this);
                                                     ResponseDialog.closeLoading();
                                                 } else {
                                                     ToastUtils.ShowToastMessage("未知错误，请联系管理员",
-                                                            ProductionNewlyComfigActivity.this);
+                                                            ProductionNewlyCopyActivity.this);
                                                     ResponseDialog.closeLoading();
                                                 }
                                             }
                                         });
                             } else {
-                                ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyComfigActivity.this);
+                                ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyCopyActivity.this);
                             }
                         }
                     } catch (Exception e) {
@@ -783,267 +697,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     }
                 }
             }
-        } else {
-            String proPrdstatusTitle = sp.getString("ComfigPrdstatus", "");//状态//
-            String productionItem = sp.getString("comfigitem", "");//款号
-            String productionDocumentary = sp.getString("configdocument", "");//跟单//
-            String productionFactory = sp.getString("configfactory", "");//工厂
-            String productionOthers = sp.getString("ConfigOthers", "");//组别人数
-            String productionSingularSystem = sp.getString("configsingular", "");//制单数//
-            String productionColor = sp.getString("configcolor", "");//花色
-            String productionTaskNumber = sp.getString("ConfigTaskNumber", "");//任务数
-            String productionSize = sp.getString("configsize", "");//尺码
-            String productionClippingNumber = sp.getString("configclipping", "");//实裁数
-            String productionCompletedLastMonth = sp.getString("ConfigLastMonth", "");//上月完工
-            String productionTotalCompletion = sp.getString("configcompletion", "");//总完工数
-            String productionBalanceAmount = sp.getString("configamount", "");//结余数量
-            String productionYear = sp.getString("configyear", "");//年
-
-            String productionOneDay = sp.getString("configOneDay", "");//1
-            String productionTwoDay = sp.getString("configTwoDay", "");//2
-            String productionThreeDay = sp.getString("configThreeDay", "");//3
-            String productionForeDay = sp.getString("configForeDay", "");//4
-            String productionFiveDay = sp.getString("configFiveDay", "");//5
-            String productionSixDay = sp.getString("configSixDay", "");//6
-            String productionSevenDay = sp.getString("configSevenDay", "");//7
-            String productionEightDay = sp.getString("configEightDay", "");//8
-            String productionNineDay = sp.getString("configNineDay", "");//9
-            String productionTenDay = sp.getString("configTenDay", "");//10
-            String productionElevenDay = sp.getString("configElevenDay", "");//11
-            String productionTwelveDay = sp.getString("configTwelveDay", "");//12
-            String productionThirteenDay = sp.getString("configThirteenDay", "");//13
-            String productionFourteenDay = sp.getString("configFourteenDay", "");//14
-            String productionFifteenDay = sp.getString("configFifteenDay", "");//15
-            String productionSixteenDay = sp.getString("configSixteenDay", "");//16
-            String productionSeventeenDay = sp.getString("configSeventeenDay", "");//17
-            String productionEighteenDay = sp.getString("configEighteenDay", "");//18
-            String productionNineteenDay = sp.getString("configNineteenDay", "");//19
-            String productionTwentyDay = sp.getString("configTwentyDay", "");//20
-            String productionTwentyOneDay = sp.getString("configTwentyOneDay", "");//21
-            String productionTwentyTwoDay = sp.getString("configTwentyTwoDay", "");//22
-            String productionTwentyThreeDay = sp.getString("configTwentyThreeDay", "");//23
-            String productionTwentyForeDay = sp.getString("configTwentyForeDay", "");//24
-            String productionTwentyFiveDay = sp.getString("configTwentyFiveDay", "");//25
-            String productionTwentySixDay = sp.getString("configTwentySixDay", "");//26
-            String productionTwentySevenDay = sp.getString("configTwentySevenDay", "");//27
-            String productionTwentyEightDay = sp.getString("configTwentyEightDay", "");//28
-            String productionTwentyNineDay = sp.getString("configTwentyNineDay", "");//29
-            String productionThirtyDay = sp.getString("configThirtyDay", "");//30
-            String productionThirtyOneDay = sp.getString("configThirtyOneDay", "");//31
-            String productionRemarks = sp.getString("configRemarks", "");//备注
-            String productionRecordat = sp.getString("configrecordat", "");//制单时间
-            Gson gson = new Gson();
-            booleandatelist.size();
-            if (procudureTitle.equals("裁床")) {
-                if (!TextUtils.isEmpty(liststr)) {
-                    try {
-                        List<String> list = PhoneSaveUtil.String2SceneList(liststr);
-                        for (int j = 0; j < list.size(); j++) {
-                            ProducationNewlyComfigSaveBean consaveBean =
-                                    new ProducationNewlyComfigSaveBean();
-                            consaveBean.setID("0");
-                            consaveBean.setRecordid(recordid);
-                            consaveBean.setSalesid(salesid);
-                            consaveBean.setProdcol(list.get(j));
-                            consaveBean.setItem(productionItem);
-                            consaveBean.setPrddocumentary(productionDocumentary);
-                            consaveBean.setSubfactory(productionFactory);
-                            consaveBean.setSubfactoryTeams(columntitle);
-                            consaveBean.setWorkingProcedure(procudureTitle);
-                            consaveBean.setWorkers(productionOthers);
-                            consaveBean.setPqty(productionSingularSystem);
-                            consaveBean.setTaskqty(productionTaskNumber);
-                            consaveBean.setMdl(productionSize);
-                            consaveBean.setFactcutqty(productionClippingNumber);
-                            consaveBean.setSumCompletedQty(productionTotalCompletion);
-                            consaveBean.setLastMonQty(productionCompletedLastMonth);
-                            consaveBean.setLeftQty(productionBalanceAmount);
-                            consaveBean.setPrdstatus(proPrdstatusTitle);
-                            consaveBean.setYear(productionYear);
-                            consaveBean.setMonth(productionMonth);
-                            consaveBean.setMemo(productionRemarks);
-                            consaveBean.setRecorder(productionRecorder);
-                            consaveBean.setRecordat(productionRecordat);
-                            newlyComfigSaveBeen.add(consaveBean);
-                        }
-                        System.out.print(list);
-                        System.out.print(newlyComfigSaveBeen);
-                        String detailb = gson.toJson(newlyComfigSaveBeen);
-                        String dateee = detailb.replace("\"\"", "null");
-                        if (newlyComfigSaveBeen.equals("")) {
-                            ToastUtils.ShowToastMessage("没有数据可以保存", ProductionNewlyComfigActivity.this);
-                        } else {
-                            if (NetWork.isNetWorkAvailable(this)) {
-                                ResponseDialog.showLoading(this);
-                                OkHttpUtils.postString().
-                                        url(saveurl)
-                                        .content(dateee)
-                                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                                        .build()
-                                        .execute(new StringCallback() {
-                                            @Override
-                                            public void onError(Call call, Exception e, int id) {
-                                                e.printStackTrace();
-                                            }
-
-                                            @Override
-                                            public void onResponse(String response, int id) {
-                                                System.out.print(response);
-                                                String ression = StringUtil.sideTrim(response, "\"");
-                                                System.out.print(ression);
-                                                int resindex = Integer.parseInt(ression);
-                                                setNewlyComfig();
-                                                if (resindex > 4) {
-                                                    ToastUtils.ShowToastMessage("保存成功，请刷新页面",
-                                                            ProductionNewlyComfigActivity.this);
-                                                    startActivity(new Intent(ProductionNewlyComfigActivity.this,
-                                                            ProductionActivity.class));
-                                                    ResponseDialog.closeLoading();
-                                                } else if (resindex == 3) {
-                                                    ToastUtils.ShowToastMessage("保存失败",
-                                                            ProductionNewlyComfigActivity.this);
-                                                    ResponseDialog.closeLoading();
-                                                } else if (resindex == 4) {
-                                                    ToastUtils.ShowToastMessage("数据错误，请重试",
-                                                            ProductionNewlyComfigActivity.this);
-                                                    ResponseDialog.closeLoading();
-                                                } else if (resindex == 2) {
-                                                    ToastUtils.ShowToastMessage("该单已存在，无法新建！",
-                                                            ProductionNewlyComfigActivity.this);
-                                                    ResponseDialog.closeLoading();
-                                                } else {
-                                                    ToastUtils.ShowToastMessage("未知错误，请联系管理员",
-                                                            ProductionNewlyComfigActivity.this);
-                                                    ResponseDialog.closeLoading();
-                                                }
-                                            }
-                                        });
-                            } else {
-                                ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyComfigActivity.this);
-                            }
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } else {
-//            if (!TextUtils.isEmpty(liststr)) {
-                try {
-                    ProducationNewlyComfigSaveBean consaveBean =
-                            new ProducationNewlyComfigSaveBean();
-                    consaveBean.setID("0");
-                    consaveBean.setSalesid(salesid);
-                    consaveBean.setRecordid(recordid);
-                    consaveBean.setProdcol(productionColor);
-                    consaveBean.setItem(productionItem);
-                    consaveBean.setPrddocumentary(productionDocumentary);
-                    consaveBean.setSubfactory(productionFactory);
-                    consaveBean.setSubfactoryTeams(columntitle);
-                    consaveBean.setWorkingProcedure(procudureTitle);
-                    consaveBean.setWorkers(productionOthers);
-                    consaveBean.setPqty(productionSingularSystem);
-                    consaveBean.setTaskqty(productionTaskNumber);
-                    consaveBean.setMdl(productionSize);
-                    consaveBean.setFactcutqty(productionClippingNumber);
-                    consaveBean.setSumCompletedQty(productionTotalCompletion);
-                    consaveBean.setLastMonQty(productionCompletedLastMonth);
-                    consaveBean.setLeftQty(productionBalanceAmount);
-                    consaveBean.setPrdstatus(proPrdstatusTitle);
-                    consaveBean.setYear(productionYear);
-                    consaveBean.setMonth(productionMonth);
-                    consaveBean.setDay1(productionOneDay);
-                    consaveBean.setDay2(productionTwoDay);
-                    consaveBean.setDay3(productionThreeDay);
-                    consaveBean.setDay4(productionForeDay);
-                    consaveBean.setDay5(productionFiveDay);
-                    consaveBean.setDay6(productionSixDay);
-                    consaveBean.setDay7(productionSevenDay);
-                    consaveBean.setDay8(productionEightDay);
-                    consaveBean.setDay9(productionNineDay);
-                    consaveBean.setDay10(productionTenDay);
-                    consaveBean.setDay11(productionElevenDay);
-                    consaveBean.setDay12(productionTwelveDay);
-                    consaveBean.setDay13(productionThirteenDay);
-                    consaveBean.setDay14(productionFourteenDay);
-                    consaveBean.setDay15(productionFifteenDay);
-                    consaveBean.setDay16(productionSixteenDay);
-                    consaveBean.setDay17(productionSeventeenDay);
-                    consaveBean.setDay18(productionEighteenDay);
-                    consaveBean.setDay19(productionNineteenDay);
-                    consaveBean.setDay20(productionTwentyDay);
-                    consaveBean.setDay21(productionTwentyOneDay);
-                    consaveBean.setDay22(productionTwentyTwoDay);
-                    consaveBean.setDay23(productionTwentyThreeDay);
-                    consaveBean.setDay24(productionTwentyForeDay);
-                    consaveBean.setDay25(productionTwentyFiveDay);
-                    consaveBean.setDay26(productionTwentySixDay);
-                    consaveBean.setDay27(productionTwentySevenDay);
-                    consaveBean.setDay28(productionTwentyEightDay);
-                    consaveBean.setDay29(productionTwentyNineDay);
-                    consaveBean.setDay30(productionThirtyDay);
-                    consaveBean.setDay31(productionThirtyOneDay);
-                    consaveBean.setMemo(productionRemarks);
-                    consaveBean.setRecorder(productionRecorder);
-                    consaveBean.setRecordat(productionRecordat);
-                    newlyComfigSaveBeen.add(consaveBean);
-                    System.out.print(newlyComfigSaveBeen);
-                    String detailb = gson.toJson(newlyComfigSaveBeen);
-                    String dateee = detailb.replace("\"\"", "null");
-                    if (newlyComfigSaveBeen.equals("")) {
-                        ToastUtils.ShowToastMessage("没有数据可以保存", ProductionNewlyComfigActivity.this);
-                    } else {
-                        if (NetWork.isNetWorkAvailable(this)) {
-                            ResponseDialog.showLoading(this);
-                            OkHttpUtils.postString().
-                                    url(saveurl)
-                                    .content(dateee)
-                                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                                    .build()
-                                    .execute(new StringCallback() {
-                                        @Override
-                                        public void onError(Call call, Exception e, int id) {
-                                            e.printStackTrace();
-                                        }
-
-                                        @Override
-                                        public void onResponse(String response, int id) {
-                                            System.out.print(response);
-                                            String ression = StringUtil.sideTrim(response, "\"");
-                                            System.out.print(ression);
-                                            int resindex = Integer.parseInt(ression);
-                                            setNewlyComfig();
-                                            if (resindex > 4) {
-                                                ToastUtils.ShowToastMessage("保存成功，请刷新页面",
-                                                        ProductionNewlyComfigActivity.this);
-                                                startActivity(new Intent(ProductionNewlyComfigActivity.this,
-                                                        ProductionActivity.class));
-                                                ResponseDialog.closeLoading();
-                                            } else if (resindex == 3) {
-                                                ToastUtils.ShowToastMessage("保存失败",
-                                                        ProductionNewlyComfigActivity.this);
-                                                ResponseDialog.closeLoading();
-                                            } else if (resindex == 4) {
-                                                ToastUtils.ShowToastMessage("数据错误，请重试",
-                                                        ProductionNewlyComfigActivity.this);
-                                                ResponseDialog.closeLoading();
-                                            } else {
-                                                ToastUtils.ShowToastMessage("未知错误，请联系管理员",
-                                                        ProductionNewlyComfigActivity.this);
-                                                ResponseDialog.closeLoading();
-                                            }
-                                        }
-                                    });
-                        } else {
-                            ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyComfigActivity.this);
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            break;
         }
+
+
 //        }
     }
 
@@ -1102,7 +759,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     });
         } else {
             ToastUtils.ShowToastMessage("当前网络不可用,请重新再试",
-                    ProductionNewlyComfigActivity.this);
+                    ProductionNewlyCopyActivity.this);
         }
     }
 
@@ -1116,12 +773,11 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         EditText tvProOthers,//组别人
                 tvProCompletedLastMonth,//上月完工
                 tvProTaskNumber;//任务数;
-        Spinner tvProMonth;
         TextView tvProSingularSystem,//制单数
                 tvProColor,//花色
                 tvProSize,//尺码
-        //                tvProMonth,//月
-        tvProClippingNumber,//实裁数
+                tvProMonth,//月
+                tvProClippingNumber,//实裁数
                 tvProTotalCompletion,//总完工数
                 tvProBalanceAmount,//结余数量
                 tvProYear;//年
@@ -1245,7 +901,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 viewHolder.tvProBalanceAmount = (TextView) convertView.findViewById(R.id.tvProBalanceAmount);
                 viewHolder.tvProState = (TextView) convertView.findViewById(R.id.tvProState);
                 viewHolder.tvProYear = (TextView) convertView.findViewById(R.id.tvProYear);
-                viewHolder.tvProMonth = (Spinner) convertView.findViewById(R.id.tvProMonth);
+                viewHolder.tvProMonth = (TextView) convertView.findViewById(R.id.tvProMonth);
                 viewHolder.tvProOneDay = (EditText) convertView.findViewById(R.id.tvProOneDay);
                 viewHolder.tvProTwoDay = (EditText) convertView.findViewById(R.id.tvProTwoDay);
                 viewHolder.tvProThreeDay = (EditText) convertView.findViewById(R.id.tvProThreeDay);
@@ -1405,259 +1061,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     String title = item.getTitle().toString();
                                     spUtils.put(context, "ConfigProcedure", title);
                                     viewHolder.tvProProcedure.setText(title);
-                                    booleandatelist.get(position).setMemoprdure(title);
-                                    if (title.equals("裁床")) {
-                                        tvconfigone.setVisibility(View.GONE);
-                                        tvconfigtwo.setVisibility(View.GONE);
-                                        tvconfigthree.setVisibility(View.GONE);
-                                        tvconfigfore.setVisibility(View.GONE);
-                                        tvconfigfive.setVisibility(View.GONE);
-                                        tvconfigsix.setVisibility(View.GONE);
-                                        tvconfigseven.setVisibility(View.GONE);
-                                        tvconfigeight.setVisibility(View.GONE);
-                                        tvconfignine.setVisibility(View.GONE);
-                                        tvconfigten.setVisibility(View.GONE);
-                                        tvconfigeleven.setVisibility(View.GONE);
-                                        tvconfigtwtlve.setVisibility(View.GONE);
-                                        tvconfigtwthreeteen.setVisibility(View.GONE);
-                                        tvconfigtwforeteen.setVisibility(View.GONE);
-                                        tvconfigtwfifteen.setVisibility(View.GONE);
-                                        tvconfigtwsixteen.setVisibility(View.GONE);
-                                        tvconfigtwseventeen.setVisibility(View.GONE);
-                                        tvconfigtweightteen.setVisibility(View.GONE);
-                                        tvconfigtwnineteen.setVisibility(View.GONE);
-                                        tvconfigtwTwenty.setVisibility(View.GONE);
-                                        tvconfigtwTwentyone.setVisibility(View.GONE);
-                                        tvconfigtwTwentytwo.setVisibility(View.GONE);
-                                        tvconfigtwTwentythree.setVisibility(View.GONE);
-                                        tvconfigtwTwentyfore.setVisibility(View.GONE);
-                                        tvconfigtwTwentyfive.setVisibility(View.GONE);
-                                        tvconfigtwTwentysix.setVisibility(View.GONE);
-                                        tvconfigtwTwentyseven.setVisibility(View.GONE);
-                                        tvconfigtwTwentyeight.setVisibility(View.GONE);
-                                        tvconfigtwTwentynine.setVisibility(View.GONE);
-                                        tvconfigtwThirty.setVisibility(View.GONE);
-                                        tvconfigtwThirtyone.setVisibility(View.GONE);
-                                        vconfigone.setVisibility(View.GONE);
-                                        vconfigtwo.setVisibility(View.GONE);
-                                        vconfigthree.setVisibility(View.GONE);
-                                        vconfigfore.setVisibility(View.GONE);
-                                        vconfigfive.setVisibility(View.GONE);
-                                        vconfigsix.setVisibility(View.GONE);
-                                        vconfigseven.setVisibility(View.GONE);
-                                        vconfigeight.setVisibility(View.GONE);
-                                        vconfignine.setVisibility(View.GONE);
-                                        vconfigten.setVisibility(View.GONE);
-                                        vconfigeleven.setVisibility(View.GONE);
-                                        vconfigtwtlve.setVisibility(View.GONE);
-                                        vconfigtwthreeteen.setVisibility(View.GONE);
-                                        vconfigtwforeteen.setVisibility(View.GONE);
-                                        vconfigtwfifteen.setVisibility(View.GONE);
-                                        vconfigtwsixteen.setVisibility(View.GONE);
-                                        vconfigtwseventeen.setVisibility(View.GONE);
-                                        vconfigtweightteen.setVisibility(View.GONE);
-                                        vconfigtwnineteen.setVisibility(View.GONE);
-                                        vconfigtwTwenty.setVisibility(View.GONE);
-                                        vconfigtwTwentyone.setVisibility(View.GONE);
-                                        vconfigtwTwentytwo.setVisibility(View.GONE);
-                                        vconfigtwTwentythree.setVisibility(View.GONE);
-                                        vconfigtwTwentyfore.setVisibility(View.GONE);
-                                        vconfigtwTwentyfive.setVisibility(View.GONE);
-                                        vconfigtwTwentysix.setVisibility(View.GONE);
-                                        vconfigtwTwentyseven.setVisibility(View.GONE);
-                                        vconfigtwTwentyeight.setVisibility(View.GONE);
-                                        vconfigtwTwentynine.setVisibility(View.GONE);
-                                        vconfigtwThirty.setVisibility(View.GONE);
-                                        vconfigtwThirtyone.setVisibility(View.GONE);
-                                        viewHolder.tvProOneDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwoDay.setVisibility(View.GONE);
-                                        viewHolder.tvProThreeDay.setVisibility(View.GONE);
-                                        viewHolder.tvProForeDay.setVisibility(View.GONE);
-                                        viewHolder.tvProFiveDay.setVisibility(View.GONE);
-                                        viewHolder.tvProSixDay.setVisibility(View.GONE);
-                                        viewHolder.tvProSevenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProEightDay.setVisibility(View.GONE);
-                                        viewHolder.tvProNineDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProElevenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwelveDay.setVisibility(View.GONE);
-                                        viewHolder.tvProThirteenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProFourteenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProFifteenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProSixteenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProSeventeenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProEighteenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProNineteenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentyDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentyOneDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentyTwoDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentyThreeDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentyForeDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentyFiveDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentySixDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentySevenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentyEightDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentyNineDay.setVisibility(View.GONE);
-                                        viewHolder.tvProThirtyDay.setVisibility(View.GONE);
-                                        viewHolder.tvProThirtyOneDay.setVisibility(View.GONE);
-                                        viewHolder.vProOneDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwoDay.setVisibility(View.GONE);
-                                        viewHolder.vProThreeDay.setVisibility(View.GONE);
-                                        viewHolder.vProForeDay.setVisibility(View.GONE);
-                                        viewHolder.vProFiveDay.setVisibility(View.GONE);
-                                        viewHolder.vProSixDay.setVisibility(View.GONE);
-                                        viewHolder.vProSevenDay.setVisibility(View.GONE);
-                                        viewHolder.vProEightDay.setVisibility(View.GONE);
-                                        viewHolder.vProNineDay.setVisibility(View.GONE);
-                                        viewHolder.vProTenDay.setVisibility(View.GONE);
-                                        viewHolder.vProElevenDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwelveDay.setVisibility(View.GONE);
-                                        viewHolder.vProThirteenDay.setVisibility(View.GONE);
-                                        viewHolder.vProFourteenDay.setVisibility(View.GONE);
-                                        viewHolder.vProFifteenDay.setVisibility(View.GONE);
-                                        viewHolder.vProSixteenDay.setVisibility(View.GONE);
-                                        viewHolder.vProSeventeenDay.setVisibility(View.GONE);
-                                        viewHolder.vProEighteenDay.setVisibility(View.GONE);
-                                        viewHolder.vProNineteenDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentyDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentyOneDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentyTwoDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentyThreeDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentyForeDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentyFiveDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentySixDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentySevenDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentyEightDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentyNineDay.setVisibility(View.GONE);
-                                        viewHolder.vProThirtyDay.setVisibility(View.GONE);
-                                        viewHolder.vProThirtyOneDay.setVisibility(View.GONE);
-
-                                    } else {
-                                        tvconfigone.setVisibility(View.VISIBLE);
-                                        tvconfigtwo.setVisibility(View.VISIBLE);
-                                        tvconfigthree.setVisibility(View.VISIBLE);
-                                        tvconfigfore.setVisibility(View.VISIBLE);
-                                        tvconfigfive.setVisibility(View.VISIBLE);
-                                        tvconfigsix.setVisibility(View.VISIBLE);
-                                        tvconfigseven.setVisibility(View.VISIBLE);
-                                        tvconfigeight.setVisibility(View.VISIBLE);
-                                        tvconfignine.setVisibility(View.VISIBLE);
-                                        tvconfigten.setVisibility(View.VISIBLE);
-                                        tvconfigeleven.setVisibility(View.VISIBLE);
-                                        tvconfigtwtlve.setVisibility(View.VISIBLE);
-                                        tvconfigtwthreeteen.setVisibility(View.VISIBLE);
-                                        tvconfigtwforeteen.setVisibility(View.VISIBLE);
-                                        tvconfigtwfifteen.setVisibility(View.VISIBLE);
-                                        tvconfigtwsixteen.setVisibility(View.VISIBLE);
-                                        tvconfigtwseventeen.setVisibility(View.VISIBLE);
-                                        tvconfigtweightteen.setVisibility(View.VISIBLE);
-                                        tvconfigtwnineteen.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwenty.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwentyone.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwentytwo.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwentythree.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwentyfore.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwentyfive.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwentysix.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwentyseven.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwentyeight.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwentynine.setVisibility(View.VISIBLE);
-                                        tvconfigtwThirty.setVisibility(View.VISIBLE);
-                                        tvconfigtwThirtyone.setVisibility(View.VISIBLE);
-                                        vconfigone.setVisibility(View.VISIBLE);
-                                        vconfigtwo.setVisibility(View.VISIBLE);
-                                        vconfigthree.setVisibility(View.VISIBLE);
-                                        vconfigfore.setVisibility(View.VISIBLE);
-                                        vconfigfive.setVisibility(View.VISIBLE);
-                                        vconfigsix.setVisibility(View.VISIBLE);
-                                        vconfigseven.setVisibility(View.VISIBLE);
-                                        vconfigeight.setVisibility(View.VISIBLE);
-                                        vconfignine.setVisibility(View.VISIBLE);
-                                        vconfigten.setVisibility(View.VISIBLE);
-                                        vconfigeleven.setVisibility(View.VISIBLE);
-                                        vconfigtwtlve.setVisibility(View.VISIBLE);
-                                        vconfigtwthreeteen.setVisibility(View.VISIBLE);
-                                        vconfigtwforeteen.setVisibility(View.VISIBLE);
-                                        vconfigtwfifteen.setVisibility(View.VISIBLE);
-                                        vconfigtwsixteen.setVisibility(View.VISIBLE);
-                                        vconfigtwseventeen.setVisibility(View.VISIBLE);
-                                        vconfigtweightteen.setVisibility(View.VISIBLE);
-                                        vconfigtwnineteen.setVisibility(View.VISIBLE);
-                                        vconfigtwTwenty.setVisibility(View.VISIBLE);
-                                        vconfigtwTwentyone.setVisibility(View.VISIBLE);
-                                        vconfigtwTwentytwo.setVisibility(View.VISIBLE);
-                                        vconfigtwTwentythree.setVisibility(View.VISIBLE);
-                                        vconfigtwTwentyfore.setVisibility(View.VISIBLE);
-                                        vconfigtwTwentyfive.setVisibility(View.VISIBLE);
-                                        vconfigtwTwentysix.setVisibility(View.VISIBLE);
-                                        vconfigtwTwentyseven.setVisibility(View.VISIBLE);
-                                        vconfigtwTwentyeight.setVisibility(View.VISIBLE);
-                                        vconfigtwTwentynine.setVisibility(View.VISIBLE);
-                                        vconfigtwThirty.setVisibility(View.VISIBLE);
-                                        vconfigtwThirtyone.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProOneDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwoDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProThreeDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProForeDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProFiveDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProSixDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProSevenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProEightDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProNineDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProElevenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwelveDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProThirteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProFourteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProFifteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProSixteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProSeventeenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProEighteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProNineteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentyDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentyOneDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentyTwoDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentyThreeDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentyForeDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentyFiveDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentySixDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentySevenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentyEightDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentyNineDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProThirtyDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProThirtyOneDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProOneDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwoDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProThreeDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProForeDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProFiveDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProSixDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProSevenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProEightDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProNineDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProElevenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwelveDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProThirteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProFourteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProFifteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProSixteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProSeventeenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProEighteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProNineteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentyDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentyOneDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentyTwoDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentyThreeDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentyForeDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentyFiveDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentySixDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentySevenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentyEightDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentyNineDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProThirtyDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProThirtyOneDay.setVisibility(View.VISIBLE);
-                                    }
                                     return false;
                                 }
                             });
@@ -1863,78 +1266,31 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     String configyear = viewHolder.tvProYear.getText().toString();
                     spUtils.put(context, "configyear", configyear);
 
-                    String[] spinnermonth = context.getResources().getStringArray(R.array.timemonth);
-                    ArrayAdapter<String> adapter =
-                            new ArrayAdapter<String>(context,
-                                    R.layout.adapter_pronewlycomfig_spinner,
-                                    spinnermonth);
-                    adapter.setDropDownViewResource(R.layout.adapter_pronewlycomfig_spinner_item);
-                    viewHolder.tvProMonth.setAdapter(adapter);
-                    Calendar now = Calendar.getInstance();
-                    int month = now.get(Calendar.MONTH);
-                    viewHolder.tvProMonth.setSelection(month, true);
-                    viewHolder.tvProMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            String[] languages = context.getResources().getStringArray(R.array.timemonth);
-                            System.out.print(languages[position]);
-                            spUtils.put(context, "ComfigMonth", languages[position]);
-//                            booleandatelist.get(position).setMemomonth(languages[position]);
-                        }
 
+                    viewHolder.tvProMonth.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-
+                        public void onClick(View v) {
+                            PopupMenu popupMenu = new PopupMenu(context, v);
+                            popupMenu.getMenuInflater().inflate(R.menu.menu_pro_mouth, popupMenu.getMenu());
+                            // menu的item点击事件
+                            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(MenuItem item) {
+                                    String title = item.getTitle().toString();
+                                    spUtils.put(context, "ComfigMonth", title);
+                                    viewHolder.tvProMonth.setText(title);
+                                    return false;
+                                }
+                            });
+                            // PopupMenu关闭事件
+                            popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+                                @Override
+                                public void onDismiss(PopupMenu menu) {
+                                }
+                            });
+                            popupMenu.show();
                         }
                     });
-
-//                    String[] spinnermonthtwo = context.getResources().getStringArray(R.array.timemonth);
-//                    ArrayAdapter<String> adaptertwo =
-//                            new ArrayAdapter<String>(context,
-//                                    R.layout.adapter_pronewlycomfig_spinner,
-//                                    spinnermonthtwo);
-//                    adaptertwo.setDropDownViewResource(R.layout.adapter_pronewlycomfig_spinner_item);
-//                    viewHolder.tvProMonth.setAdapter(adaptertwo);
-//                    Calendar now2 = Calendar.getInstance();
-//                    int month2 = now2.get(Calendar.MONTH);
-//                    viewHolder.tvProMonth.setSelection(month2, true);
-//                    viewHolder.tvProMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                        @Override
-//                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                            String[] languages = context.getResources().getStringArray(R.array.timemonth);
-//                            System.out.print(languages[position]);
-//                            spUtils.put(context, "ComfigMonth", languages[position]);
-//                        }
-//
-//                        @Override
-//                        public void onNothingSelected(AdapterView<?> parent) {
-//
-//                        }
-//                    });
-//                    viewHolder.tvProMonth.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            PopupMenu popupMenu = new PopupMenu(context, v);
-//                            popupMenu.getMenuInflater().inflate(R.menu.menu_pro_mouth, popupMenu.getMenu());
-//                            // menu的item点击事件
-//                            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                                @Override
-//                                public boolean onMenuItemClick(MenuItem item) {
-//                                    String title = item.getTitle().toString();
-//                                    spUtils.put(context, "ComfigMonth", title);
-////                                    viewHolder.tvProMonth.setText(title);
-//                                    return false;
-//                                }
-//                            });
-//                            // PopupMenu关闭事件
-//                            popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-//                                @Override
-//                                public void onDismiss(PopupMenu menu) {
-//                                }
-//                            });
-//                            popupMenu.show();
-//                        }
-//                    });
 
                     viewHolder.tvProOneDay.setVisibility(View.GONE);
                     viewHolder.tvProTwoDay.setVisibility(View.GONE);
@@ -2190,257 +1546,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     sp = context.getSharedPreferences("userInfo", 0);
                                     String title = item.getTitle().toString();
                                     spUtils.put(context, "ConfigProcedure", title);
-                                    if (title.equals("裁床")) {
-                                        tvconfigone.setVisibility(View.GONE);
-                                        tvconfigtwo.setVisibility(View.GONE);
-                                        tvconfigthree.setVisibility(View.GONE);
-                                        tvconfigfore.setVisibility(View.GONE);
-                                        tvconfigfive.setVisibility(View.GONE);
-                                        tvconfigsix.setVisibility(View.GONE);
-                                        tvconfigseven.setVisibility(View.GONE);
-                                        tvconfigeight.setVisibility(View.GONE);
-                                        tvconfignine.setVisibility(View.GONE);
-                                        tvconfigten.setVisibility(View.GONE);
-                                        tvconfigeleven.setVisibility(View.GONE);
-                                        tvconfigtwtlve.setVisibility(View.GONE);
-                                        tvconfigtwthreeteen.setVisibility(View.GONE);
-                                        tvconfigtwforeteen.setVisibility(View.GONE);
-                                        tvconfigtwfifteen.setVisibility(View.GONE);
-                                        tvconfigtwsixteen.setVisibility(View.GONE);
-                                        tvconfigtwseventeen.setVisibility(View.GONE);
-                                        tvconfigtweightteen.setVisibility(View.GONE);
-                                        tvconfigtwnineteen.setVisibility(View.GONE);
-                                        tvconfigtwTwenty.setVisibility(View.GONE);
-                                        tvconfigtwTwentyone.setVisibility(View.GONE);
-                                        tvconfigtwTwentytwo.setVisibility(View.GONE);
-                                        tvconfigtwTwentythree.setVisibility(View.GONE);
-                                        tvconfigtwTwentyfore.setVisibility(View.GONE);
-                                        tvconfigtwTwentyfive.setVisibility(View.GONE);
-                                        tvconfigtwTwentysix.setVisibility(View.GONE);
-                                        tvconfigtwTwentyseven.setVisibility(View.GONE);
-                                        tvconfigtwTwentyeight.setVisibility(View.GONE);
-                                        tvconfigtwTwentynine.setVisibility(View.GONE);
-                                        tvconfigtwThirty.setVisibility(View.GONE);
-                                        tvconfigtwThirtyone.setVisibility(View.GONE);
-                                        vconfigone.setVisibility(View.GONE);
-                                        vconfigtwo.setVisibility(View.GONE);
-                                        vconfigthree.setVisibility(View.GONE);
-                                        vconfigfore.setVisibility(View.GONE);
-                                        vconfigfive.setVisibility(View.GONE);
-                                        vconfigsix.setVisibility(View.GONE);
-                                        vconfigseven.setVisibility(View.GONE);
-                                        vconfigeight.setVisibility(View.GONE);
-                                        vconfignine.setVisibility(View.GONE);
-                                        vconfigten.setVisibility(View.GONE);
-                                        vconfigeleven.setVisibility(View.GONE);
-                                        vconfigtwtlve.setVisibility(View.GONE);
-                                        vconfigtwthreeteen.setVisibility(View.GONE);
-                                        vconfigtwforeteen.setVisibility(View.GONE);
-                                        vconfigtwfifteen.setVisibility(View.GONE);
-                                        vconfigtwsixteen.setVisibility(View.GONE);
-                                        vconfigtwseventeen.setVisibility(View.GONE);
-                                        vconfigtweightteen.setVisibility(View.GONE);
-                                        vconfigtwnineteen.setVisibility(View.GONE);
-                                        vconfigtwTwenty.setVisibility(View.GONE);
-                                        vconfigtwTwentyone.setVisibility(View.GONE);
-                                        vconfigtwTwentytwo.setVisibility(View.GONE);
-                                        vconfigtwTwentythree.setVisibility(View.GONE);
-                                        vconfigtwTwentyfore.setVisibility(View.GONE);
-                                        vconfigtwTwentyfive.setVisibility(View.GONE);
-                                        vconfigtwTwentysix.setVisibility(View.GONE);
-                                        vconfigtwTwentyseven.setVisibility(View.GONE);
-                                        vconfigtwTwentyeight.setVisibility(View.GONE);
-                                        vconfigtwTwentynine.setVisibility(View.GONE);
-                                        vconfigtwThirty.setVisibility(View.GONE);
-                                        vconfigtwThirtyone.setVisibility(View.GONE);
-                                        viewHolder.tvProOneDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwoDay.setVisibility(View.GONE);
-                                        viewHolder.tvProThreeDay.setVisibility(View.GONE);
-                                        viewHolder.tvProForeDay.setVisibility(View.GONE);
-                                        viewHolder.tvProFiveDay.setVisibility(View.GONE);
-                                        viewHolder.tvProSixDay.setVisibility(View.GONE);
-                                        viewHolder.tvProSevenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProEightDay.setVisibility(View.GONE);
-                                        viewHolder.tvProNineDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProElevenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwelveDay.setVisibility(View.GONE);
-                                        viewHolder.tvProThirteenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProFourteenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProFifteenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProSixteenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProSeventeenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProEighteenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProNineteenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentyDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentyOneDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentyTwoDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentyThreeDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentyForeDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentyFiveDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentySixDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentySevenDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentyEightDay.setVisibility(View.GONE);
-                                        viewHolder.tvProTwentyNineDay.setVisibility(View.GONE);
-                                        viewHolder.tvProThirtyDay.setVisibility(View.GONE);
-                                        viewHolder.tvProThirtyOneDay.setVisibility(View.GONE);
-                                        viewHolder.vProOneDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwoDay.setVisibility(View.GONE);
-                                        viewHolder.vProThreeDay.setVisibility(View.GONE);
-                                        viewHolder.vProForeDay.setVisibility(View.GONE);
-                                        viewHolder.vProFiveDay.setVisibility(View.GONE);
-                                        viewHolder.vProSixDay.setVisibility(View.GONE);
-                                        viewHolder.vProSevenDay.setVisibility(View.GONE);
-                                        viewHolder.vProEightDay.setVisibility(View.GONE);
-                                        viewHolder.vProNineDay.setVisibility(View.GONE);
-                                        viewHolder.vProTenDay.setVisibility(View.GONE);
-                                        viewHolder.vProElevenDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwelveDay.setVisibility(View.GONE);
-                                        viewHolder.vProThirteenDay.setVisibility(View.GONE);
-                                        viewHolder.vProFourteenDay.setVisibility(View.GONE);
-                                        viewHolder.vProFifteenDay.setVisibility(View.GONE);
-                                        viewHolder.vProSixteenDay.setVisibility(View.GONE);
-                                        viewHolder.vProSeventeenDay.setVisibility(View.GONE);
-                                        viewHolder.vProEighteenDay.setVisibility(View.GONE);
-                                        viewHolder.vProNineteenDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentyDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentyOneDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentyTwoDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentyThreeDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentyForeDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentyFiveDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentySixDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentySevenDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentyEightDay.setVisibility(View.GONE);
-                                        viewHolder.vProTwentyNineDay.setVisibility(View.GONE);
-                                        viewHolder.vProThirtyDay.setVisibility(View.GONE);
-                                        viewHolder.vProThirtyOneDay.setVisibility(View.GONE);
-                                    } else {
-                                        tvconfigone.setVisibility(View.VISIBLE);
-                                        tvconfigtwo.setVisibility(View.VISIBLE);
-                                        tvconfigthree.setVisibility(View.VISIBLE);
-                                        tvconfigfore.setVisibility(View.VISIBLE);
-                                        tvconfigfive.setVisibility(View.VISIBLE);
-                                        tvconfigsix.setVisibility(View.VISIBLE);
-                                        tvconfigseven.setVisibility(View.VISIBLE);
-                                        tvconfigeight.setVisibility(View.VISIBLE);
-                                        tvconfignine.setVisibility(View.VISIBLE);
-                                        tvconfigten.setVisibility(View.VISIBLE);
-                                        tvconfigeleven.setVisibility(View.VISIBLE);
-                                        tvconfigtwtlve.setVisibility(View.VISIBLE);
-                                        tvconfigtwthreeteen.setVisibility(View.VISIBLE);
-                                        tvconfigtwforeteen.setVisibility(View.VISIBLE);
-                                        tvconfigtwfifteen.setVisibility(View.VISIBLE);
-                                        tvconfigtwsixteen.setVisibility(View.VISIBLE);
-                                        tvconfigtwseventeen.setVisibility(View.VISIBLE);
-                                        tvconfigtweightteen.setVisibility(View.VISIBLE);
-                                        tvconfigtwnineteen.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwenty.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwentyone.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwentytwo.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwentythree.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwentyfore.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwentyfive.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwentysix.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwentyseven.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwentyeight.setVisibility(View.VISIBLE);
-                                        tvconfigtwTwentynine.setVisibility(View.VISIBLE);
-                                        tvconfigtwThirty.setVisibility(View.VISIBLE);
-                                        tvconfigtwThirtyone.setVisibility(View.VISIBLE);
-                                        vconfigone.setVisibility(View.VISIBLE);
-                                        vconfigtwo.setVisibility(View.VISIBLE);
-                                        vconfigthree.setVisibility(View.VISIBLE);
-                                        vconfigfore.setVisibility(View.VISIBLE);
-                                        vconfigfive.setVisibility(View.VISIBLE);
-                                        vconfigsix.setVisibility(View.VISIBLE);
-                                        vconfigseven.setVisibility(View.VISIBLE);
-                                        vconfigeight.setVisibility(View.VISIBLE);
-                                        vconfignine.setVisibility(View.VISIBLE);
-                                        vconfigten.setVisibility(View.VISIBLE);
-                                        vconfigeleven.setVisibility(View.VISIBLE);
-                                        vconfigtwtlve.setVisibility(View.VISIBLE);
-                                        vconfigtwthreeteen.setVisibility(View.VISIBLE);
-                                        vconfigtwforeteen.setVisibility(View.VISIBLE);
-                                        vconfigtwfifteen.setVisibility(View.VISIBLE);
-                                        vconfigtwsixteen.setVisibility(View.VISIBLE);
-                                        vconfigtwseventeen.setVisibility(View.VISIBLE);
-                                        vconfigtweightteen.setVisibility(View.VISIBLE);
-                                        vconfigtwnineteen.setVisibility(View.VISIBLE);
-                                        vconfigtwTwenty.setVisibility(View.VISIBLE);
-                                        vconfigtwTwentyone.setVisibility(View.VISIBLE);
-                                        vconfigtwTwentytwo.setVisibility(View.VISIBLE);
-                                        vconfigtwTwentythree.setVisibility(View.VISIBLE);
-                                        vconfigtwTwentyfore.setVisibility(View.VISIBLE);
-                                        vconfigtwTwentyfive.setVisibility(View.VISIBLE);
-                                        vconfigtwTwentysix.setVisibility(View.VISIBLE);
-                                        vconfigtwTwentyseven.setVisibility(View.VISIBLE);
-                                        vconfigtwTwentyeight.setVisibility(View.VISIBLE);
-                                        vconfigtwTwentynine.setVisibility(View.VISIBLE);
-                                        vconfigtwThirty.setVisibility(View.VISIBLE);
-                                        vconfigtwThirtyone.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProOneDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwoDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProThreeDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProForeDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProFiveDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProSixDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProSevenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProEightDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProNineDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProElevenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwelveDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProThirteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProFourteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProFifteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProSixteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProSeventeenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProEighteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProNineteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentyDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentyOneDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentyTwoDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentyThreeDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentyForeDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentyFiveDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentySixDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentySevenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentyEightDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProTwentyNineDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProThirtyDay.setVisibility(View.VISIBLE);
-                                        viewHolder.tvProThirtyOneDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProOneDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwoDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProThreeDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProForeDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProFiveDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProSixDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProSevenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProEightDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProNineDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProElevenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwelveDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProThirteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProFourteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProFifteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProSixteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProSeventeenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProEighteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProNineteenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentyDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentyOneDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentyTwoDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentyThreeDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentyForeDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentyFiveDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentySixDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentySevenDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentyEightDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProTwentyNineDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProThirtyDay.setVisibility(View.VISIBLE);
-                                        viewHolder.vProThirtyOneDay.setVisibility(View.VISIBLE);
-                                    }
                                     viewHolder.tvProProcedure.setText(title);
                                     return false;
                                 }
@@ -2642,54 +1747,31 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     String configyear = viewHolder.tvProYear.getText().toString();
                     spUtils.put(context, "configyear", configyear);
 
-                    String[] spinnermonththree = context.getResources().getStringArray(R.array.timemonth);
-                    ArrayAdapter<String> adapterthree =
-                            new ArrayAdapter<String>(context,
-                                    R.layout.adapter_pronewlycomfig_spinner,
-                                    spinnermonththree);
-                    adapterthree.setDropDownViewResource(R.layout.adapter_pronewlycomfig_spinner_item);
-                    viewHolder.tvProMonth.setAdapter(adapterthree);
-                    Calendar now3 = Calendar.getInstance();
-                    int month3 = now3.get(Calendar.MONTH);//获取当前月
-                    viewHolder.tvProMonth.setSelection(month3, true);//设置默认月份
-                    viewHolder.tvProMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            String[] languages = context.getResources().getStringArray(R.array.timemonth);
-                            System.out.print(languages[position]);
-                            spUtils.put(context, "ComfigMonth", languages[position]);
-//                            booleandatelist.get(position).setMemomonth(languages[position]);
-                        }
 
+                    viewHolder.tvProMonth.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-
+                        public void onClick(View v) {
+                            PopupMenu popupMenu = new PopupMenu(context, v);
+                            popupMenu.getMenuInflater().inflate(R.menu.menu_pro_mouth, popupMenu.getMenu());
+                            // menu的item点击事件
+                            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(MenuItem item) {
+                                    String title = item.getTitle().toString();
+                                    spUtils.put(context, "ComfigMonth", title);
+                                    viewHolder.tvProMonth.setText(title);
+                                    return false;
+                                }
+                            });
+                            // PopupMenu关闭事件
+                            popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+                                @Override
+                                public void onDismiss(PopupMenu menu) {
+                                }
+                            });
+                            popupMenu.show();
                         }
                     });
-//                    viewHolder.tvProMonth.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            PopupMenu popupMenu = new PopupMenu(context, v);
-//                            popupMenu.getMenuInflater().inflate(R.menu.menu_pro_mouth, popupMenu.getMenu());
-//                            // menu的item点击事件
-//                            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                                @Override
-//                                public boolean onMenuItemClick(MenuItem item) {
-//                                    String title = item.getTitle().toString();
-//                                    spUtils.put(context, "ComfigMonth", title);
-//                                    viewHolder.tvProMonth.setText(title);
-//                                    return false;
-//                                }
-//                            });
-//                            // PopupMenu关闭事件
-//                            popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-//                                @Override
-//                                public void onDismiss(PopupMenu menu) {
-//                                }
-//                            });
-//                            popupMenu.show();
-//                        }
-//                    });
 
 
                     final EditText editTexOneDay = viewHolder.tvProOneDay;

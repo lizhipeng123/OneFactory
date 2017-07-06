@@ -9,6 +9,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.MenuItem;
@@ -27,8 +28,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.car.SqlcarApplyActivity;
-import com.daoran.newfactory.onefactory.activity.work.commo.CommoditySqlActivity;
 import com.daoran.newfactory.onefactory.adapter.ProductionAdapter;
 import com.daoran.newfactory.onefactory.adapter.ProductionLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
@@ -36,6 +35,7 @@ import com.daoran.newfactory.onefactory.bean.ProducationConfigSaveBean;
 import com.daoran.newfactory.onefactory.bean.ProducationDeleteBean;
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
 import com.daoran.newfactory.onefactory.bean.ProducationSaveBean;
+import com.daoran.newfactory.onefactory.bean.ProductionDetailBooleanBean;
 import com.daoran.newfactory.onefactory.bean.Propostbean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
@@ -43,7 +43,6 @@ import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.Listener.SelectItemInterface;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
-import com.daoran.newfactory.onefactory.util.file.ACache;
 import com.daoran.newfactory.onefactory.util.file.NullStringToEmptyAdapterFactory;
 import com.daoran.newfactory.onefactory.util.file.save.ProductionExcelUtil;
 import com.daoran.newfactory.onefactory.view.dialog.ProcationDialog;
@@ -55,6 +54,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.apache.commons.lang.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -87,6 +88,10 @@ public class ProductionActivity extends BaseFrangmentActivity
             new ArrayList<ProducationSaveBean>();//保存
     List<ProducationConfigSaveBean> configSaveBeen =
             new ArrayList<ProducationConfigSaveBean>();//新建
+    private List<ProductionDetailBooleanBean.DataBean> detailbooleanDatabean
+            = new ArrayList<ProductionDetailBooleanBean.DataBean>();
+    private ProductionDetailBooleanBean detailBooleanBean;
+
 
     private EditText etSqlDetail;//底部页码输入框
     private TextView tvSignPage;//页数显示
@@ -116,6 +121,7 @@ public class ProductionActivity extends BaseFrangmentActivity
         keyHeight = screenHeight / 3;
         getViews();
         initView();
+        setNewlyComfig();
         setData();
         setListener();
     }
@@ -175,8 +181,6 @@ public class ProductionActivity extends BaseFrangmentActivity
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);//横竖SyncHorizontalScrollView适配
         etSqlDetail.setSelection(etSqlDetail.getText().length());//将光标移到文本最后
-
-
     }
 
     /**
@@ -188,7 +192,6 @@ public class ProductionActivity extends BaseFrangmentActivity
         btnSignPage.setOnClickListener(this);
         btnProSave.setOnClickListener(this);
         spinnermenu.setOnClickListener(this);
-
     }
 
     @Override
@@ -265,7 +268,6 @@ public class ProductionActivity extends BaseFrangmentActivity
             propostbean.setConditions(conditions);
             propostbean.setPageNum(0);
             propostbean.setPageSize(Integer.parseInt(getsize));
-
             String gsonbeanStr = gson.toJson(propostbean);
             if (NetWork.isNetWorkAvailable(this)) {
 //                /*检测是否为可用WiFi*/
@@ -310,7 +312,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         scroll_content.setVisibility(View.VISIBLE);
                                         System.out.print(detailBeenList);
                                         pageCount = detailBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / finalGetsize);
+                                        String count = String.valueOf(pageCount / finalGetsize + 1);
                                         tvSignPage.setText(count);
                                         mLeftAdapter = new ProductionLeftAdapter(ProductionActivity.this, detailBeenList);
                                         lv_left.setAdapter(mLeftAdapter);
@@ -321,6 +323,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         scroll_content.setVisibility(View.GONE);
                                         tv_visibi.setText("没有更多信息");
                                     }
+                                    setNewlyComfig();
                                     ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
@@ -388,7 +391,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         scroll_content.setVisibility(View.VISIBLE);
                                         System.out.print(detailBeenList);
                                         pageCount = detailBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / finalGetsize);
+                                        String count = String.valueOf(pageCount / finalGetsize + 1);
                                         tvSignPage.setText(count);
                                         mLeftAdapter = new ProductionLeftAdapter(ProductionActivity.this, detailBeenList);
                                         lv_left.setAdapter(mLeftAdapter);
@@ -400,6 +403,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         scroll_content.setVisibility(View.GONE);
                                         tv_visibi.setText("没有更多信息");
                                     }
+                                    setNewlyComfig();
                                     ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
@@ -499,7 +503,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         scroll_content.setVisibility(View.VISIBLE);
                                         System.out.print(detailBeenList);
                                         pageCount = detailBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / finalGetsize);
+                                        String count = String.valueOf(pageCount / finalGetsize + 1);
                                         tvSignPage.setText(count);
 
                                         adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
@@ -511,7 +515,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         scroll_content.setVisibility(View.GONE);
                                         tv_visibi.setText("没有更多信息");
                                     }
-
+                                    setNewlyComfig();
                                     ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
@@ -581,7 +585,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         scroll_content.setVisibility(View.VISIBLE);
                                         System.out.print(detailBeenList);
                                         pageCount = detailBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / finalGetsize);
+                                        String count = String.valueOf(pageCount / finalGetsize + 1);
                                         tvSignPage.setText(count);
                                         adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
                                         mData.setAdapter(adapter);
@@ -593,6 +597,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         scroll_content.setVisibility(View.GONE);
                                         tv_visibi.setText("没有更多信息");
                                     }
+                                    setNewlyComfig();
                                     ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
@@ -608,54 +613,371 @@ public class ProductionActivity extends BaseFrangmentActivity
     }
 
     /**
+     * 判断 array1是否包含所有的 array2
+     */
+    private static boolean containsAll(String[] array1, String[] array2) {
+        for (String str : array2) {
+            if (!ArrayUtils.contains(array1, str)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * 修改保存
+     * 待修改（循环判断）
      */
     private void setSave() {
+        sp = getSharedPreferences("my_sp", 0);
         if (NetWork.isNetWorkAvailable(this)) {
             ResponseDialog.showLoading(this);
             String saveurl = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
-            System.out.print(detailBeenList);
-            Gson gson = new GsonBuilder().registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory()).create();
-            String detailb = gson.toJson(detailBeenList);
-            System.out.print(detailb);
-            if (detailb.equals("[]")) {
-                ToastUtils.ShowToastMessage("没有数据可以修改", ProductionActivity.this);
-                ResponseDialog.closeLoading();
-            } else {
-                OkHttpUtils.postString().
-                        url(saveurl)
-                        .content(detailb)
-                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                e.printStackTrace();
-                            }
+            int beanlength = detailBeenList.size();//修改后的数据大小
+            String[] arrsflag = new String[beanlength];//修改的工序数组
+            String[] arrsItem = new String[beanlength];//修改的工序对应的款号数组
+            String[] arrsmonth = new String[beanlength];//修改的工序款号对应的月份数组
+            //循环遍历修改后的数据大小输出修改的工序和款号数组
+            for (int i = 0; i < beanlength; i++) {
+                if (beanlength != 0) {
+                    arrsflag[i] = detailBeenList.get(i).getMemoprdure();
+                    String memoprdure = detailBeenList.get(i).getMemoprdure();
+                    String memomonth = detailBeenList.get(i).getMemomonth();
+                    if (memoprdure != null || memomonth != null) {//修改的工序不为空
+                        arrsItem[i] = detailBeenList.get(i).getItem();
+                        arrsflag[i] = detailBeenList.get(i).getMemoprdure();
+                        arrsmonth[i] = detailBeenList.get(i).getMemomonth();
+                    } else {
+                        arrsItem[i] = "";
+                        arrsflag[i] = "";
+                        arrsmonth[i] = "";
+                    }
+                } else {
+                    arrsflag[i] = "";
+                }
+            }
+            System.out.print(arrsflag + "");
 
-                            @Override
-                            public void onResponse(String response, int id) {
-                                System.out.print(response);
-                                String ression = StringUtil.sideTrim(response, "\"");
-                                System.out.print(ression);
-                                int resindex = Integer.parseInt(ression);
-                                if (resindex > 3) {
-                                    ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
-                                    setData();
-                                    ResponseDialog.closeLoading();
-                                } else if (ression == "3" || ression.equals("3")) {
-                                    ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
-                                    ResponseDialog.closeLoading();
-                                } else if (ression == "4" || ression.equals("4")) {
-                                    ToastUtils.ShowToastMessage("数据错误，请重试", ProductionActivity.this);
-                                    ResponseDialog.closeLoading();
+            String strflag = "";
+            for (int i = 0; i < arrsflag.length; i++) {
+                strflag += arrsflag[i];
+            }
+            System.out.print(strflag);
+
+            //去掉修改后的工序数组中的空值“”
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < arrsItem.length; i++) {
+                if ("".equals(arrsItem[i])) {
+                    continue;
+                }
+                sb.append(arrsItem[i]);
+                if (i != arrsItem.length - 1) {
+                    sb.append(";");
+                }
+            }
+            arrsItem = sb.toString().split(";");
+            for (int i = 0; i < arrsItem.length; i++) {
+                System.out.print(arrsItem[i] + "");
+            }
+            System.out.print(arrsItem + "");
+            StringBuffer sb1 = new StringBuffer();
+            for (int i = 0; i < arrsmonth.length; i++) {
+                if ("".equals(arrsmonth[i])) {
+                    continue;
+                }
+                sb1.append(arrsmonth[i]);
+                if (i != arrsmonth.length - 1) {
+                    sb1.append(";");
+                }
+            }
+            arrsmonth = sb1.toString().split(";");
+            for (int i = 0; i < arrsmonth.length; i++) {
+                System.out.print(arrsmonth[i] + "");
+            }
+            System.out.print(arrsmonth + "");
+            int booleanlistlength = detailbooleanDatabean.size();//初始化查询的数据
+            String[] arrsdata = new String[booleanlistlength];//初始化的工序数组
+            String[] arrsdatamonth = new String[booleanlistlength];//初始化的月份数组
+            String[] arrsdateitem = new String[booleanlistlength];//初始化款号
+            //循环遍历初始化集合大小，输出符合修改后款号的工序
+            for (int i = 0; i < booleanlistlength; i++) {
+                if (booleanlistlength != 0) {
+                    String workitem = detailbooleanDatabean.get(i).getItem();
+                    String[] workitempro = workitem.split(",");
+                    boolean containsall = containsAll(arrsItem, workitempro);
+                    if (containsall == true) {
+                        arrsdata[i] = detailbooleanDatabean.get(i).getWorkingProcedure();
+                        arrsdatamonth[i] = detailbooleanDatabean.get(i).getMonth();
+                        arrsdateitem[i] = detailbooleanDatabean.get(i).getItem();
+                    } else {
+                        arrsdata[i] = "";
+                        arrsdatamonth[i] = "";
+                        arrsdateitem[i] = "";
+                    }
+                } else {
+                    arrsdata[i] = "";
+                    arrsdatamonth[i] = "";
+                    arrsdateitem[i] = "";
+                }
+            }
+            StringBuffer sb2 = new StringBuffer();
+            for (int i = 0; i < arrsdatamonth.length; i++) {
+                if ("".equals(arrsdatamonth[i])) {
+                    continue;
+                }
+                sb2.append(arrsdatamonth[i]);
+                if (i != arrsdatamonth.length - 1) {
+                    sb2.append(";");
+                }
+            }
+            arrsdatamonth = sb2.toString().split(";");
+            for (int i = 0; i < arrsdatamonth.length; i++) {
+                System.out.print(arrsdatamonth[i] + "");
+            }
+//            System.out.print(arrsdatamonth + "");
+            System.out.print(arrsdata + "");//输出的是循环出来的所有符合条件的初始化工序
+            System.out.print(arrsflag + "");
+            System.out.print(arrsdatamonth + "");
+            System.out.print(arrsdateitem + "");
+            boolean flagmonth = containsAll(arrsdatamonth, arrsmonth);
+            boolean flagdata = containsAll(arrsdata, arrsflag);
+            boolean flagitem = containsAll(arrsdateitem, arrsItem);
+            boolean booleanmonth = false;
+            for (int i = 0; i < arrsmonth.length; i++) {
+                booleanmonth = TextUtils.isEmpty(arrsmonth[i]);
+            }
+            boolean booleandata = false;
+            for (int i = 0; i < arrsflag.length; i++) {
+                booleandata = TextUtils.isEmpty(arrsflag[i]);
+            }
+            boolean booleanitem = false;
+            for (int i = 0; i < arrsItem.length; i++) {
+                booleanitem = TextUtils.isEmpty(arrsItem[i]);
+            }
+
+            if (booleanmonth == true && booleandata == true && booleanitem == true) {
+                ToastUtils.ShowToastMessage("未修改表中数据",ProductionActivity.this);
+                ResponseDialog.closeLoading();
+            }else{
+                if (arrsflag != null) {
+//判断修改后的工序是否存在于修改前的工序之中，如果存在则不能保存
+                    if (flagdata == true) {
+                        System.out.print("true");
+                        if (flagmonth == true) {
+                            ToastUtils.ShowToastMessage("相同款号、用户下，月份不能相同", ProductionActivity.this);
+                            ResponseDialog.closeLoading();
+                        } else {
+                            //如果修改后的工序不存在与修改前的工序之中，则可以保存
+                            System.out.print("false");
+                            if (flagdata == true) {
+                                Gson gson = new GsonBuilder().registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory()).create();
+                                String detailb = gson.toJson(detailBeenList);
+                                System.out.print(detailb);
+                                if (detailb.equals("[]")) {
+                                    ToastUtils.ShowToastMessage("没有数据可以修改", ProductionActivity.this);
                                 } else {
-                                    ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
-                                    ResponseDialog.closeLoading();
+                                    OkHttpUtils.postString().
+                                            url(saveurl)
+                                            .content(detailb)
+                                            .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                                            .build()
+                                            .execute(new StringCallback() {
+                                                @Override
+                                                public void onError(Call call, Exception e, int id) {
+                                                    e.printStackTrace();
+                                                }
+
+                                                @Override
+                                                public void onResponse(String response, int id) {
+                                                    System.out.print(response);
+                                                    String ression = StringUtil.sideTrim(response, "\"");
+                                                    System.out.print(ression);
+                                                    int resindex = Integer.parseInt(ression);
+                                                    if (resindex > 3) {
+                                                        ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
+                                                        setData();
+                                                        ResponseDialog.closeLoading();
+                                                    } else if (ression == "3" || ression.equals("3")) {
+                                                        ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
+                                                        ResponseDialog.closeLoading();
+                                                    } else if (ression == "4" || ression.equals("4")) {
+                                                        ToastUtils.ShowToastMessage("数据错误，请重试", ProductionActivity.this);
+                                                        ResponseDialog.closeLoading();
+                                                    } else {
+                                                        ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
+                                                        ResponseDialog.closeLoading();
+                                                    }
+                                                }
+                                            });
+                                }
+                            } else {
+                                Gson gson = new GsonBuilder().registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory()).create();
+                                String detailb = gson.toJson(detailBeenList);
+                                System.out.print(detailb);
+                                if (detailb.equals("[]")) {
+                                    ToastUtils.ShowToastMessage("没有数据可以修改", ProductionActivity.this);
+                                } else {
+                                    OkHttpUtils.postString().
+                                            url(saveurl)
+                                            .content(detailb)
+                                            .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                                            .build()
+                                            .execute(new StringCallback() {
+                                                @Override
+                                                public void onError(Call call, Exception e, int id) {
+                                                    e.printStackTrace();
+                                                }
+
+                                                @Override
+                                                public void onResponse(String response, int id) {
+                                                    System.out.print(response);
+                                                    String ression = StringUtil.sideTrim(response, "\"");
+                                                    System.out.print(ression);
+                                                    int resindex = Integer.parseInt(ression);
+                                                    if (resindex > 3) {
+                                                        ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
+                                                        setData();
+                                                        ResponseDialog.closeLoading();
+                                                    } else if (ression == "3" || ression.equals("3")) {
+                                                        ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
+                                                        ResponseDialog.closeLoading();
+                                                    } else if (ression == "4" || ression.equals("4")) {
+                                                        ToastUtils.ShowToastMessage("数据错误，请重试", ProductionActivity.this);
+                                                        ResponseDialog.closeLoading();
+                                                    } else {
+                                                        ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
+                                                        ResponseDialog.closeLoading();
+                                                    }
+                                                }
+                                            });
                                 }
                             }
-                        });
+
+                        }
+                    } else {
+                        //如果修改后的工序不存在与修改前的工序之中，则可以保存
+                        System.out.print("false");
+                        Gson gson = new GsonBuilder().registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory()).create();
+                        String detailb = gson.toJson(detailBeenList);
+                        System.out.print(detailb);
+                        if (detailb.equals("[]")) {
+                            ToastUtils.ShowToastMessage("没有数据可以修改", ProductionActivity.this);
+                        } else {
+                            OkHttpUtils.postString().
+                                    url(saveurl)
+                                    .content(detailb)
+                                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                                    .build()
+                                    .execute(new StringCallback() {
+                                        @Override
+                                        public void onError(Call call, Exception e, int id) {
+                                            e.printStackTrace();
+                                        }
+
+                                        @Override
+                                        public void onResponse(String response, int id) {
+                                            System.out.print(response);
+                                            String ression = StringUtil.sideTrim(response, "\"");
+                                            System.out.print(ression);
+                                            int resindex = Integer.parseInt(ression);
+                                            if (resindex > 3) {
+                                                ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
+                                                setData();
+                                                ResponseDialog.closeLoading();
+                                            } else if (ression == "3" || ression.equals("3")) {
+                                                ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
+                                                ResponseDialog.closeLoading();
+                                            } else if (ression == "4" || ression.equals("4")) {
+                                                ToastUtils.ShowToastMessage("数据错误，请重试", ProductionActivity.this);
+                                                ResponseDialog.closeLoading();
+                                            } else {
+                                                ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
+                                                ResponseDialog.closeLoading();
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                } else {
+                    if (flagitem == true) {
+                        if (flagmonth == true) {
+                            ToastUtils.ShowToastMessage("相同款号、用户下，月份不能相同", ProductionActivity.this);
+                            ResponseDialog.closeLoading();
+                        } else {
+                            //如果修改后的工序不存在与修改前的工序之中，则可以保存
+                            System.out.print("false");
+                            Gson gson = new GsonBuilder().registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory()).create();
+                            String detailb = gson.toJson(detailBeenList);
+                            System.out.print(detailb);
+                            if (detailb.equals("[]")) {
+                                ToastUtils.ShowToastMessage("没有数据可以修改", ProductionActivity.this);
+                            } else {
+                                OkHttpUtils.postString().
+                                        url(saveurl)
+                                        .content(detailb)
+                                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                                        .build()
+                                        .execute(new StringCallback() {
+                                            @Override
+                                            public void onError(Call call, Exception e, int id) {
+                                                e.printStackTrace();
+                                            }
+
+                                            @Override
+                                            public void onResponse(String response, int id) {
+                                                System.out.print(response);
+                                                String ression = StringUtil.sideTrim(response, "\"");
+                                                System.out.print(ression);
+                                                int resindex = Integer.parseInt(ression);
+                                                if (resindex > 3) {
+                                                    ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
+                                                    setData();
+                                                    ResponseDialog.closeLoading();
+                                                } else if (ression == "3" || ression.equals("3")) {
+                                                    ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
+                                                    ResponseDialog.closeLoading();
+                                                } else if (ression == "4" || ression.equals("4")) {
+                                                    ToastUtils.ShowToastMessage("数据错误，请重试", ProductionActivity.this);
+                                                    ResponseDialog.closeLoading();
+                                                } else {
+                                                    ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
+                                                    ResponseDialog.closeLoading();
+                                                }
+                                            }
+                                        });
+                            }
+                        }
+                    } else {
+
+                    }
+                }
             }
+//            System.out.print(detailBeenList);//修改过的数据list
+//            String probooleanProcedureTitle = sp.getString("probooleanProcedureTitle", "");
+//            //在初始化的数据中循环遍历所有工序在款号item相同的情况下和修改的工序是否一致
+//            for (int i = 0; i < booleanlistlength; i++) {
+//                String beanitem = detailBeenList.get(i).getItem();//已修改的集合中的款号
+//                String ProcedureTitle = detailBeenList.get(i).getMemoprdure();//已修改的集合中的工序(默认)(不修改则为空)
+//                String booleanitem = detailbooleanDatabean.get(i).getItem();//初始化查询出的集合中的款号
+//                String booleandure = detailbooleanDatabean.get(i).getWorkingProcedure();//初始化查询出的集合中的工序
+//                //判断款号与工序，有和原来相同的，提示并跳出，如果没有相同的则可以保存
+//                if (ProcedureTitle == null) {
+//                    ProcedureTitle = "";
+//                }
+//                if (beanitem.equals(booleanitem) && ProcedureTitle.equals(booleandure)) {
+//                    ResponseDialog.closeLoading();
+//                    flag = false;
+//                    continue;
+//                } else {
+//                    flag = true;
+//                }
+//            }
+//            System.out.print(flag + "");
+//            if (flag == true) {
+//
+//            } else {
+//
+//            }
         } else {
             ToastUtils.ShowToastMessage(R.string.noHttp, ProductionActivity.this);
         }
@@ -817,6 +1139,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                 if (resindex > 4) {
                                     ToastUtils.ShowToastMessage("保存成功",
                                             ProductionActivity.this);
+                                    setNewlyComfig();
                                     setData();
                                     configSaveBeen.clear();
                                     ResponseDialog.closeLoading();
@@ -855,6 +1178,66 @@ public class ProductionActivity extends BaseFrangmentActivity
     }
 
     /**
+     * 进入生产日报表时查询有关当前登录用户的数据，并在修改保存时调用其实体类
+     * 判断当前用户是否创建过相同款号，相同工序的条目
+     */
+    private void setNewlyComfig() {
+        String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
+        sp = getSharedPreferences("my_sp", 0);
+        String namedure = sp.getString("usernamerecoder", "");//制单人
+        String stis = sp.getString("ischeckedd", "");//是否为空
+        boolean stris = Boolean.parseBoolean(stis);
+        Gson gson = new Gson();
+        Propostbean propostbean = new Propostbean();
+        Propostbean.Conditions conditions = propostbean.new Conditions();
+        conditions.setItem("");//款号
+        conditions.setPrddocumentary(namedure);//制单人
+        conditions.setSubfactory("");//工厂
+        conditions.setWorkingProcedure("");//工序
+        conditions.setPrddocumentaryisnull(stris);//是否为空
+        propostbean.setConditions(conditions);//外部嵌套
+        propostbean.setPageNum(0);//默认第几页
+        propostbean.setPageSize(500);//默认每页多少条数据
+        String gsonbeanStr = gson.toJson(propostbean);
+        if (NetWork.isNetWorkAvailable(this)) {
+            ResponseDialog.showLoading(this);
+            OkHttpUtils.postString()
+                    .url(str)
+                    .content(gsonbeanStr)
+                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                            ResponseDialog.closeLoading();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            try {
+                                    /*成功返回的结果*/
+                                System.out.print(response);
+                                String ress = response.replace("\\", "");
+                                System.out.print(ress);
+                                String ression = StringUtil.sideTrim(ress, "\"");
+                                System.out.print(ression);
+                                detailBooleanBean = new Gson().fromJson(ression, ProductionDetailBooleanBean.class);
+                                detailbooleanDatabean = detailBooleanBean.getData();
+                                ResponseDialog.closeLoading();
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                                ResponseDialog.closeLoading();
+                            }
+                        }
+                    });
+        } else {
+            ToastUtils.ShowToastMessage("当前网络不可用,请重新再试",
+                    ProductionActivity.this);
+        }
+    }
+
+    /**
      * 删除
      */
     private void DeleteDate() {
@@ -882,7 +1265,7 @@ public class ProductionActivity extends BaseFrangmentActivity
         String copyRecorder = sp.getString("copyRecorder", "");
         String copyRecordat = sp.getString("copyRecordat", "");
         String copyRecordid = sp.getString("username", "");
-        String prorecorid = sp.getString("prorecorid","");
+        String prorecorid = sp.getString("prorecorid", "");
         if (id.equals("")) {
             ToastUtils.ShowToastMessage("未选择当前行", ProductionActivity.this);
         } else {
@@ -912,7 +1295,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             deleteBean.setRecordid(prorecorid);
             String delete = gson.toJson(deleteBean);
 //            String dateee = delete.replace("\"\"", "null");
-            if(NetWork.isNetWorkAvailable(this)){
+            if (NetWork.isNetWorkAvailable(this)) {
                 String strdelete = HttpUrl.debugoneUrl + "FactoryPlan/DeletePlanBill/";
                 OkHttpUtils.postString()
                         .url(strdelete)
@@ -929,15 +1312,15 @@ public class ProductionActivity extends BaseFrangmentActivity
                             public void onResponse(String response, int id) {
                                 System.out.print(response);
                                 String result = response;
-                                if(result.equals("false")){
-                                    ToastUtils.ShowToastMessage("删除失败",ProductionActivity.this);
-                                }else{
-                                    ToastUtils.ShowToastMessage("删除成功，刷新页面",ProductionActivity.this);
+                                if (result.equals("false")) {
+                                    ToastUtils.ShowToastMessage("删除失败", ProductionActivity.this);
+                                } else {
+                                    ToastUtils.ShowToastMessage("删除成功，刷新页面", ProductionActivity.this);
                                 }
                             }
                         });
-            }else{
-                ToastUtils.ShowToastMessage(R.string.noHttp,ProductionActivity.this);
+            } else {
+                ToastUtils.ShowToastMessage(R.string.noHttp, ProductionActivity.this);
             }
         }
     }
@@ -1022,9 +1405,9 @@ public class ProductionActivity extends BaseFrangmentActivity
                     case "刷新":
                         setData();
                         break;
-                    case "删除当前行":
-                        DeleteDate();
-                        break;
+//                    case "删除当前行":
+//                        DeleteDate();
+//                        break;
                     case "保存为Excel":
                         new Thread(new Runnable() {
                             @Override
@@ -1125,6 +1508,7 @@ public class ProductionActivity extends BaseFrangmentActivity
         editor.remove("productionThirtyOneDay");
         editor.remove("productionRemarks");
         editor.remove("productionleftItem");
+        editor.remove("etprodialogStyle");
         editor.commit();
         super.onDestroy();
     }

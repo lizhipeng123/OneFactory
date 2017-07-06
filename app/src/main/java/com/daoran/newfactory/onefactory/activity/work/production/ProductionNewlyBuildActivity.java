@@ -229,7 +229,7 @@ public class ProductionNewlyBuildActivity
                                     scroll_content.setVisibility(View.VISIBLE);
                                     System.out.print(dataBeen);
                                     pageCount = newlyBuildBean.getTotalCount();
-                                    String count = String.valueOf(pageCount / finalGetsize);
+                                    String count = String.valueOf(pageCount / finalGetsize + 1);
                                     tvNewbuildPage.setText(count);
                                     buildAdapter = new ProductionNewlyBuildAdapter(
                                             ProductionNewlyBuildActivity.this, dataBeen);
@@ -327,7 +327,7 @@ public class ProductionNewlyBuildActivity
                                         scroll_content.setVisibility(View.VISIBLE);
                                         System.out.print(dataBeen);
                                         pageCount = newlyBuildBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / finalGetsize);
+                                        String count = String.valueOf(pageCount / finalGetsize + 1);
                                         tvNewbuildPage.setText(count);
                                         buildAdapter = new ProductionNewlyBuildAdapter(
                                                 ProductionNewlyBuildActivity.this, dataBeen);
@@ -407,7 +407,7 @@ public class ProductionNewlyBuildActivity
                                         scroll_content.setVisibility(View.VISIBLE);
                                         System.out.print(dataBeen);
                                         pageCount = newlyBuildBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / finalGetsize);
+                                        String count = String.valueOf(pageCount / finalGetsize+1);
                                         tvNewbuildPage.setText(count);
                                         buildAdapter = new ProductionNewlyBuildAdapter(
                                                 ProductionNewlyBuildActivity.this, dataBeen);

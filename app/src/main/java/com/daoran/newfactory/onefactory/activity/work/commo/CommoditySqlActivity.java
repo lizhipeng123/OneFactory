@@ -355,11 +355,11 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                     scroll_content.setVisibility(View.VISIBLE);
                                     System.out.print(dataBeen);
                                     pageCount = commoditydetailBean.getTotalCount();
-                                    String count = String.valueOf(pageCount / finalGetsize);
+                                    String count = String.valueOf(pageCount / finalGetsize + 1);
                                     tvSignPage.setText(count);
                                     sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this, dataBeen);
                                     mData.setAdapter(sqlAdapter);
-                                    leftAdapter = new CommoditySqlLeftAdapter(CommoditySqlActivity.this,dataBeen);
+                                    leftAdapter = new CommoditySqlLeftAdapter(CommoditySqlActivity.this, dataBeen);
                                     lv_cleft.setAdapter(leftAdapter);
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
@@ -435,11 +435,11 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                     scroll_content.setVisibility(View.VISIBLE);
                                     System.out.print(dataBeen);
                                     pageCount = commoditydetailBean.getTotalCount();
-                                    String count = String.valueOf(pageCount / finalGetsize);
+                                    String count = String.valueOf(pageCount / finalGetsize + 1);
                                     tvSignPage.setText(count);
                                     sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this, dataBeen);
                                     mData.setAdapter(sqlAdapter);
-                                    leftAdapter = new CommoditySqlLeftAdapter(CommoditySqlActivity.this,dataBeen);
+                                    leftAdapter = new CommoditySqlLeftAdapter(CommoditySqlActivity.this, dataBeen);
                                     lv_cleft.setAdapter(leftAdapter);
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);

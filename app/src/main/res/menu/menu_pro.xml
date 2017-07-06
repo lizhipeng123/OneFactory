@@ -13,10 +13,10 @@
         android:id="@+id/show_reshare"
         android:title="刷新"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/show_delete"
-        android:title="删除当前行"
-        app:showAsAction="never" />
+    <!--<item-->
+        <!--android:id="@+id/show_delete"-->
+        <!--android:title="删除当前行"-->
+        <!--app:showAsAction="never" />-->
     <item
         android:id="@+id/show_excel"
         android:title="保存为Excel"

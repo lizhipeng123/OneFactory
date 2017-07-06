@@ -5,7 +5,6 @@
         android:id="@+id/show_workshop"
         android:title="车间"
         app:showAsAction="never"/>
-
     <item
         android:id="@+id/show_Cutting_bed"
         android:title="裁床"

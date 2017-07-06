@@ -112,20 +112,47 @@ public class CommoditydetailBean {
         private String factlcdat;//离厂日期
         private String ourAfter;//后道
         private String prdmaster;//生产主管
+        private String prdmasterid;//生产主管id
         private String QCMasterScore;//主管评分
         private String batchid;//查货批次
         private String QAname;//QA首扎
         private String firstsamQA;
+        private String firstsamQAid;
         private String QAScore;//QA首扎件数
         private String QAMemo;//QA首扎日期
         private String ctmchkdt;//业务员确认客查日期
         private String IPQC;
+        private String IPQCid;
         private String IPQCmdt;//巡检中查
         private String IPQCPedt;//尾查预查
         private String predocdt;//预计产前会报告时间
         private String prebdt;//预计早期时间
         private String premdt;//预计中期时间
         private String preedt;//预计尾期时间
+
+        public String getPrdmasterid() {
+            return prdmasterid;
+        }
+
+        public void setPrdmasterid(String prdmasterid) {
+            this.prdmasterid = prdmasterid;
+        }
+
+        public String getFirstsamQAid() {
+            return firstsamQAid;
+        }
+
+        public void setFirstsamQAid(String firstsamQAid) {
+            this.firstsamQAid = firstsamQAid;
+        }
+
+        public String getIPQCid() {
+            return IPQCid;
+        }
+
+        public void setIPQCid(String IPQCid) {
+            this.IPQCid = IPQCid;
+        }
 
         public int getID() {
             return ID;

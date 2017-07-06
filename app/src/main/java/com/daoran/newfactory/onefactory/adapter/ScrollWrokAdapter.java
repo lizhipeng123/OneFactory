@@ -11,8 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.DebugGaodeActivity;
-import com.daoran.newfactory.onefactory.activity.work.SignActivity;
+import com.daoran.newfactory.onefactory.activity.work.GaodeRouteActivity;
 import com.daoran.newfactory.onefactory.activity.work.SignDetailActivity;
 import com.daoran.newfactory.onefactory.activity.work.SignOpenActivity;
 import com.daoran.newfactory.onefactory.activity.work.car.SqlcarApplyActivity;
@@ -101,7 +100,7 @@ public class ScrollWrokAdapter extends BaseAdapter {
                         context.startActivity(new Intent(context, SignDetailActivity.class));
                         break;
                     case "公交路线":
-                        context.startActivity(new Intent(context, DebugGaodeActivity.class));
+                        context.startActivity(new Intent(context, GaodeRouteActivity.class));
                         break;
                     case "生产日报表":
                         context.startActivity(new Intent(context, ProductionActivity.class));

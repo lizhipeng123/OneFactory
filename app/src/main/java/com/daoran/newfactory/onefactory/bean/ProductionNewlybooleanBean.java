@@ -3,11 +3,12 @@ package com.daoran.newfactory.onefactory.bean;
 import java.util.List;
 
 /**
- * 生产日报详情实体类
- * Created by lizhipeng on 2017/4/27.
+ * 新建生产日报时用于判断是否可以同一个人同一款号新建
+ * Created by lizhipeng on 2017/6/29.
  */
 
-public class ProducationDetailBean {
+public class ProductionNewlybooleanBean {
+
     private int totalCount;
     private List<DataBean> Data;
 
@@ -28,99 +29,10 @@ public class ProducationDetailBean {
     }
 
     public static class DataBean {
-        /**
-         * ID : 3218
-         * salesid : 2461
-         * planid : null
-         * sn : 1
-         * contractno : null
-         * inbill : null
-         * area : null
-         * companytxt : null
-         * po : null
-         * item : R1231翻单一
-         * oitem : null
-         * mdl : 34,36,38,40,42,44
-         * ctmid : null
-         * ctmtxt : KOOKAI
-         * ctmcompanytxt : null
-         * prdtyp : null
-         * lcdat : null
-         * lbdat : null
-         * styp : null
-         * fsaler : null
-         * psaler : null
-         * memo : null
-         * pqty : 236
-         * unit : null
-         * prodcol : 浅紫色印花
-         * megitem : null
-         * teamname : null
-         * recordat : 2017/04/19 09:23:58
-         * recorder : 毕三军
-         * subfactory : 道同一车间
-         * workingProcedure : 车间
-         * subfactoryTeams :
-         * workers :
-         * factcutqty : null
-         * cutbdt : null
-         * sewbdt : null
-         * sewedt : null
-         * sewDays : null
-         * perqty : null
-         * cutamount : null
-         * sewamount : null
-         * packamount : null
-         * amount : null
-         * perMachineQty : null
-         * sumMachineQty : null
-         * prdstatus :
-         * prdmaster : null
-         * prddocumentary : 包龙
-         * taskqty : 236
-         * sumCompletedQty : null
-         * leftQty : null
-         * lastMonQty : null
-         * year : 2017
-         * month : 4
-         * day1 : null
-         * day2 : null
-         * day3 : null
-         * day4 : null
-         * day5 : null
-         * day6 : null
-         * day7 : null
-         * day8 : null
-         * day9 : null
-         * day10 : null
-         * day11 : null
-         * day12 : null
-         * day13 : null
-         * day14 : null
-         * day15 : null
-         * day16 : null
-         * day17 : null
-         * day18 : null
-         * day19 : null
-         * day20 : null
-         * day21 : null
-         * day22 : null
-         * day23 : null
-         * day24 : null
-         * day25 : null
-         * day26 : null
-         * day27 : null
-         * day28 : null
-         * day29 : null
-         * day30 : null
-         * day31 : null
-         * isdiffc : null
-         */
-
-        private int ID;//int
-        private int salesid;//引用的排单计划表id  int
-        private String planid;//引用的工厂计划id   int
-        private int sn;//序列号   int
+        private int ID;
+        private int salesid;//引用的排单计划表id
+        private String planid;//引用的工厂计划id
+        private int sn;//序列号
         private String contractno;//销售合同号
         private String inbill;//内部id
         private String area;//片区号
@@ -207,14 +119,6 @@ public class ProducationDetailBean {
         private String memoprdure;//默认的月份
         private String memomonth;//修改的月份
 
-        public String getMemomonth() {
-            return memomonth;
-        }
-
-        public void setMemomonth(String memomonth) {
-            this.memomonth = memomonth;
-        }
-
         public boolean isdiffc() {
             return isdiffc;
         }
@@ -225,6 +129,14 @@ public class ProducationDetailBean {
 
         public void setMemoprdure(String memoprdure) {
             this.memoprdure = memoprdure;
+        }
+
+        public String getMemomonth() {
+            return memomonth;
+        }
+
+        public void setMemomonth(String memomonth) {
+            this.memomonth = memomonth;
         }
 
         public int getID() {

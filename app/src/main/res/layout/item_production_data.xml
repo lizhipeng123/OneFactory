@@ -263,7 +263,6 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text=""
             android:background="@drawable/spinner_bg"
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />

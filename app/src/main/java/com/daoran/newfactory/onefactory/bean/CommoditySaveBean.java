@@ -53,6 +53,33 @@ public class CommoditySaveBean {
     private String prebdt;//预计早期时间
     private String premdt;//预计中期时间
     private String preedt;//预计尾期时间
+    private String IPQCid;
+    private String firstsamQAid;
+    private String prdmasterid;//生产主管id
+
+    public String getIPQCid() {
+        return IPQCid;
+    }
+
+    public void setIPQCid(String IPQCid) {
+        this.IPQCid = IPQCid;
+    }
+
+    public String getFirstsamQAid() {
+        return firstsamQAid;
+    }
+
+    public void setFirstsamQAid(String firstsamQAid) {
+        this.firstsamQAid = firstsamQAid;
+    }
+
+    public String getPrdmasterid() {
+        return prdmasterid;
+    }
+
+    public void setPrdmasterid(String prdmasterid) {
+        this.prdmasterid = prdmasterid;
+    }
 
     public String getPreMemo() {
         return preMemo;

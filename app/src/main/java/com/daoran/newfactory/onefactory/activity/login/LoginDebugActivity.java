@@ -272,80 +272,80 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
         String loginuserUrl = HttpUrl.debugoneUrl + "Login/UserLogin/";
         if (NetWork.isNetWorkAvailable(this)) {
             /*登录是否设置保存时间，以及加密*/
-//            /*检测是否为可用WiFi*/
-//            WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-//            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-//            String infossid = wifiInfo.getSSID();
-//            infossid = infossid.replace("\"", "");
-//            if (!infossid.equals("taoxinxi")) {
-//                AlertDialog dialog = new AlertDialog.Builder(this).create();
-//                dialog.setTitle("系统提示");
-//                dialog.setMessage("当前WiFi为公共网络，运行请转到测试WiFi状态");
-//                dialog.setButton("确定", listenerwifi);
-//                dialog.show();
-//            } else {
-            ResponseDialog.showLoading(this, "登录中");
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(NetUtil.createParam("Logid", etUsername.getText().toString()));
-            params.add(NetUtil.createParam("pwd", etPassword.getText().toString()));
-            params.add(NetUtil.createParam("Ischeckpwd", true));
-            params.add(NetUtil.createParam("Company", "杭州道然进出口有限公司"));
-            RequestParams requestParams = new RequestParams(params);
-            NetUtil.getAsyncHttpClient().post(loginuserUrl, requestParams, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(String content) {
-                    super.onSuccess(content);
-                    System.out.print(content);
-                    userNameValue = etUsername.getText().toString();
-                    passwordValue = etPassword.getText().toString();
-                    Editor editor = sp.edit();
-                    Gson gson = new Gson();
-                    UsergetBean userBean = gson.fromJson(content, UsergetBean.class);
-                    if (userBean.isStatus() == true) {
-                        spUtils.put(LoginDebugActivity.this, "username", userNameValue);
-                        spUtils.put(LoginDebugActivity.this, "passwd", passwordValue);
-                        //记住密码
-                        if (checkBoxPw.isChecked()) {
-                            spUtils.put(LoginDebugActivity.this, "remember", true);
+            /*检测是否为可用WiFi*/
+            WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            String infossid = wifiInfo.getSSID();
+            infossid = infossid.replace("\"", "");
+            if (infossid.equals("taoxinxi")) {
+                AlertDialog dialog = new AlertDialog.Builder(this).create();
+                dialog.setTitle("系统提示");
+                dialog.setMessage("当前 "+infossid+" 为测试WiFi,请连接到公共WiFi或者流量状态");
+                dialog.setButton("确定", listenerwifi);
+                dialog.show();
+            } else {
+                ResponseDialog.showLoading(this, "登录中");
+                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                params.add(NetUtil.createParam("Logid", etUsername.getText().toString()));
+                params.add(NetUtil.createParam("pwd", etPassword.getText().toString()));
+                params.add(NetUtil.createParam("Ischeckpwd", true));
+                params.add(NetUtil.createParam("Company", "杭州道然进出口有限公司"));
+                RequestParams requestParams = new RequestParams(params);
+                NetUtil.getAsyncHttpClient().post(loginuserUrl, requestParams, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(String content) {
+                        super.onSuccess(content);
+                        System.out.print(content);
+                        userNameValue = etUsername.getText().toString();
+                        passwordValue = etPassword.getText().toString();
+                        Editor editor = sp.edit();
+                        Gson gson = new Gson();
+                        UsergetBean userBean = gson.fromJson(content, UsergetBean.class);
+                        if (userBean.isStatus() == true) {
+                            spUtils.put(LoginDebugActivity.this, "username", userNameValue);
+                            spUtils.put(LoginDebugActivity.this, "passwd", passwordValue);
+                            //记住密码
+                            if (checkBoxPw.isChecked()) {
+                                spUtils.put(LoginDebugActivity.this, "remember", true);
+                            } else {
+                                spUtils.put(LoginDebugActivity.this, "remember", false);
+                            }
+                            if (checkboxopen.isChecked()) {
+                                spUtils.put(LoginDebugActivity.this, "autologin", true);
+                            } else {
+                                spUtils.put(LoginDebugActivity.this, "autologin", false);
+                            }
+                            editor.commit();
+                            spUtils.put(getApplicationContext(), "name", userBean.getU_name());
+                            spUtils.put(getApplicationContext(), "proname", userBean.getU_name());
+                            spUtils.put(getApplicationContext(), "commoname", userBean.getU_name());
+                            spUtils.put(getApplicationContext(), "commologinid", userBean.getLogid());
+                            Intent intent = new Intent(LoginDebugActivity.this, MainActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("u_name", userBean.getU_name());
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                            ResponseDialog.closeLoading();
                         } else {
-                            spUtils.put(LoginDebugActivity.this, "remember", false);
+                            ToastUtils.ShowToastMessage("用户名密码错误，请重新输入", LoginDebugActivity.this);
+                            ResponseDialog.closeLoading();
                         }
-                        if (checkboxopen.isChecked()) {
-                            spUtils.put(LoginDebugActivity.this, "autologin", true);
-                        } else {
-                            spUtils.put(LoginDebugActivity.this, "autologin", false);
-                        }
-                        editor.commit();
-                        spUtils.put(getApplicationContext(), "name", userBean.getU_name());
-                        spUtils.put(getApplicationContext(), "proname", userBean.getU_name());
-                        spUtils.put(getApplicationContext(), "commoname", userBean.getU_name());
-                        spUtils.put(getApplicationContext(),"commologinid",userBean.getLogid());
-                        Intent intent = new Intent(LoginDebugActivity.this, MainActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("u_name", userBean.getU_name());
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                        ResponseDialog.closeLoading();
-                    } else {
-                        ToastUtils.ShowToastMessage("用户名密码错误，请重新输入", LoginDebugActivity.this);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable error, String content) {
+                        super.onFailure(error, content);
+                        ToastUtils.ShowToastMessage("登录失败", LoginDebugActivity.this);
                         ResponseDialog.closeLoading();
                     }
-                }
 
-                @Override
-                public void onFailure(Throwable error, String content) {
-                    super.onFailure(error, content);
-                    ToastUtils.ShowToastMessage("登录失败", LoginDebugActivity.this);
-                    ResponseDialog.closeLoading();
-                }
-
-                @Override
-                public void onFinish() {
-                    super.onFinish();
-                    ResponseDialog.closeLoading();
-                }
-            });
-//            }
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        ResponseDialog.closeLoading();
+                    }
+                });
+            }
         } else {
             ToastUtils.ShowToastMessage(getString(R.string.noHttp), LoginDebugActivity.this);
         }
@@ -361,7 +361,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                             getPackageInfo(getPackageName(), 0);
             curVersionName = info.versionName;
             curVersionCode = info.versionCode;
-            spUtils.put(LoginDebugActivity.this,"curVersionCode",curVersionName);
+            spUtils.put(LoginDebugActivity.this, "curVersionCode", curVersionName);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace(System.err);
         }
@@ -679,13 +679,12 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
         }
     };
     private Thread downLoadThread;
-//    private void startWifi(){
-//        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-//        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-//        String infossid = wifiInfo.getSSID();
-//        tvwifimanager.setText(wifiManager.toString());
-//        tvwifissid.setText(infossid);
-//    }
+
+    private void startWifi() {
+        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        String infossid = wifiInfo.getSSID();
+    }
 
     /**
      * 下载apk

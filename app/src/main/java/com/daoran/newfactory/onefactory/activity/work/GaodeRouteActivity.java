@@ -15,9 +15,9 @@ import java.net.URISyntaxException;
  * Created by lizhipeng on 2017/4/14.
  */
 
-public class DebugGaodeActivity extends
+public class GaodeRouteActivity extends
         BaseFrangmentActivity {
-    private static final String TAG = "DebugGaodeActivity";
+    private static final String TAG = "GaodeRouteActivity";
     //--------------以下都是高德坐标系的坐标-------30.324328,120.188428------------//
     private static final double LATITUDE_A = 28.1903;  //起点纬度
     private static final double LONGTITUDE_A = 113.031738;  //起点经度

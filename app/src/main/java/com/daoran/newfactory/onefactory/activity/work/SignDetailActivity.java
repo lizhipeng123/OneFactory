@@ -228,7 +228,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                     pageCount = signBean.getTotalCount();
                                     spUtils.put(SignDetailActivity.this, "pageCount", pageCount);
                                     System.out.print(pageCount);
-                                    String count = String.valueOf(pageCount / finalGetsize);
+                                    String count = String.valueOf(pageCount / finalGetsize + 1);
                                     System.out.print(count);
                                     tvSignPage.setText(count);
                                     detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
@@ -331,7 +331,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                     spUtils.put(SignDetailActivity.this, "pagesqlCount", pageCount);
                                     System.out.print(pageCount);
 //                                        int pagesign = finalGetsize;
-                                    String count = String.valueOf(pageCount / finalGetsize);
+                                    String count = String.valueOf(pageCount / finalGetsize + 1);
                                     System.out.print(count);
                                     tvSignPage.setText(count);
                                     detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
