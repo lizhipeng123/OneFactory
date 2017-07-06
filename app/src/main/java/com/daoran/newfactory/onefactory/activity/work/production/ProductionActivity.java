@@ -98,6 +98,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     private Button btnSignPage, btnProSave, spinnermenu;//翻页确定、保存确定，菜单menu
     private TextView spinnerNewbuild;
     private EditText etNewbuild;
+    private ImageView ivUpLeftPage, ivDownRightPage;
 
     private SharedPreferences sp;//存储
     private SPUtils spUtils;
@@ -145,6 +146,8 @@ public class ProductionActivity extends BaseFrangmentActivity
         tv_visibi = (TextView) findViewById(R.id.tv_visibi);
         scroll_content = (ScrollView) findViewById(R.id.scroll_content);
         spinnProPageClumns = (Spinner) findViewById(R.id.spinnProPageClumns);
+        ivUpLeftPage = (ImageView) findViewById(R.id.ivUpLeftPage);
+        ivDownRightPage = (ImageView) findViewById(R.id.ivDownRightPage);
         getClumnsSpinner();
     }
 
@@ -192,6 +195,8 @@ public class ProductionActivity extends BaseFrangmentActivity
         btnSignPage.setOnClickListener(this);
         btnProSave.setOnClickListener(this);
         spinnermenu.setOnClickListener(this);
+        ivUpLeftPage.setOnClickListener(this);
+        ivDownRightPage.setOnClickListener(this);
     }
 
     @Override
@@ -209,13 +214,22 @@ public class ProductionActivity extends BaseFrangmentActivity
             case R.id.btnSignPage:
                 String txt = etSqlDetail.getText().toString();
                 String txtcount = tvSignPage.getText().toString();
-                if (txt.length() == 0) {
+                if (txt.equals("")) {
                     ToastUtils.ShowToastMessage("页码不能为空", ProductionActivity.this);
-                    return;
-                } else if (txt.length() > txtcount.length()) {
-                    ToastUtils.ShowToastMessage("页码超出输入范围", ProductionActivity.this);
                 } else {
-                    setPageDetail();
+                    int txtindex = Integer.parseInt(txt);
+                    int txtcountindex = Integer.parseInt(txtcount);
+                    if (txtindex > txtcountindex) {
+                        ToastUtils.ShowToastMessage("已经是最后一页", ProductionActivity.this);
+                    } else if (txtindex < 1) {
+                        ToastUtils.ShowToastMessage("已经是第一页", ProductionActivity.this);
+                    } else if (txt.length() == 0) {
+                        ToastUtils.ShowToastMessage("页码不能为空", ProductionActivity.this);
+                    } else if (etSqlDetail.getText().toString() == null) {
+                        ToastUtils.ShowToastMessage("页码不能为空", ProductionActivity.this);
+                    } else {
+                        setPageDetail();
+                    }
                 }
                 break;
             /*menu菜单*/
@@ -225,6 +239,44 @@ public class ProductionActivity extends BaseFrangmentActivity
             /*保存按钮*/
             case R.id.btnProSave:
                 setSave();
+                break;
+            /*上一页*/
+            case R.id.ivUpLeftPage:
+                String etsql = etSqlDetail.getText().toString();
+                if (etsql.equals("")) {
+                    ToastUtils.ShowToastMessage("页码不能为空", ProductionActivity.this);
+                } else {
+                    pageIndex = Integer.parseInt(etsql);
+                    int index = pageIndex - 2;
+                    if (index < 0) {
+                        ToastUtils.ShowToastMessage("已经是第一页", ProductionActivity.this);
+                    } else {
+                        String indexstr = String.valueOf(index + 1);
+                        etSqlDetail.setText(indexstr);
+                        etSqlDetail.setSelection(indexstr.length());
+                        setPageUpDate(index);
+                    }
+                }
+                break;
+            /*下一页*/
+            case R.id.ivDownRightPage:
+                String etsql2 = etSqlDetail.getText().toString();
+                if (etsql2.equals("")) {
+                    ToastUtils.ShowToastMessage("页码不能为空", ProductionActivity.this);
+                } else {
+                    pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
+                    int index2 = pageIndex + 1;
+                    String maxpageindex = tvSignPage.getText().toString();
+                    int indexmax = Integer.parseInt(maxpageindex);
+                    if (index2 > indexmax) {
+                        ToastUtils.ShowToastMessage("已经是最后一页", ProductionActivity.this);
+                    } else {
+                        String index2str = String.valueOf(index2);
+                        etSqlDetail.setText(index2str);
+                        etSqlDetail.setSelection(index2str.length());
+                        setPageUpDate(index2);
+                    }
+                }
                 break;
         }
     }
@@ -613,6 +665,200 @@ public class ProductionActivity extends BaseFrangmentActivity
     }
 
     /**
+     * 上一页，下一页
+     */
+    private void setPageUpDate(int pageupIndex) {
+        String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
+        sp = ProductionActivity.this.getSharedPreferences("my_sp", 0);
+        /*获取条件查询dialog中输入的信息字段*/
+        String namedure = sp.getString("proname", "");
+        String commonamedure;
+        String Style = sp.getString("etprodialogStyle", "");
+        String commostyle = sp.getString("productionleftItem", "");
+        String itemstyle;
+        if (commostyle.equals("")) {
+            itemstyle = Style;
+            commonamedure = namedure;
+        } else {
+            itemstyle = commostyle;
+            commonamedure = "";
+        }
+        String Factory = sp.getString("etprodialogFactory", "");
+        String getsize = sp.getString("clumnsprospinner", "");
+        if (getsize.equals("")) {
+            getsize = String.valueOf(10);
+        }
+//        String Recode = sp.getString("etprodialogRecode", "");
+        String Procedure = sp.getString("Procedure", "");
+        String stis = sp.getString("ischeckedd", "");
+        if (Procedure.equals("全部")) {
+            boolean stris = Boolean.parseBoolean(stis);
+//            pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
+//            int index = pageIndex - 1;
+            Gson gson = new Gson();
+            Propostbean propostbean = new Propostbean();
+            Propostbean.Conditions conditions = propostbean.new Conditions();
+            conditions.setItem(itemstyle);
+            conditions.setPrddocumentary(commonamedure);
+            conditions.setSubfactory(Factory);
+            conditions.setWorkingProcedure("");
+            conditions.setPrddocumentaryisnull(stris);
+            propostbean.setConditions(conditions);
+            propostbean.setPageNum(pageupIndex);
+            propostbean.setPageSize(Integer.parseInt(getsize));
+            String gsonbeanStr = gson.toJson(propostbean);
+            Log.e("you wanted", "[" + gsonbeanStr + "," + gsonbeanStr + "+]");
+            if (NetWork.isNetWorkAvailable(this)) {
+//                 /*检测是否为可用WiFi*/
+//                WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+//                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+//                String infossid = wifiInfo.getSSID();
+//                infossid = infossid.replace("\"", "");
+//                if (!infossid.equals("taoxinxi")) {
+//                    android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(this).create();
+//                    dialog.setTitle("系统提示");
+//                    dialog.setMessage("当前WiFi为公共网络，运行请转到测试WiFi状态");
+//                    dialog.setButton("确定", listenerwifi);
+//                    dialog.show();
+//                } else {
+                ResponseDialog.showLoading(this);
+                final int finalGetsize = Integer.parseInt(getsize);
+                OkHttpUtils.postString()
+                        .url(str)
+                        .content(gsonbeanStr)
+                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                e.printStackTrace();
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                try {
+                                    System.out.print(response);
+                                    String ress = response.replace("\\", "");
+                                    System.out.print(ress);
+                                    String ression = StringUtil.sideTrim(ress, "\"");
+                                    System.out.print(ression);
+                                    detailBean = new Gson().fromJson(ression, ProducationDetailBean.class);
+                                    detailBeenList = detailBean.getData();
+                                    if (detailBean.getTotalCount() != 0) {
+                                        ll_visibi.setVisibility(View.GONE);
+                                        scroll_content.setVisibility(View.VISIBLE);
+                                        System.out.print(detailBeenList);
+                                        pageCount = detailBean.getTotalCount();
+                                        String count = String.valueOf(pageCount / finalGetsize + 1);
+                                        tvSignPage.setText(count);
+
+                                        adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
+                                        mData.setAdapter(adapter);
+                                        mLeftAdapter = new ProductionLeftAdapter(ProductionActivity.this, detailBeenList);
+                                        lv_left.setAdapter(mLeftAdapter);
+                                    } else {
+                                        ll_visibi.setVisibility(View.VISIBLE);
+                                        scroll_content.setVisibility(View.GONE);
+                                        tv_visibi.setText("没有更多信息");
+                                    }
+                                    setNewlyComfig();
+                                    ResponseDialog.closeLoading();
+                                } catch (JsonSyntaxException e) {
+                                    e.printStackTrace();
+                                    ResponseDialog.closeLoading();
+                                }
+                            }
+                        });
+//                }
+            } else {
+                ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", ProductionActivity.this);
+            }
+        } else {
+            boolean stris = Boolean.parseBoolean(stis);
+            pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
+            int index = pageIndex - 1;
+            Gson gson = new Gson();
+            Propostbean propostbean = new Propostbean();
+            Propostbean.Conditions conditions = propostbean.new Conditions();
+            conditions.setItem(itemstyle);
+            conditions.setPrddocumentary(commonamedure);
+            conditions.setSubfactory(Factory);
+            conditions.setWorkingProcedure(Procedure);
+            conditions.setPrddocumentaryisnull(stris);
+            propostbean.setConditions(conditions);
+            propostbean.setPageNum(index);
+            propostbean.setPageSize(Integer.parseInt(getsize));
+            String gsonbeanStr = gson.toJson(propostbean);
+            if (NetWork.isNetWorkAvailable(this)) {
+//                /*检测是否为可用WiFi*/
+//                WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+//                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+//                String infossid = wifiInfo.getSSID();
+//                infossid = infossid.replace("\"", "");
+//                if (!infossid.equals("taoxinxi")) {
+//                    android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(this).create();
+//                    dialog.setTitle("系统提示");
+//                    dialog.setMessage("当前WiFi为公共网络，运行请转到测试WiFi状态");
+//                    dialog.setButton("确定", listenerwifi);
+//                    dialog.show();
+//                } else {
+                ResponseDialog.showLoading(this);
+                final int finalGetsize = Integer.parseInt(getsize);
+                OkHttpUtils.postString()
+                        .url(str)
+                        .content(gsonbeanStr)
+                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                e.printStackTrace();
+                                ResponseDialog.closeLoading();
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                try {
+                                    System.out.print(response);
+                                    String ress = response.replace("\\", "");
+                                    System.out.print(ress);
+                                    String ression = StringUtil.sideTrim(ress, "\"");
+                                    System.out.print(ression);
+                                    detailBean = new Gson().fromJson(ression, ProducationDetailBean.class);
+                                    detailBeenList = detailBean.getData();
+                                    if (detailBean.getTotalCount() != 0) {
+                                        ll_visibi.setVisibility(View.GONE);
+                                        scroll_content.setVisibility(View.VISIBLE);
+                                        System.out.print(detailBeenList);
+                                        pageCount = detailBean.getTotalCount();
+                                        String count = String.valueOf(pageCount / finalGetsize + 1);
+                                        tvSignPage.setText(count);
+                                        adapter = new ProductionAdapter(ProductionActivity.this, detailBeenList);
+                                        mData.setAdapter(adapter);
+                                        mLeftAdapter = new ProductionLeftAdapter(ProductionActivity.this, detailBeenList);
+                                        lv_left.setAdapter(mLeftAdapter);
+//                                        adapter.notifyDataSetChanged();
+                                    } else {
+                                        ll_visibi.setVisibility(View.VISIBLE);
+                                        scroll_content.setVisibility(View.GONE);
+                                        tv_visibi.setText("没有更多信息");
+                                    }
+                                    setNewlyComfig();
+                                    ResponseDialog.closeLoading();
+                                } catch (JsonSyntaxException e) {
+                                    e.printStackTrace();
+                                    ResponseDialog.closeLoading();
+                                }
+                            }
+                        });
+//                }
+            } else {
+                ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", ProductionActivity.this);
+            }
+        }
+    }
+
+    /**
      * 判断 array1是否包含所有的 array2
      */
     private static boolean containsAll(String[] array1, String[] array2) {
@@ -756,9 +1002,9 @@ public class ProductionActivity extends BaseFrangmentActivity
             }
 
             if (booleanmonth == true && booleandata == true && booleanitem == true) {
-                ToastUtils.ShowToastMessage("未修改表中数据",ProductionActivity.this);
+                ToastUtils.ShowToastMessage("未修改表中数据", ProductionActivity.this);
                 ResponseDialog.closeLoading();
-            }else{
+            } else {
                 if (arrsflag != null) {
 //判断修改后的工序是否存在于修改前的工序之中，如果存在则不能保存
                     if (flagdata == true) {
@@ -1360,7 +1606,12 @@ public class ProductionActivity extends BaseFrangmentActivity
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btnComfirm:
-                    setPageDetail();
+                    String etsql2 = etSqlDetail.getText().toString();
+                    if (etsql2.equals("")) {
+                        ToastUtils.ShowToastMessage("页码不能为空", ProductionActivity.this);
+                    } else {
+                        setPageDetail();
+                    }
                     procationDialog.dismiss();
                     break;
             }

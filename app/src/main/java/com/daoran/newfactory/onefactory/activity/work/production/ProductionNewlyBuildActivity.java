@@ -69,6 +69,7 @@ public class ProductionNewlyBuildActivity
             btnNewbuildPage;//翻页确定按钮
     private TextView tvNewbuildPage;//
     private EditText etNewbuild;//款号输入框
+    private ImageView ivUpLeftPage, ivDownRightPage;
 
     private NoscrollListView lv_pleft;
     private ListView lv_newbuild_data;//款号信息列表
@@ -131,6 +132,8 @@ public class ProductionNewlyBuildActivity
         tv_visibi = (TextView) findViewById(R.id.tv_visibi);
         scroll_content = (ScrollView) findViewById(R.id.scroll_content);
         spinnProNewPageClumns = (Spinner) findViewById(R.id.spinnProNewPageClumns);
+        ivUpLeftPage = (ImageView) findViewById(R.id.ivUpLeftPage);
+        ivDownRightPage = (ImageView) findViewById(R.id.ivDownRightPage);
     }
 
     /**
@@ -151,6 +154,8 @@ public class ProductionNewlyBuildActivity
         btnNewbuildPage.setOnClickListener(this);
         etNewbuildSql.setOnClickListener(this);
         btnNewbuildConfirm.setOnClickListener(this);
+        ivUpLeftPage.setOnClickListener(this);
+        ivDownRightPage.setOnClickListener(this);
     }
 
     /**
@@ -407,7 +412,7 @@ public class ProductionNewlyBuildActivity
                                         scroll_content.setVisibility(View.VISIBLE);
                                         System.out.print(dataBeen);
                                         pageCount = newlyBuildBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / finalGetsize+1);
+                                        String count = String.valueOf(pageCount / finalGetsize + 1);
                                         tvNewbuildPage.setText(count);
                                         buildAdapter = new ProductionNewlyBuildAdapter(
                                                 ProductionNewlyBuildActivity.this, dataBeen);
@@ -439,6 +444,146 @@ public class ProductionNewlyBuildActivity
             conditions.setWorkingProcedure(spinner);
             buildBean.setConditions(conditions);
             buildBean.setPageNum(ind);
+            buildBean.setPageSize(Integer.parseInt(pagesize));
+            final String bean = gson.toJson(buildBean);
+            if (NetWork.isNetWorkAvailable(this)) {
+                ResponseDialog.showLoading(this);
+                final int finalGetsize = Integer.parseInt(pagesize);
+                OkHttpUtils.postString()
+                        .url(urlDaily)
+                        .content(bean)
+                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                e.printStackTrace();
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                try {
+                                    System.out.print(response);
+                                    String ress = response.replace("\\", "");
+                                    System.out.print(ress);
+                                    String ression = StringUtil.sideTrim(ress, "\"");
+                                    System.out.print(ression);
+                                    newlyBuildBean = new Gson().fromJson(ression, ProNewlyBuildBean.class);
+                                    dataBeen = newlyBuildBean.getData();
+                                    if (newlyBuildBean.getTotalCount() != 0) {
+                                        ll_visibi.setVisibility(View.GONE);
+                                        scroll_content.setVisibility(View.VISIBLE);
+                                        System.out.print(dataBeen);
+                                        pageCount = newlyBuildBean.getTotalCount();
+                                        String count = String.valueOf(pageCount / finalGetsize);
+                                        tvNewbuildPage.setText(count);
+                                        buildAdapter = new ProductionNewlyBuildAdapter(
+                                                ProductionNewlyBuildActivity.this, dataBeen);
+                                        lv_newbuild_data.setAdapter(buildAdapter);
+                                        leftAdapter = new ProductionNewlyBuildLeftAdapter(
+                                                ProductionNewlyBuildActivity.this, dataBeen);
+                                        lv_pleft.setAdapter(leftAdapter);
+                                        buildAdapter.notifyDataSetChanged();
+                                    } else {
+                                        ll_visibi.setVisibility(View.VISIBLE);
+                                        scroll_content.setVisibility(View.GONE);
+                                        tv_visibi.setText("没有更多数据");
+                                    }
+                                    ResponseDialog.closeLoading();
+                                } catch (JsonSyntaxException e) {
+                                    e.printStackTrace();
+                                    ResponseDialog.closeLoading();
+                                }
+                            }
+                        });
+            } else {
+                ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyBuildActivity.this);
+            }
+        }
+    }
+
+    private void setPageUpDate(int pageupdateindex) {
+        sp = getSharedPreferences("my_sp", 0);
+        String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
+        String spinner = spinnerNewbuild.getText().toString();//工序
+        String editNewlyBuild = etNewbuild.getText().toString();//输入款号
+//        pageIndex = Integer.parseInt(etNewbuildDetail.getText().toString());
+//        int ind = pageIndex - 1;
+        String pagesize = sp.getString("clumnspronewspinner", "");
+        if (pagesize.equals("")) {
+            pagesize = String.valueOf(10);
+        }
+        if (spinner == "选择工序" || spinner.equals("选择工序")) {
+            Gson gson = new Gson();
+            final PropostNewlyBuildBean buildBean = new PropostNewlyBuildBean();
+            PropostNewlyBuildBean.Conditions conditions = buildBean.new Conditions();
+            conditions.setItem("");
+            conditions.setWorkingProcedure("");
+            buildBean.setConditions(conditions);
+            buildBean.setPageNum(pageupdateindex);
+            buildBean.setPageSize(Integer.parseInt(pagesize));
+            final String bean = gson.toJson(buildBean);
+            if (NetWork.isNetWorkAvailable(this)) {
+                ResponseDialog.showLoading(this);
+                final int finalGetsize = Integer.parseInt(pagesize);
+                OkHttpUtils.postString()
+                        .url(urlDaily)
+                        .content(bean)
+                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                e.printStackTrace();
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                try {
+                                    System.out.print(response);
+                                    String ress = response.replace("\\", "");
+                                    System.out.print(ress);
+                                    String ression = StringUtil.sideTrim(ress, "\"");
+                                    System.out.print(ression);
+                                    newlyBuildBean = new Gson().fromJson(ression, ProNewlyBuildBean.class);
+                                    dataBeen = newlyBuildBean.getData();
+                                    if (newlyBuildBean.getTotalCount() != 0) {
+                                        ll_visibi.setVisibility(View.GONE);
+                                        scroll_content.setVisibility(View.VISIBLE);
+                                        System.out.print(dataBeen);
+                                        pageCount = newlyBuildBean.getTotalCount();
+                                        String count = String.valueOf(pageCount / finalGetsize + 1);
+                                        tvNewbuildPage.setText(count);
+                                        buildAdapter = new ProductionNewlyBuildAdapter(
+                                                ProductionNewlyBuildActivity.this, dataBeen);
+                                        lv_newbuild_data.setAdapter(buildAdapter);
+                                        leftAdapter = new ProductionNewlyBuildLeftAdapter(
+                                                ProductionNewlyBuildActivity.this, dataBeen);
+                                        lv_pleft.setAdapter(leftAdapter);
+                                        buildAdapter.notifyDataSetChanged();
+                                    } else {
+                                        ll_visibi.setVisibility(View.VISIBLE);
+                                        scroll_content.setVisibility(View.GONE);
+                                        tv_visibi.setText("没有更多数据");
+                                    }
+                                    ResponseDialog.closeLoading();
+                                } catch (JsonSyntaxException e) {
+                                    e.printStackTrace();
+                                    ResponseDialog.closeLoading();
+                                }
+                            }
+                        });
+            } else {
+                ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyBuildActivity.this);
+            }
+        } else {
+            Gson gson = new Gson();
+            final PropostNewlyBuildBean buildBean = new PropostNewlyBuildBean();
+            PropostNewlyBuildBean.Conditions conditions = buildBean.new Conditions();
+            conditions.setItem(editNewlyBuild);
+            conditions.setWorkingProcedure(spinner);
+            buildBean.setConditions(conditions);
+            buildBean.setPageNum(pageupdateindex);
             buildBean.setPageSize(Integer.parseInt(pagesize));
             final String bean = gson.toJson(buildBean);
             if (NetWork.isNetWorkAvailable(this)) {
@@ -531,13 +676,23 @@ public class ProductionNewlyBuildActivity
             case R.id.btnNewbuildPage:
                 String countpage = tvNewbuildPage.getText().toString();
                 String text = etNewbuildDetail.getText().toString();
-                if (text.length() == 0) {
+                if (text.equals("")) {
                     ToastUtils.ShowToastMessage("页码不能为空", ProductionNewlyBuildActivity.this);
-                    return;
-                } else if (text.length() > countpage.length()) {
-                    ToastUtils.ShowToastMessage("页码超出输入范围", ProductionNewlyBuildActivity.this);
                 } else {
-                    setPagefistDate();
+                    int txtindex = Integer.parseInt(text);
+                    int txtcountindex = Integer.parseInt(countpage);
+                    if (txtindex > txtcountindex) {
+                        ToastUtils.ShowToastMessage("已经是最后一页", ProductionNewlyBuildActivity.this);
+                    } else if (txtindex < 1) {
+                        ToastUtils.ShowToastMessage("已经是第一页", ProductionNewlyBuildActivity.this);
+                    } else if (text.length() == 0) {
+                        ToastUtils.ShowToastMessage("页码不能为空", ProductionNewlyBuildActivity.this);
+                        return;
+                    } else if (text.length() > countpage.length()) {
+                        ToastUtils.ShowToastMessage("页码超出输入范围", ProductionNewlyBuildActivity.this);
+                    } else {
+                        setPagefistDate();
+                    }
                 }
                 break;
             /*根据工序及款号查找信息*/
@@ -559,6 +714,43 @@ public class ProductionNewlyBuildActivity
                                     dialog.dismiss();
                                 }
                             }).show();//相应事件
+                }
+                break;
+            /*上一页*/
+            case R.id.ivUpLeftPage:
+                String texteditstr = etNewbuildDetail.getText().toString();
+                if (texteditstr.equals("")) {
+                    ToastUtils.ShowToastMessage("页码不能为空", ProductionNewlyBuildActivity.this);
+                } else {
+                    int textedit = Integer.parseInt(texteditstr);
+                    int texteditindex = textedit - 2;
+                    if (texteditindex < 0) {
+                        ToastUtils.ShowToastMessage("已经是第一页", ProductionNewlyBuildActivity.this);
+                    } else {
+                        String indexstr = String.valueOf(texteditindex + 1);
+                        etNewbuildDetail.setText(indexstr);
+                        etNewbuildDetail.setSelection(indexstr.length());
+                        setPageUpDate(texteditindex);
+                    }
+                }
+                break;
+            /*下一页*/
+            case R.id.ivDownRightPage:
+                String texteditstr2 = etNewbuildDetail.getText().toString();
+                if (texteditstr2.equals("")) {
+                    ToastUtils.ShowToastMessage("页码不能为空", ProductionNewlyBuildActivity.this);
+                } else {
+                    int textedit2 = Integer.parseInt(texteditstr2);
+                    int editindex = textedit2 + 1;
+                    int countpageindex = Integer.parseInt(tvNewbuildPage.getText().toString());
+                    if (editindex > countpageindex) {
+                        ToastUtils.ShowToastMessage("已经是最后一页", ProductionNewlyBuildActivity.this);
+                    } else {
+                        String indexstr = String.valueOf(editindex);
+                        etNewbuildDetail.setText(indexstr);
+                        etNewbuildDetail.setSelection(indexstr.length());
+                        setPageUpDate(editindex);
+                    }
                 }
                 break;
         }

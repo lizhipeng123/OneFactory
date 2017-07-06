@@ -86,6 +86,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private TextView tv_visibi;
     private ScrollView scroll_content;
     private Spinner spinnCommoPageClumns;
+    private ImageView ivUpLeftPage, ivDownRightPage;
 
     private SharedPreferences sp;//轻量级存储本地数据
     private SPUtils spUtils;
@@ -123,6 +124,8 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         scroll_content = (ScrollView) findViewById(R.id.scroll_content);
         spinnCommoPageClumns = (Spinner) findViewById(R.id.spinnCommoPageClumns);
         spinnermenu = (Button) findViewById(R.id.spinnermenu);
+        ivUpLeftPage = (ImageView) findViewById(R.id.ivUpLeftPage);
+        ivDownRightPage = (ImageView) findViewById(R.id.ivDownRightPage);
         getClumnsSpinner();
     }
 
@@ -171,6 +174,8 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
 //        btnCommoRefresh.setOnClickListener(this);
         btnCommoSave.setOnClickListener(this);
         spinnermenu.setOnClickListener(this);
+        ivUpLeftPage.setOnClickListener(this);
+        ivDownRightPage.setOnClickListener(this);
     }
 
     @Override
@@ -188,12 +193,22 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
             case R.id.btnSignPage:
                 String txt = etSqlDetail.getText().toString();
                 String txtcount = tvSignPage.getText().toString();
-                if (txt.length() == 0) {
+                if (txt.equals("")) {
                     ToastUtils.ShowToastMessage("页码不能为空", CommoditySqlActivity.this);
-                } else if (txt.length() > txtcount.length()) {
-                    ToastUtils.ShowToastMessage("页码超出输入范围", CommoditySqlActivity.this);
                 } else {
-                    setPageDetail();
+                    int txtindex = Integer.parseInt(txt);
+                    int txtcountindex = Integer.parseInt(txtcount);
+                    if (txtindex > txtcountindex) {
+                        ToastUtils.ShowToastMessage("已经是最后一页", CommoditySqlActivity.this);
+                    } else if (txtindex < 1) {
+                        ToastUtils.ShowToastMessage("已经是第一页", CommoditySqlActivity.this);
+                    } else if (txt.length() == 0) {
+                        ToastUtils.ShowToastMessage("页码不能为空", CommoditySqlActivity.this);
+                    } else if (txt.length() > txtcount.length()) {
+                        ToastUtils.ShowToastMessage("页码超出输入范围", CommoditySqlActivity.this);
+                    } else {
+                        setPageDetail();
+                    }
                 }
                 break;
             /*保存*/
@@ -202,6 +217,44 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                 break;
             case R.id.spinnermenu:
                 showPopupMenu(spinnermenu);
+                break;
+            /*上一页*/
+            case R.id.ivUpLeftPage:
+                String stredit = etSqlDetail.getText().toString();
+                if (stredit.equals("")) {
+                    ToastUtils.ShowToastMessage("页码不能为空", CommoditySqlActivity.this);
+                } else {
+                    int pageindex = Integer.parseInt(stredit);
+                    int index = pageindex - 2;
+                    if (index < 0) {
+                        ToastUtils.ShowToastMessage("已经是第一页", CommoditySqlActivity.this);
+                    } else {
+                        String indexstr = String.valueOf(index + 1);
+                        etSqlDetail.setText(indexstr);
+                        etSqlDetail.setSelection(indexstr.length());
+                        setPageDate(index);
+                    }
+                }
+                break;
+            /*下一页*/
+            case R.id.ivDownRightPage:
+                String stredit2 = etSqlDetail.getText().toString();
+                if (stredit2.equals("")) {
+                    ToastUtils.ShowToastMessage("页码不能为空", CommoditySqlActivity.this);
+                } else {
+                    int pageIndexx = Integer.parseInt(stredit2);
+                    int index2 = pageIndexx + 1;
+                    String maxpageindex = tvSignPage.getText().toString();
+                    int indexmax = Integer.parseInt(maxpageindex);
+                    if (index2 > indexmax) {
+                        ToastUtils.ShowToastMessage("已经是最后一页", CommoditySqlActivity.this);
+                    } else {
+                        String index2str = String.valueOf(index2);
+                        etSqlDetail.setText(index2str);
+                        etSqlDetail.setSelection(index2str.length());
+                        setPageDate(index2);
+                    }
+                }
                 break;
         }
     }
@@ -276,7 +329,12 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btnComfirm:
-                    setPageDetail();
+                    String etsql2 = etSqlDetail.getText().toString();
+                    if (etsql2.equals("")) {
+                        ToastUtils.ShowToastMessage("页码不能为空", CommoditySqlActivity.this);
+                    } else {
+                        setPageDetail();
+                    }
                     commoDialog.dismiss();
                     break;
             }
@@ -404,6 +462,83 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         conditions.setPrdmasterisnull(stris);
         postBean.setConditions(conditions);
         postBean.setPageNum(Index);
+        postBean.setPageSize(Integer.parseInt(pagesize));
+        String stringpost = gson.toJson(postBean);
+        if (NetWork.isNetWorkAvailable(this)) {
+            ResponseDialog.showLoading(this);
+            final int finalGetsize = Integer.parseInt(pagesize);
+            OkHttpUtils.postString()
+                    .url(str)
+                    .content(stringpost)
+                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            try {
+                                System.out.print(response);
+                                String ress = response.replace("\\", "");
+                                System.out.print(ress);
+                                String ression = StringUtil.sideTrim(ress, "\"");
+                                System.out.print(ression);
+                                commoditydetailBean = new Gson().fromJson(ression, CommoditydetailBean.class);
+                                dataBeen = commoditydetailBean.getData();
+                                if (commoditydetailBean.getTotalCount() != 0) {
+                                    ll_visibi.setVisibility(View.GONE);
+                                    scroll_content.setVisibility(View.VISIBLE);
+                                    System.out.print(dataBeen);
+                                    pageCount = commoditydetailBean.getTotalCount();
+                                    String count = String.valueOf(pageCount / finalGetsize + 1);
+                                    tvSignPage.setText(count);
+                                    sqlAdapter = new CommoditySqlAdapter(CommoditySqlActivity.this, dataBeen);
+                                    mData.setAdapter(sqlAdapter);
+                                    leftAdapter = new CommoditySqlLeftAdapter(CommoditySqlActivity.this, dataBeen);
+                                    lv_cleft.setAdapter(leftAdapter);
+                                } else {
+                                    ll_visibi.setVisibility(View.VISIBLE);
+                                    scroll_content.setVisibility(View.GONE);
+                                    tv_visibi.setText("没有更多信息");
+                                }
+                                ResponseDialog.closeLoading();
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+        } else {
+            ToastUtils.ShowToastMessage("当前网络不可用,请稍后再试", CommoditySqlActivity.this);
+        }
+    }
+
+    private void setPageDate(int pageIndexin) {
+        ResponseDialog.showLoading(this);
+        String str = HttpUrl.debugoneUrl + "QACwork/BindSearchQACworkAPP/";
+        sp = CommoditySqlActivity.this.getSharedPreferences("my_sp", 0);
+        String recodename = sp.getString("commoname", "");//跟单
+        String Style = sp.getString("commoStyle", "");//款号
+//        String Factory = sp.getString("commoFactory", "");//跟单
+        String pagesize = sp.getString("clumnsspinner", "");
+        String Recode = sp.getString("commoRecode", "");//巡检
+        String etprodialogProcedure = sp.getString("etproProcedure", "");//生产主管
+        String ischeck = sp.getString("ischeckedd", "");//是否可为空
+        boolean stris = Boolean.parseBoolean(ischeck);
+//        pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
+//        int Index = pageIndex - 1;
+        Gson gson = new Gson();
+        CommodityPostBean postBean = new CommodityPostBean();
+        CommodityPostBean.Conditions conditions = postBean.new Conditions();
+        conditions.setItem(Style);
+        conditions.setPrddocumentary(recodename);
+        conditions.setPrdmaster(etprodialogProcedure);
+        conditions.setIPQC(Recode);
+        conditions.setPrdmasterisnull(stris);
+        postBean.setConditions(conditions);
+        postBean.setPageNum(pageIndexin);
         postBean.setPageSize(Integer.parseInt(pagesize));
         String stringpost = gson.toJson(postBean);
         if (NetWork.isNetWorkAvailable(this)) {
