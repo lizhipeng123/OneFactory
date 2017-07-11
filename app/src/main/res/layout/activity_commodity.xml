@@ -662,6 +662,54 @@
                         android:layout_width="1px"
                         android:layout_height="50dp"
                         android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="件查" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="预计件查时间" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="实际件查时间" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="查货地点(件查)" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
                 </LinearLayout>
             </com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView>
         </LinearLayout>

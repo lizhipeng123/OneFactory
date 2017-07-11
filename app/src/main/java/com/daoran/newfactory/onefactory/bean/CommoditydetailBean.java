@@ -116,7 +116,7 @@ public class CommoditydetailBean {
         private String QCMasterScore;//主管评分
         private String batchid;//查货批次
         private String QAname;//QA首扎
-        private String firstsamQA;
+        private String firstsamQA;//QA首扎,改后
         private String firstsamQAid;
         private String QAScore;//QA首扎件数
         private String QAMemo;//QA首扎日期
@@ -129,6 +129,51 @@ public class CommoditydetailBean {
         private String prebdt;//预计早期时间
         private String premdt;//预计中期时间
         private String preedt;//预计尾期时间
+        private String chker;//件查
+        private String chkerid;//件查id
+        private String chkpdt;//预计件查时间
+        private String chkfctdt;//实际件查时间
+        private String chkplace;//查货地点(件查)
+
+        public String getChker() {
+            return chker;
+        }
+
+        public void setChker(String chker) {
+            this.chker = chker;
+        }
+
+        public String getChkerid() {
+            return chkerid;
+        }
+
+        public void setChkerid(String chkerid) {
+            this.chkerid = chkerid;
+        }
+
+        public String getChkpdt() {
+            return chkpdt;
+        }
+
+        public void setChkpdt(String chkpdt) {
+            this.chkpdt = chkpdt;
+        }
+
+        public String getChkfctdt() {
+            return chkfctdt;
+        }
+
+        public void setChkfctdt(String chkfctdt) {
+            this.chkfctdt = chkfctdt;
+        }
+
+        public String getChkplace() {
+            return chkplace;
+        }
+
+        public void setChkplace(String chkplace) {
+            this.chkplace = chkplace;
+        }
 
         public String getPrdmasterid() {
             return prdmasterid;

@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,9 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.WorkPwSwitchActivity;
 import com.daoran.newfactory.onefactory.adapter.ScrollWrokAdapter;
 import com.daoran.newfactory.onefactory.bean.WorkBean;
 import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
@@ -25,8 +29,6 @@ import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.ScrollGridView;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,8 +36,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * 工作模块
@@ -134,12 +134,13 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void setListener() {
-//        idworkname.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                return false;
-//            }
-//        });
+        idworkname.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                initPopWindow();
+                return false;
+            }
+        });
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 
@@ -187,40 +188,33 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 super.onFinish();
             }
         });
-//        OkHttpUtils.get()
-//                .url(strmenu)
-//                .build()
-//                .execute(new StringCallback() {
-//                    @Override
-//                    public void onError(Call call, Exception e, int id) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    @Override
-//                    public void onResponse(String response, int id) {
-//                        String ress = response.replace("\\", "");
-//                        String ression = StringUtil.sideTrim(ress, "\"");
-//                        String resscontent = ression.replace("\'", "\"");
-//                        System.out.print(resscontent);
-//                        try {
-//                            JSONArray temp = new JSONArray(resscontent);
-//                            for (int i = 0; i < temp.length(); i++) {
-//                                String Stringcar = temp.getString(i);
-//                                String txt = new JSONObject(Stringcar).getString("text");
-//                                String phoneurl = new JSONObject(Stringcar).getString("PhoneUrl");
-//                                String img = new JSONObject(Stringcar).getString("img");
-//                                workBeen.add(new WorkBean(phoneurl, txt, img));
-//                            }
-//                            sl = temp.getString(0);
-//                            JSONObject jsonObject = new JSONObject(sl);
-//                            workitemview = jsonObject.getString("text");
-//                            sgv_gridview = (ScrollGridView) view.findViewById(R.id.sgv_gridview);
-//                            sgv_gridview.setAdapter(new ScrollWrokAdapter(getActivity(), workBeen));
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                });
+    }
+
+    /**
+     * 长按弹出菜单
+     */
+    private void initPopWindow() {
+        View contenview = LayoutInflater.from(mactivity.getApplicationContext()).
+                inflate(R.layout.popupwindow_name_switch, null);
+        final PopupWindow popupWindow = new PopupWindow(
+                mactivity.findViewById(R.id.mainLayout), 500, 600, true);
+        popupWindow.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setContentView(contenview);
+        TextView tvPwSwitch = (TextView) contenview.findViewById(R.id.tvPwSwitch);
+        tvPwSwitch.setText("添加账号");
+        tvPwSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mactivity, WorkPwSwitchActivity.class);
+                mactivity.startActivity(intent);
+                popupWindow.dismiss();
+            }
+        });
+        ListView llPwSwitch = (ListView) contenview.findViewById(R.id.llPwSwitch);
+
+        popupWindow.setFocusable(true);
+        popupWindow.showAsDropDown(idworkname);
     }
 
     @Override

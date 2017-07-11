@@ -688,6 +688,63 @@
             android:layout_width="1px"
             android:layout_height="50dp"
             android:background="#cccccc" />
+        <EditText
+            android:id="@+id/tvCommoThing"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
 
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+        <TextView
+            android:id="@+id/tvCommoThingExpectedTime"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+        <TextView
+            android:id="@+id/tvCommoThingTime"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+        <EditText
+            android:id="@+id/tvCommoThingAddress"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
     </LinearLayout>
 </LinearLayout>

@@ -56,6 +56,51 @@ public class CommoditySaveBean {
     private String IPQCid;
     private String firstsamQAid;
     private String prdmasterid;//生产主管id
+    private String chker;//件查
+    private String chkerid;//件查id
+    private String chkpdt;//预计件查时间
+    private String chkfctdt;//实际件查时间
+    private String chkplace;//查货地点(件查)
+
+    public String getChker() {
+        return chker;
+    }
+
+    public void setChker(String chker) {
+        this.chker = chker;
+    }
+
+    public String getChkerid() {
+        return chkerid;
+    }
+
+    public void setChkerid(String chkerid) {
+        this.chkerid = chkerid;
+    }
+
+    public String getChkpdt() {
+        return chkpdt;
+    }
+
+    public void setChkpdt(String chkpdt) {
+        this.chkpdt = chkpdt;
+    }
+
+    public String getChkfctdt() {
+        return chkfctdt;
+    }
+
+    public void setChkfctdt(String chkfctdt) {
+        this.chkfctdt = chkfctdt;
+    }
+
+    public String getChkplace() {
+        return chkplace;
+    }
+
+    public void setChkplace(String chkplace) {
+        this.chkplace = chkplace;
+    }
 
     public String getIPQCid() {
         return IPQCid;

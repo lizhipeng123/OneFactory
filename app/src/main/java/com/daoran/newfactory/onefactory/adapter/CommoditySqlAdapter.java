@@ -111,6 +111,10 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoQAScore = (EditText) convertView.findViewById(R.id.tvCommoQAScore);
             holder.tvCommoQAMemo = (TextView) convertView.findViewById(R.id.tvCommoQAMemo);
             holder.lin_content = (LinearLayout) convertView.findViewById(R.id.lin_content);
+            holder.tvCommoThing = (EditText) convertView.findViewById(R.id.tvCommoThing);
+            holder.tvCommoThingExpectedTime = (TextView) convertView.findViewById(R.id.tvCommoThingExpectedTime);
+            holder.tvCommoThingTime = (TextView) convertView.findViewById(R.id.tvCommoThingTime);
+            holder.tvCommoThingAddress = (EditText) convertView.findViewById(R.id.tvCommoThingAddress);
             spUtils.put(context, "strposition", position);
             convertView.setClickable(true);
             convertView.setOnClickListener(myOnclicklistener);
@@ -1386,7 +1390,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             if (editTextQAname.getTag() instanceof TextWatcher) {
                 editTextQAname.removeTextChangedListener((TextWatcher) editTextQAname.getTag());
             }
-            editTextQAname.setText(getItem(position).getQAname());
+            editTextQAname.setText(getItem(position).getFirstsamQA());
             TextWatcher TvQAname = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1520,6 +1524,37 @@ public class CommoditySqlAdapter extends BaseAdapter {
             }
             editTextQCedtDoc.setText(getItem(position).getQCedtDoc());
 
+            holder.tvCommoThing.setEnabled(false);
+            final EditText editTextThing = holder.tvCommoThing;
+            if (editTextThing.getTag() instanceof TextWatcher) {
+                editTextThing.removeTextChangedListener((TextWatcher) editTextThing.getTag());
+            }
+            editTextThing.setText(getItem(position).getChker());
+
+            holder.tvCommoThingAddress.setEnabled(false);
+            final EditText editTextThingAddress = holder.tvCommoThingAddress;
+            if (editTextThingAddress.getTag() instanceof TextWatcher) {
+                editTextThingAddress.removeTextChangedListener((TextWatcher) editTextThingAddress.getTag());
+            }
+            editTextThingAddress.setText(getItem(position).getChkplace());
+
+            holder.tvCommoThingExpectedTime.setEnabled(false);
+            holder.tvCommoThingExpectedTime.setText(getItem(position).getChkpdt());
+            holder.tvCommoThingExpectedTime.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            holder.tvCommoThingTime.setEnabled(false);
+            holder.tvCommoThingTime.setText(getItem(position).getChkfctdt());
+            holder.tvCommoThingTime.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
             /**
              * 判断跟单员是否是当前登录用户
@@ -2776,7 +2811,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             if (editTextQAname.getTag() instanceof TextWatcher) {
                 editTextQAname.removeTextChangedListener((TextWatcher) editTextQAname.getTag());
             }
-            editTextQAname.setText(getItem(position).getQAname());
+            editTextQAname.setText(getItem(position).getFirstsamQA());
             TextWatcher TvQAname = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -2909,6 +2944,38 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextQCedtDoc.removeTextChangedListener((TextWatcher) editTextQCedtDoc.getTag());
             }
             editTextQCedtDoc.setText(getItem(position).getQCedtDoc());
+
+            holder.tvCommoThing.setEnabled(false);
+            final EditText editTextThing = holder.tvCommoThing;
+            if (editTextThing.getTag() instanceof TextWatcher) {
+                editTextThing.removeTextChangedListener((TextWatcher) editTextThing.getTag());
+            }
+            editTextThing.setText(getItem(position).getChker());
+
+            holder.tvCommoThingAddress.setEnabled(false);
+            final EditText editTextThingAddress = holder.tvCommoThingAddress;
+            if (editTextThingAddress.getTag() instanceof TextWatcher) {
+                editTextThingAddress.removeTextChangedListener((TextWatcher) editTextThingAddress.getTag());
+            }
+            editTextThingAddress.setText(getItem(position).getChkplace());
+
+            holder.tvCommoThingExpectedTime.setEnabled(false);
+            holder.tvCommoThingExpectedTime.setText(getItem(position).getChkpdt());
+            holder.tvCommoThingExpectedTime.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            holder.tvCommoThingTime.setEnabled(false);
+            holder.tvCommoThingTime.setText(getItem(position).getChkfctdt());
+            holder.tvCommoThingTime.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
             /**
              * 判断登录人是否是陈慧萍（跟单负责人）
              */
@@ -4155,7 +4222,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             if (editTextQAname.getTag() instanceof TextWatcher) {
                 editTextQAname.removeTextChangedListener((TextWatcher) editTextQAname.getTag());
             }
-            editTextQAname.setText(getItem(position).getQAname());
+            editTextQAname.setText(getItem(position).getFirstsamQA());
             TextWatcher TvQAname = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -4385,6 +4452,40 @@ public class CommoditySqlAdapter extends BaseAdapter {
             editTextQCedtDoc.setTag(TvQCedtDoc);
             /*光标放置在文本最后*/
             holder.tvCommoQCedtDoc.setSelection(holder.tvCommoQCedtDoc.length());
+
+
+            holder.tvCommoThing.setEnabled(false);
+            final EditText editTextThing = holder.tvCommoThing;
+            if (editTextThing.getTag() instanceof TextWatcher) {
+                editTextThing.removeTextChangedListener((TextWatcher) editTextThing.getTag());
+            }
+            editTextThing.setText(getItem(position).getChker());
+
+            holder.tvCommoThingAddress.setEnabled(false);
+            final EditText editTextThingAddress = holder.tvCommoThingAddress;
+            if (editTextThingAddress.getTag() instanceof TextWatcher) {
+                editTextThingAddress.removeTextChangedListener((TextWatcher) editTextThingAddress.getTag());
+            }
+            editTextThingAddress.setText(getItem(position).getChkplace());
+
+            holder.tvCommoThingExpectedTime.setEnabled(false);
+            holder.tvCommoThingExpectedTime.setText(getItem(position).getChkpdt());
+            holder.tvCommoThingExpectedTime.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            holder.tvCommoThingTime.setEnabled(false);
+            holder.tvCommoThingTime.setText(getItem(position).getChkfctdt());
+            holder.tvCommoThingTime.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
         } else {
 //            holder.tvCommoItem.setEnabled(false);
 //            holder.tvCommoItem.setText(getItem(position).getItem());
@@ -4682,6 +4783,38 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 }
             });
 
+            holder.tvCommoThing.setEnabled(false);
+            final EditText editTextThing = holder.tvCommoThing;
+            if (editTextThing.getTag() instanceof TextWatcher) {
+                editTextThing.removeTextChangedListener((TextWatcher) editTextThing.getTag());
+            }
+            editTextThing.setText(getItem(position).getChker());
+
+            holder.tvCommoThingAddress.setEnabled(false);
+            final EditText editTextThingAddress = holder.tvCommoThingAddress;
+            if (editTextThingAddress.getTag() instanceof TextWatcher) {
+                editTextThingAddress.removeTextChangedListener((TextWatcher) editTextThingAddress.getTag());
+            }
+            editTextThingAddress.setText(getItem(position).getChkplace());
+
+            holder.tvCommoThingExpectedTime.setEnabled(false);
+            holder.tvCommoThingExpectedTime.setText(getItem(position).getChkpdt());
+            holder.tvCommoThingExpectedTime.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            holder.tvCommoThingTime.setEnabled(false);
+            holder.tvCommoThingTime.setText(getItem(position).getChkfctdt());
+            holder.tvCommoThingTime.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
             holder.tvCommoQCMedt.setEnabled(false);
             holder.tvCommoQCMedt.setText(getItem(position).getQCMedt());
             holder.tvCommoQCMedt.setOnClickListener(new View.OnClickListener() {
@@ -4816,7 +4949,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             if (editTextQAname.getTag() instanceof TextWatcher) {
                 editTextQAname.removeTextChangedListener((TextWatcher) editTextQAname.getTag());
             }
-            editTextQAname.setText(getItem(position).getQAname());
+            editTextQAname.setText(getItem(position).getFirstsamQA());
             holder.tvCommoQAname.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -4861,12 +4994,20 @@ public class CommoditySqlAdapter extends BaseAdapter {
         LinearLayout lin_content;
         TextView tvCommoOurAfter, tvCommoItem, tvCommoCtmtxt, tvCommoQAMemo,
                 tvCommoPrddocumentary, tvCommoprdmaster, tvCommoSealedrev,
-                tvCommoDocback, tvCommoLcdat, tvCommoTaskqty, tvCommoPredocdt, tvCommoPred, tvCommoSewFdt, tvCommoSewMdt, tvCommoSubfactory, tvCommoPrebdt, tvCommoQCbdt, tvCommoPremdt, tvCommoQCmdt, tvCommoPreedt, tvCommoQCMedt, tvCommoFctmdt, tvCommoFctedt, tvCommoPackbdat, tvCommoFactlcdat, tvCommoCtmchkdt;
+                tvCommoDocback, tvCommoLcdat, tvCommoTaskqty,
+                tvCommoPredocdt, tvCommoPred, tvCommoSewFdt,
+                tvCommoSewMdt, tvCommoSubfactory, tvCommoPrebdt,
+                tvCommoQCbdt, tvCommoPremdt, tvCommoQCmdt, tvCommoPreedt,
+                tvCommoQCMedt, tvCommoFctmdt, tvCommoFctedt, tvCommoPackbdat,
+                tvCommoFactlcdat, tvCommoCtmchkdt, tvCommoThingExpectedTime,
+                tvCommoThingTime;
         EditText
                 tvCommoQCMasterScore, tvCommoPreMemo,
                 tvCommoPredoc, tvCommoFabricsok, tvCommoAccessoriesok,
                 tvCommoSpcproDec, tvCommoSpcproMemo, tvCommoCutqty,
-                tvCommoQCbdtDoc, tvCommoQCmdtDoc, tvCommoQCedtDoc, tvCommoPackqty2, tvCommoQCMemo, tvCommoBatchid,
-                tvCommoIPQCPedt, tvCommoIPQCmdt, tvCommoQAname, tvCommoQAScore;
+                tvCommoQCbdtDoc, tvCommoQCmdtDoc, tvCommoQCedtDoc,
+                tvCommoPackqty2, tvCommoQCMemo, tvCommoBatchid,
+                tvCommoIPQCPedt, tvCommoIPQCmdt, tvCommoQAname, tvCommoQAScore,
+                tvCommoThing, tvCommoThingAddress;
     }
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/lightsteelblue"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ListView
+        android:id="@+id/llPwSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tvPwSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_100"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:textSize="@dimen/dimen_50sp" />
+</LinearLayout>
