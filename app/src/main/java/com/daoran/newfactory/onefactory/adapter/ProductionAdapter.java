@@ -227,7 +227,8 @@ public class ProductionAdapter extends BaseAdapter {
                         spUtils.put(context, "copyRecorder", copyRecorder);
                         String copyRecordat = getItem(position).getRecordat();
                         spUtils.put(context, "copyRecordat", copyRecordat);
-
+                        String copyproducament = getItem(position).getPrddocumentaryid();
+                        spUtils.put(context,"copyproducament",copyproducament);
                         ArrayList<String> list = new ArrayList<String>();
                         list.add(copyitem);
                         Intent intent = new Intent(context, ProductionActivity.class);

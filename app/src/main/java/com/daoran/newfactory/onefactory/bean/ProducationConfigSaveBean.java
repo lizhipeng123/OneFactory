@@ -1,12 +1,12 @@
 package com.daoran.newfactory.onefactory.bean;
 
 /**
- *  生产日报新建保存实体
+ * 生产日报新建保存实体
  * Created by lizhipeng on 2017/5/13.
  */
 
 public class ProducationConfigSaveBean {
-    private String ID;
+    private String ID;//条目id
     private String salesid;//引用的排单计划表id
     private String planid;//引用的工厂计划id
     private int sn;//序列号
@@ -27,7 +27,7 @@ public class ProducationConfigSaveBean {
     private String styp;//po类型(分类)
     private String fsaler;//外贸业务员
     private String psaler;//生产业务员
-    private String memo;
+    private String memo;//备注
     private String pqty;//产品数量
     private String unit;//单位
     private String prodcol;//花色
@@ -93,6 +93,15 @@ public class ProducationConfigSaveBean {
     private String day30;
     private String day31;
     private boolean isdiffc;//是否分色
+    private String prddocumentaryid;//跟单id
+
+    public String getPrddocumentaryid() {
+        return prddocumentaryid;
+    }
+
+    public void setPrddocumentaryid(String prddocumentaryid) {
+        this.prddocumentaryid = prddocumentaryid;
+    }
 
     public String getRecordid() {
         return recordid;

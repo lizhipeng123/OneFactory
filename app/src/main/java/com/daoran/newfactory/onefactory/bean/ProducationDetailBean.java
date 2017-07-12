@@ -206,6 +206,15 @@ public class ProducationDetailBean {
         private boolean isdiffc;//是否分色
         private String memoprdure;//默认的月份
         private String memomonth;//修改的月份
+        private String prddocumentaryid;
+
+        public String getPrddocumentaryid() {
+            return prddocumentaryid;
+        }
+
+        public void setPrddocumentaryid(String prddocumentaryid) {
+            this.prddocumentaryid = prddocumentaryid;
+        }
 
         public String getMemomonth() {
             return memomonth;
