@@ -68,6 +68,8 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -78,6 +80,7 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 /**
+ * 外勤签到
  * Created by lizhipeng on 2017/6/1.
  */
 @RuntimePermissions
@@ -144,12 +147,16 @@ public class SignOpenActivity extends BaseFrangmentActivity
             Manifest.permission.READ_PHONE_STATE
     };
     private static final int PERMISSON_REQUESTCODE = 0;
+
+    long prolongTim = 0;//上一次的时间
     /**
      * 判断是否需要检测，防止不停的弹框
      */
     private boolean isNeedCheck = true;
 
     private static final int msgKey1 = 1;
+
+    String strprolong1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,7 +216,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
                     long time = System.currentTimeMillis();
                     Date date = new Date(time);
                     SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-
                     tvSqltexttime.setText(format.format(date));
                     break;
                 default:
@@ -488,7 +494,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
     }
 
     /**
-     * 截屏保存图片
+     * 截屏保存图片之后上传签到信息
      */
     private void getpicture() {
         aMap.getMapScreenShot(new AMap.OnMapScreenShotListener() {
@@ -534,6 +540,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
                     topBg.setImageBitmap(bitmap);
                     String picurl = BitmapTools.convertIconToString(bitmap);
                     spUtils.put(SignOpenActivity.this, "picurl", picurl);
+                    setSignDebug();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -544,26 +551,73 @@ public class SignOpenActivity extends BaseFrangmentActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            /*返回*/
             case R.id.ivSignBack:
                 finish();
                 break;
+            /*跳转到签到查询*/
             case R.id.btnCount:
                 startActivity(new Intent(SignOpenActivity.this, SignDetailActivity.class));
                 break;
+            /*备注输入框*/
             case R.id.etRemark:
                 etRemark.setFocusableInTouchMode(true);
                 break;
 //            case R.id.btnSignCancle:
 //                finish();
 //                break;
+            /*签到按钮，目前十分钟之内不能重复签到*/
             case R.id.btnSignOk:
-                ResponseDialog.showLoading(this, "请稍后");
-                getpicture();
-                setSignDebug();
-                break;
+                long prolongtime = sp.getLong("prolongtime", 0);
+                int prolong = (int) prolongtime;
+                if (prolong == 0) {//第一次点击，初始化为本次单机的时间
+                    ResponseDialog.showLoading(this, "请稍后");
+                    long time = System.currentTimeMillis() / 1000;//获取系统时间的10位的时间戳
+                    strprolong1 = formatData("yyyy-MM-dd HH:mm:ss", time);
+                    spUtils.put(SignOpenActivity.this, "prolongtime", time);
+//                    getpicture();
+                    ToastUtils.ShowToastMessage("可以签到", SignOpenActivity.this);
+                    break;
+                } else {
+                    ResponseDialog.showLoading(this, "请稍后");
+                    long time = System.currentTimeMillis() / 1000;//获取系统时间的10位的时间戳
+                    String strprolong = formatData("yyyy-MM-dd HH:mm:ss", time);
+                    String strpro = formatData("yyyy-MM-dd HH:mm:ss",prolongtime);
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    try {
+                        Date df1 = df.parse(strprolong);
+                        Date df2 = df.parse(strpro);
+                        long fiff = df1.getTime() - df2.getTime();
+                        long days = fiff / (1000 * 60 * 60 * 24);
+                        long hours = (fiff - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
+                        long minutes = (fiff - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
+                        int minu = (int) minutes;
+                        if (minu < 5) {
+                            ToastUtils.ShowToastMessage("五分钟之内不能重复签到", SignOpenActivity.this);
+                            ResponseDialog.closeLoading();
+                        } else {
+                            ToastUtils.ShowToastMessage("可以保存", SignOpenActivity.this);
+                            spUtils.put(SignOpenActivity.this, "prolongtime", time);
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
             case R.id.topBg:
                 break;
         }
+    }
+
+    public static String formatData(String dataFormat, long timeStamp) {
+        if (timeStamp == 0) {
+            return "";
+        }
+        timeStamp = timeStamp * 1000;
+        String result = "";
+        SimpleDateFormat format = new SimpleDateFormat(dataFormat);
+        result = format.format(new Date(timeStamp));
+        return result;
     }
 
     /**
@@ -645,7 +699,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
             mapView.onDestroy();
             mapView = null;
         }
-        mapLocationClient.onDestroy();//销毁定位客户端。
+        mapLocationClient.onDestroy();//退出本页面时销毁定位客户端。
     }
 
     @Override
@@ -695,10 +749,9 @@ public class SignOpenActivity extends BaseFrangmentActivity
                                 String strresponse = String.valueOf(response.charAt(1));
                                 System.out.print(strresponse);
                                 if (strresponse.equals("1")) {
-                                    ToastUtils.ShowToastMessage(R.string.Uploadsuccess, SignOpenActivity.this);
+                                    ToastUtils.ShowToastMessage(R.string.signloadsuccess, SignOpenActivity.this);
                                 } else {
-                                    ToastUtils.ShowToastMessage(R.string.Uploadfailed, SignOpenActivity.this);
-                                    ResponseDialog.closeLoading();
+                                    ToastUtils.ShowToastMessage(R.string.signloadfailed, SignOpenActivity.this);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -837,6 +890,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
         } else {
             Log.e(TAG, "error_other：" + rCode);
         }
-        adapter.notifyDataSetChanged();
+//        adapter.notifyDataSetChanged();
     }
 }

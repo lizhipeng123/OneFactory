@@ -870,7 +870,6 @@ public class ProductionActivity extends BaseFrangmentActivity
 
     /**
      * 修改保存
-     * 待修改（循环判断）
      */
     private void setSave() {
         sp = getSharedPreferences("my_sp", 0);
@@ -935,6 +934,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             }
             System.out.print(arrsItem + "");
 
+            /*去掉符合款号的月份空值*/
             StringBuffer sb1 = new StringBuffer();
             for (int i = 0; i < arrsmonth.length; i++) {
                 if ("".equals(arrsmonth[i])) {
@@ -951,6 +951,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             }
             System.out.print(arrsmonth + "");
 
+            /*去掉符合款号的颜色的空值*/
             StringBuffer sbcolor = new StringBuffer();
             for (int i = 0; i < arrcolor.length; i++) {
                 if ("".equals(arrcolor[i])) {
@@ -996,6 +997,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                     arrsdatecolor[i] = "";
                 }
             }
+            /*去掉月份中空值*/
             StringBuffer sb2 = new StringBuffer();
             for (int i = 0; i < arrsdatamonth.length; i++) {
                 if ("".equals(arrsdatamonth[i])) {
@@ -1034,7 +1036,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                     arrsproduremonthlist[i] = "";
                 }
             }
-
+            /*去掉颜色中空值*/
             StringBuffer sbcolorpro = new StringBuffer();
             for (int i = 0; i < arrsprodurecolorlist.length; i++) {
                 if ("".equals(arrsprodurecolorlist[i])) {
@@ -1050,7 +1052,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                 System.out.print(arrsprodurecolorlist[i] + "");
             }
 
-            /*去掉月份空格*/
+            /*去掉月份中空值*/
             StringBuffer sbproduremonth = new StringBuffer();
             for (int i = 0; i < arrsproduremonthlist.length; i++) {
                 if ("".equals(arrsproduremonthlist[i])) {
@@ -1096,7 +1098,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             boolean flagprodurelist = containsAll(arrsprodurelist, arrsflag);//
             boolean flagproduremonth = containsAll(arrsproduremonthlist, arrsmonth);
             int colorlistlength = arrsprodurecolorlist.length;
-
+            /*将得到的实体类转变为json数据*/
             Gson gson = new GsonBuilder().registerTypeAdapterFactory(new
                     NullStringToEmptyAdapterFactory()).create();
             String detailb = gson.toJson(detailBeenList);
@@ -1142,6 +1144,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             String probooleanProcedureTitle = sp.getString("probooleanProcedureTitle", "");//工序
             String prosavestate = sp.getString("prosavestate", "");//状态
             producationSaveBean = new ProducationSaveBean();
+            /*判断全部可填的数据是否都为空，空则显示未修改数据*/
             if (prosaveothers.equals("") && prosavetasknunber.equals("")
                     && prosavecompletedlastmonth.equals("") && prosaveoneday.equals("")
                     && prosavetwoday.equals("") && prothreeday.equals("")
@@ -1457,67 +1460,68 @@ public class ProductionActivity extends BaseFrangmentActivity
             String copyRecorder = sp.getString("copyRecorder", "");
             String copyRecordat = sp.getString("copyRecordat", "");
             String copyRecordid = sp.getString("username", "");
-            String copyproducament = sp.getString("copyproducament","");
+            String copyproducament = sp.getString("copyproducament", "");
             Gson gson = new Gson();
+            /*实例化实体类*/
             ProducationConfigSaveBean saveBean = new ProducationConfigSaveBean();
-            saveBean.setID(itemid);
-            saveBean.setSalesid(prosalesid);
-            saveBean.setRecordid(copyRecordid);
-            saveBean.setItem(item);
-            saveBean.setPrddocumentary(copyDocumentary);
-            saveBean.setSubfactory(copyFactory);
-            saveBean.setSubfactoryTeams(copyDepartment);
-            saveBean.setWorkingProcedure(copyProcedure);
-            saveBean.setWorkers(copyOthers);
-            saveBean.setPqty(copySingularSystem);
-            saveBean.setProdcol(copyColor);
-            saveBean.setTaskqty(copyTaskNumber);
-            saveBean.setMdl(copySize);
-            saveBean.setFactcutqty(copyClippingNumber);
-            saveBean.setLastMonQty(copyCompletedLastMonth);
-            saveBean.setSumCompletedQty(copyTotalCompletion);
-            saveBean.setLeftQty(copyBalanceAmount);
-            saveBean.setPrdstatus(copyState);
-            saveBean.setYear(String.valueOf(year));
-            saveBean.setMonth(String.valueOf(month));
-            saveBean.setDay1("");
-            saveBean.setDay2("");
-            saveBean.setDay3("");
-            saveBean.setDay4("");
-            saveBean.setDay5("");
-            saveBean.setDay6("");
-            saveBean.setDay7("");
-            saveBean.setDay8("");
-            saveBean.setDay9("");
-            saveBean.setDay10("");
-            saveBean.setDay11("");
-            saveBean.setDay12("");
-            saveBean.setDay13("");
-            saveBean.setDay14("");
-            saveBean.setDay15("");
-            saveBean.setDay16("");
-            saveBean.setDay17("");
-            saveBean.setDay18("");
-            saveBean.setDay19("");
-            saveBean.setDay20("");
-            saveBean.setDay21("");
-            saveBean.setDay22("");
-            saveBean.setDay23("");
-            saveBean.setDay24("");
-            saveBean.setDay25("");
-            saveBean.setDay26("");
-            saveBean.setDay27("");
-            saveBean.setDay28("");
-            saveBean.setDay29("");
-            saveBean.setDay30("");
-            saveBean.setDay31("");
-            saveBean.setMemo("");
-            saveBean.setRecorder(copyRecorder);
-            saveBean.setRecordat(copyRecordat);
-            saveBean.setPrddocumentaryid(copyproducament);
-            configSaveBeen.add(saveBean);
-            String configsave = gson.toJson(configSaveBeen);
-            String dateee = configsave.replace("\"\"", "null");
+            saveBean.setID(itemid);//id
+            saveBean.setSalesid(prosalesid);//列id
+            saveBean.setRecordid(copyRecordid);//制单人id
+            saveBean.setItem(item);//款号
+            saveBean.setPrddocumentary(copyDocumentary);//跟单
+            saveBean.setSubfactory(copyFactory);//工厂
+            saveBean.setSubfactoryTeams(copyDepartment);//部门组别
+            saveBean.setWorkingProcedure(copyProcedure);//工序
+            saveBean.setWorkers(copyOthers);//组别人数
+            saveBean.setPqty(copySingularSystem);//制单数
+            saveBean.setProdcol(copyColor);//花色
+            saveBean.setTaskqty(copyTaskNumber);//任务数
+            saveBean.setMdl(copySize);//尺码
+            saveBean.setFactcutqty(copyClippingNumber);//实裁数
+            saveBean.setLastMonQty(copyCompletedLastMonth);//上月完工
+            saveBean.setSumCompletedQty(copyTotalCompletion);//总完工数
+            saveBean.setLeftQty(copyBalanceAmount);//结余数量
+            saveBean.setPrdstatus(copyState);//状态
+            saveBean.setYear(String.valueOf(year));//年
+            saveBean.setMonth(String.valueOf(month));//月
+            saveBean.setDay1("");//1日
+            saveBean.setDay2("");//2日
+            saveBean.setDay3("");//3日
+            saveBean.setDay4("");//4日
+            saveBean.setDay5("");//5日
+            saveBean.setDay6("");//6日
+            saveBean.setDay7("");//7日
+            saveBean.setDay8("");//8日
+            saveBean.setDay9("");//9日
+            saveBean.setDay10("");//10日
+            saveBean.setDay11("");//11日
+            saveBean.setDay12("");//12日
+            saveBean.setDay13("");//13日
+            saveBean.setDay14("");//14日
+            saveBean.setDay15("");//15日
+            saveBean.setDay16("");//16日
+            saveBean.setDay17("");//17日
+            saveBean.setDay18("");//18日
+            saveBean.setDay19("");//19日
+            saveBean.setDay20("");//20日
+            saveBean.setDay21("");//21日
+            saveBean.setDay22("");//22日
+            saveBean.setDay23("");//23日
+            saveBean.setDay24("");//24日
+            saveBean.setDay25("");//25日
+            saveBean.setDay26("");//26日
+            saveBean.setDay27("");//27日
+            saveBean.setDay28("");//28日
+            saveBean.setDay29("");//29日
+            saveBean.setDay30("");//30日
+            saveBean.setDay31("");//31日
+            saveBean.setMemo("");//备注
+            saveBean.setRecorder(copyRecorder);//制单人
+            saveBean.setRecordat(copyRecordat);//制单时间
+            saveBean.setPrddocumentaryid(copyproducament);//跟单id
+            configSaveBeen.add(saveBean);//添加实体字段
+            String configsave = gson.toJson(configSaveBeen);//实体类转json数据
+            String dateee = configsave.replace("\"\"", "null");//json数据将双引号转变为null
             /*删除本地存储的之前点击item获取的字段*/
             editor.remove("prosalesid");
             editor.remove("copyitem");
