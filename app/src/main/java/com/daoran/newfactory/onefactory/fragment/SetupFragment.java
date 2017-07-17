@@ -168,7 +168,6 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 dialog.show();
                 break;
             case R.id.rlEditionUpdate:
-
                 break;
             case R.id.tvVersion:
                 checkAppVersion(true);
