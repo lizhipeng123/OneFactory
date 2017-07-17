@@ -13,12 +13,13 @@ import com.daoran.newfactory.onefactory.bean.ProNewlyBuildBean;
 import java.util.List;
 
 /**
+ * 款号选择左侧编号适配
  * Created by lizhipeng on 2017/6/23.
  */
 
 public class ProductionNewlyBuildLeftAdapter extends BaseAdapter {
     private Context context;
-    private List<ProNewlyBuildBean.DataBean> dataBeen;
+    private List<ProNewlyBuildBean.DataBean> dataBeen;//初始化全部的数据
 
     public ProductionNewlyBuildLeftAdapter(Context context
             , List<ProNewlyBuildBean.DataBean> dataBeen) {

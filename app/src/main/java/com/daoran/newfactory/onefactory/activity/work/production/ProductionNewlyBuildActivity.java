@@ -1,5 +1,6 @@
 package com.daoran.newfactory.onefactory.activity.work.production;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -206,7 +207,9 @@ public class ProductionNewlyBuildActivity
         buildBean.setPageSize(Integer.parseInt(pagesize));
         final String bean = gson.toJson(buildBean);
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this);
+            final ProgressDialog progressDialog = ProgressDialog.show(this,
+                    "请稍候...", "正在查询中...", false, true);
+//            ResponseDialog.showLoading(this);
             final int finalGetsize = Integer.parseInt(pagesize);
             OkHttpUtils.postString()
                     .url(urlDaily)
@@ -217,12 +220,36 @@ public class ProductionNewlyBuildActivity
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                         }
 
                         @Override
                         public void onResponse(String response, int id) {
                             try {
                                 System.out.print(response);
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                                 String ress = response.replace("\\", "");
                                 System.out.print(ress);
                                 String ression = StringUtil.sideTrim(ress, "\"");
@@ -247,10 +274,21 @@ public class ProductionNewlyBuildActivity
                                     scroll_content.setVisibility(View.GONE);
                                     tv_visibi.setText("没有更多数据");
                                 }
-                                ResponseDialog.closeLoading();
+//                                ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
-                                ResponseDialog.closeLoading();
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                             }
                         }
                     });
@@ -304,7 +342,9 @@ public class ProductionNewlyBuildActivity
             buildBean.setPageSize(Integer.parseInt(pagesize));
             final String bean = gson.toJson(buildBean);
             if (NetWork.isNetWorkAvailable(this)) {
-                ResponseDialog.showLoading(this);
+                final ProgressDialog progressDialog = ProgressDialog.show(this,
+                        "请稍候...", "正在查询中...", false, true);
+//                ResponseDialog.showLoading(this);
                 final int finalGetsize = Integer.parseInt(pagesize);
                 OkHttpUtils.postString()
                         .url(urlDaily)
@@ -321,6 +361,18 @@ public class ProductionNewlyBuildActivity
                             public void onResponse(String response, int id) {
                                 try {
                                     System.out.print(response);
+                                    Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(1500);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                                    thread.start();
                                     String ress = response.replace("\\", "");
                                     System.out.print(ress);
                                     String ression = StringUtil.sideTrim(ress, "\"");
@@ -346,10 +398,21 @@ public class ProductionNewlyBuildActivity
                                         scroll_content.setVisibility(View.GONE);
                                         tv_visibi.setText("没有更多数据");
                                     }
-                                    ResponseDialog.closeLoading();
+//                                    ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
-                                    ResponseDialog.closeLoading();
+                                    Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(1500);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                                    thread.start();
                                 }
                             }
                         });
@@ -384,7 +447,8 @@ public class ProductionNewlyBuildActivity
             buildBean.setPageSize(Integer.parseInt(pagesize));
             final String bean = gson.toJson(buildBean);
             if (NetWork.isNetWorkAvailable(this)) {
-                ResponseDialog.showLoading(this);
+                final ProgressDialog progressDialog = ProgressDialog.show(this,
+                        "请稍候...", "正在查询中...", false, true);
                 final int finalGetsize = Integer.parseInt(pagesize);
                 OkHttpUtils.postString()
                         .url(urlDaily)
@@ -395,12 +459,36 @@ public class ProductionNewlyBuildActivity
                             @Override
                             public void onError(Call call, Exception e, int id) {
                                 e.printStackTrace();
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                             }
 
                             @Override
                             public void onResponse(String response, int id) {
                                 try {
                                     System.out.print(response);
+                                    Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(1500);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                                    thread.start();
                                     String ress = response.replace("\\", "");
                                     System.out.print(ress);
                                     String ression = StringUtil.sideTrim(ress, "\"");
@@ -426,10 +514,22 @@ public class ProductionNewlyBuildActivity
                                         scroll_content.setVisibility(View.GONE);
                                         tv_visibi.setText("没有更多数据");
                                     }
-                                    ResponseDialog.closeLoading();
+//                                    ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
-                                    ResponseDialog.closeLoading();
+//                                    ResponseDialog.closeLoading();
+                                    Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(1500);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                                    thread.start();
                                 }
                             }
                         });
@@ -447,7 +547,8 @@ public class ProductionNewlyBuildActivity
             buildBean.setPageSize(Integer.parseInt(pagesize));
             final String bean = gson.toJson(buildBean);
             if (NetWork.isNetWorkAvailable(this)) {
-                ResponseDialog.showLoading(this);
+                final ProgressDialog progressDialog = ProgressDialog.show(this,
+                        "请稍候...", "正在查询中...", false, true);
                 final int finalGetsize = Integer.parseInt(pagesize);
                 OkHttpUtils.postString()
                         .url(urlDaily)
@@ -464,6 +565,18 @@ public class ProductionNewlyBuildActivity
                             public void onResponse(String response, int id) {
                                 try {
                                     System.out.print(response);
+                                    Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(1500);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                                    thread.start();
                                     String ress = response.replace("\\", "");
                                     System.out.print(ress);
                                     String ression = StringUtil.sideTrim(ress, "\"");
@@ -489,10 +602,22 @@ public class ProductionNewlyBuildActivity
                                         scroll_content.setVisibility(View.GONE);
                                         tv_visibi.setText("没有更多数据");
                                     }
-                                    ResponseDialog.closeLoading();
+//                                    ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
                                     ResponseDialog.closeLoading();
+                                    Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(1500);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                                    thread.start();
                                 }
                             }
                         });
@@ -502,6 +627,10 @@ public class ProductionNewlyBuildActivity
         }
     }
 
+    /**
+     * 上一页下一页
+     * @param pageupdateindex
+     */
     private void setPageUpDate(int pageupdateindex) {
         sp = getSharedPreferences("my_sp", 0);
         String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
@@ -535,6 +664,7 @@ public class ProductionNewlyBuildActivity
                             @Override
                             public void onError(Call call, Exception e, int id) {
                                 e.printStackTrace();
+
                             }
 
                             @Override

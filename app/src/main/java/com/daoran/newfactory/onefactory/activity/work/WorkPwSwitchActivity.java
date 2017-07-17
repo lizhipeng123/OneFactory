@@ -28,6 +28,7 @@ import com.daoran.newfactory.onefactory.view.EditTextWithDelete;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.google.gson.Gson;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.http.NameValuePair;
 
 import java.util.ArrayList;
@@ -49,9 +50,6 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
     private Button btnLogin;
     private EditTextWithDelete etUsername, etPassword;
     private String userNameValue, passwordValue;
-
-    //    private List<WorkPwSwitchBean> switchBeenlist
-//            = new ArrayList<WorkPwSwitchBean>();
     private List<WorkPwSwitchBean.Data> switchBeendatalist
             = new ArrayList<WorkPwSwitchBean.Data>();
     private WorkPwSwitchBean.Data switchBean;
@@ -193,41 +191,45 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
                                 spUtils.put(getApplicationContext(), "commoname", userBean.getU_name());
                                 spUtils.put(getApplicationContext(), "commologinid", userBean.getLogid());
                                 String listwork = sp.getString("workbeenlist", "");
-//                                workPwSwitchBean = new Gson().fromJson(listwork, WorkPwSwitchBean.class);
-//                                int switchsize;
-//                                if (workPwSwitchBean == null) {
-//                                    workPwSwitchBean = new WorkPwSwitchBean();
-//                                    switchBean = new WorkPwSwitchBean.Data();
-//                                    String uuname = userBean.getU_name();
-//                                    switchBean.setU_name(uuname);
-//                                    String uulogid = userBean.getLogid();
-//                                    switchBean.setLogid(uulogid);
-//                                    switchBean.setPasswork(passwordValue);
-//                                    switchBeendatalist.add(switchBean);
-//                                    workPwSwitchBean.setDatas(switchBeendatalist);
-//                                } else {
-//                                    switchBeendatalist = workPwSwitchBean.getDatas();
-//                                    int datelistindex = switchBeendatalist.size();
-//                                    for (int i = 0; i < datelistindex+1; i++) {
-//                                        if (switchBeendatalist.get(i).getU_name() != userNameValue) {
-//                                            i += 1;
-//                                            String uname = userBean.getU_name();
-//                                            switchBeendatalist.get(i).setU_name(uname);
-//                                            String ulogid = userBean.getLogid();
-//                                            switchBeendatalist.get(i).setLogid(ulogid);
-//                                            switchBeendatalist.get(i).setPasswork(passwordValue);
-//                                        } else {
-//                                            break;
-//                                        }
-//                                    }
-//                                    System.out.print(switchBeendatalist);
-//                                }
-//                                System.out.print(workPwSwitchBean);
-//                                String workbeenlist = gson.toJson(switchBeendatalist);
-//                                String worklist = gson.toJson(workPwSwitchBean);
-//                                System.out.print(worklist);
-//                                System.out.print(workbeenlist);
-//                                spUtils.put(WorkPwSwitchActivity.this, "workbeenlist", worklist);
+                                workPwSwitchBean = new Gson().fromJson(listwork, WorkPwSwitchBean.class);
+                                //实体类等于空，也就是第一次进的时候，数据是空的
+                                if (workPwSwitchBean == null) {
+                                    workPwSwitchBean = new WorkPwSwitchBean();
+                                    switchBean = new WorkPwSwitchBean.Data();
+                                    String uuname = userBean.getU_name();
+                                    switchBean.setU_name(uuname);
+                                    String uulogid = userBean.getLogid();
+                                    switchBean.setLogid(uulogid);
+                                    switchBean.setPasswork(passwordValue);
+                                    switchBeendatalist.add(switchBean);
+                                    workPwSwitchBean.setDatas(switchBeendatalist);
+                                } else {
+                                    switchBeendatalist = workPwSwitchBean.getDatas();
+                                    switchBean = new WorkPwSwitchBean.Data();
+                                    String uuname = userBean.getU_name();
+                                    String uulogid = userBean.getLogid();
+                                    String[] uname = uuname.split(",");
+                                    String[] listname = new String[switchBeendatalist.size()];
+                                    for (int i = 0; i < switchBeendatalist.size(); i++) {
+                                        listname[i] = switchBeendatalist.get(i).getU_name();
+                                    }
+                                    System.out.print(switchBeendatalist);
+                                    System.out.print(listname);
+                                    boolean booname = containsAll(listname,uname);
+                                    if (booname == false) {
+                                        switchBean.setU_name(uuname);
+                                        switchBean.setLogid(uulogid);
+                                        switchBean.setPasswork(passwordValue);
+                                        switchBeendatalist.add(switchBean);
+                                        workPwSwitchBean.setDatas(switchBeendatalist);
+                                    }
+                                }
+                                System.out.print(workPwSwitchBean);
+                                String workbeenlist = gson.toJson(switchBeendatalist);
+                                String worklist = gson.toJson(workPwSwitchBean);
+                                System.out.print(worklist);
+                                System.out.print(workbeenlist);
+                                spUtils.put(WorkPwSwitchActivity.this, "workbeenlist", worklist);
                                 Intent intent = new Intent(WorkPwSwitchActivity.this, MainActivity.class);
                                 Bundle bundle = new Bundle();
                                 bundle.putString("u_name", userBean.getU_name());
@@ -256,6 +258,15 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
         } else {
             ToastUtils.ShowToastMessage(getString(R.string.noHttp), WorkPwSwitchActivity.this);
         }
+    }
+
+    private static boolean containsAll(String[] array1, String[] array2) {
+        for (String str : array2) {
+            if (!ArrayUtils.contains(array1, str)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

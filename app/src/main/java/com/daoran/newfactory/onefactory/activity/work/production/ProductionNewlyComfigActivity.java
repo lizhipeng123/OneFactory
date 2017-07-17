@@ -1,5 +1,6 @@
 package com.daoran.newfactory.onefactory.activity.work.production;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -338,9 +339,23 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);
         mData = (NoscrollListView) findViewById(R.id.lv_data);
+        final ProgressDialog progressDialog = ProgressDialog.show(this,
+                "请稍候...", "正在查询中...", false, true);
         mdate = getData();
         comfigAdapter = new MyAdatper(this);
         mData.setAdapter(comfigAdapter);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                progressDialog.dismiss();
+            }
+        });
+        thread.start();
 
     }
 
@@ -519,10 +534,23 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         System.out.print(arrsdatemonth + "");
         boolean monthbool = containsAll(arrsdatemonth, arrsmonth);
         boolean predurebool = containsAll(arrsdatepredure, arrspredure);
+        final ProgressDialog progressDialog = ProgressDialog.show(this,
+                "请稍候...", "正在保存中...", false, true);
         if (predurebool == true) {
             if (monthbool == true) {
                 ToastUtils.ShowToastMessage("已存在相同月份，工序的款号", ProductionNewlyComfigActivity.this);
-                ResponseDialog.closeLoading();
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+                });
+                thread.start();
             } else {
                 String proPrdstatusTitle = sp.getString("ComfigPrdstatus", "");//状态//
                 String productionItem = sp.getString("comfigitem", "");//款号
@@ -611,9 +639,21 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             String dateee = detailb.replace("\"\"", "null");
                             if (newlyComfigSaveBeen.equals("")) {
                                 ToastUtils.ShowToastMessage("没有数据可以保存", ProductionNewlyComfigActivity.this);
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                             } else {
                                 if (NetWork.isNetWorkAvailable(this)) {
-                                    ResponseDialog.showLoading(this);
+//                                    ResponseDialog.showLoading(this);
                                     OkHttpUtils.postString().
                                             url(saveurl)
                                             .content(dateee)
@@ -623,11 +663,35 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                                 @Override
                                                 public void onError(Call call, Exception e, int id) {
                                                     e.printStackTrace();
+                                                    Thread thread = new Thread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            try {
+                                                                Thread.sleep(1500);
+                                                            } catch (InterruptedException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                            progressDialog.dismiss();
+                                                        }
+                                                    });
+                                                    thread.start();
                                                 }
 
                                                 @Override
                                                 public void onResponse(String response, int id) {
                                                     System.out.print(response);
+                                                    Thread thread = new Thread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            try {
+                                                                Thread.sleep(1500);
+                                                            } catch (InterruptedException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                            progressDialog.dismiss();
+                                                        }
+                                                    });
+                                                    thread.start();
                                                     String ression = StringUtil.sideTrim(response, "\"");
                                                     System.out.print(ression);
                                                     int resindex = Integer.parseInt(ression);
@@ -637,23 +701,23 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                                                 ProductionNewlyComfigActivity.this);
                                                         startActivity(new Intent(ProductionNewlyComfigActivity.this,
                                                                 ProductionActivity.class));
-                                                        ResponseDialog.closeLoading();
+//                                                        ResponseDialog.closeLoading();
                                                     } else if (resindex == 3) {
                                                         ToastUtils.ShowToastMessage("保存失败",
                                                                 ProductionNewlyComfigActivity.this);
-                                                        ResponseDialog.closeLoading();
+//                                                        ResponseDialog.closeLoading();
                                                     } else if (resindex == 4) {
                                                         ToastUtils.ShowToastMessage("数据错误，请重试",
                                                                 ProductionNewlyComfigActivity.this);
-                                                        ResponseDialog.closeLoading();
+//                                                        ResponseDialog.closeLoading();
                                                     } else if (resindex == 2) {
                                                         ToastUtils.ShowToastMessage("该单已存在，无法新建！",
                                                                 ProductionNewlyComfigActivity.this);
-                                                        ResponseDialog.closeLoading();
+//                                                        ResponseDialog.closeLoading();
                                                     } else {
                                                         ToastUtils.ShowToastMessage("未知错误，请联系管理员",
                                                                 ProductionNewlyComfigActivity.this);
-                                                        ResponseDialog.closeLoading();
+//                                                        ResponseDialog.closeLoading();
                                                     }
                                                 }
                                             });
@@ -732,9 +796,21 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         String dateee = detailb.replace("\"\"", "null");
                         if (newlyComfigSaveBeen.equals("")) {
                             ToastUtils.ShowToastMessage("没有数据可以保存", ProductionNewlyComfigActivity.this);
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                         } else {
                             if (NetWork.isNetWorkAvailable(this)) {
-                                ResponseDialog.showLoading(this);
+//                                ResponseDialog.showLoading(this);
                                 OkHttpUtils.postString().
                                         url(saveurl)
                                         .content(dateee)
@@ -749,6 +825,18 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                             @Override
                                             public void onResponse(String response, int id) {
                                                 System.out.print(response);
+                                                Thread thread = new Thread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        try {
+                                                            Thread.sleep(1500);
+                                                        } catch (InterruptedException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                        progressDialog.dismiss();
+                                                    }
+                                                });
+                                                thread.start();
                                                 String ression = StringUtil.sideTrim(response, "\"");
                                                 System.out.print(ression);
                                                 int resindex = Integer.parseInt(ression);
@@ -758,19 +846,19 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                                             ProductionNewlyComfigActivity.this);
                                                     startActivity(new Intent(ProductionNewlyComfigActivity.this,
                                                             ProductionActivity.class));
-                                                    ResponseDialog.closeLoading();
+//                                                    ResponseDialog.closeLoading();
                                                 } else if (resindex == 3) {
                                                     ToastUtils.ShowToastMessage("保存失败",
                                                             ProductionNewlyComfigActivity.this);
-                                                    ResponseDialog.closeLoading();
+//                                                    ResponseDialog.closeLoading();
                                                 } else if (resindex == 4) {
                                                     ToastUtils.ShowToastMessage("数据错误，请重试",
                                                             ProductionNewlyComfigActivity.this);
-                                                    ResponseDialog.closeLoading();
+//                                                    ResponseDialog.closeLoading();
                                                 } else {
                                                     ToastUtils.ShowToastMessage("未知错误，请联系管理员",
                                                             ProductionNewlyComfigActivity.this);
-                                                    ResponseDialog.closeLoading();
+//                                                    ResponseDialog.closeLoading();
                                                 }
                                             }
                                         });
@@ -872,9 +960,21 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         String dateee = detailb.replace("\"\"", "null");
                         if (newlyComfigSaveBeen.equals("")) {
                             ToastUtils.ShowToastMessage("没有数据可以保存", ProductionNewlyComfigActivity.this);
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                         } else {
                             if (NetWork.isNetWorkAvailable(this)) {
-                                ResponseDialog.showLoading(this);
+//                                ResponseDialog.showLoading(this);
                                 OkHttpUtils.postString().
                                         url(saveurl)
                                         .content(dateee)
@@ -884,11 +984,35 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                             @Override
                                             public void onError(Call call, Exception e, int id) {
                                                 e.printStackTrace();
+                                                Thread thread = new Thread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        try {
+                                                            Thread.sleep(1500);
+                                                        } catch (InterruptedException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                        progressDialog.dismiss();
+                                                    }
+                                                });
+                                                thread.start();
                                             }
 
                                             @Override
                                             public void onResponse(String response, int id) {
                                                 System.out.print(response);
+                                                Thread thread = new Thread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        try {
+                                                            Thread.sleep(1500);
+                                                        } catch (InterruptedException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                        progressDialog.dismiss();
+                                                    }
+                                                });
+                                                thread.start();
                                                 String ression = StringUtil.sideTrim(response, "\"");
                                                 System.out.print(ression);
                                                 int resindex = Integer.parseInt(ression);
@@ -898,23 +1022,23 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                                             ProductionNewlyComfigActivity.this);
                                                     startActivity(new Intent(ProductionNewlyComfigActivity.this,
                                                             ProductionActivity.class));
-                                                    ResponseDialog.closeLoading();
+//                                                    ResponseDialog.closeLoading();
                                                 } else if (resindex == 3) {
                                                     ToastUtils.ShowToastMessage("保存失败",
                                                             ProductionNewlyComfigActivity.this);
-                                                    ResponseDialog.closeLoading();
+//                                                    ResponseDialog.closeLoading();
                                                 } else if (resindex == 4) {
                                                     ToastUtils.ShowToastMessage("数据错误，请重试",
                                                             ProductionNewlyComfigActivity.this);
-                                                    ResponseDialog.closeLoading();
+//                                                    ResponseDialog.closeLoading();
                                                 } else if (resindex == 2) {
                                                     ToastUtils.ShowToastMessage("该单已存在，无法新建！",
                                                             ProductionNewlyComfigActivity.this);
-                                                    ResponseDialog.closeLoading();
+//                                                    ResponseDialog.closeLoading();
                                                 } else {
                                                     ToastUtils.ShowToastMessage("未知错误，请联系管理员",
                                                             ProductionNewlyComfigActivity.this);
-                                                    ResponseDialog.closeLoading();
+//                                                    ResponseDialog.closeLoading();
                                                 }
                                             }
                                         });
@@ -993,9 +1117,21 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     String dateee = detailb.replace("\"\"", "null");
                     if (newlyComfigSaveBeen.equals("")) {
                         ToastUtils.ShowToastMessage("没有数据可以保存", ProductionNewlyComfigActivity.this);
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(1500);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                progressDialog.dismiss();
+                            }
+                        });
+                        thread.start();
                     } else {
                         if (NetWork.isNetWorkAvailable(this)) {
-                            ResponseDialog.showLoading(this);
+//                            ResponseDialog.showLoading(this);
                             OkHttpUtils.postString().
                                     url(saveurl)
                                     .content(dateee)
@@ -1005,11 +1141,35 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                         @Override
                                         public void onError(Call call, Exception e, int id) {
                                             e.printStackTrace();
+                                            Thread thread = new Thread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    try {
+                                                        Thread.sleep(1500);
+                                                    } catch (InterruptedException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    progressDialog.dismiss();
+                                                }
+                                            });
+                                            thread.start();
                                         }
 
                                         @Override
                                         public void onResponse(String response, int id) {
                                             System.out.print(response);
+                                            Thread thread = new Thread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    try {
+                                                        Thread.sleep(1500);
+                                                    } catch (InterruptedException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    progressDialog.dismiss();
+                                                }
+                                            });
+                                            thread.start();
                                             String ression = StringUtil.sideTrim(response, "\"");
                                             System.out.print(ression);
                                             int resindex = Integer.parseInt(ression);
@@ -1019,19 +1179,19 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                                         ProductionNewlyComfigActivity.this);
                                                 startActivity(new Intent(ProductionNewlyComfigActivity.this,
                                                         ProductionActivity.class));
-                                                ResponseDialog.closeLoading();
+//                                                ResponseDialog.closeLoading();
                                             } else if (resindex == 3) {
                                                 ToastUtils.ShowToastMessage("保存失败",
                                                         ProductionNewlyComfigActivity.this);
-                                                ResponseDialog.closeLoading();
+//                                                ResponseDialog.closeLoading();
                                             } else if (resindex == 4) {
                                                 ToastUtils.ShowToastMessage("数据错误，请重试",
                                                         ProductionNewlyComfigActivity.this);
-                                                ResponseDialog.closeLoading();
+//                                                ResponseDialog.closeLoading();
                                             } else {
                                                 ToastUtils.ShowToastMessage("未知错误，请联系管理员",
                                                         ProductionNewlyComfigActivity.this);
-                                                ResponseDialog.closeLoading();
+//                                                ResponseDialog.closeLoading();
                                             }
                                         }
                                     });

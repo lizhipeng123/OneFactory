@@ -77,7 +77,6 @@ public class ProcationDialog extends Dialog {
         p.width = (int) (display.getWidth() * 0.8);
         dialogWindow.setAttributes(p);
         String etaaname = sp.getString("proname","");
-//        String etaa = sp.getString("etprodialogRecode","");
         etprodialogRecode.setText(etaaname);
         String Factory = sp.getString("etprodialogFactory","");
         etprodialogFactory.setText(Factory);
@@ -88,8 +87,6 @@ public class ProcationDialog extends Dialog {
         }else{
             etprodialogRecode.setText("");
         }
-//        String style = sp.getString("etprodialogStyle","");
-//        etprodialogStyle.setText(style);
         String[] spinnerProcedure = content.getResources().getStringArray(R.array.Procedure);
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>

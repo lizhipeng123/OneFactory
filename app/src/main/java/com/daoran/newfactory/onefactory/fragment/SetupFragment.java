@@ -185,7 +185,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 startWifi();
                 break;
             case R.id.rlCore:
-                Intent intent = new Intent(mactivity,CoreActivity.class);
+                Intent intent = new Intent(mactivity, CoreActivity.class);
                 mactivity.startActivity(intent);
                 break;
             case R.id.rlAbout:
@@ -253,7 +253,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         getCurrentVersion();
         String strversion = HttpUrl.debugoneUrl + "AppVersion/GetAppVersion";
         if (NetWork.isNetWorkAvailable(mactivity)) {
-            NetUtil.getAsyncHttpClient().get(strversion,new AsyncHttpResponseHandler(){
+            NetUtil.getAsyncHttpClient().get(strversion, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String content) {
                     super.onSuccess(content);

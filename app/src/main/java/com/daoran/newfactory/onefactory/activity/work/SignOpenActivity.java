@@ -234,6 +234,20 @@ public class SignOpenActivity extends BaseFrangmentActivity
      * 给予控件属性及方法
      */
     private void initViews() {
+        final ProgressDialog progressDialog = ProgressDialog.show(this,
+                "请稍候...", "初始化中...", false, true);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                progressDialog.dismiss();
+            }
+        });
+        thread.start();
         ivSignBack.setOnClickListener(this);
         btnCount.setOnClickListener(this);
         month = month + 1;
@@ -255,6 +269,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
 //        btnSignCancle.setOnClickListener(this);
         btnSignOk.setOnClickListener(this);
         topBg.setOnClickListener(this);
+
     }
 
     /**
@@ -563,9 +578,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
             case R.id.etRemark:
                 etRemark.setFocusableInTouchMode(true);
                 break;
-//            case R.id.btnSignCancle:
-//                finish();
-//                break;
             /*签到按钮，目前十分钟之内不能重复签到*/
             case R.id.btnSignOk:
                 long prolongtime = sp.getLong("prolongtime", 0);
@@ -575,8 +587,8 @@ public class SignOpenActivity extends BaseFrangmentActivity
                     long time = System.currentTimeMillis() / 1000;//获取系统时间的10位的时间戳
                     strprolong1 = formatData("yyyy-MM-dd HH:mm:ss", time);
                     spUtils.put(SignOpenActivity.this, "prolongtime", time);
-//                    getpicture();
-                    ToastUtils.ShowToastMessage("可以签到", SignOpenActivity.this);
+                    getpicture();
+//                    ToastUtils.ShowToastMessage("可以签到", SignOpenActivity.this);
                     break;
                 } else {
                     ResponseDialog.showLoading(this, "请稍后");
@@ -596,7 +608,8 @@ public class SignOpenActivity extends BaseFrangmentActivity
                             ToastUtils.ShowToastMessage("五分钟之内不能重复签到", SignOpenActivity.this);
                             ResponseDialog.closeLoading();
                         } else {
-                            ToastUtils.ShowToastMessage("可以保存", SignOpenActivity.this);
+//                            ToastUtils.ShowToastMessage("可以保存", SignOpenActivity.this);
+                            getpicture();
                             spUtils.put(SignOpenActivity.this, "prolongtime", time);
                         }
                     } catch (ParseException e) {
@@ -609,6 +622,12 @@ public class SignOpenActivity extends BaseFrangmentActivity
         }
     }
 
+    /**
+     * 转换格式
+     * @param dataFormat
+     * @param timeStamp
+     * @return
+     */
     public static String formatData(String dataFormat, long timeStamp) {
         if (timeStamp == 0) {
             return "";
@@ -713,7 +732,9 @@ public class SignOpenActivity extends BaseFrangmentActivity
      */
     private void setSignDebug() {
         String url = HttpUrl.debugoneUrl + "OutRegister/SaveBill/";
-        ResponseDialog.showLoading(this, "请稍后");
+//        ResponseDialog.showLoading(this, "请稍后");
+        final ProgressDialog progressDialog = ProgressDialog.show(this,
+                "请稍候...", "正在保存签到信息...", false, true);
         sp = this.getSharedPreferences("my_sp", 0);
         String recodername = sp.getString("u_name", "");
         String userna = sp.getString("username", "");
@@ -740,12 +761,36 @@ public class SignOpenActivity extends BaseFrangmentActivity
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
                             ToastUtils.ShowToastMessage("上传错误" + e, SignOpenActivity.this);
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                         }
 
                         @Override
                         public void onResponse(String response, int id) {
                             try {
                                 System.out.print(response);
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                                 String strresponse = String.valueOf(response.charAt(1));
                                 System.out.print(strresponse);
                                 if (strresponse.equals("1")) {
@@ -753,8 +798,21 @@ public class SignOpenActivity extends BaseFrangmentActivity
                                 } else {
                                     ToastUtils.ShowToastMessage(R.string.signloadfailed, SignOpenActivity.this);
                                 }
+//                                ResponseDialog.closeLoading();
                             } catch (Exception e) {
                                 e.printStackTrace();
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                             }
                         }
                     });
@@ -890,6 +948,5 @@ public class SignOpenActivity extends BaseFrangmentActivity
         } else {
             Log.e(TAG, "error_other：" + rCode);
         }
-//        adapter.notifyDataSetChanged();
     }
 }

@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -21,15 +22,21 @@ import android.widget.TextView;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.work.WorkPwSwitchActivity;
 import com.daoran.newfactory.onefactory.adapter.ScrollWrokAdapter;
+import com.daoran.newfactory.onefactory.adapter.WorkPwSwitchAdapter;
 import com.daoran.newfactory.onefactory.bean.WorkBean;
+import com.daoran.newfactory.onefactory.bean.WorkPwSwitchBean;
 import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
+import com.daoran.newfactory.onefactory.util.Listener.XXListener;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.view.ScrollGridView;
+//import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
+import com.google.gson.Gson;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,10 +63,17 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     ScrollWrokAdapter adapter;
 
     private List<WorkBean> workBeen = new ArrayList<WorkBean>();
+    private WorkBean workBean;
     private ScrollGridView sgv_gridview;
     private String workitemview;
     private String sl;
 
+    private PopupWindow popupWindow;
+
+    private WorkPwSwitchBean workPwSwitchBean;
+    private List<WorkPwSwitchBean.Data> switchBeendatalist
+            = new ArrayList<WorkPwSwitchBean.Data>();
+    private WorkPwSwitchAdapter switchAdapter;
     private DrawerFragment drawerFragment;
     private String[] intimage = {String.valueOf(R.mipmap.count_500),
             String.valueOf(R.mipmap.daily),
@@ -73,7 +87,6 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case REFRESH_COMPLETE:
-//                    setPhoneMenu();
                     swipeRefreshLayout.setRefreshing(false);
                     break;
             }
@@ -90,9 +103,9 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mactivity = getActivity();
         view = inflater.inflate(R.layout.fragment_work, container, false);
-        setPhoneMenu();
         getViews();
         initViews();
+        setPhoneMenu();
         setListener();
         return view;
     }
@@ -102,15 +115,16 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         super.onResume();
         Bundle bundle = getActivity().getIntent().getExtras();
         String name = bundle.getString("u_name");
-        spUtils.put(mactivity, "u_name", name);
-        idworkname.setText(name);
+        String namebuld = sp.getString("name", "");
+        spUtils.put(mactivity, "name", namebuld);
+        idworkname.setText(namebuld);
         idworkname.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                drawerFragment.openDeawer();
             }
         });
-        spUtils.put(mactivity, "usernamerecoder", name);
+        spUtils.put(mactivity, "usernamerecoder", namebuld);
     }
 
     /**
@@ -151,23 +165,56 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         sp = getContext().getSharedPreferences("my_sp", 0);
         String name = sp.getString("username", "");
         String strmenu = HttpUrl.debugoneUrl + "login/getphonemenu/" + name;
-        NetUtil.getAsyncHttpClient().get(strmenu,new AsyncHttpResponseHandler(){
+        final ProgressDialog progressDialog = ProgressDialog.show(mactivity,
+                "请稍候...", "正在加载中...", false, true);
+        NetUtil.getAsyncHttpClient().get(strmenu, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String content) {
                 super.onSuccess(content);
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+                });
+                thread.start();
+                workBeen.clear();
                 String ress = content.replace("\\", "");
                 String ression = StringUtil.sideTrim(ress, "\"");
                 String resscontent = ression.replace("\'", "\"");
                 System.out.print(resscontent);
+                String[] worklist = new String[workBeen.size()];
+                for (int i = 0; i < workBeen.size(); i++) {
+                    worklist[i] = workBeen.get(i).getText();
+                }
+                System.out.print(worklist);
                 try {
                     JSONArray temp = new JSONArray(resscontent);
                     for (int i = 0; i < temp.length(); i++) {
                         String Stringcar = temp.getString(i);
                         String txt = new JSONObject(Stringcar).getString("text");
-                        String phoneurl = new JSONObject(Stringcar).getString("PhoneUrl");
-                        String img = new JSONObject(Stringcar).getString("img");
-                        workBeen.add(new WorkBean(phoneurl, txt, img));
+                        String[] stringcarlist = txt.split(",");
+                        boolean stringcar = containsAll(worklist, stringcarlist);
+                        if (stringcar == false) {
+                            String txt1 = new JSONObject(Stringcar).getString("text");
+                            String phoneurl = new JSONObject(Stringcar).getString("PhoneUrl");
+                            String img = new JSONObject(Stringcar).getString("img");
+                            workBeen.add(new WorkBean(phoneurl, txt1, img));
+                        } else {
+                            String txt1 = "";
+                            String phoneurl = "";
+                            String img = "";
+                            String s = workBeen.get(i).getText();
+//                            workBeen.remove(workBeen.get(i).getText());
+//                            workBeen.add(new WorkBean(phoneurl, txt1, img));
+                        }
                     }
+                    System.out.print(workBeen);
                     sl = temp.getString(0);
                     JSONObject jsonObject = new JSONObject(sl);
                     workitemview = jsonObject.getString("text");
@@ -196,7 +243,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private void initPopWindow() {
         View contenview = LayoutInflater.from(mactivity.getApplicationContext()).
                 inflate(R.layout.popupwindow_name_switch, null);
-        final PopupWindow popupWindow = new PopupWindow(
+        popupWindow = new PopupWindow(
                 mactivity.findViewById(R.id.mainLayout), 500, 600, true);
         popupWindow.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
         popupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -212,9 +259,48 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
         ListView llPwSwitch = (ListView) contenview.findViewById(R.id.llPwSwitch);
+        String listwork = sp.getString("workbeenlist", "");
+        workPwSwitchBean = new Gson().fromJson(listwork, WorkPwSwitchBean.class);
+        if (listwork.equals("")) {
 
+        } else {
+            switchBeendatalist = workPwSwitchBean.getDatas();
+            for (int i = 0; i < switchBeendatalist.size(); i++) {
+                String struname = sp.getString("name", "");
+                String uname = switchBeendatalist.get(i).getU_name();
+                if (struname.equals(uname)) {
+                    switchBeendatalist.remove(switchBeendatalist.get(i));
+                }
+            }
+            switchAdapter = new WorkPwSwitchAdapter(mactivity.getApplicationContext(), switchBeendatalist);
+            llPwSwitch.setAdapter(switchAdapter);
+            switchAdapter.setOnXXClickListener(new XXListener() {
+                @Override
+                public void onXXClick() {
+                    popupWindow.dismiss();
+
+
+                    setPhoneMenu();
+                }
+            });
+        }
         popupWindow.setFocusable(true);
         popupWindow.showAsDropDown(idworkname);
+    }
+
+    private static boolean containsAll(String[] array1, String[] array2) {
+        for (String str : array2) {
+            if (!ArrayUtils.contains(array1, str)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
     }
 
     @Override

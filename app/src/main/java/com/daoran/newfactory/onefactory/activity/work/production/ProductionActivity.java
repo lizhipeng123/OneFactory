@@ -1,12 +1,12 @@
 package com.daoran.newfactory.onefactory.activity.work.production;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.MenuItem;
@@ -42,6 +42,7 @@ import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.util.file.NullStringToEmptyAdapterFactory;
 import com.daoran.newfactory.onefactory.util.file.save.ProductionExcelUtil;
 import com.daoran.newfactory.onefactory.view.dialog.ProcationDialog;
+//import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
@@ -320,19 +321,9 @@ public class ProductionActivity extends BaseFrangmentActivity
             propostbean.setPageSize(Integer.parseInt(getsize));
             String gsonbeanStr = gson.toJson(propostbean);
             if (NetWork.isNetWorkAvailable(this)) {
-//                /*检测是否为可用WiFi*/
-//                WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-//                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-//                String infossid = wifiInfo.getSSID();
-//                infossid = infossid.replace("\"", "");
-//                if (!infossid.equals("taoxinxi")) {
-//                    android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(this).create();
-//                    dialog.setTitle("系统提示");
-//                    dialog.setMessage("当前WiFi为公共网络，运行请转到测试WiFi状态");
-//                    dialog.setButton("确定", listenerwifi);
-//                    dialog.show();
-//                } else {
-                ResponseDialog.showLoading(this);
+                final ProgressDialog progressDialog = ProgressDialog.show(this,
+                        "请稍候...", "正在查询中...", false, true);
+//                ResponseDialog.showLoading(this);
                 final int finalGetsize = Integer.parseInt(getsize);
                 OkHttpUtils.postString()
                         .url(str)
@@ -343,7 +334,18 @@ public class ProductionActivity extends BaseFrangmentActivity
                             @Override
                             public void onError(Call call, Exception e, int id) {
                                 e.printStackTrace();
-                                ResponseDialog.closeLoading();
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                             }
 
                             @Override
@@ -351,6 +353,18 @@ public class ProductionActivity extends BaseFrangmentActivity
                                 try {
                                     /*成功返回的结果*/
                                     System.out.print(response);
+                                    Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(1500);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                                    thread.start();
                                     String ress = response.replace("\\", "");
                                     System.out.print(ress);
                                     String ression = StringUtil.sideTrim(ress, "\"");
@@ -374,14 +388,25 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         tv_visibi.setText("没有更多信息");
                                     }
                                     setNewlyComfig();
-                                    ResponseDialog.closeLoading();
+
+                                    ;
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
-                                    ResponseDialog.closeLoading();
+                                    Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(1500);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                                    thread.start();
                                 }
                             }
                         });
-//                }
             } else {
                 ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", ProductionActivity.this);
             }
@@ -400,19 +425,8 @@ public class ProductionActivity extends BaseFrangmentActivity
             propostbean.setPageSize(Integer.parseInt(getsize));
             String gsonbeanStr = gson.toJson(propostbean);/*字符串转为json字符串*/
             if (NetWork.isNetWorkAvailable(this)) {
-//                /*检测是否为可用WiFi*/
-//                WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-//                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-//                String infossid = wifiInfo.getSSID();
-//                infossid = infossid.replace("\"", "");
-//                if (!infossid.equals("taoxinxi")) {
-//                    android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(this).create();
-//                    dialog.setTitle("系统提示");
-//                    dialog.setMessage("当前WiFi为公共网络，运行请转到测试WiFi状态");
-//                    dialog.setButton("确定", listenerwifi);
-//                    dialog.show();
-//                } else {
-                ResponseDialog.showLoading(this);
+                final ProgressDialog progressDialog = ProgressDialog.show(this,
+                        "请稍候...", "正在查询中...", false, true);
                 final int finalGetsize = Integer.parseInt(getsize);
                 OkHttpUtils.postString()
                         .url(str)
@@ -423,13 +437,36 @@ public class ProductionActivity extends BaseFrangmentActivity
                             @Override
                             public void onError(Call call, Exception e, int id) {
                                 e.printStackTrace();
-                                ResponseDialog.closeLoading();
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                             }
 
                             @Override
                             public void onResponse(String response, int id) {
                                 try {
                                     System.out.print(response);
+                                    Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(1500);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                                    thread.start();
                                     String ress = response.replace("\\", "");
                                     System.out.print(ress);
                                     String ression = StringUtil.sideTrim(ress, "\"");
@@ -454,14 +491,24 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         tv_visibi.setText("没有更多信息");
                                     }
                                     setNewlyComfig();
-                                    ResponseDialog.closeLoading();
+
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
-                                    ResponseDialog.closeLoading();
+                                    Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(1500);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                                    thread.start();
                                 }
                             }
                         });
-//                }
             } else {
                 ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", ProductionActivity.this);
             }
@@ -513,19 +560,8 @@ public class ProductionActivity extends BaseFrangmentActivity
             String gsonbeanStr = gson.toJson(propostbean);
             Log.e("you wanted", "[" + gsonbeanStr + "," + gsonbeanStr + "+]");
             if (NetWork.isNetWorkAvailable(this)) {
-//                 /*检测是否为可用WiFi*/
-//                WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-//                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-//                String infossid = wifiInfo.getSSID();
-//                infossid = infossid.replace("\"", "");
-//                if (!infossid.equals("taoxinxi")) {
-//                    android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(this).create();
-//                    dialog.setTitle("系统提示");
-//                    dialog.setMessage("当前WiFi为公共网络，运行请转到测试WiFi状态");
-//                    dialog.setButton("确定", listenerwifi);
-//                    dialog.show();
-//                } else {
-                ResponseDialog.showLoading(this);
+                final ProgressDialog progressDialog = ProgressDialog.show(this,
+                        "请稍候...", "正在查询中...", false, true);
                 final int finalGetsize = Integer.parseInt(getsize);
                 OkHttpUtils.postString()
                         .url(str)
@@ -536,12 +572,36 @@ public class ProductionActivity extends BaseFrangmentActivity
                             @Override
                             public void onError(Call call, Exception e, int id) {
                                 e.printStackTrace();
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                             }
 
                             @Override
                             public void onResponse(String response, int id) {
                                 try {
                                     System.out.print(response);
+                                    Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(1500);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                                    thread.start();
                                     String ress = response.replace("\\", "");
                                     System.out.print(ress);
                                     String ression = StringUtil.sideTrim(ress, "\"");
@@ -566,14 +626,23 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         tv_visibi.setText("没有更多信息");
                                     }
                                     setNewlyComfig();
-                                    ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
-                                    ResponseDialog.closeLoading();
+                                    Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(1500);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                                    thread.start();
                                 }
                             }
                         });
-//                }
             } else {
                 ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", ProductionActivity.this);
             }
@@ -594,19 +663,8 @@ public class ProductionActivity extends BaseFrangmentActivity
             propostbean.setPageSize(Integer.parseInt(getsize));
             String gsonbeanStr = gson.toJson(propostbean);
             if (NetWork.isNetWorkAvailable(this)) {
-//                /*检测是否为可用WiFi*/
-//                WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-//                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-//                String infossid = wifiInfo.getSSID();
-//                infossid = infossid.replace("\"", "");
-//                if (!infossid.equals("taoxinxi")) {
-//                    android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(this).create();
-//                    dialog.setTitle("系统提示");
-//                    dialog.setMessage("当前WiFi为公共网络，运行请转到测试WiFi状态");
-//                    dialog.setButton("确定", listenerwifi);
-//                    dialog.show();
-//                } else {
-                ResponseDialog.showLoading(this);
+                final ProgressDialog progressDialog = ProgressDialog.show(this,
+                        "请稍候...", "正在查询中...", false, true);
                 final int finalGetsize = Integer.parseInt(getsize);
                 OkHttpUtils.postString()
                         .url(str)
@@ -617,13 +675,36 @@ public class ProductionActivity extends BaseFrangmentActivity
                             @Override
                             public void onError(Call call, Exception e, int id) {
                                 e.printStackTrace();
-                                ResponseDialog.closeLoading();
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                             }
 
                             @Override
                             public void onResponse(String response, int id) {
                                 try {
                                     System.out.print(response);
+                                    Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(1500);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                                    thread.start();
                                     String ress = response.replace("\\", "");
                                     System.out.print(ress);
                                     String ression = StringUtil.sideTrim(ress, "\"");
@@ -648,14 +729,23 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         tv_visibi.setText("没有更多信息");
                                     }
                                     setNewlyComfig();
-                                    ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
-                                    ResponseDialog.closeLoading();
+                                    Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(1500);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                                    thread.start();
                                 }
                             }
                         });
-//                }
             } else {
                 ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", ProductionActivity.this);
             }
@@ -686,13 +776,10 @@ public class ProductionActivity extends BaseFrangmentActivity
         if (getsize.equals("")) {
             getsize = String.valueOf(10);
         }
-//        String Recode = sp.getString("etprodialogRecode", "");
         String Procedure = sp.getString("Procedure", "");
         String stis = sp.getString("ischeckedd", "");
         if (Procedure.equals("全部")) {
             boolean stris = Boolean.parseBoolean(stis);
-//            pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
-//            int index = pageIndex - 1;
             Gson gson = new Gson();
             Propostbean propostbean = new Propostbean();
             Propostbean.Conditions conditions = propostbean.new Conditions();
@@ -707,19 +794,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             String gsonbeanStr = gson.toJson(propostbean);
             Log.e("you wanted", "[" + gsonbeanStr + "," + gsonbeanStr + "+]");
             if (NetWork.isNetWorkAvailable(this)) {
-//                 /*检测是否为可用WiFi*/
-//                WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-//                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-//                String infossid = wifiInfo.getSSID();
-//                infossid = infossid.replace("\"", "");
-//                if (!infossid.equals("taoxinxi")) {
-//                    android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(this).create();
-//                    dialog.setTitle("系统提示");
-//                    dialog.setMessage("当前WiFi为公共网络，运行请转到测试WiFi状态");
-//                    dialog.setButton("确定", listenerwifi);
-//                    dialog.show();
-//                } else {
-                ResponseDialog.showLoading(this);
+                ResponseDialog.showLoading(this, "正在查询");
                 final int finalGetsize = Integer.parseInt(getsize);
                 OkHttpUtils.postString()
                         .url(str)
@@ -730,6 +805,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                             @Override
                             public void onError(Call call, Exception e, int id) {
                                 e.printStackTrace();
+                                ResponseDialog.closeLoading();
                             }
 
                             @Override
@@ -759,15 +835,14 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         scroll_content.setVisibility(View.GONE);
                                         tv_visibi.setText("没有更多信息");
                                     }
-                                    setNewlyComfig();
                                     ResponseDialog.closeLoading();
+                                    setNewlyComfig();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
                                     ResponseDialog.closeLoading();
                                 }
                             }
                         });
-//                }
             } else {
                 ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", ProductionActivity.this);
             }
@@ -788,19 +863,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             propostbean.setPageSize(Integer.parseInt(getsize));
             String gsonbeanStr = gson.toJson(propostbean);
             if (NetWork.isNetWorkAvailable(this)) {
-//                /*检测是否为可用WiFi*/
-//                WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-//                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-//                String infossid = wifiInfo.getSSID();
-//                infossid = infossid.replace("\"", "");
-//                if (!infossid.equals("taoxinxi")) {
-//                    android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(this).create();
-//                    dialog.setTitle("系统提示");
-//                    dialog.setMessage("当前WiFi为公共网络，运行请转到测试WiFi状态");
-//                    dialog.setButton("确定", listenerwifi);
-//                    dialog.show();
-//                } else {
-                ResponseDialog.showLoading(this);
+                ResponseDialog.showLoading(this, "正在查询");
                 final int finalGetsize = Integer.parseInt(getsize);
                 OkHttpUtils.postString()
                         .url(str)
@@ -849,7 +912,6 @@ public class ProductionActivity extends BaseFrangmentActivity
                                 }
                             }
                         });
-//                }
             } else {
                 ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", ProductionActivity.this);
             }
@@ -874,7 +936,8 @@ public class ProductionActivity extends BaseFrangmentActivity
     private void setSave() {
         sp = getSharedPreferences("my_sp", 0);
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this);
+            final ProgressDialog progressDialog = ProgressDialog.show(this,
+                    "请稍候...", "正在保存中...", false, true);
             String saveurl = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
             int beanlength = detailBeenList.size();//修改后的数据大小
             String[] arrsflag = new String[beanlength];//修改的工序数组
@@ -1166,14 +1229,36 @@ public class ProductionActivity extends BaseFrangmentActivity
                     && prosavedepartment.equals("") && probooleanProcedureTitle.equals("")
                     && prosavestate.equals("")) {
                 ToastUtils.ShowToastMessage("未修改表中数据", ProductionActivity.this);
-                ResponseDialog.closeLoading();
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+                });
+                thread.start();
             } else {
                 /*如果有多个相同颜色的款号，则判断其符合条件的工序和月份是否存在修改的工序*/
                 if (colorlistlength > 1) {
                     if (flagprodurelist == true && flagproduremonth == true) {
                         if (flagmonthsize == true) {
                             ToastUtils.ShowToastMessage("花色有多分，其中有存在相同的工序或者月份，请检查后再保存", ProductionActivity.this);
-                            ResponseDialog.closeLoading();
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                         } else {
                             OkHttpUtils.postString().
                                     url(saveurl)
@@ -1189,22 +1274,30 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         @Override
                                         public void onResponse(String response, int id) {
                                             System.out.print(response);
+                                            Thread thread = new Thread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    try {
+                                                        Thread.sleep(1500);
+                                                    } catch (InterruptedException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    progressDialog.dismiss();
+                                                }
+                                            });
+                                            thread.start();
                                             String ression = StringUtil.sideTrim(response, "\"");
                                             System.out.print(ression);
                                             int resindex = Integer.parseInt(ression);
                                             if (resindex > 3) {
                                                 ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
                                                 setData();
-                                                ResponseDialog.closeLoading();
                                             } else if (ression == "3" || ression.equals("3")) {
                                                 ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
-                                                ResponseDialog.closeLoading();
                                             } else if (ression == "4" || ression.equals("4")) {
                                                 ToastUtils.ShowToastMessage("数据错误，请重试", ProductionActivity.this);
-                                                ResponseDialog.closeLoading();
                                             } else {
                                                 ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
-                                                ResponseDialog.closeLoading();
                                             }
                                         }
                                     });
@@ -1224,22 +1317,30 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     @Override
                                     public void onResponse(String response, int id) {
                                         System.out.print(response);
+                                        Thread thread = new Thread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                try {
+                                                    Thread.sleep(1500);
+                                                } catch (InterruptedException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                progressDialog.dismiss();
+                                            }
+                                        });
+                                        thread.start();
                                         String ression = StringUtil.sideTrim(response, "\"");
                                         System.out.print(ression);
                                         int resindex = Integer.parseInt(ression);
                                         if (resindex > 3) {
                                             ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
                                             setData();
-                                            ResponseDialog.closeLoading();
                                         } else if (ression == "3" || ression.equals("3")) {
                                             ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
-                                            ResponseDialog.closeLoading();
                                         } else if (ression == "4" || ression.equals("4")) {
                                             ToastUtils.ShowToastMessage("数据错误，请重试", ProductionActivity.this);
-                                            ResponseDialog.closeLoading();
                                         } else {
                                             ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
-                                            ResponseDialog.closeLoading();
                                         }
                                     }
                                 });
@@ -1275,22 +1376,30 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                 @Override
                                                 public void onResponse(String response, int id) {
                                                     System.out.print(response);
+                                                    Thread thread = new Thread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            try {
+                                                                Thread.sleep(1500);
+                                                            } catch (InterruptedException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                            progressDialog.dismiss();
+                                                        }
+                                                    });
+                                                    thread.start();
                                                     String ression = StringUtil.sideTrim(response, "\"");
                                                     System.out.print(ression);
                                                     int resindex = Integer.parseInt(ression);
                                                     if (resindex > 3) {
                                                         ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
                                                         setData();
-                                                        ResponseDialog.closeLoading();
                                                     } else if (ression == "3" || ression.equals("3")) {
                                                         ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
-                                                        ResponseDialog.closeLoading();
                                                     } else if (ression == "4" || ression.equals("4")) {
                                                         ToastUtils.ShowToastMessage("数据错误，请重试", ProductionActivity.this);
-                                                        ResponseDialog.closeLoading();
                                                     } else {
                                                         ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
-                                                        ResponseDialog.closeLoading();
                                                     }
                                                 }
                                             });
@@ -1310,22 +1419,31 @@ public class ProductionActivity extends BaseFrangmentActivity
                                             @Override
                                             public void onResponse(String response, int id) {
                                                 System.out.print(response);
+                                                Thread thread = new Thread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        try {
+                                                            Thread.sleep(1500);
+                                                        } catch (InterruptedException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                        progressDialog.dismiss();
+                                                    }
+                                                });
+                                                thread.start();
                                                 String ression = StringUtil.sideTrim(response, "\"");
                                                 System.out.print(ression);
                                                 int resindex = Integer.parseInt(ression);
                                                 if (resindex > 3) {
                                                     ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
                                                     setData();
-                                                    ResponseDialog.closeLoading();
                                                 } else if (ression == "3" || ression.equals("3")) {
                                                     ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
-                                                    ResponseDialog.closeLoading();
+                                                    ;
                                                 } else if (ression == "4" || ression.equals("4")) {
                                                     ToastUtils.ShowToastMessage("数据错误，请重试", ProductionActivity.this);
-                                                    ResponseDialog.closeLoading();
                                                 } else {
                                                     ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
-                                                    ResponseDialog.closeLoading();
                                                 }
                                             }
                                         });
@@ -1347,22 +1465,30 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         @Override
                                         public void onResponse(String response, int id) {
                                             System.out.print(response);
+                                            Thread thread = new Thread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    try {
+                                                        Thread.sleep(1500);
+                                                    } catch (InterruptedException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    progressDialog.dismiss();
+                                                }
+                                            });
+                                            thread.start();
                                             String ression = StringUtil.sideTrim(response, "\"");
                                             System.out.print(ression);
                                             int resindex = Integer.parseInt(ression);
                                             if (resindex > 3) {
                                                 ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
                                                 setData();
-                                                ResponseDialog.closeLoading();
                                             } else if (ression == "3" || ression.equals("3")) {
                                                 ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
-                                                ResponseDialog.closeLoading();
                                             } else if (ression == "4" || ression.equals("4")) {
                                                 ToastUtils.ShowToastMessage("数据错误，请重试", ProductionActivity.this);
-                                                ResponseDialog.closeLoading();
                                             } else {
                                                 ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
-                                                ResponseDialog.closeLoading();
                                             }
                                         }
                                     });
@@ -1371,7 +1497,18 @@ public class ProductionActivity extends BaseFrangmentActivity
                         if (flagitem == true) {
                             if (flagmonth == true) {
                                 ToastUtils.ShowToastMessage("相同款号、用户下，月份不能相同", ProductionActivity.this);
-                                ResponseDialog.closeLoading();
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                             } else {
                                 //如果修改后的工序不存在与修改前的工序之中，则可以保存
                                 System.out.print("false");
@@ -1389,22 +1526,30 @@ public class ProductionActivity extends BaseFrangmentActivity
                                             @Override
                                             public void onResponse(String response, int id) {
                                                 System.out.print(response);
+                                                Thread thread = new Thread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        try {
+                                                            Thread.sleep(1500);
+                                                        } catch (InterruptedException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                        progressDialog.dismiss();
+                                                    }
+                                                });
+                                                thread.start();
                                                 String ression = StringUtil.sideTrim(response, "\"");
                                                 System.out.print(ression);
                                                 int resindex = Integer.parseInt(ression);
                                                 if (resindex > 3) {
                                                     ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
                                                     setData();
-                                                    ResponseDialog.closeLoading();
                                                 } else if (ression == "3" || ression.equals("3")) {
                                                     ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
-                                                    ResponseDialog.closeLoading();
                                                 } else if (ression == "4" || ression.equals("4")) {
                                                     ToastUtils.ShowToastMessage("数据错误，请重试", ProductionActivity.this);
-                                                    ResponseDialog.closeLoading();
                                                 } else {
                                                     ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
-                                                    ResponseDialog.closeLoading();
                                                 }
                                             }
                                         });
@@ -1545,7 +1690,8 @@ public class ProductionActivity extends BaseFrangmentActivity
             editor.remove("copyRecordat");
             editor.commit();
             if (!item.equals("")) {
-                ResponseDialog.showLoading(this);
+                final ProgressDialog progressDialog = ProgressDialog.show(this,
+                        "请稍候...", "正在复制中...", false, true);
                 OkHttpUtils.postString()
                         .url(strcopy)
                         .content(dateee)
@@ -1560,6 +1706,18 @@ public class ProductionActivity extends BaseFrangmentActivity
                             @Override
                             public void onResponse(String response, int id) {
                                 System.out.print(response);
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                                 String ression = StringUtil.sideTrim(response, "\"");
                                 System.out.print(ression);
                                 int resindex = Integer.parseInt(ression);
@@ -1569,22 +1727,18 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     setNewlyComfig();
                                     setData();
                                     configSaveBeen.clear();
-                                    ResponseDialog.closeLoading();
                                 } else if (resindex == 3) {
                                     ToastUtils.ShowToastMessage("保存失败",
                                             ProductionActivity.this);
                                     configSaveBeen.clear();
-                                    ResponseDialog.closeLoading();
                                 } else if (resindex == 4) {
                                     ToastUtils.ShowToastMessage("数据错误，请重试",
                                             ProductionActivity.this);
                                     configSaveBeen.clear();
-                                    ResponseDialog.closeLoading();
                                 } else {
                                     ToastUtils.ShowToastMessage("未知错误，请联系管理员",
                                             ProductionActivity.this);
                                     configSaveBeen.clear();
-                                    ResponseDialog.closeLoading();
                                 }
                             }
                         });
@@ -1837,17 +1991,17 @@ public class ProductionActivity extends BaseFrangmentActivity
                     case "刷新":
                         setData();
                         break;
-//                    case "删除当前行":
-//                        DeleteDate();
-//                        break;
                     case "保存为Excel":
-                        new Thread(new Runnable() {
+                        final ProgressDialog progressDialog = ProgressDialog.show(ProductionActivity.this,
+                                "请稍候...", "正在生成Excel中...", false, true);
+                        final Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 try {
                                     ProductionExcelUtil.writeExcel(ProductionActivity.this,
                                             detailBeenList,
                                             "dfProExcel+" + new Date().toString());
+                                    Thread.sleep(2000);
                                     ToastUtils.ShowToastMessage("写入成功",
                                             ProductionActivity.this);
                                 } catch (Exception e) {
@@ -1855,8 +2009,10 @@ public class ProductionActivity extends BaseFrangmentActivity
                                             ProductionActivity.this);
                                     e.printStackTrace();
                                 }
+                                progressDialog.dismiss();
                             }
-                        }).start();
+                        });
+                        thread.start();
                         ToastUtils.ShowToastMessage("写入成功，请在设置中Excel文件中查看",
                                 ProductionActivity.this);
                         break;

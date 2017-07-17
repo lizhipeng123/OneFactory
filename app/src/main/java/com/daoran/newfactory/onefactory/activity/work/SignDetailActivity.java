@@ -1,11 +1,9 @@
 package com.daoran.newfactory.onefactory.activity.work;
 
 import android.app.AlertDialog;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,8 +17,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.commo.CommoditySqlActivity;
-import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
 import com.daoran.newfactory.onefactory.adapter.SignDetailAdapter;
 import com.daoran.newfactory.onefactory.adapter.SignDetailLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
@@ -240,21 +236,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         if (getsize.equals("")) {
             getsize = String.valueOf(10);
         }
-//        pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
-//        String index = String.valueOf(pageIndex - 1);
         if (NetWork.isNetWorkAvailable(this)) {
-//             /*检测是否为可用WiFi*/
-//            WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-//            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-//            String infossid = wifiInfo.getSSID();
-//            infossid = infossid.replace("\"", "");
-//            if (!infossid.equals("taoxinxi")) {
-//                AlertDialog dialog = new AlertDialog.Builder(this).create();
-//                dialog.setTitle("系统提示");
-//                dialog.setMessage("当前WiFi为公共网络，运行请转到测试WiFi状态");
-//                dialog.setButton("确定", listenerwifi);
-//                dialog.show();
-//            } else {
             ResponseDialog.showLoading(this);
             final int finalGetsize = Integer.parseInt(getsize);
             OkHttpUtils
@@ -287,7 +269,6 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                     pageCount = signBean.getTotalCount();
                                     spUtils.put(SignDetailActivity.this, "pagesqlCount", pageCount);
                                     System.out.print(pageCount);
-//                                        int pagesign = finalGetsize;
                                     String count = String.valueOf(pageCount / finalGetsize + 1);
                                     System.out.print(count);
                                     tvSignPage.setText(count);
@@ -311,7 +292,6 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                             }
                         }
                     });
-//            }
         } else {
             ToastUtils.ShowToastMessage(R.string.disNetworking, SignDetailActivity.this);
         }
@@ -331,19 +311,9 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         String datetime = sp.getString("datetimesign", "");
         String endtime = sp.getString("endtimesign", "");
         if (NetWork.isNetWorkAvailable(this)) {
-//             /*检测是否为可用WiFi*/
-//            WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-//            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-//            String infossid = wifiInfo.getSSID();
-//            infossid = infossid.replace("\"", "");
-//            if (!infossid.equals("taoxinxi")) {
-//                AlertDialog dialog = new AlertDialog.Builder(this).create();
-//                dialog.setTitle("系统提示");
-//                dialog.setMessage("当前WiFi为公共网络，运行请转到测试WiFi状态");
-//                dialog.setButton("确定", listenerwifi);
-//                dialog.show();
-//            } else {
-            ResponseDialog.showLoading(this);
+            final ProgressDialog progressDialog = ProgressDialog.show(this,
+                    "请稍候...", "正在查询中...", false, true);
+//            ResponseDialog.showLoading(this);
             final int finalGetsize = Integer.parseInt(getsize);
             OkHttpUtils
                     .post()
@@ -360,11 +330,35 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                         }
 
                         @Override
                         public void onResponse(String response, int id) {
                             System.out.print(response);
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                             try {
                                 Gson gson = new Gson();
                                 signBean = gson.fromJson(response, SignDetailBean.class);
@@ -398,7 +392,6 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                             }
                         }
                     });
-//            }
         } else {
             ToastUtils.ShowToastMessage(R.string.disNetworking, SignDetailActivity.this);
         }
@@ -433,18 +426,6 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
         String index = String.valueOf(pageIndex - 1);
         if (NetWork.isNetWorkAvailable(this)) {
-//             /*检测是否为可用WiFi*/
-//            WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-//            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-//            String infossid = wifiInfo.getSSID();
-//            infossid = infossid.replace("\"", "");
-//            if (!infossid.equals("taoxinxi")) {
-//                AlertDialog dialog = new AlertDialog.Builder(this).create();
-//                dialog.setTitle("系统提示");
-//                dialog.setMessage("当前WiFi为公共网络，运行请转到测试WiFi状态");
-//                dialog.setButton("确定", listenerwifi);
-//                dialog.show();
-//            } else {
             ResponseDialog.showLoading(this);
             final int finalGetsize = Integer.parseInt(getsize);
             OkHttpUtils
@@ -477,7 +458,6 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                     pageCount = signBean.getTotalCount();
                                     spUtils.put(SignDetailActivity.this, "pagesqlCount", pageCount);
                                     System.out.print(pageCount);
-//                                        int pagesign = finalGetsize;
                                     String count = String.valueOf(pageCount / finalGetsize + 1);
                                     System.out.print(count);
                                     tvSignPage.setText(count);
@@ -501,7 +481,6 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                             }
                         }
                     });
-//            }
         } else {
             ToastUtils.ShowToastMessage(R.string.disNetworking, SignDetailActivity.this);
         }

@@ -7,7 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,6 +114,7 @@ public class MainActivity extends BaseFrangmentActivity {
         mTabs.add(tab_office);
         mTabs.add(tab_information);
         mTabs.add(tab_setup);
+
         mInflater = LayoutInflater.from(this);
         mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.flLayoutTabcontent);
@@ -122,6 +124,14 @@ public class MainActivity extends BaseFrangmentActivity {
             mTabHost.addTab(tabSpec, bean.getFragment(), null);
         }
         mTabHost.getTabWidget().setDividerDrawable(R.color.transparent);
+    }
+
+    public void setChantWrokFragment(){
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+//        ft.replace(R.id.mainLayout,WorkFragment.class);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
     private View getTabItemView(TabHostBean bean) {

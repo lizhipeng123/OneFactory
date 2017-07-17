@@ -1,5 +1,6 @@
 package com.daoran.newfactory.onefactory.activity.work.car;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -101,19 +102,9 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
         String spinnerPosition = sp.getString("spinnerPosition", "");
         System.out.print(datetime);
         if (NetWork.isNetWorkAvailable(this)) {
-//            /*检测是否为可用WiFi*/
-//            WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-//            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-//            String infossid = wifiInfo.getSSID();
-//            infossid = infossid.replace("\"", "");
-//            if (!infossid.equals("taoxinxi")) {
-//                android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(this).create();
-//                dialog.setTitle("系统提示");
-//                dialog.setMessage("当前WiFi为公共网络，运行请转到测试WiFi状态");
-//                dialog.setButton("确定", listenerwifi);
-//                dialog.show();
-//            } else {
-            ResponseDialog.showLoading(this);
+            final ProgressDialog progressDialog = ProgressDialog.show(this,
+                    "请稍候...", "正在查询中...", false, true);
+//            ResponseDialog.showLoading(this);
             OkHttpUtils
                     .post()
                     .url(sqlcar)
@@ -138,12 +129,36 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             ToastUtils.ShowToastMessage("获取失败，请稍后再试", SqlcarApplyActivity.this);
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                         }
 
                         @Override
                         public void onResponse(String response, int id) {
                             try {
                                 System.out.print(response);
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                                 SqlCarApplyBean carApplyBean =
                                         new Gson().fromJson(response,
                                                 SqlCarApplyBean.class);
@@ -151,13 +166,34 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                                 listView.setVisibility(View.VISIBLE);
                                 dataBeenlist = carApplyBean.getData();
                                 setListData(carApplyBean.getData());
-                                ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 setListData(new ArrayList());
-                                ResponseDialog.closeLoading();
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                             } catch (Exception e) {
                                 setListData(new ArrayList());
-                                ResponseDialog.closeLoading();
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                             }
                         }
                     });
@@ -240,20 +276,25 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                 break;
             /*保存为excel文件*/
             case R.id.btnExcel:
-                new Thread(new Runnable() {
+                final ProgressDialog progressDialog = ProgressDialog.show(this,
+                        "请稍候...", "正在生成Excel中...", false, true);
+                final Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
                             ExcelUtil.writeExcel(SqlcarApplyActivity.this,
                                     dataBeenlist,
                                     "dfcarexcel+" + new Date().toString());
-                            ToastUtils.ShowToastMessage("写入成功",SqlcarApplyActivity.this);
+                            Thread.sleep(2000);
+                            ToastUtils.ShowToastMessage("写入成功", SqlcarApplyActivity.this);
                         } catch (Exception e) {
-                            ToastUtils.ShowToastMessage("写入失败",SqlcarApplyActivity.this);
+                            ToastUtils.ShowToastMessage("写入失败", SqlcarApplyActivity.this);
                             e.printStackTrace();
                         }
+                        progressDialog.dismiss();
                     }
-                }).start();
+                });
+                thread.start();
                 break;
         }
     }

@@ -1,10 +1,8 @@
 package com.daoran.newfactory.onefactory.activity.work.commo;
 
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,7 +18,6 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
-import com.daoran.newfactory.onefactory.activity.work.production.ProductionNewlyBuildActivity;
 import com.daoran.newfactory.onefactory.adapter.CommoditySqlAdapter;
 import com.daoran.newfactory.onefactory.adapter.CommoditySqlLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
@@ -33,15 +30,12 @@ import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
-import com.daoran.newfactory.onefactory.util.file.NullStringToEmptyAdapterFactory;
 import com.daoran.newfactory.onefactory.util.file.save.CommodityExcelUtil;
-import com.daoran.newfactory.onefactory.util.file.save.ProductionExcelUtil;
 import com.daoran.newfactory.onefactory.view.dialog.CommoDialog;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -277,10 +271,13 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                         setData();
                         break;
                     case "保存为Excel":
-                        new Thread(new Runnable() {
+                        final ProgressDialog progressDialog = ProgressDialog.show(CommoditySqlActivity.this,
+                                "请稍候...", "正在生成Excel中...", false, true);
+                        final Thread thread= new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 try {
+                                    Thread.sleep(2000);
                                     CommodityExcelUtil.writeExcel(CommoditySqlActivity.this,
                                             dataBeen,
                                             "dfCommoExcel+" + new Date().toString());
@@ -291,11 +288,12 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                             CommoditySqlActivity.this);
                                     e.printStackTrace();
                                 }
+                                progressDialog.dismiss();
                                 ToastUtils.ShowToastMessage("写入成功，请在设置中Excel文件中查看",
                                         CommoditySqlActivity.this);
                             }
-                        }).start();
-
+                        });
+                        thread.start();
                         break;
                 }
                 return false;
@@ -385,7 +383,9 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         postBean.setPageSize(Integer.parseInt(pagesize));
         String stringpost = gson.toJson(postBean);
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this);
+            final ProgressDialog progressDialog = ProgressDialog.show(this,
+                    "请稍候...", "正在查询中...", false, true);
+//            ResponseDialog.showLoading(this);
             final int finalGetsize = Integer.parseInt(pagesize);
             OkHttpUtils.postString()
                     .url(str)
@@ -396,12 +396,36 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                         }
 
                         @Override
                         public void onResponse(String response, int id) {
                             try {
                                 System.out.print(response);
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                                 String ress = response.replace("\\", "");
                                 System.out.print(ress);
                                 String ression = StringUtil.sideTrim(ress, "\"");
@@ -424,9 +448,21 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                     scroll_content.setVisibility(View.GONE);
                                     tv_visibi.setText("没有更多数据");
                                 }
-                                ResponseDialog.closeLoading();
+//                                ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                             }
                         }
                     });
@@ -465,7 +501,8 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         postBean.setPageSize(Integer.parseInt(pagesize));
         String stringpost = gson.toJson(postBean);
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this);
+            final ProgressDialog progressDialog = ProgressDialog.show(this,
+                    "请稍候...", "正在查询中...", false, true);
             final int finalGetsize = Integer.parseInt(pagesize);
             OkHttpUtils.postString()
                     .url(str)
@@ -476,12 +513,36 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                         }
 
                         @Override
                         public void onResponse(String response, int id) {
                             try {
                                 System.out.print(response);
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                                 String ress = response.replace("\\", "");
                                 System.out.print(ress);
                                 String ression = StringUtil.sideTrim(ress, "\"");
@@ -504,9 +565,21 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                     scroll_content.setVisibility(View.GONE);
                                     tv_visibi.setText("没有更多信息");
                                 }
-                                ResponseDialog.closeLoading();
+//                                ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                             }
                         }
                     });
@@ -515,6 +588,10 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         }
     }
 
+    /**
+     * 上一页下一页
+     * @param pageIndexin
+     */
     private void setPageDate(int pageIndexin) {
         ResponseDialog.showLoading(this);
         String str = HttpUrl.debugoneUrl + "QACwork/BindSearchQACworkAPP/";
@@ -527,8 +604,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         String etprodialogProcedure = sp.getString("etproProcedure", "");//生产主管
         String ischeck = sp.getString("ischeckedd", "");//是否可为空
         boolean stris = Boolean.parseBoolean(ischeck);
-//        pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
-//        int Index = pageIndex - 1;
         Gson gson = new Gson();
         CommodityPostBean postBean = new CommodityPostBean();
         CommodityPostBean.Conditions conditions = postBean.new Conditions();
@@ -553,6 +628,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
+                            ResponseDialog.closeLoading();
                         }
 
                         @Override
@@ -584,6 +660,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                 ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
+                                ResponseDialog.closeLoading();
                             }
                         }
                     });
@@ -632,6 +709,8 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
             System.out.print(dataBeen);
             Gson gson = new Gson();
             String commjson = gson.toJson(dataBeen);
+            final ProgressDialog progressDialog = ProgressDialog.show(this,
+                    "请稍候...", "正在保存中...", false, true);
             OkHttpUtils.postString()
                     .url(saveurl)
                     .content(commjson)
@@ -642,21 +721,43 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
                             ResponseDialog.closeLoading();
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                             ToastUtils.ShowToastMessage("数据错误，请重新输入", CommoditySqlActivity.this);
                         }
 
                         @Override
                         public void onResponse(String response, int id) {
                             System.out.print(response);
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                             response = response.replace("\\", "");
                             String ression = StringUtil.sideTrim(response, "\"");
                             System.out.print(ression);
                             if (ression.equals("true")) {
-                                ResponseDialog.closeLoading();
                                 ToastUtils.ShowToastMessage("保存成功", CommoditySqlActivity.this);
                                 setData();
                             } else {
-                                ResponseDialog.closeLoading();
                                 ToastUtils.ShowToastMessage("保存失败", CommoditySqlActivity.this);
                             }
                         }

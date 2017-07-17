@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.activity.login;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -280,11 +281,12 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
             if (infossid.equals("taoxinxi")) {
                 AlertDialog dialog = new AlertDialog.Builder(this).create();
                 dialog.setTitle("系统提示");
-                dialog.setMessage("当前 "+infossid+" 为测试WiFi,请连接到公共WiFi或者流量状态");
+                dialog.setMessage("当前 " + infossid + " 为测试WiFi,请连接到公共WiFi或者流量状态");
                 dialog.setButton("确定", listenerwifi);
                 dialog.show();
             } else {
-                ResponseDialog.showLoading(this, "登录中");
+                final ProgressDialog progressDialog = ProgressDialog.show(this,
+                        "请稍候...", "正在登录中...", false, true);
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
                 params.add(NetUtil.createParam("Logid", etUsername.getText().toString()));
                 params.add(NetUtil.createParam("pwd", etPassword.getText().toString()));
@@ -296,6 +298,18 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                     public void onSuccess(String content) {
                         super.onSuccess(content);
                         System.out.print(content);
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(3000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                progressDialog.dismiss();
+                            }
+                        });
+                        thread.start();
                         userNameValue = etUsername.getText().toString();
                         passwordValue = etPassword.getText().toString();
                         Editor editor = sp.edit();
@@ -325,7 +339,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                             bundle.putString("u_name", userBean.getU_name());
                             intent.putExtras(bundle);
                             startActivity(intent);
-                            ResponseDialog.closeLoading();
+//                            ResponseDialog.closeLoading();
                         } else {
                             ToastUtils.ShowToastMessage("用户名密码错误，请重新输入", LoginDebugActivity.this);
                             ResponseDialog.closeLoading();
@@ -336,13 +350,35 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                     public void onFailure(Throwable error, String content) {
                         super.onFailure(error, content);
                         ToastUtils.ShowToastMessage("登录失败", LoginDebugActivity.this);
-                        ResponseDialog.closeLoading();
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(3000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                progressDialog.dismiss();
+                            }
+                        });
+                        thread.start();
                     }
 
                     @Override
                     public void onFinish() {
                         super.onFinish();
-                        ResponseDialog.closeLoading();
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(3000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                progressDialog.dismiss();
+                            }
+                        });
+                        thread.start();
                     }
                 });
             }
@@ -435,64 +471,6 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                     super.onFailure(error, content);
                 }
             });
-//            OkHttpUtils.get()
-//                    .url(strversion)
-//                    .build()
-//                    .execute(new StringCallback() {
-//                        @Override
-//                        public void onError(Call call, Exception e, int id) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        @Override
-//                        public void onResponse(String response, int id) {
-//                            System.out.print(response);
-//                            response = response.replace("{", "{\"");
-//                            System.out.print(response);
-//                            response = response.replace("\'", "\"");
-//                            System.out.print(response);
-//                            response = response.replace(",", ",\"");
-//                            System.out.print(response);
-//                            response = response.replace(":\"", "\":\"");
-//                            System.out.print(response);
-//                            String strfram = StringUtil.sideTrim(response, "\"");
-//                            System.out.print(strfram);
-//                            try {
-//                                codeBean = new Gson().fromJson(strfram, VerCodeBean.class);
-//                                String vercode = codeBean.getVerCode();//版本号
-//                                System.out.print(vercode);
-//                                String apkpath = codeBean.getApkPath();//版本地址
-//                                System.out.print(apkpath);
-//                                String reason = codeBean.getReason();//版本说明
-//                                System.out.print(reason);
-//                                spUtils.put(getApplicationContext(), "applicationvercodeupdate", vercode);
-//                                spUtils.put(LoginDebugActivity.this, "applicationapkpath", apkpath);
-//                                spUtils.put(LoginDebugActivity.this, "applicationreason", reason);
-//                                String versioncode = String.valueOf(curVersionName);
-//                                if (!versioncode.equals(vercode)) {
-//                                    String scode = "需要更新到" + vercode;
-//                                    spUtils.put(getApplicationContext(), "Applicationscode", scode);
-//                                    showNoticeDialog(0, slience);
-//                                } else {
-//                                    if (!slience) {
-//                                        String scode = "已经是最新版本" + vercode;
-//                                        spUtils.put(getApplicationContext(), "Applicationscode", scode);
-//                                        new AlertDialog.Builder(LoginDebugActivity.this)
-//                                                .setTitle("检查新版本")
-//                                                .setMessage("您所使用的已经是最新版")
-//                                                .setPositiveButton("OK", null).create()
-//                                                .show();
-//                                    }
-//                                }
-//                            } catch (JsonSyntaxException e) {
-//                                e.printStackTrace();
-//                            } catch (NumberFormatException e) {
-//                                e.printStackTrace();
-//                            }catch (Exception e){
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    });
         } else {
             ToastUtils.ShowToastMessage("当前网络不可用，请重新尝试", LoginDebugActivity.this);
         }

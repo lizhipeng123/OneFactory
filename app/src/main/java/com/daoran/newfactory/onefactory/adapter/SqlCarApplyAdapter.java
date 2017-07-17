@@ -61,14 +61,14 @@ public class SqlCarApplyAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         SqlCarApplyAdapter.ViewHolder holder;
         if (convertView == null) {
-            holder = new SqlCarApplyAdapter.ViewHolder();
+            holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_sqlcar, null);
             holder.tvSqlCarId = (TextView) convertView.findViewById(R.id.tvSqlCarId);
             holder.tvSqlApplyName = (TextView) convertView.findViewById(R.id.tvSqlApplyName);
             holder.tvSqlCarDate = (TextView) convertView.findViewById(R.id.tvSqlCarDate);
             convertView.setTag(holder);
         } else {
-            holder = (SqlCarApplyAdapter.ViewHolder) convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
         holder.tvSqlCarId.setText(getItem(position).getCode());
         holder.tvSqlApplyName.setText(getItem(position).getRecorder());
