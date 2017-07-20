@@ -1,7 +1,13 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'maven'
-
+def static getGitVersion() {
+    try {
+        return 'git rev-parse --short HEAD'.execute().text.trim()
+    } catch (Throwable th) {
+        return "";
+    }
+}
 android {
     signingConfigs {
         config {
@@ -26,7 +32,10 @@ android {
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "GIT_REVISION", "\"${getGitVersion()}\""
+        buildConfigField "String", "BUILD_DATE", "\"${new Date().toLocaleString()}\"";
         multiDexEnabled true
+
     }
     buildTypes {
         release {
@@ -37,6 +46,7 @@ android {
 
     dexOptions {
         jumboMode true
+        javaMaxHeapSize "8g"
     }
     sourceSets {
         main {
@@ -104,7 +114,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.0'
     compile 'com.github.hotchemi:permissionsdispatcher:2.0.0'
     compile 'com.github.hotchemi:permissionsdispatcher:2.3.1'
-    compile 'com.android.support:multidex:'
+    compile 'com.android.support:multidex:1.0.0'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.squareup.okio:okio:1.13.0'
     compile files('libry/mta-sdk-1.6.2.jar')
@@ -115,17 +125,16 @@ dependencies {
     compile files('libry/httpclient-4.1.2.jar')
     compile files('libry/httpcore-4.0.jar')
     compile files('libry/xUtils-2.6.14.jar')
-    compile files('libry/fastjson-1.1.46.jar')
     compile files('libry/picasso-2.5.2.jar')
     compile files('libry/json-lib-0.9.jar')
     compile files('baidulibry/baidumapapi_v3_2_0.jar')
     compile files('baidulibry/locSDK_5.01.jar')
     compile files('libry/core-3.2.1.jar')
     compile project(':epubReader')
-    compile project(':youkuPlayerOpenSDK')
     compile project(':library')
     apt 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
     compile files('libry/poi-3.16.jar')
     compile files('libry/jxl.jar')
     compile files('libry/commons-lang.jar')
+    compile project(':uikit')
 }
