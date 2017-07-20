@@ -34,7 +34,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_50"
-            android:layout_toRightOf="@+id/viewtitletwo"
+
             android:text="签到查询"
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_55sp" />
@@ -43,10 +43,19 @@
             android:id="@+id/ivSearch"
             android:layout_width="@dimen/dimen_70"
             android:layout_height="@dimen/dimen_70"
+            android:layout_toRightOf="@+id/viewtitletwo"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_40"
+            android:src="@mipmap/search" />
+        <Button
+            android:id="@+id/btnExcel"
+            android:layout_width="@dimen/dimen_170"
+            android:layout_height="@dimen/dimen_90"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dimen_30"
-            android:src="@mipmap/search" />
+            android:layout_marginRight="@dimen/dimen_15"
+            android:background="@drawable/shape_btn_newsbuild_boild"
+            android:text="excel" />
     </RelativeLayout>
 
     <View

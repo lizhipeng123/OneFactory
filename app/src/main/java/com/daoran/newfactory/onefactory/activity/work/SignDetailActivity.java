@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,6 +26,7 @@ import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.util.file.save.SignDetailExcelUtil;
 import com.daoran.newfactory.onefactory.view.dialog.SignContentDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
@@ -36,6 +38,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
@@ -65,6 +68,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     private ScrollView scroll_content;
     private Spinner spinnSignPageClumns;
     private ImageView ivUpLeftPage, ivDownRightPage;
+    private Button btnExcel;
 
     private SharedPreferences sp;
     private SPUtils spUtils;
@@ -75,7 +79,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         ResponseDialog.showLoading(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.debug_activity_detail);
+        setContentView(R.layout.activity_sign_detail);
         initView();
         getViews();
         setSignDetail();
@@ -102,6 +106,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         spinnSignPageClumns = (Spinner) findViewById(R.id.spinnSignPageClumns);
         ivUpLeftPage = (ImageView) findViewById(R.id.ivUpLeftPage);
         ivDownRightPage = (ImageView) findViewById(R.id.ivDownRightPage);
+        btnExcel = (Button) findViewById(R.id.btnExcel);
         getClumnsSpinner();
     }
 
@@ -116,6 +121,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         ivUpLeftPage.setOnClickListener(this);
         ivDownRightPage.setOnClickListener(this);
         etSqlDetail.setSelection(etSqlDetail.getText().length());
+        btnExcel.setOnClickListener(this);
     }
 
     /**
@@ -222,6 +228,39 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                 break;
             case R.id.etSqlDetail:
 
+                break;
+            case R.id.btnExcel:
+                final ProgressDialog progressDialog = ProgressDialog.show(this,
+                        "请稍候...", "正在生成Excel中...", false, true);
+                final Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(2000);
+                            if(mListData.size()!=0){
+                                Looper.prepare();
+                                SignDetailExcelUtil.writeExcel(SignDetailActivity.this,
+                                        mListData,
+                                        "dfsignexcel+" + new Date().toString());
+                                ToastUtils.ShowToastMessage("写入成功", SignDetailActivity.this);
+                                progressDialog.dismiss();
+                                Looper.loop();
+                            }else{
+                                Looper.prepare();
+                                ToastUtils.ShowToastMessage("没有数据", SignDetailActivity.this);
+                                progressDialog.dismiss();
+                                Looper.loop();
+                            }
+                        } catch (Exception e) {
+                            Looper.prepare();
+                            ToastUtils.ShowToastMessage("写入失败", SignDetailActivity.this);
+                            e.printStackTrace();
+                            progressDialog.dismiss();
+                            Looper.loop();
+                        }
+                    }
+                });
+                thread.start();
                 break;
         }
     }
