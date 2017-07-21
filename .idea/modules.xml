@@ -3,17 +3,24 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/OneFactory.iml" filepath="$PROJECT_DIR$/OneFactory.iml" />
+      <module fileurl="file://$PROJECT_DIR$/OneFactory.iml" filepath="$PROJECT_DIR$/OneFactory.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/appp/appp.iml" filepath="$PROJECT_DIR$/appp/appp.iml" />
       <module fileurl="file://$PROJECT_DIR$/epubReader/epubReader.iml" filepath="$PROJECT_DIR$/epubReader/epubReader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/epubReader/epubReader.iml" filepath="$PROJECT_DIR$/epubReader/epubReader.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/myapplication/myapplication.iml" filepath="$PROJECT_DIR$/myapplication/myapplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/mylibrary/mylibrary.iml" filepath="$PROJECT_DIR$/mylibrary/mylibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/mylibraryone/mylibraryone.iml" filepath="$PROJECT_DIR$/mylibraryone/mylibraryone.iml" />
       <module fileurl="file://$PROJECT_DIR$/mylibraryone/mylibraryone.iml" filepath="$PROJECT_DIR$/mylibraryone/mylibraryone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mylibraryone/mylibraryone.iml" filepath="$PROJECT_DIR$/mylibraryone/mylibraryone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/myrecycleview/myrecycleview.iml" filepath="$PROJECT_DIR$/myrecycleview/myrecycleview.iml" />
       <module fileurl="file://$PROJECT_DIR$/myrecycleview/myrecycleview.iml" filepath="$PROJECT_DIR$/myrecycleview/myrecycleview.iml" />
       <module fileurl="file://$PROJECT_DIR$/uikit/uikit.iml" filepath="$PROJECT_DIR$/uikit/uikit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/youkuPlayerOpenSDK/youkuPlayerOpenSDK.iml" filepath="$PROJECT_DIR$/youkuPlayerOpenSDK/youkuPlayerOpenSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/youkuPlayerOpenSDK/youkuPlayerOpenSDK.iml" filepath="$PROJECT_DIR$/youkuPlayerOpenSDK/youkuPlayerOpenSDK.iml" />
       <module fileurl="file://$PROJECT_DIR$/zz-excel-creator/zz-excel-creator.iml" filepath="$PROJECT_DIR$/zz-excel-creator/zz-excel-creator.iml" />
     </modules>

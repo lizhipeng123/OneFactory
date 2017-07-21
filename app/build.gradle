@@ -1,13 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'maven'
-def static getGitVersion() {
-    try {
-        return 'git rev-parse --short HEAD'.execute().text.trim()
-    } catch (Throwable th) {
-        return "";
-    }
-}
 android {
     signingConfigs {
         config {
@@ -32,8 +25,6 @@ android {
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "GIT_REVISION", "\"${getGitVersion()}\""
-        buildConfigField "String", "BUILD_DATE", "\"${new Date().toLocaleString()}\"";
         multiDexEnabled true
 
     }
@@ -136,5 +127,5 @@ dependencies {
     compile files('libry/poi-3.16.jar')
     compile files('libry/jxl.jar')
     compile files('libry/commons-lang.jar')
-    compile project(':uikit')
+    compile files('libry/fastjson-1.1.34.android.jar')
 }

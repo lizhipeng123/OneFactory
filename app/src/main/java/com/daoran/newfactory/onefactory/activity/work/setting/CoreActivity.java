@@ -55,7 +55,6 @@ public class CoreActivity extends BaseFrangmentActivity
     private SharedPreferences sp;
     private SPUtils spUtils;
     private Tencent mTencent;
-    private TextView tvCoreContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +74,6 @@ public class CoreActivity extends BaseFrangmentActivity
         ivcore = (ImageView) findViewById(R.id.ivcore);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         tvZingtext = (TextView) findViewById(R.id.tvZingtext);
-        tvCoreContext = (TextView) findViewById(R.id.tvCoreContext);
     }
 
     private void initViews() {

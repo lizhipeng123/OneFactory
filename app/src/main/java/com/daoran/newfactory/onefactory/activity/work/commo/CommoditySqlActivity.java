@@ -3,6 +3,7 @@ package com.daoran.newfactory.onefactory.activity.work.commo;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -278,19 +279,30 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                             public void run() {
                                 try {
                                     Thread.sleep(2000);
-                                    CommodityExcelUtil.writeExcel(CommoditySqlActivity.this,
-                                            dataBeen,
-                                            "dfCommoExcel+" + new Date().toString());
-                                    ToastUtils.ShowToastMessage("写入成功",
-                                            CommoditySqlActivity.this);
+                                    if(dataBeen.size()!=0){
+                                        Looper.prepare();
+                                        CommodityExcelUtil.writeExcel(CommoditySqlActivity.this,
+                                                dataBeen,
+                                                "dfCommoExcel+" + new Date().toString());
+                                        ToastUtils.ShowToastMessage("写入成功",
+                                                CommoditySqlActivity.this);
+                                        progressDialog.dismiss();
+                                        Looper.loop();
+                                    }else{
+                                        Looper.prepare();
+                                        ToastUtils.ShowToastMessage("没有数据",
+                                                CommoditySqlActivity.this);
+                                        progressDialog.dismiss();
+                                        Looper.loop();
+                                    }
                                 } catch (Exception e) {
+                                    Looper.prepare();
                                     ToastUtils.ShowToastMessage("写入失败",
                                             CommoditySqlActivity.this);
                                     e.printStackTrace();
+                                    progressDialog.dismiss();
+                                    Looper.loop();
                                 }
-                                progressDialog.dismiss();
-                                ToastUtils.ShowToastMessage("写入成功，请在设置中Excel文件中查看",
-                                        CommoditySqlActivity.this);
                             }
                         });
                         thread.start();

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.v7.app.AlertDialog;
 import android.text.format.Time;
 import android.util.Log;
@@ -323,7 +324,6 @@ public class ProductionActivity extends BaseFrangmentActivity
             if (NetWork.isNetWorkAvailable(this)) {
                 final ProgressDialog progressDialog = ProgressDialog.show(this,
                         "请稍候...", "正在查询中...", false, true);
-//                ResponseDialog.showLoading(this);
                 final int finalGetsize = Integer.parseInt(getsize);
                 OkHttpUtils.postString()
                         .url(str)
@@ -1781,7 +1781,8 @@ public class ProductionActivity extends BaseFrangmentActivity
         propostbean.setPageSize(500);//默认每页多少条数据
         String gsonbeanStr = gson.toJson(propostbean);
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this);
+            final ProgressDialog progressDialog = ProgressDialog.show(this,
+                    "请稍候...", "正在查询中...", false, true);
             OkHttpUtils.postString()
                     .url(str)
                     .content(gsonbeanStr)
@@ -1791,7 +1792,18 @@ public class ProductionActivity extends BaseFrangmentActivity
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
-                            ResponseDialog.closeLoading();
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                         }
 
                         @Override
@@ -1805,10 +1817,32 @@ public class ProductionActivity extends BaseFrangmentActivity
                                 System.out.print(ression);
                                 detailBooleanBean = new Gson().fromJson(ression, ProductionDetailBooleanBean.class);
                                 detailbooleanDatabean = detailBooleanBean.getData();
-                                ResponseDialog.closeLoading();
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
-                                ResponseDialog.closeLoading();
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                             }
                         }
                     });
@@ -1998,23 +2032,35 @@ public class ProductionActivity extends BaseFrangmentActivity
                             @Override
                             public void run() {
                                 try {
-                                    ProductionExcelUtil.writeExcel(ProductionActivity.this,
-                                            detailBeenList,
-                                            "dfProExcel+" + new Date().toString());
                                     Thread.sleep(2000);
-                                    ToastUtils.ShowToastMessage("写入成功",
-                                            ProductionActivity.this);
+                                    if (detailBeenList.size() != 0) {
+                                        Looper.prepare();
+                                        ToastUtils.ShowToastMessage("写入成功",
+                                                ProductionActivity.this);
+                                        ProductionExcelUtil.writeExcel(ProductionActivity.this,
+                                                detailBeenList,
+                                                "dfProExcel+" + new Date().toString());
+                                        progressDialog.dismiss();
+                                        Looper.loop();
+
+                                    } else {
+                                        Looper.prepare();
+                                        ToastUtils.ShowToastMessage("没有数据",
+                                                ProductionActivity.this);
+                                        progressDialog.dismiss();
+                                        Looper.loop();
+                                    }
                                 } catch (Exception e) {
+                                    Looper.prepare();
                                     ToastUtils.ShowToastMessage("写入失败",
                                             ProductionActivity.this);
                                     e.printStackTrace();
+                                    progressDialog.dismiss();
+                                    Looper.loop();
                                 }
-                                progressDialog.dismiss();
                             }
                         });
                         thread.start();
-                        ToastUtils.ShowToastMessage("写入成功，请在设置中Excel文件中查看",
-                                ProductionActivity.this);
                         break;
                 }
                 return false;

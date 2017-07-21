@@ -1,1 +1,1 @@
-include ':app', ':myrecycleview', ':epubReader', ':mylibraryone', ':library', ':uikit', ':youkuPlayerOpenSDK'
+include ':app', ':myrecycleview', ':epubReader', ':mylibraryone', ':library',':youkuPlayerOpenSDK'

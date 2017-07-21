@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -282,16 +283,31 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                     @Override
                     public void run() {
                         try {
-                            ExcelUtil.writeExcel(SqlcarApplyActivity.this,
-                                    dataBeenlist,
-                                    "dfcarexcel+" + new Date().toString());
                             Thread.sleep(2000);
-                            ToastUtils.ShowToastMessage("写入成功", SqlcarApplyActivity.this);
+                            if(dataBeenlist.size()!=0){
+                                Looper.prepare();
+                                ExcelUtil.writeExcel(SqlcarApplyActivity.this,
+                                        dataBeenlist,
+                                        "dfcarexcel+" + new Date().toString());
+
+                                ToastUtils.ShowToastMessage("写入成功", SqlcarApplyActivity.this);
+                                progressDialog.dismiss();
+                                Looper.loop();
+                            }else{
+                                Looper.prepare();
+                                ToastUtils.ShowToastMessage("没有数据", SqlcarApplyActivity.this);
+                                progressDialog.dismiss();
+                                Looper.loop();
+                            }
+
                         } catch (Exception e) {
+                            Looper.prepare();
                             ToastUtils.ShowToastMessage("写入失败", SqlcarApplyActivity.this);
                             e.printStackTrace();
+                            progressDialog.dismiss();
+                            Looper.loop();
                         }
-                        progressDialog.dismiss();
+
                     }
                 });
                 thread.start();
