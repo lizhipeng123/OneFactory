@@ -218,7 +218,7 @@
 
         <!-- 高德地图定位服务 -->
         <service android:name="com.amap.api.location.APSService" />
-
+        <service android:name=".util.Http.NetWorkService"/>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

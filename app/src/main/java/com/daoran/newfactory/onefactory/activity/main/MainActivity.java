@@ -50,6 +50,7 @@ public class MainActivity extends BaseFrangmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getViews();
+
     }
 
     @Override

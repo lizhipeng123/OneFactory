@@ -39,6 +39,7 @@ import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
+import com.daoran.newfactory.onefactory.util.Http.NetWorkService;
 import com.daoran.newfactory.onefactory.util.Http.RequestParams;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
@@ -143,10 +144,16 @@ public class LoginMainActivity extends BaseFrangmentActivity {
             @Override
             public void onClick(View v) {
                 if (validate()) {
+                    startService();
                     postLogin();
                 }
             }
         });
+    }
+
+    private void startService(){
+        Intent instart = new Intent(this, NetWorkService.class);
+        this.startService(instart);
     }
 
     /**
