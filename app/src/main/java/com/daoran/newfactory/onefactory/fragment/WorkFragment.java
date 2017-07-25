@@ -210,8 +210,6 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             String phoneurl = "";
                             String img = "";
                             String s = workBeen.get(i).getText();
-//                            workBeen.remove(workBeen.get(i).getText());
-//                            workBeen.add(new WorkBean(phoneurl, txt1, img));
                         }
                     }
                     System.out.print(workBeen);

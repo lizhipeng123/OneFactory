@@ -482,39 +482,6 @@ public class ProductionAdapter extends BaseAdapter {
                 viewHolder.tvProMonth.setEnabled(true);
                 viewHolder.tvProMonth.setText(getItem(position).getMonth());
 
-//                String[] spinnermonththree = context.getResources().getStringArray(R.array.timemonth);
-//                ArrayAdapter<String> adapterthree =
-//                        new ArrayAdapter<String>(context,
-//                                R.layout.adapter_pronewlycomfig_spinner,
-//                                spinnermonththree);
-//                adapterthree.setDropDownViewResource(R.layout.adapter_pronewlycomfig_spinner_item);
-//                viewHolder.tvProMonth.setAdapter(adapterthree);
-//                String monthpro;
-//                if(getItem(position).getMonth()!=null){
-//                    monthpro = getItem(position).getMonth();
-//                    int monthp = Integer.parseInt(monthpro);
-//                    viewHolder.tvProMonth.setSelection(monthp,true);
-//                }else{
-//                    int monthpr = 0;
-//                    viewHolder.tvProMonth.setSelection(monthpr,true);
-//                }
-//
-//                viewHolder.tvProMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                    @Override
-//                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                        String[] languages = context.getResources().getStringArray(R.array.timemonth);
-//                        System.out.print(languages[position]);
-////                        spUtils.put(context, "ComfigMonth", languages[position]);
-//                        String positionlan = languages[position];
-//                        getItem(position).setMonth(positionlan);
-//                    }
-//
-//                    @Override
-//                    public void onNothingSelected(AdapterView<?> parent) {
-//
-//                    }
-//                });
-
 
                 viewHolder.tvProOneDay.setEnabled(true);
                 final EditText editTexOneDay = viewHolder.tvProOneDay;

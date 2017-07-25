@@ -123,14 +123,10 @@
             android:screenOrientation="portrait" />
 
         <!-- 外勤签到测试类 -->
-        <activity
-            android:name=".activity.work.SignActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
 
         <!-- 外勤签到测试类 -->
         <activity
-            android:name=".activity.login.LoginDebugActivity"
+            android:name=".activity.login.LoginMainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 

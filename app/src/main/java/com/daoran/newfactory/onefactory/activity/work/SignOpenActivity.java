@@ -234,20 +234,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
      * 给予控件属性及方法
      */
     private void initViews() {
-        final ProgressDialog progressDialog = ProgressDialog.show(this,
-                "请稍候...", "初始化中...", false, true);
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(1500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                progressDialog.dismiss();
-            }
-        });
-        thread.start();
         ivSignBack.setOnClickListener(this);
         btnCount.setOnClickListener(this);
         month = month + 1;
@@ -269,7 +255,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
 //        btnSignCancle.setOnClickListener(this);
         btnSignOk.setOnClickListener(this);
         topBg.setOnClickListener(this);
-
     }
 
     /**
@@ -390,10 +375,24 @@ public class SignOpenActivity extends BaseFrangmentActivity
         spinnerfineTune.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                final ProgressDialog progressDialog = ProgressDialog.show(SignOpenActivity.this,
+                        "请稍候...", "初始化定位中...", false, true);
                 String str = (String) spinnerfineTune.getSelectedItem();
                 spUtils.put(SignOpenActivity.this, "addressItem", str);
                 tvSignAddress = (TextView) findViewById(R.id.tvSignAddress);
                 tvSignAddress.setText(str);
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                    }
+                });
+                thread.start();
             }
 
             @Override

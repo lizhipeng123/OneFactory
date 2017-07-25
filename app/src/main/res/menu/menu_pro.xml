@@ -5,10 +5,10 @@
         android:id="@+id/show_newsbuild"
         android:title="新建"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/show_copy"
-        android:title="复制"
-        app:showAsAction="never" />
+    <!--<item-->
+        <!--android:id="@+id/show_copy"-->
+        <!--android:title="复制"-->
+        <!--app:showAsAction="never" />-->
     <item
         android:id="@+id/show_reshare"
         android:title="刷新"

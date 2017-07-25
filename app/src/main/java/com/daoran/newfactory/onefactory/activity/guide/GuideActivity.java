@@ -9,7 +9,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.login.LoginDebugActivity;
+import com.daoran.newfactory.onefactory.activity.login.LoginMainActivity;
 import com.daoran.newfactory.onefactory.adapter.GuiderFragmentPagerAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.fragment.GuiderFragment;
@@ -38,7 +38,7 @@ public class GuideActivity extends BaseFrangmentActivity
         SharedPreferences sp = this.getSharedPreferences("guider", MODE_PRIVATE);
         boolean isFirstOpen = sp.getBoolean("isFirstOpen", true);
         if (!isFirstOpen) {
-            Intent intent = new Intent(this, LoginDebugActivity.class);
+            Intent intent = new Intent(this, LoginMainActivity.class);
             startActivity(intent);
             finish();
             return;
@@ -115,7 +115,7 @@ public class GuideActivity extends BaseFrangmentActivity
     public void login() {
         setSharedPreferences();
         //进入登录页
-        Intent intent = new Intent(this, LoginDebugActivity.class);
+        Intent intent = new Intent(this, LoginMainActivity.class);
         startActivity(intent);
         finish();
     }

@@ -18,7 +18,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.car.SqlcarApplyActivity;
 import com.daoran.newfactory.onefactory.adapter.SignDetailAdapter;
 import com.daoran.newfactory.onefactory.adapter.SignDetailLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
@@ -27,7 +26,6 @@ import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
-import com.daoran.newfactory.onefactory.util.file.save.ExcelUtil;
 import com.daoran.newfactory.onefactory.util.file.save.SignDetailExcelUtil;
 import com.daoran.newfactory.onefactory.view.dialog.SignContentDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
@@ -79,7 +77,6 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ResponseDialog.showLoading(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_detail);
         initView();
@@ -231,6 +228,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
             case R.id.etSqlDetail:
 
                 break;
+            /*生成excel文件*/
             case R.id.btnExcel:
                 final ProgressDialog progressDialog = ProgressDialog.show(this,
                         "请稍候...", "正在生成Excel中...", false, true);
@@ -239,7 +237,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                     public void run() {
                         try {
                             Thread.sleep(2000);
-                            if(mListData.size()!=0){
+                            if (mListData.size() != 0) {
                                 Looper.prepare();
                                 SignDetailExcelUtil.writeExcel(SignDetailActivity.this,
                                         mListData,
@@ -247,7 +245,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                 ToastUtils.ShowToastMessage("写入成功", SignDetailActivity.this);
                                 progressDialog.dismiss();
                                 Looper.loop();
-                            }else{
+                            } else {
                                 Looper.prepare();
                                 ToastUtils.ShowToastMessage("没有数据", SignDetailActivity.this);
                                 progressDialog.dismiss();
@@ -267,6 +265,11 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         }
     }
 
+    /**
+     * 上一页下一页
+     *
+     * @param pageIndex1
+     */
     private void setPageDate(String pageIndex1) {
         String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
         sp = SignDetailActivity.this.getSharedPreferences("my_sp", 0);
@@ -354,7 +357,6 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         if (NetWork.isNetWorkAvailable(this)) {
             final ProgressDialog progressDialog = ProgressDialog.show(this,
                     "请稍候...", "正在查询中...", false, true);
-//            ResponseDialog.showLoading(this);
             final int finalGetsize = Integer.parseInt(getsize);
             OkHttpUtils
                     .post()
@@ -423,13 +425,10 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                     scroll_content.setVisibility(View.GONE);
                                     tv_visibi.setText("没有更多信息");
                                 }
-                                ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
-                                ResponseDialog.closeLoading();
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                ResponseDialog.closeLoading();
                             }
                         }
                     });
@@ -437,19 +436,6 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
             ToastUtils.ShowToastMessage(R.string.disNetworking, SignDetailActivity.this);
         }
     }
-
-    DialogInterface.OnClickListener listenerwifi = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case AlertDialog.BUTTON_POSITIVE://确定
-                    finish();
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
 
     /**
      * 翻页查找
@@ -484,6 +470,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
+                            ResponseDialog.closeLoading();
                         }
 
                         @Override

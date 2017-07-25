@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -18,7 +17,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBar;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
@@ -41,7 +39,6 @@ import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
-import com.daoran.newfactory.onefactory.util.Http.OkHttp;
 import com.daoran.newfactory.onefactory.util.Http.RequestParams;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.StringUtil;
@@ -53,8 +50,6 @@ import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.squareup.picasso.Picasso;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.apache.http.NameValuePair;
 
@@ -71,13 +66,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import okhttp3.Call;
-
 /**
  * 登录页
  * Created by lizhipeng on 2017/4/10.
  */
-public class LoginDebugActivity extends BaseFrangmentActivity {
+public class LoginMainActivity extends BaseFrangmentActivity {
     private Button btnLogin;
     private EditTextWithDelete etUsername, etPassword;
     private SPUtils spUtils;
@@ -190,7 +183,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
         setEditTextInhibitInputSpeChat(etUsername);
         setEditTextInhibitInputSpeChat(etPassword);
 
-        Picasso.with(LoginDebugActivity.this)
+        Picasso.with(LoginMainActivity.this)
                 .load(R.mipmap.daoran)
                 .error(R.mipmap.daoran)
                 .transform(new CropSquareTransformation())
@@ -316,32 +309,32 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                         Gson gson = new Gson();
                         UsergetBean userBean = gson.fromJson(content, UsergetBean.class);
                         if (userBean.isStatus() == true) {
-                            spUtils.put(LoginDebugActivity.this, "username", userNameValue);
-                            spUtils.put(LoginDebugActivity.this, "passwd", passwordValue);
+                            spUtils.put(LoginMainActivity.this, "username", userNameValue);
+                            spUtils.put(LoginMainActivity.this, "passwd", passwordValue);
                             //记住密码
                             if (checkBoxPw.isChecked()) {
-                                spUtils.put(LoginDebugActivity.this, "remember", true);
+                                spUtils.put(LoginMainActivity.this, "remember", true);
                             } else {
-                                spUtils.put(LoginDebugActivity.this, "remember", false);
+                                spUtils.put(LoginMainActivity.this, "remember", false);
                             }
                             if (checkboxopen.isChecked()) {
-                                spUtils.put(LoginDebugActivity.this, "autologin", true);
+                                spUtils.put(LoginMainActivity.this, "autologin", true);
                             } else {
-                                spUtils.put(LoginDebugActivity.this, "autologin", false);
+                                spUtils.put(LoginMainActivity.this, "autologin", false);
                             }
                             editor.commit();
                             spUtils.put(getApplicationContext(), "name", userBean.getU_name());
                             spUtils.put(getApplicationContext(), "proname", userBean.getU_name());
                             spUtils.put(getApplicationContext(), "commoname", userBean.getU_name());
                             spUtils.put(getApplicationContext(), "commologinid", userBean.getLogid());
-                            Intent intent = new Intent(LoginDebugActivity.this, MainActivity.class);
+                            Intent intent = new Intent(LoginMainActivity.this, MainActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putString("u_name", userBean.getU_name());
                             intent.putExtras(bundle);
                             startActivity(intent);
 //                            ResponseDialog.closeLoading();
                         } else {
-                            ToastUtils.ShowToastMessage("用户名密码错误，请重新输入", LoginDebugActivity.this);
+                            ToastUtils.ShowToastMessage("用户名密码错误，请重新输入", LoginMainActivity.this);
                             ResponseDialog.closeLoading();
                         }
                     }
@@ -349,7 +342,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                     @Override
                     public void onFailure(Throwable error, String content) {
                         super.onFailure(error, content);
-                        ToastUtils.ShowToastMessage("登录失败", LoginDebugActivity.this);
+                        ToastUtils.ShowToastMessage("登录失败", LoginMainActivity.this);
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -383,7 +376,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                 });
             }
         } else {
-            ToastUtils.ShowToastMessage(getString(R.string.noHttp), LoginDebugActivity.this);
+            ToastUtils.ShowToastMessage(getString(R.string.noHttp), LoginMainActivity.this);
         }
     }
 
@@ -397,7 +390,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                             getPackageInfo(getPackageName(), 0);
             curVersionName = info.versionName;
             curVersionCode = info.versionCode;
-            spUtils.put(LoginDebugActivity.this, "curVersionCode", curVersionName);
+            spUtils.put(LoginMainActivity.this, "curVersionCode", curVersionName);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace(System.err);
         }
@@ -434,8 +427,8 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                         String reason = codeBean.getReason();//版本说明
                         System.out.print(reason);
                         spUtils.put(getApplicationContext(), "applicationvercodeupdate", vercode);
-                        spUtils.put(LoginDebugActivity.this, "applicationapkpath", apkpath);
-                        spUtils.put(LoginDebugActivity.this, "applicationreason", reason);
+                        spUtils.put(LoginMainActivity.this, "applicationapkpath", apkpath);
+                        spUtils.put(LoginMainActivity.this, "applicationreason", reason);
                         String versioncode = String.valueOf(curVersionName);
                         if (!versioncode.equals(vercode)) {
                             String scode = "需要更新到" + vercode;
@@ -445,7 +438,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                             if (!slience) {
                                 String scode = "已经是最新版本" + vercode;
                                 spUtils.put(getApplicationContext(), "Applicationscode", scode);
-                                new AlertDialog.Builder(LoginDebugActivity.this)
+                                new AlertDialog.Builder(LoginMainActivity.this)
                                         .setTitle("检查新版本")
                                         .setMessage("您所使用的已经是最新版")
                                         .setPositiveButton("OK", null).create()
@@ -472,7 +465,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                 }
             });
         } else {
-            ToastUtils.ShowToastMessage("当前网络不可用，请重新尝试", LoginDebugActivity.this);
+            ToastUtils.ShowToastMessage("当前网络不可用，请重新尝试", LoginMainActivity.this);
         }
     }
 
@@ -488,7 +481,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
             System.out.println(focuseUpdate);
         }
         if (focuseUpdate == 0) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(LoginDebugActivity.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(LoginMainActivity.this);
             builder.setTitle("发现新版本： " + reaid);
             builder.setMessage("更新日志:   " + reason);
             builder.setPositiveButton("立即更新",
@@ -509,7 +502,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
             noticeDialog.setCanceledOnTouchOutside(false);
             noticeDialog.show();
         } else if (focuseUpdate == 1) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(LoginDebugActivity.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(LoginMainActivity.this);
             builder.setTitle("软件版本更新");
             builder.setMessage("发现新版本  " + reason + ",您必须安装此版本更新才能继续使用");
             builder.setPositiveButton("立即更新",
@@ -531,9 +524,9 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
      * 显示下载对话框
      */
     private void showDownloadDialog(int focuseUpdate) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(LoginDebugActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginMainActivity.this);
         builder.setTitle("正在下载新版本");
-        final LayoutInflater inflater = LayoutInflater.from(LoginDebugActivity.this);
+        final LayoutInflater inflater = LayoutInflater.from(LoginMainActivity.this);
         View v = inflater.inflate(R.layout.update_progress, null);
         mProgress = (ProgressBar) v.findViewById(R.id.update_progress);
         mProgressText = (TextView) v.findViewById(R.id.update_progress_text);
@@ -568,7 +561,7 @@ public class LoginDebugActivity extends BaseFrangmentActivity {
                 case DOWN_NOSDCARD:
                     downloadDialog.dismiss();
                     ToastUtils.ShowToastMessage("无法下载安装文件，请检查SD卡是否挂载",
-                            LoginDebugActivity.this);
+                            LoginMainActivity.this);
                     break;
             }
         }

@@ -176,7 +176,6 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
                 viewHolder.lin_content.setBackgroundResource(R.drawable.bill_record_item);
 
                 System.out.print("");
-
                 String itemm = sp.getString("tvnewlydate", "");
                 /*从点击item中进入新建数据界面*/
                 Intent intent = new Intent(context,

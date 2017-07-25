@@ -13,6 +13,7 @@ import com.daoran.newfactory.onefactory.view.CropSquareTransformation;
 import com.squareup.picasso.Picasso;
 
 /**
+ * 关于dfapp
  * Created by lizhipeng on 2017/6/13.
  */
 
@@ -36,12 +37,18 @@ public class AboutActivity extends BaseFrangmentActivity
         setListener();
     }
 
+    /**
+     * 实例化
+     */
     private void getViews(){
         ivBack = (ImageView) findViewById(R.id.ivBack);
         tvCoreAbout = (TextView) findViewById(R.id.tvCoreAbout);
         ivAbout = (ImageView) findViewById(R.id.ivAbout);
     }
 
+    /**
+     * 操作控件
+     */
     private void initViews(){
         String vercode = sp.getString("curVersionCode", "");
         tvCoreAbout.setText("V "+vercode);

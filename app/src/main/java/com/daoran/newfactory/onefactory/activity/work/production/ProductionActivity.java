@@ -1602,202 +1602,6 @@ public class ProductionActivity extends BaseFrangmentActivity
     }
 
     /**
-     * 复制
-     */
-    private void setCopy() {
-        String strcopy = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
-        if (NetWork.isNetWorkAvailable(this)) {
-            Time t = new Time("GMT+8"); // or Time t=new Time("GMT+8");
-            t.setToNow(); // 取得系统时间。
-            year = t.year;
-            month = t.month;
-            datetime = t.monthDay;
-            hour = t.hour; // 0-23
-            minute = t.minute;
-            second = t.second;
-            month = month + 1;
-            sp = this.getSharedPreferences("my_sp", 0);
-            final SharedPreferences.Editor editor = sp.edit();
-            /*调用ProducationAdapter中点击item后取得的字段*/
-            String itemid = "";
-            String prosalesid = sp.getString("prosalesid", "");//列的id
-            String item = sp.getString("copyitem", "");//款号
-            String copyDocumentary = sp.getString("copyDocumentary", "");//跟单
-            String copyFactory = sp.getString("copyFactory", "");//工厂
-            String copyDepartment = sp.getString("copyDepartment", "");//部门
-            String copyProcedure = sp.getString("copyProcedure", "");//工序
-            String copyOthers = sp.getString("copyOthers", "");//组别人数
-            String copySingularSystem = sp.getString("copySingularSystem", "");//制单数
-            String copyColor = sp.getString("copyColor", "");//花色
-            String copyTaskNumber = sp.getString("copyTaskNumber", "");//任务数
-            String copySize = sp.getString("copySize", "");//尺寸
-            String copyClippingNumber = sp.getString("copyCompletedLastMonth", "");//实裁数
-            String copyCompletedLastMonth = sp.getString("copyCompletedLastMonth", "");//上月完工
-            String copyTotalCompletion = sp.getString("copyTotalCompletion", "");//总完工数
-            String copyBalanceAmount = sp.getString("copyBalanceAmount", "");//结余数量
-            String copyState = sp.getString("copyState", "");//状态
-            String copyProYear = sp.getString("copyProYear", "");//年
-            String copyMonth = sp.getString("copyMonth", "");//月
-            String copyRemarks = sp.getString("copyRemarks", "");//备注
-            String copyRecorder = sp.getString("copyRecorder", "");//制单人
-            String copyRecordat = sp.getString("copyRecordat", "");//制单时间
-            String copyRecordid = sp.getString("username", "");//当前用户
-            String copyproducamentid = sp.getString("copyproducamentid", "");//跟单id
-            Gson gson = new Gson();
-            /*实例化实体类*/
-            ProducationConfigSaveBean saveBean = new ProducationConfigSaveBean();
-            saveBean.setID(itemid);//id
-            saveBean.setSalesid(prosalesid);//列id
-            saveBean.setRecordid(copyRecordid);//制单人id
-            saveBean.setItem(item);//款号
-            saveBean.setPrddocumentary(copyDocumentary);//跟单
-            saveBean.setSubfactory(copyFactory);//工厂
-            saveBean.setSubfactoryTeams(copyDepartment);//部门组别
-            saveBean.setWorkingProcedure(copyProcedure);//工序
-            saveBean.setWorkers(copyOthers);//组别人数
-            saveBean.setPqty(copySingularSystem);//制单数
-            saveBean.setProdcol(copyColor);//花色
-            saveBean.setTaskqty(copyTaskNumber);//任务数
-            saveBean.setMdl(copySize);//尺码
-            saveBean.setFactcutqty(copyClippingNumber);//实裁数
-            saveBean.setLastMonQty(copyCompletedLastMonth);//上月完工
-            saveBean.setSumCompletedQty(copyTotalCompletion);//总完工数
-            saveBean.setLeftQty(copyBalanceAmount);//结余数量
-            saveBean.setPrdstatus(copyState);//状态
-            saveBean.setYear(String.valueOf(year));//年
-            saveBean.setMonth(String.valueOf(month));//月
-            saveBean.setDay1("");//1日
-            saveBean.setDay2("");//2日
-            saveBean.setDay3("");//3日
-            saveBean.setDay4("");//4日
-            saveBean.setDay5("");//5日
-            saveBean.setDay6("");//6日
-            saveBean.setDay7("");//7日
-            saveBean.setDay8("");//8日
-            saveBean.setDay9("");//9日
-            saveBean.setDay10("");//10日
-            saveBean.setDay11("");//11日
-            saveBean.setDay12("");//12日
-            saveBean.setDay13("");//13日
-            saveBean.setDay14("");//14日
-            saveBean.setDay15("");//15日
-            saveBean.setDay16("");//16日
-            saveBean.setDay17("");//17日
-            saveBean.setDay18("");//18日
-            saveBean.setDay19("");//19日
-            saveBean.setDay20("");//20日
-            saveBean.setDay21("");//21日
-            saveBean.setDay22("");//22日
-            saveBean.setDay23("");//23日
-            saveBean.setDay24("");//24日
-            saveBean.setDay25("");//25日
-            saveBean.setDay26("");//26日
-            saveBean.setDay27("");//27日
-            saveBean.setDay28("");//28日
-            saveBean.setDay29("");//29日
-            saveBean.setDay30("");//30日
-            saveBean.setDay31("");//31日
-            saveBean.setMemo("");//备注
-            saveBean.setRecorder(copyRecorder);//制单人
-            saveBean.setRecordat(copyRecordat);//制单时间
-            saveBean.setPrddocumentaryid(copyproducamentid);//跟单id
-            configSaveBeen.add(saveBean);//添加实体字段
-            String configsave = gson.toJson(configSaveBeen);//实体类转json数据
-            String dateee = configsave.replace("\"\"", "null");//json数据将双引号转变为null
-            /*删除本地存储的之前点击item获取的字段*/
-            editor.remove("prosalesid");
-            editor.remove("copyitem");
-            editor.remove("copyDocumentary");
-            editor.remove("copyFactory");
-            editor.remove("copyDepartment");
-            editor.remove("copyOthers");
-            editor.remove("copySingularSystem");
-            editor.remove("copyColor");
-            editor.remove("copyTaskNumber");
-            editor.remove("copySize");
-            editor.remove("copyCompletedLastMonth");
-            editor.remove("copyCompletedLastMonth");
-            editor.remove("copyTotalCompletion");
-            editor.remove("copyBalanceAmount");
-            editor.remove("copyState");
-            editor.remove("copyProYear");
-            editor.remove("copyMonth");
-            editor.remove("copyRemarks");
-            editor.remove("copyRecorder");
-            editor.remove("copyRecordat");
-            editor.remove("copyproducamentid");
-            editor.commit();
-            if (!item.equals("")) {
-                final ProgressDialog progressDialog = ProgressDialog.show(this,
-                        "请稍候...", "正在复制中...", false, true);
-                OkHttpUtils.postString()
-                        .url(strcopy)
-                        .content(dateee)
-                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                e.printStackTrace();
-                                progressDialog.dismiss();
-                            }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                System.out.print(response);
-                                Thread thread = new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            Thread.sleep(1500);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                        progressDialog.dismiss();
-                                    }
-                                });
-                                thread.start();
-                                String ression = StringUtil.sideTrim(response, "\"");
-                                System.out.print(ression);
-                                int resindex = Integer.parseInt(ression);
-                                if (resindex > 4) {
-                                    ToastUtils.ShowToastMessage("保存成功",
-                                            ProductionActivity.this);
-                                    setNewlyComfig();
-                                    setData();
-                                    configSaveBeen.clear();
-                                } else if (resindex == 3) {
-                                    ToastUtils.ShowToastMessage("保存失败",
-                                            ProductionActivity.this);
-                                    configSaveBeen.clear();
-                                } else if (resindex == 4) {
-                                    ToastUtils.ShowToastMessage("数据错误，请重试",
-                                            ProductionActivity.this);
-                                    configSaveBeen.clear();
-                                } else {
-                                    ToastUtils.ShowToastMessage("未知错误，请联系管理员",
-                                            ProductionActivity.this);
-                                    configSaveBeen.clear();
-                                }
-                            }
-                        });
-            } else {
-                new AlertDialog.Builder(ProductionActivity.this).setTitle("提示信息")
-                        .setMessage("请选择款号，再进行复制保存")
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).show();//相应事件
-                configSaveBeen.clear();
-            }
-        } else {
-            ToastUtils.ShowToastMessage(R.string.noHttp, ProductionActivity.this);
-        }
-    }
-
-    /**
      * 进入生产日报表时查询有关当前登录用户的数据，并在修改保存时调用其实体类
      * 判断当前用户是否创建过相同款号，相同工序的条目
      */
@@ -1942,22 +1746,6 @@ public class ProductionActivity extends BaseFrangmentActivity
     }
 
     /**
-     *
-     */
-    DialogInterface.OnClickListener listenerwifi = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case android.app.AlertDialog.BUTTON_POSITIVE://确定
-                    finish();
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
-
-    /**
      * 弹出输入框
      *
      * @param view
@@ -2020,11 +1808,10 @@ public class ProductionActivity extends BaseFrangmentActivity
                         startActivity(new Intent(ProductionActivity.this,
                                 ProductionNewlyBuildActivity.class));
                         break;
-                    case "复制":
-//                        setCopy();
-                        Intent intent = new Intent(ProductionActivity.this, ProductionCopyComfigActivity.class);
-                        startActivity(intent);
-                        break;
+//                    case "复制":
+//                        Intent intent = new Intent(ProductionActivity.this, ProductionCopyComfigActivity.class);
+//                        startActivity(intent);
+//                        break;
                     case "刷新":
                         setData();
                         break;

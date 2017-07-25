@@ -45,7 +45,7 @@
             android:layout_marginRight="10dp"
             android:layout_centerVertical="true"
             android:onClick="scan"
-            android:src="@mipmap/search"/>
+            android:src="@mipmap/bd_search"/>
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"

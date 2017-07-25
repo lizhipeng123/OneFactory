@@ -80,6 +80,9 @@ public class CoreActivity extends BaseFrangmentActivity
 
     }
 
+    /**
+     * 点击事件
+     */
     private void setListener() {
         ivBack.setOnClickListener(this);
         ivcore.setOnCreateContextMenuListener(this);
@@ -173,12 +176,13 @@ public class CoreActivity extends BaseFrangmentActivity
             case R.id.ivBack:
                 finish();
                 break;
-//            case R.id.tvFenxiangBtn:
-//                QQshare();
-//                break;
         }
     }
 
+    /**
+     * 回调
+     * @param view
+     */
     public void scan(View view) {
         startActivityForResult(new Intent(CoreActivity.this,
                 CaptureActivity.class), 0);

@@ -159,6 +159,12 @@ public final class CaptureActivity extends Activity
                 .startActivityForResult(wrapperIntent, REQUEST_CODE);
     }
 
+    /**
+     * 适配权限
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     public void onRequestPermissionsResult(
             int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == 1) {

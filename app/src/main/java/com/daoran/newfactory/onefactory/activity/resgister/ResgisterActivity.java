@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 /**
+ * 注册页面（暂时不需要）
  * Created by lizhipeng on 2017/3/21.
  */
 
