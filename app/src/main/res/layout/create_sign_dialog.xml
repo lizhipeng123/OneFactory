@@ -60,6 +60,8 @@
                 android:layout_marginLeft="@dimen/dimen_50"
                 android:background="@drawable/shape_edittext_sql_boild"
                 android:gravity="center"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
                 android:textColor="@color/black" />
         </LinearLayout>
 

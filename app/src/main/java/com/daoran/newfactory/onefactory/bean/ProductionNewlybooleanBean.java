@@ -3,7 +3,7 @@ package com.daoran.newfactory.onefactory.bean;
 import java.util.List;
 
 /**
- * 新建生产日报时用于判断是否可以同一个人同一款号新建
+ * 新建和复制生产日报时用于判断是否可以同一个人同一款号新建
  * Created by lizhipeng on 2017/6/29.
  */
 

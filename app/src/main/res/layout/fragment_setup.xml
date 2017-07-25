@@ -92,16 +92,16 @@
             </RelativeLayout>
 
             <!--<View-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="1px"-->
-                <!--android:background="#FF909090" />-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="1px"-->
+            <!--android:background="#FF909090" />-->
 
             <RelativeLayout
                 android:id="@+id/rlClean"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/aliceblue"
                 android:layout_marginTop="@dimen/dimen_20"
+                android:background="@color/aliceblue"
                 android:paddingBottom="@dimen/dimen_40"
                 android:paddingLeft="@dimen/dimen_30"
                 android:paddingRight="@dimen/dimen_30"
@@ -125,16 +125,16 @@
             </RelativeLayout>
 
             <!--<View-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="1px"-->
-                <!--android:background="#FF909090" />-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="1px"-->
+            <!--android:background="#FF909090" />-->
 
             <RelativeLayout
                 android:id="@+id/rlCore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/aliceblue"
                 android:layout_marginTop="@dimen/dimen_20"
+                android:background="@color/aliceblue"
                 android:paddingBottom="@dimen/dimen_40"
                 android:paddingLeft="@dimen/dimen_30"
                 android:paddingRight="@dimen/dimen_30"
@@ -157,16 +157,16 @@
             </RelativeLayout>
 
             <!--<View-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="1px"-->
-                <!--android:background="#FF909090" />-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="1px"-->
+            <!--android:background="#FF909090" />-->
 
             <RelativeLayout
                 android:id="@+id/rlExcelSD"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/aliceblue"
                 android:layout_marginTop="@dimen/dimen_20"
+                android:background="@color/aliceblue"
                 android:paddingBottom="@dimen/dimen_40"
                 android:paddingLeft="@dimen/dimen_30"
                 android:paddingRight="@dimen/dimen_30"
@@ -188,17 +188,43 @@
                     android:src="@mipmap/setting_three" />
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/rlYunxin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_20"
+                android:background="@color/aliceblue"
+                android:paddingBottom="@dimen/dimen_40"
+                android:paddingLeft="@dimen/dimen_30"
+                android:paddingRight="@dimen/dimen_30"
+                android:paddingTop="@dimen/dimen_40">
+
+                <TextView
+                    android:id="@+id/tvYunxin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="云信"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_55sp" />
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_43"
+                    android:layout_height="@dimen/dimen_43"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/setting_three" />
+            </RelativeLayout>
             <!--<View-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="1px"-->
-                <!--android:background="#FF909090" />-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="1px"-->
+            <!--android:background="#FF909090" />-->
 
             <RelativeLayout
                 android:id="@+id/rlAbout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/aliceblue"
                 android:layout_marginTop="@dimen/dimen_20"
+                android:background="@color/aliceblue"
                 android:paddingBottom="@dimen/dimen_40"
                 android:paddingLeft="@dimen/dimen_30"
                 android:paddingRight="@dimen/dimen_30"
@@ -221,9 +247,9 @@
             </RelativeLayout>
 
             <!--<View-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="1px"-->
-                <!--android:background="#FF909090" />-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="1px"-->
+            <!--android:background="#FF909090" />-->
 
             <RelativeLayout
                 android:id="@+id/rlAgainLogin"
@@ -248,9 +274,9 @@
             </RelativeLayout>
 
             <!--<View-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="1px"-->
-                <!--android:background="#FF909090" />-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="1px"-->
+            <!--android:background="#FF909090" />-->
 
             <RelativeLayout
                 android:id="@+id/rlwifi"

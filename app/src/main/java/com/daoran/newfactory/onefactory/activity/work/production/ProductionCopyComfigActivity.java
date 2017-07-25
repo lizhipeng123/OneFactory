@@ -13,7 +13,6 @@ import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -27,15 +26,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.adapter.ProductionAdapter;
-import com.daoran.newfactory.onefactory.adapter.ProductionLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
-import com.daoran.newfactory.onefactory.bean.ProducationConfigSaveBean;
+import com.daoran.newfactory.onefactory.bean.ProducationCopyConfigSaveBean;
+import com.daoran.newfactory.onefactory.bean.ProducationCopyDailyBean;
+import com.daoran.newfactory.onefactory.bean.ProducationCopyNewlyComfigSaveBean;
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
-import com.daoran.newfactory.onefactory.bean.ProducationNewlyComfigSaveBean;
 import com.daoran.newfactory.onefactory.bean.ProductionNewlybooleanBean;
 import com.daoran.newfactory.onefactory.bean.Propostbean;
-import com.daoran.newfactory.onefactory.bean.UsergetBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.PhoneSaveUtil;
@@ -64,11 +61,11 @@ import okhttp3.Call;
 import okhttp3.MediaType;
 
 /**
- * 新建保存
- * Created by lizhipeng on 2017/5/9.
+ * 复制保存界面
+ * Created by lizhipeng on 2017/7/24.
  */
 
-public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
+public class ProductionCopyComfigActivity extends BaseFrangmentActivity
         implements View.OnClickListener {
     private static final String TAG = "configtest";
     private NoscrollListView mData;
@@ -83,11 +80,11 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
     private List<ProductionNewlybooleanBean.DataBean> booleandatelist =
             new ArrayList<ProductionNewlybooleanBean.DataBean>();
     private ProductionNewlybooleanBean newlybooleanBean;
-    private List<ProducationConfigSaveBean> saveBeen =
-            new ArrayList<ProducationConfigSaveBean>();
+    private List<ProducationCopyConfigSaveBean> saveBeen =
+            new ArrayList<ProducationCopyConfigSaveBean>();
 
-    private List<ProducationNewlyComfigSaveBean> newlyComfigSaveBeen
-            = new ArrayList<ProducationNewlyComfigSaveBean>();
+    private List<ProducationCopyNewlyComfigSaveBean> newlyComfigSaveBeen
+            = new ArrayList<ProducationCopyNewlyComfigSaveBean>();
 
     private Button btnProSave;
     private TextView spinnerNewbuild;
@@ -118,11 +115,14 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
     private int year, month, datetime, hour, minute, second;
     int isprodure;
     private Object[] array;
+    private List<ProducationCopyDailyBean> dailyBeanList =
+            new ArrayList<ProducationCopyDailyBean>();
+//    private String listItemm, listPrecoder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_production_config);
+        setContentView(R.layout.activity_copy_production_config);
         getViews();
         initViews();
         setNewlyComfig();
@@ -373,37 +373,37 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
      */
     private List<Map<String, Object>> getData() {
         sp = getSharedPreferences("my_sp", 0);
-        String tvnewlydate = sp.getString("tvnewlydate", "");//款号
-        String tvnewlyDocumentary = sp.getString("tvnewlyDocumentary", "");//跟单
-        String tvnewlyFactory = sp.getString("tvnewlyFactory", "");//工厂
-        String tvnewlyDepartment = sp.getString("tvnewlyDepartment", "");//部门/组别
-        String tvnewlyProcedure = sp.getString("tvnewlyProcedure", "");//工序
-        String tvnewlyOthers = sp.getString("tvnewlyOthers", "");//组别人数
-        String tvnewSingularSystem = sp.getString("tvnewSingularSystem", "");//制单数
-        String tvdate = sp.getString("tvColorTaskqty", "");//任务数
-        String tvnewTaskNumber = sp.getString("tvnewTaskNumber", "");//尺码
-        String tvnewlySize = sp.getString("tvnewlySize", "");//花色
-        String tvnewlyClippingNumber = sp.getString("tvnewlyClippingNumber", "");//实裁数
-        String tvnewlyCompletedLastMonth = sp.getString("tvnewlyCompletedLastMonth", "");//总完工数
-        String tvnewlyTotalCompletion = sp.getString("tvnewlyTotalCompletion", "");//状态
+        String tvnewlydate = sp.getString("copyitem", "");//款号
+        String tvnewlyDocumentary = sp.getString("copyDocumentary", "");//跟单
+        String tvnewlyFactory = sp.getString("copyFactory", "");//工厂
+        String tvnewlyDepartment = sp.getString("copyDepartment", "");//部门/组别
+        String tvnewlyProcedure = sp.getString("copyProcedure", "");//工序
+        String tvnewlyOthers = sp.getString("copyOthers", "");//组别人数
+        String tvnewSingularSystem = sp.getString("copySingularSystem", "");//制单数
+        String tvdate = sp.getString("copyTaskNumber", "");//任务数
+        String tvnewTaskNumber = sp.getString("copySize", "");//尺码
+        String tvnewlySize = sp.getString("copyColor", "");//花色
+        String tvnewlyClippingNumber = sp.getString("copyClippingNumber", "");//实裁数
+        String tvnewlyCompletedLastMonth = sp.getString("copyTotalCompletion", "");//总完工数
+        String tvnewlyTotalCompletion = sp.getString("copyState", "");//状态
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("tvnewlydate", tvnewlydate);
-        map.put("tvnewlyDocumentary", tvnewlyDocumentary);
-        map.put("tvnewlyFactory", tvnewlyFactory);
-        map.put("tvnewlyDepartment", tvnewlyDepartment);
-        map.put("tvnewlyProcedure", tvnewlyProcedure);
-        map.put("tvnewlyOthers", tvnewlyOthers);
-        map.put("tvnewSingularSystem", tvnewSingularSystem);
-        map.put("tvColorTaskqty", tvdate);
-        map.put("tvnewTaskNumber", tvnewTaskNumber);
-        map.put("tvnewlySize", tvnewlySize);
-        map.put("tvnewlyClippingNumber", tvnewlyClippingNumber);
-        map.put("tvnewlyCompletedLastMonth", tvnewlyCompletedLastMonth);
-        map.put("tvnewlyTotalCompletion", tvnewlyTotalCompletion);
+        map.put("copyitem", tvnewlydate);
+        map.put("copyDocumentary", tvnewlyDocumentary);
+        map.put("copyFactory", tvnewlyFactory);
+        map.put("copyDepartment", tvnewlyDepartment);
+        map.put("copyProcedure", tvnewlyProcedure);
+        map.put("copyOthers", tvnewlyOthers);
+        map.put("copySingularSystem", tvnewSingularSystem);
+        map.put("copyTaskNumber", tvdate);
+        map.put("copySize", tvnewTaskNumber);
+        map.put("copyColor", tvnewlySize);
+        map.put("copyClippingNumber", tvnewlyClippingNumber);
+        map.put("copyTotalCompletion", tvnewlyCompletedLastMonth);
+        map.put("copyState", tvnewlyTotalCompletion);
         list.add(map);
         SharedPreferences.Editor editor = sp.edit();
-        editor.remove("tvnewlySize");
+        editor.remove("copyColor");
         editor.commit();
         return list;
     }
@@ -415,229 +415,288 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 finish();
                 break;
             case R.id.btnProSave:
-                setSave();
+                setdeilyData();
                 break;
         }
     }
 
     /**
-     * 判断 array1是否包含所有的 array2
+     * 复制保存
      */
-    private static boolean containsAll(String[] array1, String[] array2) {
-        for (String str : array2) {
-            if (!ArrayUtils.contains(array1, str)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * 新建保存
-     */
-    private void setSave() {
-        String saveurl = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
-        sp = getSharedPreferences("my_sp", 0);
-        SharedPreferences spes = getSharedPreferences("mylist", 0);
-        String liststr = spes.getString("mylistStr", "");
-        String tvnewlySizes = sp.getString("tvnewlySize", "");//花色
-        String salesid = sp.getString("tvnewlysalesid", "");//款号id
-        String proColumnTitle = sp.getString("Configdepartment", "");//部门
-        String productionRecorder = sp.getString("configrecorder", "");//制单人
-        String productionMonth = sp.getString("ComfigMonth", "");//月
-        String proadaptertitle = sp.getString("tvnewlyDepartment", "");
-        String columntitle;
-        String recordid = sp.getString("username", "");//制单人id
-        if (proColumnTitle.equals("")) {
-            columntitle = proadaptertitle;
-        } else {
-            columntitle = proColumnTitle;
-        }
-        String proProcedureadapterTitle = sp.getString("ConfigProcedure", "");//工序adapter中修改过的
-        String proprocudureTitle = sp.getString("tvnewlyProcedure", "");//从款号选择传过来的工序
-        String procudureTitle;//工序变量
-        //如果工序显示是空值或者为选择工序，则统一赋给变量为空值""，
-        //如果不是的话就把修改的工序赋给变量
-        if (proprocudureTitle.equals("选择工序") && proProcedureadapterTitle.equals("")) {
-            procudureTitle = "";
-        } else if (!proProcedureadapterTitle.equals("")) {
-            procudureTitle = proProcedureadapterTitle;
-        } else {
-            procudureTitle = proprocudureTitle;
-        }
-
-        int listsize = booleandatelist.size();
-        if (listsize == 0) {
-            listsize = 1;
-        } else {
-            listsize = booleandatelist.size();
-        }
-        String tvnewlydate = sp.getString("tvnewlydate", "");//
-//        int debeenlength = detailBeenList.size();//初始化集合的大小
-        String[] arrsitem = tvnewlydate.split(",");//修改的款号数组
-        String[] arrspredure = procudureTitle.split(",");//修改的工序数组
-        String[] arrsmonth = productionMonth.split(",");//修改的月份数组
-        String[] arrsdatemonth = new String[listsize];
-        String[] arrsdatepredure = new String[listsize];//符合条件的工序数组
-        for (int i = 0; i < listsize; i++) {
-            if (listsize != 0) {
-                if(booleandatelist.get(i).getItem()!=null){
-                    String woritem = booleandatelist.get(i).getItem();
-                    String[] workitempro = woritem.split(",");
-                    boolean probool = containsAll(arrsitem, workitempro);
-                    if (probool == true) {
-                        arrsdatepredure[i] = booleandatelist.get(i).getWorkingProcedure();
-                        arrsdatemonth[i] = booleandatelist.get(i).getMonth();
-                    } else {
-                        arrsdatepredure[i] = "";
-                        arrsdatemonth[i] = "";
-                    }
-                }
+    private void setdeilyData() {
+        if (NetWork.isNetWorkAvailable(this)) {
+            String stridata = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
+            sp = getSharedPreferences("my_sp", 0);
+            String liststr = sp.getString("mycopylistStr", "");
+            String tvnewlydate = sp.getString("copyitem", "");//款号
+            String tvnewlyDocumentary = sp.getString("copyDocumentary", "");//跟单
+            String tvnewlyFactory = sp.getString("copyFactory", "");//工厂
+            String tvnewlyDepartment = sp.getString("copyDepartment", "");//部门/组别
+            String tvnewlyProcedure = sp.getString("copyProcedure", "");//工序
+            String proProcedureadapterTitle = sp.getString("ConfigProcedure", "");//工序adapter中修改过的
+            String procudureTitle;//工序变量
+            if (!proProcedureadapterTitle.equals("")) {
+                procudureTitle = proProcedureadapterTitle;
             } else {
-                arrsdatepredure[i] = "";
-                arrsdatemonth[i] = "";
+                procudureTitle = tvnewlyProcedure;
             }
-        }
-        System.out.print(arrsdatepredure + "");//符合条件的工序
-        System.out.print(arrsdatemonth + "");
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < arrsdatepredure.length; i++) {
-            if ("".equals(arrsdatepredure[i])) {
-                continue;
-            }
-            sb.append(arrsdatepredure[i]);
-            if (i != arrsdatepredure.length - 1) {
-                sb.append(";");
-            }
-        }
-        arrsdatepredure = sb.toString().split(";");
-        for (int i = 0; i < arrsdatepredure.length; i++) {
-            System.out.print(arrsdatepredure[i] + "");
-        }
-        System.out.print(arrsdatepredure + "");
+            String tvnewlyOthers = sp.getString("copyOthers", "");//组别人数
+            String tvnewSingularSystem = sp.getString("copySingularSystem", "");//制单数
+            String tvdate = sp.getString("copyTaskNumber", "");//任务数
+            String tvnewTaskNumber = sp.getString("copySize", "");//尺码
+            String tvnewlySize = sp.getString("copyyColor", "");//花色
+            String tvcopynewlycolor = sp.getString("configcolor","");//表中传过来的花色
+            String tvnewlyClippingNumber = sp.getString("copyClippingNumber", "");//实裁数
+            String tvnewlyCompletedLastMonth = sp.getString("copyTotalCompletion", "");//总完工数
+            String copyBalanceAmount = sp.getString("copyBalanceAmount", "");//结余数量
+            String copyCompletedLastMonth = sp.getString("copyCompletedLastMonth", "");//上月完工
+            String tvnewlyTotalCompletion = sp.getString("copyState", "");//状态
+            String tvnewlyid = sp.getString("proadapterid", "");//id
+            String tvnewlyserid = sp.getString("prosalesid", "");//行id
+            String tvnewlyProYear = sp.getString("copyProYear", "");//年
+            String tvnewlyMonth = sp.getString("copyMonth", "");//月份
+            String productionMonth = sp.getString("ComfigMonth", "");//修改过的月份
+            String copyRecorder = sp.getString("copyRecorder", "");//制单人
+            String copyRecordat = sp.getString("copyRecordat", "");//制单时间
+            String copyRecordid = sp.getString("username", "");//当前用户
 
-        StringBuffer sb2 = new StringBuffer();
-        for (int i = 0; i < arrsdatemonth.length; i++) {
-            if ("".equals(arrsdatemonth[i])) {
-                continue;
+            if (tvnewlyProcedure.equals("裁床")) {
+                tvnewlyClippingNumber = String.valueOf(0);
+
             }
-            sb2.append(arrsdatemonth[i]);
-            if (i != arrsdatemonth.length - 1) {
-                sb2.append(";");
+            int listsize = booleandatelist.size();
+            if (listsize == 0) {
+                listsize = 1;
+            } else {
+                listsize = booleandatelist.size();
             }
-        }
-        arrsdatemonth = sb2.toString().split(";");
-        for (int i = 0; i < arrsdatemonth.length; i++) {
-            System.out.print(arrsdatemonth[i] + "");
-        }
-        System.out.print(arrsdatemonth + "");
-        boolean monthbool = containsAll(arrsdatemonth, arrsmonth);
-        boolean predurebool = containsAll(arrsdatepredure, arrspredure);
-        final ProgressDialog progressDialog = ProgressDialog.show(this,
-                "请稍候...", "正在保存中...", false, true);
-        if (predurebool == true) {
-            if (monthbool == true) {
-                ToastUtils.ShowToastMessage("已存在相同月份，工序的款号", ProductionNewlyComfigActivity.this);
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(1500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+            String[] arrsitem = tvnewlydate.split(",");//修改的款号数组
+            String[] arrspredure = procudureTitle.split(",");//修改的工序数组
+            String[] arrsmonth = productionMonth.split(",");//修改的月份数组
+            String[] arrsdatemonth = new String[listsize];
+            String[] arrsdatepredure = new String[listsize];//符合条件的工序数组
+            for (int i = 0; i < listsize; i++) {
+                if (listsize != 0) {
+                    if (booleandatelist.get(i).getItem() != null) {
+                        String woritem = booleandatelist.get(i).getItem();
+                        String[] workitempro = woritem.split(",");
+                        boolean probool = containsAll(arrsitem, workitempro);
+                        if (probool == true) {
+                            arrsdatepredure[i] = booleandatelist.get(i).getWorkingProcedure();
+                            arrsdatemonth[i] = booleandatelist.get(i).getMonth();
+                        } else {
+                            arrsdatepredure[i] = "";
+                            arrsdatemonth[i] = "";
                         }
-                        progressDialog.dismiss();
                     }
-                });
-                thread.start();
-            } else {
-                String proPrdstatusTitle = sp.getString("ComfigPrdstatus", "");//状态//
-                String productionItem = sp.getString("comfigitem", "");//款号
-                String productionDocumentary = sp.getString("configdocument", "");//跟单//
-                String productionFactory = sp.getString("configfactory", "");//工厂
-                String productionOthers = sp.getString("ConfigOthers", "");//组别人数
-                String productionSingularSystem = sp.getString("configsingular", "");//制单数//
-                String productionColor = sp.getString("configcolor", "");//花色
-                String productionTaskNumber = sp.getString("ConfigTaskNumber", "");//任务数
-                String productionSize = sp.getString("configsize", "");//尺码
-                String productionClippingNumber = sp.getString("configclipping", "");//实裁数
-                String productionCompletedLastMonth = sp.getString("ConfigLastMonth", "");//上月完工
-                String productionTotalCompletion = sp.getString("configcompletion", "");//总完工数
-                String productionBalanceAmount = sp.getString("configamount", "");//结余数量
-                String productionYear = sp.getString("configyear", "");//年
-                String productionOneDay = sp.getString("configOneDay", "");//1
-                String productionTwoDay = sp.getString("configTwoDay", "");//2
-                String productionThreeDay = sp.getString("configThreeDay", "");//3
-                String productionForeDay = sp.getString("configForeDay", "");//4
-                String productionFiveDay = sp.getString("configFiveDay", "");//5
-                String productionSixDay = sp.getString("configSixDay", "");//6
-                String productionSevenDay = sp.getString("configSevenDay", "");//7
-                String productionEightDay = sp.getString("configEightDay", "");//8
-                String productionNineDay = sp.getString("configNineDay", "");//9
-                String productionTenDay = sp.getString("configTenDay", "");//10
-                String productionElevenDay = sp.getString("configElevenDay", "");//11
-                String productionTwelveDay = sp.getString("configTwelveDay", "");//12
-                String productionThirteenDay = sp.getString("configThirteenDay", "");//13
-                String productionFourteenDay = sp.getString("configFourteenDay", "");//14
-                String productionFifteenDay = sp.getString("configFifteenDay", "");//15
-                String productionSixteenDay = sp.getString("configSixteenDay", "");//16
-                String productionSeventeenDay = sp.getString("configSeventeenDay", "");//17
-                String productionEighteenDay = sp.getString("configEighteenDay", "");//18
-                String productionNineteenDay = sp.getString("configNineteenDay", "");//19
-                String productionTwentyDay = sp.getString("configTwentyDay", "");//20
-                String productionTwentyOneDay = sp.getString("configTwentyOneDay", "");//21
-                String productionTwentyTwoDay = sp.getString("configTwentyTwoDay", "");//22
-                String productionTwentyThreeDay = sp.getString("configTwentyThreeDay", "");//23
-                String productionTwentyForeDay = sp.getString("configTwentyForeDay", "");//24
-                String productionTwentyFiveDay = sp.getString("configTwentyFiveDay", "");//25
-                String productionTwentySixDay = sp.getString("configTwentySixDay", "");//26
-                String productionTwentySevenDay = sp.getString("configTwentySevenDay", "");//27
-                String productionTwentyEightDay = sp.getString("configTwentyEightDay", "");//28
-                String productionTwentyNineDay = sp.getString("configTwentyNineDay", "");//29
-                String productionThirtyDay = sp.getString("configThirtyDay", "");//30
-                String productionThirtyOneDay = sp.getString("configThirtyOneDay", "");//31
-                String productionRemarks = sp.getString("configRemarks", "");//备注
-                String productionRecordat = sp.getString("configrecordat", "");//制单时间
-                Gson gson = new Gson();
-                booleandatelist.size();
-                if (procudureTitle.equals("裁床")) {
-                    if (!TextUtils.isEmpty(liststr)) {
-                        try {
-                            List<String> list = PhoneSaveUtil.String2SceneList(liststr);
-                            for (int j = 0; j < list.size(); j++) {
-                                ProducationNewlyComfigSaveBean consaveBean =
-                                        new ProducationNewlyComfigSaveBean();
-                                consaveBean.setID("0");
-                                consaveBean.setRecordid(recordid);
-                                consaveBean.setSalesid(salesid);
-                                consaveBean.setProdcol(list.get(j));
-                                consaveBean.setItem(productionItem);
-                                consaveBean.setPrddocumentary(productionDocumentary);
-                                consaveBean.setSubfactory(productionFactory);
-                                consaveBean.setSubfactoryTeams(columntitle);
-                                consaveBean.setWorkingProcedure(procudureTitle);
-                                consaveBean.setWorkers(productionOthers);
-                                consaveBean.setPqty(productionSingularSystem);
-                                consaveBean.setTaskqty(productionTaskNumber);
-                                consaveBean.setMdl(productionSize);
-                                consaveBean.setFactcutqty(productionClippingNumber);
-                                consaveBean.setSumCompletedQty(productionTotalCompletion);
-                                consaveBean.setLastMonQty(productionCompletedLastMonth);
-                                consaveBean.setLeftQty(productionBalanceAmount);
-                                consaveBean.setPrdstatus(proPrdstatusTitle);
-                                consaveBean.setYear(productionYear);
-                                consaveBean.setMonth(productionMonth);
-                                consaveBean.setMemo(productionRemarks);
-                                consaveBean.setRecorder(productionRecorder);
-                                consaveBean.setRecordat(productionRecordat);
-                                newlyComfigSaveBeen.add(consaveBean);
+                } else {
+                    arrsdatepredure[i] = "";
+                    arrsdatemonth[i] = "";
+                }
+            }
+            System.out.print(arrsdatepredure + "");//符合条件的工序
+            System.out.print(arrsdatemonth + "");
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < arrsdatepredure.length; i++) {
+                if ("".equals(arrsdatepredure[i])) {
+                    continue;
+                }
+                sb.append(arrsdatepredure[i]);
+                if (i != arrsdatepredure.length - 1) {
+                    sb.append(";");
+                }
+            }
+            arrsdatepredure = sb.toString().split(";");
+            for (int i = 0; i < arrsdatepredure.length; i++) {
+                System.out.print(arrsdatepredure[i] + "");
+            }
+            System.out.print(arrsdatepredure + "");
+
+            StringBuffer sb2 = new StringBuffer();
+            for (int i = 0; i < arrsdatemonth.length; i++) {
+                if ("".equals(arrsdatemonth[i])) {
+                    continue;
+                }
+                sb2.append(arrsdatemonth[i]);
+                if (i != arrsdatemonth.length - 1) {
+                    sb2.append(";");
+                }
+            }
+            arrsdatemonth = sb2.toString().split(";");
+            for (int i = 0; i < arrsdatemonth.length; i++) {
+                System.out.print(arrsdatemonth[i] + "");
+            }
+            System.out.print(arrsdatemonth + "");
+            boolean monthbool = containsAll(arrsdatemonth, arrsmonth);
+            boolean predurebool = containsAll(arrsdatepredure, arrspredure);
+            final ProgressDialog progressDialog = ProgressDialog.show(this,
+                    "请稍候...", "正在保存中...", false, true);
+            if (predurebool == true) {
+                if (monthbool == true) {
+                    ToastUtils.ShowToastMessage("已存在相同月份，工序的款号", ProductionCopyComfigActivity.this);
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(1500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
-                            System.out.print(list);
-                            System.out.print(newlyComfigSaveBeen);
-                            String detailb = gson.toJson(newlyComfigSaveBeen);
-                            String dateee = detailb.replace("\"\"", "null");
-                            if (newlyComfigSaveBeen.equals("")) {
-                                ToastUtils.ShowToastMessage("没有数据可以保存", ProductionNewlyComfigActivity.this);
+                            progressDialog.dismiss();
+                        }
+                    });
+                    thread.start();
+                } else {
+                    if (procudureTitle.equals("裁床")) {
+                        if (!TextUtils.isEmpty(liststr)) {
+                            List<String> list = null;
+                            Gson gson = new Gson();
+                            try {
+                                list = PhoneSaveUtil.String2SceneList(liststr);
+                                for (int j = 0; j < list.size(); j++) {
+                                    ProducationCopyNewlyComfigSaveBean consaveBean =
+                                            new ProducationCopyNewlyComfigSaveBean();
+                                    consaveBean.setID("0");
+                                    consaveBean.setRecordid(copyRecordid);
+                                    consaveBean.setSalesid(tvnewlyserid);
+                                    consaveBean.setProdcol(list.get(j));
+                                    consaveBean.setItem(tvnewlydate);
+                                    consaveBean.setPrddocumentary(tvnewlyDocumentary);
+                                    consaveBean.setSubfactory(tvnewlyFactory);
+                                    consaveBean.setSubfactoryTeams(tvnewlyDepartment);
+                                    consaveBean.setWorkingProcedure(procudureTitle);
+                                    consaveBean.setWorkers(tvnewlyOthers);
+                                    consaveBean.setPqty(tvnewSingularSystem);
+                                    consaveBean.setTaskqty(tvdate);
+                                    consaveBean.setMdl(tvnewTaskNumber);
+                                    consaveBean.setProdcol(tvnewlySize);
+                                    consaveBean.setFactcutqty(tvnewlyClippingNumber);
+                                    consaveBean.setSumCompletedQty(tvnewlyCompletedLastMonth);
+                                    consaveBean.setLastMonQty(copyCompletedLastMonth);
+                                    consaveBean.setLeftQty(copyBalanceAmount);
+                                    consaveBean.setPrdstatus(tvnewlyTotalCompletion);
+                                    consaveBean.setYear(tvnewlyProYear);
+                                    consaveBean.setMonth(tvnewlyMonth);
+                                    consaveBean.setRecorder(copyRecorder);
+                                    consaveBean.setRecordat(copyRecordat);
+                                    newlyComfigSaveBeen.add(consaveBean);
+                                }
+                                System.out.print(list);
+                                System.out.print(newlyComfigSaveBeen);
+                                String detailb = gson.toJson(newlyComfigSaveBeen);
+                                String dateee = detailb.replace("\"\"", "null");
+                                if (newlyComfigSaveBeen.equals("")) {
+                                    ToastUtils.ShowToastMessage("没有数据可以保存", ProductionCopyComfigActivity.this);
+                                    Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(1500);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                                    thread.start();
+                                } else {
+                                    if (NetWork.isNetWorkAvailable(this)) {
+                                        OkHttpUtils.postString()
+                                                .url(stridata)
+                                                .content(dateee)
+                                                .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                                                .build()
+                                                .execute(new StringCallback() {
+                                                    @Override
+                                                    public void onError(Call call, Exception e, int id) {
+                                                        e.printStackTrace();
+                                                        Thread thread = new Thread(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                try {
+                                                                    Thread.sleep(1500);
+                                                                } catch (InterruptedException e) {
+                                                                    e.printStackTrace();
+                                                                }
+                                                                progressDialog.dismiss();
+                                                            }
+                                                        });
+                                                        thread.start();
+                                                    }
+
+                                                    @Override
+                                                    public void onResponse(String response, int id) {
+                                                        System.out.print(response);
+                                                        Thread thread = new Thread(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                try {
+                                                                    Thread.sleep(1500);
+                                                                } catch (InterruptedException e) {
+                                                                    e.printStackTrace();
+                                                                }
+                                                                progressDialog.dismiss();
+                                                            }
+                                                        });
+                                                        thread.start();
+                                                        String ression = StringUtil.sideTrim(response, "\"");
+                                                        System.out.print(ression);
+                                                        int resindex = Integer.parseInt(ression);
+                                                        if (resindex > 4) {
+                                                            ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
+                                                                    ProductionCopyComfigActivity.this);
+                                                        } else if (resindex == 3) {
+                                                            ToastUtils.ShowToastMessage("保存失败",
+                                                                    ProductionCopyComfigActivity.this);
+                                                        } else if (resindex == 4) {
+                                                            ToastUtils.ShowToastMessage("数据错误，请重试",
+                                                                    ProductionCopyComfigActivity.this);
+                                                        } else if (resindex == 2) {
+                                                            ToastUtils.ShowToastMessage("该单已存在，无法新建！",
+                                                                    ProductionCopyComfigActivity.this);
+                                                        } else {
+                                                            ToastUtils.ShowToastMessage("未知错误，请联系管理员",
+                                                                    ProductionCopyComfigActivity.this);
+                                                        }
+                                                    }
+                                                });
+                                    } else {
+                                        ToastUtils.ShowToastMessage(R.string.noHttp, ProductionCopyComfigActivity.this);
+                                    }
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (ClassNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            ProducationCopyDailyBean dailyBean = new ProducationCopyDailyBean();
+                            dailyBean.setID("");
+                            dailyBean.setSalesid(tvnewlyserid);
+                            dailyBean.setItem(tvnewlydate);
+                            dailyBean.setPrddocumentary(tvnewlyDocumentary);
+                            dailyBean.setSubfactory(tvnewlyFactory);
+                            dailyBean.setSubfactoryTeams(tvnewlyDepartment);
+                            dailyBean.setWorkingProcedure(procudureTitle);
+                            dailyBean.setWorkers(tvnewlyOthers);
+                            dailyBean.setPqty(tvnewSingularSystem);
+                            dailyBean.setTaskqty(tvdate);
+                            dailyBean.setMdl(tvnewTaskNumber);
+                            dailyBean.setProdcol(tvnewlySize);
+                            dailyBean.setFactcutqty(tvnewlyClippingNumber);
+                            dailyBean.setSumCompletedQty(tvnewlyCompletedLastMonth);
+                            dailyBean.setPrdstatus(tvnewlyTotalCompletion);
+                            dailyBean.setYear(tvnewlyProYear);
+                            dailyBean.setMonth(tvnewlyMonth);
+                            dailyBean.setRecorder(copyRecorder);
+                            dailyBean.setRecordat(copyRecordat);
+                            dailyBean.setRecordid(copyRecordid);
+                            dailyBeanList.add(dailyBean);
+                            Gson gson = new Gson();
+                            String savebeanlist = gson.toJson(dailyBeanList);
+                            String dateee = savebeanlist.replace("\"\"", "null");
+                            if (dailyBeanList.equals("")) {
+                                ToastUtils.ShowToastMessage("没有数据可以保存", ProductionCopyComfigActivity.this);
                                 Thread thread = new Thread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -652,8 +711,8 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 thread.start();
                             } else {
                                 if (NetWork.isNetWorkAvailable(this)) {
-                                    OkHttpUtils.postString().
-                                            url(saveurl)
+                                    OkHttpUtils.postString()
+                                            .url(stridata)
                                             .content(dateee)
                                             .mediaType(MediaType.parse("application/json;charset=utf-8"))
                                             .build()
@@ -693,29 +752,254 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                                     String ression = StringUtil.sideTrim(response, "\"");
                                                     System.out.print(ression);
                                                     int resindex = Integer.parseInt(ression);
-                                                    setNewlyComfig();
                                                     if (resindex > 4) {
-                                                        ToastUtils.ShowToastMessage("保存成功，请刷新页面",
-                                                                ProductionNewlyComfigActivity.this);
-                                                        startActivity(new Intent(ProductionNewlyComfigActivity.this,
-                                                                ProductionActivity.class));
+                                                        ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
+                                                                ProductionCopyComfigActivity.this);
                                                     } else if (resindex == 3) {
                                                         ToastUtils.ShowToastMessage("保存失败",
-                                                                ProductionNewlyComfigActivity.this);
+                                                                ProductionCopyComfigActivity.this);
                                                     } else if (resindex == 4) {
                                                         ToastUtils.ShowToastMessage("数据错误，请重试",
-                                                                ProductionNewlyComfigActivity.this);
+                                                                ProductionCopyComfigActivity.this);
                                                     } else if (resindex == 2) {
                                                         ToastUtils.ShowToastMessage("该单已存在，无法新建！",
-                                                                ProductionNewlyComfigActivity.this);
+                                                                ProductionCopyComfigActivity.this);
                                                     } else {
                                                         ToastUtils.ShowToastMessage("未知错误，请联系管理员",
-                                                                ProductionNewlyComfigActivity.this);
+                                                                ProductionCopyComfigActivity.this);
                                                     }
                                                 }
                                             });
                                 } else {
-                                    ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyComfigActivity.this);
+                                    ToastUtils.ShowToastMessage(R.string.noHttp, ProductionCopyComfigActivity.this);
+                                }
+
+                            }
+
+                        }
+                    } else {
+                        ProducationCopyDailyBean dailyBean = new ProducationCopyDailyBean();
+                        dailyBean.setID("");
+                        dailyBean.setSalesid(tvnewlyserid);
+                        dailyBean.setItem(tvnewlydate);
+                        dailyBean.setPrddocumentary(tvnewlyDocumentary);
+                        dailyBean.setSubfactory(tvnewlyFactory);
+                        dailyBean.setSubfactoryTeams(tvnewlyDepartment);
+                        dailyBean.setWorkingProcedure(procudureTitle);
+                        dailyBean.setWorkers(tvnewlyOthers);
+                        dailyBean.setPqty(tvnewSingularSystem);
+                        dailyBean.setTaskqty(tvdate);
+                        dailyBean.setMdl(tvnewTaskNumber);
+                        dailyBean.setProdcol(tvcopynewlycolor);
+                        dailyBean.setFactcutqty(tvnewlyClippingNumber);
+                        dailyBean.setSumCompletedQty(tvnewlyCompletedLastMonth);
+                        dailyBean.setPrdstatus(tvnewlyTotalCompletion);
+                        dailyBean.setYear(tvnewlyProYear);
+                        dailyBean.setMonth(tvnewlyMonth);
+                        dailyBean.setRecorder(copyRecorder);
+                        dailyBean.setRecordat(copyRecordat);
+                        dailyBean.setRecordid(copyRecordid);
+                        dailyBeanList.add(dailyBean);
+                        Gson gson = new Gson();
+                        String savebeanlist = gson.toJson(dailyBeanList);
+                        String dateee = savebeanlist.replace("\"\"", "null");
+                        if (dailyBeanList.equals("")) {
+                            ToastUtils.ShowToastMessage("没有数据可以保存", ProductionCopyComfigActivity.this);
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
+                        } else {
+                            if (NetWork.isNetWorkAvailable(this)) {
+                                OkHttpUtils.postString()
+                                        .url(stridata)
+                                        .content(dateee)
+                                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                                        .build()
+                                        .execute(new StringCallback() {
+                                            @Override
+                                            public void onError(Call call, Exception e, int id) {
+                                                e.printStackTrace();
+                                                Thread thread = new Thread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        try {
+                                                            Thread.sleep(1500);
+                                                        } catch (InterruptedException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                        progressDialog.dismiss();
+                                                    }
+                                                });
+                                                thread.start();
+                                            }
+
+                                            @Override
+                                            public void onResponse(String response, int id) {
+                                                System.out.print(response);
+                                                Thread thread = new Thread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        try {
+                                                            Thread.sleep(1500);
+                                                        } catch (InterruptedException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                        progressDialog.dismiss();
+                                                    }
+                                                });
+                                                thread.start();
+                                                String ression = StringUtil.sideTrim(response, "\"");
+                                                System.out.print(ression);
+                                                int resindex = Integer.parseInt(ression);
+                                                if (resindex > 4) {
+                                                    ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
+                                                            ProductionCopyComfigActivity.this);
+                                                } else if (resindex == 3) {
+                                                    ToastUtils.ShowToastMessage("保存失败",
+                                                            ProductionCopyComfigActivity.this);
+                                                } else if (resindex == 4) {
+                                                    ToastUtils.ShowToastMessage("数据错误，请重试",
+                                                            ProductionCopyComfigActivity.this);
+                                                } else if (resindex == 2) {
+                                                    ToastUtils.ShowToastMessage("该单已存在，无法新建！",
+                                                            ProductionCopyComfigActivity.this);
+                                                } else {
+                                                    ToastUtils.ShowToastMessage("未知错误，请联系管理员",
+                                                            ProductionCopyComfigActivity.this);
+                                                }
+                                            }
+                                        });
+                            } else {
+                                ToastUtils.ShowToastMessage(R.string.noHttp, ProductionCopyComfigActivity.this);
+                            }
+                        }
+                    }
+                }
+            } else {
+                if (procudureTitle.equals("裁床")) {
+                    if (!TextUtils.isEmpty(liststr)) {
+                        List<String> list = null;
+                        Gson gson = new Gson();
+                        try {
+                            list = PhoneSaveUtil.String2SceneList(liststr);
+                            for (int j = 0; j < list.size(); j++) {
+                                ProducationCopyNewlyComfigSaveBean consaveBean =
+                                        new ProducationCopyNewlyComfigSaveBean();
+                                consaveBean.setID("0");
+                                consaveBean.setRecordid(copyRecordid);
+                                consaveBean.setSalesid(tvnewlyserid);
+                                consaveBean.setProdcol(list.get(j));
+                                consaveBean.setItem(tvnewlydate);
+                                consaveBean.setPrddocumentary(tvnewlyDocumentary);
+                                consaveBean.setSubfactory(tvnewlyFactory);
+                                consaveBean.setSubfactoryTeams(tvnewlyDepartment);
+                                consaveBean.setWorkingProcedure(procudureTitle);
+                                consaveBean.setWorkers(tvnewlyOthers);
+                                consaveBean.setPqty(tvnewSingularSystem);
+                                consaveBean.setTaskqty(tvdate);
+                                consaveBean.setMdl(tvnewTaskNumber);
+                                consaveBean.setProdcol(tvnewlySize);
+                                consaveBean.setFactcutqty(tvnewlyClippingNumber);
+                                consaveBean.setSumCompletedQty(tvnewlyCompletedLastMonth);
+                                consaveBean.setLastMonQty(copyCompletedLastMonth);
+                                consaveBean.setLeftQty(copyBalanceAmount);
+                                consaveBean.setPrdstatus(tvnewlyTotalCompletion);
+                                consaveBean.setYear(tvnewlyProYear);
+                                consaveBean.setMonth(tvnewlyMonth);
+                                consaveBean.setRecorder(copyRecorder);
+                                consaveBean.setRecordat(copyRecordat);
+                                newlyComfigSaveBeen.add(consaveBean);
+                            }
+                            System.out.print(list);
+                            System.out.print(newlyComfigSaveBeen);
+                            String detailb = gson.toJson(newlyComfigSaveBeen);
+                            String dateee = detailb.replace("\"\"", "null");
+                            if (newlyComfigSaveBeen.equals("")) {
+                                ToastUtils.ShowToastMessage("没有数据可以保存", ProductionCopyComfigActivity.this);
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
+                            } else {
+                                if (NetWork.isNetWorkAvailable(this)) {
+                                    OkHttpUtils.postString()
+                                            .url(stridata)
+                                            .content(dateee)
+                                            .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                                            .build()
+                                            .execute(new StringCallback() {
+                                                @Override
+                                                public void onError(Call call, Exception e, int id) {
+                                                    e.printStackTrace();
+                                                    Thread thread = new Thread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            try {
+                                                                Thread.sleep(1500);
+                                                            } catch (InterruptedException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                            progressDialog.dismiss();
+                                                        }
+                                                    });
+                                                    thread.start();
+                                                }
+
+                                                @Override
+                                                public void onResponse(String response, int id) {
+                                                    System.out.print(response);
+                                                    Thread thread = new Thread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            try {
+                                                                Thread.sleep(1500);
+                                                            } catch (InterruptedException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                            progressDialog.dismiss();
+                                                        }
+                                                    });
+                                                    thread.start();
+                                                    String ression = StringUtil.sideTrim(response, "\"");
+                                                    System.out.print(ression);
+                                                    int resindex = Integer.parseInt(ression);
+                                                    if (resindex > 4) {
+                                                        ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
+                                                                ProductionCopyComfigActivity.this);
+                                                    } else if (resindex == 3) {
+                                                        ToastUtils.ShowToastMessage("保存失败",
+                                                                ProductionCopyComfigActivity.this);
+                                                    } else if (resindex == 4) {
+                                                        ToastUtils.ShowToastMessage("数据错误，请重试",
+                                                                ProductionCopyComfigActivity.this);
+                                                    } else if (resindex == 2) {
+                                                        ToastUtils.ShowToastMessage("该单已存在，无法新建！",
+                                                                ProductionCopyComfigActivity.this);
+                                                    } else {
+                                                        ToastUtils.ShowToastMessage("未知错误，请联系管理员",
+                                                                ProductionCopyComfigActivity.this);
+                                                    }
+                                                }
+                                            });
+                                } else {
+                                    ToastUtils.ShowToastMessage(R.string.noHttp, ProductionCopyComfigActivity.this);
                                 }
                             }
                         } catch (IOException e) {
@@ -723,72 +1007,34 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
                         }
-                    }
-                } else {
-//            if (!TextUtils.isEmpty(liststr)) {
-                    try {
-                        ProducationNewlyComfigSaveBean consaveBean =
-                                new ProducationNewlyComfigSaveBean();
-                        consaveBean.setID("0");
-                        consaveBean.setSalesid(salesid);
-                        consaveBean.setRecordid(recordid);
-                        consaveBean.setProdcol(productionColor);
-                        consaveBean.setItem(productionItem);
-                        consaveBean.setPrddocumentary(productionDocumentary);
-                        consaveBean.setSubfactory(productionFactory);
-                        consaveBean.setSubfactoryTeams(columntitle);
-                        consaveBean.setWorkingProcedure(procudureTitle);
-                        consaveBean.setWorkers(productionOthers);
-                        consaveBean.setPqty(productionSingularSystem);
-                        consaveBean.setTaskqty(productionTaskNumber);
-                        consaveBean.setMdl(productionSize);
-                        consaveBean.setFactcutqty(productionClippingNumber);
-                        consaveBean.setSumCompletedQty(productionTotalCompletion);
-                        consaveBean.setLastMonQty(productionCompletedLastMonth);
-                        consaveBean.setLeftQty(productionBalanceAmount);
-                        consaveBean.setPrdstatus(proPrdstatusTitle);
-                        consaveBean.setYear(productionYear);
-                        consaveBean.setMonth(productionMonth);
-                        consaveBean.setDay1(productionOneDay);
-                        consaveBean.setDay2(productionTwoDay);
-                        consaveBean.setDay3(productionThreeDay);
-                        consaveBean.setDay4(productionForeDay);
-                        consaveBean.setDay5(productionFiveDay);
-                        consaveBean.setDay6(productionSixDay);
-                        consaveBean.setDay7(productionSevenDay);
-                        consaveBean.setDay8(productionEightDay);
-                        consaveBean.setDay9(productionNineDay);
-                        consaveBean.setDay10(productionTenDay);
-                        consaveBean.setDay11(productionElevenDay);
-                        consaveBean.setDay12(productionTwelveDay);
-                        consaveBean.setDay13(productionThirteenDay);
-                        consaveBean.setDay14(productionFourteenDay);
-                        consaveBean.setDay15(productionFifteenDay);
-                        consaveBean.setDay16(productionSixteenDay);
-                        consaveBean.setDay17(productionSeventeenDay);
-                        consaveBean.setDay18(productionEighteenDay);
-                        consaveBean.setDay19(productionNineteenDay);
-                        consaveBean.setDay20(productionTwentyDay);
-                        consaveBean.setDay21(productionTwentyOneDay);
-                        consaveBean.setDay22(productionTwentyTwoDay);
-                        consaveBean.setDay23(productionTwentyThreeDay);
-                        consaveBean.setDay24(productionTwentyForeDay);
-                        consaveBean.setDay25(productionTwentyFiveDay);
-                        consaveBean.setDay26(productionTwentySixDay);
-                        consaveBean.setDay27(productionTwentySevenDay);
-                        consaveBean.setDay28(productionTwentyEightDay);
-                        consaveBean.setDay29(productionTwentyNineDay);
-                        consaveBean.setDay30(productionThirtyDay);
-                        consaveBean.setDay31(productionThirtyOneDay);
-                        consaveBean.setMemo(productionRemarks);
-                        consaveBean.setRecorder(productionRecorder);
-                        consaveBean.setRecordat(productionRecordat);
-                        newlyComfigSaveBeen.add(consaveBean);
-                        System.out.print(newlyComfigSaveBeen);
-                        String detailb = gson.toJson(newlyComfigSaveBeen);
-                        String dateee = detailb.replace("\"\"", "null");
-                        if (newlyComfigSaveBeen.equals("")) {
-                            ToastUtils.ShowToastMessage("没有数据可以保存", ProductionNewlyComfigActivity.this);
+                    } else {
+                        ProducationCopyDailyBean dailyBean = new ProducationCopyDailyBean();
+                        dailyBean.setID("");
+                        dailyBean.setSalesid(tvnewlyserid);
+                        dailyBean.setItem(tvnewlydate);
+                        dailyBean.setPrddocumentary(tvnewlyDocumentary);
+                        dailyBean.setSubfactory(tvnewlyFactory);
+                        dailyBean.setSubfactoryTeams(tvnewlyDepartment);
+                        dailyBean.setWorkingProcedure(procudureTitle);
+                        dailyBean.setWorkers(tvnewlyOthers);
+                        dailyBean.setPqty(tvnewSingularSystem);
+                        dailyBean.setTaskqty(tvdate);
+                        dailyBean.setMdl(tvnewTaskNumber);
+                        dailyBean.setProdcol(tvnewlySize);
+                        dailyBean.setFactcutqty(tvnewlyClippingNumber);
+                        dailyBean.setSumCompletedQty(tvnewlyCompletedLastMonth);
+                        dailyBean.setPrdstatus(tvnewlyTotalCompletion);
+                        dailyBean.setYear(tvnewlyProYear);
+                        dailyBean.setMonth(tvnewlyMonth);
+                        dailyBean.setRecorder(copyRecorder);
+                        dailyBean.setRecordat(copyRecordat);
+                        dailyBean.setRecordid(copyRecordid);
+                        dailyBeanList.add(dailyBean);
+                        Gson gson = new Gson();
+                        String savebeanlist = gson.toJson(dailyBeanList);
+                        String dateee = savebeanlist.replace("\"\"", "null");
+                        if (dailyBeanList.equals("")) {
+                            ToastUtils.ShowToastMessage("没有数据可以保存", ProductionCopyComfigActivity.this);
                             Thread thread = new Thread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -803,173 +1049,8 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             thread.start();
                         } else {
                             if (NetWork.isNetWorkAvailable(this)) {
-//                                ResponseDialog.showLoading(this);
-                                OkHttpUtils.postString().
-                                        url(saveurl)
-                                        .content(dateee)
-                                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                                        .build()
-                                        .execute(new StringCallback() {
-                                            @Override
-                                            public void onError(Call call, Exception e, int id) {
-                                                e.printStackTrace();
-                                            }
-
-                                            @Override
-                                            public void onResponse(String response, int id) {
-                                                System.out.print(response);
-                                                Thread thread = new Thread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        try {
-                                                            Thread.sleep(1500);
-                                                        } catch (InterruptedException e) {
-                                                            e.printStackTrace();
-                                                        }
-                                                        progressDialog.dismiss();
-                                                    }
-                                                });
-                                                thread.start();
-                                                String ression = StringUtil.sideTrim(response, "\"");
-                                                System.out.print(ression);
-                                                int resindex = Integer.parseInt(ression);
-                                                setNewlyComfig();
-                                                if (resindex > 4) {
-                                                    ToastUtils.ShowToastMessage("保存成功，请刷新页面",
-                                                            ProductionNewlyComfigActivity.this);
-                                                    startActivity(new Intent(ProductionNewlyComfigActivity.this,
-                                                            ProductionActivity.class));
-//                                                    ResponseDialog.closeLoading();
-                                                } else if (resindex == 3) {
-                                                    ToastUtils.ShowToastMessage("保存失败",
-                                                            ProductionNewlyComfigActivity.this);
-//                                                    ResponseDialog.closeLoading();
-                                                } else if (resindex == 4) {
-                                                    ToastUtils.ShowToastMessage("数据错误，请重试",
-                                                            ProductionNewlyComfigActivity.this);
-//                                                    ResponseDialog.closeLoading();
-                                                } else {
-                                                    ToastUtils.ShowToastMessage("未知错误，请联系管理员",
-                                                            ProductionNewlyComfigActivity.this);
-//                                                    ResponseDialog.closeLoading();
-                                                }
-                                            }
-                                        });
-                            } else {
-                                ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyComfigActivity.this);
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        } else {
-            String proPrdstatusTitle = sp.getString("ComfigPrdstatus", "");//状态//
-            String productionItem = sp.getString("comfigitem", "");//款号
-            String productionDocumentary = sp.getString("configdocument", "");//跟单//
-            String productionFactory = sp.getString("configfactory", "");//工厂
-            String productionOthers = sp.getString("ConfigOthers", "");//组别人数
-            String productionSingularSystem = sp.getString("configsingular", "");//制单数//
-            String productionColor = sp.getString("configcolor", "");//花色
-            String productionTaskNumber = sp.getString("ConfigTaskNumber", "");//任务数
-            String productionSize = sp.getString("configsize", "");//尺码
-            String productionClippingNumber = sp.getString("configclipping", "");//实裁数
-            String productionCompletedLastMonth = sp.getString("ConfigLastMonth", "");//上月完工
-            String productionTotalCompletion = sp.getString("configcompletion", "");//总完工数
-            String productionBalanceAmount = sp.getString("configamount", "");//结余数量
-            String productionYear = sp.getString("configyear", "");//年
-
-            String productionOneDay = sp.getString("configOneDay", "");//1
-            String productionTwoDay = sp.getString("configTwoDay", "");//2
-            String productionThreeDay = sp.getString("configThreeDay", "");//3
-            String productionForeDay = sp.getString("configForeDay", "");//4
-            String productionFiveDay = sp.getString("configFiveDay", "");//5
-            String productionSixDay = sp.getString("configSixDay", "");//6
-            String productionSevenDay = sp.getString("configSevenDay", "");//7
-            String productionEightDay = sp.getString("configEightDay", "");//8
-            String productionNineDay = sp.getString("configNineDay", "");//9
-            String productionTenDay = sp.getString("configTenDay", "");//10
-            String productionElevenDay = sp.getString("configElevenDay", "");//11
-            String productionTwelveDay = sp.getString("configTwelveDay", "");//12
-            String productionThirteenDay = sp.getString("configThirteenDay", "");//13
-            String productionFourteenDay = sp.getString("configFourteenDay", "");//14
-            String productionFifteenDay = sp.getString("configFifteenDay", "");//15
-            String productionSixteenDay = sp.getString("configSixteenDay", "");//16
-            String productionSeventeenDay = sp.getString("configSeventeenDay", "");//17
-            String productionEighteenDay = sp.getString("configEighteenDay", "");//18
-            String productionNineteenDay = sp.getString("configNineteenDay", "");//19
-            String productionTwentyDay = sp.getString("configTwentyDay", "");//20
-            String productionTwentyOneDay = sp.getString("configTwentyOneDay", "");//21
-            String productionTwentyTwoDay = sp.getString("configTwentyTwoDay", "");//22
-            String productionTwentyThreeDay = sp.getString("configTwentyThreeDay", "");//23
-            String productionTwentyForeDay = sp.getString("configTwentyForeDay", "");//24
-            String productionTwentyFiveDay = sp.getString("configTwentyFiveDay", "");//25
-            String productionTwentySixDay = sp.getString("configTwentySixDay", "");//26
-            String productionTwentySevenDay = sp.getString("configTwentySevenDay", "");//27
-            String productionTwentyEightDay = sp.getString("configTwentyEightDay", "");//28
-            String productionTwentyNineDay = sp.getString("configTwentyNineDay", "");//29
-            String productionThirtyDay = sp.getString("configThirtyDay", "");//30
-            String productionThirtyOneDay = sp.getString("configThirtyOneDay", "");//31
-            String productionRemarks = sp.getString("configRemarks", "");//备注
-            String productionRecordat = sp.getString("configrecordat", "");//制单时间
-            Gson gson = new Gson();
-            booleandatelist.size();
-            if (procudureTitle.equals("裁床")) {
-                if (!TextUtils.isEmpty(liststr)) {
-                    try {
-                        List<String> list = PhoneSaveUtil.String2SceneList(liststr);
-                        for (int j = 0; j < list.size(); j++) {
-                            ProducationNewlyComfigSaveBean consaveBean =
-                                    new ProducationNewlyComfigSaveBean();
-                            consaveBean.setID("0");
-                            consaveBean.setRecordid(recordid);
-                            consaveBean.setSalesid(salesid);
-                            consaveBean.setProdcol(list.get(j));
-                            consaveBean.setItem(productionItem);
-                            consaveBean.setPrddocumentary(productionDocumentary);
-                            consaveBean.setSubfactory(productionFactory);
-                            consaveBean.setSubfactoryTeams(columntitle);
-                            consaveBean.setWorkingProcedure(procudureTitle);
-                            consaveBean.setWorkers(productionOthers);
-                            consaveBean.setPqty(productionSingularSystem);
-                            consaveBean.setTaskqty(productionTaskNumber);
-                            consaveBean.setMdl(productionSize);
-                            consaveBean.setFactcutqty(productionClippingNumber);
-                            consaveBean.setSumCompletedQty(productionTotalCompletion);
-                            consaveBean.setLastMonQty(productionCompletedLastMonth);
-                            consaveBean.setLeftQty(productionBalanceAmount);
-                            consaveBean.setPrdstatus(proPrdstatusTitle);
-                            consaveBean.setYear(productionYear);
-                            consaveBean.setMonth(productionMonth);
-                            consaveBean.setMemo(productionRemarks);
-                            consaveBean.setRecorder(productionRecorder);
-                            consaveBean.setRecordat(productionRecordat);
-                            newlyComfigSaveBeen.add(consaveBean);
-                        }
-                        System.out.print(list);
-                        System.out.print(newlyComfigSaveBeen);
-                        String detailb = gson.toJson(newlyComfigSaveBeen);
-                        String dateee = detailb.replace("\"\"", "null");
-                        if (newlyComfigSaveBeen.equals("")) {
-                            ToastUtils.ShowToastMessage("没有数据可以保存", ProductionNewlyComfigActivity.this);
-                            Thread thread = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        Thread.sleep(1500);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                    progressDialog.dismiss();
-                                }
-                            });
-                            thread.start();
-                        } else {
-                            if (NetWork.isNetWorkAvailable(this)) {
-//                                ResponseDialog.showLoading(this);
-                                OkHttpUtils.postString().
-                                        url(saveurl)
+                                OkHttpUtils.postString()
+                                        .url(stridata)
                                         .content(dateee)
                                         .mediaType(MediaType.parse("application/json;charset=utf-8"))
                                         .build()
@@ -1009,107 +1090,59 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                                 String ression = StringUtil.sideTrim(response, "\"");
                                                 System.out.print(ression);
                                                 int resindex = Integer.parseInt(ression);
-                                                setNewlyComfig();
                                                 if (resindex > 4) {
-                                                    ToastUtils.ShowToastMessage("保存成功，请刷新页面",
-                                                            ProductionNewlyComfigActivity.this);
-                                                    startActivity(new Intent(ProductionNewlyComfigActivity.this,
-                                                            ProductionActivity.class));
-//                                                    ResponseDialog.closeLoading();
+                                                    ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
+                                                            ProductionCopyComfigActivity.this);
                                                 } else if (resindex == 3) {
                                                     ToastUtils.ShowToastMessage("保存失败",
-                                                            ProductionNewlyComfigActivity.this);
-//                                                    ResponseDialog.closeLoading();
+                                                            ProductionCopyComfigActivity.this);
                                                 } else if (resindex == 4) {
                                                     ToastUtils.ShowToastMessage("数据错误，请重试",
-                                                            ProductionNewlyComfigActivity.this);
-//                                                    ResponseDialog.closeLoading();
+                                                            ProductionCopyComfigActivity.this);
                                                 } else if (resindex == 2) {
                                                     ToastUtils.ShowToastMessage("该单已存在，无法新建！",
-                                                            ProductionNewlyComfigActivity.this);
-//                                                    ResponseDialog.closeLoading();
+                                                            ProductionCopyComfigActivity.this);
                                                 } else {
                                                     ToastUtils.ShowToastMessage("未知错误，请联系管理员",
-                                                            ProductionNewlyComfigActivity.this);
-//                                                    ResponseDialog.closeLoading();
+                                                            ProductionCopyComfigActivity.this);
                                                 }
                                             }
                                         });
                             } else {
-                                ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyComfigActivity.this);
+                                ToastUtils.ShowToastMessage(R.string.noHttp, ProductionCopyComfigActivity.this);
                             }
+
                         }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
+
                     }
-                }
-            } else {
-//            if (!TextUtils.isEmpty(liststr)) {
-                try {
-                    ProducationNewlyComfigSaveBean consaveBean =
-                            new ProducationNewlyComfigSaveBean();
-                    consaveBean.setID("0");
-                    consaveBean.setSalesid(salesid);
-                    consaveBean.setRecordid(recordid);
-                    consaveBean.setProdcol(productionColor);
-                    consaveBean.setItem(productionItem);
-                    consaveBean.setPrddocumentary(productionDocumentary);
-                    consaveBean.setSubfactory(productionFactory);
-                    consaveBean.setSubfactoryTeams(columntitle);
-                    consaveBean.setWorkingProcedure(procudureTitle);
-                    consaveBean.setWorkers(productionOthers);
-                    consaveBean.setPqty(productionSingularSystem);
-                    consaveBean.setTaskqty(productionTaskNumber);
-                    consaveBean.setMdl(productionSize);
-                    consaveBean.setFactcutqty(productionClippingNumber);
-                    consaveBean.setSumCompletedQty(productionTotalCompletion);
-                    consaveBean.setLastMonQty(productionCompletedLastMonth);
-                    consaveBean.setLeftQty(productionBalanceAmount);
-                    consaveBean.setPrdstatus(proPrdstatusTitle);
-                    consaveBean.setYear(productionYear);
-                    consaveBean.setMonth(productionMonth);
-                    consaveBean.setDay1(productionOneDay);
-                    consaveBean.setDay2(productionTwoDay);
-                    consaveBean.setDay3(productionThreeDay);
-                    consaveBean.setDay4(productionForeDay);
-                    consaveBean.setDay5(productionFiveDay);
-                    consaveBean.setDay6(productionSixDay);
-                    consaveBean.setDay7(productionSevenDay);
-                    consaveBean.setDay8(productionEightDay);
-                    consaveBean.setDay9(productionNineDay);
-                    consaveBean.setDay10(productionTenDay);
-                    consaveBean.setDay11(productionElevenDay);
-                    consaveBean.setDay12(productionTwelveDay);
-                    consaveBean.setDay13(productionThirteenDay);
-                    consaveBean.setDay14(productionFourteenDay);
-                    consaveBean.setDay15(productionFifteenDay);
-                    consaveBean.setDay16(productionSixteenDay);
-                    consaveBean.setDay17(productionSeventeenDay);
-                    consaveBean.setDay18(productionEighteenDay);
-                    consaveBean.setDay19(productionNineteenDay);
-                    consaveBean.setDay20(productionTwentyDay);
-                    consaveBean.setDay21(productionTwentyOneDay);
-                    consaveBean.setDay22(productionTwentyTwoDay);
-                    consaveBean.setDay23(productionTwentyThreeDay);
-                    consaveBean.setDay24(productionTwentyForeDay);
-                    consaveBean.setDay25(productionTwentyFiveDay);
-                    consaveBean.setDay26(productionTwentySixDay);
-                    consaveBean.setDay27(productionTwentySevenDay);
-                    consaveBean.setDay28(productionTwentyEightDay);
-                    consaveBean.setDay29(productionTwentyNineDay);
-                    consaveBean.setDay30(productionThirtyDay);
-                    consaveBean.setDay31(productionThirtyOneDay);
-                    consaveBean.setMemo(productionRemarks);
-                    consaveBean.setRecorder(productionRecorder);
-                    consaveBean.setRecordat(productionRecordat);
-                    newlyComfigSaveBeen.add(consaveBean);
-                    System.out.print(newlyComfigSaveBeen);
-                    String detailb = gson.toJson(newlyComfigSaveBeen);
-                    String dateee = detailb.replace("\"\"", "null");
-                    if (newlyComfigSaveBeen.equals("")) {
-                        ToastUtils.ShowToastMessage("没有数据可以保存", ProductionNewlyComfigActivity.this);
+                } else {
+                    ProducationCopyDailyBean dailyBean = new ProducationCopyDailyBean();
+                    dailyBean.setID("");
+                    dailyBean.setSalesid(tvnewlyserid);
+                    dailyBean.setItem(tvnewlydate);
+                    dailyBean.setPrddocumentary(tvnewlyDocumentary);
+                    dailyBean.setSubfactory(tvnewlyFactory);
+                    dailyBean.setSubfactoryTeams(tvnewlyDepartment);
+                    dailyBean.setWorkingProcedure(procudureTitle);
+                    dailyBean.setWorkers(tvnewlyOthers);
+                    dailyBean.setPqty(tvnewSingularSystem);
+                    dailyBean.setTaskqty(tvdate);
+                    dailyBean.setMdl(tvnewTaskNumber);
+                    dailyBean.setProdcol(tvcopynewlycolor);
+                    dailyBean.setFactcutqty(tvnewlyClippingNumber);
+                    dailyBean.setSumCompletedQty(tvnewlyCompletedLastMonth);
+                    dailyBean.setPrdstatus(tvnewlyTotalCompletion);
+                    dailyBean.setYear(tvnewlyProYear);
+                    dailyBean.setMonth(tvnewlyMonth);
+                    dailyBean.setRecorder(copyRecorder);
+                    dailyBean.setRecordat(copyRecordat);
+                    dailyBean.setRecordid(copyRecordid);
+                    dailyBeanList.add(dailyBean);
+                    Gson gson = new Gson();
+                    String savebeanlist = gson.toJson(dailyBeanList);
+                    String dateee = savebeanlist.replace("\"\"", "null");
+                    if (dailyBeanList.equals("")) {
+                        ToastUtils.ShowToastMessage("没有数据可以保存", ProductionCopyComfigActivity.this);
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -1124,9 +1157,8 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         thread.start();
                     } else {
                         if (NetWork.isNetWorkAvailable(this)) {
-//                            ResponseDialog.showLoading(this);
-                            OkHttpUtils.postString().
-                                    url(saveurl)
+                            OkHttpUtils.postString()
+                                    .url(stridata)
                                     .content(dateee)
                                     .mediaType(MediaType.parse("application/json;charset=utf-8"))
                                     .build()
@@ -1166,38 +1198,46 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                             String ression = StringUtil.sideTrim(response, "\"");
                                             System.out.print(ression);
                                             int resindex = Integer.parseInt(ression);
-                                            setNewlyComfig();
                                             if (resindex > 4) {
-                                                ToastUtils.ShowToastMessage("保存成功，请刷新页面",
-                                                        ProductionNewlyComfigActivity.this);
-                                                startActivity(new Intent(ProductionNewlyComfigActivity.this,
-                                                        ProductionActivity.class));
-//                                                ResponseDialog.closeLoading();
+                                                ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
+                                                        ProductionCopyComfigActivity.this);
                                             } else if (resindex == 3) {
                                                 ToastUtils.ShowToastMessage("保存失败",
-                                                        ProductionNewlyComfigActivity.this);
-//                                                ResponseDialog.closeLoading();
+                                                        ProductionCopyComfigActivity.this);
                                             } else if (resindex == 4) {
                                                 ToastUtils.ShowToastMessage("数据错误，请重试",
-                                                        ProductionNewlyComfigActivity.this);
-//                                                ResponseDialog.closeLoading();
+                                                        ProductionCopyComfigActivity.this);
+                                            } else if (resindex == 2) {
+                                                ToastUtils.ShowToastMessage("该单已存在，无法新建！",
+                                                        ProductionCopyComfigActivity.this);
                                             } else {
                                                 ToastUtils.ShowToastMessage("未知错误，请联系管理员",
-                                                        ProductionNewlyComfigActivity.this);
-//                                                ResponseDialog.closeLoading();
+                                                        ProductionCopyComfigActivity.this);
                                             }
                                         }
                                     });
                         } else {
-                            ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyComfigActivity.this);
+                            ToastUtils.ShowToastMessage(R.string.noHttp, ProductionCopyComfigActivity.this);
                         }
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
+        } else {
+            ToastUtils.ShowToastMessage(R.string.noHttp, ProductionCopyComfigActivity.this);
         }
-//        }
+    }
+
+
+    /**
+     * 判断 array1是否包含所有的 array2
+     */
+    private static boolean containsAll(String[] array1, String[] array2) {
+        for (String str : array2) {
+            if (!ArrayUtils.contains(array1, str)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -1255,7 +1295,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     });
         } else {
             ToastUtils.ShowToastMessage("当前网络不可用,请重新再试",
-                    ProductionNewlyComfigActivity.this);
+                    ProductionCopyComfigActivity.this);
         }
     }
 
@@ -1378,9 +1418,9 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            final ViewHolder viewHolder;
+            final ProductionCopyComfigActivity.ViewHolder viewHolder;
             if (convertView == null) {
-                viewHolder = new ViewHolder();
+                viewHolder = new ProductionCopyComfigActivity.ViewHolder();
                 convertView = LayoutInflater.from(context).inflate(R.layout.item_producation_new_data, null);
                 viewHolder.tv_data = (TextView) convertView.findViewById(R.id.tv_data);
                 viewHolder.tvProDocumentary = (TextView) convertView.findViewById(R.id.tvProDocumentary);
@@ -1466,25 +1506,25 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 viewHolder.vProThirtyOneDay = convertView.findViewById(R.id.vProThirtyOneDay);
                 convertView.setTag(viewHolder);
             } else {
-                viewHolder = (ViewHolder) convertView.getTag();
+                viewHolder = (ProductionCopyComfigActivity.ViewHolder) convertView.getTag();
             }
-            String tvnewly = String.valueOf(mdate.get(position).get("tvnewlydate"));
+            sp = getSharedPreferences("my_sp", 0);
+            String tvnewly = String.valueOf(mdate.get(position).get("copyitem"));
             System.out.print(tvnewly);
             viewHolder.tv_data.setText(tvnewly);
-            sp = getSharedPreferences("my_sp", 0);
             String nameid = sp.getString("usernamerecoder", "");
-            String tvnewlyDocumen = String.valueOf(mdate.get(position).get("tvnewlyDocumentary"));
-            String tvnewlyFactory = String.valueOf(mdate.get(position).get("tvnewlyFactory"));
-            String tvnewlyDepartment = String.valueOf(mdate.get(position).get("tvnewlyDepartment"));
-            String tvnewlyProcedure = String.valueOf(mdate.get(position).get("tvnewlyProcedure"));
-            String tvnewlyOthers = String.valueOf(mdate.get(position).get("tvnewlyOthers"));
-            String tvnewSingularSystem = String.valueOf(mdate.get(position).get("tvnewSingularSystem"));
-            final String tvdate = String.valueOf(mdate.get(position).get("tvColorTaskqty"));
-            String tvnewTaskNumber = String.valueOf(mdate.get(position).get("tvnewTaskNumber"));
-            String tvnewlySize = String.valueOf(mdate.get(position).get("tvnewlySize"));
-            String tvnewlyClippingNumber = String.valueOf(mdate.get(position).get("tvnewlyClippingNumber"));
-            String tvnewlyCompletedLastMonth = String.valueOf(mdate.get(position).get("tvnewlyCompletedLastMonth"));
-            String tvnewlyTotalCompletion = String.valueOf(mdate.get(position).get("tvnewlyTotalCompletion"));
+            String tvnewlyDocumen = String.valueOf(mdate.get(position).get("copyDocumentary"));
+            String tvnewlyFactory = String.valueOf(mdate.get(position).get("copyFactory"));
+            String tvnewlyDepartment = String.valueOf(mdate.get(position).get("copyDepartment"));
+            String tvnewlyProcedure = String.valueOf(mdate.get(position).get("copyProcedure"));
+            String tvnewlyOthers = String.valueOf(mdate.get(position).get("copyOthers"));
+            String tvnewSingularSystem = String.valueOf(mdate.get(position).get("copySingularSystem"));
+            final String tvdate = String.valueOf(mdate.get(position).get("copyTaskNumber"));
+            String tvnewTaskNumber = String.valueOf(mdate.get(position).get("copySize"));
+            String tvnewlySize = String.valueOf(mdate.get(position).get("copyyColor"));
+            String tvnewlyClippingNumber = String.valueOf(mdate.get(position).get("copyClippingNumber"));
+            String tvnewlyCompletedLastMonth = String.valueOf(mdate.get(position).get("copyTotalCompletion"));
+            String tvnewlyTotalCompletion = String.valueOf(mdate.get(position).get("copyState"));
 
             Time t = new Time("GMT+8"); // or Time t=new Time("GMT+8");
             t.setToNow(); // 取得系统时间。
@@ -10107,7 +10147,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         //关闭界面时清除缓存中可输入的数据
         SharedPreferences.Editor editor = sp.edit();
         editor.remove("mylistStr");//保存集合
-        editor.remove("tvnewlyProcedure");//工序
+        editor.remove("copyProcedure");//工序
         editor.remove("Configdepartment");//部门
         editor.remove("ComfigMonth");//月份
         editor.remove("ConfigProcedure");
@@ -10146,6 +10186,23 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         editor.remove("configRemarks");//备注
         editor.remove("ConfigLastMonth");//上月完工
         editor.remove("ConfigTaskNumber");//任务数
+        editor.remove("copyitem");
+        editor.remove("copyDocumentary");
+        editor.remove("copyFactory");
+        editor.remove("copyDepartment");
+        editor.remove("copyOthers");
+        editor.remove("copySingularSystem");
+        editor.remove("copyTaskNumber");
+        editor.remove("copySize");
+        editor.remove("copyColor");
+        editor.remove("copyClippingNumber");
+        editor.remove("copyTotalCompletion");
+        editor.remove("copyState");
+        editor.remove("proadapterid");
+        editor.remove("prosalesid");
+        editor.remove("copyProYear");
+        editor.remove("copyMonth");
+        editor.remove("copyProcedure");
         editor.commit();
         super.onDestroy();
     }

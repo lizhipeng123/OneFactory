@@ -23,12 +23,16 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
+import com.daoran.newfactory.onefactory.activity.work.production.ProductionCopyComfigActivity;
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
 import com.daoran.newfactory.onefactory.bean.ProducationSaveBean;
+import com.daoran.newfactory.onefactory.util.Http.sharedparams.PhoneSaveUtil;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
@@ -187,12 +191,32 @@ public class ProductionAdapter extends BaseAdapter {
                         spUtils.put(context, "copyDepartment", copyDepartment);
                         String copyProcedure = getItem(position).getWorkingProcedure();
                         spUtils.put(context, "copyProcedure", copyProcedure);
+
                         String copyOthers = getItem(position).getWorkers();
                         spUtils.put(context, "copyOthers", copyOthers);
                         String copySingularSystem = getItem(position).getPqty();
                         spUtils.put(context, "copySingularSystem", copySingularSystem);
                         String copyColor = getItem(position).getProdcol();
-                        spUtils.put(context, "copyColor", copyColor);
+                        if(copyColor.contains("/")){
+                            System.out.print(copyColor);
+                            String[] temp = null;
+                            temp = copyColor.split("/");
+                            System.out.print(temp);
+                            List<String> list = Arrays.asList(temp);
+                            System.out.print(list);
+                            SharedPreferences spes = context.getSharedPreferences("mylist", 0);
+                            SharedPreferences.Editor editor = spes.edit();
+                            try {
+                                String liststr = PhoneSaveUtil.SceneList2String(list);
+                                editor.putString("mycopylistStr", liststr);
+                                spUtils.put(context, "copyyColor", copyColor);//花色
+                                editor.commit();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }else{
+                            spUtils.put(context, "copyyColor", copyColor);
+                        }
                         String copyTaskNumber = getItem(position).getTaskqty();
                         spUtils.put(context, "copyTaskNumber", copyTaskNumber);
                         String copySize = getItem(position).getMdl();
@@ -228,23 +252,14 @@ public class ProductionAdapter extends BaseAdapter {
                         String copyRecordat = getItem(position).getRecordat();
                         spUtils.put(context, "copyRecordat", copyRecordat);
                         String copyproducament = getItem(position).getPrddocumentaryid();
-                        spUtils.put(context,"copyproducament",copyproducament);
+                        spUtils.put(context,"copyproducamentid",copyproducament);
                         ArrayList<String> list = new ArrayList<String>();
                         list.add(copyitem);
-                        Intent intent = new Intent(context, ProductionActivity.class);
+                        Intent intent = new Intent(context, ProductionCopyComfigActivity.class);
                         intent.putStringArrayListExtra("copyitemlist", list);
+                        context.startActivity(intent);
                     }
                 });
-//                String proid = sp.getString("proadapterid", "");
-//
-//                spUtils.put(context, "proadapterid", proid);
-//                String urlid = String.valueOf(getItem(position).getID());
-//                spUtils.put(context, "prourisaveid", urlid);
-//                String salesid = String.valueOf(getItem(position).getSalesid());
-//                spUtils.put(context, "prosalessaveid", salesid);
-//                viewHolder.tv_data.setEnabled(true);
-//                String productionItem = getItem(position).getItem();
-//                viewHolder.tv_data.setText(productionItem);
                 viewHolder.tvProDocumentary.setEnabled(true);
                 String productionadapterDocumentary = getItem(position).getPrddocumentary();
                 viewHolder.tvProDocumentary.setText(productionadapterDocumentary);

@@ -1269,6 +1269,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         @Override
                                         public void onError(Call call, Exception e, int id) {
                                             e.printStackTrace();
+                                            progressDialog.dismiss();
                                         }
 
                                         @Override
@@ -1312,6 +1313,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     @Override
                                     public void onError(Call call, Exception e, int id) {
                                         e.printStackTrace();
+                                        progressDialog.dismiss();
                                     }
 
                                     @Override
@@ -1358,7 +1360,38 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     System.out.print(arrsItem[i]);
                                     arrsitemi = arrsItem[i];
                                 }
-                                if (arrsitemi.equals("")) {
+                                if (arrsitemi.equals("") && prosaveothers.equals("") && prosavetasknunber.equals("")
+                                        && prosavecompletedlastmonth.equals("") && prosaveoneday.equals("")
+                                        && prosavetwoday.equals("") && prothreeday.equals("")
+                                        && prosaveforeday.equals("") && prosavefiveday.equals("")
+                                        && prosavesixday.equals("") && prosavesevenday.equals("")
+                                        && prosaveeightday.equals("") && prosavenineday.equals("")
+                                        && prosavetenday.equals("") && prosaveelevenday.equals("")
+                                        && prosavetwelveday.equals("") && prosavethirteenday.equals("")
+                                        && prosavefourteenday.equals("") && prosavefifteenday.equals("")
+                                        && prosavesixteenday.equals("") && prosaveserventeenday.equals("")
+                                        && prosaveeighteenday.equals("") && prosavenineteenday.equals("")
+                                        && prosavetwentyday.equals("") && prosavetwentyoneday.equals("")
+                                        && prosavetwentytwoday.equals("") && prosavetwentythreeday.equals("")
+                                        && prosavetwentyforeday.equals("") && prosavetwentyfiveday.equals("")
+                                        && prosavetwentysixday.equals("") && prosavetwentysevenday.equals("")
+                                        && prosavetwentyeightday.equals("") && prosavetwentynineday.equals("")
+                                        && prosavethirtyday.equals("") && prosavethirtyoneday.equals("")
+                                        && prosaveremarks.equals("") && prosavemonth.equals("")
+                                        && prosavedepartment.equals("") && probooleanProcedureTitle.equals("")
+                                        && prosavestate.equals("")) {
+                                    Thread thread = new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                Thread.sleep(1500);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                                    thread.start();
                                     ToastUtils.ShowToastMessage("未修改表中数据",
                                             ProductionActivity.this);
                                 } else {
@@ -1371,6 +1404,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                 @Override
                                                 public void onError(Call call, Exception e, int id) {
                                                     e.printStackTrace();
+                                                    progressDialog.dismiss();
                                                 }
 
                                                 @Override
@@ -1414,6 +1448,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                             @Override
                                             public void onError(Call call, Exception e, int id) {
                                                 e.printStackTrace();
+                                                progressDialog.dismiss();
                                             }
 
                                             @Override
@@ -1460,6 +1495,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         @Override
                                         public void onError(Call call, Exception e, int id) {
                                             e.printStackTrace();
+                                            progressDialog.dismiss();
                                         }
 
                                         @Override
@@ -1521,6 +1557,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                             @Override
                                             public void onError(Call call, Exception e, int id) {
                                                 e.printStackTrace();
+                                                progressDialog.dismiss();
                                             }
 
                                             @Override
@@ -1583,29 +1620,29 @@ public class ProductionActivity extends BaseFrangmentActivity
             final SharedPreferences.Editor editor = sp.edit();
             /*调用ProducationAdapter中点击item后取得的字段*/
             String itemid = "";
-            String prosalesid = sp.getString("prosalesid", "");
-            String item = sp.getString("copyitem", "");
-            String copyDocumentary = sp.getString("copyDocumentary", "");
-            String copyFactory = sp.getString("copyFactory", "");
-            String copyDepartment = sp.getString("copyDepartment", "");
-            String copyProcedure = sp.getString("copyProcedure", "");
-            String copyOthers = sp.getString("copyOthers", "");
-            String copySingularSystem = sp.getString("copySingularSystem", "");
-            String copyColor = sp.getString("copyColor", "");
-            String copyTaskNumber = sp.getString("copyTaskNumber", "");
-            String copySize = sp.getString("copySize", "");
-            String copyClippingNumber = sp.getString("copyCompletedLastMonth", "");
-            String copyCompletedLastMonth = sp.getString("copyCompletedLastMonth", "");
-            String copyTotalCompletion = sp.getString("copyTotalCompletion", "");
-            String copyBalanceAmount = sp.getString("copyBalanceAmount", "");
-            String copyState = sp.getString("copyState", "");
-            String copyProYear = sp.getString("copyProYear", "");
-            String copyMonth = sp.getString("copyMonth", "");
-            String copyRemarks = sp.getString("copyRemarks", "");
-            String copyRecorder = sp.getString("copyRecorder", "");
-            String copyRecordat = sp.getString("copyRecordat", "");
-            String copyRecordid = sp.getString("username", "");
-            String copyproducament = sp.getString("copyproducament", "");
+            String prosalesid = sp.getString("prosalesid", "");//列的id
+            String item = sp.getString("copyitem", "");//款号
+            String copyDocumentary = sp.getString("copyDocumentary", "");//跟单
+            String copyFactory = sp.getString("copyFactory", "");//工厂
+            String copyDepartment = sp.getString("copyDepartment", "");//部门
+            String copyProcedure = sp.getString("copyProcedure", "");//工序
+            String copyOthers = sp.getString("copyOthers", "");//组别人数
+            String copySingularSystem = sp.getString("copySingularSystem", "");//制单数
+            String copyColor = sp.getString("copyColor", "");//花色
+            String copyTaskNumber = sp.getString("copyTaskNumber", "");//任务数
+            String copySize = sp.getString("copySize", "");//尺寸
+            String copyClippingNumber = sp.getString("copyCompletedLastMonth", "");//实裁数
+            String copyCompletedLastMonth = sp.getString("copyCompletedLastMonth", "");//上月完工
+            String copyTotalCompletion = sp.getString("copyTotalCompletion", "");//总完工数
+            String copyBalanceAmount = sp.getString("copyBalanceAmount", "");//结余数量
+            String copyState = sp.getString("copyState", "");//状态
+            String copyProYear = sp.getString("copyProYear", "");//年
+            String copyMonth = sp.getString("copyMonth", "");//月
+            String copyRemarks = sp.getString("copyRemarks", "");//备注
+            String copyRecorder = sp.getString("copyRecorder", "");//制单人
+            String copyRecordat = sp.getString("copyRecordat", "");//制单时间
+            String copyRecordid = sp.getString("username", "");//当前用户
+            String copyproducamentid = sp.getString("copyproducamentid", "");//跟单id
             Gson gson = new Gson();
             /*实例化实体类*/
             ProducationConfigSaveBean saveBean = new ProducationConfigSaveBean();
@@ -1663,7 +1700,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             saveBean.setMemo("");//备注
             saveBean.setRecorder(copyRecorder);//制单人
             saveBean.setRecordat(copyRecordat);//制单时间
-            saveBean.setPrddocumentaryid(copyproducament);//跟单id
+            saveBean.setPrddocumentaryid(copyproducamentid);//跟单id
             configSaveBeen.add(saveBean);//添加实体字段
             String configsave = gson.toJson(configSaveBeen);//实体类转json数据
             String dateee = configsave.replace("\"\"", "null");//json数据将双引号转变为null
@@ -1688,6 +1725,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             editor.remove("copyRemarks");
             editor.remove("copyRecorder");
             editor.remove("copyRecordat");
+            editor.remove("copyproducamentid");
             editor.commit();
             if (!item.equals("")) {
                 final ProgressDialog progressDialog = ProgressDialog.show(this,
@@ -1701,6 +1739,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                             @Override
                             public void onError(Call call, Exception e, int id) {
                                 e.printStackTrace();
+                                progressDialog.dismiss();
                             }
 
                             @Override
@@ -1781,8 +1820,6 @@ public class ProductionActivity extends BaseFrangmentActivity
         propostbean.setPageSize(500);//默认每页多少条数据
         String gsonbeanStr = gson.toJson(propostbean);
         if (NetWork.isNetWorkAvailable(this)) {
-            final ProgressDialog progressDialog = ProgressDialog.show(this,
-                    "请稍候...", "正在查询中...", false, true);
             OkHttpUtils.postString()
                     .url(str)
                     .content(gsonbeanStr)
@@ -1792,18 +1829,6 @@ public class ProductionActivity extends BaseFrangmentActivity
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
-                            Thread thread = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        Thread.sleep(1500);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                    progressDialog.dismiss();
-                                }
-                            });
-                            thread.start();
                         }
 
                         @Override
@@ -1817,32 +1842,8 @@ public class ProductionActivity extends BaseFrangmentActivity
                                 System.out.print(ression);
                                 detailBooleanBean = new Gson().fromJson(ression, ProductionDetailBooleanBean.class);
                                 detailbooleanDatabean = detailBooleanBean.getData();
-                                Thread thread = new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            Thread.sleep(1500);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                        progressDialog.dismiss();
-                                    }
-                                });
-                                thread.start();
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
-                                Thread thread = new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            Thread.sleep(1500);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                        progressDialog.dismiss();
-                                    }
-                                });
-                                thread.start();
                             }
                         }
                     });
@@ -2020,7 +2021,9 @@ public class ProductionActivity extends BaseFrangmentActivity
                                 ProductionNewlyBuildActivity.class));
                         break;
                     case "复制":
-                        setCopy();
+//                        setCopy();
+                        Intent intent = new Intent(ProductionActivity.this, ProductionCopyComfigActivity.class);
+                        startActivity(intent);
                         break;
                     case "刷新":
                         setData();

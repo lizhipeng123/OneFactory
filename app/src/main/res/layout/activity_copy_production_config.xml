@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_150"
+        android:background="@color/lightblue">
+
+        <ImageView
+            android:id="@+id/ivProductionBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/btn_back" />
+
+        <View
+            android:id="@+id/viewtitletwo"
+            android:layout_width="1px"
+            android:layout_height="@dimen/dimen_100"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_20"
+            android:layout_toRightOf="@+id/ivProductionBack"
+            android:background="#FF909090" />
+
+        <TextView
+            android:id="@+id/tvProTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/dimen_50"
+            android:layout_toRightOf="@+id/viewtitletwo"
+            android:text="复制保存"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_55sp" />
+
+        <Button
+            android:id="@+id/btnProSave"
+            android:layout_width="@dimen/dimen_170"
+            android:layout_height="@dimen/dimen_90"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/shape_btn_newsbuild_boild"
+            android:text="保存" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="#FF909090" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/lightblue"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/lin_header_content"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="3"
+            android:orientation="vertical">
+
+            <com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView
+                android:id="@+id/header_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:overScrollMode="never"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/lin_year_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_data"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="款号" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="跟单" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="工厂" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="部门/组别" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="工序" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="组别人数" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="制单数" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="花色" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="任务数" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="尺码" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="实裁数" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="上月完工" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="总完工数" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="结余数量" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="状态" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="年" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="月" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigone"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="1日" />
+
+                    <View
+                        android:id="@+id/vconfigone"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwo"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="2日" />
+
+                    <View
+                        android:id="@+id/vconfigtwo"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigthree"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="3日" />
+
+                    <View
+                        android:id="@+id/vconfigthree"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigfore"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="4日" />
+
+                    <View
+                        android:id="@+id/vconfigfore"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigfive"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="5日" />
+
+                    <View
+                        android:id="@+id/vconfigfive"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigsix"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="6日" />
+
+                    <View
+                        android:id="@+id/vconfigsix"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigseven"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="7日" />
+
+                    <View
+                        android:id="@+id/vconfigseven"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigeight"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="8日" />
+
+                    <View
+                        android:id="@+id/vconfigeight"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfignine"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="9日" />
+
+                    <View
+                        android:id="@+id/vconfignine"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigten"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="10日" />
+
+                    <View
+                        android:id="@+id/vconfigten"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigeleven"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="11日" />
+
+                    <View
+                        android:id="@+id/vconfigeleven"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwtlve"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="12日" />
+
+                    <View
+                        android:id="@+id/vconfigtwtlve"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwthreeteen"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="13日" />
+
+                    <View
+                        android:id="@+id/vconfigtwthreeteen"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwforeteen"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="14日" />
+
+                    <View
+                        android:id="@+id/vconfigtwforeteen"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwfifteen"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="15日" />
+
+                    <View
+                        android:id="@+id/vconfigtwfifteen"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwsixteen"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="16日" />
+
+                    <View
+                        android:id="@+id/vconfigtwsixteen"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwseventeen"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="17日" />
+
+                    <View
+                        android:id="@+id/vconfigtwseventeen"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtweightteen"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="18日" />
+
+                    <View
+                        android:id="@+id/vconfigtweightteen"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwnineteen"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="19日" />
+
+                    <View
+                        android:id="@+id/vconfigtwnineteen"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwTwenty"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="20日" />
+
+                    <View
+                        android:id="@+id/vconfigtwTwenty"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwTwentyone"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="21日" />
+
+                    <View
+                        android:id="@+id/vconfigtwTwentyone"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwTwentytwo"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="22日" />
+
+                    <View
+                        android:id="@+id/vconfigtwTwentytwo"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwTwentythree"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="23日" />
+
+                    <View
+                        android:id="@+id/vconfigtwTwentythree"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwTwentyfore"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="24日" />
+
+                    <View
+                        android:id="@+id/vconfigtwTwentyfore"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwTwentyfive"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="25日" />
+
+                    <View
+                        android:id="@+id/vconfigtwTwentyfive"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwTwentysix"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="26日" />
+
+                    <View
+                        android:id="@+id/vconfigtwTwentysix"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwTwentyseven"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="27日" />
+
+                    <View
+                        android:id="@+id/vconfigtwTwentyseven"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwTwentyeight"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="28日" />
+
+                    <View
+                        android:id="@+id/vconfigtwTwentyeight"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwTwentynine"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="29日" />
+
+                    <View
+                        android:id="@+id/vconfigtwTwentynine"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwThirty"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="30日" />
+
+                    <View
+                        android:id="@+id/vconfigtwThirty"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tvconfigtwThirtyone"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="31日" />
+
+                    <View
+                        android:id="@+id/vconfigtwThirtyone"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="170dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="备注" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="制单人" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="制单时间" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+                </LinearLayout>
+            </com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#cccccc" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:id="@+id/scroll_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/lin_data_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView
+                        android:id="@+id/data_horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:overScrollMode="never"
+                        android:scrollbars="none">
+
+                        <com.daoran.newfactory.onefactory.view.listview.NoscrollListView
+                            android:id="@+id/lv_data"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:overScrollMode="never"
+                            android:scrollbars="none" />
+                    </com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>

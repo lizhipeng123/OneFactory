@@ -112,7 +112,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         tvSignPage = (TextView) findViewById(R.id.tvSignPage);
         btnSignPage = (Button) findViewById(R.id.btnSignPage);
         etSqlDetail = (EditText) findViewById(R.id.etSqlDetail);
-//        btnCommoRefresh = (Button) findViewById(R.id.btnCommoRefresh);
         btnCommoSave = (Button) findViewById(R.id.btnCommoSave);
         ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
         tv_visibi = (TextView) findViewById(R.id.tv_visibi);
@@ -274,12 +273,12 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                     case "保存为Excel":
                         final ProgressDialog progressDialog = ProgressDialog.show(CommoditySqlActivity.this,
                                 "请稍候...", "正在生成Excel中...", false, true);
-                        final Thread thread= new Thread(new Runnable() {
+                        final Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 try {
                                     Thread.sleep(2000);
-                                    if(dataBeen.size()!=0){
+                                    if (dataBeen.size() != 0) {
                                         Looper.prepare();
                                         CommodityExcelUtil.writeExcel(CommoditySqlActivity.this,
                                                 dataBeen,
@@ -288,7 +287,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                                 CommoditySqlActivity.this);
                                         progressDialog.dismiss();
                                         Looper.loop();
-                                    }else{
+                                    } else {
                                         Looper.prepare();
                                         ToastUtils.ShowToastMessage("没有数据",
                                                 CommoditySqlActivity.this);
@@ -370,7 +369,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
      */
     private void setData() {
         String str = HttpUrl.debugoneUrl + "QACwork/BindSearchQACworkAPP/";
-        sp = CommoditySqlActivity.this.getSharedPreferences("my_sp", 0);
+        sp = this.getSharedPreferences("my_sp", 0);
         String recodename = sp.getString("commoname", "");//跟单
         String Style = sp.getString("commoStyle", "");//款号
 //        String Factory = sp.getString("commoFactory", "");//跟单
@@ -397,7 +396,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         if (NetWork.isNetWorkAvailable(this)) {
             final ProgressDialog progressDialog = ProgressDialog.show(this,
                     "请稍候...", "正在查询中...", false, true);
-//            ResponseDialog.showLoading(this);
             final int finalGetsize = Integer.parseInt(pagesize);
             OkHttpUtils.postString()
                     .url(str)
@@ -487,7 +485,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
      * 指定页码查询数据
      */
     private void setPageDetail() {
-        ResponseDialog.showLoading(this);
         String str = HttpUrl.debugoneUrl + "QACwork/BindSearchQACworkAPP/";
         sp = CommoditySqlActivity.this.getSharedPreferences("my_sp", 0);
         String recodename = sp.getString("commoname", "");//跟单
@@ -602,6 +599,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
 
     /**
      * 上一页下一页
+     *
      * @param pageIndexin
      */
     private void setPageDate(int pageIndexin) {
