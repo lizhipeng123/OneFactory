@@ -445,7 +445,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
             String tvdate = sp.getString("copyTaskNumber", "");//任务数
             String tvnewTaskNumber = sp.getString("copySize", "");//尺码
             String tvnewlySize = sp.getString("copyyColor", "");//花色
-            String tvcopynewlycolor = sp.getString("configcolor","");//表中传过来的花色
+            String tvcopynewlycolor = sp.getString("configcolor", "");//表中传过来的花色
             String tvnewlyClippingNumber = sp.getString("copyClippingNumber", "");//实裁数
             String tvnewlyCompletedLastMonth = sp.getString("copyTotalCompletion", "");//总完工数
             String copyBalanceAmount = sp.getString("copyBalanceAmount", "");//结余数量
