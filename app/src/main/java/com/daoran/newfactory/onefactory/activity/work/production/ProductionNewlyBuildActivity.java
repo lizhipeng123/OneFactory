@@ -4,9 +4,12 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -48,7 +51,7 @@ import okhttp3.Call;
 import okhttp3.MediaType;
 
 /**
- * 新建生产日报
+ * 新建生产日报选择款号
  * Created by lizhipeng on 2017/5/2.
  */
 
@@ -71,6 +74,7 @@ public class ProductionNewlyBuildActivity
     private TextView tvNewbuildPage;//
     private EditText etNewbuild;//款号输入框
     private ImageView ivUpLeftPage, ivDownRightPage;
+    private ImageView ivNewlyFilp;
 
     private NoscrollListView lv_pleft;
     private ListView lv_newbuild_data;//款号信息列表
@@ -87,6 +91,7 @@ public class ProductionNewlyBuildActivity
 
     private int pageCount;//请求获取的总页数
     private int pageIndex = 0;//初始页数
+    private String configid;
 
     private SharedPreferences sp;//轻量级存储
     private SPUtils spUtils;//保存在手机中的目录
@@ -135,6 +140,7 @@ public class ProductionNewlyBuildActivity
         spinnProNewPageClumns = (Spinner) findViewById(R.id.spinnProNewPageClumns);
         ivUpLeftPage = (ImageView) findViewById(R.id.ivUpLeftPage);
         ivDownRightPage = (ImageView) findViewById(R.id.ivDownRightPage);
+        ivNewlyFilp = (ImageView) findViewById(R.id.ivNewlyFilp);
     }
 
     /**
@@ -144,6 +150,13 @@ public class ProductionNewlyBuildActivity
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);
         etNewbuildDetail.setSelection(etNewbuildDetail.getText().length());
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Log.i("info", "landscape"); // 横屏
+            configid = String.valueOf(1);
+        } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            Log.i("info", "portrait"); // 竖屏
+            configid = String.valueOf(2);
+        }
     }
 
     /**
@@ -157,6 +170,7 @@ public class ProductionNewlyBuildActivity
         btnNewbuildConfirm.setOnClickListener(this);
         ivUpLeftPage.setOnClickListener(this);
         ivDownRightPage.setOnClickListener(this);
+        ivNewlyFilp.setOnClickListener(this);
     }
 
     /**
@@ -629,6 +643,7 @@ public class ProductionNewlyBuildActivity
 
     /**
      * 上一页下一页
+     *
      * @param pageupdateindex
      */
     private void setPageUpDate(int pageupdateindex) {
@@ -881,6 +896,15 @@ public class ProductionNewlyBuildActivity
                         etNewbuildDetail.setSelection(indexstr.length());
                         setPageUpDate(editindex);
                     }
+                }
+                break;
+            case R.id.ivNewlyFilp:
+                if (configid.equals("1")) {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                } else if (configid.equals("2")) {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                } else {
+
                 }
                 break;
         }

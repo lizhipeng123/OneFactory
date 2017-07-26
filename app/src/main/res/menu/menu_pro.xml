@@ -10,6 +10,10 @@
         <!--android:title="复制"-->
         <!--app:showAsAction="never" />-->
     <item
+        android:id="@+id/show_filp"
+        android:title="横竖屏切换"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/show_reshare"
         android:title="刷新"
         app:showAsAction="never" />

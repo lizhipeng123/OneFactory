@@ -356,7 +356,6 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
      * @return
      */
     public boolean startApp(Context context, String packageName) {
-//String packageName = "XXX";
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         PackageManager pm = context.getPackageManager();
@@ -460,14 +459,9 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                         spUtils.put(mactivity, "reason", reason);
                         String versioncode = String.valueOf(curVersionName);
                         if (!versioncode.equals(vercode)) {
-//                                    tvNewVersion.setText("需要更新到"+vercode);
-//                                    ToastUtils.ShowToastMessage("需要更新", mactivity);
-//                                    ToastUtils.ShowToastMessage("code:" + vercode + "," +
-//                                            "curversion:" + curVersionCode, mactivity);
                             showNoticeDialog(0, slience);
                         } else {
                             if (!slience) {
-//                                        tvNewVersion.setText("已经是最新版本");
                                 new AlertDialog.Builder(mactivity)
                                         .setTitle("检查新版本")
                                         .setMessage("您所使用的已经是最新版")
@@ -560,13 +554,6 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         mProgressText = (TextView) v.findViewById(R.id.update_progress_text);
         builder.setView(v);
         if (focuseUpdate == 0) {
-//            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    dialog.dismiss();
-////                    interceptFlag = true;
-//                }
-//            });
             builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {

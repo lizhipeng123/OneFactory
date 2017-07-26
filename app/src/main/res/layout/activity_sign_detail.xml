@@ -47,15 +47,25 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_40"
             android:src="@mipmap/search" />
+
         <Button
-            android:id="@+id/btnExcel"
-            android:layout_width="@dimen/dimen_170"
-            android:layout_height="@dimen/dimen_90"
+            android:id="@+id/spinnermenu"
+            android:layout_width="@dimen/dimen_80"
+            android:layout_height="@dimen/dimen_80"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dimen_15"
-            android:background="@drawable/shape_btn_newsbuild_boild"
-            android:text="excel" />
+            android:layout_marginLeft="@dimen/dimen_30"
+            android:layout_marginRight="@dimen/dimen_30"
+            android:background="@mipmap/em_add" />
+        <!--<Button-->
+            <!--android:id="@+id/btnExcel"-->
+            <!--android:layout_width="@dimen/dimen_170"-->
+            <!--android:layout_height="@dimen/dimen_90"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginRight="@dimen/dimen_15"-->
+            <!--android:background="@drawable/shape_btn_newsbuild_boild"-->
+            <!--android:text="excel" />-->
     </RelativeLayout>
 
     <View

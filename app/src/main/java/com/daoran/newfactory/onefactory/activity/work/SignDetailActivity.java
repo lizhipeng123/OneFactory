@@ -1,11 +1,13 @@
 package com.daoran.newfactory.onefactory.activity.work;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Looper;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,11 +15,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.commo.CommoditySqlActivity;
 import com.daoran.newfactory.onefactory.adapter.SignDetailAdapter;
 import com.daoran.newfactory.onefactory.adapter.SignDetailLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
@@ -26,6 +30,7 @@ import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.util.file.save.CommodityExcelUtil;
 import com.daoran.newfactory.onefactory.util.file.save.SignDetailExcelUtil;
 import com.daoran.newfactory.onefactory.view.dialog.SignContentDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
@@ -68,12 +73,14 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     private ScrollView scroll_content;
     private Spinner spinnSignPageClumns;
     private ImageView ivUpLeftPage, ivDownRightPage;
-    private Button btnExcel;
+//    private Button btnExcel;
+    private Button spinnermenu;
 
     private SharedPreferences sp;
     private SPUtils spUtils;
     int pageIndex = 0;
     int pageCount;
+    private String configid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +112,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         spinnSignPageClumns = (Spinner) findViewById(R.id.spinnSignPageClumns);
         ivUpLeftPage = (ImageView) findViewById(R.id.ivUpLeftPage);
         ivDownRightPage = (ImageView) findViewById(R.id.ivDownRightPage);
-        btnExcel = (Button) findViewById(R.id.btnExcel);
+        spinnermenu = (Button) findViewById(R.id.spinnermenu);
         getClumnsSpinner();
     }
 
@@ -113,6 +120,13 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
      * 操作控件
      */
     private void getViews() {
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Log.i("info", "landscape"); // 横屏
+            configid = String.valueOf(1);
+        } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            Log.i("info", "portrait"); // 竖屏
+            configid = String.valueOf(2);
+        }
         ivSiganSqlDetail.setOnClickListener(this);
         ivSearch.setOnClickListener(this);
         btnSignPage.setOnClickListener(this);
@@ -120,7 +134,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         ivUpLeftPage.setOnClickListener(this);
         ivDownRightPage.setOnClickListener(this);
         etSqlDetail.setSelection(etSqlDetail.getText().length());
-        btnExcel.setOnClickListener(this);
+        spinnermenu.setOnClickListener(this);
     }
 
     /**
@@ -147,6 +161,78 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
 
             }
         });
+    }
+
+    /**
+     * 弹出选择菜单
+     *
+     * @param view
+     */
+    private void showPopupMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(SignDetailActivity.this, view);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_signdetail, popupMenu.getMenu());
+        // menu的item点击事件
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                String title = item.getTitle().toString();
+                switch (title) {
+                    case "刷新":
+                        setSignDetail();
+                        break;
+                    case "横竖屏切换":
+                        if (configid.equals("1")) {
+                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                        } else if (configid.equals("2")) {
+                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                        } else {
+
+                        }
+                        break;
+                    case "保存为Excel":
+                        final ProgressDialog progressDialog = ProgressDialog.show(SignDetailActivity.this,
+                                "请稍候...", "正在生成Excel中...", false, true);
+                        final Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(2000);
+                                    if (mListData.size() != 0) {
+                                        Looper.prepare();
+                                        SignDetailExcelUtil.writeExcel(SignDetailActivity.this,
+                                                mListData,
+                                                "dfsignexcel+" + new Date().toString());
+                                        ToastUtils.ShowToastMessage("写入成功", SignDetailActivity.this);
+                                        progressDialog.dismiss();
+                                        Looper.loop();
+                                    } else {
+                                        Looper.prepare();
+                                        ToastUtils.ShowToastMessage("没有数据", SignDetailActivity.this);
+                                        progressDialog.dismiss();
+                                        Looper.loop();
+                                    }
+                                } catch (Exception e) {
+                                    Looper.prepare();
+                                    ToastUtils.ShowToastMessage("写入失败", SignDetailActivity.this);
+                                    e.printStackTrace();
+                                    progressDialog.dismiss();
+                                    Looper.loop();
+                                }
+                            }
+                        });
+                        thread.start();
+                        break;
+                }
+                return false;
+            }
+        });
+        // PopupMenu关闭事件
+        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+            @Override
+            public void onDismiss(PopupMenu menu) {
+            }
+        });
+        popupMenu.show();
     }
 
     @Override
@@ -228,39 +314,9 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
             case R.id.etSqlDetail:
 
                 break;
-            /*生成excel文件*/
-            case R.id.btnExcel:
-                final ProgressDialog progressDialog = ProgressDialog.show(this,
-                        "请稍候...", "正在生成Excel中...", false, true);
-                final Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(2000);
-                            if (mListData.size() != 0) {
-                                Looper.prepare();
-                                SignDetailExcelUtil.writeExcel(SignDetailActivity.this,
-                                        mListData,
-                                        "dfsignexcel+" + new Date().toString());
-                                ToastUtils.ShowToastMessage("写入成功", SignDetailActivity.this);
-                                progressDialog.dismiss();
-                                Looper.loop();
-                            } else {
-                                Looper.prepare();
-                                ToastUtils.ShowToastMessage("没有数据", SignDetailActivity.this);
-                                progressDialog.dismiss();
-                                Looper.loop();
-                            }
-                        } catch (Exception e) {
-                            Looper.prepare();
-                            ToastUtils.ShowToastMessage("写入失败", SignDetailActivity.this);
-                            e.printStackTrace();
-                            progressDialog.dismiss();
-                            Looper.loop();
-                        }
-                    }
-                });
-                thread.start();
+
+            case R.id.spinnermenu:
+                showPopupMenu(spinnermenu);
                 break;
         }
     }

@@ -58,8 +58,6 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
             = new ArrayList<WorkPwSwitchBean.Data>();
     private WorkPwSwitchBean.Data switchBean;
     private WorkPwSwitchBean workPwSwitchBean;
-    private View view;
-    boolean isopen = false;
     String id;
 
     @Override
@@ -67,7 +65,7 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pwswitch_work);
         sp = getSharedPreferences("my_sp", 0);
-        if (Build.VERSION.SDK_INT >= 21) {
+        if (Build.VERSION.SDK_INT >= 21) {//赋予权限，适配6.0以上
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
@@ -314,6 +312,13 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
         }
     }
 
+    /**
+     * 判断数组是否相同
+     *
+     * @param array1
+     * @param array2
+     * @return
+     */
     private static boolean containsAll(String[] array1, String[] array2) {
         for (String str : array2) {
             if (!ArrayUtils.contains(array1, str)) {

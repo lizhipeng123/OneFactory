@@ -113,8 +113,6 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onResume() {
         super.onResume();
-        Bundle bundle = getActivity().getIntent().getExtras();
-        String name = bundle.getString("u_name");
         String namebuld = sp.getString("name", "");
         spUtils.put(mactivity, "name", namebuld);
         idworkname.setText(namebuld);
@@ -143,8 +141,8 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
      */
     private void initViews() {
         /*需要的时候可以加上*/
-////        drawerFragment = (DrawerFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-////        drawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) getActivity().findViewById(R.id.activity_main));
+//        drawerFragment = (DrawerFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+//        drawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) getActivity().findViewById(R.id.activity_main));
     }
 
     private void setListener() {

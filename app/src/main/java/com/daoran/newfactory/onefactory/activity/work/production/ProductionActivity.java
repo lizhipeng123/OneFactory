@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Looper;
@@ -113,6 +114,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     int screenHeight = 0;
     private int year, month, datetime, hour, minute, second;
     private boolean flagmonthsize;
+    private String configid ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,6 +186,13 @@ public class ProductionActivity extends BaseFrangmentActivity
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);//横竖SyncHorizontalScrollView适配
         etSqlDetail.setSelection(etSqlDetail.getText().length());//将光标移到文本最后
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Log.i("info", "landscape"); // 横屏
+            configid= String.valueOf(1);
+        } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            Log.i("info", "portrait"); // 竖屏
+            configid= String.valueOf(2);
+        }
     }
 
     /**
@@ -1812,6 +1821,15 @@ public class ProductionActivity extends BaseFrangmentActivity
 //                        Intent intent = new Intent(ProductionActivity.this, ProductionCopyComfigActivity.class);
 //                        startActivity(intent);
 //                        break;
+                    case "横竖屏切换":
+                        if (configid.equals("1")) {
+                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                        } else if(configid.equals("2")) {
+                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                        }else{
+
+                        }
+                        break;
                     case "刷新":
                         setData();
                         break;
@@ -1984,6 +2002,9 @@ public class ProductionActivity extends BaseFrangmentActivity
         } else if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES) {
             ToastUtils.ShowToastMessage("隐藏状态", ProductionActivity.this);
         }
+        String message = newConfig.orientation ==
+                Configuration.ORIENTATION_LANDSCAPE ? "屏幕设置为：横屏" : "屏幕设置为：竖屏";
+        ToastUtils.ShowToastMessage(message, this);
     }
 
     @Override

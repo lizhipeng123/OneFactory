@@ -48,6 +48,14 @@
             android:text="确定"
             android:textSize="@dimen/dimen_40sp"
             android:visibility="gone" />
+        <ImageView
+            android:id="@+id/ivNewlyFilp"
+            android:layout_width="@dimen/dimen_70"
+            android:layout_height="@dimen/dimen_70"
+            android:src="@mipmap/spin_filp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_30"/>
     </RelativeLayout>
 
     <View

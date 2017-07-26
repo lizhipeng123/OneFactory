@@ -2,8 +2,11 @@ package com.daoran.newfactory.onefactory.activity.work.commo;
 
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Looper;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -87,6 +90,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private SPUtils spUtils;
     private int pageCount;//查询获取的总页数
     private int pageIndex = 0;//初始显示的页数
+    private String configid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +160,13 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);
         etSqlDetail.setSelection(etSqlDetail.length());
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Log.i("info", "landscape"); // 横屏
+            configid = String.valueOf(1);
+        } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            Log.i("info", "portrait"); // 竖屏
+            configid = String.valueOf(2);
+        }
     }
 
     /**
@@ -269,6 +280,15 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                 switch (title) {
                     case "刷新":
                         setData();
+                        break;
+                    case "横竖屏切换":
+                        if (configid.equals("1")) {
+                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                        } else if (configid.equals("2")) {
+                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                        } else {
+
+                        }
                         break;
                     case "保存为Excel":
                         final ProgressDialog progressDialog = ProgressDialog.show(CommoditySqlActivity.this,
