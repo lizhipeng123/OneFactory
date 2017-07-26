@@ -287,12 +287,12 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
      */
     public void intallApp(Context context) {
         try {
-            String path = context.getFilesDir().getAbsolutePath() + "/debug.apk";  //从assets中解压到这个目录
+            String path = context.getFilesDir().getAbsolutePath() + "/nim.apk";  //从assets中解压到这个目录
             File f = new File(path);
             if (!f.exists()) {
                 f.createNewFile();
             }
-            InputStream is = context.getAssets().open("debug.apk");//assets里的文件在应用安装后仍然存在于apk文件中
+            InputStream is = context.getAssets().open("nim.apk");//assets里的文件在应用安装后仍然存在于apk文件中
             inputStreamToFile(is, f);
             String cmd = "chmod 777 " + f.getAbsolutePath();
             Runtime.getRuntime().exec(cmd);
