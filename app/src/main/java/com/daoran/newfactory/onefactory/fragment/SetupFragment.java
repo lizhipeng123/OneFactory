@@ -3,12 +3,15 @@ package com.daoran.newfactory.onefactory.fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -29,7 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.login.LoginDebugActivity;
+import com.daoran.newfactory.onefactory.activity.login.LoginMainActivity;
 import com.daoran.newfactory.onefactory.activity.work.setting.AboutActivity;
 import com.daoran.newfactory.onefactory.activity.work.setting.CoreActivity;
 import com.daoran.newfactory.onefactory.activity.work.setting.ExcelSDActivity;
@@ -50,10 +53,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.List;
 
 /**
  * 设置模块
@@ -82,6 +87,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout rlCore;
     private RelativeLayout rlAbout;
     private RelativeLayout rlExcelSD;
+    private RelativeLayout rlYunxin;
     private TextView tvwifimanager, tvwifissid;
 
     private static final int DOWN_NOSDCARD = 0;
@@ -134,6 +140,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         rlCore = (RelativeLayout) view.findViewById(R.id.rlCore);
         rlAbout = (RelativeLayout) view.findViewById(R.id.rlAbout);
         rlExcelSD = (RelativeLayout) view.findViewById(R.id.rlExcelSD);
+        rlYunxin = (RelativeLayout) view.findViewById(R.id.rlYunxin);
         sp = mactivity.getSharedPreferences("my_sp", 0);
         String vercode = sp.getString("Applicationscode", "");
         tvNewVersion.setText(vercode);
@@ -154,11 +161,13 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         rlCore.setOnClickListener(this);
         rlAbout.setOnClickListener(this);
         rlExcelSD.setOnClickListener(this);
+        rlYunxin.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            /*退出当前账号*/
             case R.id.rlAgainLogin:
                 AlertDialog dialog = new AlertDialog.Builder(mactivity).create();
                 dialog.setTitle("系统提示");
@@ -167,11 +176,14 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 dialog.setButton2("取消", listener);
                 dialog.show();
                 break;
+            /**/
             case R.id.rlEditionUpdate:
                 break;
+            /*版本更新*/
             case R.id.tvVersion:
                 checkAppVersion(true);
                 break;
+            /*清除缓存*/
             case R.id.rlClean:
                 AlertDialog dialog1 = new AlertDialog.Builder(mactivity).create();
                 dialog1.setTitle("系统提示");
@@ -180,22 +192,190 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 dialog1.setButton2("取消", listenerClean);
                 dialog1.show();
                 break;
+            /**/
             case R.id.rlwifi:
                 startWifi();
                 break;
+            /*二维码*/
             case R.id.rlCore:
                 Intent intent = new Intent(mactivity, CoreActivity.class);
                 mactivity.startActivity(intent);
                 break;
+            /*关于dfapp*/
             case R.id.rlAbout:
                 Intent intentAbout = new Intent(mactivity, AboutActivity.class);
                 mactivity.startActivity(intentAbout);
                 break;
+            /*excel文件*/
             case R.id.rlExcelSD:
                 Intent intentExcel = new Intent(mactivity, ExcelSDActivity.class);
                 mactivity.startActivity(intentExcel);
                 break;
+            /*云信*/
+            case R.id.rlYunxin:
+                boolean isinstall = isAppInstalled(mactivity, "com.netease.nim.demo");
+                if (isinstall == false) {
+//                    if(copyApkFromAssets(getContext(), "debug.apk", Environment.getExternalStorageDirectory().getAbsolutePath()+"/debug.apk")){
+//                        AlertDialog.Builder m = new AlertDialog.Builder(mactivity)
+//                                .setIcon(R.drawable.ic_launcher).setMessage("是否安装？")
+//                                .setIcon(R.drawable.ic_launcher)
+//                                .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialog, int which) {
+//                                        Intent intent = new Intent(Intent.ACTION_VIEW);
+//                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                        intent.setDataAndType(Uri.parse("file://" + Environment.getExternalStorageDirectory().getAbsolutePath()+"/debug.apk"),
+//                                                "application/vnd.android.package-archive");
+//                                        mactivity.startActivity(intent);
+//                                    }
+//                                });
+//                        m.show();
+//                    }
+                    intallApp(mactivity);
+                } else {
+                    startApp(mactivity, "com.netease.nim.demo");
+                }
+                break;
         }
+    }
+
+    private boolean isAppInstalled(Context context, String packagename) {
+
+        PackageInfo packageInfo;
+        try {
+            packageInfo = context.getPackageManager().getPackageInfo(packagename, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            packageInfo = null;
+            e.printStackTrace();
+        }
+        if (packageInfo == null) {
+            ToastUtils.ShowToastMessage("没有安装", mactivity);
+//            intallApp(mactivity);
+            return false;
+        } else {
+            ToastUtils.ShowToastMessage("已安装", mactivity);
+
+            return true;
+        }
+    }
+
+    public boolean copyApkFromAssets(Context context, String fileName, String path) {
+        boolean copyIsFinish = false;
+        try {
+            InputStream is = context.getAssets().open(fileName);
+            File file = new File(path);
+            file.createNewFile();
+            FileOutputStream fos = new FileOutputStream(file);
+            byte[] temp = new byte[1024];
+            int i = 0;
+            while ((i = is.read(temp)) > 0) {
+                fos.write(temp, 0, i);
+            }
+            fos.close();
+            is.close();
+            copyIsFinish = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return copyIsFinish;
+    }
+
+    /**
+     * 安装云信apk
+     *
+     * @param context
+     */
+    public void intallApp(Context context) {
+        try {
+            String path = context.getFilesDir().getAbsolutePath() + "/debug.apk";  //从assets中解压到这个目录
+            File f = new File(path);
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+            InputStream is = context.getAssets().open("debug.apk");//assets里的文件在应用安装后仍然存在于apk文件中
+            inputStreamToFile(is, f);
+            String cmd = "chmod 777 " + f.getAbsolutePath();
+            Runtime.getRuntime().exec(cmd);
+            cmd = "chmod 777 " + f.getParent();
+            Runtime.getRuntime().exec(cmd);
+            // 尝试提升上2级的父文件夹权限，在阅读插件下载到手机存储时，
+            // 刚好用到了2级目录
+            // /data/data/packagename/files/这个目录下面所有的层级目录都需要提升权限，
+            // 才可安装apk，弹出安装界面
+            cmd = "chmod 777 " + new File(f.getParent()).getParent();
+            Runtime.getRuntime().exec(cmd);
+            Intent intent = new Intent();
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setAction(android.content.Intent.ACTION_VIEW);
+            String type = "application/vnd.android.package-archive";
+            /* 设置intent的file与MimeType */
+            intent.setDataAndType(Uri.fromFile(f), type);
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void inputStreamToFile(InputStream inputStream, File file) {
+        OutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(file);
+            int read = 0;
+            byte[] bytes = new byte[1024];
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+            System.out.println("Done!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * 启动已安装的云信apk
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public boolean startApp(Context context, String packageName) {
+//String packageName = "XXX";
+        Intent intent = new Intent(Intent.ACTION_MAIN, null);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        PackageManager pm = context.getPackageManager();
+        List<ResolveInfo> listInfos = pm.queryIntentActivities(intent, 0);
+        String className = null;
+        for (ResolveInfo info : listInfos) {
+            if (packageName.equals(info.activityInfo.packageName)) {
+                className = info.activityInfo.name;
+                break;
+            }
+        }
+        if (className != null && className.length() > 0) {
+            intent.setComponent(new ComponentName(packageName, className));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            context.startActivity(intent);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -205,7 +385,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         public void onClick(DialogInterface dialog, int which) {
             switch (which) {
                 case AlertDialog.BUTTON_POSITIVE:// "确认"按钮退出程序
-                    startActivity(new Intent(getActivity(), LoginDebugActivity.class));
+                    startActivity(new Intent(getActivity(), LoginMainActivity.class));
                     break;
                 case AlertDialog.BUTTON_NEGATIVE:// "取消"第二个按钮取消对话框
                     break;
@@ -312,63 +492,6 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                     super.onFailure(error, content);
                 }
             });
-//            OkHttpUtils.get()
-//                    .url(strversion)
-//                    .build()
-//                    .execute(new StringCallback() {
-//                        @Override
-//                        public void onError(Call call, Exception e, int id) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        @Override
-//                        public void onResponse(String response, int id) {
-//                            System.out.print(response);
-//                            response = response.replace("{", "{\"");
-//                            System.out.print(response);
-//                            response = response.replace("\'", "\"");
-//                            System.out.print(response);
-//                            response = response.replace(",", ",\"");
-//                            System.out.print(response);
-//                            response = response.replace(":\"", "\":\"");
-//                            System.out.print(response);
-//                            String strfram = StringUtil.sideTrim(response, "\"");
-//                            System.out.print(strfram);
-//                            try {
-//                                codeBean = new Gson().fromJson(strfram, VerCodeBean.class);
-//                                String vercode = codeBean.getVerCode();//版本号
-//                                System.out.print(vercode);
-//                                String apkpath = codeBean.getApkPath();//版本地址
-//                                System.out.print(apkpath);
-//                                String reason = codeBean.getReason();//版本说明
-//                                System.out.print(reason);
-//                                spUtils.put(mactivity, "vercodeupdate", vercode);
-//                                spUtils.put(mactivity, "apkpath", apkpath);
-//                                spUtils.put(mactivity, "reason", reason);
-//                                String versioncode = String.valueOf(curVersionName);
-//                                if (!versioncode.equals(vercode)) {
-////                                    tvNewVersion.setText("需要更新到"+vercode);
-////                                    ToastUtils.ShowToastMessage("需要更新", mactivity);
-////                                    ToastUtils.ShowToastMessage("code:" + vercode + "," +
-////                                            "curversion:" + curVersionCode, mactivity);
-//                                    showNoticeDialog(0, slience);
-//                                } else {
-//                                    if (!slience) {
-////                                        tvNewVersion.setText("已经是最新版本");
-//                                        new AlertDialog.Builder(mactivity)
-//                                                .setTitle("检查新版本")
-//                                                .setMessage("您所使用的已经是最新版")
-//                                                .setPositiveButton("OK", null).create()
-//                                                .show();
-//                                    }
-//                                }
-//                            } catch (JsonSyntaxException e) {
-//                                e.printStackTrace();
-//                            } catch (NumberFormatException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    });
         } else {
             ToastUtils.ShowToastMessage("当前网络不可用，请重新尝试", mactivity);
         }
@@ -504,22 +627,18 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                     apkFilePath = savePath + apkName;
                     tmpFilePath = savePath + tmpApk;
                 }
-
                 // 没有挂载SD卡，无法下载文件
                 if (apkFilePath == null || apkFilePath == "") {
                     mHandler.sendEmptyMessage(DOWN_NOSDCARD);
                     return;
                 }
-
                 File ApkFile = new File(apkFilePath);
-
                 // 是否已下载更新文件
                 if (ApkFile.exists()) {
                     downloadDialog.dismiss();
                     installApk();
                     return;
                 }
-
                 // 输出临时下载文件
                 File tmpFile = new File(tmpFilePath);
                 FileOutputStream fos = new FileOutputStream(tmpFile);
@@ -531,15 +650,12 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 conn.connect();
                 int length = conn.getContentLength();
                 InputStream is = conn.getInputStream();
-
                 // 显示文件大小格式：2个小数点显示
                 DecimalFormat df = new DecimalFormat("0.00");
                 // 进度条下面显示的总文件大小
                 apkFileSize = df.format((float) length / 1024 / 1024) + "MB";
-
                 int count = 0;
                 byte buf[] = new byte[1024];
-
                 do {
                     int numread = is.read(buf);
                     count += numread;

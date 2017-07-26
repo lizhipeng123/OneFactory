@@ -4,7 +4,6 @@ import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,14 +17,12 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
-import com.daoran.newfactory.onefactory.bean.GetPhoneMenuBean;
 import com.daoran.newfactory.onefactory.bean.TabHostBean;
 import com.daoran.newfactory.onefactory.fragment.DrawerFragment;
 import com.daoran.newfactory.onefactory.fragment.InformationFragment;
 import com.daoran.newfactory.onefactory.fragment.OfficeFragment;
 import com.daoran.newfactory.onefactory.fragment.SetupFragment;
 import com.daoran.newfactory.onefactory.fragment.WorkFragment;
-import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.view.FragmentTabHost;
 
 import java.util.ArrayList;
@@ -39,18 +36,17 @@ public class MainActivity extends BaseFrangmentActivity {
     private FragmentTabHost mTabHost;
     private LayoutInflater mInflater;
     private List<TabHostBean> mTabs = new ArrayList<>(4);
-    private SharedPreferences sp;
-    private SPUtils spUtils;
-    private GetPhoneMenuBean getPhoneMenuBeen;
     private DrawerFragment drawerFragment;
     private Fragment navigation_drawer;
+    String idd;
+    int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        id = getIntent().getIntExtra(idd, 0);
         getViews();
-
     }
 
     @Override
@@ -85,7 +81,7 @@ public class MainActivity extends BaseFrangmentActivity {
                         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(startMain);
                         System.exit(0);
-                    } else {// android2.1
+                    } else {//android2.1
                         ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
                         am.restartPackage(getPackageName());
                     }
@@ -125,9 +121,15 @@ public class MainActivity extends BaseFrangmentActivity {
             mTabHost.addTab(tabSpec, bean.getFragment(), null);
         }
         mTabHost.getTabWidget().setDividerDrawable(R.color.transparent);
+        if(id==1){
+            Fragment workFragment = new WorkFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.flLayoutTabcontent,workFragment);
+        }
     }
 
-    public void setChantWrokFragment(){
+    public void setChantWrokFragment() {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 //        ft.replace(R.id.mainLayout,WorkFragment.class);

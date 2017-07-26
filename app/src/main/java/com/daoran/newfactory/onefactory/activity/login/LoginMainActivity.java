@@ -32,9 +32,11 @@ import android.widget.Toast;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.main.MainActivity;
+import com.daoran.newfactory.onefactory.activity.work.WorkPwSwitchActivity;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.UsergetBean;
 import com.daoran.newfactory.onefactory.bean.VerCodeBean;
+import com.daoran.newfactory.onefactory.bean.WorkPwSwitchBean;
 import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetUtil;
@@ -52,6 +54,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.squareup.picasso.Picasso;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.http.NameValuePair;
 
 import java.io.File;
@@ -79,6 +82,10 @@ public class LoginMainActivity extends BaseFrangmentActivity {
     private SharedPreferences sp;
     private String userNameValue, passwordValue;
     private ImageView image_login;
+    private WorkPwSwitchBean workPwSwitchBean;
+    private WorkPwSwitchBean.Data switchBean;
+    private List<WorkPwSwitchBean.Data> switchBeendatalist
+            = new ArrayList<WorkPwSwitchBean.Data>();
 
     private String curVersionName;
     private int curVersionCode;
@@ -118,7 +125,6 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         getViews();
         initViews();
         checkAppVersion(false);
-
         String name = sp.getString("username", "");
         String passwd = sp.getString("passwd", "");
         boolean choseRemember = sp.getBoolean("remember", false);
@@ -151,7 +157,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         });
     }
 
-    private void startService(){
+    private void startService() {
         Intent instart = new Intent(this, NetWorkService.class);
         this.startService(instart);
     }
@@ -189,7 +195,6 @@ public class LoginMainActivity extends BaseFrangmentActivity {
     private void initViews() {
         setEditTextInhibitInputSpeChat(etUsername);
         setEditTextInhibitInputSpeChat(etPassword);
-
         Picasso.with(LoginMainActivity.this)
                 .load(R.mipmap.daoran)
                 .error(R.mipmap.daoran)
@@ -286,7 +291,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                 dialog.show();
             } else {
                 final ProgressDialog progressDialog = ProgressDialog.show(this,
-                        "请稍候...", "正在登录中...", false, true);
+                        getResources().getString(R.string.login_his_later), getResources().getString(R.string.logining), false, true);
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
                 params.add(NetUtil.createParam("Logid", etUsername.getText().toString()));
                 params.add(NetUtil.createParam("pwd", etPassword.getText().toString()));
@@ -321,6 +326,45 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                             //记住密码
                             if (checkBoxPw.isChecked()) {
                                 spUtils.put(LoginMainActivity.this, "remember", true);
+                                String listwork = sp.getString("workbeenlist", "");
+                                workPwSwitchBean = new Gson().fromJson(listwork, WorkPwSwitchBean.class);
+                                //实体类等于空，也就是第一次进的时候，数据是空的
+                                if (workPwSwitchBean == null) {
+                                    workPwSwitchBean = new WorkPwSwitchBean();
+                                    switchBean = new WorkPwSwitchBean.Data();
+                                    String uuname = userBean.getU_name();
+                                    switchBean.setU_name(uuname);
+                                    String uulogid = userBean.getLogid();
+                                    switchBean.setLogid(uulogid);
+                                    switchBean.setPasswork(passwordValue);
+                                    switchBeendatalist.add(switchBean);
+                                    workPwSwitchBean.setDatas(switchBeendatalist);
+                                    ToastUtils.ShowToastMessage("", LoginMainActivity.this);
+                                } else {
+                                    switchBeendatalist = workPwSwitchBean.getDatas();
+                                    switchBean = new WorkPwSwitchBean.Data();
+                                    String uuname = userBean.getU_name();
+                                    String uulogid = userBean.getLogid();
+                                    String[] uname = uuname.split(",");
+                                    String[] listname = new String[switchBeendatalist.size()];
+                                    for (int i = 0; i < switchBeendatalist.size(); i++) {
+                                        listname[i] = switchBeendatalist.get(i).getU_name();
+                                    }
+                                    System.out.print(switchBeendatalist);
+                                    System.out.print(listname);
+                                    boolean booname = containsAll(listname, uname);
+                                    //添加账号信息，如果不相同则添加，相同则不添加
+                                    if (booname == false) {
+                                        switchBean.setU_name(uuname);
+                                        switchBean.setLogid(uulogid);
+                                        switchBean.setPasswork(passwordValue);
+                                        switchBeendatalist.add(switchBean);
+                                        workPwSwitchBean.setDatas(switchBeendatalist);
+                                    } else {
+                                        ToastUtils.ShowToastMessage("已有当前账号,登录中", LoginMainActivity.this);
+                                    }
+                                }
+                                System.out.print(workPwSwitchBean);
                             } else {
                                 spUtils.put(LoginMainActivity.this, "remember", false);
                             }
@@ -334,14 +378,15 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                             spUtils.put(getApplicationContext(), "proname", userBean.getU_name());
                             spUtils.put(getApplicationContext(), "commoname", userBean.getU_name());
                             spUtils.put(getApplicationContext(), "commologinid", userBean.getLogid());
+
+
                             Intent intent = new Intent(LoginMainActivity.this, MainActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putString("u_name", userBean.getU_name());
                             intent.putExtras(bundle);
                             startActivity(intent);
-//                            ResponseDialog.closeLoading();
                         } else {
-                            ToastUtils.ShowToastMessage("用户名密码错误，请重新输入", LoginMainActivity.this);
+                            ToastUtils.ShowToastMessage(R.string.user_tips, LoginMainActivity.this);
                             ResponseDialog.closeLoading();
                         }
                     }
@@ -349,7 +394,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                     @Override
                     public void onFailure(Throwable error, String content) {
                         super.onFailure(error, content);
-                        ToastUtils.ShowToastMessage("登录失败", LoginMainActivity.this);
+                        ToastUtils.ShowToastMessage(R.string.login_has_error, LoginMainActivity.this);
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -385,6 +430,15 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         } else {
             ToastUtils.ShowToastMessage(getString(R.string.noHttp), LoginMainActivity.this);
         }
+    }
+
+    private static boolean containsAll(String[] array1, String[] array2) {
+        for (String str : array2) {
+            if (!ArrayUtils.contains(array1, str)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

@@ -1,12 +1,16 @@
 package com.daoran.newfactory.onefactory.activity.work;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -54,12 +58,22 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
             = new ArrayList<WorkPwSwitchBean.Data>();
     private WorkPwSwitchBean.Data switchBean;
     private WorkPwSwitchBean workPwSwitchBean;
+    private View view;
+    boolean isopen = false;
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pwswitch_work);
         sp = getSharedPreferences("my_sp", 0);
+        if (Build.VERSION.SDK_INT >= 21) {
+            View decorView = getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            decorView.setSystemUiVisibility(option);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.lightblue));
+        }
         getViews();
         setViews();
         setListener();
@@ -137,15 +151,15 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
         try {
             String username = etUsername.getText().toString().trim();
             if (username.equals("")) {
-                message = "请输入账号";
+                message = getResources().getString(R.string.login_hint_account);
                 etUsername.requestFocus();
                 result = false;
                 return result;
             }
             String password = etPassword.getText().toString().trim();
             if (password.length() == 0) {
-                message = "请输入密码";
-                etPassword.setHint("请输入密码");
+                message = getResources().getString(R.string.login_hint_password);
+                etPassword.setHint(getResources().getString(R.string.login_hint_password));
                 etPassword.requestFocus();
                 result = false;
                 return result;
@@ -166,7 +180,8 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
     private void postLogin() {
         String loginuserUrl = HttpUrl.debugoneUrl + "Login/UserLogin/";
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this, "登录中");
+            final ProgressDialog progressDialog = ProgressDialog.show(this,
+                    "请稍候...", "正在登录中...", false, true);
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(NetUtil.createParam("Logid", etUsername.getText().toString()));
             params.add(NetUtil.createParam("pwd", etPassword.getText().toString()));
@@ -178,6 +193,18 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
                         @Override
                         public void onSuccess(String content) {
                             super.onSuccess(content);
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(3000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                             System.out.print(content);
                             userNameValue = etUsername.getText().toString();
                             passwordValue = etPassword.getText().toString();
@@ -203,6 +230,7 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
                                     switchBean.setPasswork(passwordValue);
                                     switchBeendatalist.add(switchBean);
                                     workPwSwitchBean.setDatas(switchBeendatalist);
+                                    ToastUtils.ShowToastMessage("", WorkPwSwitchActivity.this);
                                 } else {
                                     switchBeendatalist = workPwSwitchBean.getDatas();
                                     switchBean = new WorkPwSwitchBean.Data();
@@ -215,13 +243,16 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
                                     }
                                     System.out.print(switchBeendatalist);
                                     System.out.print(listname);
-                                    boolean booname = containsAll(listname,uname);
+                                    boolean booname = containsAll(listname, uname);
+                                    //添加账号信息，如果不相同则添加，相同则不添加
                                     if (booname == false) {
                                         switchBean.setU_name(uuname);
                                         switchBean.setLogid(uulogid);
                                         switchBean.setPasswork(passwordValue);
                                         switchBeendatalist.add(switchBean);
                                         workPwSwitchBean.setDatas(switchBeendatalist);
+                                    } else {
+                                        ToastUtils.ShowToastMessage("已有当前账号", WorkPwSwitchActivity.this);
                                     }
                                 }
                                 System.out.print(workPwSwitchBean);
@@ -233,11 +264,12 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
                                 Intent intent = new Intent(WorkPwSwitchActivity.this, MainActivity.class);
                                 Bundle bundle = new Bundle();
                                 bundle.putString("u_name", userBean.getU_name());
+                                intent.putExtra(id, 1);
                                 intent.putExtras(bundle);
+                                setResult(2, intent);
                                 startActivity(intent);
-                                ResponseDialog.closeLoading();
                             } else {
-                                ToastUtils.ShowToastMessage("用户名密码错误，请重新输入", WorkPwSwitchActivity.this);
+                                ToastUtils.ShowToastMessage(R.string.user_tips, WorkPwSwitchActivity.this);
                                 ResponseDialog.closeLoading();
                             }
                         }
@@ -245,14 +277,36 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
                         @Override
                         public void onFailure(Throwable error, String content) {
                             super.onFailure(error, content);
-                            ToastUtils.ShowToastMessage("登录失败", WorkPwSwitchActivity.this);
-                            ResponseDialog.closeLoading();
+                            ToastUtils.ShowToastMessage(R.string.login_has_error, WorkPwSwitchActivity.this);
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(3000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                         }
 
                         @Override
                         public void onFinish() {
                             super.onFinish();
-                            ResponseDialog.closeLoading();
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(3000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                         }
                     });
         } else {
@@ -279,6 +333,17 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
         switch (v.getId()) {
             case R.id.btnLogin:
                 if (validate()) {
+                    //判断软件盘是否弹出
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm != null) {
+                        if (imm.hideSoftInputFromWindow(v.getWindowToken(), 0)) {
+                            imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                                    0);
+                        } else {
+                            imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                                    0);
+                        }
+                    }
                     postLogin();
                 }
                 break;
@@ -286,5 +351,10 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
                 finish();
                 break;
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 }
