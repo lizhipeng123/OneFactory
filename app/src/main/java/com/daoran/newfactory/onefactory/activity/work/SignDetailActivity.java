@@ -314,7 +314,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
             case R.id.etSqlDetail:
 
                 break;
-
+            /*弹出菜单*/
             case R.id.spinnermenu:
                 showPopupMenu(spinnermenu);
                 break;

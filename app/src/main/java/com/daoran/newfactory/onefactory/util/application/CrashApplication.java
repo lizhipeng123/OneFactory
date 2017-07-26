@@ -5,6 +5,7 @@ import android.app.Application;
 import com.daoran.newfactory.onefactory.util.CrashHandler;
 
 /**
+ * 初始化操作
  * Created by lizhipeng on 2017/7/18.
  */
 

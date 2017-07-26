@@ -339,7 +339,6 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                                     switchBean.setPasswork(passwordValue);
                                     switchBeendatalist.add(switchBean);
                                     workPwSwitchBean.setDatas(switchBeendatalist);
-                                    ToastUtils.ShowToastMessage("", LoginMainActivity.this);
                                 } else {
                                     switchBeendatalist = workPwSwitchBean.getDatas();
                                     switchBean = new WorkPwSwitchBean.Data();

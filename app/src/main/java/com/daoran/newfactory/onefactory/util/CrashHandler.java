@@ -46,8 +46,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     /**
      * 保证只有一个CrashHandler实例
      */
-    private CrashHandler() {
-    }
+    private CrashHandler() {}
 
     /**
      * 获取CrashHandler实例 ,单例模式
@@ -113,10 +112,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         }.start();
         // 1.获取软件版本信息
         String versioninfo = getVersionInfo();
-
         // 2.获取手机的硬件信息.
         String mobileInfo = getMobileInfo();
-
         // 3.把错误的堆栈信息 获取出来
         String errorinfo = getErrorInfo(ex);
         String time = formatter.format(new Date());
@@ -146,7 +143,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
             public void onClick(DialogInterface dialog, int which) {
                 // TODO Auto-generated method stub
-                //上传处理---我这里没写，大家根据实际情况自己补上，我这里是一个Toast提示，提示内容就是我们要上传的信息
+                //上传处理---将上传的信息
                 Log.e(TAG, "---" + sbs.toString());
                 Toast.makeText(mContext, sbs.toString(), Toast.LENGTH_LONG).show();
                 new Thread(new Runnable() {
@@ -154,7 +151,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
                     public void run() {
                         // TODO Auto-generated method stub
                         try {
-                            Thread.sleep(3000);
+                            Thread.sleep(10000);
                             //  mDefaultHandler.uncaughtException(thread, ex);
                         } catch (InterruptedException e) {
                             Log.e(TAG, "error : ", e);
@@ -164,7 +161,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
                         System.exit(1);
                     }
                 }).start();
-
             }
         });
         buder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -175,13 +171,11 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
                 System.exit(1);
             }
         });
-
         dialog = buder.create();
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.setCanceledOnTouchOutside(false);//设置点击屏幕其他地方，dialog不消失
         dialog.setCancelable(false);//设置点击返回键和HOme键，dialog不消失
         dialog.show();
-
         Log.i("PLog", "2");
     }
 
@@ -192,14 +186,12 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      * @return 返回文件名称, 便于将文件传送到服务器
      */
     private String saveCrashInfo2File(Throwable ex) {
-
         StringBuffer sb = new StringBuffer();
         for (Map.Entry<String, String> entry : infos.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
             sb.append(key + "=" + value + "\n");
         }
-
         Writer writer = new StringWriter();
         PrintWriter printWriter = new PrintWriter(writer);
         ex.printStackTrace(printWriter);
@@ -274,5 +266,4 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             return "版本号未知";
         }
     }
-
 }

@@ -42,6 +42,7 @@
     <uses-feature android:name="android.hardware.camera" />
 
     <application
+        android:name=".util.application.CrashApplication"
         android:allowBackup="true"
         android:icon="@mipmap/daoran"
         android:label="${APP_NAME}"
