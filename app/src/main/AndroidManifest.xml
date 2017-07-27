@@ -143,11 +143,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
-        <!-- 搜索地址 -->
-        <activity
-            android:name=".activity.work.SearchViaPointActivity"
-            android:screenOrientation="portrait" />
-
         <!-- 新建生产日报 -->
         <activity
             android:name=".activity.work.production.ProductionNewlyBuildActivity"

@@ -96,18 +96,10 @@ public class SignOpenActivity extends BaseFrangmentActivity
     private double longitude;
     private double latitude;
     private LocationSource.OnLocationChangedListener mListener;
-    private ProgressDialog progressDialog = null;//搜索时进度条
     private PoiSearch.Query query;//poi查询类
     private PoiSearch poiSearch;//搜索
-    private PoiSearch.SearchBound searchBound;
-    private List<PoiItem> poiItems;
-    private int currentPage;//当前页面，从0开始
     private PoiResult poiResult;//poi返回的结果
-    private String city = "";//搜索城市
     private String deepType;//搜索类型
-    private int juli = 1000;
-    private LatLonPoint latLonPoint;
-    private GeocodeSearch geocodeSearch;
     private Spinner spinner, spinnnerfileTune;
     private MyLocationStyle myLocationStyle;
 
@@ -117,13 +109,9 @@ public class SignOpenActivity extends BaseFrangmentActivity
     public static final String KEY_DES = "des";
 
     private String cityCode;
-
     private TextView tvSqltexttime;
     private LinearLayout btnSignOk;
-    private Button btnCount
-//            ,btnSignCancle
-//            , btnSignOk
-            ;
+    private Button btnCount;
     private TextView tvSignAddress, tvSignDate;
     private Spinner SpinnerSign, spinnerfineTune;
     private EditText etRemark;
@@ -132,8 +120,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
     private ScrollView scrollviewSign;
     private ArrayAdapter<String> adapter;
     private ArrayList<String> locationList = new ArrayList<>();
-    private List<SignDetailBean.DataBean> signBean = new ArrayList<SignDetailBean.DataBean>();
-    private SignDetailBean dataBean;
 
     private int year, month, date, hour, minute, second;
     private SharedPreferences sp;
@@ -147,8 +133,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
             Manifest.permission.READ_PHONE_STATE
     };
     private static final int PERMISSON_REQUESTCODE = 0;
-
-    long prolongTim = 0;//上一次的时间
     /**
      * 判断是否需要检测，防止不停的弹框
      */
@@ -408,7 +392,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
     private void doSearch() {
         aMap.setOnMapClickListener(null);//进行poi搜索时清除掉地图点击事件
         query = new PoiSearch.Query("", deepType, cityCode);
-        PoiSearch poiSearch = new PoiSearch(this, query);
+        poiSearch = new PoiSearch(this, query);
         poiSearch.setOnPoiSearchListener(this);
         query.setPageSize(30);// 设置每页最多返回多少条数据
         query.setPageNum(0);//设置查询页码
@@ -490,7 +474,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
      */
     private void getSpinner() {
         String[] spinner = getResources().getStringArray(R.array.signSpinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinner);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         SpinnerSign.setAdapter(adapter);
         SpinnerSign.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -925,7 +909,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
         if (rCode == 1000) {
             if (result != null && result.getQuery() != null) {// 搜索poi的结果
                 if (result.getQuery().equals(query)) {// 是否是同一条
-                    PoiResult poiResult = result;
+                    poiResult = result;
                     ArrayList<PoiItem> poiItems = poiResult.getPois();
                     if (poiItems != null && poiItems.size() > 0) {
                         for (PoiItem p : poiItems) {

@@ -47,7 +47,7 @@ public class ProductionNewlyBuildLeftAdapter extends BaseAdapter {
         final ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
-            convertView = LayoutInflater.from(context).inflate(R.layout.debug_item_left, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_left_adapter, null);
             holder.tvLeft = (TextView) convertView.findViewById(R.id.tv_left);
             convertView.setTag(holder);
         } else {

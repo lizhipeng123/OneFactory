@@ -46,7 +46,7 @@ public class SignDetailAdapter extends BaseAdapter {
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
-            convertView = LayoutInflater.from(context).inflate(R.layout.debug_item_data, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_data_signdetail_adapter, null);
 //            holder.tvData = (TextView) convertView.findViewById(R.id.tv_data);
             holder.tvsignName = (TextView) convertView.findViewById(R.id.tvsignName);
             holder.tvClasses = (TextView) convertView.findViewById(R.id.tvClasses);

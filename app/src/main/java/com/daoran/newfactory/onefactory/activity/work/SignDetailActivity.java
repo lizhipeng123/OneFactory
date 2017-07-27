@@ -21,7 +21,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.commo.CommoditySqlActivity;
 import com.daoran.newfactory.onefactory.adapter.SignDetailAdapter;
 import com.daoran.newfactory.onefactory.adapter.SignDetailLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
@@ -30,7 +29,6 @@ import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
-import com.daoran.newfactory.onefactory.util.file.save.CommodityExcelUtil;
 import com.daoran.newfactory.onefactory.util.file.save.SignDetailExcelUtil;
 import com.daoran.newfactory.onefactory.view.dialog.SignContentDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
@@ -73,7 +71,6 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     private ScrollView scroll_content;
     private Spinner spinnSignPageClumns;
     private ImageView ivUpLeftPage, ivDownRightPage;
-//    private Button btnExcel;
     private Button spinnermenu;
 
     private SharedPreferences sp;
@@ -229,8 +226,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         // PopupMenu关闭事件
         popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override
-            public void onDismiss(PopupMenu menu) {
-            }
+            public void onDismiss(PopupMenu menu) {}
         });
         popupMenu.show();
     }
