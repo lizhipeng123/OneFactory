@@ -64,7 +64,8 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="85547ccec1838f47b9aab22f5582332a" />
-
+        <meta-data android:value="59795831b27b0a69e5001585"
+            android:name="UMENG_APPKEY"/>
         <!-- 启动页 -->
         <activity
             android:name=".activity.start.StartActivity"
@@ -219,7 +220,6 @@
 
         <!-- 高德地图定位服务 -->
         <service android:name="com.amap.api.location.APSService" />
-        <service android:name=".util.Http.NetWorkService"/>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

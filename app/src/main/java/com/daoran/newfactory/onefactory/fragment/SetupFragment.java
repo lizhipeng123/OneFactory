@@ -60,6 +60,8 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import static com.umeng.analytics.MobclickAgent.onProfileSignOff;
+
 /**
  * 设置模块
  * Created by lizhipeng on 2017/3/22.
@@ -385,6 +387,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
             switch (which) {
                 case AlertDialog.BUTTON_POSITIVE:// "确认"按钮退出程序
                     startActivity(new Intent(getActivity(), LoginMainActivity.class));
+                    onProfileSignOff();
                     break;
                 case AlertDialog.BUTTON_NEGATIVE:// "取消"第二个按钮取消对话框
                     break;

@@ -10,7 +10,6 @@
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/myapplication/myapplication.iml" filepath="$PROJECT_DIR$/myapplication/myapplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/mylibrary/mylibrary.iml" filepath="$PROJECT_DIR$/mylibrary/mylibrary.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mylibraryone/mylibraryone.iml" filepath="$PROJECT_DIR$/mylibraryone/mylibraryone.iml" />
       <module fileurl="file://$PROJECT_DIR$/myrecycleview/myrecycleview.iml" filepath="$PROJECT_DIR$/myrecycleview/myrecycleview.iml" />
       <module fileurl="file://$PROJECT_DIR$/uikit/uikit.iml" filepath="$PROJECT_DIR$/uikit/uikit.iml" />
       <module fileurl="file://$PROJECT_DIR$/youkuPlayerOpenSDK/youkuPlayerOpenSDK.iml" filepath="$PROJECT_DIR$/youkuPlayerOpenSDK/youkuPlayerOpenSDK.iml" />

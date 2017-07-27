@@ -228,7 +228,6 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
                                     switchBean.setPasswork(passwordValue);
                                     switchBeendatalist.add(switchBean);
                                     workPwSwitchBean.setDatas(switchBeendatalist);
-                                    ToastUtils.ShowToastMessage("", WorkPwSwitchActivity.this);
                                 } else {
                                     switchBeendatalist = workPwSwitchBean.getDatas();
                                     switchBean = new WorkPwSwitchBean.Data();

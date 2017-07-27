@@ -53,6 +53,7 @@ import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.squareup.picasso.Picasso;
+import com.umeng.analytics.MobclickAgent;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.http.NameValuePair;
@@ -150,16 +151,10 @@ public class LoginMainActivity extends BaseFrangmentActivity {
             @Override
             public void onClick(View v) {
                 if (validate()) {
-                    startService();
                     postLogin();
                 }
             }
         });
-    }
-
-    private void startService() {
-        Intent instart = new Intent(this, NetWorkService.class);
-        this.startService(instart);
     }
 
     /**
@@ -364,6 +359,11 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                                     }
                                 }
                                 System.out.print(workPwSwitchBean);
+                                String workbeenlist = gson.toJson(switchBeendatalist);
+                                String worklist = gson.toJson(workPwSwitchBean);
+                                System.out.print(worklist);
+                                System.out.print(workbeenlist);
+                                spUtils.put(LoginMainActivity.this, "workbeenlist", worklist);
                             } else {
                                 spUtils.put(LoginMainActivity.this, "remember", false);
                             }
@@ -377,8 +377,10 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                             spUtils.put(getApplicationContext(), "proname", userBean.getU_name());
                             spUtils.put(getApplicationContext(), "commoname", userBean.getU_name());
                             spUtils.put(getApplicationContext(), "commologinid", userBean.getLogid());
-
-
+                            MobclickAgent.setScenarioType(LoginMainActivity.this,
+                                    MobclickAgent.EScenarioType.E_UM_NORMAL);
+                            MobclickAgent.setDebugMode(true);
+                            MobclickAgent.onProfileSignIn(userNameValue);
                             Intent intent = new Intent(LoginMainActivity.this, MainActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putString("u_name", userBean.getU_name());
