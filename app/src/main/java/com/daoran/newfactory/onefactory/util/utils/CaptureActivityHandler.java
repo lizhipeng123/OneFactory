@@ -24,7 +24,7 @@ import android.os.Message;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.work.setting.CaptureActivity;
-import com.daoran.newfactory.onefactory.util.camera.CameraManager;
+import com.daoran.newfactory.onefactory.util.file.camera.CameraManager;
 import com.daoran.newfactory.onefactory.util.decode.DecodeThread;
 import com.google.zxing.Result;
 

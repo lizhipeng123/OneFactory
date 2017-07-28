@@ -2,7 +2,7 @@ package com.daoran.newfactory.onefactory.util.application;
 
 import android.app.Application;
 
-import com.daoran.newfactory.onefactory.util.CrashHandler;
+import com.daoran.newfactory.onefactory.util.application.settings.CrashHandler;
 
 /**
  * 初始化操作

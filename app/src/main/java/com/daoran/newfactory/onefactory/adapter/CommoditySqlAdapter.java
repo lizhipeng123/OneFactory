@@ -38,7 +38,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
     private ArrayList attentionArr = new ArrayList();
     private SharedPreferences sp;
     private SPUtils spUtils;
-    private int index = -1;
 
     public CommoditySqlAdapter(Context context, List<CommoditydetailBean.DataBean> dataBeen) {
         this.context = context;
@@ -66,7 +65,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_commodity_data, null);
-//            holder.tvCommoItem = (TextView) convertView.findViewById(R.id.tvCommoItem);
             holder.tvCommoCtmtxt = (TextView) convertView.findViewById(R.id.tvCommoCtmtxt);
             holder.tvCommoPrddocumentary = (TextView) convertView.findViewById(R.id.tvCommoPrddocumentary);
             holder.tvCommoprdmaster = (TextView) convertView.findViewById(R.id.tvCommoprdmaster);
@@ -147,9 +145,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     spUtils.put(context, "uriid", uriid);
                 }
             });
-//            holder.tvCommoItem.setEnabled(true);
-//            holder.tvCommoItem.setText(getItem(position).getItem());
-
             holder.tvCommoCtmtxt.setEnabled(true);
             holder.tvCommoCtmtxt.setText(getItem(position).getCtmtxt());
 
@@ -174,7 +169,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                             sp = context.getSharedPreferences("my_sp", 0);
                             String title = item.getTitle().toString();
                             getItem(position).setOurAfter(title);
-//                        spUtils.put(context, "commohdTitle", title);
                             return false;
                         }
                     });
@@ -220,7 +214,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 Log.d(TAG, "afterTextChanged");
                                 String proitem = holder.tvCommoQCMasterScore.getText().toString();
                                 getItem(position).setQCMasterScore(proitem);
-//                                spUtils.put(context, "CommodityQCMasterScore", proitem);
                             }
                         };
                         editTextQCMasterScore.addTextChangedListener(TvQCMasterScore);
@@ -230,13 +223,11 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         String qcmastertwoo = holder.tvCommoQCMasterScore.getText().toString();
                         getItem(position).setQCMasterScore(qcmastertwoo);
                         System.out.print(qcmastertwoo);
-//                        spUtils.put(context, "CommodityQCMasterScore", qcmastertwoo);
                     }
                 }
             });
             /*光标放置在文本最后*/
             holder.tvCommoQCMasterScore.setSelection(holder.tvCommoQCMasterScore.length());
-
 
             holder.tvCommoSealedrev.setEnabled(true);
             holder.tvCommoSealedrev.getResources().getDrawable(R.drawable.shape_text_sql_boild);
@@ -264,7 +255,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                         holder.tvCommoSealedrev.setText(datetime);
                                         if (attentionArr.contains(position)) {
                                             getItem(position).setSealedrev(datetime);
-//                                            spUtils.put(context, "dateSealedrewtimesign", datetime);
                                         }
                                     }
                                 });
@@ -274,7 +264,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     public void onClick(DialogInterface dialog, int which) {
                                         holder.tvCommoSealedrev.setText("");
                                         getItem(position).setSealedrev("");
-//                                        spUtils.put(context, "dateSealedrewtimesign", "");
                                     }
                                 });
                         datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -288,7 +277,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     }
                 }
             });
-
 
             holder.tvCommoDocback.setEnabled(true);
             holder.tvCommoDocback.setText(getItem(position).getDocback());
@@ -312,7 +300,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoDocback.setText(datetime);
                                     getItem(position).setDocback(datetime);
-//                                    spUtils.put(context, "dateDocbacktimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -321,7 +308,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoDocback.setText("");
                                     holder.tvCommoDocback.setText("");
-//                                    spUtils.put(context, "dateDocbacktimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -334,7 +320,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     datePickerDialog.show();
                 }
             });
-
 
             holder.tvCommoLcdat.setEnabled(true);
             holder.tvCommoLcdat.setText(getItem(position).getLcdat());
@@ -365,7 +350,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoPreMemo.getText().toString();
                     getItem(position).setPreMemo(proitem);
-//                    spUtils.put(context, "CommodityPreMemo", proitem);
                 }
             };
             editTextPreMemo.addTextChangedListener(TvPreMemo);
@@ -396,7 +380,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPredocdt.setText(datetime);
                                     getItem(position).setPredocdt(datetime);
-//                                    spUtils.put(context, "datePredocdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -405,7 +388,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPredocdt.setText("");
                                     getItem(position).setPredocdt("");
-//                                    spUtils.put(context, "datePredocdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -441,7 +423,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPred.setText(datetime);
                                     getItem(position).setPredocdt(datetime);
-//                                    spUtils.put(context, "datePredtimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -450,7 +431,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPred.setText("");
                                     getItem(position).setPredocdt("");
-//                                    spUtils.put(context, "datePredtimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -463,7 +443,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     datePickerDialog.show();
                 }
             });
-
 
             holder.tvCommoFabricsok.setEnabled(true);
             final EditText editTextFabricsok = holder.tvCommoFabricsok;
@@ -488,7 +467,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoFabricsok.getText().toString();
                     getItem(position).setFabricsok(proitem);
-//                    spUtils.put(context, "CommodityFabricsok", proitem);
                 }
             };
             editTextFabricsok.addTextChangedListener(TvFabricsok);
@@ -520,7 +498,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoAccessoriesok.getText().toString();
                     getItem(position).setAccessoriesok(proitem);
-//                    spUtils.put(context, "CommodityAccessoriesok", proitem);
                 }
             };
             editTextAccessoriesok.addTextChangedListener(TvAccessoriesok);
@@ -531,7 +508,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoSpcproDec.setEnabled(true);
             final EditText editTextSpcproDec = holder.tvCommoSpcproDec;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextSpcproDec.getTag() instanceof TextWatcher) {
                 editTextSpcproDec.removeTextChangedListener((TextWatcher) editTextSpcproDec.getTag());
             }
@@ -552,7 +529,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoSpcproDec.getText().toString();
                     getItem(position).setSpcproDec(proitem);
-//                    spUtils.put(context, "CommoditySpcproDec", proitem);
                 }
             };
             editTextSpcproDec.addTextChangedListener(TvSpcproDec);
@@ -584,7 +560,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoSpcproMemo.getText().toString();
                     getItem(position).setSpcproMemo(proitem);
-//                    spUtils.put(context, "CommoditySpcproMemo", proitem);
                 }
             };
             editTextSpcproMemo.addTextChangedListener(TvSpcproMemo);
@@ -616,7 +591,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoCutqty.getText().toString();
                     getItem(position).setCutqty(proitem);
-//                    spUtils.put(context, "CommodityCutqty", proitem);
                 }
             };
             editTextCutqty.addTextChangedListener(TvCutqty);
@@ -647,7 +621,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoSewFdt.setText(datetime);
                                     getItem(position).setSewFdt(datetime);
-//                                    spUtils.put(context, "dateSewFdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -656,7 +629,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoSewFdt.setText("");
                                     getItem(position).setSewFdt("");
-//                                    spUtils.put(context, "dateSewFdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -692,7 +664,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoSewMdt.setText(datetime);
                                     getItem(position).setSewMdt(datetime);
-//                                    spUtils.put(context, "dateSewMdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -701,7 +672,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoSewMdt.setText("");
                                     getItem(position).setSewMdt("");
-//                                    spUtils.put(context, "dateSewMdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -746,7 +716,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPrebdt.setText(datetime);
                                     getItem(position).setPrebdt(datetime);
-//                                    spUtils.put(context, "datePrebdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -755,7 +724,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPrebdt.setText("");
                                     getItem(position).setPrebdt("");
-//                                    spUtils.put(context, "datePrebdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -791,7 +759,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCbdt.setText(datetime);
                                     getItem(position).setQCbdt(datetime);
-//                                    spUtils.put(context, "dateQCbdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -800,7 +767,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCbdt.setText("");
                                     getItem(position).setQCbdt("");
-//                                    spUtils.put(context, "dateQCbdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -837,7 +803,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPremdt.setText(datetime);
                                     getItem(position).setPremdt(datetime);
-//                                    spUtils.put(context, "datePremdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -846,7 +811,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPremdt.setText("");
                                     getItem(position).setPremdt("");
-//                                    spUtils.put(context, "datePremdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -882,7 +846,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCmdt.setText(datetime);
                                     getItem(position).setQCmdt(datetime);
-//                                    spUtils.put(context, "dateQCmdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -891,7 +854,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCmdt.setText("");
                                     getItem(position).setQCmdt("");
-//                                    spUtils.put(context, "dateQCmdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -928,7 +890,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPreedt.setText(datetime);
                                     getItem(position).setPreedt(datetime);
-//                                    spUtils.put(context, "datePreedttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -937,7 +898,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPreedt.setText("");
                                     getItem(position).setPreedt("");
-//                                    spUtils.put(context, "datePreedttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -973,7 +933,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCMedt.setText(datetime);
                                     getItem(position).setQCMedt(datetime);
-//                                    spUtils.put(context, "dateQCMedttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -982,7 +941,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCMedt.setText("");
                                     getItem(position).setQCMedt("");
-//                                    spUtils.put(context, "dateQCMedttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1019,7 +977,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFctmdt.setText(datetime);
                                     getItem(position).setFctmdt(datetime);
-//                                    spUtils.put(context, "dateFctmdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1028,7 +985,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFctmdt.setText("");
                                     getItem(position).setFctmdt("");
-//                                    spUtils.put(context, "dateFctmdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1064,7 +1020,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFctedt.setText(datetime);
                                     getItem(position).setFctedt(datetime);
-//                                    spUtils.put(context, "dateFctedttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1073,7 +1028,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFctedt.setText("");
                                     getItem(position).setFctedt("");
-//                                    spUtils.put(context, "dateFctedttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1109,7 +1063,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPackbdat.setText(datetime);
                                     getItem(position).setPackbdat(datetime);
-//                                    spUtils.put(context, "datePackbdattimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1118,7 +1071,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPackbdat.setText("");
                                     getItem(position).setPackbdat("");
-//                                    spUtils.put(context, "datePackbdattimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1135,7 +1087,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoPackqty2.setEnabled(true);
             final EditText editTextPackqty2 = holder.tvCommoPackqty2;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextPackqty2.getTag() instanceof TextWatcher) {
                 editTextPackqty2.removeTextChangedListener((TextWatcher) editTextPackqty2.getTag());
             }
@@ -1156,7 +1108,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoPackqty2.getText().toString();
                     getItem(position).setPackqty2(proitem);
-//                    spUtils.put(context, "CommodityPackqty2", proitem);
                 }
             };
             editTextPackqty2.addTextChangedListener(TvPackqty2);
@@ -1167,7 +1118,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoQCMemo.setEnabled(true);
             final EditText editTextQCMemo = holder.tvCommoQCMemo;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQCMemo.getTag() instanceof TextWatcher) {
                 editTextQCMemo.removeTextChangedListener((TextWatcher) editTextQCMemo.getTag());
             }
@@ -1188,7 +1139,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQCMemo.getText().toString();
                     getItem(position).setQCMemo(proitem);
-//                    spUtils.put(context, "CommodityQCMemo", proitem);
                 }
             };
             editTextQCMemo.addTextChangedListener(TvQCMemo);
@@ -1218,7 +1168,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFactlcdat.setText(datetime);
                                     getItem(position).setFactlcdat(datetime);
-//                                    spUtils.put(context, "dateFactlcdattimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1227,7 +1176,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFactlcdat.setText("");
                                     getItem(position).setFactlcdat("");
-//                                    spUtils.put(context, "dateFactlcdattimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1243,7 +1191,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoBatchid.setEnabled(true);
             final EditText editTextBatchid = holder.tvCommoBatchid;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextBatchid.getTag() instanceof TextWatcher) {
                 editTextBatchid.removeTextChangedListener((TextWatcher) editTextBatchid.getTag());
             }
@@ -1264,7 +1212,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoBatchid.getText().toString();
                     getItem(position).setBatchid(proitem);
-//                    spUtils.put(context, "CommodityBatchid", proitem);
                 }
             };
             editTextBatchid.addTextChangedListener(TvBatchid);
@@ -1296,7 +1243,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoCtmchkdt.setText(datetime);
                                     getItem(position).setCtmchkdt(datetime);
-//                                    spUtils.put(context, "dateCtmchkdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1305,7 +1251,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoCtmchkdt.setText("");
                                     getItem(position).setCtmchkdt("");
-//                                    spUtils.put(context, "dateCtmchkdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1322,7 +1267,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoIPQCPedt.setEnabled(true);
             final EditText editTextIPQCPedt = holder.tvCommoIPQCPedt;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextIPQCPedt.getTag() instanceof TextWatcher) {
                 editTextIPQCPedt.removeTextChangedListener((TextWatcher) editTextIPQCPedt.getTag());
             }
@@ -1343,7 +1288,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoIPQCPedt.getText().toString();
                     getItem(position).setIPQCPedt(proitem);
-//                    spUtils.put(context, "CommodityIPQCPedt", proitem);
                 }
             };
             editTextIPQCPedt.addTextChangedListener(TvIPQCPedt);
@@ -1375,7 +1319,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoIPQCmdt.getText().toString();
                     getItem(position).setIPQCmdt(proitem);
-//                    spUtils.put(context, "CommodityIPQCmdt", proitem);
                 }
             };
             editTextIPQCmdt.addTextChangedListener(TvIPQCmdt);
@@ -1407,7 +1350,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQAname.getText().toString();
                     getItem(position).setQAname(proitem);
-//                    spUtils.put(context, "CommodityQAname", proitem);
                 }
             };
             editTextQAname.addTextChangedListener(TvQAname);
@@ -1439,7 +1381,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQAScore.getText().toString();
                     getItem(position).setQAScore(proitem);
-//                    spUtils.put(context, "CommodityQAScore", proitem);
                 }
             };
             editTextQAScore.addTextChangedListener(TvQAScore);
@@ -1470,7 +1411,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQAMemo.setText(datetime);
                                     getItem(position).setQAMemo(datetime);
-//                                    spUtils.put(context, "dateQAMemotimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1479,7 +1419,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQAMemo.setText("");
                                     getItem(position).setQAMemo("");
-//                                    spUtils.put(context, "dateQAMemotimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1510,7 +1449,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoQCmdtDoc.setEnabled(false);
             final EditText editTextQCmdtDoc = holder.tvCommoQCmdtDoc;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQCmdtDoc.getTag() instanceof TextWatcher) {
                 editTextQCmdtDoc.removeTextChangedListener((TextWatcher) editTextQCmdtDoc.getTag());
             }
@@ -1518,7 +1457,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoQCedtDoc.setEnabled(false);
             final EditText editTextQCedtDoc = holder.tvCommoQCedtDoc;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQCedtDoc.getTag() instanceof TextWatcher) {
                 editTextQCedtDoc.removeTextChangedListener((TextWatcher) editTextQCedtDoc.getTag());
             }
@@ -1543,7 +1482,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoThingExpectedTime.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                 }
             });
 
@@ -1552,7 +1490,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoThingTime.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                 }
             });
 
@@ -1569,8 +1506,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     spUtils.put(context, "uriid", uriid);
                 }
             });
-//            holder.tvCommoItem.setEnabled(true);
-//            holder.tvCommoItem.setText(getItem(position).getItem());
 
             holder.tvCommoCtmtxt.setEnabled(true);
             holder.tvCommoCtmtxt.setText(getItem(position).getCtmtxt());
@@ -1596,7 +1531,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                             sp = context.getSharedPreferences("my_sp", 0);
                             String title = item.getTitle().toString();
                             getItem(position).setOurAfter(title);
-//                        spUtils.put(context, "commohdTitle", title);
                             return false;
                         }
                     });
@@ -1617,47 +1551,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 editTextQCMasterScore.removeTextChangedListener((TextWatcher) editTextQCMasterScore.getTag());
             }
             editTextQCMasterScore.setText(getItem(position).getQCMasterScore());
-//            holder.tvCommoQCMasterScore.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//                @Override
-//                public void onFocusChange(View v, boolean hasFocus) {
-//                    if (hasFocus) {
-//                        //得到焦点
-//                        sp = context.getSharedPreferences("my_sp", 0);
-//                        String qcmaster = sp.getString("CommodityQCMasterScore", "");
-//                        System.out.print(qcmaster);
-//                        spUtils.put(context, "debugQCMasterScore", qcmaster);
-//                        TextWatcher TvQCMasterScore = new TextWatcher() {
-//                            @Override
-//                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                                Log.d(TAG, "beforeTextChanged");
-//                            }
-//
-//                            @Override
-//                            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                                Log.d(TAG, "onTextChanged");
-//                            }
-//
-//                            @Override
-//                            public void afterTextChanged(Editable s) {
-//                                Log.d(TAG, "afterTextChanged");
-//                                String proitem = holder.tvCommoQCMasterScore.getText().toString();
-//                                getItem(position).setQCMasterScore(proitem);
-////                                spUtils.put(context, "CommodityQCMasterScore", proitem);
-//                            }
-//                        };
-//                        editTextQCMasterScore.addTextChangedListener(TvQCMasterScore);
-//                        editTextQCMasterScore.setTag(TvQCMasterScore);
-//                    } else {
-//                        //失去焦点
-//                        String qcmastertwoo = holder.tvCommoQCMasterScore.getText().toString();
-//                        getItem(position).setQCMasterScore(qcmastertwoo);
-//                        System.out.print(qcmastertwoo);
-////                        spUtils.put(context, "CommodityQCMasterScore", qcmastertwoo);
-//                    }
-//                }
-//            });
-//            /*光标放置在文本最后*/
-//            holder.tvCommoQCMasterScore.setSelection(holder.tvCommoQCMasterScore.length());
 
             holder.tvCommoSealedrev.setEnabled(true);
             holder.tvCommoSealedrev.getResources().getDrawable(R.drawable.shape_text_sql_boild);
@@ -1685,7 +1578,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                         holder.tvCommoSealedrev.setText(datetime);
                                         if (attentionArr.contains(position)) {
                                             getItem(position).setSealedrev(datetime);
-//                                            spUtils.put(context, "dateSealedrewtimesign", datetime);
                                         }
                                     }
                                 });
@@ -1695,7 +1587,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     public void onClick(DialogInterface dialog, int which) {
                                         holder.tvCommoSealedrev.setText("");
                                         getItem(position).setSealedrev("");
-//                                        spUtils.put(context, "dateSealedrewtimesign", "");
                                     }
                                 });
                         datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1733,7 +1624,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoDocback.setText(datetime);
                                     getItem(position).setDocback(datetime);
-//                                    spUtils.put(context, "dateDocbacktimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1742,7 +1632,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoDocback.setText("");
                                     holder.tvCommoDocback.setText("");
-//                                    spUtils.put(context, "dateDocbacktimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1756,7 +1645,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 }
             });
 
-
             holder.tvCommoLcdat.setEnabled(true);
             holder.tvCommoLcdat.setText(getItem(position).getLcdat());
 
@@ -1765,7 +1653,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoPreMemo.setEnabled(true);
             final EditText editTextPreMemo = holder.tvCommoPreMemo;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextPreMemo.getTag() instanceof TextWatcher) {
                 editTextPreMemo.removeTextChangedListener((TextWatcher) editTextPreMemo.getTag());
             }
@@ -1786,7 +1674,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoPreMemo.getText().toString();
                     getItem(position).setPreMemo(proitem);
-//                    spUtils.put(context, "CommodityPreMemo", proitem);
                 }
             };
             editTextPreMemo.addTextChangedListener(TvPreMemo);
@@ -1817,7 +1704,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPredocdt.setText(datetime);
                                     getItem(position).setPredocdt(datetime);
-//                                    spUtils.put(context, "datePredocdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1826,7 +1712,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPredocdt.setText("");
                                     getItem(position).setPredocdt("");
-//                                    spUtils.put(context, "datePredocdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1862,7 +1747,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPred.setText(datetime);
                                     getItem(position).setPredocdt(datetime);
-//                                    spUtils.put(context, "datePredtimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1871,7 +1755,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPred.setText("");
                                     getItem(position).setPredocdt("");
-//                                    spUtils.put(context, "datePredtimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1888,7 +1771,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoFabricsok.setEnabled(true);
             final EditText editTextFabricsok = holder.tvCommoFabricsok;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextFabricsok.getTag() instanceof TextWatcher) {
                 editTextFabricsok.removeTextChangedListener((TextWatcher) editTextFabricsok.getTag());
             }
@@ -1909,7 +1792,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoFabricsok.getText().toString();
                     getItem(position).setFabricsok(proitem);
-//                    spUtils.put(context, "CommodityFabricsok", proitem);
                 }
             };
             editTextFabricsok.addTextChangedListener(TvFabricsok);
@@ -1920,7 +1802,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoAccessoriesok.setEnabled(true);
             final EditText editTextAccessoriesok = holder.tvCommoAccessoriesok;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextAccessoriesok.getTag() instanceof TextWatcher) {
                 editTextAccessoriesok.removeTextChangedListener((TextWatcher) editTextAccessoriesok.getTag());
             }
@@ -1941,7 +1823,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoAccessoriesok.getText().toString();
                     getItem(position).setAccessoriesok(proitem);
-//                    spUtils.put(context, "CommodityAccessoriesok", proitem);
                 }
             };
             editTextAccessoriesok.addTextChangedListener(TvAccessoriesok);
@@ -1952,7 +1833,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoSpcproDec.setEnabled(true);
             final EditText editTextSpcproDec = holder.tvCommoSpcproDec;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextSpcproDec.getTag() instanceof TextWatcher) {
                 editTextSpcproDec.removeTextChangedListener((TextWatcher) editTextSpcproDec.getTag());
             }
@@ -1973,7 +1854,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoSpcproDec.getText().toString();
                     getItem(position).setSpcproDec(proitem);
-//                    spUtils.put(context, "CommoditySpcproDec", proitem);
                 }
             };
             editTextSpcproDec.addTextChangedListener(TvSpcproDec);
@@ -1984,7 +1864,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoSpcproMemo.setEnabled(true);
             final EditText editTextSpcproMemo = holder.tvCommoSpcproMemo;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextSpcproMemo.getTag() instanceof TextWatcher) {
                 editTextSpcproMemo.removeTextChangedListener((TextWatcher) editTextSpcproMemo.getTag());
             }
@@ -2005,7 +1885,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoSpcproMemo.getText().toString();
                     getItem(position).setSpcproMemo(proitem);
-//                    spUtils.put(context, "CommoditySpcproMemo", proitem);
                 }
             };
             editTextSpcproMemo.addTextChangedListener(TvSpcproMemo);
@@ -2016,7 +1895,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoCutqty.setEnabled(true);
             final EditText editTextCutqty = holder.tvCommoCutqty;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextCutqty.getTag() instanceof TextWatcher) {
                 editTextCutqty.removeTextChangedListener((TextWatcher) editTextCutqty.getTag());
             }
@@ -2037,7 +1916,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoCutqty.getText().toString();
                     getItem(position).setCutqty(proitem);
-//                    spUtils.put(context, "CommodityCutqty", proitem);
                 }
             };
             editTextCutqty.addTextChangedListener(TvCutqty);
@@ -2068,7 +1946,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoSewFdt.setText(datetime);
                                     getItem(position).setSewFdt(datetime);
-//                                    spUtils.put(context, "dateSewFdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2077,7 +1954,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoSewFdt.setText("");
                                     getItem(position).setSewFdt("");
-//                                    spUtils.put(context, "dateSewFdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2113,7 +1989,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoSewMdt.setText(datetime);
                                     getItem(position).setSewMdt(datetime);
-//                                    spUtils.put(context, "dateSewMdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2122,7 +1997,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoSewMdt.setText("");
                                     getItem(position).setSewMdt("");
-//                                    spUtils.put(context, "dateSewMdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2167,7 +2041,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPrebdt.setText(datetime);
                                     getItem(position).setPrebdt(datetime);
-//                                    spUtils.put(context, "datePrebdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2176,7 +2049,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPrebdt.setText("");
                                     getItem(position).setPrebdt("");
-//                                    spUtils.put(context, "datePrebdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2212,7 +2084,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCbdt.setText(datetime);
                                     getItem(position).setQCbdt(datetime);
-//                                    spUtils.put(context, "dateQCbdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2221,7 +2092,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCbdt.setText("");
                                     getItem(position).setQCbdt("");
-//                                    spUtils.put(context, "dateQCbdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2258,7 +2128,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPremdt.setText(datetime);
                                     getItem(position).setPremdt(datetime);
-//                                    spUtils.put(context, "datePremdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2267,7 +2136,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPremdt.setText("");
                                     getItem(position).setPremdt("");
-//                                    spUtils.put(context, "datePremdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2303,7 +2171,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCmdt.setText(datetime);
                                     getItem(position).setQCmdt(datetime);
-//                                    spUtils.put(context, "dateQCmdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2312,7 +2179,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCmdt.setText("");
                                     getItem(position).setQCmdt("");
-//                                    spUtils.put(context, "dateQCmdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2349,7 +2215,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPreedt.setText(datetime);
                                     getItem(position).setPreedt(datetime);
-//                                    spUtils.put(context, "datePreedttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2358,7 +2223,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPreedt.setText("");
                                     getItem(position).setPreedt("");
-//                                    spUtils.put(context, "datePreedttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2394,7 +2258,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCMedt.setText(datetime);
                                     getItem(position).setQCMedt(datetime);
-//                                    spUtils.put(context, "dateQCMedttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2403,7 +2266,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCMedt.setText("");
                                     getItem(position).setQCMedt("");
-//                                    spUtils.put(context, "dateQCMedttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2440,7 +2302,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFctmdt.setText(datetime);
                                     getItem(position).setFctmdt(datetime);
-//                                    spUtils.put(context, "dateFctmdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2449,7 +2310,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFctmdt.setText("");
                                     getItem(position).setFctmdt("");
-//                                    spUtils.put(context, "dateFctmdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2485,7 +2345,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFctedt.setText(datetime);
                                     getItem(position).setFctedt(datetime);
-//                                    spUtils.put(context, "dateFctedttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2494,7 +2353,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFctedt.setText("");
                                     getItem(position).setFctedt("");
-//                                    spUtils.put(context, "dateFctedttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2530,7 +2388,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPackbdat.setText(datetime);
                                     getItem(position).setPackbdat(datetime);
-//                                    spUtils.put(context, "datePackbdattimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2539,7 +2396,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPackbdat.setText("");
                                     getItem(position).setPackbdat("");
-//                                    spUtils.put(context, "datePackbdattimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2577,7 +2433,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoPackqty2.getText().toString();
                     getItem(position).setPackqty2(proitem);
-//                    spUtils.put(context, "CommodityPackqty2", proitem);
                 }
             };
             editTextPackqty2.addTextChangedListener(TvPackqty2);
@@ -2609,7 +2464,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQCMemo.getText().toString();
                     getItem(position).setQCMemo(proitem);
-//                    spUtils.put(context, "CommodityQCMemo", proitem);
                 }
             };
             editTextQCMemo.addTextChangedListener(TvQCMemo);
@@ -2639,7 +2493,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFactlcdat.setText(datetime);
                                     getItem(position).setFactlcdat(datetime);
-//                                    spUtils.put(context, "dateFactlcdattimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2648,7 +2501,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFactlcdat.setText("");
                                     getItem(position).setFactlcdat("");
-//                                    spUtils.put(context, "dateFactlcdattimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2685,7 +2537,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoBatchid.getText().toString();
                     getItem(position).setBatchid(proitem);
-//                    spUtils.put(context, "CommodityBatchid", proitem);
                 }
             };
             editTextBatchid.addTextChangedListener(TvBatchid);
@@ -2717,7 +2568,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoCtmchkdt.setText(datetime);
                                     getItem(position).setCtmchkdt(datetime);
-//                                    spUtils.put(context, "dateCtmchkdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2726,7 +2576,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoCtmchkdt.setText("");
                                     getItem(position).setCtmchkdt("");
-//                                    spUtils.put(context, "dateCtmchkdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2764,7 +2613,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoIPQCPedt.getText().toString();
                     getItem(position).setIPQCPedt(proitem);
-//                    spUtils.put(context, "CommodityIPQCPedt", proitem);
                 }
             };
             editTextIPQCPedt.addTextChangedListener(TvIPQCPedt);
@@ -2796,7 +2644,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoIPQCmdt.getText().toString();
                     getItem(position).setIPQCmdt(proitem);
-//                    spUtils.put(context, "CommodityIPQCmdt", proitem);
                 }
             };
             editTextIPQCmdt.addTextChangedListener(TvIPQCmdt);
@@ -2828,7 +2675,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQAname.getText().toString();
                     getItem(position).setQAname(proitem);
-//                    spUtils.put(context, "CommodityQAname", proitem);
                 }
             };
             editTextQAname.addTextChangedListener(TvQAname);
@@ -2860,7 +2706,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQAScore.getText().toString();
                     getItem(position).setQAScore(proitem);
-//                    spUtils.put(context, "CommodityQAScore", proitem);
                 }
             };
             editTextQAScore.addTextChangedListener(TvQAScore);
@@ -2891,7 +2736,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQAMemo.setText(datetime);
                                     getItem(position).setQAMemo(datetime);
-//                                    spUtils.put(context, "dateQAMemotimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2900,7 +2744,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQAMemo.setText("");
                                     getItem(position).setQAMemo("");
-//                                    spUtils.put(context, "dateQAMemotimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2980,8 +2823,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
              * 判断登录人是否是陈慧萍（跟单负责人）
              */
         } else if (nameid.equals("陈慧萍")) {
-//            holder.tvCommoItem.setEnabled(true);
-//            holder.tvCommoItem.setText(getItem(position).getItem());
 
             holder.tvCommoCtmtxt.setEnabled(true);
             holder.tvCommoCtmtxt.setText(getItem(position).getCtmtxt());
@@ -3007,7 +2848,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                             sp = context.getSharedPreferences("my_sp", 0);
                             String title = item.getTitle().toString();
                             getItem(position).setOurAfter(title);
-//                        spUtils.put(context, "commohdTitle", title);
                             return false;
                         }
                     });
@@ -3023,52 +2863,11 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoQCMasterScore.setEnabled(false);
             final EditText editTextQCMasterScore = holder.tvCommoQCMasterScore;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQCMasterScore.getTag() instanceof TextWatcher) {
                 editTextQCMasterScore.removeTextChangedListener((TextWatcher) editTextQCMasterScore.getTag());
             }
             editTextQCMasterScore.setText(getItem(position).getQCMasterScore());
-//            holder.tvCommoQCMasterScore.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//                @Override
-//                public void onFocusChange(View v, boolean hasFocus) {
-//                    if (hasFocus) {
-//                        //得到焦点
-//                        sp = context.getSharedPreferences("my_sp", 0);
-//                        String qcmaster = sp.getString("CommodityQCMasterScore", "");
-//                        System.out.print(qcmaster);
-//                        spUtils.put(context, "debugQCMasterScore", qcmaster);
-//                        TextWatcher TvQCMasterScore = new TextWatcher() {
-//                            @Override
-//                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                                Log.d(TAG, "beforeTextChanged");
-//                            }
-//
-//                            @Override
-//                            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                                Log.d(TAG, "onTextChanged");
-//                            }
-//
-//                            @Override
-//                            public void afterTextChanged(Editable s) {
-//                                Log.d(TAG, "afterTextChanged");
-//                                String proitem = holder.tvCommoQCMasterScore.getText().toString();
-//                                getItem(position).setQCMasterScore(proitem);
-////                                spUtils.put(context, "CommodityQCMasterScore", proitem);
-//                            }
-//                        };
-//                        editTextQCMasterScore.addTextChangedListener(TvQCMasterScore);
-//                        editTextQCMasterScore.setTag(TvQCMasterScore);
-//                    } else {
-//                        //失去焦点
-//                        String qcmastertwoo = holder.tvCommoQCMasterScore.getText().toString();
-//                        getItem(position).setQCMasterScore(qcmastertwoo);
-//                        System.out.print(qcmastertwoo);
-////                        spUtils.put(context, "CommodityQCMasterScore", qcmastertwoo);
-//                    }
-//                }
-//            });
-//            /*光标放置在文本最后*/
-//            holder.tvCommoQCMasterScore.setSelection(holder.tvCommoQCMasterScore.length());
 
             holder.tvCommoSealedrev.setEnabled(true);
             holder.tvCommoSealedrev.getResources().getDrawable(R.drawable.shape_text_sql_boild);
@@ -3096,7 +2895,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                         holder.tvCommoSealedrev.setText(datetime);
                                         if (attentionArr.contains(position)) {
                                             getItem(position).setSealedrev(datetime);
-//                                            spUtils.put(context, "dateSealedrewtimesign", datetime);
                                         }
                                     }
                                 });
@@ -3106,7 +2904,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     public void onClick(DialogInterface dialog, int which) {
                                         holder.tvCommoSealedrev.setText("");
                                         getItem(position).setSealedrev("");
-//                                        spUtils.put(context, "dateSealedrewtimesign", "");
                                     }
                                 });
                         datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3144,7 +2941,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoDocback.setText(datetime);
                                     getItem(position).setDocback(datetime);
-//                                    spUtils.put(context, "dateDocbacktimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3153,7 +2949,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoDocback.setText("");
                                     holder.tvCommoDocback.setText("");
-//                                    spUtils.put(context, "dateDocbacktimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3176,7 +2971,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoPreMemo.setEnabled(true);
             final EditText editTextPreMemo = holder.tvCommoPreMemo;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextPreMemo.getTag() instanceof TextWatcher) {
                 editTextPreMemo.removeTextChangedListener((TextWatcher) editTextPreMemo.getTag());
             }
@@ -3197,7 +2992,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoPreMemo.getText().toString();
                     getItem(position).setPreMemo(proitem);
-//                    spUtils.put(context, "CommodityPreMemo", proitem);
                 }
             };
             editTextPreMemo.addTextChangedListener(TvPreMemo);
@@ -3228,7 +3022,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPredocdt.setText(datetime);
                                     getItem(position).setPredocdt(datetime);
-//                                    spUtils.put(context, "datePredocdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3237,7 +3030,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPredocdt.setText("");
                                     getItem(position).setPredocdt("");
-//                                    spUtils.put(context, "datePredocdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3273,7 +3065,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPred.setText(datetime);
                                     getItem(position).setPredocdt(datetime);
-//                                    spUtils.put(context, "datePredtimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3282,7 +3073,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPred.setText("");
                                     getItem(position).setPredocdt("");
-//                                    spUtils.put(context, "datePredtimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3299,7 +3089,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoFabricsok.setEnabled(true);
             final EditText editTextFabricsok = holder.tvCommoFabricsok;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextFabricsok.getTag() instanceof TextWatcher) {
                 editTextFabricsok.removeTextChangedListener((TextWatcher) editTextFabricsok.getTag());
             }
@@ -3320,7 +3110,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoFabricsok.getText().toString();
                     getItem(position).setFabricsok(proitem);
-//                    spUtils.put(context, "CommodityFabricsok", proitem);
                 }
             };
             editTextFabricsok.addTextChangedListener(TvFabricsok);
@@ -3331,7 +3120,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoAccessoriesok.setEnabled(true);
             final EditText editTextAccessoriesok = holder.tvCommoAccessoriesok;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextAccessoriesok.getTag() instanceof TextWatcher) {
                 editTextAccessoriesok.removeTextChangedListener((TextWatcher) editTextAccessoriesok.getTag());
             }
@@ -3352,7 +3141,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoAccessoriesok.getText().toString();
                     getItem(position).setAccessoriesok(proitem);
-//                    spUtils.put(context, "CommodityAccessoriesok", proitem);
                 }
             };
             editTextAccessoriesok.addTextChangedListener(TvAccessoriesok);
@@ -3363,7 +3151,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoSpcproDec.setEnabled(true);
             final EditText editTextSpcproDec = holder.tvCommoSpcproDec;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextSpcproDec.getTag() instanceof TextWatcher) {
                 editTextSpcproDec.removeTextChangedListener((TextWatcher) editTextSpcproDec.getTag());
             }
@@ -3384,7 +3172,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoSpcproDec.getText().toString();
                     getItem(position).setSpcproDec(proitem);
-//                    spUtils.put(context, "CommoditySpcproDec", proitem);
                 }
             };
             editTextSpcproDec.addTextChangedListener(TvSpcproDec);
@@ -3395,7 +3182,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoSpcproMemo.setEnabled(true);
             final EditText editTextSpcproMemo = holder.tvCommoSpcproMemo;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextSpcproMemo.getTag() instanceof TextWatcher) {
                 editTextSpcproMemo.removeTextChangedListener((TextWatcher) editTextSpcproMemo.getTag());
             }
@@ -3416,7 +3203,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoSpcproMemo.getText().toString();
                     getItem(position).setSpcproMemo(proitem);
-//                    spUtils.put(context, "CommoditySpcproMemo", proitem);
                 }
             };
             editTextSpcproMemo.addTextChangedListener(TvSpcproMemo);
@@ -3427,7 +3213,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoCutqty.setEnabled(true);
             final EditText editTextCutqty = holder.tvCommoCutqty;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextCutqty.getTag() instanceof TextWatcher) {
                 editTextCutqty.removeTextChangedListener((TextWatcher) editTextCutqty.getTag());
             }
@@ -3448,7 +3234,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoCutqty.getText().toString();
                     getItem(position).setCutqty(proitem);
-//                    spUtils.put(context, "CommodityCutqty", proitem);
                 }
             };
             editTextCutqty.addTextChangedListener(TvCutqty);
@@ -3479,7 +3264,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoSewFdt.setText(datetime);
                                     getItem(position).setSewFdt(datetime);
-//                                    spUtils.put(context, "dateSewFdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3488,7 +3272,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoSewFdt.setText("");
                                     getItem(position).setSewFdt("");
-//                                    spUtils.put(context, "dateSewFdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3524,7 +3307,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoSewMdt.setText(datetime);
                                     getItem(position).setSewMdt(datetime);
-//                                    spUtils.put(context, "dateSewMdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3533,7 +3315,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoSewMdt.setText("");
                                     getItem(position).setSewMdt("");
-//                                    spUtils.put(context, "dateSewMdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3578,7 +3359,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPrebdt.setText(datetime);
                                     getItem(position).setPrebdt(datetime);
-//                                    spUtils.put(context, "datePrebdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3587,7 +3367,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPrebdt.setText("");
                                     getItem(position).setPrebdt("");
-//                                    spUtils.put(context, "datePrebdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3623,7 +3402,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCbdt.setText(datetime);
                                     getItem(position).setQCbdt(datetime);
-//                                    spUtils.put(context, "dateQCbdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3632,7 +3410,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCbdt.setText("");
                                     getItem(position).setQCbdt("");
-//                                    spUtils.put(context, "dateQCbdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3669,7 +3446,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPremdt.setText(datetime);
                                     getItem(position).setPremdt(datetime);
-//                                    spUtils.put(context, "datePremdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3678,7 +3454,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPremdt.setText("");
                                     getItem(position).setPremdt("");
-//                                    spUtils.put(context, "datePremdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3714,7 +3489,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCmdt.setText(datetime);
                                     getItem(position).setQCmdt(datetime);
-//                                    spUtils.put(context, "dateQCmdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3723,7 +3497,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCmdt.setText("");
                                     getItem(position).setQCmdt("");
-//                                    spUtils.put(context, "dateQCmdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3760,7 +3533,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPreedt.setText(datetime);
                                     getItem(position).setPreedt(datetime);
-//                                    spUtils.put(context, "datePreedttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3769,7 +3541,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPreedt.setText("");
                                     getItem(position).setPreedt("");
-//                                    spUtils.put(context, "datePreedttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3805,7 +3576,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCMedt.setText(datetime);
                                     getItem(position).setQCMedt(datetime);
-//                                    spUtils.put(context, "dateQCMedttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3814,7 +3584,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCMedt.setText("");
                                     getItem(position).setQCMedt("");
-//                                    spUtils.put(context, "dateQCMedttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3851,7 +3620,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFctmdt.setText(datetime);
                                     getItem(position).setFctmdt(datetime);
-//                                    spUtils.put(context, "dateFctmdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3860,7 +3628,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFctmdt.setText("");
                                     getItem(position).setFctmdt("");
-//                                    spUtils.put(context, "dateFctmdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3896,7 +3663,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFctedt.setText(datetime);
                                     getItem(position).setFctedt(datetime);
-//                                    spUtils.put(context, "dateFctedttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3905,7 +3671,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFctedt.setText("");
                                     getItem(position).setFctedt("");
-//                                    spUtils.put(context, "dateFctedttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3941,7 +3706,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPackbdat.setText(datetime);
                                     getItem(position).setPackbdat(datetime);
-//                                    spUtils.put(context, "datePackbdattimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3950,7 +3714,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPackbdat.setText("");
                                     getItem(position).setPackbdat("");
-//                                    spUtils.put(context, "datePackbdattimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3967,7 +3730,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoPackqty2.setEnabled(true);
             final EditText editTextPackqty2 = holder.tvCommoPackqty2;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextPackqty2.getTag() instanceof TextWatcher) {
                 editTextPackqty2.removeTextChangedListener((TextWatcher) editTextPackqty2.getTag());
             }
@@ -3988,7 +3751,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoPackqty2.getText().toString();
                     getItem(position).setPackqty2(proitem);
-//                    spUtils.put(context, "CommodityPackqty2", proitem);
                 }
             };
             editTextPackqty2.addTextChangedListener(TvPackqty2);
@@ -3999,7 +3761,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoQCMemo.setEnabled(true);
             final EditText editTextQCMemo = holder.tvCommoQCMemo;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQCMemo.getTag() instanceof TextWatcher) {
                 editTextQCMemo.removeTextChangedListener((TextWatcher) editTextQCMemo.getTag());
             }
@@ -4020,7 +3782,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQCMemo.getText().toString();
                     getItem(position).setQCMemo(proitem);
-//                    spUtils.put(context, "CommodityQCMemo", proitem);
                 }
             };
             editTextQCMemo.addTextChangedListener(TvQCMemo);
@@ -4050,7 +3811,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFactlcdat.setText(datetime);
                                     getItem(position).setFactlcdat(datetime);
-//                                    spUtils.put(context, "dateFactlcdattimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -4059,7 +3819,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFactlcdat.setText("");
                                     getItem(position).setFactlcdat("");
-//                                    spUtils.put(context, "dateFactlcdattimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -4075,7 +3834,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoBatchid.setEnabled(true);
             final EditText editTextBatchid = holder.tvCommoBatchid;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextBatchid.getTag() instanceof TextWatcher) {
                 editTextBatchid.removeTextChangedListener((TextWatcher) editTextBatchid.getTag());
             }
@@ -4096,7 +3855,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoBatchid.getText().toString();
                     getItem(position).setBatchid(proitem);
-//                    spUtils.put(context, "CommodityBatchid", proitem);
                 }
             };
             editTextBatchid.addTextChangedListener(TvBatchid);
@@ -4128,7 +3886,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoCtmchkdt.setText(datetime);
                                     getItem(position).setCtmchkdt(datetime);
-//                                    spUtils.put(context, "dateCtmchkdttimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -4137,7 +3894,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoCtmchkdt.setText("");
                                     getItem(position).setCtmchkdt("");
-//                                    spUtils.put(context, "dateCtmchkdttimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -4154,7 +3910,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoIPQCPedt.setEnabled(true);
             final EditText editTextIPQCPedt = holder.tvCommoIPQCPedt;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextIPQCPedt.getTag() instanceof TextWatcher) {
                 editTextIPQCPedt.removeTextChangedListener((TextWatcher) editTextIPQCPedt.getTag());
             }
@@ -4175,7 +3931,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoIPQCPedt.getText().toString();
                     getItem(position).setIPQCPedt(proitem);
-//                    spUtils.put(context, "CommodityIPQCPedt", proitem);
                 }
             };
             editTextIPQCPedt.addTextChangedListener(TvIPQCPedt);
@@ -4186,7 +3941,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoIPQCmdt.setEnabled(true);
             final EditText editTextIPQCmdt = holder.tvCommoIPQCmdt;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextIPQCmdt.getTag() instanceof TextWatcher) {
                 editTextIPQCmdt.removeTextChangedListener((TextWatcher) editTextIPQCmdt.getTag());
             }
@@ -4207,7 +3962,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoIPQCmdt.getText().toString();
                     getItem(position).setIPQCmdt(proitem);
-//                    spUtils.put(context, "CommodityIPQCmdt", proitem);
                 }
             };
             editTextIPQCmdt.addTextChangedListener(TvIPQCmdt);
@@ -4218,7 +3972,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoQAname.setEnabled(true);
             final EditText editTextQAname = holder.tvCommoQAname;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQAname.getTag() instanceof TextWatcher) {
                 editTextQAname.removeTextChangedListener((TextWatcher) editTextQAname.getTag());
             }
@@ -4239,7 +3993,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQAname.getText().toString();
                     getItem(position).setQAname(proitem);
-//                    spUtils.put(context, "CommodityQAname", proitem);
                 }
             };
             editTextQAname.addTextChangedListener(TvQAname);
@@ -4250,7 +4003,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoQAScore.setEnabled(true);
             final EditText editTextQAScore = holder.tvCommoQAScore;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQAScore.getTag() instanceof TextWatcher) {
                 editTextQAScore.removeTextChangedListener((TextWatcher) editTextQAScore.getTag());
             }
@@ -4271,7 +4024,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQAScore.getText().toString();
                     getItem(position).setQAScore(proitem);
-//                    spUtils.put(context, "CommodityQAScore", proitem);
                 }
             };
             editTextQAScore.addTextChangedListener(TvQAScore);
@@ -4302,7 +4054,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQAMemo.setText(datetime);
                                     getItem(position).setQAMemo(datetime);
-//                                    spUtils.put(context, "dateQAMemotimesign", datetime);
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -4311,7 +4062,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQAMemo.setText("");
                                     getItem(position).setQAMemo("");
-//                                    spUtils.put(context, "dateQAMemotimesign", "");
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -4328,7 +4078,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoPredoc.setEnabled(true);
             final EditText editTextPredoc = holder.tvCommoPredoc;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextPredoc.getTag() instanceof TextWatcher) {
                 editTextPredoc.removeTextChangedListener((TextWatcher) editTextPredoc.getTag());
             }
@@ -4349,7 +4099,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoPredoc.getText().toString();
                     getItem(position).setPredoc(proitem);
-//                    spUtils.put(context, "CommodityPredoc", proitem);
                 }
             };
             editTextPredoc.addTextChangedListener(TvPredoc);
@@ -4360,7 +4109,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoQCbdtDoc.setEnabled(true);
             final EditText editTextQCbdtDoc = holder.tvCommoQCbdtDoc;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQCbdtDoc.getTag() instanceof TextWatcher) {
                 editTextQCbdtDoc.removeTextChangedListener((TextWatcher) editTextQCbdtDoc.getTag());
             }
@@ -4381,7 +4130,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQCbdtDoc.getText().toString();
                     getItem(position).setQCbdtDoc(proitem);
-//                    spUtils.put(context, "CommodityQCbdtDoc", proitem);
                 }
             };
             editTextQCbdtDoc.addTextChangedListener(TvQCbdtDoc);
@@ -4392,7 +4140,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoQCmdtDoc.setEnabled(true);
             final EditText editTextQCmdtDoc = holder.tvCommoQCmdtDoc;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQCmdtDoc.getTag() instanceof TextWatcher) {
                 editTextQCmdtDoc.removeTextChangedListener((TextWatcher) editTextQCmdtDoc.getTag());
             }
@@ -4413,7 +4161,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQCmdtDoc.getText().toString();
                     getItem(position).setQCmdtDoc(proitem);
-//                    spUtils.put(context, "CommodityQCmdtDoc", proitem);
                 }
             };
             editTextQCmdtDoc.addTextChangedListener(TvQCmdtDoc);
@@ -4424,7 +4171,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoQCedtDoc.setEnabled(true);
             final EditText editTextQCedtDoc = holder.tvCommoQCedtDoc;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQCedtDoc.getTag() instanceof TextWatcher) {
                 editTextQCedtDoc.removeTextChangedListener((TextWatcher) editTextQCedtDoc.getTag());
             }
@@ -4445,7 +4192,6 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQCedtDoc.getText().toString();
                     getItem(position).setQCedtDoc(proitem);
-//                    spUtils.put(context, "CommodityQCedtDoc", proitem);
                 }
             };
             editTextQCedtDoc.addTextChangedListener(TvQCedtDoc);
@@ -4482,19 +4228,9 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoThingTime.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                 }
             });
-
         } else {
-//            holder.tvCommoItem.setEnabled(false);
-//            holder.tvCommoItem.setText(getItem(position).getItem());
-//            holder.tvCommoItem.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                }
-//            });
 
             holder.tvCommoCtmtxt.setEnabled(false);
             holder.tvCommoCtmtxt.setText(getItem(position).getCtmtxt());
@@ -4607,7 +4343,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoPredoc.setEnabled(false);
             final EditText editTextPredoc = holder.tvCommoPredoc;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextPredoc.getTag() instanceof TextWatcher) {
                 editTextPredoc.removeTextChangedListener((TextWatcher) editTextPredoc.getTag());
             }
@@ -4621,7 +4357,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoFabricsok.setEnabled(false);
             final EditText editTextFabricsok = holder.tvCommoFabricsok;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextFabricsok.getTag() instanceof TextWatcher) {
                 editTextFabricsok.removeTextChangedListener((TextWatcher) editTextFabricsok.getTag());
             }
@@ -4635,7 +4371,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoAccessoriesok.setEnabled(false);
             final EditText editTextAccessoriesok = holder.tvCommoAccessoriesok;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextAccessoriesok.getTag() instanceof TextWatcher) {
                 editTextAccessoriesok.removeTextChangedListener((TextWatcher) editTextAccessoriesok.getTag());
             }
@@ -4649,7 +4385,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoSpcproDec.setEnabled(false);
             final EditText editTextSpcproDec = holder.tvCommoSpcproDec;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextSpcproDec.getTag() instanceof TextWatcher) {
                 editTextSpcproDec.removeTextChangedListener((TextWatcher) editTextSpcproDec.getTag());
             }
@@ -4663,7 +4399,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoSpcproMemo.setEnabled(false);
             final EditText editTextSpcproMemo = holder.tvCommoSpcproMemo;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextSpcproMemo.getTag() instanceof TextWatcher) {
                 editTextSpcproMemo.removeTextChangedListener((TextWatcher) editTextSpcproMemo.getTag());
             }
@@ -4677,7 +4413,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoCutqty.setEnabled(false);
             final EditText editTextCutqty = holder.tvCommoCutqty;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextCutqty.getTag() instanceof TextWatcher) {
                 editTextCutqty.removeTextChangedListener((TextWatcher) editTextCutqty.getTag());
             }
@@ -4768,7 +4504,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoQCmdtDoc.setEnabled(false);
             final EditText editTextQCmdtDoc = holder.tvCommoQCmdtDoc;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQCmdtDoc.getTag() instanceof TextWatcher) {
                 editTextQCmdtDoc.removeTextChangedListener((TextWatcher) editTextQCmdtDoc.getTag());
             }
@@ -4826,7 +4562,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoQCedtDoc.setEnabled(false);
             final EditText editTextQCedtDoc = holder.tvCommoQCedtDoc;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQCedtDoc.getTag() instanceof TextWatcher) {
                 editTextQCedtDoc.removeTextChangedListener((TextWatcher) editTextQCedtDoc.getTag());
             }
@@ -4861,7 +4597,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoPackqty2.setEnabled(false);
             final EditText editTextPackqty2 = holder.tvCommoPackqty2;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextPackqty2.getTag() instanceof TextWatcher) {
                 editTextPackqty2.removeTextChangedListener((TextWatcher) editTextPackqty2.getTag());
             }
@@ -4869,7 +4605,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoQCMemo.setEnabled(false);
             final EditText editTextQCMemo = holder.tvCommoQCMemo;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQCMemo.getTag() instanceof TextWatcher) {
                 editTextQCMemo.removeTextChangedListener((TextWatcher) editTextQCMemo.getTag());
             }
@@ -4886,7 +4622,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoBatchid.setEnabled(false);
             final EditText editTextBatchid = holder.tvCommoBatchid;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextBatchid.getTag() instanceof TextWatcher) {
                 editTextBatchid.removeTextChangedListener((TextWatcher) editTextBatchid.getTag());
             }
@@ -4959,7 +4695,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoQAScore.setEnabled(false);
             final EditText editTextQAScore = holder.tvCommoQAScore;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQAScore.getTag() instanceof TextWatcher) {
                 editTextQAScore.removeTextChangedListener((TextWatcher) editTextQAScore.getTag());
             }

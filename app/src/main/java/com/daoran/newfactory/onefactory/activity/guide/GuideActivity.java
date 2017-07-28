@@ -13,8 +13,8 @@ import com.daoran.newfactory.onefactory.activity.login.LoginMainActivity;
 import com.daoran.newfactory.onefactory.adapter.GuiderFragmentPagerAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.fragment.GuiderFragment;
-import com.daoran.newfactory.onefactory.util.settings.Comfig;
-import com.daoran.newfactory.onefactory.view.IndicatorView;
+import com.daoran.newfactory.onefactory.util.application.settings.Comfig;
+import com.daoran.newfactory.onefactory.view.image.IndicatorView;
 
 /**
  * 引导页

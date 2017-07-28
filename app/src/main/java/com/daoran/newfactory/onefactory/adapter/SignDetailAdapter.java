@@ -47,7 +47,6 @@ public class SignDetailAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_data_signdetail_adapter, null);
-//            holder.tvData = (TextView) convertView.findViewById(R.id.tv_data);
             holder.tvsignName = (TextView) convertView.findViewById(R.id.tvsignName);
             holder.tvClasses = (TextView) convertView.findViewById(R.id.tvClasses);
             holder.tvSignData = (TextView) convertView.findViewById(R.id.tvSignData);
@@ -57,7 +56,6 @@ public class SignDetailAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-//        holder.tvData.setText(getItem(position).getCode());
         holder.tvsignName.setText(getItem(position).getRecorder());
         holder.tvClasses.setText(getItem(position).getRegedittyp());
         holder.tvSignData.setText(getItem(position).getRecordat());
@@ -67,7 +65,6 @@ public class SignDetailAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        TextView tvData;
         TextView tvsignName;
         TextView tvClasses;
         TextView tvSignData;

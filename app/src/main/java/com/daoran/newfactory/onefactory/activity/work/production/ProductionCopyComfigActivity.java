@@ -2,7 +2,6 @@ package com.daoran.newfactory.onefactory.activity.work.production;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
@@ -27,19 +26,16 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
-import com.daoran.newfactory.onefactory.bean.ProducationCopyConfigSaveBean;
 import com.daoran.newfactory.onefactory.bean.ProducationCopyDailyBean;
 import com.daoran.newfactory.onefactory.bean.ProducationCopyNewlyComfigSaveBean;
-import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
 import com.daoran.newfactory.onefactory.bean.ProductionNewlybooleanBean;
 import com.daoran.newfactory.onefactory.bean.Propostbean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.PhoneSaveUtil;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
-import com.daoran.newfactory.onefactory.util.StringUtil;
-import com.daoran.newfactory.onefactory.util.ToastUtils;
-import com.daoran.newfactory.onefactory.view.dialog.ProcationDialog;
+import com.daoran.newfactory.onefactory.util.file.json.StringUtil;
+import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
@@ -69,26 +65,16 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
         implements View.OnClickListener {
     private static final String TAG = "configtest";
     private NoscrollListView mData;
-    private ProcationDialog procationDialog;
-
     private SyncHorizontalScrollView mHeaderHorizontal;
     private SyncHorizontalScrollView mDataHorizontal;
     private ImageView ivProductionBack;
-    private List<ProducationDetailBean.DataBean> detailBeenList =
-            new ArrayList<ProducationDetailBean.DataBean>();
-    private ProducationDetailBean detailBean;
     private List<ProductionNewlybooleanBean.DataBean> booleandatelist =
             new ArrayList<ProductionNewlybooleanBean.DataBean>();
     private ProductionNewlybooleanBean newlybooleanBean;
-    private List<ProducationCopyConfigSaveBean> saveBeen =
-            new ArrayList<ProducationCopyConfigSaveBean>();
-
     private List<ProducationCopyNewlyComfigSaveBean> newlyComfigSaveBeen
             = new ArrayList<ProducationCopyNewlyComfigSaveBean>();
 
     private Button btnProSave;
-    private TextView spinnerNewbuild;
-    private EditText etNewbuild;
     private MyAdatper comfigAdapter;
     private TextView tvconfigone, tvconfigtwo, tvconfigthree, tvconfigfore, tvconfigfive,
             tvconfigsix, tvconfigseven, tvconfigeight, tvconfignine, tvconfigten, tvconfigeleven,
@@ -108,16 +94,11 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
             vconfigtwTwentyeight, vconfigtwTwentynine, vconfigtwThirty, vconfigtwThirtyone;
     private SharedPreferences sp;
     private SPUtils spUtils;
-    private int pageCount;
-    private int newlyCount;
-    private int pageIndex = 0;
     private List<Map<String, Object>> mdate;
     private int year, month, datetime, hour, minute, second;
     int isprodure;
-    private Object[] array;
     private List<ProducationCopyDailyBean> dailyBeanList =
             new ArrayList<ProducationCopyDailyBean>();
-//    private String listItemm, listPrecoder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -355,7 +336,6 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
             }
         });
         thread.start();
-
     }
 
     /**
@@ -459,10 +439,8 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
             String copyRecorder = sp.getString("copyRecorder", "");//制单人
             String copyRecordat = sp.getString("copyRecordat", "");//制单时间
             String copyRecordid = sp.getString("username", "");//当前用户
-
             if (tvnewlyProcedure.equals("裁床")) {
                 tvnewlyClippingNumber = String.valueOf(0);
-
             }
             int listsize = booleandatelist.size();
             if (listsize == 0) {
@@ -1227,7 +1205,6 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
         }
     }
 
-
     /**
      * 判断 array1是否包含所有的 array2
      */
@@ -1390,12 +1367,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
      */
     public class MyAdatper extends BaseAdapter {
         private Context context;
-        private int index = -1;
         int lastmont, day1, day2, day3, day4, day5, day6, day7, day8, day9,
                 day10, day11, day12, day13, day14, day15, day16, day17, day18,
                 day19, day20, day21, day22, day23, day24, day25, day26, day27,
                 day28, day29, day30, day31;
-        int countmon, skNumber;
 
         public MyAdatper(Context context) {
             this.context = context;
@@ -1865,7 +1840,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     });
 
                     final EditText editTexOthers = viewHolder.tvProOthers;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexOthers.getTag() instanceof TextWatcher) {
                         editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
                     }
@@ -1906,7 +1881,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     };
                     editTexOthers.addTextChangedListener(TvOthers);
                     editTexOthers.setTag(TvOthers);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProOthers.setSelection(viewHolder.tvProOthers.length());
 
                     String configsingular = viewHolder.tvProSingularSystem.getText().toString();
@@ -1916,7 +1891,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     spUtils.put(context, "configcolor", configcolor);
 
                     final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     final int singular = Integer.parseInt(viewHolder.tvProSingularSystem.getText().toString());
                     final int MIN_MARK = 0;
                     if (editTexTaskNumber.getTag() instanceof TextWatcher) {
@@ -1951,14 +1926,12 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                     }
                                 }
                             }
-
                         }
 
                         @Override
                         public void afterTextChanged(Editable s) {
                             Log.d(TAG, "afterTextChanged");
                             if (s != null && s.equals("")) {
-
                                 if (MIN_MARK != -1 && singular != -1) {
                                     int markVal = 0;
                                     try {
@@ -1991,7 +1964,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     spUtils.put(context, "configclipping", configclipping);
 
                     final EditText editTexLastMonth = viewHolder.tvProCompletedLastMonth;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexLastMonth.getTag() instanceof TextWatcher) {
                         editTexLastMonth.removeTextChangedListener((TextWatcher) editTexLastMonth.getTag());
                     }
@@ -2016,7 +1989,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     };
                     editTexLastMonth.addTextChangedListener(TvLastMonth);
                     editTexLastMonth.setTag(TvLastMonth);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProCompletedLastMonth.setSelection(viewHolder.tvProCompletedLastMonth.length());
 
                     viewHolder.tvProTotalCompletion.setText(tvnewlyTotalCompletion);
@@ -2080,55 +2053,6 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
 
                         }
                     });
-
-//                    String[] spinnermonthtwo = context.getResources().getStringArray(R.array.timemonth);
-//                    ArrayAdapter<String> adaptertwo =
-//                            new ArrayAdapter<String>(context,
-//                                    R.layout.adapter_pronewlycomfig_spinner,
-//                                    spinnermonthtwo);
-//                    adaptertwo.setDropDownViewResource(R.layout.adapter_pronewlycomfig_spinner_item);
-//                    viewHolder.tvProMonth.setAdapter(adaptertwo);
-//                    Calendar now2 = Calendar.getInstance();
-//                    int month2 = now2.get(Calendar.MONTH);
-//                    viewHolder.tvProMonth.setSelection(month2, true);
-//                    viewHolder.tvProMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                        @Override
-//                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                            String[] languages = context.getResources().getStringArray(R.array.timemonth);
-//                            System.out.print(languages[position]);
-//                            spUtils.put(context, "ComfigMonth", languages[position]);
-//                        }
-//
-//                        @Override
-//                        public void onNothingSelected(AdapterView<?> parent) {
-//
-//                        }
-//                    });
-//                    viewHolder.tvProMonth.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            PopupMenu popupMenu = new PopupMenu(context, v);
-//                            popupMenu.getMenuInflater().inflate(R.menu.menu_pro_mouth, popupMenu.getMenu());
-//                            // menu的item点击事件
-//                            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                                @Override
-//                                public boolean onMenuItemClick(MenuItem item) {
-//                                    String title = item.getTitle().toString();
-//                                    spUtils.put(context, "ComfigMonth", title);
-////                                    viewHolder.tvProMonth.setText(title);
-//                                    return false;
-//                                }
-//                            });
-//                            // PopupMenu关闭事件
-//                            popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-//                                @Override
-//                                public void onDismiss(PopupMenu menu) {
-//                                }
-//                            });
-//                            popupMenu.show();
-//                        }
-//                    });
-
                     viewHolder.tvProOneDay.setVisibility(View.GONE);
                     viewHolder.tvProTwoDay.setVisibility(View.GONE);
                     viewHolder.tvProThreeDay.setVisibility(View.GONE);
@@ -2193,7 +2117,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     viewHolder.vProThirtyOneDay.setVisibility(View.GONE);
 
                     final EditText editTexRemarks = viewHolder.tvProRemarks;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexRemarks.getTag() instanceof TextWatcher) {
                         editTexRemarks.removeTextChangedListener((TextWatcher) editTexRemarks.getTag());
                     }
@@ -2217,29 +2141,26 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     };
                     editTexRemarks.addTextChangedListener(TvRemarks);
                     editTexRemarks.setTag(TvRemarks);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProRemarks.setSelection(viewHolder.tvProRemarks.length());
-
 
                     viewHolder.tvProRecorder.setText(nameid);
                     String configrecorder = viewHolder.tvProRecorder.getText().toString();
                     spUtils.put(context, "configrecorder", configrecorder);
 
-
                     viewHolder.tvProRecordat.setText(year + "/" + month + "/" + datetime);
                     String configrecordat = viewHolder.tvProRecordat.getText().toString();
                     spUtils.put(context, "configrecordat", configrecordat);
-
                 } else {
                     final EditText editTexOthers = viewHolder.tvProOthers;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexOthers.getTag() instanceof TextWatcher) {
                         editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
                     }
                     editTexOthers.setText(tvnewlyOthers);
 
                     final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexTaskNumber.getTag() instanceof TextWatcher) {
                         editTexTaskNumber.removeTextChangedListener((TextWatcher) editTexTaskNumber.getTag());
                     }
@@ -2248,7 +2169,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     viewHolder.tvProColor.setText(tvnewlySize);
 
                     final EditText editTexLastMonth = viewHolder.tvProCompletedLastMonth;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexLastMonth.getTag() instanceof TextWatcher) {
                         editTexLastMonth.removeTextChangedListener((TextWatcher) editTexLastMonth.getTag());
                     }
@@ -2667,7 +2588,6 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                         @Override
                         public void afterTextChanged(Editable s) {
                             Log.d(TAG, "afterTextChanged");
-
                             if (s != null && s.equals("")) {
                                 if (MIN_MARK_OTHER != -1 && MAX_MARK_OTHER != -1) {
                                     int markVal = 0;
@@ -2701,7 +2621,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     spUtils.put(context, "configcolor", configcolor);
 
                     final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     final int singular = Integer.parseInt(viewHolder.tvProSingularSystem.getText().toString());
                     final int MIN_MARK = 0;
                     if (editTexTaskNumber.getTag() instanceof TextWatcher) {
@@ -2734,7 +2654,6 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 }
                             }
                         }
-
                         @Override
                         public void afterTextChanged(Editable s) {
                             Log.d(TAG, "afterTextChanged");
@@ -2760,7 +2679,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     };
                     editTexTaskNumber.addTextChangedListener(TvTaskNumber);
                     editTexTaskNumber.setTag(TvTaskNumber);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProTaskNumber.setSelection(viewHolder.tvProTaskNumber.length());
 
                     String configsize = viewHolder.tvProSize.getText().toString();
@@ -2770,7 +2689,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     spUtils.put(context, "configclipping", configclipping);
 
                     final EditText editTexLastMonth = viewHolder.tvProCompletedLastMonth;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexLastMonth.getTag() instanceof TextWatcher) {
                         editTexLastMonth.removeTextChangedListener((TextWatcher) editTexLastMonth.getTag());
                     }
@@ -2795,7 +2714,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     };
                     editTexLastMonth.addTextChangedListener(TvLastMonth);
                     editTexLastMonth.setTag(TvLastMonth);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProCompletedLastMonth.setSelection(viewHolder.tvProCompletedLastMonth.length());
 
                     viewHolder.tvProTotalCompletion.setText(tvnewlyTotalCompletion);
@@ -2859,35 +2778,9 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
 
                         }
                     });
-//                    viewHolder.tvProMonth.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            PopupMenu popupMenu = new PopupMenu(context, v);
-//                            popupMenu.getMenuInflater().inflate(R.menu.menu_pro_mouth, popupMenu.getMenu());
-//                            // menu的item点击事件
-//                            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                                @Override
-//                                public boolean onMenuItemClick(MenuItem item) {
-//                                    String title = item.getTitle().toString();
-//                                    spUtils.put(context, "ComfigMonth", title);
-//                                    viewHolder.tvProMonth.setText(title);
-//                                    return false;
-//                                }
-//                            });
-//                            // PopupMenu关闭事件
-//                            popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-//                                @Override
-//                                public void onDismiss(PopupMenu menu) {
-//                                }
-//                            });
-//                            popupMenu.show();
-//                        }
-//                    });
-
-
                     final EditText editTexOneDay = viewHolder.tvProOneDay;
                     viewHolder.tvProOneDay.setVisibility(View.VISIBLE);
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexOneDay.getTag() instanceof TextWatcher) {
                         editTexOneDay.removeTextChangedListener((TextWatcher) editTexOneDay.getTag());
                     }
@@ -2998,10 +2891,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -3229,10 +3122,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -3460,10 +3353,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -3691,10 +3584,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -3922,10 +3815,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -4153,10 +4046,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -4384,10 +4277,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -4615,10 +4508,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -4846,10 +4739,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -5077,10 +4970,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -5308,10 +5201,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -5539,10 +5432,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -5770,10 +5663,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -6001,10 +5894,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -6232,10 +6125,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -6463,10 +6356,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -6694,10 +6587,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -6925,10 +6818,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -7156,10 +7049,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -7387,10 +7280,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -7618,10 +7511,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -7849,10 +7742,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -8080,10 +7973,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -8311,10 +8204,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -8542,10 +8435,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -8773,10 +8666,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -9004,10 +8897,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -9235,10 +9128,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -9466,10 +9359,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -9697,10 +9590,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -9928,10 +9821,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -10071,7 +9964,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     };
                     editTexRemarks.addTextChangedListener(TvRemarks);
                     editTexRemarks.setTag(TvRemarks);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProRemarks.setSelection(viewHolder.tvProRemarks.length());
 
 
@@ -10083,24 +9976,23 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     viewHolder.tvProRecordat.setText(year + "/" + month + "/" + datetime);
                     String configrecordat = viewHolder.tvProRecordat.getText().toString();
                     spUtils.put(context, "configrecordat", configrecordat);
-
                 } else {
                     final EditText editTexOthers = viewHolder.tvProOthers;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexOthers.getTag() instanceof TextWatcher) {
                         editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
                     }
                     editTexOthers.setText(tvnewlyOthers);
 
                     final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexTaskNumber.getTag() instanceof TextWatcher) {
                         editTexTaskNumber.removeTextChangedListener((TextWatcher) editTexTaskNumber.getTag());
                     }
                     viewHolder.tvProTaskNumber.setText(tvdate);
 
                     final EditText editTexLastMonth = viewHolder.tvProCompletedLastMonth;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexLastMonth.getTag() instanceof TextWatcher) {
                         editTexLastMonth.removeTextChangedListener((TextWatcher) editTexLastMonth.getTag());
                     }
@@ -10108,31 +10000,31 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
 
                     final EditText editTexOneDay = viewHolder.tvProOneDay;
                     viewHolder.tvProOneDay.setVisibility(View.VISIBLE);
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexOneDay.getTag() instanceof TextWatcher) {
                         editTexOneDay.removeTextChangedListener((TextWatcher) editTexOneDay.getTag());
                     }
 
                     final EditText editTexTwoDay = viewHolder.tvProTwoDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexTwoDay.getTag() instanceof TextWatcher) {
                         editTexTwoDay.removeTextChangedListener((TextWatcher) editTexTwoDay.getTag());
                     }
 
                     final EditText editTexThreeDay = viewHolder.tvProThreeDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexThreeDay.getTag() instanceof TextWatcher) {
                         editTexThreeDay.removeTextChangedListener((TextWatcher) editTexThreeDay.getTag());
                     }
 
                     final EditText editTexForeDay = viewHolder.tvProForeDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexForeDay.getTag() instanceof TextWatcher) {
                         editTexForeDay.removeTextChangedListener((TextWatcher) editTexForeDay.getTag());
                     }
 
                     final EditText editTexFiveDay = viewHolder.tvProFiveDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexFiveDay.getTag() instanceof TextWatcher) {
                         editTexFiveDay.removeTextChangedListener((TextWatcher) editTexFiveDay.getTag());
                     }

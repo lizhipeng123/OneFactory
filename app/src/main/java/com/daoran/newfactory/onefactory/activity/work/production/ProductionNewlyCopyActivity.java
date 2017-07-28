@@ -1,5 +1,6 @@
 package com.daoran.newfactory.onefactory.activity.work.production;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,8 +24,6 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
-import com.daoran.newfactory.onefactory.bean.ProducationConfigSaveBean;
-import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
 import com.daoran.newfactory.onefactory.bean.ProducationNewlyComfigSaveBean;
 import com.daoran.newfactory.onefactory.bean.ProductionNewlybooleanBean;
 import com.daoran.newfactory.onefactory.bean.Propostbean;
@@ -32,10 +31,8 @@ import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.PhoneSaveUtil;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
-import com.daoran.newfactory.onefactory.util.StringUtil;
-import com.daoran.newfactory.onefactory.util.ToastUtils;
-import com.daoran.newfactory.onefactory.view.dialog.ProcationDialog;
-import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
+import com.daoran.newfactory.onefactory.util.file.json.StringUtil;
+import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
 import com.google.gson.Gson;
@@ -61,27 +58,15 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
         implements View.OnClickListener {
     private static final String TAG = "configtest";
     private NoscrollListView mData;
-    private ProcationDialog procationDialog;
-
     private SyncHorizontalScrollView mHeaderHorizontal;
     private SyncHorizontalScrollView mDataHorizontal;
     private ImageView ivProductionBack;
-    private List<ProducationDetailBean.DataBean> detailBeenList =
-            new ArrayList<ProducationDetailBean.DataBean>();
-    private ProducationDetailBean detailBean;
     private List<ProductionNewlybooleanBean.DataBean> booleandatelist =
             new ArrayList<ProductionNewlybooleanBean.DataBean>();
     private ProductionNewlybooleanBean newlybooleanBean;
-    private List<ProducationConfigSaveBean> saveBeen =
-            new ArrayList<ProducationConfigSaveBean>();
-
     private List<ProducationNewlyComfigSaveBean> newlyComfigSaveBeen
             = new ArrayList<ProducationNewlyComfigSaveBean>();
-
     private Button btnProSave;
-    private TextView spinnerNewbuild;
-    private EditText etNewbuild;
-    private TextView tvProTitle;
     private MyAdatper comfigAdapter;
     private TextView tvconfigone, tvconfigtwo, tvconfigthree, tvconfigfore, tvconfigfive,
             tvconfigsix, tvconfigseven, tvconfigeight, tvconfignine, tvconfigten, tvconfigeleven,
@@ -101,13 +86,9 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
             vconfigtwTwentyeight, vconfigtwTwentynine, vconfigtwThirty, vconfigtwThirtyone;
     private SharedPreferences sp;
     private SPUtils spUtils;
-    private int pageCount;
-    private int newlyCount;
-    private int pageIndex = 0;
     private List<Map<String, Object>> mdate;
     private int year, month, datetime, hour, minute, second;
     int isprodure;
-    private Object[] array;
     private String listItemm, listPrecoder;
 
     @Override
@@ -120,7 +101,8 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
         setListener();
         sp = getSharedPreferences("my_sp", 0);
         String isprodure = sp.getString("isprodure", "");
-        if (isprodure.equals("0")) {//如果是裁床，则隐藏1~31日填写信息
+        //如果是裁床，则隐藏1~31日填写信息
+        if (isprodure.equals("0")) {
             tvconfigone.setVisibility(View.VISIBLE);
             tvconfigtwo.setVisibility(View.VISIBLE);
             tvconfigthree.setVisibility(View.VISIBLE);
@@ -332,7 +314,6 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
         mdate = getData();
         comfigAdapter = new MyAdatper(this);
         mData.setAdapter(comfigAdapter);
-
     }
 
     /**
@@ -388,18 +369,19 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            /*返回*/
             case R.id.ivProductionBack:
                 finish();
                 break;
+            /*复制保存*/
             case R.id.btnProSave:
-
                 setSave();
                 break;
         }
     }
 
     /**
-     * 新建保存
+     * 复制保存
      */
     private void setSave() {
         String saveurl = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
@@ -484,11 +466,11 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                 String productionThirtyDay = sp.getString("configThirtyDay", "");//30
                 String productionThirtyOneDay = sp.getString("configThirtyOneDay", "");//31
                 String productionRemarks = sp.getString("configRemarks", "");//备注
-
                 String productionRecordat = sp.getString("configrecordat", "");//制单时间
                 Gson gson = new Gson();
-//        for(int i =0;){}
                 booleandatelist.size();
+                final ProgressDialog progressDialog = ProgressDialog.show(this,
+                        "请稍候...", "正在保存中...", false, true);
                 if (procudureTitle.equals("裁床")) {
                     if (!TextUtils.isEmpty(liststr)) {
                         try {
@@ -527,9 +509,20 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                             String dateee = detailb.replace("\"\"", "null");
                             if (newlyComfigSaveBeen.equals("")) {
                                 ToastUtils.ShowToastMessage("没有数据可以保存", ProductionNewlyCopyActivity.this);
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                             } else {
                                 if (NetWork.isNetWorkAvailable(this)) {
-                                    ResponseDialog.showLoading(this);
                                     OkHttpUtils.postString().
                                             url(saveurl)
                                             .content(dateee)
@@ -539,11 +532,35 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                                 @Override
                                                 public void onError(Call call, Exception e, int id) {
                                                     e.printStackTrace();
+                                                    Thread thread = new Thread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            try {
+                                                                Thread.sleep(1500);
+                                                            } catch (InterruptedException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                            progressDialog.dismiss();
+                                                        }
+                                                    });
+                                                    thread.start();
                                                 }
 
                                                 @Override
                                                 public void onResponse(String response, int id) {
                                                     System.out.print(response);
+                                                    Thread thread = new Thread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            try {
+                                                                Thread.sleep(1500);
+                                                            } catch (InterruptedException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                            progressDialog.dismiss();
+                                                        }
+                                                    });
+                                                    thread.start();
                                                     String ression = StringUtil.sideTrim(response, "\"");
                                                     System.out.print(ression);
                                                     int resindex = Integer.parseInt(ression);
@@ -552,23 +569,18 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                                                 ProductionNewlyCopyActivity.this);
                                                         startActivity(new Intent(ProductionNewlyCopyActivity.this,
                                                                 ProductionActivity.class));
-                                                        ResponseDialog.closeLoading();
                                                     } else if (resindex == 3) {
                                                         ToastUtils.ShowToastMessage("保存失败",
                                                                 ProductionNewlyCopyActivity.this);
-                                                        ResponseDialog.closeLoading();
                                                     } else if (resindex == 4) {
                                                         ToastUtils.ShowToastMessage("数据错误，请重试",
                                                                 ProductionNewlyCopyActivity.this);
-                                                        ResponseDialog.closeLoading();
                                                     } else if (resindex == 2) {
                                                         ToastUtils.ShowToastMessage("该单已存在，无法新建！",
                                                                 ProductionNewlyCopyActivity.this);
-                                                        ResponseDialog.closeLoading();
                                                     } else {
                                                         ToastUtils.ShowToastMessage("未知错误，请联系管理员",
                                                                 ProductionNewlyCopyActivity.this);
-                                                        ResponseDialog.closeLoading();
                                                     }
                                                 }
                                             });
@@ -583,7 +595,6 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                         }
                     }
                 } else {
-//            if (!TextUtils.isEmpty(liststr)) {
                     try {
                         ProducationNewlyComfigSaveBean consaveBean =
                                 new ProducationNewlyComfigSaveBean();
@@ -647,9 +658,20 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                         String dateee = detailb.replace("\"\"", "null");
                         if (newlyComfigSaveBeen.equals("")) {
                             ToastUtils.ShowToastMessage("没有数据可以保存", ProductionNewlyCopyActivity.this);
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                         } else {
                             if (NetWork.isNetWorkAvailable(this)) {
-                                ResponseDialog.showLoading(this);
                                 OkHttpUtils.postString().
                                         url(saveurl)
                                         .content(dateee)
@@ -659,11 +681,35 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                             @Override
                                             public void onError(Call call, Exception e, int id) {
                                                 e.printStackTrace();
+                                                Thread thread = new Thread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        try {
+                                                            Thread.sleep(1500);
+                                                        } catch (InterruptedException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                        progressDialog.dismiss();
+                                                    }
+                                                });
+                                                thread.start();
                                             }
 
                                             @Override
                                             public void onResponse(String response, int id) {
                                                 System.out.print(response);
+                                                Thread thread = new Thread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        try {
+                                                            Thread.sleep(1500);
+                                                        } catch (InterruptedException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                        progressDialog.dismiss();
+                                                    }
+                                                });
+                                                thread.start();
                                                 String ression = StringUtil.sideTrim(response, "\"");
                                                 System.out.print(ression);
                                                 int resindex = Integer.parseInt(ression);
@@ -672,19 +718,15 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                                             ProductionNewlyCopyActivity.this);
                                                     startActivity(new Intent(ProductionNewlyCopyActivity.this,
                                                             ProductionActivity.class));
-                                                    ResponseDialog.closeLoading();
                                                 } else if (resindex == 3) {
                                                     ToastUtils.ShowToastMessage("保存失败",
                                                             ProductionNewlyCopyActivity.this);
-                                                    ResponseDialog.closeLoading();
                                                 } else if (resindex == 4) {
                                                     ToastUtils.ShowToastMessage("数据错误，请重试",
                                                             ProductionNewlyCopyActivity.this);
-                                                    ResponseDialog.closeLoading();
                                                 } else {
                                                     ToastUtils.ShowToastMessage("未知错误，请联系管理员",
                                                             ProductionNewlyCopyActivity.this);
-                                                    ResponseDialog.closeLoading();
                                                 }
                                             }
                                         });
@@ -699,9 +741,6 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
             }
             break;
         }
-
-
-//        }
     }
 
     /**
@@ -726,7 +765,8 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
         propostbean.setPageSize(500);//默认每页多少条数据
         String gsonbeanStr = gson.toJson(propostbean);
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this);
+            final ProgressDialog progressDialog = ProgressDialog.show(this,
+                    "请稍候...", "正在保存中...", false, true);
             OkHttpUtils.postString()
                     .url(str)
                     .content(gsonbeanStr)
@@ -736,13 +776,36 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
-                            ResponseDialog.closeLoading();
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                         }
 
                         @Override
                         public void onResponse(String response, int id) {
                             try {
-                                    /*成功返回的结果*/
+                                /*成功返回的结果*/
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                                 System.out.print(response);
                                 String ress = response.replace("\\", "");
                                 System.out.print(ress);
@@ -750,10 +813,20 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 System.out.print(ression);
                                 newlybooleanBean = new Gson().fromJson(ression, ProductionNewlybooleanBean.class);
                                 booleandatelist = newlybooleanBean.getData();
-                                ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
-                                ResponseDialog.closeLoading();
+                                Thread thread = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(1500);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        progressDialog.dismiss();
+                                    }
+                                });
+                                thread.start();
                             }
                         }
                     });
@@ -853,12 +926,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
      */
     public class MyAdatper extends BaseAdapter {
         private Context context;
-        private int index = -1;
         int lastmont, day1, day2, day3, day4, day5, day6, day7, day8, day9,
                 day10, day11, day12, day13, day14, day15, day16, day17, day18,
                 day19, day20, day21, day22, day23, day24, day25, day26, day27,
                 day28, day29, day30, day31;
-        int countmon, skNumber;
 
         public MyAdatper(Context context) {
             this.context = context;
@@ -1075,7 +1146,7 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                     });
 
                     final EditText editTexOthers = viewHolder.tvProOthers;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexOthers.getTag() instanceof TextWatcher) {
                         editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
                     }
@@ -1116,7 +1187,7 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                     };
                     editTexOthers.addTextChangedListener(TvOthers);
                     editTexOthers.setTag(TvOthers);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProOthers.setSelection(viewHolder.tvProOthers.length());
 
                     String configsingular = viewHolder.tvProSingularSystem.getText().toString();
@@ -1126,7 +1197,7 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                     spUtils.put(context, "configcolor", configcolor);
 
                     final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     final int singular = Integer.parseInt(viewHolder.tvProSingularSystem.getText().toString());
                     final int MIN_MARK = 0;
                     if (editTexTaskNumber.getTag() instanceof TextWatcher) {
@@ -1161,14 +1232,12 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                     }
                                 }
                             }
-
                         }
 
                         @Override
                         public void afterTextChanged(Editable s) {
                             Log.d(TAG, "afterTextChanged");
                             if (s != null && s.equals("")) {
-
                                 if (MIN_MARK != -1 && singular != -1) {
                                     int markVal = 0;
                                     try {
@@ -1191,7 +1260,7 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                     };
                     editTexTaskNumber.addTextChangedListener(TvTaskNumber);
                     editTexTaskNumber.setTag(TvTaskNumber);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProTaskNumber.setSelection(viewHolder.tvProTaskNumber.length());
 
                     String configsize = viewHolder.tvProSize.getText().toString();
@@ -1201,7 +1270,7 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                     spUtils.put(context, "configclipping", configclipping);
 
                     final EditText editTexLastMonth = viewHolder.tvProCompletedLastMonth;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexLastMonth.getTag() instanceof TextWatcher) {
                         editTexLastMonth.removeTextChangedListener((TextWatcher) editTexLastMonth.getTag());
                     }
@@ -1226,7 +1295,7 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                     };
                     editTexLastMonth.addTextChangedListener(TvLastMonth);
                     editTexLastMonth.setTag(TvLastMonth);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProCompletedLastMonth.setSelection(viewHolder.tvProCompletedLastMonth.length());
 
                     viewHolder.tvProTotalCompletion.setText(tvnewlyTotalCompletion);
@@ -1356,7 +1425,7 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                     viewHolder.vProThirtyOneDay.setVisibility(View.GONE);
 
                     final EditText editTexRemarks = viewHolder.tvProRemarks;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexRemarks.getTag() instanceof TextWatcher) {
                         editTexRemarks.removeTextChangedListener((TextWatcher) editTexRemarks.getTag());
                     }
@@ -1380,7 +1449,7 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                     };
                     editTexRemarks.addTextChangedListener(TvRemarks);
                     editTexRemarks.setTag(TvRemarks);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProRemarks.setSelection(viewHolder.tvProRemarks.length());
 
 
@@ -1395,14 +1464,14 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
 
                 } else {
                     final EditText editTexOthers = viewHolder.tvProOthers;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexOthers.getTag() instanceof TextWatcher) {
                         editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
                     }
                     editTexOthers.setText(tvnewlyOthers);
 
                     final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexTaskNumber.getTag() instanceof TextWatcher) {
                         editTexTaskNumber.removeTextChangedListener((TextWatcher) editTexTaskNumber.getTag());
                     }
@@ -1411,7 +1480,7 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                     viewHolder.tvProColor.setText(tvnewlySize);
 
                     final EditText editTexLastMonth = viewHolder.tvProCompletedLastMonth;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexLastMonth.getTag() instanceof TextWatcher) {
                         editTexLastMonth.removeTextChangedListener((TextWatcher) editTexLastMonth.getTag());
                     }
@@ -1561,7 +1630,7 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                     });
 
                     final EditText editTexOthers = viewHolder.tvProOthers;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexOthers.getTag() instanceof TextWatcher) {
                         editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
                     }
@@ -1603,7 +1672,7 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                     };
                     editTexOthers.addTextChangedListener(TvOthers);
                     editTexOthers.setTag(TvOthers);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProOthers.setSelection(viewHolder.tvProOthers.length());
 
                     String configsingular = viewHolder.tvProSingularSystem.getText().toString();
@@ -1613,7 +1682,7 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                     spUtils.put(context, "configcolor", configcolor);
 
                     final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     final int singular = Integer.parseInt(viewHolder.tvProSingularSystem.getText().toString());
                     final int MIN_MARK = 0;
                     if (editTexTaskNumber.getTag() instanceof TextWatcher) {
@@ -1672,7 +1741,7 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                     };
                     editTexTaskNumber.addTextChangedListener(TvTaskNumber);
                     editTexTaskNumber.setTag(TvTaskNumber);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProTaskNumber.setSelection(viewHolder.tvProTaskNumber.length());
 
                     String configsize = viewHolder.tvProSize.getText().toString();
@@ -1682,7 +1751,7 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                     spUtils.put(context, "configclipping", configclipping);
 
                     final EditText editTexLastMonth = viewHolder.tvProCompletedLastMonth;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexLastMonth.getTag() instanceof TextWatcher) {
                         editTexLastMonth.removeTextChangedListener((TextWatcher) editTexLastMonth.getTag());
                     }
@@ -1707,7 +1776,7 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                     };
                     editTexLastMonth.addTextChangedListener(TvLastMonth);
                     editTexLastMonth.setTag(TvLastMonth);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProCompletedLastMonth.setSelection(viewHolder.tvProCompletedLastMonth.length());
 
                     viewHolder.tvProTotalCompletion.setText(tvnewlyTotalCompletion);
@@ -1776,7 +1845,7 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
 
                     final EditText editTexOneDay = viewHolder.tvProOneDay;
                     viewHolder.tvProOneDay.setVisibility(View.VISIBLE);
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexOneDay.getTag() instanceof TextWatcher) {
                         editTexOneDay.removeTextChangedListener((TextWatcher) editTexOneDay.getTag());
                     }
@@ -1887,10 +1956,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -2001,13 +2070,13 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                     };
                     editTexOneDay.addTextChangedListener(TvOneDay);
                     editTexOneDay.setTag(TvOneDay);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProOneDay.setSelection(viewHolder.tvProOneDay.length());
 
 
                     viewHolder.tvProTwoDay.setEnabled(true);
                     final EditText editTexTwoDay = viewHolder.tvProTwoDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexTwoDay.getTag() instanceof TextWatcher) {
                         editTexTwoDay.removeTextChangedListener((TextWatcher) editTexTwoDay.getTag());
                     }
@@ -2118,10 +2187,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -2349,10 +2418,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -2580,10 +2649,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -2811,10 +2880,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -3042,10 +3111,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -3273,10 +3342,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -3504,10 +3573,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -3735,10 +3804,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -3966,10 +4035,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -4197,10 +4266,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -4428,10 +4497,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -4659,10 +4728,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -4890,10 +4959,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -5121,10 +5190,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -5352,10 +5421,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -5583,10 +5652,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -5814,10 +5883,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -6045,10 +6114,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -6276,10 +6345,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -6507,10 +6576,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -6738,10 +6807,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -6969,10 +7038,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -7200,10 +7269,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -7431,10 +7500,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -7662,10 +7731,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -7893,10 +7962,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -8124,10 +8193,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -8355,10 +8424,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -8586,10 +8655,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -8817,10 +8886,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {

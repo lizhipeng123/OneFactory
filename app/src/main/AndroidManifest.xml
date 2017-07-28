@@ -188,7 +188,7 @@
 
         <!--添加账号-->
         <activity
-            android:name=".activity.work.WorkPwSwitchActivity"
+            android:name=".activity.work.setting.WorkPwSwitchActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 

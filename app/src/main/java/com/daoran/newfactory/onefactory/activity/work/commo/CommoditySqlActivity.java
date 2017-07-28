@@ -26,13 +26,12 @@ import com.daoran.newfactory.onefactory.adapter.CommoditySqlLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.ClumnsResultBean;
 import com.daoran.newfactory.onefactory.bean.CommodityPostBean;
-import com.daoran.newfactory.onefactory.bean.CommoditySaveBean;
 import com.daoran.newfactory.onefactory.bean.CommoditydetailBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
-import com.daoran.newfactory.onefactory.util.StringUtil;
-import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.util.file.json.StringUtil;
+import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 import com.daoran.newfactory.onefactory.util.file.save.CommodityExcelUtil;
 import com.daoran.newfactory.onefactory.view.dialog.CommoDialog;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
@@ -58,11 +57,9 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         implements View.OnClickListener {
     private NoscrollListView mData;//列表
     private NoscrollListView lv_cleft;//左侧款号列表
-
     private SyncHorizontalScrollView mHeaderHorizontal;
     private SyncHorizontalScrollView mDataHorizontal;
     private ImageView ivProductionBack;//返回按钮
-    private boolean prdmasterisnull = false;//判断是否选中
     private CommoDialog commoDialog;//查货条件查询弹出框
     private ImageView ivSearch;//条件查询
 
@@ -71,13 +68,12 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private CommoditydetailBean commoditydetailBean;//列表实体bean
     private CommoditySqlLeftAdapter leftAdapter;
     private CommoditySqlAdapter sqlAdapter;//列表适配
-    List<CommoditySaveBean> saveBeen = new ArrayList<CommoditySaveBean>();//实体list
     private ClumnsResultBean resultBean;
 
     private TextView tvSignPage;//显示的总页数
     private EditText etSqlDetail;//输入的页数
     private Button btnSignPage;//翻页确认
-    private Button btnCommoRefresh, btnCommoSave;//刷新，保存
+    private Button btnCommoSave;//保存
     private Button spinnermenu;
     private LinearLayout ll_visibi;
     private TextView tv_visibi;
@@ -175,7 +171,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         ivProductionBack.setOnClickListener(this);
         ivSearch.setOnClickListener(this);
         btnSignPage.setOnClickListener(this);
-//        btnCommoRefresh.setOnClickListener(this);
         btnCommoSave.setOnClickListener(this);
         spinnermenu.setOnClickListener(this);
         ivUpLeftPage.setOnClickListener(this);
@@ -744,7 +739,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
-                            ResponseDialog.closeLoading();
                             Thread thread = new Thread(new Runnable() {
                                 @Override
                                 public void run() {

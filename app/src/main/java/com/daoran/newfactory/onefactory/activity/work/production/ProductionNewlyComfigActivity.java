@@ -13,7 +13,6 @@ import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -27,22 +26,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.adapter.ProductionAdapter;
-import com.daoran.newfactory.onefactory.adapter.ProductionLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
-import com.daoran.newfactory.onefactory.bean.ProducationConfigSaveBean;
-import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
 import com.daoran.newfactory.onefactory.bean.ProducationNewlyComfigSaveBean;
 import com.daoran.newfactory.onefactory.bean.ProductionNewlybooleanBean;
 import com.daoran.newfactory.onefactory.bean.Propostbean;
-import com.daoran.newfactory.onefactory.bean.UsergetBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.PhoneSaveUtil;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
-import com.daoran.newfactory.onefactory.util.StringUtil;
-import com.daoran.newfactory.onefactory.util.ToastUtils;
-import com.daoran.newfactory.onefactory.view.dialog.ProcationDialog;
+import com.daoran.newfactory.onefactory.util.file.json.StringUtil;
+import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
@@ -72,26 +65,16 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         implements View.OnClickListener {
     private static final String TAG = "configtest";
     private NoscrollListView mData;
-    private ProcationDialog procationDialog;
-
     private SyncHorizontalScrollView mHeaderHorizontal;
     private SyncHorizontalScrollView mDataHorizontal;
     private ImageView ivProductionBack;
-    private List<ProducationDetailBean.DataBean> detailBeenList =
-            new ArrayList<ProducationDetailBean.DataBean>();
-    private ProducationDetailBean detailBean;
     private List<ProductionNewlybooleanBean.DataBean> booleandatelist =
             new ArrayList<ProductionNewlybooleanBean.DataBean>();
     private ProductionNewlybooleanBean newlybooleanBean;
-    private List<ProducationConfigSaveBean> saveBeen =
-            new ArrayList<ProducationConfigSaveBean>();
-
     private List<ProducationNewlyComfigSaveBean> newlyComfigSaveBeen
             = new ArrayList<ProducationNewlyComfigSaveBean>();
 
     private Button btnProSave;
-    private TextView spinnerNewbuild;
-    private EditText etNewbuild;
     private MyAdatper comfigAdapter;
     private TextView tvconfigone, tvconfigtwo, tvconfigthree, tvconfigfore, tvconfigfive,
             tvconfigsix, tvconfigseven, tvconfigeight, tvconfignine, tvconfigten, tvconfigeleven,
@@ -111,13 +94,9 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
             vconfigtwTwentyeight, vconfigtwTwentynine, vconfigtwThirty, vconfigtwThirtyone;
     private SharedPreferences sp;
     private SPUtils spUtils;
-    private int pageCount;
-    private int newlyCount;
-    private int pageIndex = 0;
     private List<Map<String, Object>> mdate;
     private int year, month, datetime, hour, minute, second;
     int isprodure;
-    private Object[] array;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -355,7 +334,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
             }
         });
         thread.start();
-
     }
 
     /**
@@ -472,8 +450,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         } else {
             listsize = booleandatelist.size();
         }
-        String tvnewlydate = sp.getString("tvnewlydate", "");//
-//        int debeenlength = detailBeenList.size();//初始化集合的大小
+        String tvnewlydate = sp.getString("tvnewlydate", "");
         String[] arrsitem = tvnewlydate.split(",");//修改的款号数组
         String[] arrspredure = procudureTitle.split(",");//修改的工序数组
         String[] arrsmonth = productionMonth.split(",");//修改的月份数组
@@ -481,7 +458,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         String[] arrsdatepredure = new String[listsize];//符合条件的工序数组
         for (int i = 0; i < listsize; i++) {
             if (listsize != 0) {
-                if(booleandatelist.get(i).getItem()!=null){
+                if (booleandatelist.get(i).getItem() != null) {
                     String woritem = booleandatelist.get(i).getItem();
                     String[] workitempro = woritem.split(",");
                     boolean probool = containsAll(arrsitem, workitempro);
@@ -725,7 +702,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         }
                     }
                 } else {
-//            if (!TextUtils.isEmpty(liststr)) {
                     try {
                         ProducationNewlyComfigSaveBean consaveBean =
                                 new ProducationNewlyComfigSaveBean();
@@ -803,7 +779,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             thread.start();
                         } else {
                             if (NetWork.isNetWorkAvailable(this)) {
-//                                ResponseDialog.showLoading(this);
                                 OkHttpUtils.postString().
                                         url(saveurl)
                                         .content(dateee)
@@ -839,19 +814,15 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                                             ProductionNewlyComfigActivity.this);
                                                     startActivity(new Intent(ProductionNewlyComfigActivity.this,
                                                             ProductionActivity.class));
-//                                                    ResponseDialog.closeLoading();
                                                 } else if (resindex == 3) {
                                                     ToastUtils.ShowToastMessage("保存失败",
                                                             ProductionNewlyComfigActivity.this);
-//                                                    ResponseDialog.closeLoading();
                                                 } else if (resindex == 4) {
                                                     ToastUtils.ShowToastMessage("数据错误，请重试",
                                                             ProductionNewlyComfigActivity.this);
-//                                                    ResponseDialog.closeLoading();
                                                 } else {
                                                     ToastUtils.ShowToastMessage("未知错误，请联系管理员",
                                                             ProductionNewlyComfigActivity.this);
-//                                                    ResponseDialog.closeLoading();
                                                 }
                                             }
                                         });
@@ -879,7 +850,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
             String productionTotalCompletion = sp.getString("configcompletion", "");//总完工数
             String productionBalanceAmount = sp.getString("configamount", "");//结余数量
             String productionYear = sp.getString("configyear", "");//年
-
             String productionOneDay = sp.getString("configOneDay", "");//1
             String productionTwoDay = sp.getString("configTwoDay", "");//2
             String productionThreeDay = sp.getString("configThreeDay", "");//3
@@ -967,7 +937,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             thread.start();
                         } else {
                             if (NetWork.isNetWorkAvailable(this)) {
-//                                ResponseDialog.showLoading(this);
                                 OkHttpUtils.postString().
                                         url(saveurl)
                                         .content(dateee)
@@ -1015,23 +984,18 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                                             ProductionNewlyComfigActivity.this);
                                                     startActivity(new Intent(ProductionNewlyComfigActivity.this,
                                                             ProductionActivity.class));
-//                                                    ResponseDialog.closeLoading();
                                                 } else if (resindex == 3) {
                                                     ToastUtils.ShowToastMessage("保存失败",
                                                             ProductionNewlyComfigActivity.this);
-//                                                    ResponseDialog.closeLoading();
                                                 } else if (resindex == 4) {
                                                     ToastUtils.ShowToastMessage("数据错误，请重试",
                                                             ProductionNewlyComfigActivity.this);
-//                                                    ResponseDialog.closeLoading();
                                                 } else if (resindex == 2) {
                                                     ToastUtils.ShowToastMessage("该单已存在，无法新建！",
                                                             ProductionNewlyComfigActivity.this);
-//                                                    ResponseDialog.closeLoading();
                                                 } else {
                                                     ToastUtils.ShowToastMessage("未知错误，请联系管理员",
                                                             ProductionNewlyComfigActivity.this);
-//                                                    ResponseDialog.closeLoading();
                                                 }
                                             }
                                         });
@@ -1046,7 +1010,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     }
                 }
             } else {
-//            if (!TextUtils.isEmpty(liststr)) {
                 try {
                     ProducationNewlyComfigSaveBean consaveBean =
                             new ProducationNewlyComfigSaveBean();
@@ -1124,7 +1087,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         thread.start();
                     } else {
                         if (NetWork.isNetWorkAvailable(this)) {
-//                            ResponseDialog.showLoading(this);
                             OkHttpUtils.postString().
                                     url(saveurl)
                                     .content(dateee)
@@ -1172,19 +1134,15 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                                         ProductionNewlyComfigActivity.this);
                                                 startActivity(new Intent(ProductionNewlyComfigActivity.this,
                                                         ProductionActivity.class));
-//                                                ResponseDialog.closeLoading();
                                             } else if (resindex == 3) {
                                                 ToastUtils.ShowToastMessage("保存失败",
                                                         ProductionNewlyComfigActivity.this);
-//                                                ResponseDialog.closeLoading();
                                             } else if (resindex == 4) {
                                                 ToastUtils.ShowToastMessage("数据错误，请重试",
                                                         ProductionNewlyComfigActivity.this);
-//                                                ResponseDialog.closeLoading();
                                             } else {
                                                 ToastUtils.ShowToastMessage("未知错误，请联系管理员",
                                                         ProductionNewlyComfigActivity.this);
-//                                                ResponseDialog.closeLoading();
                                             }
                                         }
                                     });
@@ -1197,7 +1155,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 }
             }
         }
-//        }
     }
 
     /**
@@ -1238,7 +1195,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         @Override
                         public void onResponse(String response, int id) {
                             try {
-                                    /*成功返回的结果*/
+                                /*成功返回的结果*/
                                 System.out.print(response);
                                 String ress = response.replace("\\", "");
                                 System.out.print(ress);
@@ -1350,12 +1307,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
      */
     public class MyAdatper extends BaseAdapter {
         private Context context;
-        private int index = -1;
         int lastmont, day1, day2, day3, day4, day5, day6, day7, day8, day9,
                 day10, day11, day12, day13, day14, day15, day16, day17, day18,
                 day19, day20, day21, day22, day23, day24, day25, day26, day27,
                 day28, day29, day30, day31;
-        int countmon, skNumber;
 
         public MyAdatper(Context context) {
             this.context = context;
@@ -1825,7 +1780,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     });
 
                     final EditText editTexOthers = viewHolder.tvProOthers;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexOthers.getTag() instanceof TextWatcher) {
                         editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
                     }
@@ -1876,7 +1831,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     spUtils.put(context, "configcolor", configcolor);
 
                     final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     final int singular = Integer.parseInt(viewHolder.tvProSingularSystem.getText().toString());
                     final int MIN_MARK = 0;
                     if (editTexTaskNumber.getTag() instanceof TextWatcher) {
@@ -1911,14 +1866,12 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     }
                                 }
                             }
-
                         }
 
                         @Override
                         public void afterTextChanged(Editable s) {
                             Log.d(TAG, "afterTextChanged");
                             if (s != null && s.equals("")) {
-
                                 if (MIN_MARK != -1 && singular != -1) {
                                     int markVal = 0;
                                     try {
@@ -1941,7 +1894,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     };
                     editTexTaskNumber.addTextChangedListener(TvTaskNumber);
                     editTexTaskNumber.setTag(TvTaskNumber);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProTaskNumber.setSelection(viewHolder.tvProTaskNumber.length());
 
                     String configsize = viewHolder.tvProSize.getText().toString();
@@ -1951,7 +1904,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     spUtils.put(context, "configclipping", configclipping);
 
                     final EditText editTexLastMonth = viewHolder.tvProCompletedLastMonth;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexLastMonth.getTag() instanceof TextWatcher) {
                         editTexLastMonth.removeTextChangedListener((TextWatcher) editTexLastMonth.getTag());
                     }
@@ -1976,7 +1929,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     };
                     editTexLastMonth.addTextChangedListener(TvLastMonth);
                     editTexLastMonth.setTag(TvLastMonth);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProCompletedLastMonth.setSelection(viewHolder.tvProCompletedLastMonth.length());
 
                     viewHolder.tvProTotalCompletion.setText(tvnewlyTotalCompletion);
@@ -2040,55 +1993,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
 
                         }
                     });
-
-//                    String[] spinnermonthtwo = context.getResources().getStringArray(R.array.timemonth);
-//                    ArrayAdapter<String> adaptertwo =
-//                            new ArrayAdapter<String>(context,
-//                                    R.layout.adapter_pronewlycomfig_spinner,
-//                                    spinnermonthtwo);
-//                    adaptertwo.setDropDownViewResource(R.layout.adapter_pronewlycomfig_spinner_item);
-//                    viewHolder.tvProMonth.setAdapter(adaptertwo);
-//                    Calendar now2 = Calendar.getInstance();
-//                    int month2 = now2.get(Calendar.MONTH);
-//                    viewHolder.tvProMonth.setSelection(month2, true);
-//                    viewHolder.tvProMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                        @Override
-//                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                            String[] languages = context.getResources().getStringArray(R.array.timemonth);
-//                            System.out.print(languages[position]);
-//                            spUtils.put(context, "ComfigMonth", languages[position]);
-//                        }
-//
-//                        @Override
-//                        public void onNothingSelected(AdapterView<?> parent) {
-//
-//                        }
-//                    });
-//                    viewHolder.tvProMonth.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            PopupMenu popupMenu = new PopupMenu(context, v);
-//                            popupMenu.getMenuInflater().inflate(R.menu.menu_pro_mouth, popupMenu.getMenu());
-//                            // menu的item点击事件
-//                            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                                @Override
-//                                public boolean onMenuItemClick(MenuItem item) {
-//                                    String title = item.getTitle().toString();
-//                                    spUtils.put(context, "ComfigMonth", title);
-////                                    viewHolder.tvProMonth.setText(title);
-//                                    return false;
-//                                }
-//                            });
-//                            // PopupMenu关闭事件
-//                            popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-//                                @Override
-//                                public void onDismiss(PopupMenu menu) {
-//                                }
-//                            });
-//                            popupMenu.show();
-//                        }
-//                    });
-
                     viewHolder.tvProOneDay.setVisibility(View.GONE);
                     viewHolder.tvProTwoDay.setVisibility(View.GONE);
                     viewHolder.tvProThreeDay.setVisibility(View.GONE);
@@ -2153,7 +2057,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     viewHolder.vProThirtyOneDay.setVisibility(View.GONE);
 
                     final EditText editTexRemarks = viewHolder.tvProRemarks;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexRemarks.getTag() instanceof TextWatcher) {
                         editTexRemarks.removeTextChangedListener((TextWatcher) editTexRemarks.getTag());
                     }
@@ -2177,7 +2081,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     };
                     editTexRemarks.addTextChangedListener(TvRemarks);
                     editTexRemarks.setTag(TvRemarks);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProRemarks.setSelection(viewHolder.tvProRemarks.length());
 
 
@@ -2192,14 +2096,14 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
 
                 } else {
                     final EditText editTexOthers = viewHolder.tvProOthers;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexOthers.getTag() instanceof TextWatcher) {
                         editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
                     }
                     editTexOthers.setText(tvnewlyOthers);
 
                     final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexTaskNumber.getTag() instanceof TextWatcher) {
                         editTexTaskNumber.removeTextChangedListener((TextWatcher) editTexTaskNumber.getTag());
                     }
@@ -2208,7 +2112,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     viewHolder.tvProColor.setText(tvnewlySize);
 
                     final EditText editTexLastMonth = viewHolder.tvProCompletedLastMonth;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexLastMonth.getTag() instanceof TextWatcher) {
                         editTexLastMonth.removeTextChangedListener((TextWatcher) editTexLastMonth.getTag());
                     }
@@ -2609,7 +2513,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     });
 
                     final EditText editTexOthers = viewHolder.tvProOthers;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexOthers.getTag() instanceof TextWatcher) {
                         editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());
                     }
@@ -2651,7 +2555,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     };
                     editTexOthers.addTextChangedListener(TvOthers);
                     editTexOthers.setTag(TvOthers);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProOthers.setSelection(viewHolder.tvProOthers.length());
 
                     String configsingular = viewHolder.tvProSingularSystem.getText().toString();
@@ -2661,7 +2565,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     spUtils.put(context, "configcolor", configcolor);
 
                     final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     final int singular = Integer.parseInt(viewHolder.tvProSingularSystem.getText().toString());
                     final int MIN_MARK = 0;
                     if (editTexTaskNumber.getTag() instanceof TextWatcher) {
@@ -2730,7 +2634,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     spUtils.put(context, "configclipping", configclipping);
 
                     final EditText editTexLastMonth = viewHolder.tvProCompletedLastMonth;
-//            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexLastMonth.getTag() instanceof TextWatcher) {
                         editTexLastMonth.removeTextChangedListener((TextWatcher) editTexLastMonth.getTag());
                     }
@@ -2755,7 +2659,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     };
                     editTexLastMonth.addTextChangedListener(TvLastMonth);
                     editTexLastMonth.setTag(TvLastMonth);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProCompletedLastMonth.setSelection(viewHolder.tvProCompletedLastMonth.length());
 
                     viewHolder.tvProTotalCompletion.setText(tvnewlyTotalCompletion);
@@ -2819,35 +2723,9 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
 
                         }
                     });
-//                    viewHolder.tvProMonth.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            PopupMenu popupMenu = new PopupMenu(context, v);
-//                            popupMenu.getMenuInflater().inflate(R.menu.menu_pro_mouth, popupMenu.getMenu());
-//                            // menu的item点击事件
-//                            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                                @Override
-//                                public boolean onMenuItemClick(MenuItem item) {
-//                                    String title = item.getTitle().toString();
-//                                    spUtils.put(context, "ComfigMonth", title);
-//                                    viewHolder.tvProMonth.setText(title);
-//                                    return false;
-//                                }
-//                            });
-//                            // PopupMenu关闭事件
-//                            popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-//                                @Override
-//                                public void onDismiss(PopupMenu menu) {
-//                                }
-//                            });
-//                            popupMenu.show();
-//                        }
-//                    });
-
-
                     final EditText editTexOneDay = viewHolder.tvProOneDay;
                     viewHolder.tvProOneDay.setVisibility(View.VISIBLE);
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexOneDay.getTag() instanceof TextWatcher) {
                         editTexOneDay.removeTextChangedListener((TextWatcher) editTexOneDay.getTag());
                     }
@@ -2958,10 +2836,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -3072,13 +2950,13 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     };
                     editTexOneDay.addTextChangedListener(TvOneDay);
                     editTexOneDay.setTag(TvOneDay);
-            /*光标放置在文本最后*/
+                    /*光标放置在文本最后*/
                     viewHolder.tvProOneDay.setSelection(viewHolder.tvProOneDay.length());
 
 
                     viewHolder.tvProTwoDay.setEnabled(true);
                     final EditText editTexTwoDay = viewHolder.tvProTwoDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                    /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexTwoDay.getTag() instanceof TextWatcher) {
                         editTexTwoDay.removeTextChangedListener((TextWatcher) editTexTwoDay.getTag());
                     }
@@ -3189,10 +3067,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -3420,10 +3298,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -3651,10 +3529,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -3882,10 +3760,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -4113,10 +3991,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -4344,10 +4222,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -4575,10 +4453,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -4806,10 +4684,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -5037,10 +4915,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -5268,10 +5146,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -5499,10 +5377,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -5730,10 +5608,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -5961,10 +5839,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -6192,10 +6070,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -6423,10 +6301,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -6654,10 +6532,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -6885,10 +6763,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -7116,10 +6994,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -7347,10 +7225,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -7578,10 +7456,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -7809,10 +7687,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -8040,10 +7918,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -8271,10 +8149,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -8502,10 +8380,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -8733,10 +8611,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -8964,10 +8842,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -9195,10 +9073,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -9426,10 +9304,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -9657,10 +9535,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -9888,10 +9766,10 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {

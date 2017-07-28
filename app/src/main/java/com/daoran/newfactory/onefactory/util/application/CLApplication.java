@@ -6,7 +6,7 @@ import android.os.Environment;
 
 import com.daoran.newfactory.onefactory.bean.UsergetBean;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.PreferencesUtils;
-import com.daoran.newfactory.onefactory.util.settings.Comfig;
+import com.daoran.newfactory.onefactory.util.application.settings.Comfig;
 import com.google.gson.Gson;
 
 import java.io.File;

@@ -20,7 +20,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.WorkPwSwitchActivity;
+import com.daoran.newfactory.onefactory.activity.work.setting.WorkPwSwitchActivity;
 import com.daoran.newfactory.onefactory.adapter.ScrollWrokAdapter;
 import com.daoran.newfactory.onefactory.adapter.WorkPwSwitchAdapter;
 import com.daoran.newfactory.onefactory.bean.WorkBean;
@@ -30,9 +30,9 @@ import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.Listener.XXListener;
-import com.daoran.newfactory.onefactory.util.StringUtil;
-import com.daoran.newfactory.onefactory.util.ToastUtils;
-import com.daoran.newfactory.onefactory.view.ScrollGridView;
+import com.daoran.newfactory.onefactory.util.file.json.StringUtil;
+import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
+import com.daoran.newfactory.onefactory.view.listview.ScrollGridView;
 //import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.google.gson.Gson;
 

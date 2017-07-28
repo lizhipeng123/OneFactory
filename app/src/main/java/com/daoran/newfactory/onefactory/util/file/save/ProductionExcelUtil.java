@@ -6,8 +6,7 @@ import android.os.StatFs;
 import android.widget.Toast;
 
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
-import com.daoran.newfactory.onefactory.bean.SqlCarApplyBean;
-import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;

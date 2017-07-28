@@ -23,7 +23,7 @@
             android:layout_height="1px"
             android:background="#FF909090" />
 
-        <com.daoran.newfactory.onefactory.view.FragmentTabHost
+        <com.daoran.newfactory.onefactory.view.fragment.FragmentTabHost
             android:id="@android:id/tabhost"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_weight="0" />
-        </com.daoran.newfactory.onefactory.view.FragmentTabHost>
+        </com.daoran.newfactory.onefactory.view.fragment.FragmentTabHost>
     </LinearLayout>
 
     <!--<fragment-->

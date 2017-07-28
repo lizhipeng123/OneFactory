@@ -85,7 +85,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_50sp" />
 
-        <com.daoran.newfactory.onefactory.view.EditTextWithDelete
+        <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
             android:id="@+id/etNewbuild"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

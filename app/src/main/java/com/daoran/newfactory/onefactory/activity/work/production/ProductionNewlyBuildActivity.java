@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -25,7 +24,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.SignDetailActivity;
 import com.daoran.newfactory.onefactory.adapter.ProductionNewlyBuildAdapter;
 import com.daoran.newfactory.onefactory.adapter.ProductionNewlyBuildLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
@@ -34,8 +32,8 @@ import com.daoran.newfactory.onefactory.bean.PropostNewlyBuildBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
-import com.daoran.newfactory.onefactory.util.StringUtil;
-import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.util.file.json.StringUtil;
+import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
@@ -65,9 +63,7 @@ public class ProductionNewlyBuildActivity
     private ImageView ivProductionBack;//返回
     private Button btnNewbuildConfirm;//确定
     private TextView spinnerNewbuild;//选择工序
-    private EditText
-            etNewbuildetNewbuildSql,
-            etNewbuildDetail;//页数输入框
+    private EditText etNewbuildDetail;//页数输入框
     private Button
             etNewbuildSql,//查找按钮
             btnNewbuildPage;//翻页确定按钮
@@ -223,7 +219,6 @@ public class ProductionNewlyBuildActivity
         if (NetWork.isNetWorkAvailable(this)) {
             final ProgressDialog progressDialog = ProgressDialog.show(this,
                     "请稍候...", "正在查询中...", false, true);
-//            ResponseDialog.showLoading(this);
             final int finalGetsize = Integer.parseInt(pagesize);
             OkHttpUtils.postString()
                     .url(urlDaily)
@@ -288,7 +283,6 @@ public class ProductionNewlyBuildActivity
                                     scroll_content.setVisibility(View.GONE);
                                     tv_visibi.setText("没有更多数据");
                                 }
-//                                ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
                                 Thread thread = new Thread(new Runnable() {
@@ -310,19 +304,6 @@ public class ProductionNewlyBuildActivity
             ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyBuildActivity.this);
         }
     }
-
-    DialogInterface.OnClickListener listenerwifi = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case android.app.AlertDialog.BUTTON_POSITIVE://确定
-                    finish();
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
 
     /**
      * 根据工序及款号查找信息
@@ -358,7 +339,6 @@ public class ProductionNewlyBuildActivity
             if (NetWork.isNetWorkAvailable(this)) {
                 final ProgressDialog progressDialog = ProgressDialog.show(this,
                         "请稍候...", "正在查询中...", false, true);
-//                ResponseDialog.showLoading(this);
                 final int finalGetsize = Integer.parseInt(pagesize);
                 OkHttpUtils.postString()
                         .url(urlDaily)
@@ -412,7 +392,6 @@ public class ProductionNewlyBuildActivity
                                         scroll_content.setVisibility(View.GONE);
                                         tv_visibi.setText("没有更多数据");
                                     }
-//                                    ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
                                     Thread thread = new Thread(new Runnable() {
@@ -528,10 +507,8 @@ public class ProductionNewlyBuildActivity
                                         scroll_content.setVisibility(View.GONE);
                                         tv_visibi.setText("没有更多数据");
                                     }
-//                                    ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
-//                                    ResponseDialog.closeLoading();
                                     Thread thread = new Thread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -616,7 +593,6 @@ public class ProductionNewlyBuildActivity
                                         scroll_content.setVisibility(View.GONE);
                                         tv_visibi.setText("没有更多数据");
                                     }
-//                                    ResponseDialog.closeLoading();
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
                                     ResponseDialog.closeLoading();
@@ -651,8 +627,6 @@ public class ProductionNewlyBuildActivity
         String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
         String spinner = spinnerNewbuild.getText().toString();//工序
         String editNewlyBuild = etNewbuild.getText().toString();//输入款号
-//        pageIndex = Integer.parseInt(etNewbuildDetail.getText().toString());
-//        int ind = pageIndex - 1;
         String pagesize = sp.getString("clumnspronewspinner", "");
         if (pagesize.equals("")) {
             pagesize = String.valueOf(10);
@@ -679,7 +653,6 @@ public class ProductionNewlyBuildActivity
                             @Override
                             public void onError(Call call, Exception e, int id) {
                                 e.printStackTrace();
-
                             }
 
                             @Override
@@ -898,25 +871,14 @@ public class ProductionNewlyBuildActivity
                     }
                 }
                 break;
+            /*横竖屏切换*/
             case R.id.ivNewlyFilp:
                 if (configid.equals("1")) {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 } else if (configid.equals("2")) {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                } else {
-
-                }
+                } else {}
                 break;
         }
     }
-
-    AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            TextView textView = (TextView) view;
-            textView.setBackgroundColor(Color.YELLOW);
-            buildAdapter.setSelectItem(position);//记录当前选中的item
-            buildAdapter.notifyDataSetInvalidated();
-        }
-    };
 }

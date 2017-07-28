@@ -5,9 +5,8 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.widget.Toast;
 
-import com.daoran.newfactory.onefactory.activity.work.commo.CommoditySqlActivity;
 import com.daoran.newfactory.onefactory.bean.CommoditydetailBean;
-import com.daoran.newfactory.onefactory.util.ToastUtils;
+import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;

@@ -58,7 +58,7 @@
                 android:text="    "
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_50sp" />
-            <com.daoran.newfactory.onefactory.view.EditTextWithDelete
+            <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
                 android:id="@+id/etprodialogStyle"
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
@@ -85,7 +85,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_50sp" />
 
-            <com.daoran.newfactory.onefactory.view.EditTextWithDelete
+            <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
                 android:id="@+id/etprodialogProcedure"
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
@@ -115,7 +115,7 @@
                 android:text="    "
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_50sp" />
-            <com.daoran.newfactory.onefactory.view.EditTextWithDelete
+            <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
                 android:id="@+id/etprodialogFactory"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_100"
@@ -151,7 +151,7 @@
                 android:text="    "
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_50sp" />
-            <com.daoran.newfactory.onefactory.view.EditTextWithDelete
+            <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
                 android:id="@+id/etprodialogRecode"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_100"

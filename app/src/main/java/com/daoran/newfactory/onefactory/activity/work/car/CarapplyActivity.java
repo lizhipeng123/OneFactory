@@ -24,18 +24,14 @@ import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
-import com.daoran.newfactory.onefactory.util.StringUtil;
-import com.daoran.newfactory.onefactory.util.ToastUtils;
-import com.daoran.newfactory.onefactory.util.file.JsonUtil;
+import com.daoran.newfactory.onefactory.util.file.json.StringUtil;
+import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
+import com.daoran.newfactory.onefactory.util.file.json.JsonUtil;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.google.gson.Gson;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * 出车单展示
@@ -50,12 +46,7 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
     private Spinner spinnerdriver, spinnerNumberBind;
     private List<DriverBindBean> bindBeen = new ArrayList<DriverBindBean>();
     private List<CarNumberBindBean> bindBeencar = new ArrayList<CarNumberBindBean>();
-    private DriverBindBean driverBindBean;
-    private List<CarNumberBindBean> numberBindBeen;
-    private CarNumberBindBean carNumberBindBean;
-    private List<CarDetailBean> carDetailBeen = new ArrayList<CarDetailBean>();
     private CarDetailBean carDetailBean;
-    private String[] attr;
     private ImageView ivBack;
     private TextView tvCarcode,//编号
             tvCarrecorder,//申请人
@@ -106,8 +97,7 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
         ivBack.setOnClickListener(this);
     }
 
-    private void setListener() {
-    }
+    private void setListener() {}
 
     private void showEditClickPopupWindow() {
         WindowManager manager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
@@ -204,45 +194,6 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
                     super.onFailure(error, content);
                 }
             });
-//            OkHttpUtils.post()
-//                    .url(strDriver)
-//                    .build()
-//                    .execute(new StringCallback() {
-//                        @Override
-//                        public void onError(Call call, Exception e, int id) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        @Override
-//                        public void onResponse(String response, int id) {
-//                            System.out.print(response);
-//                            String ress = response.replace("\\", "");
-//                            System.out.print(ress);
-//                            String ression = StringUtil.sideTrim(ress, "\"");
-//                            System.out.print(ression);
-//                            bindBeen = JsonUtil.stringToList(ression, DriverBindBean.class);
-//                            System.out.print(bindBeen);
-//
-//                            String[] spinnerr = getResources().getStringArray(R.array.driver);
-//                            ArrayAdapter<String> adapter = new
-//                                    ArrayAdapter<String>(CarapplyActivity.this,android.R.layout.simple_spinner_item,spinnerr);
-//                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                            spinnerdriver.setAdapter(adapter);
-//                            spinnerdriver.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                                @Override
-//                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                                    String[] languages = getResources().getStringArray(R.array.driver);
-////                                    ToastUtils.ShowToastMessage("点击的是"+languages[position],CarapplyActivity.this);
-////                                    .put(CarapplyActivity.this, "languages", languages[position]);
-//                                }
-//
-//                                @Override
-//                                public void onNothingSelected(AdapterView<?> parent) {
-//
-//                                }
-//                            });
-//                        }
-//                    });
         } else {
             ToastUtils.ShowToastMessage(R.string.noHttp, CarapplyActivity.this);
         }
@@ -294,43 +245,6 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
                     super.onFinish();
                 }
             });
-//            OkHttpUtils.post()
-//                    .url(strCarNumber)
-//                    .build()
-//                    .execute(new StringCallback() {
-//                        @Override
-//                        public void onError(Call call, Exception e, int id) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        @Override
-//                        public void onResponse(String response, int id) {
-//                            System.out.print(response);
-//                            String ress = response.replace("\\", "");
-//                            System.out.print(ress);
-//                            String ression = StringUtil.sideTrim(ress, "\"");
-//                            System.out.print(ression);
-//                            bindBeencar = JsonUtil.stringToList(ression,CarNumberBindBean.class);
-//                            System.out.print(bindBeencar);
-//                            String[] spinnerr = getResources().getStringArray(R.array.CarNumberBind);
-//                            ArrayAdapter<String> adapter = new
-//                                    ArrayAdapter<String>(CarapplyActivity.this,android.R.layout.simple_spinner_item,spinnerr);
-//                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                            spinnerNumberBind.setAdapter(adapter);
-//                            spinnerNumberBind.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                                @Override
-//                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                                    String[] languages = getResources().getStringArray(R.array.CarNumberBind);
-////                                    ToastUtils.ShowToastMessage("点击的是"+languages[position],CarapplyActivity.this);
-//                                }
-//
-//                                @Override
-//                                public void onNothingSelected(AdapterView<?> parent) {
-//
-//                                }
-//                            });
-//                        }
-//                    });
         } else {
             ToastUtils.ShowToastMessage(R.string.noHttp, CarapplyActivity.this);
         }

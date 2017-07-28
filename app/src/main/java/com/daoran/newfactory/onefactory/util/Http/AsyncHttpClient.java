@@ -2,7 +2,7 @@ package com.daoran.newfactory.onefactory.util.Http;
 
 import android.content.Context;
 
-import com.daoran.newfactory.onefactory.util.settings.Comfig;
+import com.daoran.newfactory.onefactory.util.application.settings.Comfig;
 
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;

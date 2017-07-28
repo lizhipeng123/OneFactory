@@ -23,7 +23,7 @@ import com.daoran.newfactory.onefactory.fragment.InformationFragment;
 import com.daoran.newfactory.onefactory.fragment.OfficeFragment;
 import com.daoran.newfactory.onefactory.fragment.SetupFragment;
 import com.daoran.newfactory.onefactory.fragment.WorkFragment;
-import com.daoran.newfactory.onefactory.view.FragmentTabHost;
+import com.daoran.newfactory.onefactory.view.fragment.FragmentTabHost;
 
 import java.util.ArrayList;
 import java.util.List;

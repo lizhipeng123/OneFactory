@@ -44,7 +44,7 @@
         android:layout_marginTop="@dimen/dimen_60"
         android:orientation="vertical">
 
-        <com.daoran.newfactory.onefactory.view.EditTextWithDelete
+        <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
             android:id="@+id/etUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
             android:textColorHint="@color/defaultTextColor"
             android:textSize="@dimen/dimen_50sp" />
 
-        <com.daoran.newfactory.onefactory.view.EditTextWithDelete
+        <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

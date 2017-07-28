@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
-import com.daoran.newfactory.onefactory.view.CropSquareTransformation;
+import com.daoran.newfactory.onefactory.util.file.image.CropSquareTransformation;
 import com.squareup.picasso.Picasso;
 
 /**
