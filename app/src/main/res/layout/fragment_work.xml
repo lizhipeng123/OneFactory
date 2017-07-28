@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/mainLayout"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -10,41 +10,22 @@
         android:layout_height="@dimen/dimen_150"
         android:background="@color/lightblue">
 
-        <!--<LinearLayout-->
-        <!--android:id="@+id/llNameSwitch"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:background="@drawable/bill_name_item"-->
-        <!--android:clickable="true"-->
-        <!--android:gravity="center"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:paddingLeft="@dimen/dimen_30">-->
-
         <TextView
             android:id="@+id/idworkname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:paddingTop="@dimen/dimen_30"
             android:layout_marginLeft="@dimen/dimen_40"
-            android:paddingBottom="@dimen/dimen_30"
-            android:gravity="center"
-            android:text="毕三军"
             android:background="@drawable/selector_pro_text_press_color"
-            android:textColor="@color/black"
-            android:paddingRight="@dimen/dimen_30"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dimen_30"
             android:paddingLeft="@dimen/dimen_30"
+            android:paddingRight="@dimen/dimen_30"
+            android:paddingTop="@dimen/dimen_30"
+            android:text="毕三军"
+            android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
-
-        <!--<ImageView-->
-        <!--android:layout_width="@dimen/dimen_60"-->
-        <!--android:layout_height="@dimen/dimen_60"-->
-        <!--android:layout_marginLeft="@dimen/dimen_20"-->
-        <!--android:src="@mipmap/arrow_triangle" />-->
-        <!--</LinearLayout>-->
 
         <TextView
             android:layout_width="wrap_content"
@@ -59,7 +40,6 @@
         android:layout_width="fill_parent"
         android:layout_height="1px"
         android:background="#FF909090" />
-
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/id_swipe_ly"

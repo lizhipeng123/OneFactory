@@ -47,7 +47,6 @@ import java.util.regex.Pattern;
 
 public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
         View.OnClickListener {
-
     private SPUtils spUtils;
     private SharedPreferences sp;
     private TextView tvPwSwitchCancle;

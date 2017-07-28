@@ -64,7 +64,6 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_production_newlybuild, null);
-//            viewHolder.tv_data = (TextView) convertView.findViewById(R.id.tv_data);
             viewHolder.tvProDocumentary = (TextView) convertView.findViewById(R.id.tvProDocumentary);
             viewHolder.tvProFactory = (TextView) convertView.findViewById(R.id.tvProFactory);
             viewHolder.tvProDepartment = (TextView) convertView.findViewById(R.id.tvProDepartment);
@@ -82,7 +81,6 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-//        viewHolder.tv_data.setText(getItem(position).getItem());
         viewHolder.tvProDocumentary.setText(getItem(position).getPrddocumentary());
         viewHolder.tvProFactory.setText(getItem(position).getSubfactory());
         viewHolder.tvProDepartment.setText(getItem(position).getSubfactoryTeams());
@@ -103,9 +101,6 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
         viewHolder.lin_content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                String getid = String.valueOf(v.getId());
-//                List<String> stingid = new ArrayList<String>();
-//                stingid.add(getid);
                 sp = context.getSharedPreferences("my_sp", 0);
                 String salesid = getItem(position).getID();
                 String said = getItem(position).getSalesid();

@@ -9,7 +9,6 @@ import android.os.Looper;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,9 +22,7 @@ import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.util.file.save.ExcelUtil;
-import com.daoran.newfactory.onefactory.view.RefreshLayout;
 import com.daoran.newfactory.onefactory.view.dialog.ContentDialog;
-import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.i5tong.epubreaderlib.view.pulltorefresh.PullToRefreshListView;
@@ -45,11 +42,7 @@ import okhttp3.Request;
  */
 
 public class SqlcarApplyActivity extends BaseListActivity implements View.OnClickListener {
-    private ImageButton ibSqlCarDialog;
-    private Button btnSqlopen;
-    private RefreshLayout swipeLayout;
     private ImageView ivBack, ivSearch;
-    private TextView tvTbarTitle;
     private TextView tvInitialDate;
     private ContentDialog dialog;//条件查询dialog弹出框
     private LinearLayout ll_visibi;//隐藏的空页面
@@ -105,7 +98,6 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
         if (NetWork.isNetWorkAvailable(this)) {
             final ProgressDialog progressDialog = ProgressDialog.show(this,
                     "请稍候...", "正在查询中...", false, true);
-//            ResponseDialog.showLoading(this);
             OkHttpUtils
                     .post()
                     .url(sqlcar)
@@ -198,7 +190,6 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                             }
                         }
                     });
-//            }
         } else {
             ToastUtils.ShowToastMessage(getString(R.string.noHttp), SqlcarApplyActivity.this);
         }
@@ -286,11 +277,10 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                             Thread.sleep(2000);
                             if(dataBeenlist.size()!=0){
                                 Looper.prepare();
+                                ToastUtils.ShowToastMessage("写入成功", SqlcarApplyActivity.this);
                                 ExcelUtil.writeExcel(SqlcarApplyActivity.this,
                                         dataBeenlist,
                                         "dfcarexcel+" + new Date().toString());
-
-                                ToastUtils.ShowToastMessage("写入成功", SqlcarApplyActivity.this);
                                 progressDialog.dismiss();
                                 Looper.loop();
                             }else{
@@ -299,7 +289,6 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                                 progressDialog.dismiss();
                                 Looper.loop();
                             }
-
                         } catch (Exception e) {
                             Looper.prepare();
                             ToastUtils.ShowToastMessage("写入失败", SqlcarApplyActivity.this);
@@ -307,7 +296,6 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                             progressDialog.dismiss();
                             Looper.loop();
                         }
-
                     }
                 });
                 thread.start();

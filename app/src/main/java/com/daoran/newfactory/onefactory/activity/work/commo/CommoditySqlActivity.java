@@ -21,7 +21,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
 import com.daoran.newfactory.onefactory.adapter.CommoditySqlAdapter;
 import com.daoran.newfactory.onefactory.adapter.CommoditySqlLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
@@ -300,11 +299,11 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                     Thread.sleep(2000);
                                     if (dataBeen.size() != 0) {
                                         Looper.prepare();
+                                        ToastUtils.ShowToastMessage("写入成功",
+                                                CommoditySqlActivity.this);
                                         CommodityExcelUtil.writeExcel(CommoditySqlActivity.this,
                                                 dataBeen,
                                                 "dfCommoExcel+" + new Date().toString());
-                                        ToastUtils.ShowToastMessage("写入成功",
-                                                CommoditySqlActivity.this);
                                         progressDialog.dismiss();
                                         Looper.loop();
                                     } else {
@@ -392,7 +391,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         sp = this.getSharedPreferences("my_sp", 0);
         String recodename = sp.getString("commoname", "");//跟单
         String Style = sp.getString("commoStyle", "");//款号
-//        String Factory = sp.getString("commoFactory", "");//跟单
         String pagesize = sp.getString("clumnsspinner", "");
         if (pagesize.equals("")) {
             pagesize = String.valueOf(10);
@@ -478,7 +476,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                     scroll_content.setVisibility(View.GONE);
                                     tv_visibi.setText("没有更多数据");
                                 }
-//                                ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
                                 Thread thread = new Thread(new Runnable() {
@@ -509,7 +506,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         sp = CommoditySqlActivity.this.getSharedPreferences("my_sp", 0);
         String recodename = sp.getString("commoname", "");//跟单
         String Style = sp.getString("commoStyle", "");//款号
-//        String Factory = sp.getString("commoFactory", "");//跟单
         String pagesize = sp.getString("clumnsspinner", "");
         String Recode = sp.getString("commoRecode", "");//巡检
         String etprodialogProcedure = sp.getString("etproProcedure", "");//生产主管
@@ -594,7 +590,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                     scroll_content.setVisibility(View.GONE);
                                     tv_visibi.setText("没有更多信息");
                                 }
-//                                ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
                                 Thread thread = new Thread(new Runnable() {
@@ -628,7 +623,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         sp = CommoditySqlActivity.this.getSharedPreferences("my_sp", 0);
         String recodename = sp.getString("commoname", "");//跟单
         String Style = sp.getString("commoStyle", "");//款号
-//        String Factory = sp.getString("commoFactory", "");//跟单
         String pagesize = sp.getString("clumnsspinner", "");
         String Recode = sp.getString("commoRecode", "");//巡检
         String etprodialogProcedure = sp.getString("etproProcedure", "");//生产主管

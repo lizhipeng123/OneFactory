@@ -12,17 +12,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
 import com.daoran.newfactory.onefactory.activity.work.production.ProductionCopyComfigActivity;
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
 import com.daoran.newfactory.onefactory.bean.ProducationSaveBean;
@@ -33,9 +29,7 @@ import com.daoran.newfactory.onefactory.util.ToastUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * 生产日报适配器
@@ -49,12 +43,6 @@ public class ProductionAdapter extends BaseAdapter {
     private SharedPreferences sp;
     private ProducationSaveBean saveBean;
     private SPUtils spUtils;
-
-    private Vector<Collection> collections;
-
-    private boolean flag = false;
-
-    private int index = -1;
     private int last_item = -1;
     private int year, month, datetime, hour, minute, second;
     int lastmont, day1, day2, day3, day4, day5, day6, day7, day8, day9,
@@ -103,7 +91,6 @@ public class ProductionAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_production_data, null);
             viewHolder.lin_content = (LinearLayout) convertView.findViewById(R.id.lin_content);
-//            viewHolder.tv_data = (TextView) convertView.findViewById(R.id.tv_data);
             viewHolder.tvProDocumentary = (TextView) convertView.findViewById(R.id.tvProDocumentary);
             viewHolder.tvProFactory = (TextView) convertView.findViewById(R.id.tvProFactory);
             viewHolder.tvProDepartment = (TextView) convertView.findViewById(R.id.tvProDepartment);
@@ -197,7 +184,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String copySingularSystem = getItem(position).getPqty();
                         spUtils.put(context, "copySingularSystem", copySingularSystem);
                         String copyColor = getItem(position).getProdcol();
-                        if(copyColor.contains("/")){
+                        if (copyColor.contains("/")) {
                             System.out.print(copyColor);
                             String[] temp = null;
                             temp = copyColor.split("/");
@@ -214,7 +201,7 @@ public class ProductionAdapter extends BaseAdapter {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                        }else{
+                        } else {
                             spUtils.put(context, "copyyColor", copyColor);
                         }
                         String copyTaskNumber = getItem(position).getTaskqty();
@@ -252,7 +239,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String copyRecordat = getItem(position).getRecordat();
                         spUtils.put(context, "copyRecordat", copyRecordat);
                         String copyproducament = getItem(position).getPrddocumentaryid();
-                        spUtils.put(context,"copyproducamentid",copyproducament);
+                        spUtils.put(context, "copyproducamentid", copyproducament);
                         ArrayList<String> list = new ArrayList<String>();
                         list.add(copyitem);
                         Intent intent = new Intent(context, ProductionCopyComfigActivity.class);
@@ -307,7 +294,6 @@ public class ProductionAdapter extends BaseAdapter {
                         }
                         InputFilter[] filters = {new InputFilter.LengthFilter(MAX_MARK_OTHER)};
                         viewHolder.tvProTaskNumber.setFilters(filters);
-//                        ToastUtils.ShowToastMessage("输入超过了限制人数", context);
                     }
 
                     @Override
@@ -331,7 +317,7 @@ public class ProductionAdapter extends BaseAdapter {
                         }
                         String proitem = viewHolder.tvProOthers.getText().toString();
                         getItem(position).setWorkers(proitem);
-                        spUtils.put(context,"prosaveothers",proitem);
+                        spUtils.put(context, "prosaveothers", proitem);
                         saveBean.setWorkers(proitem);
                         viewHolder.tvProOthers.setSelection(viewHolder.tvProOthers.length());
                     }
@@ -410,16 +396,14 @@ public class ProductionAdapter extends BaseAdapter {
                         }
                         String proitem = viewHolder.tvProTaskNumber.getText().toString();
                         getItem(position).setTaskqty(proitem);
-                        spUtils.put(context,"prosavetasknunber",proitem);
+                        spUtils.put(context, "prosavetasknunber", proitem);
                         saveBean.setTaskqty(proitem);
                         viewHolder.tvProTaskNumber.setSelection(viewHolder.tvProTaskNumber.length());
-//                        spUtils.put(context, "productionTaskNumber", proitem);
-
                     }
                 };
                 editTexTaskNumber.addTextChangedListener(TvTaskNumber);
                 editTexTaskNumber.setTag(TvTaskNumber);
-            /*光标放置在文本最后*/
+                /*光标放置在文本最后*/
                 viewHolder.tvProTaskNumber.setSelection(viewHolder.tvProTaskNumber.length());
 
                 viewHolder.tvProSize.setEnabled(true);
@@ -432,7 +416,6 @@ public class ProductionAdapter extends BaseAdapter {
 
                 viewHolder.tvProCompletedLastMonth.setEnabled(true);
                 final int MIN_MARK_LASTMONTH = 0;
-//                final int lastmonth_MAX =
                 final EditText editTexCompletedLastMonth = viewHolder.tvProCompletedLastMonth;
                 /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                 if (editTexCompletedLastMonth.getTag() instanceof TextWatcher) {
@@ -456,9 +439,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProCompletedLastMonth.getText().toString();
                         getItem(position).setLastMonQty(proitem);
                         saveBean.setLastMonQty(proitem);
-                        spUtils.put(context,"prosavecompletedlastmonth",proitem);
-//                        spUtils.put(context, "productionCompletedLastMonth", proitem);
-
+                        spUtils.put(context, "prosavecompletedlastmonth", proitem);
                     }
                 };
                 editTexCompletedLastMonth.addTextChangedListener(TvCompletedLastMonth);
@@ -508,8 +489,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProOneDay.getText().toString();
                         getItem(position).setDay1(proitem);
                         saveBean.setDay1(proitem);
-                        spUtils.put(context,"prosaveoneday",proitem);
-//                        spUtils.put(context, "productionOneDay", proitem);
+                        spUtils.put(context, "prosaveoneday", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
                             lastmont = 0;
@@ -601,10 +581,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -711,18 +691,17 @@ public class ProductionAdapter extends BaseAdapter {
                                 + day29 + day30 + day31;
                         String countmonth = String.valueOf(count);
                         viewHolder.tvProTotalCompletion.setText(countmonth);
-
                     }
                 };
                 editTexOneDay.addTextChangedListener(TvOneDay);
                 editTexOneDay.setTag(TvOneDay);
-            /*光标放置在文本最后*/
+                /*光标放置在文本最后*/
                 viewHolder.tvProOneDay.setSelection(viewHolder.tvProOneDay.getText().length());
 
 
                 viewHolder.tvProTwoDay.setEnabled(true);
                 final EditText editTexTwoDay = viewHolder.tvProTwoDay;
-            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                 if (editTexTwoDay.getTag() instanceof TextWatcher) {
                     editTexTwoDay.removeTextChangedListener((TextWatcher) editTexTwoDay.getTag());
                 }
@@ -745,8 +724,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProTwoDay.getText().toString();
                         getItem(position).setDay2(proitem);
                         saveBean.setDay2(proitem);
-                        spUtils.put(context,"prosavetwoday",proitem);
-//                        spUtils.put(context, "productionTwoDay", proitem);
+                        spUtils.put(context, "prosavetwoday", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
                             lastmont = 0;
@@ -838,10 +816,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -981,8 +959,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProThreeDay.getText().toString();
                         getItem(position).setDay3(proitem);
                         saveBean.setDay3(proitem);
-                        spUtils.put(context,"prothreeday",proitem);
-//                        spUtils.put(context, "productionThreeDay", proitem);
+                        spUtils.put(context, "prothreeday", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
                             lastmont = 0;
@@ -1074,10 +1051,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -1216,7 +1193,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProForeDay.getText().toString();
                         getItem(position).setDay4(proitem);
                         saveBean.setDay4(proitem);
-                        spUtils.put(context,"prosaveforeday",proitem);
+                        spUtils.put(context, "prosaveforeday", proitem);
 //                        spUtils.put(context, "productionForeDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -1309,10 +1286,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -1452,7 +1429,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProFiveDay.getText().toString();
                         getItem(position).setDay5(proitem);
                         saveBean.setDay5(proitem);
-                        spUtils.put(context,"prosavefiveday",proitem);
+                        spUtils.put(context, "prosavefiveday", proitem);
 //                        spUtils.put(context, "productionFiveDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -1545,10 +1522,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -1688,7 +1665,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProSixDay.getText().toString();
                         getItem(position).setDay6(proitem);
                         saveBean.setDay6(proitem);
-                        spUtils.put(context,"prosavesixday",proitem);
+                        spUtils.put(context, "prosavesixday", proitem);
 //                        spUtils.put(context, "productionSixDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -1781,10 +1758,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -1923,7 +1900,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProSevenDay.getText().toString();
                         getItem(position).setDay7(proitem);
                         saveBean.setDay7(proitem);
-                        spUtils.put(context,"prosavesevenday",proitem);
+                        spUtils.put(context, "prosavesevenday", proitem);
 //                        spUtils.put(context, "productionSevenDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -2016,10 +1993,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -2158,7 +2135,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProEightDay.getText().toString();
                         getItem(position).setDay8(proitem);
                         saveBean.setDay8(proitem);
-                        spUtils.put(context,"prosaveeightday",proitem);
+                        spUtils.put(context, "prosaveeightday", proitem);
 //                        spUtils.put(context, "productionEightDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -2251,10 +2228,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -2393,7 +2370,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProNineDay.getText().toString();
                         getItem(position).setDay9(proitem);
                         saveBean.setDay9(proitem);
-                        spUtils.put(context,"prosavenineday",proitem);
+                        spUtils.put(context, "prosavenineday", proitem);
 //                        spUtils.put(context, "productionNineDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -2486,10 +2463,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -2628,7 +2605,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProTenDay.getText().toString();
                         getItem(position).setDay10(proitem);
                         saveBean.setDay10(proitem);
-                        spUtils.put(context,"prosavetenday",proitem);
+                        spUtils.put(context, "prosavetenday", proitem);
 //                        spUtils.put(context, "productionTenDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -2721,10 +2698,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -2863,7 +2840,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProElevenDay.getText().toString();
                         getItem(position).setDay11(proitem);
                         saveBean.setDay11(proitem);
-                        spUtils.put(context,"prosaveelevenday",proitem);
+                        spUtils.put(context, "prosaveelevenday", proitem);
 //                        spUtils.put(context, "productionElevenDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -2956,10 +2933,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -3098,7 +3075,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProTwelveDay.getText().toString();
                         getItem(position).setDay12(proitem);
                         saveBean.setDay12(proitem);
-                        spUtils.put(context,"prosavetwelveday",proitem);
+                        spUtils.put(context, "prosavetwelveday", proitem);
 //                        spUtils.put(context, "productionTwelveDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -3191,10 +3168,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -3333,7 +3310,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProThirteenDay.getText().toString();
                         getItem(position).setDay13(proitem);
                         saveBean.setDay13(proitem);
-                        spUtils.put(context,"prosavethirteenday",proitem);
+                        spUtils.put(context, "prosavethirteenday", proitem);
 //                        spUtils.put(context, "productionThirteenDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -3426,10 +3403,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -3568,7 +3545,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProFourteenDay.getText().toString();
                         getItem(position).setDay14(proitem);
                         saveBean.setDay14(proitem);
-                        spUtils.put(context,"prosavefourteenday",proitem);
+                        spUtils.put(context, "prosavefourteenday", proitem);
 //                        spUtils.put(context, "productionFourteenDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -3661,10 +3638,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -3803,7 +3780,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProFifteenDay.getText().toString();
                         getItem(position).setDay15(proitem);
                         saveBean.setDay15(proitem);
-                        spUtils.put(context,"prosavefifteenday",proitem);
+                        spUtils.put(context, "prosavefifteenday", proitem);
 //                        spUtils.put(context, "productionFifteenDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -3896,10 +3873,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -4038,7 +4015,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProSixteenDay.getText().toString();
                         getItem(position).setDay16(proitem);
                         saveBean.setDay16(proitem);
-                        spUtils.put(context,"prosavesixteenday",proitem);
+                        spUtils.put(context, "prosavesixteenday", proitem);
 //                        spUtils.put(context, "productionSixteenDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -4131,10 +4108,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -4273,7 +4250,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProSeventeenDay.getText().toString();
                         getItem(position).setDay17(proitem);
                         saveBean.setDay17(proitem);
-                        spUtils.put(context,"prosaveserventeenday",proitem);
+                        spUtils.put(context, "prosaveserventeenday", proitem);
 //                        spUtils.put(context, "productionSeventeenDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -4366,10 +4343,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -4508,7 +4485,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProEighteenDay.getText().toString();
                         getItem(position).setDay18(proitem);
                         saveBean.setDay18(proitem);
-                        spUtils.put(context,"prosaveeighteenday",proitem);
+                        spUtils.put(context, "prosaveeighteenday", proitem);
 //                        spUtils.put(context, "productionEighteenDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -4601,10 +4578,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -4743,7 +4720,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProNineteenDay.getText().toString();
                         getItem(position).setDay19(proitem);
                         saveBean.setDay19(proitem);
-                        spUtils.put(context,"prosavenineteenday",proitem);
+                        spUtils.put(context, "prosavenineteenday", proitem);
 //                        spUtils.put(context, "productionNineteenDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -4836,10 +4813,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -4978,7 +4955,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProTwentyDay.getText().toString();
                         getItem(position).setDay20(proitem);
                         saveBean.setDay20(proitem);
-                        spUtils.put(context,"prosavetwentyday",proitem);
+                        spUtils.put(context, "prosavetwentyday", proitem);
 //                        spUtils.put(context, "productionTwentyDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -5071,10 +5048,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -5213,7 +5190,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProTwentyOneDay.getText().toString();
                         getItem(position).setDay21(proitem);
                         saveBean.setDay21(proitem);
-                        spUtils.put(context,"prosavetwentyoneday",proitem);
+                        spUtils.put(context, "prosavetwentyoneday", proitem);
 //                        spUtils.put(context, "productionTwentyOneDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -5306,10 +5283,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -5448,7 +5425,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProTwentyTwoDay.getText().toString();
                         getItem(position).setDay22(proitem);
                         saveBean.setDay22(proitem);
-                        spUtils.put(context,"prosavetwentytwoday",proitem);
+                        spUtils.put(context, "prosavetwentytwoday", proitem);
 //                        spUtils.put(context, "productionTwentyTwoDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -5541,10 +5518,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -5683,7 +5660,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProTwentyThreeDay.getText().toString();
                         getItem(position).setDay23(proitem);
                         saveBean.setDay23(proitem);
-                        spUtils.put(context,"prosavetwentythreeday",proitem);
+                        spUtils.put(context, "prosavetwentythreeday", proitem);
 //                        spUtils.put(context, "productionTwentyThreeDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -5776,10 +5753,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -5918,7 +5895,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProTwentyForeDay.getText().toString();
                         getItem(position).setDay24(proitem);
                         saveBean.setDay24(proitem);
-                        spUtils.put(context,"prosavetwentyforeday",proitem);
+                        spUtils.put(context, "prosavetwentyforeday", proitem);
 //                        spUtils.put(context, "productionTwentyForeDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -6011,10 +5988,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -6153,7 +6130,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProTwentyFiveDay.getText().toString();
                         getItem(position).setDay25(proitem);
                         saveBean.setDay25(proitem);
-                        spUtils.put(context,"prosavetwentyfiveday",proitem);
+                        spUtils.put(context, "prosavetwentyfiveday", proitem);
 //                        spUtils.put(context, "productionTwentyFiveDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -6246,10 +6223,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -6388,7 +6365,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProTwentySixDay.getText().toString();
                         getItem(position).setDay26(proitem);
                         saveBean.setDay26(proitem);
-                        spUtils.put(context,"prosavetwentysixday",proitem);
+                        spUtils.put(context, "prosavetwentysixday", proitem);
 //                        spUtils.put(context, "productionTwentySixDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -6481,10 +6458,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -6623,7 +6600,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProTwentySevenDay.getText().toString();
                         getItem(position).setDay27(proitem);
                         saveBean.setDay27(proitem);
-                        spUtils.put(context,"prosavetwentysevenday",proitem);
+                        spUtils.put(context, "prosavetwentysevenday", proitem);
 //                        spUtils.put(context, "productionTwentySevenDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -6716,10 +6693,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -6858,7 +6835,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProTwentyEightDay.getText().toString();
                         getItem(position).setDay28(proitem);
                         saveBean.setDay28(proitem);
-                        spUtils.put(context,"prosavetwentyeightday",proitem);
+                        spUtils.put(context, "prosavetwentyeightday", proitem);
 //                        spUtils.put(context, "productionTwentyEightDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -6951,10 +6928,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -7093,7 +7070,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProTwentyNineDay.getText().toString();
                         getItem(position).setDay29(proitem);
                         saveBean.setDay29(proitem);
-                        spUtils.put(context,"prosavetwentynineday",proitem);
+                        spUtils.put(context, "prosavetwentynineday", proitem);
 //                        spUtils.put(context, "productionTwentyNineDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -7186,10 +7163,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -7328,7 +7305,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProThirtyDay.getText().toString();
                         getItem(position).setDay30(proitem);
                         saveBean.setDay30(proitem);
-                        spUtils.put(context,"prosavethirtyday",proitem);
+                        spUtils.put(context, "prosavethirtyday", proitem);
 //                        spUtils.put(context, "productionThirtyDay", proitem);
                         String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                         if (lastmonth.equals("")) {
@@ -7421,10 +7398,10 @@ public class ProductionAdapter extends BaseAdapter {
                             day14 = Integer.parseInt(dayFourteen);
                         }
                         String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                        if (dayFourteen.equals("")) {
+                        if (dayFifteen.equals("")) {
                             day15 = 0;
                         } else {
-                            day15 = Integer.parseInt(dayFourteen);
+                            day15 = Integer.parseInt(dayFifteen);
                         }
                         String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                         if (daySixteen.equals("")) {
@@ -7590,7 +7567,7 @@ public class ProductionAdapter extends BaseAdapter {
                             String proitem = viewHolder.tvProThirtyOneDay.getText().toString();
                             getItem(position).setDay31(proitem);
                             saveBean.setDay31(proitem);
-                            spUtils.put(context,"prosavethirtyoneday",proitem);
+                            spUtils.put(context, "prosavethirtyoneday", proitem);
 //                        spUtils.put(context, "productionThirtyOneDay", proitem);
                             String lastmonth = viewHolder.tvProCompletedLastMonth.getText().toString();
                             if (lastmonth.equals("")) {
@@ -7683,10 +7660,10 @@ public class ProductionAdapter extends BaseAdapter {
                                 day14 = Integer.parseInt(dayFourteen);
                             }
                             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-                            if (dayFourteen.equals("")) {
+                            if (dayFifteen.equals("")) {
                                 day15 = 0;
                             } else {
-                                day15 = Integer.parseInt(dayFourteen);
+                                day15 = Integer.parseInt(dayFifteen);
                             }
                             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
                             if (daySixteen.equals("")) {
@@ -7826,7 +7803,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String proitem = viewHolder.tvProRemarks.getText().toString();
                         getItem(position).setMemo(proitem);
                         saveBean.setMemo(proitem);
-                        spUtils.put(context,"prosaveremarks",proitem);
+                        spUtils.put(context, "prosaveremarks", proitem);
 //                        spUtils.put(context, "productionRemarks", proitem);
 
                     }
@@ -8301,10 +8278,10 @@ public class ProductionAdapter extends BaseAdapter {
                 day14 = Integer.parseInt(dayFourteen);
             }
             String dayFifteen = viewHolder.tvProFifteenDay.getText().toString();
-            if (dayFourteen.equals("")) {
+            if (dayFifteen.equals("")) {
                 day15 = 0;
             } else {
-                day15 = Integer.parseInt(dayFourteen);
+                day15 = Integer.parseInt(dayFifteen);
             }
             String daySixteen = viewHolder.tvProSixteenDay.getText().toString();
             if (daySixteen.equals("")) {
@@ -8813,7 +8790,7 @@ public class ProductionAdapter extends BaseAdapter {
                         String title = item.getTitle().toString();
 //                        spUtils.put(context, "proadapterMonthTitle", title);
                         viewHolder.tvProMonth.setText(title);
-                        spUtils.put(context,"prosavemonth",title);
+                        spUtils.put(context, "prosavemonth", title);
                         getItem(position).setMonth(title);
                         getItem(position).setMemomonth(title);
                         return false;
@@ -8841,7 +8818,7 @@ public class ProductionAdapter extends BaseAdapter {
                     public boolean onMenuItemClick(MenuItem item) {
                         sp = context.getSharedPreferences("userInfo", 0);
                         String title = item.getTitle().toString();
-                        spUtils.put(context,"prosavedepartment",title);
+                        spUtils.put(context, "prosavedepartment", title);
 //                        spUtils.put(context, "proColumnTitle", title);
                         viewHolder.tvProDepartment.setText(title);
                         getItem(position).setPrddocumentary(title);
@@ -8900,7 +8877,7 @@ public class ProductionAdapter extends BaseAdapter {
                     public boolean onMenuItemClick(MenuItem item) {
                         sp = context.getSharedPreferences("userInfo", 0);
                         String title = item.getTitle().toString();
-                        spUtils.put(context,"prosavestate",title);
+                        spUtils.put(context, "prosavestate", title);
 //                        spUtils.put(context, "proadapterPrdstatusTitle", title);
                         viewHolder.tvProState.setText(title);
                         getItem(position).setPrdstatus(title);

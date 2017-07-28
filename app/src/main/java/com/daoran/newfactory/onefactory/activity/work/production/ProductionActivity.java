@@ -1,15 +1,12 @@
 package com.daoran.newfactory.onefactory.activity.work.production;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Looper;
-import android.support.v7.app.AlertDialog;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -29,7 +26,6 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.adapter.ProductionAdapter;
 import com.daoran.newfactory.onefactory.adapter.ProductionLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
-import com.daoran.newfactory.onefactory.bean.ProducationConfigSaveBean;
 import com.daoran.newfactory.onefactory.bean.ProducationDeleteBean;
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
 import com.daoran.newfactory.onefactory.bean.ProducationSaveBean;
@@ -44,7 +40,6 @@ import com.daoran.newfactory.onefactory.util.ToastUtils;
 import com.daoran.newfactory.onefactory.util.file.NullStringToEmptyAdapterFactory;
 import com.daoran.newfactory.onefactory.util.file.save.ProductionExcelUtil;
 import com.daoran.newfactory.onefactory.view.dialog.ProcationDialog;
-//import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
@@ -83,29 +78,20 @@ public class ProductionActivity extends BaseFrangmentActivity
             new ArrayList<ProducationDetailBean.DataBean>();//列表实体list
     private ProducationDetailBean detailBean;//列表实体bean
     private ProductionAdapter adapter;//列表适配
-    List<ProducationSaveBean> saveBeen =
-            new ArrayList<ProducationSaveBean>();//保存
     private ProducationSaveBean producationSaveBean;//修改后的保存
-    List<ProducationConfigSaveBean> configSaveBeen =
-            new ArrayList<ProducationConfigSaveBean>();//新建
     private List<ProductionDetailBooleanBean.DataBean> detailbooleanDatabean
             = new ArrayList<ProductionDetailBooleanBean.DataBean>();
     private ProductionDetailBooleanBean detailBooleanBean;
 
-
     private EditText etSqlDetail;//底部页码输入框
     private TextView tvSignPage;//页数显示
     private Button btnSignPage, btnProSave, spinnermenu;//翻页确定、保存确定，菜单menu
-    private TextView spinnerNewbuild;
-    private EditText etNewbuild;
     private ImageView ivUpLeftPage, ivDownRightPage;
 
     private SharedPreferences sp;//存储
     private SPUtils spUtils;
     private int pageCount;//总页数int
     private int pageIndex = 0;//初始页数0
-    private int last_item = -1;
-    private TextView oldView;
     private LinearLayout ll_visibi;//
     private TextView tv_visibi;
     private ScrollView scroll_content;
@@ -1817,10 +1803,6 @@ public class ProductionActivity extends BaseFrangmentActivity
                         startActivity(new Intent(ProductionActivity.this,
                                 ProductionNewlyBuildActivity.class));
                         break;
-//                    case "复制":
-//                        Intent intent = new Intent(ProductionActivity.this, ProductionCopyComfigActivity.class);
-//                        startActivity(intent);
-//                        break;
                     case "横竖屏切换":
                         if (configid.equals("1")) {
                             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

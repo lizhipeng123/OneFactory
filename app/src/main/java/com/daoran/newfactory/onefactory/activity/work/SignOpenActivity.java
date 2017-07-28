@@ -100,7 +100,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
     private PoiSearch poiSearch;//搜索
     private PoiResult poiResult;//poi返回的结果
     private String deepType;//搜索类型
-    private Spinner spinner, spinnnerfileTune;
+    private Spinner spinnnerfileTune;
     private MyLocationStyle myLocationStyle;
 
     private static final String TAG = "TAG";
@@ -137,15 +137,14 @@ public class SignOpenActivity extends BaseFrangmentActivity
      * 判断是否需要检测，防止不停的弹框
      */
     private boolean isNeedCheck = true;
-
     private static final int msgKey1 = 1;
-
     String strprolong1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign);
+        sp = this.getSharedPreferences("my_sp", 0);
         tvSqltexttime = (TextView) findViewById(R.id.tvSqltexttime);
         new TimeThread().start();
         mapView = (MapView) findViewById(R.id.mapSigngaode);
@@ -161,7 +160,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
         mMarkerOptions = new MarkerOptions();
         mMarkerOptions.draggable(false);//可拖放性
         mMarkerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.guidepoint_red));
-
         getViews();
         initViews();
         initSpinner();
@@ -169,7 +167,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
         myLocationStyle = new MyLocationStyle();
         myLocationStyle.strokeColor(Color.argb(0, 0, 0, 0));
         myLocationStyle.radiusFillColor(Color.argb(0, 0, 0, 0));
-        sp = this.getSharedPreferences("my_sp", 0);
         SignOpenActivityPermissionsDispatcher.startLocationWithCheck(this);
     }
 
@@ -191,6 +188,9 @@ public class SignOpenActivity extends BaseFrangmentActivity
         }
     }
 
+    /**
+     * 线程计时（时分秒）
+     */
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -236,7 +236,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
             }
         });
         etRemark.setOnClickListener(this);
-//        btnSignCancle.setOnClickListener(this);
         btnSignOk.setOnClickListener(this);
         topBg.setOnClickListener(this);
     }
@@ -248,7 +247,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
         scrollviewSign = (ScrollView) findViewById(R.id.scrollviewSign);
         ivSignBack = (ImageView) findViewById(R.id.ivSignBack);
         btnCount = (Button) findViewById(R.id.btnCount);
-//        btnSignCancle = (Button) findViewById(R.id.btnSignCancle);
         btnSignOk = (LinearLayout) findViewById(R.id.btnSignOk);
         tvSignDate = (TextView) findViewById(R.id.tvSignDate);
         etRemark = (EditText) findViewById(R.id.etRemark);
@@ -498,7 +496,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
         aMap.getMapScreenShot(new AMap.OnMapScreenShotListener() {
             @Override
             public void onMapScreenShot(Bitmap bitmap) {
-
             }
 
             @Override
@@ -534,7 +531,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
                         buffer.append("地图未渲染完成，截屏有网格");
                     }
                     System.out.print(buffer.toString());
-//                    ToastUtils.ShowToastMessage(buffer.toString(),getApplicationContext());
                     topBg.setImageBitmap(bitmap);
                     String picurl = BitmapTools.convertIconToString(bitmap);
                     spUtils.put(SignOpenActivity.this, "picurl", picurl);
@@ -571,13 +567,12 @@ public class SignOpenActivity extends BaseFrangmentActivity
                     strprolong1 = formatData("yyyy-MM-dd HH:mm:ss", time);
                     spUtils.put(SignOpenActivity.this, "prolongtime", time);
                     getpicture();
-//                    ToastUtils.ShowToastMessage("可以签到", SignOpenActivity.this);
                     break;
                 } else {
                     ResponseDialog.showLoading(this, "请稍后");
                     long time = System.currentTimeMillis() / 1000;//获取系统时间的10位的时间戳
                     String strprolong = formatData("yyyy-MM-dd HH:mm:ss", time);
-                    String strpro = formatData("yyyy-MM-dd HH:mm:ss",prolongtime);
+                    String strpro = formatData("yyyy-MM-dd HH:mm:ss", prolongtime);
                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     try {
                         Date df1 = df.parse(strprolong);
@@ -591,7 +586,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
                             ToastUtils.ShowToastMessage("五分钟之内不能重复签到", SignOpenActivity.this);
                             ResponseDialog.closeLoading();
                         } else {
-//                            ToastUtils.ShowToastMessage("可以保存", SignOpenActivity.this);
                             getpicture();
                             spUtils.put(SignOpenActivity.this, "prolongtime", time);
                         }
@@ -607,6 +601,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
 
     /**
      * 转换格式
+     *
      * @param dataFormat
      * @param timeStamp
      * @return
@@ -715,7 +710,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
      */
     private void setSignDebug() {
         String url = HttpUrl.debugoneUrl + "OutRegister/SaveBill/";
-//        ResponseDialog.showLoading(this, "请稍后");
         final ProgressDialog progressDialog = ProgressDialog.show(this,
                 "请稍候...", "正在保存签到信息...", false, true);
         sp = this.getSharedPreferences("my_sp", 0);
@@ -781,7 +775,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
                                 } else {
                                     ToastUtils.ShowToastMessage(R.string.signloadfailed, SignOpenActivity.this);
                                 }
-//                                ResponseDialog.closeLoading();
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Thread thread = new Thread(new Runnable() {

@@ -251,7 +251,6 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             public void onClick(View v) {
                 Intent intent = new Intent(mactivity, WorkPwSwitchActivity.class);
                 mactivity.startActivity(intent);
-                mactivity.finish();
                 popupWindow.dismiss();
             }
         });
@@ -295,8 +294,8 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==2){
-            if(requestCode==1){
+        if (resultCode == 2) {
+            if (requestCode == 1) {
                 getViews();
 
             }

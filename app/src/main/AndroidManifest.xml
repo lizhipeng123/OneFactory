@@ -64,8 +64,9 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="85547ccec1838f47b9aab22f5582332a" />
-        <meta-data android:value="59795831b27b0a69e5001585"
-            android:name="UMENG_APPKEY"/>
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="59795831b27b0a69e5001585" />
         <!-- 启动页 -->
         <activity
             android:name=".activity.start.StartActivity"
@@ -184,14 +185,19 @@
             android:name=".activity.work.setting.ExcelSDActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
+        <!--添加账号-->
         <activity
             android:name=".activity.work.WorkPwSwitchActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
+        <!--生产日报复制保存-->
         <activity
             android:name=".activity.work.production.ProductionCopyComfigActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
         <!--qq分享-->
         <activity
             android:name="com.tencent.tauth.AuthActivity"

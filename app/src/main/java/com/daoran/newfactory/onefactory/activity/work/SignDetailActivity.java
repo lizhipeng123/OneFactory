@@ -196,10 +196,10 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                     Thread.sleep(2000);
                                     if (mListData.size() != 0) {
                                         Looper.prepare();
+                                        ToastUtils.ShowToastMessage("写入成功", SignDetailActivity.this);
                                         SignDetailExcelUtil.writeExcel(SignDetailActivity.this,
                                                 mListData,
                                                 "dfsignexcel+" + new Date().toString());
-                                        ToastUtils.ShowToastMessage("写入成功", SignDetailActivity.this);
                                         progressDialog.dismiss();
                                         Looper.loop();
                                     } else {
@@ -226,7 +226,8 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         // PopupMenu关闭事件
         popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
             @Override
-            public void onDismiss(PopupMenu menu) {}
+            public void onDismiss(PopupMenu menu) {
+            }
         });
         popupMenu.show();
     }
