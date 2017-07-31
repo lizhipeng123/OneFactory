@@ -100,7 +100,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     int screenHeight = 0;
     private int year, month, datetime, hour, minute, second;
     private boolean flagmonthsize;
-    private String configid ;
+    private String configid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,10 +174,10 @@ public class ProductionActivity extends BaseFrangmentActivity
         etSqlDetail.setSelection(etSqlDetail.getText().length());//将光标移到文本最后
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Log.i("info", "landscape"); // 横屏
-            configid= String.valueOf(1);
+            configid = String.valueOf(1);
         } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             Log.i("info", "portrait"); // 竖屏
-            configid= String.valueOf(2);
+            configid = String.valueOf(2);
         }
     }
 
@@ -282,6 +282,8 @@ public class ProductionActivity extends BaseFrangmentActivity
     private void setData() {
         String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
         sp = ProductionActivity.this.getSharedPreferences("my_sp", 0);
+        final ProgressDialog progressDialog = ProgressDialog.show(this,
+                "请稍候...", "正在查询中...", false, true);
         String namedure = sp.getString("proname", "");//制单人
         String Style = sp.getString("etprodialogStyle", "");//款号
         String commostyle = sp.getString("productionleftItem", "");
@@ -317,8 +319,6 @@ public class ProductionActivity extends BaseFrangmentActivity
             propostbean.setPageSize(Integer.parseInt(getsize));
             String gsonbeanStr = gson.toJson(propostbean);
             if (NetWork.isNetWorkAvailable(this)) {
-                final ProgressDialog progressDialog = ProgressDialog.show(this,
-                        "请稍候...", "正在查询中...", false, true);
                 final int finalGetsize = Integer.parseInt(getsize);
                 OkHttpUtils.postString()
                         .url(str)
@@ -383,8 +383,6 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         tv_visibi.setText("没有更多信息");
                                     }
                                     setNewlyComfig();
-
-                                    ;
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
                                     Thread thread = new Thread(new Runnable() {
@@ -420,8 +418,6 @@ public class ProductionActivity extends BaseFrangmentActivity
             propostbean.setPageSize(Integer.parseInt(getsize));
             String gsonbeanStr = gson.toJson(propostbean);/*字符串转为json字符串*/
             if (NetWork.isNetWorkAvailable(this)) {
-                final ProgressDialog progressDialog = ProgressDialog.show(this,
-                        "请稍候...", "正在查询中...", false, true);
                 final int finalGetsize = Integer.parseInt(getsize);
                 OkHttpUtils.postString()
                         .url(str)
@@ -486,7 +482,6 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         tv_visibi.setText("没有更多信息");
                                     }
                                     setNewlyComfig();
-
                                 } catch (JsonSyntaxException e) {
                                     e.printStackTrace();
                                     Thread thread = new Thread(new Runnable() {
@@ -893,7 +888,6 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         mData.setAdapter(adapter);
                                         mLeftAdapter = new ProductionLeftAdapter(ProductionActivity.this, detailBeenList);
                                         lv_left.setAdapter(mLeftAdapter);
-//                                        adapter.notifyDataSetChanged();
                                     } else {
                                         ll_visibi.setVisibility(View.VISIBLE);
                                         scroll_content.setVisibility(View.GONE);
@@ -1161,7 +1155,6 @@ public class ProductionActivity extends BaseFrangmentActivity
                     NullStringToEmptyAdapterFactory()).create();
             String detailb = gson.toJson(detailBeenList);
             System.out.print(detailb);
-
             String prosaveothers = sp.getString("prosaveothers", "");//组别人数
             String prosavetasknunber = sp.getString("prosavetasknunber", "");//任务数
             String prosavecompletedlastmonth = sp.getString("prosavecompletedlastmonth", "");//上月完工
@@ -1262,14 +1255,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     .build()
                                     .execute(new StringCallback() {
                                         @Override
-                                        public void onError(Call call, Exception e, int id) {
-                                            e.printStackTrace();
-                                            progressDialog.dismiss();
-                                        }
-
-                                        @Override
-                                        public void onResponse(String response, int id) {
-                                            System.out.print(response);
+                                        public void onError(Call call, final Exception e, int id) {
                                             Thread thread = new Thread(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -1278,10 +1264,16 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                     } catch (InterruptedException e) {
                                                         e.printStackTrace();
                                                     }
+                                                    e.printStackTrace();
                                                     progressDialog.dismiss();
                                                 }
                                             });
                                             thread.start();
+                                        }
+
+                                        @Override
+                                        public void onResponse(final String response, int id) {
+                                            System.out.print(response);
                                             String ression = StringUtil.sideTrim(response, "\"");
                                             System.out.print(ression);
                                             int resindex = Integer.parseInt(ression);
@@ -1295,6 +1287,20 @@ public class ProductionActivity extends BaseFrangmentActivity
                                             } else {
                                                 ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
                                             }
+                                            deletesp();
+                                            Thread thread = new Thread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    try {
+                                                        Thread.sleep(1500);
+
+                                                    } catch (InterruptedException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    progressDialog.dismiss();
+                                                }
+                                            });
+                                            thread.start();
                                         }
                                     });
                         }
@@ -1306,14 +1312,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                 .build()
                                 .execute(new StringCallback() {
                                     @Override
-                                    public void onError(Call call, Exception e, int id) {
-                                        e.printStackTrace();
-                                        progressDialog.dismiss();
-                                    }
-
-                                    @Override
-                                    public void onResponse(String response, int id) {
-                                        System.out.print(response);
+                                    public void onError(Call call, final Exception e, int id) {
                                         Thread thread = new Thread(new Runnable() {
                                             @Override
                                             public void run() {
@@ -1322,10 +1321,16 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                 } catch (InterruptedException e) {
                                                     e.printStackTrace();
                                                 }
+                                                e.printStackTrace();
                                                 progressDialog.dismiss();
                                             }
                                         });
                                         thread.start();
+                                    }
+
+                                    @Override
+                                    public void onResponse(final String response, int id) {
+                                        System.out.print(response);
                                         String ression = StringUtil.sideTrim(response, "\"");
                                         System.out.print(ression);
                                         int resindex = Integer.parseInt(ression);
@@ -1339,6 +1344,20 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         } else {
                                             ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
                                         }
+                                        deletesp();
+                                        Thread thread = new Thread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                try {
+                                                    Thread.sleep(1500);
+
+                                                } catch (InterruptedException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                progressDialog.dismiss();
+                                            }
+                                        });
+                                        thread.start();
                                     }
                                 });
                     }
@@ -1375,6 +1394,8 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         && prosaveremarks.equals("") && prosavemonth.equals("")
                                         && prosavedepartment.equals("") && probooleanProcedureTitle.equals("")
                                         && prosavestate.equals("")) {
+                                    ToastUtils.ShowToastMessage("未修改表中数据",
+                                            ProductionActivity.this);
                                     Thread thread = new Thread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -1387,8 +1408,6 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         }
                                     });
                                     thread.start();
-                                    ToastUtils.ShowToastMessage("未修改表中数据",
-                                            ProductionActivity.this);
                                 } else {
                                     OkHttpUtils.postString().
                                             url(saveurl)
@@ -1397,14 +1416,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                             .build()
                                             .execute(new StringCallback() {
                                                 @Override
-                                                public void onError(Call call, Exception e, int id) {
-                                                    e.printStackTrace();
-                                                    progressDialog.dismiss();
-                                                }
-
-                                                @Override
-                                                public void onResponse(String response, int id) {
-                                                    System.out.print(response);
+                                                public void onError(Call call, final Exception e, int id) {
                                                     Thread thread = new Thread(new Runnable() {
                                                         @Override
                                                         public void run() {
@@ -1413,10 +1425,16 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                             } catch (InterruptedException e) {
                                                                 e.printStackTrace();
                                                             }
+                                                            e.printStackTrace();
                                                             progressDialog.dismiss();
                                                         }
                                                     });
                                                     thread.start();
+                                                }
+
+                                                @Override
+                                                public void onResponse(final String response, int id) {
+                                                    System.out.print(response);
                                                     String ression = StringUtil.sideTrim(response, "\"");
                                                     System.out.print(ression);
                                                     int resindex = Integer.parseInt(ression);
@@ -1430,6 +1448,20 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                     } else {
                                                         ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
                                                     }
+                                                    deletesp();
+                                                    Thread thread = new Thread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            try {
+                                                                Thread.sleep(1500);
+
+                                                            } catch (InterruptedException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                            progressDialog.dismiss();
+                                                        }
+                                                    });
+                                                    thread.start();
                                                 }
                                             });
                                 }
@@ -1441,14 +1473,40 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         .build()
                                         .execute(new StringCallback() {
                                             @Override
-                                            public void onError(Call call, Exception e, int id) {
+                                            public void onError(Call call, final Exception e, int id) {
                                                 e.printStackTrace();
-                                                progressDialog.dismiss();
+                                                Thread thread = new Thread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        try {
+                                                            Thread.sleep(1500);
+                                                        } catch (InterruptedException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                        e.printStackTrace();
+                                                        progressDialog.dismiss();
+                                                    }
+                                                });
+                                                thread.start();
                                             }
 
                                             @Override
-                                            public void onResponse(String response, int id) {
+                                            public void onResponse(final String response, int id) {
                                                 System.out.print(response);
+                                                String ression = StringUtil.sideTrim(response, "\"");
+                                                System.out.print(ression);
+                                                int resindex = Integer.parseInt(ression);
+                                                if (resindex > 3) {
+                                                    ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
+                                                    setData();
+                                                } else if (ression == "3" || ression.equals("3")) {
+                                                    ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
+                                                } else if (ression == "4" || ression.equals("4")) {
+                                                    ToastUtils.ShowToastMessage("数据错误，请重试", ProductionActivity.this);
+                                                } else {
+                                                    ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
+                                                }
+                                                deletesp();
                                                 Thread thread = new Thread(new Runnable() {
                                                     @Override
                                                     public void run() {
@@ -1461,20 +1519,6 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                     }
                                                 });
                                                 thread.start();
-                                                String ression = StringUtil.sideTrim(response, "\"");
-                                                System.out.print(ression);
-                                                int resindex = Integer.parseInt(ression);
-                                                if (resindex > 3) {
-                                                    ToastUtils.ShowToastMessage("保存成功", ProductionActivity.this);
-                                                    setData();
-                                                } else if (ression == "3" || ression.equals("3")) {
-                                                    ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
-                                                    ;
-                                                } else if (ression == "4" || ression.equals("4")) {
-                                                    ToastUtils.ShowToastMessage("数据错误，请重试", ProductionActivity.this);
-                                                } else {
-                                                    ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
-                                                }
                                             }
                                         });
                             }
@@ -1488,14 +1532,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     .build()
                                     .execute(new StringCallback() {
                                         @Override
-                                        public void onError(Call call, Exception e, int id) {
-                                            e.printStackTrace();
-                                            progressDialog.dismiss();
-                                        }
-
-                                        @Override
-                                        public void onResponse(String response, int id) {
-                                            System.out.print(response);
+                                        public void onError(Call call, final Exception e, int id) {
                                             Thread thread = new Thread(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -1504,10 +1541,16 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                     } catch (InterruptedException e) {
                                                         e.printStackTrace();
                                                     }
+                                                    e.printStackTrace();
                                                     progressDialog.dismiss();
                                                 }
                                             });
                                             thread.start();
+                                        }
+
+                                        @Override
+                                        public void onResponse(final String response, int id) {
+                                            System.out.print(response);
                                             String ression = StringUtil.sideTrim(response, "\"");
                                             System.out.print(ression);
                                             int resindex = Integer.parseInt(ression);
@@ -1521,6 +1564,20 @@ public class ProductionActivity extends BaseFrangmentActivity
                                             } else {
                                                 ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
                                             }
+                                            deletesp();
+                                            Thread thread = new Thread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    try {
+                                                        Thread.sleep(1500);
+
+                                                    } catch (InterruptedException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    progressDialog.dismiss();
+                                                }
+                                            });
+                                            thread.start();
                                         }
                                     });
                         }
@@ -1550,14 +1607,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         .build()
                                         .execute(new StringCallback() {
                                             @Override
-                                            public void onError(Call call, Exception e, int id) {
-                                                e.printStackTrace();
-                                                progressDialog.dismiss();
-                                            }
-
-                                            @Override
-                                            public void onResponse(String response, int id) {
-                                                System.out.print(response);
+                                            public void onError(Call call, final Exception e, int id) {
                                                 Thread thread = new Thread(new Runnable() {
                                                     @Override
                                                     public void run() {
@@ -1566,10 +1616,16 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                         } catch (InterruptedException e) {
                                                             e.printStackTrace();
                                                         }
+                                                        e.printStackTrace();
                                                         progressDialog.dismiss();
                                                     }
                                                 });
                                                 thread.start();
+                                            }
+
+                                            @Override
+                                            public void onResponse(final String response, int id) {
+                                                System.out.print(response);
                                                 String ression = StringUtil.sideTrim(response, "\"");
                                                 System.out.print(ression);
                                                 int resindex = Integer.parseInt(ression);
@@ -1583,6 +1639,21 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                 } else {
                                                     ToastUtils.ShowToastMessage("未知错误，请联系管理员", ProductionActivity.this);
                                                 }
+                                                deletesp();
+                                                Thread thread = new Thread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        try {
+                                                            Thread.sleep(1500);
+
+                                                        } catch (InterruptedException e) {
+                                                            e.printStackTrace();
+                                                        }
+
+                                                        progressDialog.dismiss();
+                                                    }
+                                                });
+                                                thread.start();
                                             }
                                         });
                             }
@@ -1802,13 +1873,14 @@ public class ProductionActivity extends BaseFrangmentActivity
                     case "新建":
                         startActivity(new Intent(ProductionActivity.this,
                                 ProductionNewlyBuildActivity.class));
+                        ProductionActivity.this.finish();
                         break;
                     case "横竖屏切换":
                         if (configid.equals("1")) {
                             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                        } else if(configid.equals("2")) {
+                        } else if (configid.equals("2")) {
                             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                        }else{
+                        } else {
 
                         }
                         break;
@@ -1974,6 +2046,95 @@ public class ProductionActivity extends BaseFrangmentActivity
         editor.remove("prosavestate");
         editor.commit();
         super.onDestroy();
+    }
+
+    private void deletesp() {
+        SharedPreferences.Editor editor = sp.edit();
+        /*关闭界面后，删除本地存储的字段*/
+        editor.remove("prouriid");
+        editor.remove("prosalesid");
+        editor.remove("proColumnTitle");
+        editor.remove("proProcedureTitle");
+        editor.remove("proadapterPrdstatusTitle");
+        editor.remove("productionsaveOthers");
+        editor.remove("productionOthers");
+        editor.remove("productionTaskNumber");
+        editor.remove("productionCompletedLastMonth");
+        editor.remove("proadapterMonthTitle");
+        editor.remove("productionOneDay");
+        editor.remove("productionTwoDay");
+        editor.remove("productionThreeDay");
+        editor.remove("productionForeDay");
+        editor.remove("productionFiveDay");
+        editor.remove("productionSixDay");
+        editor.remove("productionSevenDay");
+        editor.remove("productionEightDay");
+        editor.remove("productionNineDay");
+        editor.remove("productionTenDay");
+        editor.remove("productionElevenDay");
+        editor.remove("productionTwelveDay");
+        editor.remove("productionThirteenDay");
+        editor.remove("productionFourteenDay");
+        editor.remove("productionFifteenDay");
+        editor.remove("productionSixteenDay");
+        editor.remove("productionSeventeenDay");
+        editor.remove("productionEighteenDay");
+        editor.remove("productionNineteenDay");
+        editor.remove("productionTwentyDay");
+        editor.remove("productionTwentyOneDay");
+        editor.remove("productionTwentyTwoDay");
+        editor.remove("productionTwentyThreeDay");
+        editor.remove("productionTwentyForeDay");
+        editor.remove("productionTwentyFiveDay");
+        editor.remove("productionTwentySixDay");
+        editor.remove("productionTwentySevenDay");
+        editor.remove("productionTwentyEightDay");
+        editor.remove("productionTwentyNineDay");
+        editor.remove("productionThirtyDay");
+        editor.remove("productionThirtyOneDay");
+        editor.remove("productionRemarks");
+        editor.remove("productionleftItem");
+        editor.remove("etprodialogStyle");
+        editor.remove("prosaveothers");
+        editor.remove("prosavetasknunber");
+        editor.remove("prosavecompletedlastmonth");
+        editor.remove("prosaveoneday");
+        editor.remove("prosavetwoday");
+        editor.remove("prothreeday");
+        editor.remove("prosaveforeday");
+        editor.remove("prosavefiveday");
+        editor.remove("prosavesixday");
+        editor.remove("prosavesevenday");
+        editor.remove("prosaveeightday");
+        editor.remove("prosavenineday");
+        editor.remove("prosaveelevenday");
+        editor.remove("prosavetenday");
+        editor.remove("prosavetwelveday");
+        editor.remove("prosavethirteenday");
+        editor.remove("prosavefourteenday");
+        editor.remove("prosavefifteenday");
+        editor.remove("prosavesixteenday");
+        editor.remove("prosaveserventeenday");
+        editor.remove("prosaveeighteenday");
+        editor.remove("prosavenineteenday");
+        editor.remove("prosavetwentyday");
+        editor.remove("prosavetwentyoneday");
+        editor.remove("prosavetwentytwoday");
+        editor.remove("prosavetwentythreeday");
+        editor.remove("prosavetwentyforeday");
+        editor.remove("prosavetwentyfiveday");
+        editor.remove("prosavetwentysixday");
+        editor.remove("prosavetwentysevenday");
+        editor.remove("prosavetwentyeightday");
+        editor.remove("prosavetwentynineday");
+        editor.remove("prosavethirtyday");
+        editor.remove("prosavethirtyoneday");
+        editor.remove("prosaveremarks");
+        editor.remove("prosavemonth");
+        editor.remove("prosavedepartment");
+        editor.remove("probooleanProcedureTitle");
+        editor.remove("prosavestate");
+        editor.commit();
     }
 
     @Override

@@ -127,7 +127,6 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         ivSiganSqlDetail.setOnClickListener(this);
         ivSearch.setOnClickListener(this);
         btnSignPage.setOnClickListener(this);
-        etSqlDetail.setOnClickListener(this);
         ivUpLeftPage.setOnClickListener(this);
         ivDownRightPage.setOnClickListener(this);
         etSqlDetail.setSelection(etSqlDetail.getText().length());
@@ -307,9 +306,6 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                         setPageDate(index2str);
                     }
                 }
-                break;
-            case R.id.etSqlDetail:
-
                 break;
             /*弹出菜单*/
             case R.id.spinnermenu:

@@ -19,6 +19,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.production.ProductionActivity;
 import com.daoran.newfactory.onefactory.activity.work.production.ProductionCopyComfigActivity;
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
 import com.daoran.newfactory.onefactory.bean.ProducationSaveBean;
@@ -245,6 +246,8 @@ public class ProductionAdapter extends BaseAdapter {
                         Intent intent = new Intent(context, ProductionCopyComfigActivity.class);
                         intent.putStringArrayListExtra("copyitemlist", list);
                         context.startActivity(intent);
+                        ProductionActivity productionActivity = new ProductionActivity();
+                        productionActivity.finish();
                     }
                 });
                 viewHolder.tvProDocumentary.setEnabled(true);

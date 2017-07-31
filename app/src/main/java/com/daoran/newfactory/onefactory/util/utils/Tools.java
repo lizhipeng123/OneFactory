@@ -26,6 +26,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * 各种类型转换
  * Created by djx on 16/1/18.
  */
 public class Tools {

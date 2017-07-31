@@ -200,6 +200,8 @@ public class ProductionNewlyBuildActivity
      */
     private void setDate() {
         sp = getSharedPreferences("my_sp", 0);
+        final ProgressDialog progressDialog = ProgressDialog.show(this,
+                "请稍候...", "正在查询中...", false, true);
         String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
         String pagesize = sp.getString("clumnspronewspinner", "");
         String editNewlyBuild = etNewbuild.getText().toString();//输入款号
@@ -217,8 +219,6 @@ public class ProductionNewlyBuildActivity
         buildBean.setPageSize(Integer.parseInt(pagesize));
         final String bean = gson.toJson(buildBean);
         if (NetWork.isNetWorkAvailable(this)) {
-            final ProgressDialog progressDialog = ProgressDialog.show(this,
-                    "请稍候...", "正在查询中...", false, true);
             final int finalGetsize = Integer.parseInt(pagesize);
             OkHttpUtils.postString()
                     .url(urlDaily)

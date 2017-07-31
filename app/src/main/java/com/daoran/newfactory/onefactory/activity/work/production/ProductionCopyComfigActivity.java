@@ -2,6 +2,7 @@ package com.daoran.newfactory.onefactory.activity.work.production;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
@@ -362,7 +363,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
         String tvnewSingularSystem = sp.getString("copySingularSystem", "");//制单数
         String tvdate = sp.getString("copyTaskNumber", "");//任务数
         String tvnewTaskNumber = sp.getString("copySize", "");//尺码
-        String tvnewlySize = sp.getString("copyColor", "");//花色
+        String tvnewlySize = sp.getString("copyyColor", "");//花色
         String tvnewlyClippingNumber = sp.getString("copyClippingNumber", "");//实裁数
         String tvnewlyCompletedLastMonth = sp.getString("copyTotalCompletion", "");//总完工数
         String tvnewlyTotalCompletion = sp.getString("copyState", "");//状态
@@ -377,13 +378,12 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
         map.put("copySingularSystem", tvnewSingularSystem);
         map.put("copyTaskNumber", tvdate);
         map.put("copySize", tvnewTaskNumber);
-        map.put("copyColor", tvnewlySize);
+        map.put("copyyColor", tvnewlySize);
         map.put("copyClippingNumber", tvnewlyClippingNumber);
         map.put("copyTotalCompletion", tvnewlyCompletedLastMonth);
         map.put("copyState", tvnewlyTotalCompletion);
         list.add(map);
         SharedPreferences.Editor editor = sp.edit();
-        editor.remove("copyColor");
         editor.commit();
         return list;
     }
@@ -439,6 +439,12 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
             String copyRecorder = sp.getString("copyRecorder", "");//制单人
             String copyRecordat = sp.getString("copyRecordat", "");//制单时间
             String copyRecordid = sp.getString("username", "");//当前用户
+            String copymonth;
+            if(productionMonth.equals("")){
+                copymonth=tvnewlyMonth;
+            }else{
+                copymonth = productionMonth;
+            }
             if (tvnewlyProcedure.equals("裁床")) {
                 tvnewlyClippingNumber = String.valueOf(0);
             }
@@ -554,7 +560,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                     consaveBean.setLeftQty(copyBalanceAmount);
                                     consaveBean.setPrdstatus(tvnewlyTotalCompletion);
                                     consaveBean.setYear(tvnewlyProYear);
-                                    consaveBean.setMonth(tvnewlyMonth);
+                                    consaveBean.setMonth(copymonth);
                                     consaveBean.setRecorder(copyRecorder);
                                     consaveBean.setRecordat(copyRecordat);
                                     newlyComfigSaveBeen.add(consaveBean);
@@ -603,7 +609,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                     }
 
                                                     @Override
-                                                    public void onResponse(String response, int id) {
+                                                    public void onResponse(final String response, int id) {
                                                         System.out.print(response);
                                                         Thread thread = new Thread(new Runnable() {
                                                             @Override
@@ -613,29 +619,31 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                                 } catch (InterruptedException e) {
                                                                     e.printStackTrace();
                                                                 }
+                                                                String ression = StringUtil.sideTrim(response, "\"");
+                                                                System.out.print(ression);
+                                                                int resindex = Integer.parseInt(ression);
+                                                                if (resindex > 4) {
+                                                                    ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
+                                                                            ProductionCopyComfigActivity.this);
+                                                                    startActivity(new Intent(ProductionCopyComfigActivity.this,
+                                                                            ProductionActivity.class));
+                                                                } else if (resindex == 3) {
+                                                                    ToastUtils.ShowToastMessage("保存失败",
+                                                                            ProductionCopyComfigActivity.this);
+                                                                } else if (resindex == 4) {
+                                                                    ToastUtils.ShowToastMessage("数据错误，请重试",
+                                                                            ProductionCopyComfigActivity.this);
+                                                                } else if (resindex == 2) {
+                                                                    ToastUtils.ShowToastMessage("该单已存在，无法新建！",
+                                                                            ProductionCopyComfigActivity.this);
+                                                                } else {
+                                                                    ToastUtils.ShowToastMessage("未知错误，请联系管理员",
+                                                                            ProductionCopyComfigActivity.this);
+                                                                }
                                                                 progressDialog.dismiss();
                                                             }
                                                         });
                                                         thread.start();
-                                                        String ression = StringUtil.sideTrim(response, "\"");
-                                                        System.out.print(ression);
-                                                        int resindex = Integer.parseInt(ression);
-                                                        if (resindex > 4) {
-                                                            ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
-                                                                    ProductionCopyComfigActivity.this);
-                                                        } else if (resindex == 3) {
-                                                            ToastUtils.ShowToastMessage("保存失败",
-                                                                    ProductionCopyComfigActivity.this);
-                                                        } else if (resindex == 4) {
-                                                            ToastUtils.ShowToastMessage("数据错误，请重试",
-                                                                    ProductionCopyComfigActivity.this);
-                                                        } else if (resindex == 2) {
-                                                            ToastUtils.ShowToastMessage("该单已存在，无法新建！",
-                                                                    ProductionCopyComfigActivity.this);
-                                                        } else {
-                                                            ToastUtils.ShowToastMessage("未知错误，请联系管理员",
-                                                                    ProductionCopyComfigActivity.this);
-                                                        }
                                                     }
                                                 });
                                     } else {
@@ -665,7 +673,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                             dailyBean.setSumCompletedQty(tvnewlyCompletedLastMonth);
                             dailyBean.setPrdstatus(tvnewlyTotalCompletion);
                             dailyBean.setYear(tvnewlyProYear);
-                            dailyBean.setMonth(tvnewlyMonth);
+                            dailyBean.setMonth(copymonth);
                             dailyBean.setRecorder(copyRecorder);
                             dailyBean.setRecordat(copyRecordat);
                             dailyBean.setRecordid(copyRecordid);
@@ -713,7 +721,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                 }
 
                                                 @Override
-                                                public void onResponse(String response, int id) {
+                                                public void onResponse(final String response, int id) {
                                                     System.out.print(response);
                                                     Thread thread = new Thread(new Runnable() {
                                                         @Override
@@ -723,37 +731,37 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                             } catch (InterruptedException e) {
                                                                 e.printStackTrace();
                                                             }
+                                                            String ression = StringUtil.sideTrim(response, "\"");
+                                                            System.out.print(ression);
+                                                            int resindex = Integer.parseInt(ression);
+                                                            if (resindex > 4) {
+                                                                ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
+                                                                        ProductionCopyComfigActivity.this);
+                                                                startActivity(new Intent(ProductionCopyComfigActivity.this,
+                                                                        ProductionActivity.class));
+                                                            } else if (resindex == 3) {
+                                                                ToastUtils.ShowToastMessage("保存失败",
+                                                                        ProductionCopyComfigActivity.this);
+                                                            } else if (resindex == 4) {
+                                                                ToastUtils.ShowToastMessage("数据错误，请重试",
+                                                                        ProductionCopyComfigActivity.this);
+                                                            } else if (resindex == 2) {
+                                                                ToastUtils.ShowToastMessage("该单已存在，无法新建！",
+                                                                        ProductionCopyComfigActivity.this);
+                                                            } else {
+                                                                ToastUtils.ShowToastMessage("未知错误，请联系管理员",
+                                                                        ProductionCopyComfigActivity.this);
+                                                            }
                                                             progressDialog.dismiss();
                                                         }
                                                     });
                                                     thread.start();
-                                                    String ression = StringUtil.sideTrim(response, "\"");
-                                                    System.out.print(ression);
-                                                    int resindex = Integer.parseInt(ression);
-                                                    if (resindex > 4) {
-                                                        ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
-                                                                ProductionCopyComfigActivity.this);
-                                                    } else if (resindex == 3) {
-                                                        ToastUtils.ShowToastMessage("保存失败",
-                                                                ProductionCopyComfigActivity.this);
-                                                    } else if (resindex == 4) {
-                                                        ToastUtils.ShowToastMessage("数据错误，请重试",
-                                                                ProductionCopyComfigActivity.this);
-                                                    } else if (resindex == 2) {
-                                                        ToastUtils.ShowToastMessage("该单已存在，无法新建！",
-                                                                ProductionCopyComfigActivity.this);
-                                                    } else {
-                                                        ToastUtils.ShowToastMessage("未知错误，请联系管理员",
-                                                                ProductionCopyComfigActivity.this);
-                                                    }
                                                 }
                                             });
                                 } else {
                                     ToastUtils.ShowToastMessage(R.string.noHttp, ProductionCopyComfigActivity.this);
                                 }
-
                             }
-
                         }
                     } else {
                         ProducationCopyDailyBean dailyBean = new ProducationCopyDailyBean();
@@ -773,7 +781,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                         dailyBean.setSumCompletedQty(tvnewlyCompletedLastMonth);
                         dailyBean.setPrdstatus(tvnewlyTotalCompletion);
                         dailyBean.setYear(tvnewlyProYear);
-                        dailyBean.setMonth(tvnewlyMonth);
+                        dailyBean.setMonth(copymonth);
                         dailyBean.setRecorder(copyRecorder);
                         dailyBean.setRecordat(copyRecordat);
                         dailyBean.setRecordid(copyRecordid);
@@ -821,13 +829,35 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                             }
 
                                             @Override
-                                            public void onResponse(String response, int id) {
+                                            public void onResponse(final String response, int id) {
                                                 System.out.print(response);
+
                                                 Thread thread = new Thread(new Runnable() {
                                                     @Override
                                                     public void run() {
                                                         try {
                                                             Thread.sleep(1500);
+                                                            String ression = StringUtil.sideTrim(response, "\"");
+                                                            System.out.print(ression);
+                                                            int resindex = Integer.parseInt(ression);
+                                                            if (resindex > 4) {
+                                                                ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
+                                                                        ProductionCopyComfigActivity.this);
+                                                                startActivity(new Intent(ProductionCopyComfigActivity.this,
+                                                                        ProductionActivity.class));
+                                                            } else if (resindex == 3) {
+                                                                ToastUtils.ShowToastMessage("保存失败",
+                                                                        ProductionCopyComfigActivity.this);
+                                                            } else if (resindex == 4) {
+                                                                ToastUtils.ShowToastMessage("数据错误，请重试",
+                                                                        ProductionCopyComfigActivity.this);
+                                                            } else if (resindex == 2) {
+                                                                ToastUtils.ShowToastMessage("该单已存在，无法新建！",
+                                                                        ProductionCopyComfigActivity.this);
+                                                            } else {
+                                                                ToastUtils.ShowToastMessage("未知错误，请联系管理员",
+                                                                        ProductionCopyComfigActivity.this);
+                                                            }
                                                         } catch (InterruptedException e) {
                                                             e.printStackTrace();
                                                         }
@@ -835,25 +865,6 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                     }
                                                 });
                                                 thread.start();
-                                                String ression = StringUtil.sideTrim(response, "\"");
-                                                System.out.print(ression);
-                                                int resindex = Integer.parseInt(ression);
-                                                if (resindex > 4) {
-                                                    ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
-                                                            ProductionCopyComfigActivity.this);
-                                                } else if (resindex == 3) {
-                                                    ToastUtils.ShowToastMessage("保存失败",
-                                                            ProductionCopyComfigActivity.this);
-                                                } else if (resindex == 4) {
-                                                    ToastUtils.ShowToastMessage("数据错误，请重试",
-                                                            ProductionCopyComfigActivity.this);
-                                                } else if (resindex == 2) {
-                                                    ToastUtils.ShowToastMessage("该单已存在，无法新建！",
-                                                            ProductionCopyComfigActivity.this);
-                                                } else {
-                                                    ToastUtils.ShowToastMessage("未知错误，请联系管理员",
-                                                            ProductionCopyComfigActivity.this);
-                                                }
                                             }
                                         });
                             } else {
@@ -892,7 +903,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 consaveBean.setLeftQty(copyBalanceAmount);
                                 consaveBean.setPrdstatus(tvnewlyTotalCompletion);
                                 consaveBean.setYear(tvnewlyProYear);
-                                consaveBean.setMonth(tvnewlyMonth);
+                                consaveBean.setMonth(copymonth);
                                 consaveBean.setRecorder(copyRecorder);
                                 consaveBean.setRecordat(copyRecordat);
                                 newlyComfigSaveBeen.add(consaveBean);
@@ -941,7 +952,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                 }
 
                                                 @Override
-                                                public void onResponse(String response, int id) {
+                                                public void onResponse(final String response, int id) {
                                                     System.out.print(response);
                                                     Thread thread = new Thread(new Runnable() {
                                                         @Override
@@ -951,29 +962,31 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                             } catch (InterruptedException e) {
                                                                 e.printStackTrace();
                                                             }
+                                                            String ression = StringUtil.sideTrim(response, "\"");
+                                                            System.out.print(ression);
+                                                            int resindex = Integer.parseInt(ression);
+                                                            if (resindex > 4) {
+                                                                ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
+                                                                        ProductionCopyComfigActivity.this);
+                                                                startActivity(new Intent(ProductionCopyComfigActivity.this,
+                                                                        ProductionActivity.class));
+                                                            } else if (resindex == 3) {
+                                                                ToastUtils.ShowToastMessage("保存失败",
+                                                                        ProductionCopyComfigActivity.this);
+                                                            } else if (resindex == 4) {
+                                                                ToastUtils.ShowToastMessage("数据错误，请重试",
+                                                                        ProductionCopyComfigActivity.this);
+                                                            } else if (resindex == 2) {
+                                                                ToastUtils.ShowToastMessage("该单已存在，无法新建！",
+                                                                        ProductionCopyComfigActivity.this);
+                                                            } else {
+                                                                ToastUtils.ShowToastMessage("未知错误，请联系管理员",
+                                                                        ProductionCopyComfigActivity.this);
+                                                            }
                                                             progressDialog.dismiss();
                                                         }
                                                     });
                                                     thread.start();
-                                                    String ression = StringUtil.sideTrim(response, "\"");
-                                                    System.out.print(ression);
-                                                    int resindex = Integer.parseInt(ression);
-                                                    if (resindex > 4) {
-                                                        ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
-                                                                ProductionCopyComfigActivity.this);
-                                                    } else if (resindex == 3) {
-                                                        ToastUtils.ShowToastMessage("保存失败",
-                                                                ProductionCopyComfigActivity.this);
-                                                    } else if (resindex == 4) {
-                                                        ToastUtils.ShowToastMessage("数据错误，请重试",
-                                                                ProductionCopyComfigActivity.this);
-                                                    } else if (resindex == 2) {
-                                                        ToastUtils.ShowToastMessage("该单已存在，无法新建！",
-                                                                ProductionCopyComfigActivity.this);
-                                                    } else {
-                                                        ToastUtils.ShowToastMessage("未知错误，请联系管理员",
-                                                                ProductionCopyComfigActivity.this);
-                                                    }
                                                 }
                                             });
                                 } else {
@@ -1003,7 +1016,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                         dailyBean.setSumCompletedQty(tvnewlyCompletedLastMonth);
                         dailyBean.setPrdstatus(tvnewlyTotalCompletion);
                         dailyBean.setYear(tvnewlyProYear);
-                        dailyBean.setMonth(tvnewlyMonth);
+                        dailyBean.setMonth(copymonth);
                         dailyBean.setRecorder(copyRecorder);
                         dailyBean.setRecordat(copyRecordat);
                         dailyBean.setRecordid(copyRecordid);
@@ -1051,7 +1064,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                             }
 
                                             @Override
-                                            public void onResponse(String response, int id) {
+                                            public void onResponse(final String response, int id) {
                                                 System.out.print(response);
                                                 Thread thread = new Thread(new Runnable() {
                                                     @Override
@@ -1061,37 +1074,37 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                         } catch (InterruptedException e) {
                                                             e.printStackTrace();
                                                         }
+                                                        String ression = StringUtil.sideTrim(response, "\"");
+                                                        System.out.print(ression);
+                                                        int resindex = Integer.parseInt(ression);
+                                                        if (resindex > 4) {
+                                                            ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
+                                                                    ProductionCopyComfigActivity.this);
+                                                            startActivity(new Intent(ProductionCopyComfigActivity.this,
+                                                                    ProductionActivity.class));
+                                                        } else if (resindex == 3) {
+                                                            ToastUtils.ShowToastMessage("保存失败",
+                                                                    ProductionCopyComfigActivity.this);
+                                                        } else if (resindex == 4) {
+                                                            ToastUtils.ShowToastMessage("数据错误，请重试",
+                                                                    ProductionCopyComfigActivity.this);
+                                                        } else if (resindex == 2) {
+                                                            ToastUtils.ShowToastMessage("该单已存在，无法新建！",
+                                                                    ProductionCopyComfigActivity.this);
+                                                        } else {
+                                                            ToastUtils.ShowToastMessage("未知错误，请联系管理员",
+                                                                    ProductionCopyComfigActivity.this);
+                                                        }
                                                         progressDialog.dismiss();
                                                     }
                                                 });
                                                 thread.start();
-                                                String ression = StringUtil.sideTrim(response, "\"");
-                                                System.out.print(ression);
-                                                int resindex = Integer.parseInt(ression);
-                                                if (resindex > 4) {
-                                                    ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
-                                                            ProductionCopyComfigActivity.this);
-                                                } else if (resindex == 3) {
-                                                    ToastUtils.ShowToastMessage("保存失败",
-                                                            ProductionCopyComfigActivity.this);
-                                                } else if (resindex == 4) {
-                                                    ToastUtils.ShowToastMessage("数据错误，请重试",
-                                                            ProductionCopyComfigActivity.this);
-                                                } else if (resindex == 2) {
-                                                    ToastUtils.ShowToastMessage("该单已存在，无法新建！",
-                                                            ProductionCopyComfigActivity.this);
-                                                } else {
-                                                    ToastUtils.ShowToastMessage("未知错误，请联系管理员",
-                                                            ProductionCopyComfigActivity.this);
-                                                }
                                             }
                                         });
                             } else {
                                 ToastUtils.ShowToastMessage(R.string.noHttp, ProductionCopyComfigActivity.this);
                             }
-
                         }
-
                     }
                 } else {
                     ProducationCopyDailyBean dailyBean = new ProducationCopyDailyBean();
@@ -1111,7 +1124,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     dailyBean.setSumCompletedQty(tvnewlyCompletedLastMonth);
                     dailyBean.setPrdstatus(tvnewlyTotalCompletion);
                     dailyBean.setYear(tvnewlyProYear);
-                    dailyBean.setMonth(tvnewlyMonth);
+                    dailyBean.setMonth(copymonth);
                     dailyBean.setRecorder(copyRecorder);
                     dailyBean.setRecordat(copyRecordat);
                     dailyBean.setRecordid(copyRecordid);
@@ -1159,7 +1172,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                         }
 
                                         @Override
-                                        public void onResponse(String response, int id) {
+                                        public void onResponse(final String response, int id) {
                                             System.out.print(response);
                                             Thread thread = new Thread(new Runnable() {
                                                 @Override
@@ -1170,28 +1183,30 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                         e.printStackTrace();
                                                     }
                                                     progressDialog.dismiss();
+                                                    String ression = StringUtil.sideTrim(response, "\"");
+                                                    System.out.print(ression);
+                                                    int resindex = Integer.parseInt(ression);
+                                                    if (resindex > 4) {
+                                                        ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
+                                                                ProductionCopyComfigActivity.this);
+                                                        startActivity(new Intent(ProductionCopyComfigActivity.this,
+                                                                ProductionActivity.class));
+                                                    } else if (resindex == 3) {
+                                                        ToastUtils.ShowToastMessage("保存失败",
+                                                                ProductionCopyComfigActivity.this);
+                                                    } else if (resindex == 4) {
+                                                        ToastUtils.ShowToastMessage("数据错误，请重试",
+                                                                ProductionCopyComfigActivity.this);
+                                                    } else if (resindex == 2) {
+                                                        ToastUtils.ShowToastMessage("该单已存在，无法新建！",
+                                                                ProductionCopyComfigActivity.this);
+                                                    } else {
+                                                        ToastUtils.ShowToastMessage("未知错误，请联系管理员",
+                                                                ProductionCopyComfigActivity.this);
+                                                    }
                                                 }
                                             });
                                             thread.start();
-                                            String ression = StringUtil.sideTrim(response, "\"");
-                                            System.out.print(ression);
-                                            int resindex = Integer.parseInt(ression);
-                                            if (resindex > 4) {
-                                                ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
-                                                        ProductionCopyComfigActivity.this);
-                                            } else if (resindex == 3) {
-                                                ToastUtils.ShowToastMessage("保存失败",
-                                                        ProductionCopyComfigActivity.this);
-                                            } else if (resindex == 4) {
-                                                ToastUtils.ShowToastMessage("数据错误，请重试",
-                                                        ProductionCopyComfigActivity.this);
-                                            } else if (resindex == 2) {
-                                                ToastUtils.ShowToastMessage("该单已存在，无法新建！",
-                                                        ProductionCopyComfigActivity.this);
-                                            } else {
-                                                ToastUtils.ShowToastMessage("未知错误，请联系管理员",
-                                                        ProductionCopyComfigActivity.this);
-                                            }
                                         }
                                     });
                         } else {
@@ -10086,7 +10101,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
         editor.remove("copySingularSystem");
         editor.remove("copyTaskNumber");
         editor.remove("copySize");
-        editor.remove("copyColor");
+        editor.remove("copyyColor");
         editor.remove("copyClippingNumber");
         editor.remove("copyTotalCompletion");
         editor.remove("copyState");
