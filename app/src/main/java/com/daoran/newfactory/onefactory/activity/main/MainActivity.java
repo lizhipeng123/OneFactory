@@ -35,6 +35,7 @@ public class MainActivity extends BaseFrangmentActivity {
 
     private FragmentTabHost mTabHost;
     private LayoutInflater mInflater;
+    private AlertDialog noticeDialog;
     private List<TabHostBean> mTabs = new ArrayList<>(4);
     private DrawerFragment drawerFragment;
     private Fragment navigation_drawer;
@@ -53,16 +54,37 @@ public class MainActivity extends BaseFrangmentActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             // 创建退出对话框
-            AlertDialog isExit = new AlertDialog.Builder(this).create();
-            // 设置对话框标题
-            isExit.setTitle("系统提示");
-            // 设置对话框消息
-            isExit.setMessage("确定要退出吗");
-            // 添加选择按钮并注册监听
-            isExit.setButton("确定", listener);
-            isExit.setButton2("取消", listener);
-            // 显示对话框
-            isExit.show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("系统提示");
+            builder.setMessage("确定要退出吗");
+            builder.setPositiveButton("确定"
+                    , new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            int currentVersion = android.os.Build.VERSION.SDK_INT;
+                            if (currentVersion > android.os.Build.VERSION_CODES.ECLAIR_MR1) {
+                                Intent startMain = new Intent(Intent.ACTION_MAIN);
+                                startMain.addCategory(Intent.CATEGORY_HOME);
+                                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(startMain);
+                                System.exit(0);
+                            } else {//android2.1
+                                ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+                                am.restartPackage(getPackageName());
+                            }
+                            dialog.dismiss();
+                        }
+                    });
+            builder.setNegativeButton("取消",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            noticeDialog = builder.create();
+            noticeDialog.setCanceledOnTouchOutside(false);
+            noticeDialog.show();
         }
         return false;
     }

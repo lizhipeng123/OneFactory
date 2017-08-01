@@ -1,7 +1,9 @@
 package com.daoran.newfactory.onefactory.activity.work.production;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -26,6 +28,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.login.LoginMainActivity;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.ProducationNewlyComfigSaveBean;
 import com.daoran.newfactory.onefactory.bean.ProductionNewlybooleanBean;
@@ -56,6 +59,8 @@ import java.util.Map;
 import okhttp3.Call;
 import okhttp3.MediaType;
 
+import static com.umeng.analytics.MobclickAgent.onProfileSignOff;
+
 /**
  * 新建保存
  * Created by lizhipeng on 2017/5/9.
@@ -73,7 +78,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
     private ProductionNewlybooleanBean newlybooleanBean;
     private List<ProducationNewlyComfigSaveBean> newlyComfigSaveBeen
             = new ArrayList<ProducationNewlyComfigSaveBean>();
-
+    private AlertDialog noticeDialog;
     private Button btnProSave;
     private MyAdatper comfigAdapter;
     private TextView tvconfigone, tvconfigtwo, tvconfigthree, tvconfigfore, tvconfigfive,
@@ -389,9 +394,31 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            /*返回判断是否保存后退出*/
             case R.id.ivProductionBack:
-                finish();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("保存提示");
+                builder.setMessage("退出是否保存");
+                builder.setPositiveButton("保存后退出"
+                        , new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                setSave();
+                                dialog.dismiss();
+                            }
+                        });
+                builder.setNegativeButton("不保存，直接退出",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                noticeDialog = builder.create();
+                noticeDialog.setCanceledOnTouchOutside(false);
+                noticeDialog.show();
                 break;
+            /*保存*/
             case R.id.btnProSave:
                 setSave();
                 break;
@@ -458,9 +485,9 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         String[] arrsmonth = productionMonth.split(",");//修改的月份数组
         String[] arrsdatemonth = new String[listsize];
         String[] arrsdatepredure = new String[listsize];//符合条件的工序数组
-        if(booleandatelist.size()==0){
-            if(procudureTitle.equals("")){
-                ToastUtils.ShowToastMessage("请选择工序，再保存",ProductionNewlyComfigActivity.this);
+        if (booleandatelist.size() == 0) {
+            if (procudureTitle.equals("")) {
+                ToastUtils.ShowToastMessage("请选择工序，再保存", ProductionNewlyComfigActivity.this);
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -473,7 +500,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     }
                 });
                 thread.start();
-            }else{
+            } else {
                 String proPrdstatusTitle = sp.getString("ComfigPrdstatus", "");//状态//
                 String productionItem = sp.getString("comfigitem", "");//款号
                 String productionDocumentary = sp.getString("configdocument", "");//跟单//
@@ -796,7 +823,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     }
                 }
             }
-        }else{
+        } else {
             for (int i = 0; i < listsize; i++) {
                 if (listsize != 0) {
                     if (booleandatelist.get(i).getItem() != null) {
@@ -851,7 +878,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
             System.out.print(arrsdatemonth + "");
             boolean monthbool = containsAll(arrsdatemonth, arrsmonth);//判断月份是否存在
             boolean predurebool = containsAll(arrsdatepredure, arrspredure);//判断工序是否存在
-            if(procudureTitle.equals("")){
+            if (procudureTitle.equals("")) {
                 ToastUtils.ShowToastMessage("请填写工序", ProductionNewlyComfigActivity.this);
                 Thread thread = new Thread(new Runnable() {
                     @Override
@@ -865,7 +892,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                     }
                 });
                 thread.start();
-            }else{
+            } else {
                 if (predurebool == true) {
                     if (monthbool == true) {
                         ToastUtils.ShowToastMessage("已存在相同月份，工序的款号", ProductionNewlyComfigActivity.this);
@@ -1547,7 +1574,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         propostbean.setPageSize(500);//默认每页多少条数据
         String gsonbeanStr = gson.toJson(propostbean);
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this);
             OkHttpUtils.postString()
                     .url(str)
                     .content(gsonbeanStr)
@@ -1557,7 +1583,6 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
-                            ResponseDialog.closeLoading();
                         }
 
                         @Override
@@ -1571,10 +1596,8 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 System.out.print(ression);
                                 newlybooleanBean = new Gson().fromJson(ression, ProductionNewlybooleanBean.class);
                                 booleandatelist = newlybooleanBean.getData();
-                                ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
-                                ResponseDialog.closeLoading();
                             }
                         }
                     });

@@ -1,7 +1,9 @@
 package com.daoran.newfactory.onefactory.activity.work.production;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -57,6 +59,7 @@ import okhttp3.MediaType;
 public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
         implements View.OnClickListener {
     private static final String TAG = "configtest";
+    private AlertDialog noticeDialog;
     private NoscrollListView mData;
     private SyncHorizontalScrollView mHeaderHorizontal;
     private SyncHorizontalScrollView mDataHorizontal;
@@ -371,7 +374,27 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
         switch (v.getId()) {
             /*返回*/
             case R.id.ivProductionBack:
-                finish();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("保存提示");
+                builder.setMessage("退出是否保存");
+                builder.setPositiveButton("保存后退出"
+                        , new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                setSave();
+                                dialog.dismiss();
+                            }
+                        });
+                builder.setNegativeButton("不保存，直接退出",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                noticeDialog = builder.create();
+                noticeDialog.setCanceledOnTouchOutside(false);
+                noticeDialog.show();
                 break;
             /*复制保存*/
             case R.id.btnProSave:

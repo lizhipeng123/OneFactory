@@ -171,12 +171,28 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             /*退出当前账号*/
             case R.id.rlAgainLogin:
-                AlertDialog dialog = new AlertDialog.Builder(mactivity).create();
-                dialog.setTitle("系统提示");
-                dialog.setMessage("确定重新登录吗");
-                dialog.setButton("确定", listener);
-                dialog.setButton2("取消", listener);
-                dialog.show();
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(mactivity);
+                builder1.setTitle("系统提示");
+                builder1.setMessage("确定重新登录吗");
+                builder1.setPositiveButton("确定"
+                        , new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(getActivity(), LoginMainActivity.class));
+                                onProfileSignOff();
+                                dialog.dismiss();
+                            }
+                        });
+                builder1.setNegativeButton("取消",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                noticeDialog = builder1.create();
+                noticeDialog.setCanceledOnTouchOutside(false);
+                noticeDialog.show();
                 break;
             /**/
             case R.id.rlEditionUpdate:
@@ -187,12 +203,27 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 break;
             /*清除缓存*/
             case R.id.rlClean:
-                AlertDialog dialog1 = new AlertDialog.Builder(mactivity).create();
-                dialog1.setTitle("系统提示");
-                dialog1.setMessage("确定清除缓存吗");
-                dialog1.setButton("确定", listenerClean);
-                dialog1.setButton2("取消", listenerClean);
-                dialog1.show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(mactivity);
+                builder.setTitle("系统提示");
+                builder.setMessage("确定清除缓存吗");
+                builder.setPositiveButton("确定"
+                        , new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                showClearDialog();
+                                dialog.dismiss();
+                            }
+                        });
+                builder.setNegativeButton("取消",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                noticeDialog = builder.create();
+                noticeDialog.setCanceledOnTouchOutside(false);
+                noticeDialog.show();
                 break;
             /**/
             case R.id.rlwifi:
@@ -378,39 +409,6 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         }
         return false;
     }
-
-    /**
-     * 监听对话框里面的button点击事件
-     */
-    DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case AlertDialog.BUTTON_POSITIVE:// "确认"按钮退出程序
-                    startActivity(new Intent(getActivity(), LoginMainActivity.class));
-                    onProfileSignOff();
-                    break;
-                case AlertDialog.BUTTON_NEGATIVE:// "取消"第二个按钮取消对话框
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
-
-    DialogInterface.OnClickListener listenerClean = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case AlertDialog.BUTTON_POSITIVE://确定
-                    showClearDialog();
-                    break;
-                case AlertDialog.BUTTON_NEGATIVE://取消
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
 
     /**
      * 获取本机版本号
