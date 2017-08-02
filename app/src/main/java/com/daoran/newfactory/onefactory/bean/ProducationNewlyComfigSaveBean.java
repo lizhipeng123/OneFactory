@@ -28,7 +28,7 @@ public class ProducationNewlyComfigSaveBean {
     private String styp;//po类型(分类)
     private String fsaler;//外贸业务员
     private String psaler;//生产业务员
-    private String memo;
+    private String memo;//备注
     private String pqty;//产品数量
     private String unit;//单位
     private String prodcol;//花色

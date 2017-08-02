@@ -116,6 +116,9 @@ public class MainActivity extends BaseFrangmentActivity {
         }
     };
 
+    /**
+     * 操作控件
+     */
     private void getViews() {
 //        drawerFragment = (DrawerFragment) getSupportFragmentManager().
 //                findFragmentById(R.id.navigation_drawer);
@@ -159,6 +162,11 @@ public class MainActivity extends BaseFrangmentActivity {
         ft.commit();
     }
 
+    /**
+     * 底部菜单项
+     * @param bean
+     * @return
+     */
     private View getTabItemView(TabHostBean bean) {
         View view = mInflater.inflate(R.layout.tabitem_home, null);
         ImageView imageView = (ImageView) view.findViewById(R.id.tab_icon);

@@ -1,7 +1,9 @@
 package com.daoran.newfactory.onefactory.activity.work.production;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -74,7 +76,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
     private ProductionNewlybooleanBean newlybooleanBean;
     private List<ProducationCopyNewlyComfigSaveBean> newlyComfigSaveBeen
             = new ArrayList<ProducationCopyNewlyComfigSaveBean>();
-
+    private AlertDialog noticeDialog;
     private Button btnProSave;
     private MyAdatper comfigAdapter;
     private TextView tvconfigone, tvconfigtwo, tvconfigthree, tvconfigfore, tvconfigfive,
@@ -391,9 +393,32 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            /*返回按钮*/
             case R.id.ivProductionBack:
-                finish();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("保存提示");
+                builder.setMessage("退出是否保存");
+                builder.setPositiveButton("保存后退出"
+                        , new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                setdeilyData();
+                                dialog.dismiss();
+                            }
+                        });
+                builder.setNegativeButton("不保存，直接退出",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                finish();
+                            }
+                        });
+                noticeDialog = builder.create();
+                noticeDialog.setCanceledOnTouchOutside(false);
+                noticeDialog.show();
                 break;
+            /*复制保存按钮*/
             case R.id.btnProSave:
                 setdeilyData();
                 break;
@@ -440,9 +465,9 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
             String copyRecordat = sp.getString("copyRecordat", "");//制单时间
             String copyRecordid = sp.getString("username", "");//当前用户
             String copymonth;
-            if(productionMonth.equals("")){
-                copymonth=tvnewlyMonth;
-            }else{
+            if (productionMonth.equals("")) {
+                copymonth = tvnewlyMonth;
+            } else {
                 copymonth = productionMonth;
             }
             if (tvnewlyProcedure.equals("裁床")) {
@@ -1540,6 +1565,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     viewHolder.tvProSingularSystem.setText(tvnewSingularSystem);
                     viewHolder.tvProSize.setText(tvnewTaskNumber);
                     viewHolder.tvProColor.setText(tvnewlySize);
+                    viewHolder.tvProState.setText(tvnewlyTotalCompletion);
                     viewHolder.tvProClippingNumber.setText(tvnewlyClippingNumber);
                     viewHolder.tvProRecordat.setText(year + "/" + month + "/" + datetime);
                     String comfigitem = viewHolder.tv_data.getText().toString();
@@ -2007,7 +2033,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     /*光标放置在文本最后*/
                     viewHolder.tvProCompletedLastMonth.setSelection(viewHolder.tvProCompletedLastMonth.length());
 
-                    viewHolder.tvProTotalCompletion.setText(tvnewlyTotalCompletion);
+                    viewHolder.tvProTotalCompletion.setText(tvnewlyCompletedLastMonth);
                     String configcompletion = viewHolder.tvProTotalCompletion.getText().toString();
                     spUtils.put(context, "configcompletion", configcompletion);
 
@@ -2182,14 +2208,13 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     viewHolder.tvProTaskNumber.setText(tvdate);
 
                     viewHolder.tvProColor.setText(tvnewlySize);
-
+                    viewHolder.tvProState.setText(tvnewlyTotalCompletion);
                     final EditText editTexLastMonth = viewHolder.tvProCompletedLastMonth;
                     /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexLastMonth.getTag() instanceof TextWatcher) {
                         editTexLastMonth.removeTextChangedListener((TextWatcher) editTexLastMonth.getTag());
                     }
                     viewHolder.tvProCompletedLastMonth.setText(tvnewlyCompletedLastMonth);
-
                     viewHolder.tvProOneDay.setVisibility(View.GONE);
                     viewHolder.tvProTwoDay.setVisibility(View.GONE);
                     viewHolder.tvProThreeDay.setVisibility(View.GONE);
@@ -2271,6 +2296,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     viewHolder.tvProSingularSystem.setText(tvnewSingularSystem);
                     viewHolder.tvProSize.setText(tvnewTaskNumber);
                     viewHolder.tvProColor.setText(tvnewlySize);
+                    viewHolder.tvProState.setText(tvnewlyTotalCompletion);
                     viewHolder.tvProClippingNumber.setText(tvnewlyClippingNumber);
                     viewHolder.tvProRecordat.setText(year + "/" + month + "/" + datetime);
                     String comfigitem = viewHolder.tv_data.getText().toString();
@@ -2669,6 +2695,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 }
                             }
                         }
+
                         @Override
                         public void afterTextChanged(Editable s) {
                             Log.d(TAG, "afterTextChanged");
@@ -2732,7 +2759,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     /*光标放置在文本最后*/
                     viewHolder.tvProCompletedLastMonth.setSelection(viewHolder.tvProCompletedLastMonth.length());
 
-                    viewHolder.tvProTotalCompletion.setText(tvnewlyTotalCompletion);
+                    viewHolder.tvProTotalCompletion.setText(tvnewlyCompletedLastMonth);
                     String configcompletion = viewHolder.tvProTotalCompletion.getText().toString();
                     spUtils.put(context, "configcompletion", configcompletion);
 

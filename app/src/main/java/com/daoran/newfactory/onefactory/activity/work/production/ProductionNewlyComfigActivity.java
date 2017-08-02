@@ -412,6 +412,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
+                                finish();
                             }
                         });
                 noticeDialog = builder.create();
@@ -448,17 +449,25 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         SharedPreferences spes = getSharedPreferences("mylist", 0);
         String liststr = spes.getString("mylistStr", "");
         String tvnewlySizes = sp.getString("tvnewlySize", "");//花色
-        String salesid = sp.getString("tvnewlysalesid", "");//款号id
-        String proColumnTitle = sp.getString("Configdepartment", "");//部门
+        String salesid = sp.getString("tvnewlysalesid", "");//款号行id
+        String recordid = sp.getString("username", "");//制单人id
         String productionRecorder = sp.getString("configrecorder", "");//制单人
         String productionMonth = sp.getString("ComfigMonth", "");//月
-        String proadaptertitle = sp.getString("tvnewlyDepartment", "");
-        String columntitle;
-        String recordid = sp.getString("username", "");//制单人id
-        if (proColumnTitle.equals("")) {
+        String proColumnTitle = sp.getString("Configdepartment", "");//部门
+        String proadaptertitle = sp.getString("tvnewlyDepartment", "");//款号选择传过来的部门组别
+        String columntitle;//部门变量
+        if (proColumnTitle.equals("")) {//如果没有修改部门组别，就把款号传过来的部门加进去
             columntitle = proadaptertitle;
         } else {
             columntitle = proColumnTitle;
+        }
+        String productionTaskNumber = sp.getString("ConfigTaskNumber", "");//修改的任务数
+        String productiontvColorTaskqty = sp.getString("tvColorTaskqty","");//款号选择传过来的任务数
+        String tvColorTaskqtyss ;//任务数变量
+        if(productionTaskNumber.equals("")){//如果没有修改任务数，就把款号传过来的任务数加进去
+            tvColorTaskqtyss = productiontvColorTaskqty;
+        }else{
+            tvColorTaskqtyss = productionTaskNumber;
         }
         String proProcedureadapterTitle = sp.getString("ConfigProcedure", "");//工序adapter中修改过的
         String proprocudureTitle = sp.getString("tvnewlyProcedure", "");//从款号选择传过来的工序
@@ -472,6 +481,14 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         } else {
             procudureTitle = proprocudureTitle;
         }
+        String proPrdstatusTitle = sp.getString("ComfigPrdstatus", "");//状态//
+        String protvnewlyTotalCompletionn = sp.getString("tvnewlyTotalCompletion","");//款号传过来的状态
+        String tvnewlyTotalCompletionn;
+        if(proPrdstatusTitle.equals("")){
+            tvnewlyTotalCompletionn = protvnewlyTotalCompletionn;
+        }else{
+            tvnewlyTotalCompletionn = proPrdstatusTitle;
+        }
 
         int listsize = booleandatelist.size();
         if (listsize == 0) {
@@ -479,6 +496,9 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         } else {
             listsize = booleandatelist.size();
         }
+
+        String procomfigcountmonth = sp.getString("procomfigcountmonth","");//结算后的总完工数
+
         String tvnewlydate = sp.getString("tvnewlydate", "");
         String[] arrsitem = tvnewlydate.split(",");//修改的款号数组
         String[] arrspredure = procudureTitle.split(",");//修改的工序数组
@@ -501,14 +521,12 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 });
                 thread.start();
             } else {
-                String proPrdstatusTitle = sp.getString("ComfigPrdstatus", "");//状态//
                 String productionItem = sp.getString("comfigitem", "");//款号
                 String productionDocumentary = sp.getString("configdocument", "");//跟单//
                 String productionFactory = sp.getString("configfactory", "");//工厂
                 String productionOthers = sp.getString("ConfigOthers", "");//组别人数
                 String productionSingularSystem = sp.getString("configsingular", "");//制单数//
                 String productionColor = sp.getString("configcolor", "");//花色
-                String productionTaskNumber = sp.getString("ConfigTaskNumber", "");//任务数
                 String productionSize = sp.getString("configsize", "");//尺码
                 String productionClippingNumber = sp.getString("configclipping", "");//实裁数
                 String productionCompletedLastMonth = sp.getString("ConfigLastMonth", "");//上月完工
@@ -570,13 +588,13 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 consaveBean.setWorkingProcedure(procudureTitle);
                                 consaveBean.setWorkers(productionOthers);
                                 consaveBean.setPqty(productionSingularSystem);
-                                consaveBean.setTaskqty(productionTaskNumber);
+                                consaveBean.setTaskqty(tvColorTaskqtyss);
                                 consaveBean.setMdl(productionSize);
                                 consaveBean.setFactcutqty(productionClippingNumber);
                                 consaveBean.setSumCompletedQty(productionTotalCompletion);
                                 consaveBean.setLastMonQty(productionCompletedLastMonth);
                                 consaveBean.setLeftQty(productionBalanceAmount);
-                                consaveBean.setPrdstatus(proPrdstatusTitle);
+                                consaveBean.setPrdstatus(tvnewlyTotalCompletionn);
                                 consaveBean.setYear(productionYear);
                                 consaveBean.setMonth(productionMonth);
                                 consaveBean.setMemo(productionRemarks);
@@ -691,13 +709,13 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         consaveBean.setWorkingProcedure(procudureTitle);
                         consaveBean.setWorkers(productionOthers);
                         consaveBean.setPqty(productionSingularSystem);
-                        consaveBean.setTaskqty(productionTaskNumber);
+                        consaveBean.setTaskqty(tvColorTaskqtyss);
                         consaveBean.setMdl(productionSize);
                         consaveBean.setFactcutqty(productionClippingNumber);
                         consaveBean.setSumCompletedQty(productionTotalCompletion);
                         consaveBean.setLastMonQty(productionCompletedLastMonth);
                         consaveBean.setLeftQty(productionBalanceAmount);
-                        consaveBean.setPrdstatus(proPrdstatusTitle);
+                        consaveBean.setPrdstatus(tvnewlyTotalCompletionn);
                         consaveBean.setYear(productionYear);
                         consaveBean.setMonth(productionMonth);
                         consaveBean.setDay1(productionOneDay);
@@ -909,14 +927,12 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         });
                         thread.start();
                     } else {
-                        String proPrdstatusTitle = sp.getString("ComfigPrdstatus", "");//状态//
                         String productionItem = sp.getString("comfigitem", "");//款号
                         String productionDocumentary = sp.getString("configdocument", "");//跟单//
                         String productionFactory = sp.getString("configfactory", "");//工厂
                         String productionOthers = sp.getString("ConfigOthers", "");//组别人数
                         String productionSingularSystem = sp.getString("configsingular", "");//制单数//
                         String productionColor = sp.getString("configcolor", "");//花色
-                        String productionTaskNumber = sp.getString("ConfigTaskNumber", "");//任务数
                         String productionSize = sp.getString("configsize", "");//尺码
                         String productionClippingNumber = sp.getString("configclipping", "");//实裁数
                         String productionCompletedLastMonth = sp.getString("ConfigLastMonth", "");//上月完工
@@ -976,13 +992,13 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                         consaveBean.setWorkingProcedure(procudureTitle);
                                         consaveBean.setWorkers(productionOthers);
                                         consaveBean.setPqty(productionSingularSystem);
-                                        consaveBean.setTaskqty(productionTaskNumber);
+                                        consaveBean.setTaskqty(tvColorTaskqtyss);
                                         consaveBean.setMdl(productionSize);
                                         consaveBean.setFactcutqty(productionClippingNumber);
                                         consaveBean.setSumCompletedQty(productionTotalCompletion);
                                         consaveBean.setLastMonQty(productionCompletedLastMonth);
                                         consaveBean.setLeftQty(productionBalanceAmount);
-                                        consaveBean.setPrdstatus(proPrdstatusTitle);
+                                        consaveBean.setPrdstatus(tvnewlyTotalCompletionn);
                                         consaveBean.setYear(productionYear);
                                         consaveBean.setMonth(productionMonth);
                                         consaveBean.setMemo(productionRemarks);
@@ -1097,13 +1113,13 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                 consaveBean.setWorkingProcedure(procudureTitle);
                                 consaveBean.setWorkers(productionOthers);
                                 consaveBean.setPqty(productionSingularSystem);
-                                consaveBean.setTaskqty(productionTaskNumber);
+                                consaveBean.setTaskqty(tvColorTaskqtyss);
                                 consaveBean.setMdl(productionSize);
                                 consaveBean.setFactcutqty(productionClippingNumber);
                                 consaveBean.setSumCompletedQty(productionTotalCompletion);
                                 consaveBean.setLastMonQty(productionCompletedLastMonth);
                                 consaveBean.setLeftQty(productionBalanceAmount);
-                                consaveBean.setPrdstatus(proPrdstatusTitle);
+                                consaveBean.setPrdstatus(tvnewlyTotalCompletionn);
                                 consaveBean.setYear(productionYear);
                                 consaveBean.setMonth(productionMonth);
                                 consaveBean.setDay1(productionOneDay);
@@ -1229,14 +1245,12 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                         }
                     }
                 } else {
-                    String proPrdstatusTitle = sp.getString("ComfigPrdstatus", "");//状态//
                     String productionItem = sp.getString("comfigitem", "");//款号
                     String productionDocumentary = sp.getString("configdocument", "");//跟单//
                     String productionFactory = sp.getString("configfactory", "");//工厂
                     String productionOthers = sp.getString("ConfigOthers", "");//组别人数
                     String productionSingularSystem = sp.getString("configsingular", "");//制单数//
                     String productionColor = sp.getString("configcolor", "");//花色
-                    String productionTaskNumber = sp.getString("ConfigTaskNumber", "");//任务数
                     String productionSize = sp.getString("configsize", "");//尺码
                     String productionClippingNumber = sp.getString("configclipping", "");//实裁数
                     String productionCompletedLastMonth = sp.getString("ConfigLastMonth", "");//上月完工
@@ -1296,13 +1310,13 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     consaveBean.setWorkingProcedure(procudureTitle);
                                     consaveBean.setWorkers(productionOthers);
                                     consaveBean.setPqty(productionSingularSystem);
-                                    consaveBean.setTaskqty(productionTaskNumber);
+                                    consaveBean.setTaskqty(tvColorTaskqtyss);
                                     consaveBean.setMdl(productionSize);
                                     consaveBean.setFactcutqty(productionClippingNumber);
                                     consaveBean.setSumCompletedQty(productionTotalCompletion);
                                     consaveBean.setLastMonQty(productionCompletedLastMonth);
                                     consaveBean.setLeftQty(productionBalanceAmount);
-                                    consaveBean.setPrdstatus(proPrdstatusTitle);
+                                    consaveBean.setPrdstatus(tvnewlyTotalCompletionn);
                                     consaveBean.setYear(productionYear);
                                     consaveBean.setMonth(productionMonth);
                                     consaveBean.setMemo(productionRemarks);
@@ -1417,13 +1431,13 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                             consaveBean.setWorkingProcedure(procudureTitle);
                             consaveBean.setWorkers(productionOthers);
                             consaveBean.setPqty(productionSingularSystem);
-                            consaveBean.setTaskqty(productionTaskNumber);
+                            consaveBean.setTaskqty(tvColorTaskqtyss);
                             consaveBean.setMdl(productionSize);
                             consaveBean.setFactcutqty(productionClippingNumber);
                             consaveBean.setSumCompletedQty(productionTotalCompletion);
                             consaveBean.setLastMonQty(productionCompletedLastMonth);
                             consaveBean.setLeftQty(productionBalanceAmount);
-                            consaveBean.setPrdstatus(proPrdstatusTitle);
+                            consaveBean.setPrdstatus(tvnewlyTotalCompletionn);
                             consaveBean.setYear(productionYear);
                             consaveBean.setMonth(productionMonth);
                             consaveBean.setDay1(productionOneDay);
@@ -1819,18 +1833,18 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
             viewHolder.tv_data.setText(tvnewly);
             sp = getSharedPreferences("my_sp", 0);
             String nameid = sp.getString("usernamerecoder", "");
-            String tvnewlyDocumen = String.valueOf(mdate.get(position).get("tvnewlyDocumentary"));
-            String tvnewlyFactory = String.valueOf(mdate.get(position).get("tvnewlyFactory"));
-            String tvnewlyDepartment = String.valueOf(mdate.get(position).get("tvnewlyDepartment"));
-            String tvnewlyProcedure = String.valueOf(mdate.get(position).get("tvnewlyProcedure"));
-            String tvnewlyOthers = String.valueOf(mdate.get(position).get("tvnewlyOthers"));
-            String tvnewSingularSystem = String.valueOf(mdate.get(position).get("tvnewSingularSystem"));
-            final String tvdate = String.valueOf(mdate.get(position).get("tvColorTaskqty"));
-            String tvnewTaskNumber = String.valueOf(mdate.get(position).get("tvnewTaskNumber"));
-            String tvnewlySize = String.valueOf(mdate.get(position).get("tvnewlySize"));
-            String tvnewlyClippingNumber = String.valueOf(mdate.get(position).get("tvnewlyClippingNumber"));
-            String tvnewlyCompletedLastMonth = String.valueOf(mdate.get(position).get("tvnewlyCompletedLastMonth"));
-            String tvnewlyTotalCompletion = String.valueOf(mdate.get(position).get("tvnewlyTotalCompletion"));
+            String tvnewlyDocumen = String.valueOf(mdate.get(position).get("tvnewlyDocumentary"));//跟单
+            String tvnewlyFactory = String.valueOf(mdate.get(position).get("tvnewlyFactory"));//工厂
+            String tvnewlyDepartment = String.valueOf(mdate.get(position).get("tvnewlyDepartment"));//部门组别
+            String tvnewlyProcedure = String.valueOf(mdate.get(position).get("tvnewlyProcedure"));//工序
+            String tvnewlyOthers = String.valueOf(mdate.get(position).get("tvnewlyOthers"));//组别人数
+            String tvnewSingularSystem = String.valueOf(mdate.get(position).get("tvnewSingularSystem"));//制单数
+            final String tvdate = String.valueOf(mdate.get(position).get("tvColorTaskqty"));//任务数
+            String tvnewTaskNumber = String.valueOf(mdate.get(position).get("tvnewTaskNumber"));//尺码
+            String tvnewlySize = String.valueOf(mdate.get(position).get("tvnewlySize"));//花色
+            String tvnewlyClippingNumber = String.valueOf(mdate.get(position).get("tvnewlyClippingNumber"));//实裁数
+            String tvnewlyCompletedLastMonth = String.valueOf(mdate.get(position).get("tvnewlyCompletedLastMonth"));//总完工数
+            String tvnewlyTotalCompletion = String.valueOf(mdate.get(position).get("tvnewlyTotalCompletion"));//状态
 
             Time t = new Time("GMT+8"); // or Time t=new Time("GMT+8");
             t.setToNow(); // 取得系统时间。
@@ -3337,6 +3351,8 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
+
                         }
                     };
                     editTexOneDay.addTextChangedListener(TvOneDay);
@@ -3568,6 +3584,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexTwoDay.addTextChangedListener(TvTwoDay);
@@ -3799,6 +3816,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexThreeDay.addTextChangedListener(TvThreeDay);
@@ -4030,6 +4048,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexForeDay.addTextChangedListener(TvForeDay);
@@ -4261,6 +4280,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexFiveDay.addTextChangedListener(TvFiveDay);
@@ -4492,6 +4512,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexSixDay.addTextChangedListener(TvSixDay);
@@ -4723,6 +4744,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexSevenDay.addTextChangedListener(TvSevenDay);
@@ -4954,6 +4976,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexEightDay.addTextChangedListener(TvEightDay);
@@ -5185,6 +5208,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexNineDay.addTextChangedListener(TvNineDay);
@@ -5416,6 +5440,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexTenDay.addTextChangedListener(TvTenDay);
@@ -5647,6 +5672,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexElevenDay.addTextChangedListener(TvElevenDay);
@@ -5878,6 +5904,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexTwelveDay.addTextChangedListener(TvTwelveDay);
@@ -6109,6 +6136,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexThirteenDay.addTextChangedListener(TvThirteenDay);
@@ -6340,6 +6368,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexFourteenDay.addTextChangedListener(TvFourteenDay);
@@ -6571,6 +6600,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexFifteenDay.addTextChangedListener(TvFifteenDay);
@@ -6802,6 +6832,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexSixteenDay.addTextChangedListener(TvSixteenDay);
@@ -7033,6 +7064,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexSeventeenDay.addTextChangedListener(TvSeventeenDay);
@@ -7264,6 +7296,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexEighteenDay.addTextChangedListener(TvEighteenDay);
@@ -7495,6 +7528,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexNineteenDay.addTextChangedListener(TvNineteenDay);
@@ -7726,6 +7760,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexTwentyDay.addTextChangedListener(TvTwentyDay);
@@ -7957,6 +7992,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexTwentyOneDay.addTextChangedListener(TvTwentyOneDay);
@@ -8188,6 +8224,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexTwentyTwoDay.addTextChangedListener(TvTwentyTwoDay);
@@ -8419,6 +8456,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexTwentyThreeDay.addTextChangedListener(TvTwentyThreeDay);
@@ -8650,6 +8688,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexTwentyForeDay.addTextChangedListener(TvTwentyForeDay);
@@ -8881,6 +8920,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexTwentyFiveDay.addTextChangedListener(TvTwentyFiveDay);
@@ -9112,6 +9152,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexTwentySixDay.addTextChangedListener(TvTwentySixDay);
@@ -9343,6 +9384,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexTwentySevenDay.addTextChangedListener(TvTwentySevenDay);
@@ -9574,6 +9616,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexTwentyEightDay.addTextChangedListener(TvTwentyEightDay);
@@ -9805,6 +9848,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexTwentyNineDay.addTextChangedListener(TvTwentyNineDay);
@@ -10036,6 +10080,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexThirtyDay.addTextChangedListener(TvThirtyDay);
@@ -10267,6 +10312,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                     + day29 + day30 + day31;
                             String countmonth = String.valueOf(count);
                             viewHolder.tvProTotalCompletion.setText(countmonth);
+                            spUtils.put(context,"procomfigcountmonth",countmonth);
                         }
                     };
                     editTexThirtyOneDay.addTextChangedListener(TvThirtyOneDay);

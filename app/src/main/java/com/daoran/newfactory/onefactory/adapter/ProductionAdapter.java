@@ -162,29 +162,29 @@ public class ProductionAdapter extends BaseAdapter {
                     public void onClick(View v) {
                         viewHolder.lin_content.setBackgroundResource(R.drawable.bill_record_historylist);
                         String prorecorid = getItem(position).getRecordid();
-                        spUtils.put(context, "prorecorid", prorecorid);
+                        spUtils.put(context, "prorecorid", prorecorid);//制单人id
                         String proid = String.valueOf(getItem(position).getID());
-                        spUtils.put(context, "proadapterid", proid);
+                        spUtils.put(context, "proadapterid", proid);//id
                         String urlid = String.valueOf(getItem(position).getID());
-                        spUtils.put(context, "prouriid", urlid);
+                        spUtils.put(context, "prouriid", urlid);//id
                         String salesid = String.valueOf(getItem(position).getSalesid());
-                        spUtils.put(context, "prosalesid", salesid);
+                        spUtils.put(context, "prosalesid", salesid);//行id
                         String copyitem = getItem(position).getItem();
-                        spUtils.put(context, "copyitem", copyitem);
+                        spUtils.put(context, "copyitem", copyitem);//款号
                         String copyDocumentary = getItem(position).getPrddocumentary();
-                        spUtils.put(context, "copyDocumentary", copyDocumentary);
+                        spUtils.put(context, "copyDocumentary", copyDocumentary);//跟单
                         String copyFactory = getItem(position).getSubfactory();
-                        spUtils.put(context, "copyFactory", copyFactory);
+                        spUtils.put(context, "copyFactory", copyFactory);//工厂
                         String copyDepartment = getItem(position).getSubfactoryTeams();
-                        spUtils.put(context, "copyDepartment", copyDepartment);
+                        spUtils.put(context, "copyDepartment", copyDepartment);//部门组别
                         String copyProcedure = getItem(position).getWorkingProcedure();
-                        spUtils.put(context, "copyProcedure", copyProcedure);
+                        spUtils.put(context, "copyProcedure", copyProcedure);//工序
 
                         String copyOthers = getItem(position).getWorkers();
-                        spUtils.put(context, "copyOthers", copyOthers);
+                        spUtils.put(context, "copyOthers", copyOthers);//组别人数
                         String copySingularSystem = getItem(position).getPqty();
-                        spUtils.put(context, "copySingularSystem", copySingularSystem);
-                        String copyColor = getItem(position).getProdcol();
+                        spUtils.put(context, "copySingularSystem", copySingularSystem);//制单数
+                        String copyColor = getItem(position).getProdcol();//花色
                         if (copyColor.contains("/")) {
                             System.out.print(copyColor);
                             String[] temp = null;
@@ -206,19 +206,19 @@ public class ProductionAdapter extends BaseAdapter {
                             spUtils.put(context, "copyyColor", copyColor);
                         }
                         String copyTaskNumber = getItem(position).getTaskqty();
-                        spUtils.put(context, "copyTaskNumber", copyTaskNumber);
+                        spUtils.put(context, "copyTaskNumber", copyTaskNumber);//任务数
                         String copySize = getItem(position).getMdl();
-                        spUtils.put(context, "copySize", copySize);
+                        spUtils.put(context, "copySize", copySize);//尺码
                         String copyClippingNumber = getItem(position).getFactcutqty();
-                        spUtils.put(context, "copyClippingNumber", copyClippingNumber);
+                        spUtils.put(context, "copyClippingNumber", copyClippingNumber);//实裁数
                         String copyCompletedLastMonth = getItem(position).getLastMonQty();
-                        spUtils.put(context, "copyCompletedLastMonth", copyCompletedLastMonth);
+                        spUtils.put(context, "copyCompletedLastMonth", copyCompletedLastMonth);//上月完工
                         String copyTotalCompletion = getItem(position).getSumCompletedQty();
-                        spUtils.put(context, "copyTotalCompletion", copyTotalCompletion);
+                        spUtils.put(context, "copyTotalCompletion", copyTotalCompletion);//总完工数
                         String copyBalanceAmount = getItem(position).getLeftQty();
-                        spUtils.put(context, "copyBalanceAmount", copyBalanceAmount);
+                        spUtils.put(context, "copyBalanceAmount", copyBalanceAmount);//结余数量
                         String copyState = getItem(position).getPrdstatus();
-                        spUtils.put(context, "copyState", copyState);
+                        spUtils.put(context, "copyState", copyState);//状态
                         Time t = new Time("GMT+8"); // or Time t=new Time("GMT+8");
                         t.setToNow(); // 取得系统时间。
                         year = t.year;
@@ -229,22 +229,22 @@ public class ProductionAdapter extends BaseAdapter {
                         second = t.second;
                         month = month + 1;
                         String copyProYear = year + "";
-                        spUtils.put(context, "copyProYear", copyProYear);
+                        spUtils.put(context, "copyProYear", copyProYear);//年
                         String copyMonth = month + "";
-                        spUtils.put(context, "copyMonth", copyMonth);
+                        spUtils.put(context, "copyMonth", copyMonth);//月
 
                         String copyRemarks = getItem(position).getMemo();
-                        spUtils.put(context, "copyRemarks", copyRemarks);
+                        spUtils.put(context, "copyRemarks", copyRemarks);//备注
                         String copyRecorder = getItem(position).getRecorder();
-                        spUtils.put(context, "copyRecorder", copyRecorder);
+                        spUtils.put(context, "copyRecorder", copyRecorder);//制单人
                         String copyRecordat = getItem(position).getRecordat();
-                        spUtils.put(context, "copyRecordat", copyRecordat);
+                        spUtils.put(context, "copyRecordat", copyRecordat);//制单时间
                         String copyproducament = getItem(position).getPrddocumentaryid();
-                        spUtils.put(context, "copyproducamentid", copyproducament);
+                        spUtils.put(context, "copyproducamentid", copyproducament);//跟单人ID
                         ArrayList<String> list = new ArrayList<String>();
                         list.add(copyitem);
                         Intent intent = new Intent(context, ProductionCopyComfigActivity.class);
-                        intent.putStringArrayListExtra("copyitemlist", list);
+                        intent.putStringArrayListExtra("copyitemlist", list);//
                         context.startActivity(intent);
                         ProductionActivity productionActivity = new ProductionActivity();
                         productionActivity.finish();
@@ -261,7 +261,7 @@ public class ProductionAdapter extends BaseAdapter {
                 viewHolder.tvProDepartment.setEnabled(true);
                 viewHolder.tvProDepartment.setText(getItem(position).getSubfactoryTeams());
 
-                viewHolder.tvProProcedure.setEnabled(true);
+                viewHolder.tvProProcedure.setEnabled(false);
                 viewHolder.tvProProcedure.setText(getItem(position).getWorkingProcedure());
 
                 viewHolder.tvProOthers.setEnabled(true);
@@ -8779,6 +8779,7 @@ public class ProductionAdapter extends BaseAdapter {
             viewHolder.tvProRecordat.setText(getItem(position).getRecordat());
         }
 
+        /*月份*/
         viewHolder.tvProMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -8791,7 +8792,6 @@ public class ProductionAdapter extends BaseAdapter {
                     public boolean onMenuItemClick(MenuItem item) {
                         sp = context.getSharedPreferences("userInfo", 0);
                         String title = item.getTitle().toString();
-//                        spUtils.put(context, "proadapterMonthTitle", title);
                         viewHolder.tvProMonth.setText(title);
                         spUtils.put(context, "prosavemonth", title);
                         getItem(position).setMonth(title);
@@ -8809,7 +8809,7 @@ public class ProductionAdapter extends BaseAdapter {
             }
         });
 
-
+        /*部门组别*/
         viewHolder.tvProDepartment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -8819,12 +8819,10 @@ public class ProductionAdapter extends BaseAdapter {
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        sp = context.getSharedPreferences("userInfo", 0);
                         String title = item.getTitle().toString();
                         spUtils.put(context, "prosavedepartment", title);
-//                        spUtils.put(context, "proColumnTitle", title);
                         viewHolder.tvProDepartment.setText(title);
-                        getItem(position).setPrddocumentary(title);
+                        getItem(position).setSubfactoryTeams(title);
                         return false;
                     }
                 });
@@ -8869,6 +8867,9 @@ public class ProductionAdapter extends BaseAdapter {
             }
         });
 
+        /**
+         * 状态
+         */
         viewHolder.tvProState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -8881,7 +8882,6 @@ public class ProductionAdapter extends BaseAdapter {
                         sp = context.getSharedPreferences("userInfo", 0);
                         String title = item.getTitle().toString();
                         spUtils.put(context, "prosavestate", title);
-//                        spUtils.put(context, "proadapterPrdstatusTitle", title);
                         viewHolder.tvProState.setText(title);
                         getItem(position).setPrdstatus(title);
                         return false;
@@ -8899,10 +8899,6 @@ public class ProductionAdapter extends BaseAdapter {
 
 
         return convertView;
-    }
-
-    void getcon() {
-
     }
 
     class ViewHolder {

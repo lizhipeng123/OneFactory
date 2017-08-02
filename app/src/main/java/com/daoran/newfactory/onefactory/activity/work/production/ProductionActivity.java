@@ -83,7 +83,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     private ProductionAdapter adapter;//列表适配
     private ProducationSaveBean producationSaveBean;//修改后的保存
     private List<ProductionDetailBooleanBean.DataBean> detailbooleanDatabean
-            = new ArrayList<ProductionDetailBooleanBean.DataBean>();
+            = new ArrayList<ProductionDetailBooleanBean.DataBean>();//
     private ProductionDetailBooleanBean detailBooleanBean;
 
     private EditText etSqlDetail;//底部页码输入框
@@ -101,7 +101,6 @@ public class ProductionActivity extends BaseFrangmentActivity
     private Spinner spinnProPageClumns;
     int keyHeight = 0;
     int screenHeight = 0;
-    private int year, month, datetime, hour, minute, second;
     private boolean flagmonthsize;
     private String configid;
 
@@ -1996,14 +1995,12 @@ public class ProductionActivity extends BaseFrangmentActivity
         /*关闭界面后，删除本地存储的字段*/
         editor.remove("prouriid");
         editor.remove("prosalesid");
-        editor.remove("proColumnTitle");
         editor.remove("proProcedureTitle");
         editor.remove("proadapterPrdstatusTitle");
         editor.remove("productionsaveOthers");
         editor.remove("productionOthers");
         editor.remove("productionTaskNumber");
         editor.remove("productionCompletedLastMonth");
-        editor.remove("proadapterMonthTitle");
         editor.remove("productionOneDay");
         editor.remove("productionTwoDay");
         editor.remove("productionThreeDay");
@@ -2086,14 +2083,12 @@ public class ProductionActivity extends BaseFrangmentActivity
         /*关闭界面后，删除本地存储的字段*/
         editor.remove("prouriid");
         editor.remove("prosalesid");
-        editor.remove("proColumnTitle");
         editor.remove("proProcedureTitle");
         editor.remove("proadapterPrdstatusTitle");
         editor.remove("productionsaveOthers");
         editor.remove("productionOthers");
         editor.remove("productionTaskNumber");
         editor.remove("productionCompletedLastMonth");
-        editor.remove("proadapterMonthTitle");
         editor.remove("productionOneDay");
         editor.remove("productionTwoDay");
         editor.remove("productionThreeDay");

@@ -413,10 +413,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
         String liststr = spes.getString("mylistStr", "");
         String tvnewlySizes = sp.getString("tvnewlySize", "");//花色
         String salesid = sp.getString("tvnewlysalesid", "");//款号id
-        String proColumnTitle = sp.getString("Configdepartment", "");//部门
-        String proadaptertitle = sp.getString("tvnewlyDepartment", "");
-        String columntitle;
         String recordid = sp.getString("username", "");//制单人id
+        String proColumnTitle = sp.getString("Configdepartment", "");//部门
+        String proadaptertitle = sp.getString("tvnewlyDepartment", "");//
+        String columntitle;//部门组别变量
         if (proColumnTitle.equals("")) {
             columntitle = proadaptertitle;
         } else {
