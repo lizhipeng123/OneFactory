@@ -650,6 +650,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                                 if (resindex > 4) {
                                                                     ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
                                                                             ProductionCopyComfigActivity.this);
+                                                                    saveDestroy();
                                                                     startActivity(new Intent(ProductionCopyComfigActivity.this,
                                                                             ProductionActivity.class));
                                                                 } else if (resindex == 3) {
@@ -762,6 +763,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                             if (resindex > 4) {
                                                                 ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
                                                                         ProductionCopyComfigActivity.this);
+                                                                saveDestroy();
                                                                 startActivity(new Intent(ProductionCopyComfigActivity.this,
                                                                         ProductionActivity.class));
                                                             } else if (resindex == 3) {
@@ -868,6 +870,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                             if (resindex > 4) {
                                                                 ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
                                                                         ProductionCopyComfigActivity.this);
+                                                                saveDestroy();
                                                                 startActivity(new Intent(ProductionCopyComfigActivity.this,
                                                                         ProductionActivity.class));
                                                             } else if (resindex == 3) {
@@ -993,6 +996,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                             if (resindex > 4) {
                                                                 ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
                                                                         ProductionCopyComfigActivity.this);
+                                                                saveDestroy();
                                                                 startActivity(new Intent(ProductionCopyComfigActivity.this,
                                                                         ProductionActivity.class));
                                                             } else if (resindex == 3) {
@@ -1105,6 +1109,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                         if (resindex > 4) {
                                                             ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
                                                                     ProductionCopyComfigActivity.this);
+                                                            saveDestroy();
                                                             startActivity(new Intent(ProductionCopyComfigActivity.this,
                                                                     ProductionActivity.class));
                                                         } else if (resindex == 3) {
@@ -1214,6 +1219,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                     if (resindex > 4) {
                                                         ToastUtils.ShowToastMessage("保存成功，请返回生产日报页面并刷新",
                                                                 ProductionCopyComfigActivity.this);
+                                                        saveDestroy();
                                                         startActivity(new Intent(ProductionCopyComfigActivity.this,
                                                                 ProductionActivity.class));
                                                     } else if (resindex == 3) {
@@ -10076,9 +10082,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        //关闭界面时清除缓存中可输入的数据
+    private void saveDestroy(){
         SharedPreferences.Editor editor = sp.edit();
         editor.remove("mylistStr");//保存集合
         editor.remove("copyProcedure");//工序
@@ -10137,6 +10141,70 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
         editor.remove("copyProYear");
         editor.remove("copyMonth");
         editor.remove("copyProcedure");
+        editor.commit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        //关闭界面时清除缓存中可输入的数据
+        SharedPreferences.Editor editor = sp.edit();
+        editor.remove("mylistStr");//保存集合
+        editor.remove("copyProcedure");//工序
+        editor.remove("Configdepartment");//部门
+        editor.remove("ComfigMonth");//月份
+        editor.remove("ConfigProcedure");//工序
+        editor.remove("ConfigOthers");//组别人数
+        editor.remove("configOneDay");//1
+        editor.remove("configTwoDay");//2
+        editor.remove("configThreeDay");//3
+        editor.remove("configForeDay");//4
+        editor.remove("configFiveDay");//5
+        editor.remove("configSixDay");//6
+        editor.remove("configSevenDay");//7
+        editor.remove("configEightDay");//8
+        editor.remove("configNineDay");//9
+        editor.remove("configTenDay");//10
+        editor.remove("configElevenDay");//11
+        editor.remove("configTwelveDay");//12
+        editor.remove("configThirteenDay");//13
+        editor.remove("configFourteenDay");//14
+        editor.remove("configFifteenDay");//15
+        editor.remove("configSixteenDay");//16
+        editor.remove("configSeventeenDay");//17
+        editor.remove("configEighteenDay");//18
+        editor.remove("configNineteenDay");//19
+        editor.remove("configTwentyDay");//20
+        editor.remove("configTwentyOneDay");//21
+        editor.remove("configTwentyTwoDay");//22
+        editor.remove("configTwentyThreeDay");//23
+        editor.remove("configTwentyForeDay");//24
+        editor.remove("configTwentyFiveDay");//25
+        editor.remove("configTwentySixDay");//26
+        editor.remove("configTwentySevenDay");//27
+        editor.remove("configTwentyEightDay");//28
+        editor.remove("configTwentyNineDay");//29
+        editor.remove("configThirtyDay");//30
+        editor.remove("configThirtyOneDay");//31
+        editor.remove("configRemarks");//备注
+        editor.remove("ConfigLastMonth");//上月完工
+        editor.remove("ConfigTaskNumber");//任务数
+        editor.remove("copyitem");//款号
+        editor.remove("copyDocumentary");//跟单
+        editor.remove("copyFactory");//工厂
+        editor.remove("copyDepartment");//部门
+        editor.remove("copyOthers");//组别人数
+        editor.remove("copySingularSystem");//制单数
+        editor.remove("copyTaskNumber");//任务数
+        editor.remove("copySize");//尺码
+        editor.remove("copyyColor");//花色
+        editor.remove("copyClippingNumber");//实裁数
+        editor.remove("copyTotalCompletion");
+        editor.remove("copyState");//状态
+        editor.remove("proadapterid");//id
+        editor.remove("prosalesid");//行ID
+        editor.remove("copyProYear");//年
+        editor.remove("copyMonth");//月
+        editor.remove("copyProcedure");//制单人
         editor.commit();
         super.onDestroy();
     }

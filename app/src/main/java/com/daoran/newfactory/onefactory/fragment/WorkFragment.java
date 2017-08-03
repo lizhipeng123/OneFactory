@@ -192,6 +192,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 }
                 System.out.print(worklist);
                 try {
+                    //循环解析角色菜单添加到自定义实体类中
                     JSONArray temp = new JSONArray(resscontent);
                     for (int i = 0; i < temp.length(); i++) {
                         String Stringcar = temp.getString(i);
@@ -204,10 +205,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             String img = new JSONObject(Stringcar).getString("img");
                             workBeen.add(new WorkBean(phoneurl, txt1, img));
                         } else {
-                            String txt1 = "";
-                            String phoneurl = "";
-                            String img = "";
-                            String s = workBeen.get(i).getText();
+
                         }
                     }
                     System.out.print(workBeen);
@@ -259,7 +257,6 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         String listwork = sp.getString("workbeenlist", "");
         workPwSwitchBean = new Gson().fromJson(listwork, WorkPwSwitchBean.class);
         if (listwork.equals("")) {
-
         } else {
             switchBeendatalist = workPwSwitchBean.getDatas();
             for (int i = 0; i < switchBeendatalist.size(); i++) {
@@ -283,6 +280,12 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         popupWindow.showAsDropDown(idworkname);
     }
 
+    /**
+     * 两个数组比较是否存在
+     * @param array1
+     * @param array2
+     * @return
+     */
     private static boolean containsAll(String[] array1, String[] array2) {
         for (String str : array2) {
             if (!ArrayUtils.contains(array1, str)) {
@@ -298,7 +301,6 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         if (resultCode == 2) {
             if (requestCode == 1) {
                 getViews();
-
             }
         }
     }

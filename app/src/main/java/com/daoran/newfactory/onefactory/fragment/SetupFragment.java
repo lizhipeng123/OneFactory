@@ -272,8 +272,13 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * 安装app
+     * @param context
+     * @param packagename
+     * @return
+     */
     private boolean isAppInstalled(Context context, String packagename) {
-
         PackageInfo packageInfo;
         try {
             packageInfo = context.getPackageManager().getPackageInfo(packagename, 0);
@@ -287,7 +292,6 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
             return false;
         } else {
             ToastUtils.ShowToastMessage("已安装", mactivity);
-
             return true;
         }
     }

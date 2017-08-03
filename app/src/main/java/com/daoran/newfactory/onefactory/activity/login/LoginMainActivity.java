@@ -276,13 +276,13 @@ public class LoginMainActivity extends BaseFrangmentActivity {
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
             String infossid = wifiInfo.getSSID();
             infossid = infossid.replace("\"", "");
-//            if (infossid.equals("taoxinxi")) {
-//                AlertDialog dialog = new AlertDialog.Builder(this).create();
-//                dialog.setTitle("系统提示");
-//                dialog.setMessage("当前 " + infossid + " 为测试WiFi,请连接到公共WiFi或者流量状态");
-//                dialog.setButton("确定", listenerwifi);
-//                dialog.show();
-//            } else {
+            if (infossid.equals("taoxinxi")) {
+                AlertDialog dialog = new AlertDialog.Builder(this).create();
+                dialog.setTitle("系统提示");
+                dialog.setMessage("当前 " + infossid + " 为测试WiFi,请连接到公共WiFi或者流量状态");
+                dialog.setButton("确定", listenerwifi);
+                dialog.show();
+            } else {
                 final ProgressDialog progressDialog = ProgressDialog.show(this,
                         getResources().getString(R.string.login_his_later), getResources().getString(R.string.logining), false, true);
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -425,7 +425,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                         thread.start();
                     }
                 });
-//            }
+            }
         } else {
             ToastUtils.ShowToastMessage(getString(R.string.noHttp), LoginMainActivity.this);
         }

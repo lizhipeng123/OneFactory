@@ -496,9 +496,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         } else {
             listsize = booleandatelist.size();
         }
-
         String procomfigcountmonth = sp.getString("procomfigcountmonth","");//结算后的总完工数
-
         String tvnewlydate = sp.getString("tvnewlydate", "");
         String[] arrsitem = tvnewlydate.split(",");//修改的款号数组
         String[] arrspredure = procudureTitle.split(",");//修改的工序数组
@@ -663,6 +661,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                                             if (resindex > 4) {
                                                                 ToastUtils.ShowToastMessage("保存成功，请刷新页面",
                                                                         ProductionNewlyComfigActivity.this);
+                                                                saveDestroy();
                                                                 startActivity(new Intent(ProductionNewlyComfigActivity.this,
                                                                         ProductionActivity.class));
                                                             } else if (resindex == 3) {
@@ -814,6 +813,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                                         if (resindex > 4) {
                                                             ToastUtils.ShowToastMessage("保存成功，请刷新页面",
                                                                     ProductionNewlyComfigActivity.this);
+                                                            saveDestroy();
                                                             startActivity(new Intent(ProductionNewlyComfigActivity.this,
                                                                     ProductionActivity.class));
                                                         } else if (resindex == 3) {
@@ -1067,6 +1067,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                                                     if (resindex > 4) {
                                                                         ToastUtils.ShowToastMessage("保存成功，请刷新页面",
                                                                                 ProductionNewlyComfigActivity.this);
+                                                                        saveDestroy();
                                                                         startActivity(new Intent(ProductionNewlyComfigActivity.this,
                                                                                 ProductionActivity.class));
                                                                     } else if (resindex == 3) {
@@ -1217,6 +1218,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                                                 if (resindex > 4) {
                                                                     ToastUtils.ShowToastMessage("保存成功，请刷新页面",
                                                                             ProductionNewlyComfigActivity.this);
+                                                                    saveDestroy();
                                                                     startActivity(new Intent(ProductionNewlyComfigActivity.this,
                                                                             ProductionActivity.class));
                                                                 } else if (resindex == 3) {
@@ -1385,6 +1387,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                                                 if (resindex > 4) {
                                                                     ToastUtils.ShowToastMessage("保存成功，请刷新页面",
                                                                             ProductionNewlyComfigActivity.this);
+                                                                    saveDestroy();
                                                                     startActivity(new Intent(ProductionNewlyComfigActivity.this,
                                                                             ProductionActivity.class));
                                                                 } else if (resindex == 3) {
@@ -1535,6 +1538,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                                                             if (resindex > 4) {
                                                                 ToastUtils.ShowToastMessage("保存成功，请刷新页面",
                                                                         ProductionNewlyComfigActivity.this);
+                                                                saveDestroy();
                                                                 startActivity(new Intent(ProductionNewlyComfigActivity.this,
                                                                         ProductionActivity.class));
                                                             } else if (resindex == 3) {
@@ -10417,15 +10421,14 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        //关闭界面时清除缓存中可输入的数据
+    private void saveDestroy(){
         SharedPreferences.Editor editor = sp.edit();
         editor.remove("mylistStr");//保存集合
         editor.remove("tvnewlyProcedure");//工序
         editor.remove("Configdepartment");//部门
+        editor.remove("tvnewlyDepartment");//部门
         editor.remove("ComfigMonth");//月份
-        editor.remove("ConfigProcedure");
+        editor.remove("ConfigProcedure");//修改的工序
         editor.remove("ConfigOthers");//组别人数
         editor.remove("configOneDay");//1
         editor.remove("configTwoDay");//2
@@ -10461,6 +10464,78 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         editor.remove("configRemarks");//备注
         editor.remove("ConfigLastMonth");//上月完工
         editor.remove("ConfigTaskNumber");//任务数
+        editor.remove("tvnewlyTotalCompletion");//状态
+        editor.remove("tvnewlydate");//款号
+        editor.remove("tvnewlyDocumentary");//跟单
+        editor.remove("tvnewlyFactory");//工厂
+        editor.remove("tvnewlyOthers");//组别人数
+        editor.remove("tvnewSingularSystem");//制单数
+        editor.remove("tvColorTaskqty");//任务数
+        editor.remove("tvnewTaskNumber");//尺码
+        editor.remove("tvnewlySize");//花色
+        editor.remove("tvnewlyClippingNumber");//实裁数
+        editor.remove("tvnewlyCompletedLastMonth");//总完工数
+        editor.remove("ComfigPrdstatus");//状态
+        editor.commit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        //关闭界面时清除缓存中可输入的数据
+        SharedPreferences.Editor editor = sp.edit();
+        editor.remove("mylistStr");//保存集合
+        editor.remove("tvnewlydate");//款号
+        editor.remove("tvnewlyProcedure");//工序
+        editor.remove("tvnewlyDepartment");//部门
+        editor.remove("Configdepartment");//部门
+        editor.remove("ComfigMonth");//月份
+        editor.remove("ConfigProcedure");//工序
+        editor.remove("ConfigOthers");//组别人数
+        editor.remove("tvnewlyOthers");//组别人数
+        editor.remove("configOneDay");//1
+        editor.remove("configTwoDay");//2
+        editor.remove("configThreeDay");//3
+        editor.remove("configForeDay");//4
+        editor.remove("configFiveDay");//5
+        editor.remove("configSixDay");//6
+        editor.remove("configSevenDay");//7
+        editor.remove("configEightDay");//8
+        editor.remove("configNineDay");//9
+        editor.remove("configTenDay");//10
+        editor.remove("configElevenDay");//11
+        editor.remove("configTwelveDay");//12
+        editor.remove("configThirteenDay");//13
+        editor.remove("configFourteenDay");//14
+        editor.remove("configFifteenDay");//15
+        editor.remove("configSixteenDay");//16
+        editor.remove("configSeventeenDay");//17
+        editor.remove("configEighteenDay");//18
+        editor.remove("configNineteenDay");//19
+        editor.remove("configTwentyDay");//20
+        editor.remove("configTwentyOneDay");//21
+        editor.remove("configTwentyTwoDay");//22
+        editor.remove("configTwentyThreeDay");//23
+        editor.remove("configTwentyForeDay");//24
+        editor.remove("configTwentyFiveDay");//25
+        editor.remove("configTwentySixDay");//26
+        editor.remove("configTwentySevenDay");//27
+        editor.remove("configTwentyEightDay");//28
+        editor.remove("configTwentyNineDay");//29
+        editor.remove("configThirtyDay");//30
+        editor.remove("configThirtyOneDay");//31
+        editor.remove("configRemarks");//备注
+        editor.remove("ConfigLastMonth");//上月完工
+        editor.remove("ConfigTaskNumber");//任务数
+        editor.remove("tvnewlyTotalCompletion");//状态
+        editor.remove("ComfigPrdstatus");//状态
+        editor.remove("tvnewlyDocumentary");//跟单
+        editor.remove("tvnewlyFactory");//工厂
+        editor.remove("tvnewSingularSystem");//制单数
+        editor.remove("tvColorTaskqty");//任务数
+        editor.remove("tvnewTaskNumber");//尺码
+        editor.remove("tvnewlySize");//花色
+        editor.remove("tvnewlyClippingNumber");//实裁数
+        editor.remove("tvnewlyCompletedLastMonth");//总完工数
         editor.commit();
         super.onDestroy();
     }

@@ -720,16 +720,16 @@ public class SignOpenActivity extends BaseFrangmentActivity
         if (NetWork.isNetWorkAvailable(this)) {
             OkHttpUtils.post()
                     .url(url)
-                    .addParams("id", "")
-                    .addParams("pic", picstr)
-                    .addParams("code", "")
-                    .addParams("memo", etRemark.getText().toString())
-                    .addParams("recorder", recodername)
-                    .addParams("recorderID", userna)
-                    .addParams("recordat", tvSignDate.getText().toString())
-                    .addParams("recordplace", address)
-                    .addParams("LNGLAT", Latitude)
-                    .addParams("regedittyp", languages)
+                    .addParams("id", "")//id
+                    .addParams("pic", picstr)//地图截图
+                    .addParams("code", "")//
+                    .addParams("memo", etRemark.getText().toString())///备注
+                    .addParams("recorder", recodername)//签到人(制单人)
+                    .addParams("recorderID", userna)//签到人id
+                    .addParams("recordat", tvSignDate.getText().toString())//签到时间
+                    .addParams("recordplace", address)//签到地址
+                    .addParams("LNGLAT", Latitude)//经纬度
+                    .addParams("regedittyp", languages)//签到类型
                     .build()
                     .execute(new StringCallback() {
                         @Override
