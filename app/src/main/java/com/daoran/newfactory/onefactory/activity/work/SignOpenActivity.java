@@ -3,6 +3,7 @@ package com.daoran.newfactory.onefactory.activity.work;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +24,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -545,10 +547,12 @@ public class SignOpenActivity extends BaseFrangmentActivity
         switch (v.getId()) {
             /*返回*/
             case R.id.ivSignBack:
+                sethideSoft(v);
                 finish();
                 break;
             /*跳转到签到查询*/
             case R.id.btnCount:
+                sethideSoft(v);
                 startActivity(new Intent(SignOpenActivity.this, SignDetailActivity.class));
                 break;
             /*备注输入框*/
@@ -557,6 +561,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
                 break;
             /*签到按钮，目前十分钟之内不能重复签到*/
             case R.id.btnSignOk:
+                sethideSoft(v);
                 long prolongtime = sp.getLong("prolongtime", 0);
                 int prolong = (int) prolongtime;
                 if (prolong == 0) {//第一次点击，初始化为本次单机的时间
@@ -594,6 +599,24 @@ public class SignOpenActivity extends BaseFrangmentActivity
                 }
             case R.id.topBg:
                 break;
+        }
+    }
+
+    /**
+     * 判断软键盘是否弹出
+     * @param v
+     */
+    private void sethideSoft(View v){
+        //判断软件盘是否弹出
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            if (imm.hideSoftInputFromWindow(v.getWindowToken(), 0)) {
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                        0);
+            } else {
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                        0);
+            }
         }
     }
 

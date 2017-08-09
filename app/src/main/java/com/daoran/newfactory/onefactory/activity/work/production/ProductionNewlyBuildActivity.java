@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.activity.work.production;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import android.text.Spanned;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -771,10 +773,12 @@ public class ProductionNewlyBuildActivity
         switch (v.getId()) {
             /*返回按键*/
             case R.id.ivProductionBack:
+                sethideSoft(v);
                 finish();
                 break;
             /*选择工序*/
             case R.id.spinnerNewbuild:
+                sethideSoft(v);
                 PopupMenu popupMenu = new PopupMenu(ProductionNewlyBuildActivity.this, v);
                 popupMenu.getMenuInflater().inflate(R.menu.menu_pro_spinnernew, popupMenu.getMenu());
                 // menu的item点击事件
@@ -798,6 +802,7 @@ public class ProductionNewlyBuildActivity
                 break;
             /*翻页确定按钮*/
             case R.id.btnNewbuildPage:
+                sethideSoft(v);
                 String countpage = tvNewbuildPage.getText().toString();
                 String text = etNewbuildDetail.getText().toString();
                 if (text.equals("")) {
@@ -821,10 +826,12 @@ public class ProductionNewlyBuildActivity
                 break;
             /*根据工序及款号查找信息*/
             case R.id.etNewbuildSql:
+                sethideSoft(v);
                 setPageDate();
                 break;
             /*款号选择之后确定新增*/
             case R.id.btnNewbuildConfirm:
+                sethideSoft(v);
                 sp = getSharedPreferences("my_sp", 0);
                 String tvnewlydate = sp.getString("tvnewlydate", "");//newlybuildadapter中款号
                 if (!tvnewlydate.equals("")) {
@@ -842,6 +849,7 @@ public class ProductionNewlyBuildActivity
                 break;
             /*上一页*/
             case R.id.ivUpLeftPage:
+                sethideSoft(v);
                 String texteditstr = etNewbuildDetail.getText().toString();
                 if (texteditstr.equals("")) {
                     ToastUtils.ShowToastMessage("页码不能为空", ProductionNewlyBuildActivity.this);
@@ -860,6 +868,7 @@ public class ProductionNewlyBuildActivity
                 break;
             /*下一页*/
             case R.id.ivDownRightPage:
+                sethideSoft(v);
                 String texteditstr2 = etNewbuildDetail.getText().toString();
                 if (texteditstr2.equals("")) {
                     ToastUtils.ShowToastMessage("页码不能为空", ProductionNewlyBuildActivity.this);
@@ -879,12 +888,31 @@ public class ProductionNewlyBuildActivity
                 break;
             /*横竖屏切换*/
             case R.id.ivNewlyFilp:
+                sethideSoft(v);
                 if (configid.equals("1")) {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 } else if (configid.equals("2")) {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 } else {}
                 break;
+        }
+    }
+
+    /**
+     * 判断软键盘是否弹出
+     * @param v
+     */
+    private void sethideSoft(View v){
+        //判断软件盘是否弹出
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            if (imm.hideSoftInputFromWindow(v.getWindowToken(), 0)) {
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                        0);
+            } else {
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                        0);
+            }
         }
     }
 

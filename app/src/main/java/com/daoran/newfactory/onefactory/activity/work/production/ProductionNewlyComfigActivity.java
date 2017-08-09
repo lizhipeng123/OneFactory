@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -396,6 +397,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
         switch (v.getId()) {
             /*返回判断是否保存后退出*/
             case R.id.ivProductionBack:
+                sethideSoft(v);
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("保存提示");
                 builder.setMessage("退出是否保存");
@@ -421,8 +423,27 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 break;
             /*保存*/
             case R.id.btnProSave:
+                sethideSoft(v);
                 setSave();
                 break;
+        }
+    }
+
+    /**
+     * 判断软键盘是否弹出
+     * @param v
+     */
+    private void sethideSoft(View v){
+        //判断软件盘是否弹出
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            if (imm.hideSoftInputFromWindow(v.getWindowToken(), 0)) {
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                        0);
+            } else {
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                        0);
+            }
         }
     }
 

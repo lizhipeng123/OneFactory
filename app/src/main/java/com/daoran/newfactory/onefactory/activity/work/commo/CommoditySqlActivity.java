@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.activity.work.commo;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -11,6 +12,7 @@ import android.text.Spanned;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -187,14 +189,17 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         switch (v.getId()) {
             /*返回按钮*/
             case R.id.ivCommoditySql:
+                sethideSoft(v);
                 finish();
                 break;
             /*查询*/
             case R.id.ivSearch:
+                sethideSoft(v);
                 ShowDialog(v);
                 break;
             /*翻页确认按钮*/
             case R.id.btnSignPage:
+                sethideSoft(v);
                 String txt = etSqlDetail.getText().toString();
                 String txtcount = tvSignPage.getText().toString();
                 if (txt.equals("")) {
@@ -217,14 +222,17 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                 break;
             /*保存*/
             case R.id.btnCommoSave:
+                sethideSoft(v);
                 setCommoSave();
                 break;
             /*弹出菜单*/
             case R.id.spinnermenu:
+                sethideSoft(v);
                 showPopupMenu(spinnermenu);
                 break;
             /*上一页*/
             case R.id.ivUpLeftPage:
+                sethideSoft(v);
                 String stredit = etSqlDetail.getText().toString();
                 if (stredit.equals("")) {
                     ToastUtils.ShowToastMessage("页码不能为空", CommoditySqlActivity.this);
@@ -243,6 +251,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                 break;
             /*下一页*/
             case R.id.ivDownRightPage:
+                sethideSoft(v);
                 String stredit2 = etSqlDetail.getText().toString();
                 if (stredit2.equals("")) {
                     ToastUtils.ShowToastMessage("页码不能为空", CommoditySqlActivity.this);
@@ -261,6 +270,24 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                     }
                 }
                 break;
+        }
+    }
+
+    /**
+     * 判断软键盘是否弹出
+     * @param v
+     */
+    private void sethideSoft(View v){
+        //判断软件盘是否弹出
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            if (imm.hideSoftInputFromWindow(v.getWindowToken(), 0)) {
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                        0);
+            } else {
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                        0);
+            }
         }
     }
 

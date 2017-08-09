@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.activity.work;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -11,6 +12,7 @@ import android.text.Spanned;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -154,6 +156,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                         getStringArray(R.array.clumnsCommon);
                 spUtils.put(SignDetailActivity.this,
                         "clumnssignspinner", languages[position]);
+                sethideSoft(view);
                 setSignDetail();
             }
 
@@ -241,6 +244,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         switch (v.getId()) {
             /*返回*/
             case R.id.ivSiganSqlDetail:
+                sethideSoft(v);
                 finish();
                 break;
             /*条件查询*/
@@ -249,6 +253,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                 break;
             /*翻页*/
             case R.id.btnSignPage:
+                sethideSoft(v);
                 String txt = etSqlDetail.getText().toString();
                 String txtint = tvSignPage.getText().toString();
                 if (txt.equals("")) {
@@ -273,6 +278,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                 break;
             /*上一页*/
             case R.id.ivUpLeftPage:
+                sethideSoft(v);
                 String stredit = etSqlDetail.getText().toString();
                 if (stredit.equals("")) {
                     ToastUtils.ShowToastMessage("页码不能为空", SignDetailActivity.this);
@@ -292,6 +298,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                 break;
             /*下一页*/
             case R.id.ivDownRightPage:
+                sethideSoft(v);
                 String stredit2 = etSqlDetail.getText().toString();
                 if (stredit2.equals("")) {
                     ToastUtils.ShowToastMessage("页码不能为空", SignDetailActivity.this);
@@ -316,6 +323,20 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
             case R.id.spinnermenu:
                 showPopupMenu(spinnermenu);
                 break;
+        }
+    }
+
+    private void sethideSoft(View v){
+        //判断软件盘是否弹出
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            if (imm.hideSoftInputFromWindow(v.getWindowToken(), 0)) {
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                        0);
+            } else {
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                        0);
+            }
         }
     }
 
@@ -507,7 +528,8 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
         String index = String.valueOf(pageIndex - 1);
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this);
+            final ProgressDialog progressDialog = ProgressDialog.show(this,
+                    "请稍候...", "正在查询中...", false, true);
             final int finalGetsize = Integer.parseInt(getsize);
             OkHttpUtils
                     .post()
@@ -524,12 +546,35 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
-                            ResponseDialog.closeLoading();
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                         }
 
                         @Override
                         public void onResponse(String response, int id) {
                             System.out.print(response);
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    progressDialog.dismiss();
+                                }
+                            });
+                            thread.start();
                             try {
                                 Gson gson = new Gson();
                                 signBean = gson.fromJson(response, SignDetailBean.class);
@@ -553,13 +598,11 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                     scroll_content.setVisibility(View.GONE);
                                     tv_visibi.setText("没有更多信息");
                                 }
-                                ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
-                                ResponseDialog.closeLoading();
+
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                ResponseDialog.closeLoading();
                             }
                         }
                     });
@@ -592,6 +635,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btnComfirm:
+                    sethideSoft(v);
                     String etsql2 = etSqlDetail.getText().toString();
                     if (etsql2.equals("")) {
                         ToastUtils.ShowToastMessage("页码不能为空", SignDetailActivity.this);
@@ -616,7 +660,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                 String speChat = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
                 Pattern pattern = Pattern.compile(speChat);
                 Matcher matcher = pattern.matcher(source.toString());
-                if (source.equals(" ")||source.equals("\n")||matcher.find())
+                if (source.equals(" ") || source.equals("\n") || matcher.find())
                     return "";
                 else
                     return null;

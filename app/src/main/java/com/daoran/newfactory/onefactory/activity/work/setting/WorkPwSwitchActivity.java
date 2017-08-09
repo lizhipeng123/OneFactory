@@ -21,6 +21,7 @@ import com.daoran.newfactory.onefactory.activity.main.MainActivity;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.UsergetBean;
 import com.daoran.newfactory.onefactory.bean.WorkPwSwitchBean;
+import com.daoran.newfactory.onefactory.fragment.WorkFragment;
 import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetUtil;
@@ -353,6 +354,9 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
                 }
                 break;
             case R.id.tvPwSwitchCancle:
+                Intent intent = new Intent(WorkPwSwitchActivity.this, MainActivity.class);
+                intent.putExtra(id, 1);
+                startActivity(intent);
                 finish();
                 break;
         }

@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.activity.work.production;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -179,6 +181,7 @@ public class ProductionActivity extends BaseFrangmentActivity
         spinnProPageClumns.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                sethideSoft(view);
                 String[] languages = getResources().
                         getStringArray(R.array.clumnsCommon);
                 spUtils.put(ProductionActivity.this,
@@ -227,14 +230,17 @@ public class ProductionActivity extends BaseFrangmentActivity
         switch (v.getId()) {
             /*返回按钮*/
             case R.id.ivProductionBack:
+                sethideSoft(v);
                 finish();
                 break;
             /*条件查询弹出框*/
             case R.id.ivSearch:
+                sethideSoft(v);
                 ShowDialog(v);
                 break;
             /*按页查询*/
             case R.id.btnSignPage:
+                sethideSoft(v);
                 String txt = etSqlDetail.getText().toString();
                 String txtcount = tvSignPage.getText().toString();
                 if (txt.equals("")) {
@@ -257,14 +263,17 @@ public class ProductionActivity extends BaseFrangmentActivity
                 break;
             /*menu菜单*/
             case R.id.spinnermenu:
+                sethideSoft(v);
                 showPopupMenu(spinnermenu);
                 break;
             /*保存按钮*/
             case R.id.btnProSave:
+                sethideSoft(v);
                 setSave();
                 break;
             /*上一页*/
             case R.id.ivUpLeftPage:
+                sethideSoft(v);
                 String etsql = etSqlDetail.getText().toString();
                 if (etsql.equals("")) {
                     ToastUtils.ShowToastMessage("页码不能为空", ProductionActivity.this);
@@ -283,6 +292,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                 break;
             /*下一页*/
             case R.id.ivDownRightPage:
+                sethideSoft(v);
                 String etsql2 = etSqlDetail.getText().toString();
                 if (etsql2.equals("")) {
                     ToastUtils.ShowToastMessage("页码不能为空", ProductionActivity.this);
@@ -2030,6 +2040,7 @@ public class ProductionActivity extends BaseFrangmentActivity
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btnComfirm:
+                    sethideSoft(v);
                     String etsql2 = etSqlDetail.getText().toString();
                     if (etsql2.equals("")) {
                         ToastUtils.ShowToastMessage("页码不能为空", ProductionActivity.this);
@@ -2061,7 +2072,7 @@ public class ProductionActivity extends BaseFrangmentActivity
      *
      * @param view
      */
-    private void showPopupMenu(View view) {
+    private void showPopupMenu(final View view) {
         PopupMenu popupMenu = new PopupMenu(ProductionActivity.this, view);
         popupMenu.getMenuInflater().inflate(R.menu.menu_pro, popupMenu.getMenu());
         // menu的item点击事件
@@ -2071,11 +2082,13 @@ public class ProductionActivity extends BaseFrangmentActivity
                 String title = item.getTitle().toString();
                 switch (title) {
                     case "新建":
+                        sethideSoft(view);
                         startActivity(new Intent(ProductionActivity.this,
                                 ProductionNewlyBuildActivity.class));
                         ProductionActivity.this.finish();
                         break;
                     case "横竖屏切换":
+                        sethideSoft(view);
                         if (configid.equals("1")) {
                             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                         } else if (configid.equals("2")) {
@@ -2089,6 +2102,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                         setData();
                         break;
                     case "保存为Excel":
+                        sethideSoft(view);
                         final ProgressDialog progressDialog = ProgressDialog.show(ProductionActivity.this,
                                 "请稍候...", "正在生成Excel中...", false, true);
                         final Thread thread = new Thread(new Runnable() {
@@ -2136,6 +2150,24 @@ public class ProductionActivity extends BaseFrangmentActivity
             }
         });
         popupMenu.show();
+    }
+
+    /**
+     * 判断软键盘是否弹出
+     * @param v
+     */
+    private void sethideSoft(View v){
+        //判断软件盘是否弹出
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            if (imm.hideSoftInputFromWindow(v.getWindowToken(), 0)) {
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                        0);
+            } else {
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                        0);
+            }
+        }
     }
 
     @Override
