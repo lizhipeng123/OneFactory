@@ -38,9 +38,8 @@ import java.util.List;
  * Created by lizhipeng on 2017/3/24.
  */
 
-public class CarapplyActivity extends BaseFrangmentActivity implements View.OnClickListener {
-
-    private Toolbar tbarCarapply;
+public class CarapplyActivity extends BaseFrangmentActivity
+        implements View.OnClickListener {
     private EditText etStartDataClick, etEndDataClick;
     private int id;
     private Spinner spinnerdriver, spinnerNumberBind;
@@ -73,7 +72,6 @@ public class CarapplyActivity extends BaseFrangmentActivity implements View.OnCl
      */
     private void getViews() {
         id = getIntent().getIntExtra("id", 0);
-        tbarCarapply = (Toolbar) findViewById(R.id.tbarCarapply);
         etStartDataClick = (EditText) findViewById(R.id.etStartDataClick);
         etEndDataClick = (EditText) findViewById(R.id.etEndDataClick);
         spinnerdriver = (Spinner) findViewById(R.id.spinnerdriver);

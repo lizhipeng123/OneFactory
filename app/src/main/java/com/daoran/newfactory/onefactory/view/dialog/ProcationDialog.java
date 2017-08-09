@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.Display;
 import android.view.View;
@@ -23,6 +25,9 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *  生产日报条件查询dialog
@@ -66,6 +71,9 @@ public class ProcationDialog extends Dialog {
         btnCancle = (Button) findViewById(R.id.btnCancle);
         btnComfirm = (Button) findViewById(R.id.btnComfirm);
         tvprodialogProcedure = (Spinner) findViewById(R.id.tvprodialogProcedure);
+        setEditTextInhibitInputSpace(etprodialogStyle);
+        setEditTextInhibitInputSpace(etprodialogFactory);
+        setEditTextInhibitInputSpace(etprodialogRecode);
     }
 
     private void initViews() {
@@ -205,4 +213,24 @@ public class ProcationDialog extends Dialog {
                     + etprodialogRecode.getText().toString() + "<--");
         }
     };
+
+    /**
+     * 禁止EditText输入空格
+     * @param editText
+     */
+    public static void setEditTextInhibitInputSpace(EditText editText) {
+        InputFilter filter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                String speChat = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+                Pattern pattern = Pattern.compile(speChat);
+                Matcher matcher = pattern.matcher(source.toString());
+                if (source.equals(" ")||source.equals("\n")||matcher.find())
+                    return "";
+                else
+                    return null;
+            }
+        };
+        editText.setFilters(new InputFilter[]{filter});
+    }
 }

@@ -65,53 +65,101 @@ public class CommoditySqlAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_commodity_data, null);
+            //客户
             holder.tvCommoCtmtxt = (TextView) convertView.findViewById(R.id.tvCommoCtmtxt);
+            //跟单
             holder.tvCommoPrddocumentary = (TextView) convertView.findViewById(R.id.tvCommoPrddocumentary);
+            //生产主管
             holder.tvCommoprdmaster = (TextView) convertView.findViewById(R.id.tvCommoprdmaster);
+            //主管评分
             holder.tvCommoQCMasterScore = (EditText) convertView.findViewById(R.id.tvCommoQCMasterScore);
+            //封样资料接收时间
             holder.tvCommoSealedrev = (TextView) convertView.findViewById(R.id.tvCommoSealedrev);
+            //大货资料接收时间
             holder.tvCommoDocback = (TextView) convertView.findViewById(R.id.tvCommoDocback);
+            //出货时间
             holder.tvCommoLcdat = (TextView) convertView.findViewById(R.id.tvCommoLcdat);
+            //制单数量
             holder.tvCommoTaskqty = (TextView) convertView.findViewById(R.id.tvCommoTaskqty);
+            //需要备注的特殊情况
             holder.tvCommoPreMemo = (EditText) convertView.findViewById(R.id.tvCommoPreMemo);
+            //预计产前报告时间
             holder.tvCommoPredocdt = (TextView) convertView.findViewById(R.id.tvCommoPredocdt);
+            //开产前会时间
             holder.tvCommoPred = (TextView) convertView.findViewById(R.id.tvCommoPred);
+            //产前会报告
             holder.tvCommoPredoc = (EditText) convertView.findViewById(R.id.tvCommoPredoc);
+            //大货面料情况
             holder.tvCommoFabricsok = (EditText) convertView.findViewById(R.id.tvCommoFabricsok);
+            //大货辅料情况
             holder.tvCommoAccessoriesok = (EditText) convertView.findViewById(R.id.tvCommoAccessoriesok);
+            //大货特殊工艺情况
             holder.tvCommoSpcproDec = (EditText) convertView.findViewById(R.id.tvCommoSpcproDec);
+            //特殊工艺特别备注
             holder.tvCommoSpcproMemo = (EditText) convertView.findViewById(R.id.tvCommoSpcproMemo);
+            //实裁数
             holder.tvCommoCutqty = (EditText) convertView.findViewById(R.id.tvCommoCutqty);
+            //上线日期
             holder.tvCommoSewFdt = (TextView) convertView.findViewById(R.id.tvCommoSewFdt);
+            //下线日期
             holder.tvCommoSewMdt = (TextView) convertView.findViewById(R.id.tvCommoSewMdt);
+            //加工厂
             holder.tvCommoSubfactory = (TextView) convertView.findViewById(R.id.tvCommoSubfactory);
+            //预计早期时间
             holder.tvCommoPrebdt = (TextView) convertView.findViewById(R.id.tvCommoPrebdt);
+            //自查早期时间
             holder.tvCommoQCbdt = (TextView) convertView.findViewById(R.id.tvCommoQCbdt);
+            //早期报告
             holder.tvCommoQCbdtDoc = (EditText) convertView.findViewById(R.id.tvCommoQCbdtDoc);
+            //预计中期时间
             holder.tvCommoPremdt = (TextView) convertView.findViewById(R.id.tvCommoPremdt);
+            //自查中期时间
             holder.tvCommoQCmdt = (TextView) convertView.findViewById(R.id.tvCommoQCmdt);
+            //中期报告
             holder.tvCommoQCmdtDoc = (EditText) convertView.findViewById(R.id.tvCommoQCmdtDoc);
+            //预计尾期时间
             holder.tvCommoPreedt = (TextView) convertView.findViewById(R.id.tvCommoPreedt);
+            //自查尾期时间
             holder.tvCommoQCMedt = (TextView) convertView.findViewById(R.id.tvCommoQCMedt);
+            //尾期报告
             holder.tvCommoQCedtDoc = (EditText) convertView.findViewById(R.id.tvCommoQCedtDoc);
+            //客查中期时间
             holder.tvCommoFctmdt = (TextView) convertView.findViewById(R.id.tvCommoFctmdt);
+            //客查尾期报告
             holder.tvCommoFctedt = (TextView) convertView.findViewById(R.id.tvCommoFctedt);
+            //成品包装开始日期
             holder.tvCommoPackbdat = (TextView) convertView.findViewById(R.id.tvCommoPackbdat);
+            //装箱数量
             holder.tvCommoPackqty2 = (EditText) convertView.findViewById(R.id.tvCommoPackqty2);
+            //qc特别备注
             holder.tvCommoQCMemo = (EditText) convertView.findViewById(R.id.tvCommoQCMemo);
+            //离厂日期
             holder.tvCommoFactlcdat = (TextView) convertView.findViewById(R.id.tvCommoFactlcdat);
+            //查货批次
             holder.tvCommoBatchid = (EditText) convertView.findViewById(R.id.tvCommoBatchid);
+            //后道
             holder.tvCommoOurAfter = (TextView) convertView.findViewById(R.id.tvCommoOurAfter);
+            //业务员确认客查时间
             holder.tvCommoCtmchkdt = (TextView) convertView.findViewById(R.id.tvCommoCtmchkdt);
+            //尾查预查
             holder.tvCommoIPQCPedt = (EditText) convertView.findViewById(R.id.tvCommoIPQCPedt);
+            //巡检中查
             holder.tvCommoIPQCmdt = (EditText) convertView.findViewById(R.id.tvCommoIPQCmdt);
+            //QA首扎
             holder.tvCommoQAname = (EditText) convertView.findViewById(R.id.tvCommoQAname);
+            //QA首扎件数
             holder.tvCommoQAScore = (EditText) convertView.findViewById(R.id.tvCommoQAScore);
+            //QA首扎日
             holder.tvCommoQAMemo = (TextView) convertView.findViewById(R.id.tvCommoQAMemo);
+            //每项item
             holder.lin_content = (LinearLayout) convertView.findViewById(R.id.lin_content);
+            //件查
             holder.tvCommoThing = (EditText) convertView.findViewById(R.id.tvCommoThing);
+            //预计件查时间
             holder.tvCommoThingExpectedTime = (TextView) convertView.findViewById(R.id.tvCommoThingExpectedTime);
+            //实际件查时间
             holder.tvCommoThingTime = (TextView) convertView.findViewById(R.id.tvCommoThingTime);
+            //查货地点
             holder.tvCommoThingAddress = (EditText) convertView.findViewById(R.id.tvCommoThingAddress);
             spUtils.put(context, "strposition", position);
             convertView.setClickable(true);
@@ -135,7 +183,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
         /**
          * 判断生产主管是否是当前登录用户
          */
-        if (master.equals(nameid)) {
+        if (master.equals("周小琴")) {
             holder.lin_content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -145,18 +193,16 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     spUtils.put(context, "uriid", uriid);
                 }
             });
-            holder.tvCommoCtmtxt.setEnabled(true);
+            holder.tvCommoCtmtxt.setEnabled(true);//客户
             holder.tvCommoCtmtxt.setText(getItem(position).getCtmtxt());
 
-            holder.tvCommoPrddocumentary.setEnabled(true);
+            holder.tvCommoPrddocumentary.setEnabled(true);//跟单
             holder.tvCommoPrddocumentary.setText(getItem(position).getPrddocumentary());
 
-            holder.tvCommoprdmaster.setEnabled(true);
+            holder.tvCommoprdmaster.setEnabled(true);//生产主管
             holder.tvCommoprdmaster.setText(getItem(position).getPrdmaster());
 
-
-            holder.tvCommoOurAfter.setText(getItem(position).getOurAfter());
-
+            holder.tvCommoOurAfter.setText(getItem(position).getOurAfter());//后道
             holder.tvCommoOurAfter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -168,7 +214,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                         public boolean onMenuItemClick(MenuItem item) {
                             sp = context.getSharedPreferences("my_sp", 0);
                             String title = item.getTitle().toString();
-                            getItem(position).setOurAfter(title);
+                            String commotitle = getItem(position).getOurAfter();
+                            if (commotitle == null) {
+                                commotitle = "";
+                            }
+                            String nulltitle;
+                            if (commotitle.equals(title)) {
+                                nulltitle = "1";
+                            } else {
+                                nulltitle = "2";
+                                getItem(position).setOurAfter(title);
+                            }
+                            spUtils.put(context, "commonulltitle", nulltitle);
+                            spUtils.put(context, "commohdTitle", title);//后道
                             return false;
                         }
                     });
@@ -182,7 +240,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 }
             });
 
-            holder.tvCommoQCMasterScore.setEnabled(true);
+            holder.tvCommoQCMasterScore.setEnabled(true);//主管评分
             final EditText editTextQCMasterScore = holder.tvCommoQCMasterScore;
                 /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQCMasterScore.getTag() instanceof TextWatcher) {
@@ -213,15 +271,37 @@ public class CommoditySqlAdapter extends BaseAdapter {
                             public void afterTextChanged(Editable s) {
                                 Log.d(TAG, "afterTextChanged");
                                 String proitem = holder.tvCommoQCMasterScore.getText().toString();
-                                getItem(position).setQCMasterScore(proitem);
+                                String commoitem = getItem(position).getQCMasterScore();
+                                if (commoitem == null) {
+                                    commoitem = "";
+                                }
+                                String nullitem;
+                                if (commoitem.equals(proitem)) {
+                                    nullitem = "1";
+                                } else {
+                                    nullitem = "2";
+                                    getItem(position).setQCMasterScore(proitem);
+                                }
+                                spUtils.put(context, "commonullitem", nullitem);
+                                spUtils.put(context, "CommodityQCMasterScore", proitem);//主管评分
                             }
                         };
                         editTextQCMasterScore.addTextChangedListener(TvQCMasterScore);
                         editTextQCMasterScore.setTag(TvQCMasterScore);
-                    } else {
-                        //失去焦点
+                    } else { //失去焦点
                         String qcmastertwoo = holder.tvCommoQCMasterScore.getText().toString();
-                        getItem(position).setQCMasterScore(qcmastertwoo);
+                        String commoitem = getItem(position).getQCMasterScore();
+                        if (commoitem == null) {
+                            commoitem = "";
+                        }
+                        String nullitem;
+                        if (commoitem.equals(qcmastertwoo)) {
+                            nullitem = "1";
+                        } else {
+                            nullitem = "2";
+                            getItem(position).setQCMasterScore(qcmastertwoo);
+                        }
+                        spUtils.put(context, "commonullitem", nullitem);
                         System.out.print(qcmastertwoo);
                     }
                 }
@@ -229,7 +309,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             /*光标放置在文本最后*/
             holder.tvCommoQCMasterScore.setSelection(holder.tvCommoQCMasterScore.length());
 
-            holder.tvCommoSealedrev.setEnabled(true);
+            holder.tvCommoSealedrev.setEnabled(true);//封样资料接收时间
             holder.tvCommoSealedrev.getResources().getDrawable(R.drawable.shape_text_sql_boild);
             holder.tvCommoSealedrev.setText(getItem(position).getSealedrev());
             holder.tvCommoSealedrev.setOnClickListener(new View.OnClickListener() {
@@ -253,9 +333,21 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                         int day = datePicker.getDayOfMonth();
                                         String datetime = year + "/" + (month + 1) + "/" + day;
                                         holder.tvCommoSealedrev.setText(datetime);
-                                        if (attentionArr.contains(position)) {
-                                            getItem(position).setSealedrev(datetime);
+                                        String commosearledrev = getItem(position).getSealedrev();
+                                        if (commosearledrev == null) {
+                                            commosearledrev = "";
                                         }
+                                        String nullsearledrev;
+                                        if (commosearledrev.equals(datetime)) {
+                                            nullsearledrev = "1";
+                                        } else {
+                                            nullsearledrev = "2";
+                                            if (attentionArr.contains(position)) {
+                                                getItem(position).setSealedrev(datetime);
+                                            }
+                                        }
+                                        spUtils.put(context, "commonullsearledrev", nullsearledrev);
+                                        spUtils.put(context, "dateSealedrewtimesign", datetime);//封样资料接收时间
                                     }
                                 });
                         datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL,
@@ -263,7 +355,21 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         holder.tvCommoSealedrev.setText("");
-                                        getItem(position).setSealedrev("");
+                                        String commosearledrev = getItem(position).getSealedrev();
+                                        if (commosearledrev == null) {
+                                            commosearledrev = "";
+                                        }
+                                        String nullsearledrev;
+                                        if (commosearledrev.equals("")) {
+                                            nullsearledrev = "1";
+                                        } else {
+                                            nullsearledrev = "2";
+                                            if (attentionArr.contains(position)) {
+                                                getItem(position).setSealedrev("");
+                                            }
+                                        }
+                                        spUtils.put(context, "commonullsearledrev", nullsearledrev);
+                                        spUtils.put(context, "dateSealedrewtimesign", "");//封样资料接收时间
                                     }
                                 });
                         datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -278,7 +384,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 }
             });
 
-            holder.tvCommoDocback.setEnabled(true);
+            holder.tvCommoDocback.setEnabled(true);//大货资料接收时间
             holder.tvCommoDocback.setText(getItem(position).getDocback());
             holder.tvCommoDocback.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -299,7 +405,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoDocback.setText(datetime);
-                                    getItem(position).setDocback(datetime);
+                                    String commodocback = getItem(position).getDocback();
+                                    if (commodocback == null) {
+                                        commodocback = "";
+                                    }
+                                    String nulldocback;
+                                    if (commodocback.equals(datetime)) {
+                                        nulldocback = "1";
+                                    } else {
+                                        nulldocback = "2";
+                                        getItem(position).setDocback(datetime);
+                                    }
+                                    spUtils.put(context, "commonulldocback", nulldocback);
+                                    spUtils.put(context, "dateDocbacktimesign", datetime);//大货资料接收时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -307,7 +425,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoDocback.setText("");
-                                    holder.tvCommoDocback.setText("");
+                                    String commodocback = getItem(position).getDocback();
+                                    if (commodocback == null) {
+                                        commodocback = "";
+                                    }
+                                    String nulldocback;
+                                    if (commodocback.equals("")) {
+                                        nulldocback = "1";
+                                    } else {
+                                        nulldocback = "2";
+                                        getItem(position).setDocback("");
+                                    }
+                                    spUtils.put(context, "commonulldocback", nulldocback);
+                                    spUtils.put(context, "dateDocbacktimesign", "");//大货资料接收时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -327,9 +457,9 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoTaskqty.setEnabled(true);
             holder.tvCommoTaskqty.setText(getItem(position).getTaskqty());
 
-            holder.tvCommoPreMemo.setEnabled(true);
+            holder.tvCommoPreMemo.setEnabled(true);//需要特别备注的情况
             final EditText editTextPreMemo = holder.tvCommoPreMemo;
-                /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
+            /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextPreMemo.getTag() instanceof TextWatcher) {
                 editTextPreMemo.removeTextChangedListener((TextWatcher) editTextPreMemo.getTag());
             }
@@ -349,7 +479,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoPreMemo.getText().toString();
-                    getItem(position).setPreMemo(proitem);
+                    String commopromemo = getItem(position).getPreMemo();
+                    if (commopromemo == null) {
+                        commopromemo = "";
+                    }
+                    String nullmemo;
+                    if (commopromemo.equals(proitem)) {
+                        nullmemo = "1";
+                    } else {
+                        nullmemo = "2";
+                        getItem(position).setPreMemo(proitem);
+                    }
+                    spUtils.put(context, "commonullmemo", nullmemo);
+                    spUtils.put(context, "CommodityPreMemo", proitem);//需要特别备注的情况
                 }
             };
             editTextPreMemo.addTextChangedListener(TvPreMemo);
@@ -358,7 +500,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoPreMemo.setSelection(holder.tvCommoPreMemo.length());
 
 
-            holder.tvCommoPredocdt.setEnabled(true);
+            holder.tvCommoPredocdt.setEnabled(true);//预计产前报告时间
             holder.tvCommoPredocdt.setText(getItem(position).getPredocdt());
             holder.tvCommoPredocdt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -379,7 +521,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPredocdt.setText(datetime);
-                                    getItem(position).setPredocdt(datetime);
+                                    String commopreducdt = getItem(position).getPredocdt();
+                                    if (commopreducdt == null) {
+                                        commopreducdt = "";
+                                    }
+                                    String nullpreducdt;
+                                    if (commopreducdt.equals(datetime)) {
+                                        nullpreducdt = "1";
+                                    } else {
+                                        nullpreducdt = "2";
+                                        getItem(position).setPredocdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullpreducdt", nullpreducdt);
+                                    spUtils.put(context, "datePredocdttimesign", datetime);//预计产前报告时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -387,7 +541,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPredocdt.setText("");
-                                    getItem(position).setPredocdt("");
+                                    String commopreducdt = getItem(position).getPredocdt();
+                                    if (commopreducdt == null) {
+                                        commopreducdt = "";
+                                    }
+                                    String nullpreducdt;
+                                    if (commopreducdt.equals("")) {
+                                        nullpreducdt = "1";
+                                    } else {
+                                        nullpreducdt = "2";
+                                        getItem(position).setPredocdt("");
+                                    }
+                                    spUtils.put(context, "commonullpreducdt", nullpreducdt);
+                                    spUtils.put(context, "datePredocdttimesign", "");//预计产前报告时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -401,8 +567,8 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 }
             });
 
-            holder.tvCommoPred.setEnabled(true);
-            holder.tvCommoPred.setText(getItem(position).getPredocdt());
+            holder.tvCommoPred.setEnabled(true);//开产前会时间
+            holder.tvCommoPred.setText(getItem(position).getPredt());
             holder.tvCommoPred.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -422,7 +588,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPred.setText(datetime);
-                                    getItem(position).setPredocdt(datetime);
+                                    String commopred = getItem(position).getPredt();
+                                    if (commopred == null) {
+                                        commopred = "";
+                                    }
+                                    String nullpred;
+                                    if (commopred.equals(datetime)) {
+                                        nullpred = "1";
+                                    } else {
+                                        nullpred = "2";
+                                        getItem(position).setPredt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullpred", nullpred);
+                                    spUtils.put(context, "datePredtimesign", datetime);//开产前会时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -430,7 +608,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPred.setText("");
-                                    getItem(position).setPredocdt("");
+                                    String commopred = getItem(position).getPredt();
+                                    if (commopred == null) {
+                                        commopred = "";
+                                    }
+                                    String nullpred;
+                                    if (commopred.equals("")) {
+                                        nullpred = "1";
+                                    } else {
+                                        nullpred = "2";
+                                        getItem(position).setPredt("");
+                                    }
+                                    spUtils.put(context, "commonullpred", nullpred);
+                                    spUtils.put(context, "datePredtimesign", "");//开产前会时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -444,7 +634,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 }
             });
 
-            holder.tvCommoFabricsok.setEnabled(true);
+            holder.tvCommoFabricsok.setEnabled(true);//大货面料情况
             final EditText editTextFabricsok = holder.tvCommoFabricsok;
                 /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextFabricsok.getTag() instanceof TextWatcher) {
@@ -466,7 +656,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoFabricsok.getText().toString();
-                    getItem(position).setFabricsok(proitem);
+                    String commofabricsok = getItem(position).getFabricsok();
+                    if (commofabricsok == null) {
+                        commofabricsok = "";
+                    }
+                    String nullfabricsok;
+                    if (commofabricsok.equals(proitem)) {
+                        nullfabricsok = "1";
+                    } else {
+                        nullfabricsok = "2";
+                        getItem(position).setFabricsok(proitem);
+                    }
+                    spUtils.put(context, "commonullfabricsok", nullfabricsok);
+                    spUtils.put(context, "CommodityFabricsok", proitem);//大货面料情况
                 }
             };
             editTextFabricsok.addTextChangedListener(TvFabricsok);
@@ -475,7 +677,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoFabricsok.setSelection(holder.tvCommoFabricsok.length());
 
 
-            holder.tvCommoAccessoriesok.setEnabled(true);
+            holder.tvCommoAccessoriesok.setEnabled(true);//大货辅料情况
             final EditText editTextAccessoriesok = holder.tvCommoAccessoriesok;
                 /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextAccessoriesok.getTag() instanceof TextWatcher) {
@@ -497,7 +699,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoAccessoriesok.getText().toString();
-                    getItem(position).setAccessoriesok(proitem);
+                    String commoaccessori = getItem(position).getAccessoriesok();
+                    if (commoaccessori == null) {
+                        commoaccessori = "";
+                    }
+                    String nullaccessori;
+                    if (commoaccessori.equals(proitem)) {
+                        nullaccessori = "1";
+                    } else {
+                        nullaccessori = "2";
+                        getItem(position).setAccessoriesok(proitem);
+                    }
+                    spUtils.put(context, "commonullaccessori", nullaccessori);
+                    spUtils.put(context, "CommodityAccessoriesok", proitem);//大货辅料情况
                 }
             };
             editTextAccessoriesok.addTextChangedListener(TvAccessoriesok);
@@ -506,7 +720,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoAccessoriesok.setSelection(holder.tvCommoAccessoriesok.length());
 
 
-            holder.tvCommoSpcproDec.setEnabled(true);
+            holder.tvCommoSpcproDec.setEnabled(true);//大货特殊工艺情况
             final EditText editTextSpcproDec = holder.tvCommoSpcproDec;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextSpcproDec.getTag() instanceof TextWatcher) {
@@ -528,7 +742,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoSpcproDec.getText().toString();
-                    getItem(position).setSpcproDec(proitem);
+                    String commospcprodec = getItem(position).getSpcproDec();
+                    if (commospcprodec == null) {
+                        commospcprodec = "";
+                    }
+                    String nullspcprodec;
+                    if (commospcprodec.equals(proitem)) {
+                        nullspcprodec = "1";
+                    } else {
+                        nullspcprodec = "2";
+                        getItem(position).setSpcproDec(proitem);
+                    }
+                    spUtils.put(context, "commonullspcprodec", nullspcprodec);
+                    spUtils.put(context, "CommoditySpcproDec", proitem);//大货特殊工艺情况
                 }
             };
             editTextSpcproDec.addTextChangedListener(TvSpcproDec);
@@ -537,7 +763,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoSpcproDec.setSelection(holder.tvCommoSpcproDec.length());
 
 
-            holder.tvCommoSpcproMemo.setEnabled(true);
+            holder.tvCommoSpcproMemo.setEnabled(true);//特殊工艺特别备注
             final EditText editTextSpcproMemo = holder.tvCommoSpcproMemo;
                 /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextSpcproMemo.getTag() instanceof TextWatcher) {
@@ -559,7 +785,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoSpcproMemo.getText().toString();
-                    getItem(position).setSpcproMemo(proitem);
+                    String commospcpromemo = getItem(position).getSpcproMemo();
+                    if (commospcpromemo == null) {
+                        commospcpromemo = "";
+                    }
+                    String nullspcpromemo;
+                    if (commospcpromemo.equals(proitem)) {
+                        nullspcpromemo = "1";
+                    } else {
+                        nullspcpromemo = "2";
+                        getItem(position).setSpcproMemo(proitem);
+                    }
+                    spUtils.put(context, "commonullspcpromemo", nullspcpromemo);
+                    spUtils.put(context, "CommoditySpcproMemo", proitem);//特殊工艺特别备注
                 }
             };
             editTextSpcproMemo.addTextChangedListener(TvSpcproMemo);
@@ -568,7 +806,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoSpcproMemo.setSelection(holder.tvCommoSpcproMemo.length());
 
 
-            holder.tvCommoCutqty.setEnabled(true);
+            holder.tvCommoCutqty.setEnabled(true);//实裁数
             final EditText editTextCutqty = holder.tvCommoCutqty;
                 /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextCutqty.getTag() instanceof TextWatcher) {
@@ -590,7 +828,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoCutqty.getText().toString();
-                    getItem(position).setCutqty(proitem);
+                    String commocutqty = getItem(position).getCutqty();
+                    if (commocutqty == null) {
+                        commocutqty = "";
+                    }
+                    String nullcutqty;
+                    if (commocutqty.equals(proitem)) {
+                        nullcutqty = "1";
+                    } else {
+                        nullcutqty = "2";
+                        getItem(position).setCutqty(proitem);
+                    }
+                    spUtils.put(context, "commonullcutqty", nullcutqty);
+                    spUtils.put(context, "CommodityCutqty", proitem);//实裁数
                 }
             };
             editTextCutqty.addTextChangedListener(TvCutqty);
@@ -599,7 +849,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoCutqty.setSelection(holder.tvCommoCutqty.length());
 
 
-            holder.tvCommoSewFdt.setEnabled(true);
+            holder.tvCommoSewFdt.setEnabled(true);//上线日期
             holder.tvCommoSewFdt.setText(getItem(position).getSewFdt());
             holder.tvCommoSewFdt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -620,7 +870,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoSewFdt.setText(datetime);
-                                    getItem(position).setSewFdt(datetime);
+                                    String commosewfdt = getItem(position).getSewFdt();
+                                    if (commosewfdt == null) {
+                                        commosewfdt = "";
+                                    }
+                                    String nullsewfdt;
+                                    if (commosewfdt.equals(datetime)) {
+                                        nullsewfdt = "1";
+                                    } else {
+                                        nullsewfdt = "2";
+                                        getItem(position).setSewFdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullsewfdt", nullsewfdt);
+                                    spUtils.put(context, "dateSewFdttimesign", datetime);//上线日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -628,7 +890,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoSewFdt.setText("");
-                                    getItem(position).setSewFdt("");
+                                    String commosewfdt = getItem(position).getSewFdt();
+                                    if (commosewfdt == null) {
+                                        commosewfdt = "";
+                                    }
+                                    String nullsewfdt;
+                                    if (commosewfdt.equals("")) {
+                                        nullsewfdt = "1";
+                                    } else {
+                                        nullsewfdt = "2";
+                                        getItem(position).setSewFdt("");
+                                    }
+                                    spUtils.put(context, "commonullsewfdt", nullsewfdt);
+                                    spUtils.put(context, "dateSewFdttimesign", "");//上线日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -663,7 +937,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoSewMdt.setText(datetime);
-                                    getItem(position).setSewMdt(datetime);
+                                    String commosewmdt = getItem(position).getSewMdt();
+                                    if (commosewmdt == null) {
+                                        commosewmdt = "";
+                                    }
+                                    String nullsewmdt;
+                                    if (commosewmdt.equals(datetime)) {
+                                        nullsewmdt = "1";
+                                    } else {
+                                        nullsewmdt = "2";
+                                        getItem(position).setSewMdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullsewmdt", nullsewmdt);
+                                    spUtils.put(context, "dateSewMdttimesign", datetime);//下线日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -671,7 +957,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoSewMdt.setText("");
-                                    getItem(position).setSewMdt("");
+                                    String commosewmdt = getItem(position).getSewMdt();
+                                    if (commosewmdt == null) {
+                                        commosewmdt = "";
+                                    }
+                                    String nullsewmdt;
+                                    if (commosewmdt.equals("")) {
+                                        nullsewmdt = "1";
+                                    } else {
+                                        nullsewmdt = "2";
+                                        getItem(position).setSewMdt("");
+                                    }
+                                    spUtils.put(context, "commonullsewmdt", nullsewmdt);
+                                    spUtils.put(context, "dateSewMdttimesign", "");//下线日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -694,7 +992,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 }
             });
 
-            holder.tvCommoPrebdt.setEnabled(true);
+            holder.tvCommoPrebdt.setEnabled(true);//预计早期时间
             holder.tvCommoPrebdt.setText(getItem(position).getPrebdt());
             holder.tvCommoPrebdt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -715,7 +1013,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPrebdt.setText(datetime);
-                                    getItem(position).setPrebdt(datetime);
+                                    String commoprebdt = getItem(position).getPrebdt();
+                                    if (commoprebdt == null) {
+                                        commoprebdt = "";
+                                    }
+                                    String nullprebdt;
+                                    if (commoprebdt.equals(datetime)) {
+                                        nullprebdt = "1";
+                                    } else {
+                                        nullprebdt = "2";
+                                        getItem(position).setPrebdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullprebdt", nullprebdt);
+                                    spUtils.put(context, "datePrebdttimesign", datetime);//预计早期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -723,7 +1033,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPrebdt.setText("");
-                                    getItem(position).setPrebdt("");
+                                    String commoprebdt = getItem(position).getPrebdt();
+                                    if (commoprebdt == null) {
+                                        commoprebdt = "";
+                                    }
+                                    String nullprebdt;
+                                    if (commoprebdt.equals("")) {
+                                        nullprebdt = "1";
+                                    } else {
+                                        nullprebdt = "2";
+                                        getItem(position).setPrebdt("");
+                                    }
+                                    spUtils.put(context, "commonullprebdt", nullprebdt);
+                                    spUtils.put(context, "datePrebdttimesign", "");//预计早期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -737,7 +1059,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 }
             });
 
-            holder.tvCommoQCbdt.setEnabled(true);
+            holder.tvCommoQCbdt.setEnabled(true);//自查早期时间
             holder.tvCommoQCbdt.setText(getItem(position).getQCbdt());
             holder.tvCommoQCbdt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -758,7 +1080,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCbdt.setText(datetime);
-                                    getItem(position).setQCbdt(datetime);
+                                    String commoqcbdt = getItem(position).getQCbdt();
+                                    if (commoqcbdt == null) {
+                                        commoqcbdt = "";
+                                    }
+                                    String nullqcbdt;
+                                    if (commoqcbdt.equals(datetime)) {
+                                        nullqcbdt = "1";
+                                    } else {
+                                        nullqcbdt = "2";
+                                        getItem(position).setQCbdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullqcbdt", nullqcbdt);
+                                    spUtils.put(context, "dateQCbdttimesign", datetime);//自查早期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -766,7 +1100,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCbdt.setText("");
-                                    getItem(position).setQCbdt("");
+                                    String commoqcbdt = getItem(position).getQCbdt();
+                                    if (commoqcbdt == null) {
+                                        commoqcbdt = "";
+                                    }
+                                    String nullqcbdt;
+                                    if (commoqcbdt.equals("")) {
+                                        nullqcbdt = "1";
+                                    } else {
+                                        nullqcbdt = "2";
+                                        getItem(position).setQCbdt("");
+                                    }
+                                    spUtils.put(context, "commonullqcbdt", nullqcbdt);
+                                    spUtils.put(context, "dateQCbdttimesign", "");//自查早期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -802,7 +1148,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPremdt.setText(datetime);
-                                    getItem(position).setPremdt(datetime);
+                                    String commopremdt = getItem(position).getPremdt();
+                                    if (commopremdt == null) {
+                                        commopremdt = "";
+                                    }
+                                    String nullpremdt;
+                                    if (commopremdt.equals(datetime)) {
+                                        nullpremdt = "1";
+                                    } else {
+                                        nullpremdt = "2";
+                                        getItem(position).setPremdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullpremdt", nullpremdt);
+                                    spUtils.put(context, "datePremdttimesign", datetime);//预计中期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -810,7 +1168,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPremdt.setText("");
-                                    getItem(position).setPremdt("");
+                                    String commopremdt = getItem(position).getPremdt();
+                                    if (commopremdt == null) {
+                                        commopremdt = "";
+                                    }
+                                    String nullpremdt;
+                                    if (commopremdt.equals("")) {
+                                        nullpremdt = "1";
+                                    } else {
+                                        nullpremdt = "2";
+                                        getItem(position).setPremdt("");
+                                    }
+                                    spUtils.put(context, "commonullpremdt", nullpremdt);
+                                    spUtils.put(context, "datePremdttimesign", "");//预计中期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -845,7 +1215,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCmdt.setText(datetime);
-                                    getItem(position).setQCmdt(datetime);
+                                    String commoecmdt = getItem(position).getQCmdt();
+                                    if (commoecmdt == null) {
+                                        commoecmdt = "";
+                                    }
+                                    String nullqcmdt;
+                                    if (commoecmdt.equals(datetime)) {
+                                        nullqcmdt = "1";
+                                    } else {
+                                        nullqcmdt = "2";
+                                        getItem(position).setQCmdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullqcmdt", nullqcmdt);
+                                    spUtils.put(context, "dateQCmdttimesign", datetime);//自查中期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -853,7 +1235,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCmdt.setText("");
-                                    getItem(position).setQCmdt("");
+                                    String commoecmdt = getItem(position).getQCmdt();
+                                    if (commoecmdt == null) {
+                                        commoecmdt = "";
+                                    }
+                                    String nullqcmdt;
+                                    if (commoecmdt.equals("")) {
+                                        nullqcmdt = "1";
+                                    } else {
+                                        nullqcmdt = "2";
+                                        getItem(position).setQCmdt("");
+                                    }
+                                    spUtils.put(context, "commonullqcmdt", nullqcmdt);
+                                    spUtils.put(context, "dateQCmdttimesign", "");//自查中期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -889,7 +1283,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPreedt.setText(datetime);
-                                    getItem(position).setPreedt(datetime);
+                                    String commopreedt = getItem(position).getPreedt();
+                                    if (commopreedt == null) {
+                                        commopreedt = "";
+                                    }
+                                    String nullpreedt;
+                                    if (commopreedt.equals(datetime)) {
+                                        nullpreedt = "1";
+                                    } else {
+                                        nullpreedt = "2";
+                                        getItem(position).setPreedt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullpreedt", nullpreedt);
+                                    spUtils.put(context, "datePreedttimesign", datetime);//预计尾期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -897,7 +1303,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPreedt.setText("");
-                                    getItem(position).setPreedt("");
+                                    String commopreedt = getItem(position).getPreedt();
+                                    if (commopreedt == null) {
+                                        commopreedt = "";
+                                    }
+                                    String nullpreedt;
+                                    if (commopreedt.equals("")) {
+                                        nullpreedt = "1";
+                                    } else {
+                                        nullpreedt = "2";
+                                        getItem(position).setPreedt("");
+                                    }
+                                    spUtils.put(context, "commonullpreedt", nullpreedt);
+                                    spUtils.put(context, "datePreedttimesign", "");//预计尾期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -911,7 +1329,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 }
             });
 
-            holder.tvCommoQCMedt.setEnabled(true);
+            holder.tvCommoQCMedt.setEnabled(true);//自查尾期时间
             holder.tvCommoQCMedt.setText(getItem(position).getQCMedt());
             holder.tvCommoQCMedt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -932,7 +1350,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCMedt.setText(datetime);
-                                    getItem(position).setQCMedt(datetime);
+                                    String commoqcmedt = getItem(position).getQCMedt();
+                                    if (commoqcmedt == null) {
+                                        commoqcmedt = "";
+                                    }
+                                    String nullqcmedt;
+                                    if (commoqcmedt.equals(datetime)) {
+                                        nullqcmedt = "1";
+                                    } else {
+                                        nullqcmedt = "2";
+                                        getItem(position).setQCMedt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullqcmedt", nullqcmedt);
+                                    spUtils.put(context, "dateQCMedttimesign", datetime);//自查尾期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -940,7 +1370,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCMedt.setText("");
-                                    getItem(position).setQCMedt("");
+                                    String commoqcmedt = getItem(position).getQCMedt();
+                                    if (commoqcmedt == null) {
+                                        commoqcmedt = "";
+                                    }
+                                    String nullqcmedt;
+                                    if (commoqcmedt.equals("")) {
+                                        nullqcmedt = "1";
+                                    } else {
+                                        nullqcmedt = "2";
+                                        getItem(position).setQCMedt("");
+                                    }
+                                    spUtils.put(context, "commonullqcmedt", nullqcmedt);
+                                    spUtils.put(context, "dateQCMedttimesign", "");//自查尾期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -955,7 +1397,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             });
 
 
-            holder.tvCommoFctmdt.setEnabled(true);
+            holder.tvCommoFctmdt.setEnabled(true);//客查中期时间
             holder.tvCommoFctmdt.setText(getItem(position).getFctmdt());
             holder.tvCommoFctmdt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -976,7 +1418,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFctmdt.setText(datetime);
-                                    getItem(position).setFctmdt(datetime);
+                                    String commofctmdt = getItem(position).getFctmdt();
+                                    if (commofctmdt == null) {
+                                        commofctmdt = "";
+                                    }
+                                    String nullfctmdt;
+                                    if (commofctmdt.equals(datetime)) {
+                                        nullfctmdt = "1";
+                                    } else {
+                                        nullfctmdt = "2";
+                                        getItem(position).setFctmdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullfctmdt", nullfctmdt);
+                                    spUtils.put(context, "dateFctmdttimesign", datetime);//客查中期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -984,7 +1438,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFctmdt.setText("");
-                                    getItem(position).setFctmdt("");
+                                    String commofctmdt = getItem(position).getFctmdt();
+                                    if (commofctmdt == null) {
+                                        commofctmdt = "";
+                                    }
+                                    String nullfctmdt;
+                                    if (commofctmdt.equals("")) {
+                                        nullfctmdt = "1";
+                                    } else {
+                                        nullfctmdt = "2";
+                                        getItem(position).setFctmdt("");
+                                    }
+                                    spUtils.put(context, "commonullfctmdt", nullfctmdt);
+                                    spUtils.put(context, "dateFctmdttimesign", "");//客查中期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -998,7 +1464,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 }
             });
 
-            holder.tvCommoFctedt.setEnabled(true);
+            holder.tvCommoFctedt.setEnabled(true);//客查尾期时间
             holder.tvCommoFctedt.setText(getItem(position).getFctedt());
             holder.tvCommoFctedt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1019,7 +1485,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFctedt.setText(datetime);
-                                    getItem(position).setFctedt(datetime);
+                                    String commofctedt = getItem(position).getFctedt();
+                                    if (commofctedt == null) {
+                                        commofctedt = "";
+                                    }
+                                    String nullfctedt;
+                                    if (commofctedt.equals(datetime)) {
+                                        nullfctedt = "1";
+                                    } else {
+                                        nullfctedt = "2";
+                                        getItem(position).setFctedt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullfctedt", nullfctedt);
+                                    spUtils.put(context, "dateFctedttimesign", datetime);//客查尾期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1027,7 +1505,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFctedt.setText("");
-                                    getItem(position).setFctedt("");
+                                    String commofctedt = getItem(position).getFctedt();
+                                    if (commofctedt == null) {
+                                        commofctedt = "";
+                                    }
+                                    String nullfctedt;
+                                    if (commofctedt.equals("")) {
+                                        nullfctedt = "1";
+                                    } else {
+                                        nullfctedt = "2";
+                                        getItem(position).setFctedt("");
+                                    }
+                                    spUtils.put(context, "commonullfctedt", nullfctedt);
+                                    spUtils.put(context, "dateFctedttimesign", "");//客查尾期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1041,7 +1531,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 }
             });
 
-            holder.tvCommoPackbdat.setEnabled(true);
+            holder.tvCommoPackbdat.setEnabled(true);//成品包装开始时间
             holder.tvCommoPackbdat.setText(getItem(position).getPackbdat());
             holder.tvCommoPackbdat.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1062,7 +1552,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPackbdat.setText(datetime);
-                                    getItem(position).setPackbdat(datetime);
+                                    String commopackbdat = getItem(position).getPackbdat();
+                                    if (commopackbdat == null) {
+                                        commopackbdat = "";
+                                    }
+                                    String nullpackbdat;
+                                    if (commopackbdat.equals(datetime)) {
+                                        nullpackbdat = "1";
+                                    } else {
+                                        nullpackbdat = "2";
+                                        getItem(position).setPackbdat(datetime);
+                                    }
+                                    spUtils.put(context, "commonullpackbdat", nullpackbdat);
+                                    spUtils.put(context, "datePackbdattimesign", datetime);//成品包装开始日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1070,7 +1572,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPackbdat.setText("");
-                                    getItem(position).setPackbdat("");
+                                    String commopackbdat = getItem(position).getPackbdat();
+                                    if (commopackbdat == null) {
+                                        commopackbdat = "";
+                                    }
+                                    String nullpackbdat;
+                                    if (commopackbdat.equals("")) {
+                                        nullpackbdat = "1";
+                                    } else {
+                                        nullpackbdat = "2";
+                                        getItem(position).setPackbdat("");
+                                    }
+                                    spUtils.put(context, "commonullpackbdat", nullpackbdat);
+                                    spUtils.put(context, "datePackbdattimesign", "");//成品包装开始日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1085,7 +1599,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             });
 
 
-            holder.tvCommoPackqty2.setEnabled(true);
+            holder.tvCommoPackqty2.setEnabled(true);//装箱数量
             final EditText editTextPackqty2 = holder.tvCommoPackqty2;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextPackqty2.getTag() instanceof TextWatcher) {
@@ -1107,7 +1621,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoPackqty2.getText().toString();
-                    getItem(position).setPackqty2(proitem);
+                    String commopackqty2 = getItem(position).getPackqty2();
+                    if (commopackqty2 == null) {
+                        commopackqty2 = "";
+                    }
+                    String nullpackqty2;
+                    if (commopackqty2.equals(proitem)) {
+                        nullpackqty2 = "1";
+                    } else {
+                        nullpackqty2 = "2";
+                        getItem(position).setPackqty2(proitem);
+                    }
+                    spUtils.put(context, "commonullpackqty2", nullpackqty2);
+                    spUtils.put(context, "CommodityPackqty2", proitem);//装箱数量
                 }
             };
             editTextPackqty2.addTextChangedListener(TvPackqty2);
@@ -1116,7 +1642,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoPackqty2.setSelection(holder.tvCommoPackqty2.length());
 
 
-            holder.tvCommoQCMemo.setEnabled(true);
+            holder.tvCommoQCMemo.setEnabled(true);//qc特别备注
             final EditText editTextQCMemo = holder.tvCommoQCMemo;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQCMemo.getTag() instanceof TextWatcher) {
@@ -1138,7 +1664,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQCMemo.getText().toString();
-                    getItem(position).setQCMemo(proitem);
+                    String commoqcmemo = getItem(position).getQCMemo();
+                    if (commoqcmemo == null) {
+                        commoqcmemo = "";
+                    }
+                    String nullqcmemo;
+                    if (commoqcmemo.equals(proitem)) {
+                        nullqcmemo = "1";
+                    } else {
+                        nullqcmemo = "2";
+                        getItem(position).setQCMemo(proitem);
+                    }
+                    spUtils.put(context, "commonullqcmemo", nullqcmemo);
+                    spUtils.put(context, "CommodityQCMemo", proitem);//QC特别备注
                 }
             };
             editTextQCMemo.addTextChangedListener(TvQCMemo);
@@ -1146,7 +1684,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             /*光标放置在文本最后*/
             holder.tvCommoQCMemo.setSelection(holder.tvCommoQCMemo.length());
 
-            holder.tvCommoFactlcdat.setEnabled(true);
+            holder.tvCommoFactlcdat.setEnabled(true);//离厂日期
             holder.tvCommoFactlcdat.setText(getItem(position).getFactlcdat());
             holder.tvCommoFactlcdat.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1167,7 +1705,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFactlcdat.setText(datetime);
-                                    getItem(position).setFactlcdat(datetime);
+                                    String commofactlcdat = getItem(position).getFactlcdat();
+                                    if (commofactlcdat == null) {
+                                        commofactlcdat = "";
+                                    }
+                                    String nullfactlcdat;
+                                    if (commofactlcdat.equals(datetime)) {
+                                        nullfactlcdat = "1";
+                                    } else {
+                                        nullfactlcdat = "2";
+                                        getItem(position).setFactlcdat(datetime);
+                                    }
+                                    spUtils.put(context, "commonullfactlcdat", nullfactlcdat);
+                                    spUtils.put(context, "dateFactlcdattimesign", datetime);//离厂日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1175,7 +1725,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFactlcdat.setText("");
-                                    getItem(position).setFactlcdat("");
+                                    String commofactlcdat = getItem(position).getFactlcdat();
+                                    if (commofactlcdat == null) {
+                                        commofactlcdat = "";
+                                    }
+                                    String nullfactlcdat;
+                                    if (commofactlcdat.equals("")) {
+                                        nullfactlcdat = "1";
+                                    } else {
+                                        nullfactlcdat = "2";
+                                        getItem(position).setFactlcdat("");
+                                    }
+                                    spUtils.put(context, "commonullfactlcdat", nullfactlcdat);
+                                    spUtils.put(context, "dateFactlcdattimesign", "");//离厂日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1211,7 +1773,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoBatchid.getText().toString();
-                    getItem(position).setBatchid(proitem);
+                    String commoBatchid = getItem(position).getBatchid();
+                    if (commoBatchid == null) {
+                        commoBatchid = "";
+                    }
+                    String nullBatchid;
+                    if (commoBatchid.equals(proitem)) {
+                        nullBatchid = "1";
+                    } else {
+                        nullBatchid = "2";
+                        getItem(position).setBatchid(proitem);
+                    }
+                    spUtils.put(context, "commonullBatchid", nullBatchid);
+                    spUtils.put(context, "CommodityBatchid", proitem);//查货批次
                 }
             };
             editTextBatchid.addTextChangedListener(TvBatchid);
@@ -1242,7 +1816,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoCtmchkdt.setText(datetime);
-                                    getItem(position).setCtmchkdt(datetime);
+                                    String commoCtmchkdt = getItem(position).getCtmchkdt();
+                                    if (commoCtmchkdt == null) {
+                                        commoCtmchkdt = "";
+                                    }
+                                    String nullCtmchkdt;
+                                    if (commoCtmchkdt.equals(datetime)) {
+                                        nullCtmchkdt = "1";
+                                    } else {
+                                        nullCtmchkdt = "2";
+                                        getItem(position).setCtmchkdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullCtmchkdt", nullCtmchkdt);
+                                    spUtils.put(context, "dateCtmchkdttimesign", datetime);//业务员确认客查日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1250,7 +1836,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoCtmchkdt.setText("");
-                                    getItem(position).setCtmchkdt("");
+                                    String commoCtmchkdt = getItem(position).getCtmchkdt();
+                                    if (commoCtmchkdt == null) {
+                                        commoCtmchkdt = "";
+                                    }
+                                    String nullCtmchkdt;
+                                    if (commoCtmchkdt.equals("")) {
+                                        nullCtmchkdt = "1";
+                                    } else {
+                                        nullCtmchkdt = "2";
+                                        getItem(position).setCtmchkdt("");
+                                    }
+                                    spUtils.put(context, "commonullCtmchkdt", nullCtmchkdt);
+                                    spUtils.put(context, "dateCtmchkdttimesign", "");//业务员确认客查日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1265,7 +1863,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             });
 
 
-            holder.tvCommoIPQCPedt.setEnabled(true);
+            holder.tvCommoIPQCPedt.setEnabled(true);//尾查预查
             final EditText editTextIPQCPedt = holder.tvCommoIPQCPedt;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextIPQCPedt.getTag() instanceof TextWatcher) {
@@ -1287,7 +1885,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoIPQCPedt.getText().toString();
-                    getItem(position).setIPQCPedt(proitem);
+                    String commoipqcpedt = getItem(position).getIPQCPedt();
+                    if (commoipqcpedt == null) {
+                        commoipqcpedt = "";
+                    }
+                    String nullipqcpedt;
+                    if (commoipqcpedt.equals(proitem)) {
+                        nullipqcpedt = "1";
+                    } else {
+                        nullipqcpedt = "2";
+                        getItem(position).setIPQCPedt(proitem);
+                    }
+                    spUtils.put(context, "commonullipqcpedt", nullipqcpedt);
+                    spUtils.put(context, "CommodityIPQCPedt", proitem);//尾查预查
                 }
             };
             editTextIPQCPedt.addTextChangedListener(TvIPQCPedt);
@@ -1296,7 +1906,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoIPQCPedt.setSelection(holder.tvCommoIPQCPedt.length());
 
 
-            holder.tvCommoIPQCmdt.setEnabled(true);
+            holder.tvCommoIPQCmdt.setEnabled(true);//巡检中查
             final EditText editTextIPQCmdt = holder.tvCommoIPQCmdt;
                 /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextIPQCmdt.getTag() instanceof TextWatcher) {
@@ -1318,7 +1928,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoIPQCmdt.getText().toString();
-                    getItem(position).setIPQCmdt(proitem);
+                    String commoipqcmdt = getItem(position).getIPQCmdt();
+                    if (commoipqcmdt == null) {
+                        commoipqcmdt = "";
+                    }
+                    String nullipqcmdt;
+                    if (commoipqcmdt.equals(proitem)) {
+                        nullipqcmdt = "1";
+                    } else {
+                        nullipqcmdt = "2";
+                        getItem(position).setIPQCmdt(proitem);
+                    }
+                    spUtils.put(context, "commonullipqcmdt", nullipqcmdt);
+                    spUtils.put(context, "CommodityIPQCmdt", proitem);//巡检中查
                 }
             };
             editTextIPQCmdt.addTextChangedListener(TvIPQCmdt);
@@ -1327,7 +1949,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoIPQCmdt.setSelection(holder.tvCommoIPQCmdt.length());
 
 
-            holder.tvCommoQAname.setEnabled(true);
+            holder.tvCommoQAname.setEnabled(true);//QA首扎
             final EditText editTextQAname = holder.tvCommoQAname;
                 /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQAname.getTag() instanceof TextWatcher) {
@@ -1349,7 +1971,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQAname.getText().toString();
-                    getItem(position).setQAname(proitem);
+                    String commoQaname = getItem(position).getQAname();
+                    if (commoQaname == null) {
+                        commoQaname = "";
+                    }
+                    String nullqaname;
+                    if (commoQaname.equals(proitem)) {
+                        nullqaname = "1";
+                    } else {
+                        nullqaname = "2";
+                        getItem(position).setQAname(proitem);
+                    }
+                    spUtils.put(context, "commonullqaname", nullqaname);
+                    spUtils.put(context, "CommodityQAname", proitem);//QA首扎
                 }
             };
             editTextQAname.addTextChangedListener(TvQAname);
@@ -1358,7 +1992,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoQAname.setSelection(holder.tvCommoQAname.length());
 
 
-            holder.tvCommoQAScore.setEnabled(true);
+            holder.tvCommoQAScore.setEnabled(true);//QA首扎件数
             final EditText editTextQAScore = holder.tvCommoQAScore;
                 /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQAScore.getTag() instanceof TextWatcher) {
@@ -1380,7 +2014,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQAScore.getText().toString();
-                    getItem(position).setQAScore(proitem);
+                    String commoqascore = getItem(position).getQAScore();
+                    if (commoqascore == null) {
+                        commoqascore = "";
+                    }
+                    String nullqascore;
+                    if (commoqascore.equals(proitem)) {
+                        nullqascore = "1";
+                    } else {
+                        nullqascore = "2";
+                        getItem(position).setQAScore(proitem);
+                    }
+                    spUtils.put(context, "commonullqascore", nullqascore);
+                    spUtils.put(context, "CommodityQAScore", proitem);//QA首扎件数
                 }
             };
             editTextQAScore.addTextChangedListener(TvQAScore);
@@ -1410,7 +2056,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQAMemo.setText(datetime);
-                                    getItem(position).setQAMemo(datetime);
+                                    String commoqamemo = getItem(position).getQAMemo();
+                                    if(commoqamemo==null){
+                                        commoqamemo="";
+                                    }
+                                    String nullqamemo;
+                                    if(commoqamemo.equals(datetime)){
+                                        nullqamemo="1";
+                                    }else{
+                                        nullqamemo="2";
+                                        getItem(position).setQAMemo(datetime);
+                                    }
+                                    spUtils.put(context,"commonullqamemo",nullqamemo);
+                                    spUtils.put(context, "dateQAMemotimesign", datetime);//QA首扎日
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1418,7 +2076,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQAMemo.setText("");
-                                    getItem(position).setQAMemo("");
+                                    String commoqamemo = getItem(position).getQAMemo();
+                                    if(commoqamemo==null){
+                                        commoqamemo="";
+                                    }
+                                    String nullqamemo;
+                                    if(commoqamemo.equals("")){
+                                        nullqamemo="1";
+                                    }else{
+                                        nullqamemo="2";
+                                        getItem(position).setQAMemo("");
+                                    }
+                                    spUtils.put(context,"commonullqamemo",nullqamemo);
+                                    spUtils.put(context, "dateQAMemotimesign", "");//QA首扎日
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1496,7 +2166,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             /**
              * 判断跟单员是否是当前登录用户
              */
-        } else if (documentary.equals(nameid)) {
+        } else if (documentary.equals("周小琴")) {
             holder.lin_content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1531,6 +2201,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                             sp = context.getSharedPreferences("my_sp", 0);
                             String title = item.getTitle().toString();
                             getItem(position).setOurAfter(title);
+                            spUtils.put(context, "commohdTitle", title);//后道
                             return false;
                         }
                     });
@@ -1576,9 +2247,22 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                         int day = datePicker.getDayOfMonth();
                                         String datetime = year + "/" + (month + 1) + "/" + day;
                                         holder.tvCommoSealedrev.setText(datetime);
-                                        if (attentionArr.contains(position)) {
-                                            getItem(position).setSealedrev(datetime);
+                                        String commosearledrev = getItem(position).getSealedrev();
+                                        if (commosearledrev == null) {
+                                            commosearledrev = "";
                                         }
+                                        String nullsearledrev;
+                                        if (commosearledrev.equals(datetime)) {
+                                            nullsearledrev = "1";
+                                        } else {
+                                            nullsearledrev = "2";
+                                            if (attentionArr.contains(position)) {
+                                                getItem(position).setSealedrev(datetime);
+                                            }
+                                        }
+                                        spUtils.put(context, "commonullsearledrev", nullsearledrev);
+                                        spUtils.put(context, "dateSealedrewtimesign", datetime);//封样资料接收时间
+
                                     }
                                 });
                         datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL,
@@ -1586,7 +2270,21 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         holder.tvCommoSealedrev.setText("");
-                                        getItem(position).setSealedrev("");
+                                        String commosearledrev = getItem(position).getSealedrev();
+                                        if (commosearledrev == null) {
+                                            commosearledrev = "";
+                                        }
+                                        String nullsearledrev;
+                                        if (commosearledrev.equals("")) {
+                                            nullsearledrev = "1";
+                                        } else {
+                                            nullsearledrev = "2";
+                                            if (attentionArr.contains(position)) {
+                                                getItem(position).setSealedrev("");
+                                            }
+                                        }
+                                        spUtils.put(context, "commonullsearledrev", nullsearledrev);
+                                        spUtils.put(context, "dateSealedrewtimesign", "");//封样资料接收时间
                                     }
                                 });
                         datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1623,7 +2321,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoDocback.setText(datetime);
-                                    getItem(position).setDocback(datetime);
+                                    String commodocback = getItem(position).getDocback();
+                                    if (commodocback == null) {
+                                        commodocback = "";
+                                    }
+                                    String nulldocback;
+                                    if (commodocback.equals(datetime)) {
+                                        nulldocback = "1";
+                                    } else {
+                                        nulldocback = "2";
+                                        getItem(position).setDocback(datetime);
+                                    }
+                                    spUtils.put(context, "commonulldocback", nulldocback);
+                                    spUtils.put(context, "dateDocbacktimesign", datetime);//大货资料接收时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1631,7 +2341,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoDocback.setText("");
-                                    holder.tvCommoDocback.setText("");
+                                    String commodocback = getItem(position).getDocback();
+                                    if (commodocback == null) {
+                                        commodocback = "";
+                                    }
+                                    String nulldocback;
+                                    if (commodocback.equals("")) {
+                                        nulldocback = "1";
+                                    } else {
+                                        nulldocback = "2";
+                                        getItem(position).setDocback("");
+                                    }
+                                    spUtils.put(context, "commonulldocback", nulldocback);
+                                    spUtils.put(context, "dateDocbacktimesign", "");//大货资料接收时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1673,7 +2395,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoPreMemo.getText().toString();
-                    getItem(position).setPreMemo(proitem);
+                    String commopromemo = getItem(position).getPreMemo();
+                    if (commopromemo == null) {
+                        commopromemo = "";
+                    }
+                    String nullmemo;
+                    if (commopromemo.equals(proitem)) {
+                        nullmemo = "1";
+                    } else {
+                        nullmemo = "2";
+                        getItem(position).setPreMemo(proitem);
+                    }
+                    spUtils.put(context, "commonullmemo", nullmemo);
+                    spUtils.put(context, "CommodityPreMemo", proitem);//需要特别备注的情况
                 }
             };
             editTextPreMemo.addTextChangedListener(TvPreMemo);
@@ -1703,7 +2437,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPredocdt.setText(datetime);
-                                    getItem(position).setPredocdt(datetime);
+                                    String commopreducdt = getItem(position).getPredocdt();
+                                    if (commopreducdt == null) {
+                                        commopreducdt = "";
+                                    }
+                                    String nullpreducdt;
+                                    if (commopreducdt.equals(datetime)) {
+                                        nullpreducdt = "1";
+                                    } else {
+                                        nullpreducdt = "2";
+                                        getItem(position).setPredocdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullpreducdt", nullpreducdt);
+                                    spUtils.put(context, "datePredocdttimesign", datetime);//预计产前报告时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1711,7 +2457,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPredocdt.setText("");
-                                    getItem(position).setPredocdt("");
+                                    String commopreducdt = getItem(position).getPredocdt();
+                                    if (commopreducdt == null) {
+                                        commopreducdt = "";
+                                    }
+                                    String nullpreducdt;
+                                    if (commopreducdt.equals("")) {
+                                        nullpreducdt = "1";
+                                    } else {
+                                        nullpreducdt = "2";
+                                        getItem(position).setPredocdt("");
+                                    }
+                                    spUtils.put(context, "commonullpreducdt", nullpreducdt);
+                                    spUtils.put(context, "datePredocdttimesign", "");//预计产前报告时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1726,7 +2484,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             });
 
             holder.tvCommoPred.setEnabled(true);
-            holder.tvCommoPred.setText(getItem(position).getPredocdt());
+            holder.tvCommoPred.setText(getItem(position).getPredt());
             holder.tvCommoPred.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1746,7 +2504,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPred.setText(datetime);
-                                    getItem(position).setPredocdt(datetime);
+                                    String commopred = getItem(position).getPredt();
+                                    if (commopred == null) {
+                                        commopred = "";
+                                    }
+                                    String nullpred;
+                                    if (commopred.equals(datetime)) {
+                                        nullpred = "1";
+                                    } else {
+                                        nullpred = "2";
+                                        getItem(position).setPredt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullpred", nullpred);
+                                    spUtils.put(context, "datePredtimesign", datetime);//开产前会时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1754,7 +2524,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPred.setText("");
-                                    getItem(position).setPredocdt("");
+                                    String commopred = getItem(position).getPredt();
+                                    if (commopred == null) {
+                                        commopred = "";
+                                    }
+                                    String nullpred;
+                                    if (commopred.equals("")) {
+                                        nullpred = "1";
+                                    } else {
+                                        nullpred = "2";
+                                        getItem(position).setPredt("");
+                                    }
+                                    spUtils.put(context, "commonullpred", nullpred);
+                                    spUtils.put(context, "datePredtimesign", "");//开产前会时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1791,7 +2573,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoFabricsok.getText().toString();
-                    getItem(position).setFabricsok(proitem);
+                    String commofabricsok = getItem(position).getFabricsok();
+                    if (commofabricsok == null) {
+                        commofabricsok = "";
+                    }
+                    String nullfabricsok;
+                    if (commofabricsok.equals(proitem)) {
+                        nullfabricsok = "1";
+                    } else {
+                        nullfabricsok = "2";
+                        getItem(position).setFabricsok(proitem);
+                    }
+                    spUtils.put(context, "commonullfabricsok", nullfabricsok);
+                    spUtils.put(context, "CommodityFabricsok", proitem);//大货面料情况
                 }
             };
             editTextFabricsok.addTextChangedListener(TvFabricsok);
@@ -1822,7 +2616,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoAccessoriesok.getText().toString();
-                    getItem(position).setAccessoriesok(proitem);
+                    String commoaccessori = getItem(position).getAccessoriesok();
+                    if (commoaccessori == null) {
+                        commoaccessori = "";
+                    }
+                    String nullaccessori;
+                    if (commoaccessori.equals(proitem)) {
+                        nullaccessori = "1";
+                    } else {
+                        nullaccessori = "2";
+                        getItem(position).setAccessoriesok(proitem);
+                    }
+                    spUtils.put(context, "commonullaccessori", nullaccessori);
+                    spUtils.put(context, "CommodityAccessoriesok", proitem);//大货辅料情况
                 }
             };
             editTextAccessoriesok.addTextChangedListener(TvAccessoriesok);
@@ -1853,7 +2659,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoSpcproDec.getText().toString();
-                    getItem(position).setSpcproDec(proitem);
+                    String commospcprodec = getItem(position).getSpcproDec();
+                    if (commospcprodec == null) {
+                        commospcprodec = "";
+                    }
+                    String nullspcprodec;
+                    if (commospcprodec.equals(proitem)) {
+                        nullspcprodec = "1";
+                    } else {
+                        nullspcprodec = "2";
+                        getItem(position).setSpcproDec(proitem);
+                    }
+                    spUtils.put(context, "commonullspcprodec", nullspcprodec);
+                    spUtils.put(context, "CommoditySpcproDec", proitem);//大货特殊工艺情况
                 }
             };
             editTextSpcproDec.addTextChangedListener(TvSpcproDec);
@@ -1884,7 +2702,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoSpcproMemo.getText().toString();
-                    getItem(position).setSpcproMemo(proitem);
+                    String commospcpromemo = getItem(position).getSpcproMemo();
+                    if (commospcpromemo == null) {
+                        commospcpromemo = "";
+                    }
+                    String nullspcpromemo;
+                    if (commospcpromemo.equals(proitem)) {
+                        nullspcpromemo = "1";
+                    } else {
+                        nullspcpromemo = "2";
+                        getItem(position).setSpcproMemo(proitem);
+                    }
+                    spUtils.put(context, "commonullspcpromemo", nullspcpromemo);
+                    spUtils.put(context, "CommoditySpcproMemo", proitem);//特殊工艺特别备注
                 }
             };
             editTextSpcproMemo.addTextChangedListener(TvSpcproMemo);
@@ -1915,7 +2745,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoCutqty.getText().toString();
-                    getItem(position).setCutqty(proitem);
+                    String commocutqty = getItem(position).getCutqty();
+                    if (commocutqty == null) {
+                        commocutqty = "";
+                    }
+                    String nullcutqty;
+                    if (commocutqty.equals(proitem)) {
+                        nullcutqty = "1";
+                    } else {
+                        nullcutqty = "2";
+                        getItem(position).setCutqty(proitem);
+                    }
+                    spUtils.put(context, "commonullcutqty", nullcutqty);
+                    spUtils.put(context, "CommodityCutqty", proitem);//实裁数
                 }
             };
             editTextCutqty.addTextChangedListener(TvCutqty);
@@ -1945,7 +2787,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoSewFdt.setText(datetime);
-                                    getItem(position).setSewFdt(datetime);
+                                    String commosewfdt = getItem(position).getSewFdt();
+                                    if (commosewfdt == null) {
+                                        commosewfdt = "";
+                                    }
+                                    String nullsewfdt;
+                                    if (commosewfdt.equals(datetime)) {
+                                        nullsewfdt = "1";
+                                    } else {
+                                        nullsewfdt = "2";
+                                        getItem(position).setSewFdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullsewfdt", nullsewfdt);
+                                    spUtils.put(context, "dateSewFdttimesign", datetime);//上线日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1953,7 +2807,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoSewFdt.setText("");
-                                    getItem(position).setSewFdt("");
+                                    String commosewfdt = getItem(position).getSewFdt();
+                                    if (commosewfdt == null) {
+                                        commosewfdt = "";
+                                    }
+                                    String nullsewfdt;
+                                    if (commosewfdt.equals("")) {
+                                        nullsewfdt = "1";
+                                    } else {
+                                        nullsewfdt = "2";
+                                        getItem(position).setSewFdt("");
+                                    }
+                                    spUtils.put(context, "commonullsewfdt", nullsewfdt);
+                                    spUtils.put(context, "dateSewFdttimesign", "");//上线日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -1988,7 +2854,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoSewMdt.setText(datetime);
-                                    getItem(position).setSewMdt(datetime);
+                                    String commosewmdt = getItem(position).getSewMdt();
+                                    if (commosewmdt == null) {
+                                        commosewmdt = "";
+                                    }
+                                    String nullsewmdt;
+                                    if (commosewmdt.equals(datetime)) {
+                                        nullsewmdt = "1";
+                                    } else {
+                                        nullsewmdt = "2";
+                                        getItem(position).setSewMdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullsewmdt", nullsewmdt);
+                                    spUtils.put(context, "dateSewMdttimesign", datetime);//下线日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -1996,7 +2874,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoSewMdt.setText("");
-                                    getItem(position).setSewMdt("");
+                                    String commosewmdt = getItem(position).getSewMdt();
+                                    if (commosewmdt == null) {
+                                        commosewmdt = "";
+                                    }
+                                    String nullsewmdt;
+                                    if (commosewmdt.equals("")) {
+                                        nullsewmdt = "1";
+                                    } else {
+                                        nullsewmdt = "2";
+                                        getItem(position).setSewMdt("");
+                                    }
+                                    spUtils.put(context, "commonullsewmdt", nullsewmdt);
+                                    spUtils.put(context, "dateSewMdttimesign", "");//下线日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2040,7 +2930,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPrebdt.setText(datetime);
-                                    getItem(position).setPrebdt(datetime);
+                                    String commoprebdt = getItem(position).getPrebdt();
+                                    if (commoprebdt == null) {
+                                        commoprebdt = "";
+                                    }
+                                    String nullprebdt;
+                                    if (commoprebdt.equals(datetime)) {
+                                        nullprebdt = "1";
+                                    } else {
+                                        nullprebdt = "2";
+                                        getItem(position).setPrebdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullprebdt", nullprebdt);
+                                    spUtils.put(context, "datePrebdttimesign", datetime);//预计早期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2048,7 +2950,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPrebdt.setText("");
-                                    getItem(position).setPrebdt("");
+                                    String commoprebdt = getItem(position).getPrebdt();
+                                    if (commoprebdt == null) {
+                                        commoprebdt = "";
+                                    }
+                                    String nullprebdt;
+                                    if (commoprebdt.equals("")) {
+                                        nullprebdt = "1";
+                                    } else {
+                                        nullprebdt = "2";
+                                        getItem(position).setPrebdt("");
+                                    }
+                                    spUtils.put(context, "commonullprebdt", nullprebdt);
+                                    spUtils.put(context, "datePrebdttimesign", "");//预计早期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2083,7 +2997,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCbdt.setText(datetime);
-                                    getItem(position).setQCbdt(datetime);
+                                    String commoqcbdt = getItem(position).getQCbdt();
+                                    if (commoqcbdt == null) {
+                                        commoqcbdt = "";
+                                    }
+                                    String nullqcbdt;
+                                    if (commoqcbdt.equals(datetime)) {
+                                        nullqcbdt = "1";
+                                    } else {
+                                        nullqcbdt = "2";
+                                        getItem(position).setQCbdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullqcbdt", nullqcbdt);
+                                    spUtils.put(context, "dateQCbdttimesign", datetime);//自查早期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2091,7 +3017,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCbdt.setText("");
-                                    getItem(position).setQCbdt("");
+                                    String commoqcbdt = getItem(position).getQCbdt();
+                                    if (commoqcbdt == null) {
+                                        commoqcbdt = "";
+                                    }
+                                    String nullqcbdt;
+                                    if (commoqcbdt.equals("")) {
+                                        nullqcbdt = "1";
+                                    } else {
+                                        nullqcbdt = "2";
+                                        getItem(position).setQCbdt("");
+                                    }
+                                    spUtils.put(context, "commonullqcbdt", nullqcbdt);
+                                    spUtils.put(context, "dateQCbdttimesign", "");//自查早期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2106,7 +3044,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             });
 
 
-            holder.tvCommoPremdt.setEnabled(true);
+            holder.tvCommoPremdt.setEnabled(true);//预计中期时间
             holder.tvCommoPremdt.setText(getItem(position).getPremdt());
             holder.tvCommoPremdt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -2127,7 +3065,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPremdt.setText(datetime);
-                                    getItem(position).setPremdt(datetime);
+                                    String commopremdt = getItem(position).getPremdt();
+                                    if (commopremdt == null) {
+                                        commopremdt = "";
+                                    }
+                                    String nullpremdt;
+                                    if (commopremdt.equals(datetime)) {
+                                        nullpremdt = "1";
+                                    } else {
+                                        nullpremdt = "2";
+                                        getItem(position).setPremdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullpremdt", nullpremdt);
+                                    spUtils.put(context, "datePremdttimesign", datetime);//预计中期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2135,7 +3085,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPremdt.setText("");
-                                    getItem(position).setPremdt("");
+                                    String commopremdt = getItem(position).getPremdt();
+                                    if (commopremdt == null) {
+                                        commopremdt = "";
+                                    }
+                                    String nullpremdt;
+                                    if (commopremdt.equals("")) {
+                                        nullpremdt = "1";
+                                    } else {
+                                        nullpremdt = "2";
+                                        getItem(position).setPremdt("");
+                                    }
+                                    spUtils.put(context, "commonullpremdt", nullpremdt);
+                                    spUtils.put(context, "datePremdttimesign", "");//预计中期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2170,7 +3132,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCmdt.setText(datetime);
-                                    getItem(position).setQCmdt(datetime);
+                                    String commoecmdt = getItem(position).getQCmdt();
+                                    if (commoecmdt == null) {
+                                        commoecmdt = "";
+                                    }
+                                    String nullqcmdt;
+                                    if (commoecmdt.equals(datetime)) {
+                                        nullqcmdt = "1";
+                                    } else {
+                                        nullqcmdt = "2";
+                                        getItem(position).setQCmdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullqcmdt", nullqcmdt);
+                                    spUtils.put(context, "dateQCmdttimesign", datetime);//自查中期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2178,7 +3152,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCmdt.setText("");
-                                    getItem(position).setQCmdt("");
+                                    String commoecmdt = getItem(position).getQCmdt();
+                                    if (commoecmdt == null) {
+                                        commoecmdt = "";
+                                    }
+                                    String nullqcmdt;
+                                    if (commoecmdt.equals("")) {
+                                        nullqcmdt = "1";
+                                    } else {
+                                        nullqcmdt = "2";
+                                        getItem(position).setQCmdt("");
+                                    }
+                                    spUtils.put(context, "commonullqcmdt", nullqcmdt);
+                                    spUtils.put(context, "dateQCmdttimesign", "");//自查中期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2214,7 +3200,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPreedt.setText(datetime);
-                                    getItem(position).setPreedt(datetime);
+                                    String commopreedt = getItem(position).getPreedt();
+                                    if (commopreedt == null) {
+                                        commopreedt = "";
+                                    }
+                                    String nullpreedt;
+                                    if (commopreedt.equals(datetime)) {
+                                        nullpreedt = "1";
+                                    } else {
+                                        nullpreedt = "2";
+                                        getItem(position).setPreedt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullpreedt", nullpreedt);
+                                    spUtils.put(context, "datePreedttimesign", datetime);//预计尾期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2222,7 +3220,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPreedt.setText("");
-                                    getItem(position).setPreedt("");
+                                    String commopreedt = getItem(position).getPreedt();
+                                    if (commopreedt == null) {
+                                        commopreedt = "";
+                                    }
+                                    String nullpreedt;
+                                    if (commopreedt.equals("")) {
+                                        nullpreedt = "1";
+                                    } else {
+                                        nullpreedt = "2";
+                                        getItem(position).setPreedt("");
+                                    }
+                                    spUtils.put(context, "commonullpreedt", nullpreedt);
+                                    spUtils.put(context, "datePreedttimesign", "");//预计尾期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2257,7 +3267,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCMedt.setText(datetime);
-                                    getItem(position).setQCMedt(datetime);
+                                    String commoqcmedt = getItem(position).getQCMedt();
+                                    if (commoqcmedt == null) {
+                                        commoqcmedt = "";
+                                    }
+                                    String nullqcmedt;
+                                    if (commoqcmedt.equals(datetime)) {
+                                        nullqcmedt = "1";
+                                    } else {
+                                        nullqcmedt = "2";
+                                        getItem(position).setQCMedt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullqcmedt", nullqcmedt);
+                                    spUtils.put(context, "dateQCMedttimesign", datetime);//自查尾期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2265,7 +3287,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCMedt.setText("");
-                                    getItem(position).setQCMedt("");
+                                    String commoqcmedt = getItem(position).getQCMedt();
+                                    if (commoqcmedt == null) {
+                                        commoqcmedt = "";
+                                    }
+                                    String nullqcmedt;
+                                    if (commoqcmedt.equals("")) {
+                                        nullqcmedt = "1";
+                                    } else {
+                                        nullqcmedt = "2";
+                                        getItem(position).setQCMedt("");
+                                    }
+                                    spUtils.put(context, "commonullqcmedt", nullqcmedt);
+                                    spUtils.put(context, "dateQCMedttimesign", "");//自查尾期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2301,7 +3335,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFctmdt.setText(datetime);
-                                    getItem(position).setFctmdt(datetime);
+                                    String commofctmdt = getItem(position).getFctmdt();
+                                    if (commofctmdt == null) {
+                                        commofctmdt = "";
+                                    }
+                                    String nullfctmdt;
+                                    if (commofctmdt.equals(datetime)) {
+                                        nullfctmdt = "1";
+                                    } else {
+                                        nullfctmdt = "2";
+                                        getItem(position).setFctmdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullfctmdt", nullfctmdt);
+                                    spUtils.put(context, "dateFctmdttimesign", datetime);//客查中期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2309,7 +3355,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFctmdt.setText("");
-                                    getItem(position).setFctmdt("");
+                                    String commofctmdt = getItem(position).getFctmdt();
+                                    if (commofctmdt == null) {
+                                        commofctmdt = "";
+                                    }
+                                    String nullfctmdt;
+                                    if (commofctmdt.equals("")) {
+                                        nullfctmdt = "1";
+                                    } else {
+                                        nullfctmdt = "2";
+                                        getItem(position).setFctmdt("");
+                                    }
+                                    spUtils.put(context, "commonullfctmdt", nullfctmdt);
+                                    spUtils.put(context, "dateFctmdttimesign", "");//客查中期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2344,7 +3402,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFctedt.setText(datetime);
-                                    getItem(position).setFctedt(datetime);
+                                    String commofctedt = getItem(position).getFctedt();
+                                    if (commofctedt == null) {
+                                        commofctedt = "";
+                                    }
+                                    String nullfctedt;
+                                    if (commofctedt.equals(datetime)) {
+                                        nullfctedt = "1";
+                                    } else {
+                                        nullfctedt = "2";
+                                        getItem(position).setFctedt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullfctedt", nullfctedt);
+                                    spUtils.put(context, "dateFctedttimesign", datetime);//客查尾期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2352,7 +3422,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFctedt.setText("");
-                                    getItem(position).setFctedt("");
+                                    String commofctedt = getItem(position).getFctedt();
+                                    if (commofctedt == null) {
+                                        commofctedt = "";
+                                    }
+                                    String nullfctedt;
+                                    if (commofctedt.equals("")) {
+                                        nullfctedt = "1";
+                                    } else {
+                                        nullfctedt = "2";
+                                        getItem(position).setFctedt("");
+                                    }
+                                    spUtils.put(context, "commonullfctedt", nullfctedt);
+                                    spUtils.put(context, "dateFctedttimesign", "");//客查尾期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2387,7 +3469,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPackbdat.setText(datetime);
-                                    getItem(position).setPackbdat(datetime);
+                                    String commopackbdat = getItem(position).getPackbdat();
+                                    if (commopackbdat == null) {
+                                        commopackbdat = "";
+                                    }
+                                    String nullpackbdat;
+                                    if (commopackbdat.equals(datetime)) {
+                                        nullpackbdat = "1";
+                                    } else {
+                                        nullpackbdat = "2";
+                                        getItem(position).setPackbdat(datetime);
+                                    }
+                                    spUtils.put(context, "commonullpackbdat", nullpackbdat);
+                                    spUtils.put(context, "datePackbdattimesign", datetime);//成品包装开始日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2395,7 +3489,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPackbdat.setText("");
-                                    getItem(position).setPackbdat("");
+                                    String commopackbdat = getItem(position).getPackbdat();
+                                    if (commopackbdat == null) {
+                                        commopackbdat = "";
+                                    }
+                                    String nullpackbdat;
+                                    if (commopackbdat.equals("")) {
+                                        nullpackbdat = "1";
+                                    } else {
+                                        nullpackbdat = "2";
+                                        getItem(position).setPackbdat("");
+                                    }
+                                    spUtils.put(context, "commonullpackbdat", nullpackbdat);
+                                    spUtils.put(context, "datePackbdattimesign", "");//成品包装开始日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2432,7 +3538,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoPackqty2.getText().toString();
-                    getItem(position).setPackqty2(proitem);
+                    String commopackqty2 = getItem(position).getPackqty2();
+                    if (commopackqty2 == null) {
+                        commopackqty2 = "";
+                    }
+                    String nullpackqty2;
+                    if (commopackqty2.equals(proitem)) {
+                        nullpackqty2 = "1";
+                    } else {
+                        nullpackqty2 = "2";
+                        getItem(position).setPackqty2(proitem);
+                    }
+                    spUtils.put(context, "commonullpackqty2", nullpackqty2);
+                    spUtils.put(context, "CommodityPackqty2", proitem);//装箱数量
                 }
             };
             editTextPackqty2.addTextChangedListener(TvPackqty2);
@@ -2463,7 +3581,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQCMemo.getText().toString();
-                    getItem(position).setQCMemo(proitem);
+                    String commoqcmemo = getItem(position).getQCMemo();
+                    if (commoqcmemo == null) {
+                        commoqcmemo = "";
+                    }
+                    String nullqcmemo;
+                    if (commoqcmemo.equals(proitem)) {
+                        nullqcmemo = "1";
+                    } else {
+                        nullqcmemo = "2";
+                        getItem(position).setQCMemo(proitem);
+                    }
+                    spUtils.put(context, "commonullqcmemo", nullqcmemo);
+                    spUtils.put(context, "CommodityQCMemo", proitem);//QC特别备注
                 }
             };
             editTextQCMemo.addTextChangedListener(TvQCMemo);
@@ -2492,7 +3622,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFactlcdat.setText(datetime);
-                                    getItem(position).setFactlcdat(datetime);
+                                    String commofactlcdat = getItem(position).getFactlcdat();
+                                    if (commofactlcdat == null) {
+                                        commofactlcdat = "";
+                                    }
+                                    String nullfactlcdat;
+                                    if (commofactlcdat.equals(datetime)) {
+                                        nullfactlcdat = "1";
+                                    } else {
+                                        nullfactlcdat = "2";
+                                        getItem(position).setFactlcdat(datetime);
+                                    }
+                                    spUtils.put(context, "commonullfactlcdat", nullfactlcdat);
+                                    spUtils.put(context, "dateFactlcdattimesign", datetime);//离厂日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2500,7 +3642,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFactlcdat.setText("");
-                                    getItem(position).setFactlcdat("");
+                                    String commofactlcdat = getItem(position).getFactlcdat();
+                                    if (commofactlcdat == null) {
+                                        commofactlcdat = "";
+                                    }
+                                    String nullfactlcdat;
+                                    if (commofactlcdat.equals("")) {
+                                        nullfactlcdat = "1";
+                                    } else {
+                                        nullfactlcdat = "2";
+                                        getItem(position).setFactlcdat("");
+                                    }
+                                    spUtils.put(context, "commonullfactlcdat", nullfactlcdat);
+                                    spUtils.put(context, "dateFactlcdattimesign", "");//离厂日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2536,7 +3690,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoBatchid.getText().toString();
-                    getItem(position).setBatchid(proitem);
+                    String commoBatchid = getItem(position).getBatchid();
+                    if (commoBatchid == null) {
+                        commoBatchid = "";
+                    }
+                    String nullBatchid;
+                    if (commoBatchid.equals(proitem)) {
+                        nullBatchid = "1";
+                    } else {
+                        nullBatchid = "2";
+                        getItem(position).setBatchid(proitem);
+                    }
+                    spUtils.put(context, "commonullBatchid", nullBatchid);
+                    spUtils.put(context, "CommodityBatchid", proitem);//查货批次
                 }
             };
             editTextBatchid.addTextChangedListener(TvBatchid);
@@ -2567,7 +3733,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoCtmchkdt.setText(datetime);
-                                    getItem(position).setCtmchkdt(datetime);
+                                    String commoCtmchkdt = getItem(position).getCtmchkdt();
+                                    if (commoCtmchkdt == null) {
+                                        commoCtmchkdt = "";
+                                    }
+                                    String nullCtmchkdt;
+                                    if (commoCtmchkdt.equals(datetime)) {
+                                        nullCtmchkdt = "1";
+                                    } else {
+                                        nullCtmchkdt = "2";
+                                        getItem(position).setCtmchkdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullCtmchkdt", nullCtmchkdt);
+                                    spUtils.put(context, "dateCtmchkdttimesign", datetime);//业务员确认客查日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2575,7 +3753,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoCtmchkdt.setText("");
-                                    getItem(position).setCtmchkdt("");
+                                    String commoCtmchkdt = getItem(position).getCtmchkdt();
+                                    if (commoCtmchkdt == null) {
+                                        commoCtmchkdt = "";
+                                    }
+                                    String nullCtmchkdt;
+                                    if (commoCtmchkdt.equals("")) {
+                                        nullCtmchkdt = "1";
+                                    } else {
+                                        nullCtmchkdt = "2";
+                                        getItem(position).setCtmchkdt("");
+                                    }
+                                    spUtils.put(context, "commonullCtmchkdt", nullCtmchkdt);
+                                    spUtils.put(context, "dateCtmchkdttimesign", "");//业务员确认客查日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2612,7 +3802,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoIPQCPedt.getText().toString();
-                    getItem(position).setIPQCPedt(proitem);
+                    String commoipqcpedt = getItem(position).getIPQCPedt();
+                    if (commoipqcpedt == null) {
+                        commoipqcpedt = "";
+                    }
+                    String nullipqcpedt;
+                    if (commoipqcpedt.equals(proitem)) {
+                        nullipqcpedt = "1";
+                    } else {
+                        nullipqcpedt = "2";
+                        getItem(position).setIPQCPedt(proitem);
+                    }
+                    spUtils.put(context, "commonullipqcpedt", nullipqcpedt);
+                    spUtils.put(context, "CommodityIPQCPedt", proitem);//尾查预查
                 }
             };
             editTextIPQCPedt.addTextChangedListener(TvIPQCPedt);
@@ -2643,7 +3845,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoIPQCmdt.getText().toString();
-                    getItem(position).setIPQCmdt(proitem);
+                    String commoipqcmdt = getItem(position).getIPQCmdt();
+                    if (commoipqcmdt == null) {
+                        commoipqcmdt = "";
+                    }
+                    String nullipqcmdt;
+                    if (commoipqcmdt.equals(proitem)) {
+                        nullipqcmdt = "1";
+                    } else {
+                        nullipqcmdt = "2";
+                        getItem(position).setIPQCmdt(proitem);
+                    }
+                    spUtils.put(context, "commonullipqcmdt", nullipqcmdt);
+                    spUtils.put(context, "CommodityIPQCmdt", proitem);//巡检中查
                 }
             };
             editTextIPQCmdt.addTextChangedListener(TvIPQCmdt);
@@ -2674,7 +3888,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQAname.getText().toString();
-                    getItem(position).setQAname(proitem);
+                    String commoQaname = getItem(position).getQAname();
+                    if (commoQaname == null) {
+                        commoQaname = "";
+                    }
+                    String nullqaname;
+                    if (commoQaname.equals(proitem)) {
+                        nullqaname = "1";
+                    } else {
+                        nullqaname = "2";
+                        getItem(position).setQAname(proitem);
+                    }
+                    spUtils.put(context, "commonullqaname", nullqaname);
+                    spUtils.put(context, "CommodityQAname", proitem);//QA首扎
                 }
             };
             editTextQAname.addTextChangedListener(TvQAname);
@@ -2705,7 +3931,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQAScore.getText().toString();
-                    getItem(position).setQAScore(proitem);
+                    String commoqascore = getItem(position).getQAScore();
+                    if (commoqascore == null) {
+                        commoqascore = "";
+                    }
+                    String nullqascore;
+                    if (commoqascore.equals(proitem)) {
+                        nullqascore = "1";
+                    } else {
+                        nullqascore = "2";
+                        getItem(position).setQAScore(proitem);
+                    }
+                    spUtils.put(context, "commonullqascore", nullqascore);
+                    spUtils.put(context, "CommodityQAScore", proitem);//QA首扎件数
                 }
             };
             editTextQAScore.addTextChangedListener(TvQAScore);
@@ -2735,7 +3973,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQAMemo.setText(datetime);
-                                    getItem(position).setQAMemo(datetime);
+                                    String commoqamemo = getItem(position).getQAMemo();
+                                    if(commoqamemo==null){
+                                        commoqamemo="";
+                                    }
+                                    String nullqamemo;
+                                    if(commoqamemo.equals(datetime)){
+                                        nullqamemo="1";
+                                    }else{
+                                        nullqamemo="2";
+                                        getItem(position).setQAMemo(datetime);
+                                    }
+                                    spUtils.put(context,"commonullqamemo",nullqamemo);
+                                    spUtils.put(context, "dateQAMemotimesign", datetime);//QA首扎日
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2743,7 +3993,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQAMemo.setText("");
-                                    getItem(position).setQAMemo("");
+                                    String commoqamemo = getItem(position).getQAMemo();
+                                    if(commoqamemo==null){
+                                        commoqamemo="";
+                                    }
+                                    String nullqamemo;
+                                    if(commoqamemo.equals("")){
+                                        nullqamemo="1";
+                                    }else{
+                                        nullqamemo="2";
+                                        getItem(position).setQAMemo("");
+                                    }
+                                    spUtils.put(context,"commonullqamemo",nullqamemo);
+                                    spUtils.put(context, "dateQAMemotimesign", "");//QA首扎日
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2848,6 +4110,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                             sp = context.getSharedPreferences("my_sp", 0);
                             String title = item.getTitle().toString();
                             getItem(position).setOurAfter(title);
+                            spUtils.put(context, "commohdTitle", title);//后道
                             return false;
                         }
                     });
@@ -2893,9 +4156,21 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                         int day = datePicker.getDayOfMonth();
                                         String datetime = year + "/" + (month + 1) + "/" + day;
                                         holder.tvCommoSealedrev.setText(datetime);
-                                        if (attentionArr.contains(position)) {
-                                            getItem(position).setSealedrev(datetime);
+                                        String commosearledrev = getItem(position).getSealedrev();
+                                        if (commosearledrev == null) {
+                                            commosearledrev = "";
                                         }
+                                        String nullsearledrev;
+                                        if (commosearledrev.equals(datetime)) {
+                                            nullsearledrev = "1";
+                                        } else {
+                                            nullsearledrev = "2";
+                                            if (attentionArr.contains(position)) {
+                                                getItem(position).setSealedrev(datetime);
+                                            }
+                                        }
+                                        spUtils.put(context, "commonullsearledrev", nullsearledrev);
+                                        spUtils.put(context, "dateSealedrewtimesign", datetime);//封样资料接收时间
                                     }
                                 });
                         datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL,
@@ -2903,7 +4178,21 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         holder.tvCommoSealedrev.setText("");
-                                        getItem(position).setSealedrev("");
+                                        String commosearledrev = getItem(position).getSealedrev();
+                                        if (commosearledrev == null) {
+                                            commosearledrev = "";
+                                        }
+                                        String nullsearledrev;
+                                        if (commosearledrev.equals("")) {
+                                            nullsearledrev = "1";
+                                        } else {
+                                            nullsearledrev = "2";
+                                            if (attentionArr.contains(position)) {
+                                                getItem(position).setSealedrev("");
+                                            }
+                                        }
+                                        spUtils.put(context, "commonullsearledrev", nullsearledrev);
+                                        spUtils.put(context, "dateSealedrewtimesign", "");//封样资料接收时间
                                     }
                                 });
                         datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2940,7 +4229,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoDocback.setText(datetime);
-                                    getItem(position).setDocback(datetime);
+                                    String commodocback = getItem(position).getDocback();
+                                    if (commodocback == null) {
+                                        commodocback = "";
+                                    }
+                                    String nulldocback;
+                                    if (commodocback.equals(datetime)) {
+                                        nulldocback = "1";
+                                    } else {
+                                        nulldocback = "2";
+                                        getItem(position).setDocback(datetime);
+                                    }
+                                    spUtils.put(context, "commonulldocback", nulldocback);
+                                    spUtils.put(context, "dateDocbacktimesign", datetime);//大货资料接收时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -2948,7 +4249,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoDocback.setText("");
-                                    holder.tvCommoDocback.setText("");
+                                    String commodocback = getItem(position).getDocback();
+                                    if (commodocback == null) {
+                                        commodocback = "";
+                                    }
+                                    String nulldocback;
+                                    if (commodocback.equals("")) {
+                                        nulldocback = "1";
+                                    } else {
+                                        nulldocback = "2";
+                                        getItem(position).setDocback("");
+                                    }
+                                    spUtils.put(context, "commonulldocback", nulldocback);
+                                    spUtils.put(context, "dateDocbacktimesign", "");//大货资料接收时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -2991,7 +4304,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoPreMemo.getText().toString();
-                    getItem(position).setPreMemo(proitem);
+                    String commopromemo = getItem(position).getPreMemo();
+                    if (commopromemo == null) {
+                        commopromemo = "";
+                    }
+                    String nullmemo;
+                    if (commopromemo.equals(proitem)) {
+                        nullmemo = "1";
+                    } else {
+                        nullmemo = "2";
+                        getItem(position).setPreMemo(proitem);
+                    }
+                    spUtils.put(context, "commonullmemo", nullmemo);
+                    spUtils.put(context, "CommodityPreMemo", proitem);//需要特别备注的情况
                 }
             };
             editTextPreMemo.addTextChangedListener(TvPreMemo);
@@ -3021,7 +4346,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPredocdt.setText(datetime);
-                                    getItem(position).setPredocdt(datetime);
+                                    String commopreducdt = getItem(position).getPredocdt();
+                                    if (commopreducdt == null) {
+                                        commopreducdt = "";
+                                    }
+                                    String nullpreducdt;
+                                    if (commopreducdt.equals(datetime)) {
+                                        nullpreducdt = "1";
+                                    } else {
+                                        nullpreducdt = "2";
+                                        getItem(position).setPredocdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullpreducdt", nullpreducdt);
+                                    spUtils.put(context, "datePredocdttimesign", datetime);//预计产前报告时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3029,7 +4366,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPredocdt.setText("");
-                                    getItem(position).setPredocdt("");
+                                    String commopreducdt = getItem(position).getPredocdt();
+                                    if (commopreducdt == null) {
+                                        commopreducdt = "";
+                                    }
+                                    String nullpreducdt;
+                                    if (commopreducdt.equals("")) {
+                                        nullpreducdt = "1";
+                                    } else {
+                                        nullpreducdt = "2";
+                                        getItem(position).setPredocdt("");
+                                    }
+                                    spUtils.put(context, "commonullpreducdt", nullpreducdt);
+                                    spUtils.put(context, "datePredocdttimesign", "");//预计产前报告时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3044,7 +4393,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             });
 
             holder.tvCommoPred.setEnabled(true);
-            holder.tvCommoPred.setText(getItem(position).getPredocdt());
+            holder.tvCommoPred.setText(getItem(position).getPredt());
             holder.tvCommoPred.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -3064,7 +4413,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPred.setText(datetime);
-                                    getItem(position).setPredocdt(datetime);
+                                    String commopred = getItem(position).getPredt();
+                                    if (commopred == null) {
+                                        commopred = "";
+                                    }
+                                    String nullpred;
+                                    if (commopred.equals(datetime)) {
+                                        nullpred = "1";
+                                    } else {
+                                        nullpred = "2";
+                                        getItem(position).setPredt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullpred", nullpred);
+                                    spUtils.put(context, "datePredtimesign", datetime);//开产前会时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3072,7 +4433,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPred.setText("");
-                                    getItem(position).setPredocdt("");
+                                    String commopred = getItem(position).getPredt();
+                                    if (commopred == null) {
+                                        commopred = "";
+                                    }
+                                    String nullpred;
+                                    if (commopred.equals("")) {
+                                        nullpred = "1";
+                                    } else {
+                                        nullpred = "2";
+                                        getItem(position).setPredt("");
+                                    }
+                                    spUtils.put(context, "commonullpred", nullpred);
+                                    spUtils.put(context, "datePredtimesign", "");//开产前会时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3109,7 +4482,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoFabricsok.getText().toString();
-                    getItem(position).setFabricsok(proitem);
+                    String commofabricsok = getItem(position).getFabricsok();
+                    if (commofabricsok == null) {
+                        commofabricsok = "";
+                    }
+                    String nullfabricsok;
+                    if (commofabricsok.equals(proitem)) {
+                        nullfabricsok = "1";
+                    } else {
+                        nullfabricsok = "2";
+                        getItem(position).setFabricsok(proitem);
+                    }
+                    spUtils.put(context, "commonullfabricsok", nullfabricsok);
+                    spUtils.put(context, "CommodityFabricsok", proitem);//大货面料情况
                 }
             };
             editTextFabricsok.addTextChangedListener(TvFabricsok);
@@ -3140,7 +4525,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoAccessoriesok.getText().toString();
-                    getItem(position).setAccessoriesok(proitem);
+                    String commoaccessori = getItem(position).getAccessoriesok();
+                    if (commoaccessori == null) {
+                        commoaccessori = "";
+                    }
+                    String nullaccessori;
+                    if (commoaccessori.equals(proitem)) {
+                        nullaccessori = "1";
+                    } else {
+                        nullaccessori = "2";
+                        getItem(position).setAccessoriesok(proitem);
+                    }
+                    spUtils.put(context, "commonullaccessori", nullaccessori);
+                    spUtils.put(context, "CommodityAccessoriesok", proitem);//大货辅料情况
                 }
             };
             editTextAccessoriesok.addTextChangedListener(TvAccessoriesok);
@@ -3171,7 +4568,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoSpcproDec.getText().toString();
-                    getItem(position).setSpcproDec(proitem);
+                    String commospcprodec = getItem(position).getSpcproDec();
+                    if (commospcprodec == null) {
+                        commospcprodec = "";
+                    }
+                    String nullspcprodec;
+                    if (commospcprodec.equals(proitem)) {
+                        nullspcprodec = "1";
+                    } else {
+                        nullspcprodec = "2";
+                        getItem(position).setSpcproDec(proitem);
+                    }
+                    spUtils.put(context, "commonullspcprodec", nullspcprodec);
+                    spUtils.put(context, "CommoditySpcproDec", proitem);//大货特殊工艺情况
                 }
             };
             editTextSpcproDec.addTextChangedListener(TvSpcproDec);
@@ -3202,7 +4611,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoSpcproMemo.getText().toString();
-                    getItem(position).setSpcproMemo(proitem);
+                    String commospcpromemo = getItem(position).getSpcproMemo();
+                    if (commospcpromemo == null) {
+                        commospcpromemo = "";
+                    }
+                    String nullspcpromemo;
+                    if (commospcpromemo.equals(proitem)) {
+                        nullspcpromemo = "1";
+                    } else {
+                        nullspcpromemo = "2";
+                        getItem(position).setSpcproMemo(proitem);
+                    }
+                    spUtils.put(context, "commonullspcpromemo", nullspcpromemo);
+                    spUtils.put(context, "CommoditySpcproMemo", proitem);//特殊工艺特别备注
                 }
             };
             editTextSpcproMemo.addTextChangedListener(TvSpcproMemo);
@@ -3233,7 +4654,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoCutqty.getText().toString();
-                    getItem(position).setCutqty(proitem);
+                    String commocutqty = getItem(position).getCutqty();
+                    if (commocutqty == null) {
+                        commocutqty = "";
+                    }
+                    String nullcutqty;
+                    if (commocutqty.equals(proitem)) {
+                        nullcutqty = "1";
+                    } else {
+                        nullcutqty = "2";
+                        getItem(position).setCutqty(proitem);
+                    }
+                    spUtils.put(context, "commonullcutqty", nullcutqty);
+                    spUtils.put(context, "CommodityCutqty", proitem);//实裁数
                 }
             };
             editTextCutqty.addTextChangedListener(TvCutqty);
@@ -3263,7 +4696,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoSewFdt.setText(datetime);
-                                    getItem(position).setSewFdt(datetime);
+                                    String commosewfdt = getItem(position).getSewFdt();
+                                    if (commosewfdt == null) {
+                                        commosewfdt = "";
+                                    }
+                                    String nullsewfdt;
+                                    if (commosewfdt.equals(datetime)) {
+                                        nullsewfdt = "1";
+                                    } else {
+                                        nullsewfdt = "2";
+                                        getItem(position).setSewFdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullsewfdt", nullsewfdt);
+                                    spUtils.put(context, "dateSewFdttimesign", datetime);//上线日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3271,7 +4716,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoSewFdt.setText("");
-                                    getItem(position).setSewFdt("");
+                                    String commosewfdt = getItem(position).getSewFdt();
+                                    if (commosewfdt == null) {
+                                        commosewfdt = "";
+                                    }
+                                    String nullsewfdt;
+                                    if (commosewfdt.equals("")) {
+                                        nullsewfdt = "1";
+                                    } else {
+                                        nullsewfdt = "2";
+                                        getItem(position).setSewFdt("");
+                                    }
+                                    spUtils.put(context, "commonullsewfdt", nullsewfdt);
+                                    spUtils.put(context, "dateSewFdttimesign", "");//上线日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3306,7 +4763,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoSewMdt.setText(datetime);
-                                    getItem(position).setSewMdt(datetime);
+                                    String commosewmdt = getItem(position).getSewMdt();
+                                    if (commosewmdt == null) {
+                                        commosewmdt = "";
+                                    }
+                                    String nullsewmdt;
+                                    if (commosewmdt.equals(datetime)) {
+                                        nullsewmdt = "1";
+                                    } else {
+                                        nullsewmdt = "2";
+                                        getItem(position).setSewMdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullsewmdt", nullsewmdt);
+                                    spUtils.put(context, "dateSewMdttimesign", datetime);//下线日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3314,7 +4783,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoSewMdt.setText("");
-                                    getItem(position).setSewMdt("");
+                                    String commosewmdt = getItem(position).getSewMdt();
+                                    if (commosewmdt == null) {
+                                        commosewmdt = "";
+                                    }
+                                    String nullsewmdt;
+                                    if (commosewmdt.equals("")) {
+                                        nullsewmdt = "1";
+                                    } else {
+                                        nullsewmdt = "2";
+                                        getItem(position).setSewMdt("");
+                                    }
+                                    spUtils.put(context, "commonullsewmdt", nullsewmdt);
+                                    spUtils.put(context, "dateSewMdttimesign", "");//下线日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3358,7 +4839,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPrebdt.setText(datetime);
-                                    getItem(position).setPrebdt(datetime);
+                                    String commoprebdt = getItem(position).getPrebdt();
+                                    if (commoprebdt == null) {
+                                        commoprebdt = "";
+                                    }
+                                    String nullprebdt;
+                                    if (commoprebdt.equals(datetime)) {
+                                        nullprebdt = "1";
+                                    } else {
+                                        nullprebdt = "2";
+                                        getItem(position).setPrebdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullprebdt", nullprebdt);
+                                    spUtils.put(context, "datePrebdttimesign", datetime);//预计早期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3366,7 +4859,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPrebdt.setText("");
-                                    getItem(position).setPrebdt("");
+                                    String commoprebdt = getItem(position).getPrebdt();
+                                    if (commoprebdt == null) {
+                                        commoprebdt = "";
+                                    }
+                                    String nullprebdt;
+                                    if (commoprebdt.equals("")) {
+                                        nullprebdt = "1";
+                                    } else {
+                                        nullprebdt = "2";
+                                        getItem(position).setPrebdt("");
+                                    }
+                                    spUtils.put(context, "commonullprebdt", nullprebdt);
+                                    spUtils.put(context, "datePrebdttimesign", "");//预计早期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3401,7 +4906,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCbdt.setText(datetime);
-                                    getItem(position).setQCbdt(datetime);
+                                    String commoqcbdt = getItem(position).getQCbdt();
+                                    if (commoqcbdt == null) {
+                                        commoqcbdt = "";
+                                    }
+                                    String nullqcbdt;
+                                    if (commoqcbdt.equals(datetime)) {
+                                        nullqcbdt = "1";
+                                    } else {
+                                        nullqcbdt = "2";
+                                        getItem(position).setQCbdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullqcbdt", nullqcbdt);
+                                    spUtils.put(context, "dateQCbdttimesign", datetime);//自查早期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3409,7 +4926,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCbdt.setText("");
-                                    getItem(position).setQCbdt("");
+                                    String commoqcbdt = getItem(position).getQCbdt();
+                                    if (commoqcbdt == null) {
+                                        commoqcbdt = "";
+                                    }
+                                    String nullqcbdt;
+                                    if (commoqcbdt.equals("")) {
+                                        nullqcbdt = "1";
+                                    } else {
+                                        nullqcbdt = "2";
+                                        getItem(position).setQCbdt("");
+                                    }
+                                    spUtils.put(context, "commonullqcbdt", nullqcbdt);
+                                    spUtils.put(context, "dateQCbdttimesign", "");//自查早期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3445,7 +4974,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPremdt.setText(datetime);
-                                    getItem(position).setPremdt(datetime);
+                                    String commopremdt = getItem(position).getPremdt();
+                                    if (commopremdt == null) {
+                                        commopremdt = "";
+                                    }
+                                    String nullpremdt;
+                                    if (commopremdt.equals(datetime)) {
+                                        nullpremdt = "1";
+                                    } else {
+                                        nullpremdt = "2";
+                                        getItem(position).setPremdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullpremdt", nullpremdt);
+                                    spUtils.put(context, "datePremdttimesign", datetime);//预计中期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3453,7 +4994,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPremdt.setText("");
-                                    getItem(position).setPremdt("");
+                                    String commopremdt = getItem(position).getPremdt();
+                                    if (commopremdt == null) {
+                                        commopremdt = "";
+                                    }
+                                    String nullpremdt;
+                                    if (commopremdt.equals("")) {
+                                        nullpremdt = "1";
+                                    } else {
+                                        nullpremdt = "2";
+                                        getItem(position).setPremdt("");
+                                    }
+                                    spUtils.put(context, "commonullpremdt", nullpremdt);
+                                    spUtils.put(context, "datePremdttimesign", "");//预计中期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3488,7 +5041,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCmdt.setText(datetime);
-                                    getItem(position).setQCmdt(datetime);
+                                    String commoecmdt = getItem(position).getQCmdt();
+                                    if (commoecmdt == null) {
+                                        commoecmdt = "";
+                                    }
+                                    String nullqcmdt;
+                                    if (commoecmdt.equals(datetime)) {
+                                        nullqcmdt = "1";
+                                    } else {
+                                        nullqcmdt = "2";
+                                        getItem(position).setQCmdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullqcmdt", nullqcmdt);
+                                    spUtils.put(context, "dateQCmdttimesign", datetime);//自查中期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3496,7 +5061,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCmdt.setText("");
-                                    getItem(position).setQCmdt("");
+                                    String commoecmdt = getItem(position).getQCmdt();
+                                    if (commoecmdt == null) {
+                                        commoecmdt = "";
+                                    }
+                                    String nullqcmdt;
+                                    if (commoecmdt.equals("")) {
+                                        nullqcmdt = "1";
+                                    } else {
+                                        nullqcmdt = "2";
+                                        getItem(position).setQCmdt("");
+                                    }
+                                    spUtils.put(context, "commonullqcmdt", nullqcmdt);
+                                    spUtils.put(context, "dateQCmdttimesign", "");//自查中期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3532,7 +5109,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPreedt.setText(datetime);
-                                    getItem(position).setPreedt(datetime);
+                                    String commopreedt = getItem(position).getPreedt();
+                                    if (commopreedt == null) {
+                                        commopreedt = "";
+                                    }
+                                    String nullpreedt;
+                                    if (commopreedt.equals(datetime)) {
+                                        nullpreedt = "1";
+                                    } else {
+                                        nullpreedt = "2";
+                                        getItem(position).setPreedt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullpreedt", nullpreedt);
+                                    spUtils.put(context, "datePreedttimesign", datetime);//预计尾期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3540,7 +5129,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPreedt.setText("");
-                                    getItem(position).setPreedt("");
+                                    String commopreedt = getItem(position).getPreedt();
+                                    if (commopreedt == null) {
+                                        commopreedt = "";
+                                    }
+                                    String nullpreedt;
+                                    if (commopreedt.equals("")) {
+                                        nullpreedt = "1";
+                                    } else {
+                                        nullpreedt = "2";
+                                        getItem(position).setPreedt("");
+                                    }
+                                    spUtils.put(context, "commonullpreedt", nullpreedt);
+                                    spUtils.put(context, "datePreedttimesign", "");//预计尾期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3575,7 +5176,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQCMedt.setText(datetime);
-                                    getItem(position).setQCMedt(datetime);
+                                    String commoqcmedt = getItem(position).getQCMedt();
+                                    if (commoqcmedt == null) {
+                                        commoqcmedt = "";
+                                    }
+                                    String nullqcmedt;
+                                    if (commoqcmedt.equals(datetime)) {
+                                        nullqcmedt = "1";
+                                    } else {
+                                        nullqcmedt = "2";
+                                        getItem(position).setQCMedt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullqcmedt", nullqcmedt);
+                                    spUtils.put(context, "dateQCMedttimesign", datetime);//自查尾期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3583,7 +5196,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQCMedt.setText("");
-                                    getItem(position).setQCMedt("");
+                                    String commoqcmedt = getItem(position).getQCMedt();
+                                    if (commoqcmedt == null) {
+                                        commoqcmedt = "";
+                                    }
+                                    String nullqcmedt;
+                                    if (commoqcmedt.equals("")) {
+                                        nullqcmedt = "1";
+                                    } else {
+                                        nullqcmedt = "2";
+                                        getItem(position).setQCMedt("");
+                                    }
+                                    spUtils.put(context, "commonullqcmedt", nullqcmedt);
+                                    spUtils.put(context, "dateQCMedttimesign", "");//自查尾期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3619,7 +5244,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFctmdt.setText(datetime);
-                                    getItem(position).setFctmdt(datetime);
+                                    String commofctmdt = getItem(position).getFctmdt();
+                                    if (commofctmdt == null) {
+                                        commofctmdt = "";
+                                    }
+                                    String nullfctmdt;
+                                    if (commofctmdt.equals(datetime)) {
+                                        nullfctmdt = "1";
+                                    } else {
+                                        nullfctmdt = "2";
+                                        getItem(position).setFctmdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullfctmdt", nullfctmdt);
+                                    spUtils.put(context, "dateFctmdttimesign", datetime);//客查中期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3627,7 +5264,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFctmdt.setText("");
-                                    getItem(position).setFctmdt("");
+                                    String commofctmdt = getItem(position).getFctmdt();
+                                    if (commofctmdt == null) {
+                                        commofctmdt = "";
+                                    }
+                                    String nullfctmdt;
+                                    if (commofctmdt.equals("")) {
+                                        nullfctmdt = "1";
+                                    } else {
+                                        nullfctmdt = "2";
+                                        getItem(position).setFctmdt("");
+                                    }
+                                    spUtils.put(context, "commonullfctmdt", nullfctmdt);
+                                    spUtils.put(context, "dateFctmdttimesign", "");//客查中期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3662,7 +5311,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFctedt.setText(datetime);
-                                    getItem(position).setFctedt(datetime);
+                                    String commofctedt = getItem(position).getFctedt();
+                                    if (commofctedt == null) {
+                                        commofctedt = "";
+                                    }
+                                    String nullfctedt;
+                                    if (commofctedt.equals(datetime)) {
+                                        nullfctedt = "1";
+                                    } else {
+                                        nullfctedt = "2";
+                                        getItem(position).setFctedt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullfctedt", nullfctedt);
+                                    spUtils.put(context, "dateFctedttimesign", datetime);//客查尾期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3670,7 +5331,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFctedt.setText("");
-                                    getItem(position).setFctedt("");
+                                    String commofctedt = getItem(position).getFctedt();
+                                    if (commofctedt == null) {
+                                        commofctedt = "";
+                                    }
+                                    String nullfctedt;
+                                    if (commofctedt.equals("")) {
+                                        nullfctedt = "1";
+                                    } else {
+                                        nullfctedt = "2";
+                                        getItem(position).setFctedt("");
+                                    }
+                                    spUtils.put(context, "commonullfctedt", nullfctedt);
+                                    spUtils.put(context, "dateFctedttimesign", "");//客查尾期时间
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3705,7 +5378,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoPackbdat.setText(datetime);
-                                    getItem(position).setPackbdat(datetime);
+                                    String commopackbdat = getItem(position).getPackbdat();
+                                    if (commopackbdat == null) {
+                                        commopackbdat = "";
+                                    }
+                                    String nullpackbdat;
+                                    if (commopackbdat.equals(datetime)) {
+                                        nullpackbdat = "1";
+                                    } else {
+                                        nullpackbdat = "2";
+                                        getItem(position).setPackbdat(datetime);
+                                    }
+                                    spUtils.put(context, "commonullpackbdat", nullpackbdat);
+                                    spUtils.put(context, "datePackbdattimesign", datetime);//成品包装开始日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3713,7 +5398,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoPackbdat.setText("");
-                                    getItem(position).setPackbdat("");
+                                    String commopackbdat = getItem(position).getPackbdat();
+                                    if (commopackbdat == null) {
+                                        commopackbdat = "";
+                                    }
+                                    String nullpackbdat;
+                                    if (commopackbdat.equals("")) {
+                                        nullpackbdat = "1";
+                                    } else {
+                                        nullpackbdat = "2";
+                                        getItem(position).setPackbdat("");
+                                    }
+                                    spUtils.put(context, "commonullpackbdat", nullpackbdat);
+                                    spUtils.put(context, "datePackbdattimesign", "");//成品包装开始日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3750,7 +5447,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoPackqty2.getText().toString();
-                    getItem(position).setPackqty2(proitem);
+                    String commopackqty2 = getItem(position).getPackqty2();
+                    if (commopackqty2 == null) {
+                        commopackqty2 = "";
+                    }
+                    String nullpackqty2;
+                    if (commopackqty2.equals(proitem)) {
+                        nullpackqty2 = "1";
+                    } else {
+                        nullpackqty2 = "2";
+                        getItem(position).setPackqty2(proitem);
+                    }
+                    spUtils.put(context, "commonullpackqty2", nullpackqty2);
+                    spUtils.put(context, "CommodityPackqty2", proitem);//装箱数量
                 }
             };
             editTextPackqty2.addTextChangedListener(TvPackqty2);
@@ -3781,7 +5490,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQCMemo.getText().toString();
-                    getItem(position).setQCMemo(proitem);
+                    String commoqcmemo = getItem(position).getQCMemo();
+                    if (commoqcmemo == null) {
+                        commoqcmemo = "";
+                    }
+                    String nullqcmemo;
+                    if (commoqcmemo.equals(proitem)) {
+                        nullqcmemo = "1";
+                    } else {
+                        nullqcmemo = "2";
+                        getItem(position).setQCMemo(proitem);
+                    }
+                    spUtils.put(context, "commonullqcmemo", nullqcmemo);
+                    spUtils.put(context, "CommodityQCMemo", proitem);//QC特别备注
                 }
             };
             editTextQCMemo.addTextChangedListener(TvQCMemo);
@@ -3810,7 +5531,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoFactlcdat.setText(datetime);
-                                    getItem(position).setFactlcdat(datetime);
+                                    String commofactlcdat = getItem(position).getFactlcdat();
+                                    if (commofactlcdat == null) {
+                                        commofactlcdat = "";
+                                    }
+                                    String nullfactlcdat;
+                                    if (commofactlcdat.equals(datetime)) {
+                                        nullfactlcdat = "1";
+                                    } else {
+                                        nullfactlcdat = "2";
+                                        getItem(position).setFactlcdat(datetime);
+                                    }
+                                    spUtils.put(context, "commonullfactlcdat", nullfactlcdat);
+                                    spUtils.put(context, "dateFactlcdattimesign", datetime);//离厂日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3818,7 +5551,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoFactlcdat.setText("");
-                                    getItem(position).setFactlcdat("");
+                                    String commofactlcdat = getItem(position).getFactlcdat();
+                                    if (commofactlcdat == null) {
+                                        commofactlcdat = "";
+                                    }
+                                    String nullfactlcdat;
+                                    if (commofactlcdat.equals("")) {
+                                        nullfactlcdat = "1";
+                                    } else {
+                                        nullfactlcdat = "2";
+                                        getItem(position).setFactlcdat("");
+                                    }
+                                    spUtils.put(context, "commonullfactlcdat", nullfactlcdat);
+                                    spUtils.put(context, "dateFactlcdattimesign", "");//离厂日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3854,7 +5599,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoBatchid.getText().toString();
-                    getItem(position).setBatchid(proitem);
+                    String commoBatchid = getItem(position).getBatchid();
+                    if (commoBatchid == null) {
+                        commoBatchid = "";
+                    }
+                    String nullBatchid;
+                    if (commoBatchid.equals(proitem)) {
+                        nullBatchid = "1";
+                    } else {
+                        nullBatchid = "2";
+                        getItem(position).setBatchid(proitem);
+                    }
+                    spUtils.put(context, "commonullBatchid", nullBatchid);
+                    spUtils.put(context, "CommodityBatchid", proitem);//查货批次
                 }
             };
             editTextBatchid.addTextChangedListener(TvBatchid);
@@ -3885,7 +5642,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoCtmchkdt.setText(datetime);
-                                    getItem(position).setCtmchkdt(datetime);
+                                    String commoCtmchkdt = getItem(position).getCtmchkdt();
+                                    if (commoCtmchkdt == null) {
+                                        commoCtmchkdt = "";
+                                    }
+                                    String nullCtmchkdt;
+                                    if (commoCtmchkdt.equals(datetime)) {
+                                        nullCtmchkdt = "1";
+                                    } else {
+                                        nullCtmchkdt = "2";
+                                        getItem(position).setCtmchkdt(datetime);
+                                    }
+                                    spUtils.put(context, "commonullCtmchkdt", nullCtmchkdt);
+                                    spUtils.put(context, "dateCtmchkdttimesign", datetime);//业务员确认客查日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -3893,7 +5662,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoCtmchkdt.setText("");
-                                    getItem(position).setCtmchkdt("");
+                                    String commoCtmchkdt = getItem(position).getCtmchkdt();
+                                    if (commoCtmchkdt == null) {
+                                        commoCtmchkdt = "";
+                                    }
+                                    String nullCtmchkdt;
+                                    if (commoCtmchkdt.equals("")) {
+                                        nullCtmchkdt = "1";
+                                    } else {
+                                        nullCtmchkdt = "2";
+                                        getItem(position).setCtmchkdt("");
+                                    }
+                                    spUtils.put(context, "commonullCtmchkdt", nullCtmchkdt);
+                                    spUtils.put(context, "dateCtmchkdttimesign", "");//业务员确认客查日期
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -3930,7 +5711,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoIPQCPedt.getText().toString();
-                    getItem(position).setIPQCPedt(proitem);
+                    String commoipqcpedt = getItem(position).getIPQCPedt();
+                    if (commoipqcpedt == null) {
+                        commoipqcpedt = "";
+                    }
+                    String nullipqcpedt;
+                    if (commoipqcpedt.equals(proitem)) {
+                        nullipqcpedt = "1";
+                    } else {
+                        nullipqcpedt = "2";
+                        getItem(position).setIPQCPedt(proitem);
+                    }
+                    spUtils.put(context, "commonullipqcpedt", nullipqcpedt);
+                    spUtils.put(context, "CommodityIPQCPedt", proitem);//尾查预查
                 }
             };
             editTextIPQCPedt.addTextChangedListener(TvIPQCPedt);
@@ -3961,7 +5754,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoIPQCmdt.getText().toString();
-                    getItem(position).setIPQCmdt(proitem);
+                    String commoipqcmdt = getItem(position).getIPQCmdt();
+                    if (commoipqcmdt == null) {
+                        commoipqcmdt = "";
+                    }
+                    String nullipqcmdt;
+                    if (commoipqcmdt.equals(proitem)) {
+                        nullipqcmdt = "1";
+                    } else {
+                        nullipqcmdt = "2";
+                        getItem(position).setIPQCmdt(proitem);
+                    }
+                    spUtils.put(context, "commonullipqcmdt", nullipqcmdt);
+                    spUtils.put(context, "CommodityIPQCmdt", proitem);//巡检中查
                 }
             };
             editTextIPQCmdt.addTextChangedListener(TvIPQCmdt);
@@ -3992,7 +5797,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQAname.getText().toString();
-                    getItem(position).setQAname(proitem);
+                    String commoQaname = getItem(position).getQAname();
+                    if (commoQaname == null) {
+                        commoQaname = "";
+                    }
+                    String nullqaname;
+                    if (commoQaname.equals(proitem)) {
+                        nullqaname = "1";
+                    } else {
+                        nullqaname = "2";
+                        getItem(position).setQAname(proitem);
+                    }
+                    spUtils.put(context, "commonullqaname", nullqaname);
+                    spUtils.put(context, "CommodityQAname", proitem);//QA首扎
                 }
             };
             editTextQAname.addTextChangedListener(TvQAname);
@@ -4023,7 +5840,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQAScore.getText().toString();
-                    getItem(position).setQAScore(proitem);
+                    String commoqascore = getItem(position).getQAScore();
+                    if (commoqascore == null) {
+                        commoqascore = "";
+                    }
+                    String nullqascore;
+                    if (commoqascore.equals(proitem)) {
+                        nullqascore = "1";
+                    } else {
+                        nullqascore = "2";
+                        getItem(position).setQAScore(proitem);
+                    }
+                    spUtils.put(context, "commonullqascore", nullqascore);
+                    spUtils.put(context, "CommodityQAScore", proitem);//QA首扎件数
                 }
             };
             editTextQAScore.addTextChangedListener(TvQAScore);
@@ -4053,7 +5882,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     holder.tvCommoQAMemo.setText(datetime);
-                                    getItem(position).setQAMemo(datetime);
+                                    String commoqamemo = getItem(position).getQAMemo();
+                                    if(commoqamemo==null){
+                                        commoqamemo="";
+                                    }
+                                    String nullqamemo;
+                                    if(commoqamemo.equals(datetime)){
+                                        nullqamemo="1";
+                                    }else{
+                                        nullqamemo="2";
+                                        getItem(position).setQAMemo(datetime);
+                                    }
+                                    spUtils.put(context,"commonullqamemo",nullqamemo);
+                                    spUtils.put(context, "dateQAMemotimesign", datetime);//QA首扎日
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL
@@ -4061,7 +5902,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     holder.tvCommoQAMemo.setText("");
-                                    getItem(position).setQAMemo("");
+                                    String commoqamemo = getItem(position).getQAMemo();
+                                    if(commoqamemo==null){
+                                        commoqamemo="";
+                                    }
+                                    String nullqamemo;
+                                    if(commoqamemo.equals("")){
+                                        nullqamemo="1";
+                                    }else{
+                                        nullqamemo="2";
+                                        getItem(position).setQAMemo("");
+                                    }
+                                    spUtils.put(context,"commonullqamemo",nullqamemo);
+                                    spUtils.put(context, "dateQAMemotimesign", "");//QA首扎日
                                 }
                             });
                     datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE
@@ -4098,7 +5951,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoPredoc.getText().toString();
-                    getItem(position).setPredoc(proitem);
+                    String commopredoc = getItem(position).getPredoc();
+                    if (commopredoc == null) {
+                        commopredoc = "";
+                    }
+                    String nullpredoc;
+                    if (commopredoc.equals(proitem)) {
+                        nullpredoc = "1";
+                    } else {
+                        nullpredoc = "2";
+                        getItem(position).setPredoc(proitem);
+                    }
+                    spUtils.put(context, "commonullpredoc", nullpredoc);
+                    spUtils.put(context, "CommodityPredoc", proitem);//产前会报告
                 }
             };
             editTextPredoc.addTextChangedListener(TvPredoc);
@@ -4107,7 +5972,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoPredoc.setSelection(holder.tvCommoPredoc.length());
 
 
-            holder.tvCommoQCbdtDoc.setEnabled(true);
+            holder.tvCommoQCbdtDoc.setEnabled(true);//早期报告
             final EditText editTextQCbdtDoc = holder.tvCommoQCbdtDoc;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQCbdtDoc.getTag() instanceof TextWatcher) {
@@ -4129,7 +5994,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQCbdtDoc.getText().toString();
-                    getItem(position).setQCbdtDoc(proitem);
+                    String commoqcbdtdoc = getItem(position).getQCbdtDoc();
+                    if (commoqcbdtdoc == null) {
+                        commoqcbdtdoc = "";
+                    }
+                    String nullqcbdtdoc;
+                    if (commoqcbdtdoc.equals(proitem)) {
+                        nullqcbdtdoc = "1";
+                    } else {
+                        nullqcbdtdoc = "2";
+                        getItem(position).setQCbdtDoc(proitem);
+                    }
+                    spUtils.put(context, "commonullqcbdtdoc", nullqcbdtdoc);
+                    spUtils.put(context, "Commodityqcbdtdoc", proitem);//早期报告
                 }
             };
             editTextQCbdtDoc.addTextChangedListener(TvQCbdtDoc);
@@ -4138,7 +6015,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoQCbdtDoc.setSelection(holder.tvCommoQCbdtDoc.length());
 
 
-            holder.tvCommoQCmdtDoc.setEnabled(true);
+            holder.tvCommoQCmdtDoc.setEnabled(true);//中期报告
             final EditText editTextQCmdtDoc = holder.tvCommoQCmdtDoc;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQCmdtDoc.getTag() instanceof TextWatcher) {
@@ -4160,7 +6037,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQCmdtDoc.getText().toString();
-                    getItem(position).setQCmdtDoc(proitem);
+                    String commoqcmdtdoc = getItem(position).getQCmdtDoc();
+                    if (commoqcmdtdoc == null) {
+                        commoqcmdtdoc = "";
+                    }
+                    String nullqcmdtdoc;
+                    if (commoqcmdtdoc.equals(proitem)) {
+                        nullqcmdtdoc = "1";
+                    } else {
+                        nullqcmdtdoc = "2";
+                        getItem(position).setQCmdtDoc(proitem);
+                    }
+                    spUtils.put(context, "commonullqcmdtdoc", nullqcmdtdoc);
+                    spUtils.put(context, "CommodityQCmdtDoc", proitem);//中期报告
                 }
             };
             editTextQCmdtDoc.addTextChangedListener(TvQCmdtDoc);
@@ -4169,7 +6058,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoQCmdtDoc.setSelection(holder.tvCommoQCmdtDoc.length());
 
 
-            holder.tvCommoQCedtDoc.setEnabled(true);
+            holder.tvCommoQCedtDoc.setEnabled(true);//尾期报告
             final EditText editTextQCedtDoc = holder.tvCommoQCedtDoc;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQCedtDoc.getTag() instanceof TextWatcher) {
@@ -4191,7 +6080,19 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = holder.tvCommoQCedtDoc.getText().toString();
-                    getItem(position).setQCedtDoc(proitem);
+                    String commoqcedtdoc = getItem(position).getQCedtDoc();
+                    if (commoqcedtdoc == null) {
+                        commoqcedtdoc = "";
+                    }
+                    String nullqcedtdoc;
+                    if (commoqcedtdoc.equals(proitem)) {
+                        nullqcedtdoc = "1";
+                    } else {
+                        nullqcedtdoc = "2";
+                        getItem(position).setQCedtDoc(proitem);
+                    }
+                    spUtils.put(context, "commonullqcedtdoc", nullqcedtdoc);
+                    spUtils.put(context, "CommodityQCedtDoc", proitem);//尾查报告
                 }
             };
             editTextQCedtDoc.addTextChangedListener(TvQCedtDoc);
@@ -4333,7 +6234,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             });
 
             holder.tvCommoPred.setEnabled(false);
-            holder.tvCommoPred.setText(getItem(position).getPredocdt());
+            holder.tvCommoPred.setText(getItem(position).getPredt());
             holder.tvCommoPred.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

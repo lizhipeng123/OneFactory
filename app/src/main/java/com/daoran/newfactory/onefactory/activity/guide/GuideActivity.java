@@ -35,7 +35,7 @@ public class GuideActivity extends BaseFrangmentActivity
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_guide);
         //是否第一次打开app，如果是则进入引导页，否则进入登录页
-        SharedPreferences sp = this.getSharedPreferences("guider", MODE_PRIVATE);
+        SharedPreferences sp = this.getSharedPreferences("guider", 0);
         boolean isFirstOpen = sp.getBoolean("isFirstOpen", true);
         if (!isFirstOpen) {
             Intent intent = new Intent(this, LoginMainActivity.class);

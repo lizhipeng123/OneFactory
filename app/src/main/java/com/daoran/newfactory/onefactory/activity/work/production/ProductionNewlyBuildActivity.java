@@ -8,6 +8,8 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +46,8 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -137,6 +141,8 @@ public class ProductionNewlyBuildActivity
         ivUpLeftPage = (ImageView) findViewById(R.id.ivUpLeftPage);
         ivDownRightPage = (ImageView) findViewById(R.id.ivDownRightPage);
         ivNewlyFilp = (ImageView) findViewById(R.id.ivNewlyFilp);
+        setEditTextInhibitInputSpeChat(etNewbuildDetail);
+        setEditTextInhibitInputSpeChat(etNewbuild);
     }
 
     /**
@@ -880,5 +886,26 @@ public class ProductionNewlyBuildActivity
                 } else {}
                 break;
         }
+    }
+
+    /**
+     * 禁止EditText输入特殊字符
+     *
+     * @param editText
+     */
+    public static void setEditTextInhibitInputSpeChat(EditText editText) {
+        InputFilter filter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                String speChat = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+                Pattern pattern = Pattern.compile(speChat);
+                Matcher matcher = pattern.matcher(source.toString());
+                if (source.equals(" ")||source.equals("\n")||matcher.find())
+                    return "";
+                else
+                    return null;
+            }
+        };
+        editText.setFilters(new InputFilter[]{filter});
     }
 }

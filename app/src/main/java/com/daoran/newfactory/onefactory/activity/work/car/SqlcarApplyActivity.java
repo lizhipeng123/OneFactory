@@ -46,7 +46,6 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
     private TextView tvInitialDate;
     private ContentDialog dialog;//条件查询dialog弹出框
     private LinearLayout ll_visibi;//隐藏的空页面
-    private TextView tv_visibi;
     private PullToRefreshListView listview;//可刷新的listview
 
     private SqlCarApplyBean.DataBean dataBean;//列表显示的实体
@@ -74,7 +73,6 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
         ivSearch = (ImageView) findViewById(R.id.ivSearch);
         tvInitialDate = (TextView) findViewById(R.id.tvInitialDate);
         ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
-        tv_visibi = (TextView) findViewById(R.id.tv_visibi);
         listview = (PullToRefreshListView) findViewById(R.id.listview);
         btnExcel = (Button) findViewById(R.id.btnExcel);
         ivBack.setOnClickListener(this);

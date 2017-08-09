@@ -4,7 +4,8 @@
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively). -->
     <dimen name="activity_horizontal_margin">64dp</dimen>
     <dimen name="activity_vertical_margin">64dp</dimen>
-
+    <item type="fraction" name="dialog_min_width_major">45%</item>
+    <item type="fraction" name="dialog_min_width_minor">72%</item>
     <dimen name="dimen_0">0.00dp</dimen>
     <dimen name="dimen_1">0.74dp</dimen>
     <dimen name="dimen_2">1.56dp</dimen>

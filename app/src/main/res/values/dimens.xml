@@ -15,6 +15,8 @@
     <dimen name="guider_indicator">30dp</dimen>
     <!-- 引导页中登录、注册按钮跟底部的距离-->
     <dimen name="guider_login_register">80dp</dimen>
+    <item type="fraction" name="dialog_min_width_major">65%</item>
+    <item type="fraction" name="dialog_min_width_minor">95%</item>
 
     <!-- 通用 -->
     <dimen name="isetting_item_height">55dip</dimen>

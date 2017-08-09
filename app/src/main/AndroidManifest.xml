@@ -106,20 +106,20 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
-        <!-- 外勤签到查询测试类 -->
+        <!-- 外勤签到查询类 -->
         <activity
             android:name=".activity.work.SignDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
-        <!-- 生产日报查询测试类 -->
+        <!-- 生产日报查询类 -->
         <activity
             android:name=".activity.work.production.ProductionActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
-        <!-- 查货跟踪查询测试类 -->
+        <!-- 查货跟踪查询类 -->
         <activity
             android:name=".activity.work.commo.CommoditySqlActivity"
             android:launchMode="singleTask"

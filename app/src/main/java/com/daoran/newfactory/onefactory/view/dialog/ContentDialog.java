@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
@@ -14,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -21,6 +24,8 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 
 import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 用车申请单条件查询弹框

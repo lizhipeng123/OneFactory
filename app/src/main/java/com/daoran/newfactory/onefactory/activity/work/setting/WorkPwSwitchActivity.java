@@ -114,8 +114,10 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
                 String speChat = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
                 Pattern pattern = Pattern.compile(speChat);
                 Matcher matcher = pattern.matcher(source.toString());
-                if (matcher.find()) return "";
-                else return null;
+                if (source.equals(" ")||source.equals("\n")||matcher.find())
+                    return "";
+                else
+                    return null;
             }
         };
         editText.setFilters(new InputFilter[]{filter});
@@ -360,4 +362,5 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
     protected void onStart() {
         super.onStart();
     }
+
 }

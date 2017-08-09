@@ -6,6 +6,8 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Looper;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +45,8 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Call;
 
@@ -110,6 +114,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         ivUpLeftPage = (ImageView) findViewById(R.id.ivUpLeftPage);
         ivDownRightPage = (ImageView) findViewById(R.id.ivDownRightPage);
         spinnermenu = (Button) findViewById(R.id.spinnermenu);
+        setEditTextInhibitInputSpeChat(etSqlDetail);
         getClumnsSpinner();
     }
 
@@ -598,4 +603,25 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
             }
         }
     };
+
+    /**
+     * 禁止EditText输入特殊字符
+     *
+     * @param editText
+     */
+    public static void setEditTextInhibitInputSpeChat(EditText editText) {
+        InputFilter filter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                String speChat = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+                Pattern pattern = Pattern.compile(speChat);
+                Matcher matcher = pattern.matcher(source.toString());
+                if (source.equals(" ")||source.equals("\n")||matcher.find())
+                    return "";
+                else
+                    return null;
+            }
+        };
+        editText.setFilters(new InputFilter[]{filter});
+    }
 }

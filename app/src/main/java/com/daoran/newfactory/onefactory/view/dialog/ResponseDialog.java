@@ -37,17 +37,6 @@ public class ResponseDialog {
 
     public static void closeLoading() {
         if (progress != null) {
-//            Thread thread = new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    try {
-//                        Thread.sleep(3000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            });
-//            thread.start();
             progress.dismiss();
             progress = null;
         }

@@ -1,221 +1,225 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/create_user_dialog_view"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical">
-
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/dimen_30">
-
-        <TextView
+        android:orientation="vertical">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="生产单查询"
-            android:textColor="@color/black"
-            android:textSize="@dimen/dimen_55sp" />
+            android:orientation="horizontal"
+            android:padding="@dimen/dimen_30">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="生产单查询"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dimen_55sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#FF909090" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dimen_70"
+            android:paddingLeft="@dimen/dimen_70"
+            android:paddingRight="@dimen/dimen_70"
+            android:paddingTop="@dimen/dimen_70">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_70"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="款号"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_50sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="    "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_50sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="    "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_50sp" />
+                <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
+                    android:id="@+id/etprodialogStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="37dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dimen_50"
+                    android:background="@drawable/shape_edittext_sql_boild"
+                    android:gravity="center"
+                    android:textColor="@color/black" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_70"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="生产主管"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_50sp" />
+
+                <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
+                    android:id="@+id/etprodialogProcedure"
+                    android:layout_width="match_parent"
+                    android:layout_height="37dp"
+                    android:layout_marginLeft="@dimen/dimen_50"
+                    android:background="@drawable/shape_edittext_sql_boild"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_50sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_70"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="跟单员"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_50sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="    "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_50sp" />
+                <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
+                    android:id="@+id/etprodialogFactory"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_100"
+                    android:layout_marginLeft="@dimen/dimen_50"
+                    android:background="@drawable/shape_edittext_sql_boild"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_50sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_70"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="巡检"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_50sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="    "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_50sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="    "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_50sp" />
+                <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
+                    android:id="@+id/etprodialogRecode"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_100"
+                    android:layout_marginLeft="@dimen/dimen_50"
+                    android:background="@drawable/shape_edittext_sql_boild"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_50sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkboxNull"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/chk_agee_provision_background"
+                    android:button="@null" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="生产主管是否可空"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_50sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#FF909090" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/dimen_30"
+            android:paddingLeft="@dimen/dimen_70"
+            android:paddingRight="@dimen/dimen_70"
+            android:paddingTop="@dimen/dimen_30">
+
+            <Button
+                android:id="@+id/btnCancle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/shape_btn_sql_boild"
+                android:textColor="@color/white"
+                android:text="取消" />
+
+            <Button
+                android:id="@+id/btnComfirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_200"
+                android:background="@drawable/shape_btn_sql_boild"
+                android:textColor="@color/white"
+                android:layout_weight="1"
+                android:text="确定" />
+        </LinearLayout>
     </LinearLayout>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:background="#FF909090" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/dimen_70"
-        android:paddingLeft="@dimen/dimen_70"
-        android:paddingRight="@dimen/dimen_70"
-        android:paddingTop="@dimen/dimen_70">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimen_70"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="款号"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_50sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="    "
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_50sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="    "
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_50sp" />
-            <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
-                android:id="@+id/etprodialogStyle"
-                android:layout_width="match_parent"
-                android:layout_height="37dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/dimen_50"
-                android:background="@drawable/shape_edittext_sql_boild"
-                android:gravity="center"
-                android:textColor="@color/black" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimen_70"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="生产主管"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_50sp" />
-
-            <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
-                android:id="@+id/etprodialogProcedure"
-                android:layout_width="match_parent"
-                android:layout_height="37dp"
-                android:layout_marginLeft="@dimen/dimen_50"
-                android:background="@drawable/shape_edittext_sql_boild"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_50sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimen_70"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="跟单员"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_50sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="    "
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_50sp" />
-            <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
-                android:id="@+id/etprodialogFactory"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_100"
-                android:layout_marginLeft="@dimen/dimen_50"
-                android:background="@drawable/shape_edittext_sql_boild"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_50sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimen_70"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="巡检"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_50sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="    "
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_50sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="    "
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_50sp" />
-            <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
-                android:id="@+id/etprodialogRecode"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen_100"
-                android:layout_marginLeft="@dimen/dimen_50"
-                android:background="@drawable/shape_edittext_sql_boild"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_50sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/checkboxNull"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/chk_agee_provision_background"
-                android:button="@null" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="生产主管是否可空"
-                android:layout_marginLeft="10dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_50sp" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:background="#FF909090" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/dimen_30"
-        android:paddingLeft="@dimen/dimen_70"
-        android:paddingRight="@dimen/dimen_70"
-        android:paddingTop="@dimen/dimen_30">
-
-        <Button
-            android:id="@+id/btnCancle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/shape_btn_sql_boild"
-            android:textColor="@color/white"
-            android:text="取消" />
-
-        <Button
-            android:id="@+id/btnComfirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_200"
-            android:background="@drawable/shape_btn_sql_boild"
-            android:textColor="@color/white"
-            android:layout_weight="1"
-            android:text="确定" />
-    </LinearLayout>
-</LinearLayout>
+</ScrollView>
