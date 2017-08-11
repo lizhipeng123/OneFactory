@@ -409,19 +409,7 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK){
-            //判断软件盘是否弹出
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                if (imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0)) {
-                    imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
-                            0);
-                } else {
-                    imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
-                            0);
-                }
-            }
-
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("保存提示");
             builder.setMessage("退出是否保存");
@@ -449,9 +437,10 @@ public class ProductionNewlyCopyActivity extends BaseFrangmentActivity
 
     /**
      * 判断软键盘是否弹出
+     *
      * @param v
      */
-    private void sethideSoft(View v){
+    private void sethideSoft(View v) {
         //判断软件盘是否弹出
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {

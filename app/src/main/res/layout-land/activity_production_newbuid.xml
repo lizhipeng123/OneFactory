@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_150"
+        android:layout_height="@dimen/dimen_100"
         android:background="@color/lightblue">
 
         <ImageView
@@ -35,7 +35,7 @@
             android:layout_toRightOf="@+id/viewtitletwo"
             android:text="款号选择"
             android:textColor="@color/black"
-            android:textSize="@dimen/dimen_55sp" />
+            android:textSize="@dimen/dimen_45sp" />
 
         <Button
             android:id="@+id/btnNewbuildConfirm"
@@ -46,7 +46,7 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/shape_btn_newsbuild_boild"
             android:text="确定"
-            android:textSize="@dimen/dimen_40sp"
+            android:textSize="@dimen/dimen_30sp"
             android:visibility="gone" />
         <ImageView
             android:id="@+id/ivNewlyFilp"
@@ -70,20 +70,20 @@
         android:background="@color/lightblue"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingBottom="@dimen/dimen_20"
-        android:paddingTop="@dimen/dimen_20">
+        android:paddingBottom="@dimen/dimen_10"
+        android:paddingTop="@dimen/dimen_10">
 
         <TextView
             android:id="@+id/spinnerNewbuild"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:layout_weight="3"
+
             android:background="@drawable/spinner_bg"
             android:gravity="center"
             android:text="选择工序"
             android:textColor="@color/black"
-            android:textSize="@dimen/dimen_50sp" />
+            android:textSize="@dimen/dimen_30sp" />
 
         <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
             android:id="@+id/etNewbuild"
@@ -99,7 +99,7 @@
             android:paddingRight="@dimen/dimen_42"
             android:paddingTop="@dimen/dimen_20"
             android:textColorHint="@color/defaultTextColor"
-            android:textSize="@dimen/dimen_50sp" />
+            android:textSize="@dimen/dimen_30sp" />
 
         <Button
             android:id="@+id/etNewbuildSql"
@@ -112,7 +112,7 @@
             android:gravity="center"
             android:text="查找"
             android:textColor="@color/black"
-            android:textSize="@dimen/dimen_40sp" />
+            android:textSize="@dimen/dimen_30sp" />
     </LinearLayout>
 
     <View
@@ -122,56 +122,56 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:background="@color/lightblue"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_id"
                 android:layout_width="100dp"
-                android:layout_height="50dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="款号"
                 android:textColor="@color/black"
-                android:textSize="@dimen/dimen_45sp" />
+                android:textSize="@dimen/dimen_30sp" />
         </LinearLayout>
 
         <View
             android:layout_width="1px"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:background="#cccccc" />
 
         <LinearLayout
             android:id="@+id/lin_header_content"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_weight="3"
             android:orientation="vertical">
 
             <com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView
                 android:id="@+id/header_horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="match_parent"
                 android:overScrollMode="never"
                 android:scrollbars="none">
 
                 <LinearLayout
                     android:id="@+id/lin_year_title"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="match_parent"
                     android:orientation="horizontal">
 
                     <!--<TextView-->
                     <!--android:id="@+id/tv_data"-->
                     <!--android:layout_width="120dp"-->
-                    <!--android:layout_height="50dp"-->
+                    <!--android:layout_height="match_parent"-->
                     <!--android:layout_gravity="center"-->
                     <!--android:gravity="center"-->
                     <!--android:text="款号"-->
@@ -180,175 +180,175 @@
 
                     <!--<View-->
                     <!--android:layout_width="1px"-->
-                    <!--android:layout_height="50dp"-->
+                    <!--android:layout_height="match_parent"-->
                     <!--android:background="@color/darkgray" />-->
 
                     <TextView
                         android:layout_width="100dp"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="跟单"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
+                        android:textSize="@dimen/dimen_30sp" />
 
                     <View
                         android:layout_width="1px"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="工厂"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
+                        android:textSize="@dimen/dimen_30sp" />
 
                     <View
                         android:layout_width="1px"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="部门/组别"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
+                        android:textSize="@dimen/dimen_30sp" />
 
                     <View
                         android:layout_width="1px"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="工序"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
+                        android:textSize="@dimen/dimen_30sp" />
 
                     <View
                         android:layout_width="1px"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="组别人数"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
+                        android:textSize="@dimen/dimen_30sp" />
 
                     <View
                         android:layout_width="1px"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="制单数"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
+                        android:textSize="@dimen/dimen_30sp" />
 
                     <View
                         android:layout_width="1px"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="任务数"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
+                        android:textSize="@dimen/dimen_30sp" />
 
                     <View
                         android:layout_width="1px"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="120dp"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="尺码"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
+                        android:textSize="@dimen/dimen_30sp" />
 
                     <View
                         android:layout_width="1px"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="花色"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
+                        android:textSize="@dimen/dimen_30sp" />
 
                     <View
                         android:layout_width="1px"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="实裁数"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
+                        android:textSize="@dimen/dimen_30sp" />
 
                     <View
                         android:layout_width="1px"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="总完工数"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
+                        android:textSize="@dimen/dimen_30sp" />
 
                     <View
                         android:layout_width="1px"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="状态"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
+                        android:textSize="@dimen/dimen_30sp" />
 
                     <View
                         android:layout_width="1px"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:background="@color/darkgray" />
 
                 </LinearLayout>
@@ -444,10 +444,10 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="9"
+            android:layout_height="@dimen/dimen_80"
             android:background="@color/lightblue"
             android:gravity="center_vertical">
+
             <ImageView
                 android:id="@+id/ivUpLeftPage"
                 android:layout_width="@dimen/dimen_100"
@@ -456,6 +456,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dimen_20"
                 android:src="@mipmap/left49" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -467,7 +468,7 @@
                 <EditText
                     android:id="@+id/etNewbuildDetail"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dimen_90"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:background="@drawable/shape_edittext_sql_boild"
                     android:inputType="phone|number"
@@ -480,8 +481,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
                     android:text="/"
                     android:textSize="20sp" />
 
@@ -489,23 +490,24 @@
                     android:id="@+id/tvNewbuildPage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
                     android:text="0"
                     android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btnNewbuildPage"
                     android:layout_width="@dimen/dimen_170"
-                    android:layout_height="@dimen/dimen_100"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dimen_30"
                     android:background="@drawable/shape_btn_newsbuild_boild"
                     android:text="确定" />
+
                 <Spinner
                     android:id="@+id/spinnProNewPageClumns"
                     android:layout_width="@dimen/dimen_150"
-                    android:layout_height="@dimen/dimen_100"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/dimen_30"
                     android:background="@drawable/spinner_bg"
                     android:entries="@array/clumnsCommon"
@@ -520,8 +522,9 @@
                     android:layout_marginLeft="@dimen/dimen_30"
                     android:gravity="center"
                     android:text="条"
-                    android:textSize="@dimen/dimen_50sp" />
+                    android:textSize="@dimen/dimen_30sp" />
             </LinearLayout>
+
             <ImageView
                 android:id="@+id/ivDownRightPage"
                 android:layout_width="@dimen/dimen_100"

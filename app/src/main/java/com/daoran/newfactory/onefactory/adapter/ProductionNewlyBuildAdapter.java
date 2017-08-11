@@ -1,6 +1,8 @@
 package com.daoran.newfactory.onefactory.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -32,6 +34,7 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
     private SharedPreferences sp;
     private SPUtils spUtils;
     private boolean flag = false;
+    private AlertDialog alertDialog;
     private int isprodure;
 
     public ProductionNewlyBuildAdapter(Context context, List<ProNewlyBuildBean.DataBean> dataBeen) {
@@ -98,85 +101,42 @@ public class ProductionNewlyBuildAdapter extends BaseAdapter {
         } else {
             viewHolder.lin_content.setBackgroundColor(Color.TRANSPARENT);
         }
-        viewHolder.lin_content.setOnClickListener(new View.OnClickListener() {
+        //长按弹出花色具体信息
+        viewHolder.tvProSize.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
-                sp = context.getSharedPreferences("my_sp", 0);
-                String salesid = getItem(position).getID();
-                String said = getItem(position).getSalesid();
-                spUtils.put(context, "tvnewlysalesid", salesid);
-                flag = true;
-                spUtils.put(context, "tvflag", flag);
-                String tvdate = getItem(position).getItem();
-                spUtils.put(context, "tvnewlydate", tvdate);//款号
-                String tvProDocumentary = getItem(position).getPrddocumentary();
-                spUtils.put(context, "tvnewlyDocumentary", tvProDocumentary);//跟单
-                String tvProFactory = getItem(position).getSubfactory();
-                spUtils.put(context, "tvnewlyFactory", tvProFactory);//工厂
-                String tvProDepartment = getItem(position).getSubfactoryTeams();
-                spUtils.put(context, "tvnewlyDepartment", tvProDepartment);//部门
-                String tvProProcedure = getItem(position).getWorkingProcedure();
-                spUtils.put(context, "tvnewlyProcedure", tvProProcedure);//工序
-                if (tvProProcedure.equals("裁床")) {
-                    isprodure = 1;
-                    spUtils.put(context, "isprodure", String.valueOf(isprodure));
-                } else {
-                    isprodure = 0;
-                    spUtils.put(context, "isprodure", String.valueOf(isprodure));
-                }
-                String tvProOthers = getItem(position).getWorkers();
-                spUtils.put(context, "tvnewlyOthers", tvProOthers);//组别人数
-
-                String tvProSingularSystem = getItem(position).getPqty();
-                spUtils.put(context, "tvnewSingularSystem", tvProSingularSystem);//制单数
-
-                String tvProColor = getItem(position).getTaskqty();
-                spUtils.put(context, "tvColorTaskqty", tvProColor);//任务数
-
-                String tvProTaskNumber = getItem(position).getMdl();
-                spUtils.put(context, "tvnewTaskNumber", tvProTaskNumber);//尺码
-
-                String tvProSize = getItem(position).getProdcol();
-                if (tvProSize.contains("/")) {
-                    System.out.print(tvProSize);
-                    String[] temp = null;
-                    temp = tvProSize.split("/");
-                    System.out.print(temp);
-                    List<String> list = Arrays.asList(temp);
-                    System.out.print(list);
-                    SharedPreferences spes = context.getSharedPreferences("mylist", 0);
-                    SharedPreferences.Editor editor = spes.edit();
-                    try {
-                        String liststr = PhoneSaveUtil.SceneList2String(list);
-                        editor.putString("mylistStr", liststr);
-                        spUtils.put(context, "tvnewlySize", tvProSize);//花色
-                        editor.commit();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    System.out.print(tvProSize);
-                    spUtils.put(context, "tvnewlySize", tvProSize);//花色
-                }
-
-                String tvProClippingNumber = getItem(position).getFactcutqty();
-                spUtils.put(context, "tvnewlyClippingNumber", tvProClippingNumber);//实裁数
-
-                String tvProCompletedLastMonth = getItem(position).getSumCompletedQty();
-                spUtils.put(context, "tvnewlyCompletedLastMonth", tvProCompletedLastMonth);//总完工数
-
-                String tvProTotalCompletion = getItem(position).getPrdstatus();
-                spUtils.put(context, "tvnewlyTotalCompletion", tvProTotalCompletion);//状态
-
-                viewHolder.lin_content.setBackgroundResource(R.drawable.bill_record_item);
-
-                System.out.print("");
-                String itemm = sp.getString("tvnewlydate", "");
-                /*从点击item中进入新建数据界面*/
-                Intent intent = new Intent(context,
-                        ProductionNewlyComfigActivity.class);
-                context.startActivity(intent);
-                System.out.print(itemm);
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage(getItem(position).getProdcol());
+                builder.setNegativeButton("退出",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog = builder.create();
+                alertDialog.setCanceledOnTouchOutside(false);
+                alertDialog.show();
+                return false;
+            }
+        });
+        //长按弹出尺码具体信息
+        viewHolder.tvProTaskNumber.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage(getItem(position).getMdl());
+                builder.setNegativeButton("退出",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog = builder.create();
+                alertDialog.setCanceledOnTouchOutside(false);
+                alertDialog.show();
+                return false;
             }
         });
         return convertView;

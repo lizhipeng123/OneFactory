@@ -1,6 +1,8 @@
 package com.daoran.newfactory.onefactory.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.Editable;
@@ -51,6 +53,7 @@ public class ProductionAdapter extends BaseAdapter {
             day19, day20, day21, day22, day23, day24, day25, day26, day27,
             day28, day29, day30, day31;
     int countmon, skNumber;
+    private AlertDialog alertDialog;
 
     public ProductionAdapter(Context context, List<ProducationDetailBean.DataBean> dataBeen
     ) {
@@ -157,99 +160,6 @@ public class ProductionAdapter extends BaseAdapter {
         }
         if (!recorder.equals("")) {
             if (recorder.equals(nameid)) {
-                viewHolder.lin_content.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        viewHolder.lin_content.setBackgroundResource(R.drawable.bill_record_historylist);
-                        String prorecorid = getItem(position).getRecordid();
-                        spUtils.put(context, "prorecorid", prorecorid);//制单人id
-                        String proid = String.valueOf(getItem(position).getID());
-                        spUtils.put(context, "proadapterid", proid);//id
-                        String urlid = String.valueOf(getItem(position).getID());
-                        spUtils.put(context, "prouriid", urlid);//id
-                        String salesid = String.valueOf(getItem(position).getSalesid());
-                        spUtils.put(context, "prosalesid", salesid);//行id
-                        String copyitem = getItem(position).getItem();
-                        spUtils.put(context, "copyitem", copyitem);//款号
-                        String copyDocumentary = getItem(position).getPrddocumentary();
-                        spUtils.put(context, "copyDocumentary", copyDocumentary);//跟单
-                        String copyFactory = getItem(position).getSubfactory();
-                        spUtils.put(context, "copyFactory", copyFactory);//工厂
-                        String copyDepartment = getItem(position).getSubfactoryTeams();
-                        spUtils.put(context, "copyDepartment", copyDepartment);//部门组别
-                        String copyProcedure = getItem(position).getWorkingProcedure();
-                        spUtils.put(context, "copyProcedure", copyProcedure);//工序
-
-                        String copyOthers = getItem(position).getWorkers();
-                        spUtils.put(context, "copyOthers", copyOthers);//组别人数
-                        String copySingularSystem = getItem(position).getPqty();
-                        spUtils.put(context, "copySingularSystem", copySingularSystem);//制单数
-                        String copyColor = getItem(position).getProdcol();//花色
-                        if (copyColor.contains("/")) {
-                            System.out.print(copyColor);
-                            String[] temp = null;
-                            temp = copyColor.split("/");
-                            System.out.print(temp);
-                            List<String> list = Arrays.asList(temp);
-                            System.out.print(list);
-                            SharedPreferences spes = context.getSharedPreferences("mylist", 0);
-                            SharedPreferences.Editor editor = spes.edit();
-                            try {
-                                String liststr = PhoneSaveUtil.SceneList2String(list);
-                                editor.putString("mycopylistStr", liststr);
-                                spUtils.put(context, "copyyColor", copyColor);//花色
-                                editor.commit();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            spUtils.put(context, "copyyColor", copyColor);
-                        }
-                        String copyTaskNumber = getItem(position).getTaskqty();
-                        spUtils.put(context, "copyTaskNumber", copyTaskNumber);//任务数
-                        String copySize = getItem(position).getMdl();
-                        spUtils.put(context, "copySize", copySize);//尺码
-                        String copyClippingNumber = getItem(position).getFactcutqty();
-                        spUtils.put(context, "copyClippingNumber", copyClippingNumber);//实裁数
-                        String copyCompletedLastMonth = getItem(position).getLastMonQty();
-                        spUtils.put(context, "copyCompletedLastMonth", copyCompletedLastMonth);//上月完工
-                        String copyTotalCompletion = getItem(position).getSumCompletedQty();
-                        spUtils.put(context, "copyTotalCompletion", copyTotalCompletion);//总完工数
-                        String copyBalanceAmount = getItem(position).getLeftQty();
-                        spUtils.put(context, "copyBalanceAmount", copyBalanceAmount);//结余数量
-                        String copyState = getItem(position).getPrdstatus();
-                        spUtils.put(context, "copyState", copyState);//状态
-                        Time t = new Time("GMT+8"); // or Time t=new Time("GMT+8");
-                        t.setToNow(); // 取得系统时间。
-                        year = t.year;
-                        month = t.month;
-                        datetime = t.monthDay;
-                        hour = t.hour; // 0-23
-                        minute = t.minute;
-                        second = t.second;
-                        month = month + 1;
-                        String copyProYear = year + "";
-                        spUtils.put(context, "copyProYear", copyProYear);//年
-                        String copyMonth = month + "";
-                        spUtils.put(context, "copyMonth", copyMonth);//月
-
-                        String copyRemarks = getItem(position).getMemo();
-                        spUtils.put(context, "copyRemarks", copyRemarks);//备注
-                        String copyRecorder = getItem(position).getRecorder();
-                        spUtils.put(context, "copyRecorder", copyRecorder);//制单人
-                        String copyRecordat = getItem(position).getRecordat();
-                        spUtils.put(context, "copyRecordat", copyRecordat);//制单时间
-                        String copyproducament = getItem(position).getPrddocumentaryid();
-                        spUtils.put(context, "copyproducamentid", copyproducament);//跟单人ID
-                        ArrayList<String> list = new ArrayList<String>();
-                        list.add(copyitem);
-                        Intent intent = new Intent(context, ProductionCopyComfigActivity.class);
-                        intent.putStringArrayListExtra("copyitemlist", list);//
-                        context.startActivity(intent);
-                        ProductionActivity productionActivity = new ProductionActivity();
-                        productionActivity.finish();
-                    }
-                });
                 viewHolder.tvProDocumentary.setEnabled(true);
                 String productionadapterDocumentary = getItem(position).getPrddocumentary();
                 viewHolder.tvProDocumentary.setText(productionadapterDocumentary);
@@ -349,6 +259,24 @@ public class ProductionAdapter extends BaseAdapter {
                 viewHolder.tvProColor.setEnabled(true);
                 String productionColor = getItem(position).getProdcol();
                 viewHolder.tvProColor.setText(productionColor);
+                viewHolder.tvProColor.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setMessage(getItem(position).getProdcol());
+                        builder.setNegativeButton("退出",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog = builder.create();
+                        alertDialog.setCanceledOnTouchOutside(false);
+                        alertDialog.show();
+                        return false;
+                    }
+                });
 
                 viewHolder.tvProTaskNumber.setEnabled(true);
                 final int singular = Integer.parseInt(viewHolder.tvProSingularSystem.getText().toString());
@@ -434,6 +362,24 @@ public class ProductionAdapter extends BaseAdapter {
                 viewHolder.tvProSize.setEnabled(true);
                 String productionSize = getItem(position).getMdl();
                 viewHolder.tvProSize.setText(productionSize);
+                viewHolder.tvProSize.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setMessage(getItem(position).getMdl());
+                        builder.setNegativeButton("退出",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog = builder.create();
+                        alertDialog.setCanceledOnTouchOutside(false);
+                        alertDialog.show();
+                        return false;
+                    }
+                });
 
                 viewHolder.tvProClippingNumber.setEnabled(true);
                 String productionClippingNumber = getItem(position).getFactcutqty();

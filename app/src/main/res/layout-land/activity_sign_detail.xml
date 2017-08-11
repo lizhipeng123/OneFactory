@@ -2,16 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     android:orientation="vertical">
-
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_150"
-        android:background="@color/lightblue">
+        android:layout_height="@dimen/dimen_100"
+        android:background="@color/lightblue"
+        android:gravity="center">
 
         <ImageView
-            android:id="@+id/ivProductionBack"
+            android:id="@+id/ivSiganSqlDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -21,41 +22,40 @@
         <View
             android:id="@+id/viewtitletwo"
             android:layout_width="1px"
-            android:layout_height="@dimen/dimen_100"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_20"
-            android:layout_toRightOf="@+id/ivProductionBack"
+            android:layout_toRightOf="@+id/ivSiganSqlDetail"
             android:background="#FF909090" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_50"
-            android:layout_toRightOf="@+id/viewtitletwo"
-            android:text="款号选择"
+            android:text="签到查询"
             android:textColor="@color/black"
-            android:textSize="@dimen/dimen_55sp" />
+            android:textSize="@dimen/dimen_45sp" />
+
+        <ImageView
+            android:id="@+id/ivSearch"
+            android:layout_width="@dimen/dimen_60"
+            android:layout_height="@dimen/dimen_60"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_40"
+            android:layout_toRightOf="@+id/viewtitletwo"
+            android:src="@mipmap/search" />
 
         <Button
-            android:id="@+id/btnNewbuildConfirm"
-            android:layout_width="@dimen/dimen_170"
-            android:layout_height="@dimen/dimen_90"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/shape_btn_newsbuild_boild"
-            android:text="确定"
-            android:textSize="@dimen/dimen_40sp"
-            android:visibility="gone" />
-        <ImageView
-            android:id="@+id/ivNewlyFilp"
+            android:id="@+id/spinnermenu"
             android:layout_width="@dimen/dimen_70"
             android:layout_height="@dimen/dimen_70"
-            android:src="@mipmap/spin_filp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dimen_30"/>
+            android:layout_marginLeft="@dimen/dimen_30"
+            android:layout_marginRight="@dimen/dimen_30"
+            android:background="@mipmap/em_add" />
     </RelativeLayout>
 
     <View
@@ -65,292 +65,122 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:background="@color/lightblue"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/dimen_20"
-        android:paddingTop="@dimen/dimen_20">
-
-        <TextView
-            android:id="@+id/spinnerNewbuild"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="3"
-            android:background="@drawable/spinner_bg"
-            android:gravity="center"
-            android:text="选择工序"
-            android:textColor="@color/black"
-            android:textSize="@dimen/dimen_50sp" />
-
-        <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
-            android:id="@+id/etNewbuild"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="3"
-            android:background="@drawable/shape_edittext_sql_boild"
-            android:hint="请输入款号"
-            android:paddingBottom="@dimen/dimen_20"
-            android:paddingLeft="@dimen/dimen_42"
-            android:paddingRight="@dimen/dimen_42"
-            android:paddingTop="@dimen/dimen_20"
-            android:textColorHint="@color/defaultTextColor"
-            android:textSize="@dimen/dimen_50sp" />
-
-        <Button
-            android:id="@+id/etNewbuildSql"
-            android:layout_width="@dimen/dimen_170"
-            android:layout_height="@dimen/dimen_90"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="10dp"
-            android:layout_weight="0"
-            android:background="@drawable/shape_btn_newsbuild_boild"
-            android:gravity="center"
-            android:text="查找"
-            android:textColor="@color/black"
-            android:textSize="@dimen/dimen_40sp" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/darkgray" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:background="@color/lightblue"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_id"
                 android:layout_width="100dp"
-                android:layout_height="50dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="款号"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_45sp" />
+                android:text="编号" />
         </LinearLayout>
 
         <View
             android:layout_width="1px"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:background="#cccccc" />
 
         <LinearLayout
             android:id="@+id/lin_header_content"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_weight="3"
             android:orientation="vertical">
 
             <com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView
                 android:id="@+id/header_horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="match_parent"
                 android:overScrollMode="never"
                 android:scrollbars="none">
 
                 <LinearLayout
                     android:id="@+id/lin_year_title"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="match_parent"
                     android:orientation="horizontal">
 
                     <!--<TextView-->
                     <!--android:id="@+id/tv_data"-->
-                    <!--android:layout_width="120dp"-->
-                    <!--android:layout_height="50dp"-->
+                    <!--android:layout_width="100dp"-->
+                    <!--android:layout_height="match_parent"-->
                     <!--android:layout_gravity="center"-->
                     <!--android:gravity="center"-->
-                    <!--android:text="款号"-->
-                    <!--android:textColor="@color/black"-->
-                    <!--android:textSize="@dimen/dimen_45sp" />-->
+                    <!--android:text="编号" />-->
 
                     <!--<View-->
                     <!--android:layout_width="1px"-->
-                    <!--android:layout_height="50dp"-->
+                    <!--android:layout_height="match_parent"-->
                     <!--android:background="@color/darkgray" />-->
 
                     <TextView
                         android:layout_width="100dp"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="跟单"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
+                        android:text="制单人" />
 
                     <View
                         android:layout_width="1px"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:background="@color/darkgray" />
 
                     <TextView
                         android:layout_width="100dp"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="工厂"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
+                        android:text="班次" />
 
                     <View
                         android:layout_width="1px"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:background="@color/darkgray" />
 
                     <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="部门/组别"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
+                        android:text="签到时间" />
 
                     <View
                         android:layout_width="1px"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:background="@color/darkgray" />
 
                     <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
+                        android:layout_width="200dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="工序"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
+                        android:text="签到地点" />
 
                     <View
                         android:layout_width="1px"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:background="@color/darkgray" />
 
                     <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
+                        android:layout_width="200dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="组别人数"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
+                        android:text="备注" />
 
                     <View
                         android:layout_width="1px"
-                        android:layout_height="50dp"
+                        android:layout_height="match_parent"
                         android:background="@color/darkgray" />
-
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="制单数"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
-
-                    <View
-                        android:layout_width="1px"
-                        android:layout_height="50dp"
-                        android:background="@color/darkgray" />
-
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="任务数"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
-
-                    <View
-                        android:layout_width="1px"
-                        android:layout_height="50dp"
-                        android:background="@color/darkgray" />
-
-                    <TextView
-                        android:layout_width="120dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="尺码"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
-
-                    <View
-                        android:layout_width="1px"
-                        android:layout_height="50dp"
-                        android:background="@color/darkgray" />
-
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="花色"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
-
-                    <View
-                        android:layout_width="1px"
-                        android:layout_height="50dp"
-                        android:background="@color/darkgray" />
-
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="实裁数"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
-
-                    <View
-                        android:layout_width="1px"
-                        android:layout_height="50dp"
-                        android:background="@color/darkgray" />
-
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="总完工数"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
-
-                    <View
-                        android:layout_width="1px"
-                        android:layout_height="50dp"
-                        android:background="@color/darkgray" />
-
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="状态"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/dimen_45sp" />
-
-                    <View
-                        android:layout_width="1px"
-                        android:layout_height="50dp"
-                        android:background="@color/darkgray" />
-
                 </LinearLayout>
             </com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView>
         </LinearLayout>
@@ -359,7 +189,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="#cccccc" />
+        android:background="@color/darkgray" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -371,6 +201,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:background="@color/lightblue"
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="gone">
@@ -386,7 +217,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:text=""
-                android:textColor="#FFCBCBCB"
+                android:textColor="@color/white"
                 android:textSize="15sp" />
         </LinearLayout>
 
@@ -405,7 +236,7 @@
                 android:orientation="horizontal">
 
                 <com.daoran.newfactory.onefactory.view.listview.NoscrollListView
-                    android:id="@+id/lv_pleft"
+                    android:id="@+id/lv_left"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -432,7 +263,7 @@
                         android:scrollbars="none">
 
                         <com.daoran.newfactory.onefactory.view.listview.NoscrollListView
-                            android:id="@+id/lv_newbuild_data"
+                            android:id="@+id/lv_data"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:overScrollMode="never"
@@ -444,10 +275,10 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="9"
+            android:layout_height="@dimen/dimen_80"
             android:background="@color/lightblue"
-            android:gravity="center_vertical">
+            android:gravity="center">
+
             <ImageView
                 android:id="@+id/ivUpLeftPage"
                 android:layout_width="@dimen/dimen_100"
@@ -456,6 +287,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dimen_20"
                 android:src="@mipmap/left49" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -465,10 +297,9 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/etNewbuildDetail"
+                    android:id="@+id/etSqlDetail"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dimen_90"
-                    android:layout_gravity="center"
+                    android:layout_height="match_parent"
                     android:background="@drawable/shape_edittext_sql_boild"
                     android:inputType="phone|number"
                     android:numeric="integer"
@@ -481,31 +312,31 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:layout_gravity="center"
                     android:text="/"
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/tvNewbuildPage"
+                    android:id="@+id/tvSignPage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:layout_gravity="center"
                     android:text="0"
                     android:textSize="20sp" />
 
                 <Button
-                    android:id="@+id/btnNewbuildPage"
-                    android:layout_width="@dimen/dimen_170"
-                    android:layout_height="@dimen/dimen_100"
+                    android:id="@+id/btnSignPage"
+                    android:layout_width="@dimen/dimen_130"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dimen_30"
                     android:background="@drawable/shape_btn_newsbuild_boild"
                     android:text="确定" />
+
                 <Spinner
-                    android:id="@+id/spinnProNewPageClumns"
-                    android:layout_width="@dimen/dimen_150"
-                    android:layout_height="@dimen/dimen_100"
+                    android:id="@+id/spinnSignPageClumns"
+                    android:layout_width="@dimen/dimen_130"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dimen_30"
                     android:background="@drawable/spinner_bg"
                     android:entries="@array/clumnsCommon"
@@ -520,8 +351,9 @@
                     android:layout_marginLeft="@dimen/dimen_30"
                     android:gravity="center"
                     android:text="条"
-                    android:textSize="@dimen/dimen_50sp" />
+                    android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <ImageView
                 android:id="@+id/ivDownRightPage"
                 android:layout_width="@dimen/dimen_100"
@@ -533,5 +365,4 @@
                 android:src="@mipmap/left49" />
         </RelativeLayout>
     </LinearLayout>
-
 </LinearLayout>

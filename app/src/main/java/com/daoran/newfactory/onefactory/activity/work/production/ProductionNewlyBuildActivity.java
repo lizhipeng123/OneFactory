@@ -97,11 +97,14 @@ public class ProductionNewlyBuildActivity
 
     private SharedPreferences sp;//轻量级存储
     private SPUtils spUtils;//保存在手机中的目录
+    private int orientation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*1是竖屏，2是横屏*/
         setContentView(R.layout.activity_production_newbuid);
+
         getViews();
         initViews();
         setListener();
@@ -893,16 +896,18 @@ public class ProductionNewlyBuildActivity
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 } else if (configid.equals("2")) {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                } else {}
+                } else {
+                }
                 break;
         }
     }
 
     /**
      * 判断软键盘是否弹出
+     *
      * @param v
      */
-    private void sethideSoft(View v){
+    private void sethideSoft(View v) {
         //判断软件盘是否弹出
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
@@ -928,7 +933,7 @@ public class ProductionNewlyBuildActivity
                 String speChat = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
                 Pattern pattern = Pattern.compile(speChat);
                 Matcher matcher = pattern.matcher(source.toString());
-                if (source.equals(" ")||source.equals("\n")||matcher.find())
+                if (source.equals(" ") || source.equals("\n") || matcher.find())
                     return "";
                 else
                     return null;
