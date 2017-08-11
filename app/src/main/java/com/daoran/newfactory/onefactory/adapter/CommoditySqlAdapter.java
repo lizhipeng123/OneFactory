@@ -183,7 +183,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
         /**
          * 判断生产主管是否是当前登录用户
          */
-        if (master.equals("周小琴")) {
+        if (master.equals(nameid)) {
             holder.lin_content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -2166,7 +2166,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             /**
              * 判断跟单员是否是当前登录用户
              */
-        } else if (documentary.equals("周小琴")) {
+        } else if (documentary.equals(nameid)) {
             holder.lin_content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

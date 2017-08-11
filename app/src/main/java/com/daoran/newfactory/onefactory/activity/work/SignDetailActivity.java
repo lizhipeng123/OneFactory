@@ -156,7 +156,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                         getStringArray(R.array.clumnsCommon);
                 spUtils.put(SignDetailActivity.this,
                         "clumnssignspinner", languages[position]);
-                sethideSoft(view);
+//                sethideSoft(view);
                 setSignDetail();
             }
 

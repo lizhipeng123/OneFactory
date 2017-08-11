@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -103,6 +104,7 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
     private List<Map<String, Object>> mdate;
     private int year, month, datetime, hour, minute, second;
     int isprodure;
+    private View viewdialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -427,6 +429,35 @@ public class ProductionNewlyComfigActivity extends BaseFrangmentActivity
                 setSave();
                 break;
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("保存提示");
+            builder.setMessage("退出是否保存");
+            builder.setPositiveButton("保存后退出"
+                    , new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            setSave();
+                            dialog.dismiss();
+                        }
+                    });
+            builder.setNegativeButton("不保存，直接退出",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    });
+            noticeDialog = builder.create();
+            noticeDialog.setCanceledOnTouchOutside(false);
+            noticeDialog.show();
+        }
+        return false;
     }
 
     /**

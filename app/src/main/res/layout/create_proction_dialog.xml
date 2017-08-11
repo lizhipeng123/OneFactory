@@ -175,6 +175,7 @@
                     android:button="@null" />
 
                 <TextView
+                    android:id="@+id/tvProDialogcheck"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"

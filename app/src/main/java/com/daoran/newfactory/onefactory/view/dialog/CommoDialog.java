@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
@@ -35,6 +36,7 @@ public class CommoDialog extends Dialog {
     private EditText etprodialogStyle, etprodialogFactory, etprodialogRecode, etprodialogProcedure;
     private CheckBox checkboxNull;
     private Button btnCancle, btnComfirm;
+    private TextView tvCommoDialogcheck;
     private SharedPreferences sp;
     private SPUtils spUtils;
 
@@ -68,6 +70,7 @@ public class CommoDialog extends Dialog {
         checkboxNull = (CheckBox) findViewById(R.id.checkboxNull);
         btnCancle = (Button) findViewById(R.id.btnCancle);
         btnComfirm = (Button) findViewById(R.id.btnComfirm);
+        tvCommoDialogcheck = (TextView) findViewById(R.id.tvCommoDialogcheck);
         setEditTextInhibitInputSpace(etprodialogStyle);
         setEditTextInhibitInputSpace(etprodialogFactory);
         setEditTextInhibitInputSpace(etprodialogRecode);
@@ -75,7 +78,7 @@ public class CommoDialog extends Dialog {
     }
 
     /**
-     * 操作控件
+     * 初始化控件
      */
     private void initViews() {
         sp = content.getSharedPreferences("my_sp", 0);
@@ -100,6 +103,16 @@ public class CommoDialog extends Dialog {
         etprodialogProcedure.addTextChangedListener(etproProcedure);//生产主管
         btnComfirm.setOnClickListener(mClickListener);
         btnCancle.setOnClickListener(mCancleLinstener);
+        tvCommoDialogcheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkboxNull.toggle();
+                checkboxNull.isChecked();
+                boolean ischeck = checkboxNull.isChecked();
+                String is = String.valueOf(ischeck);
+                spUtils.put(content,"ischeckedd",is);
+            }
+        });
         checkboxNull.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

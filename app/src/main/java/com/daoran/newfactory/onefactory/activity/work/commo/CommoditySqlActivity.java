@@ -1,7 +1,9 @@
 package com.daoran.newfactory.onefactory.activity.work.commo;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -10,6 +12,7 @@ import android.os.Looper;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -76,6 +79,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private CommoditySqlAdapter sqlAdapter;//列表适配
     private ClumnsResultBean resultBean;
 
+    private AlertDialog noticeDialog;
     private TextView tvSignPage;//显示的总页数
     private EditText etSqlDetail;//输入的页数
     private Button btnSignPage;//翻页确认
@@ -92,6 +96,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private int pageCount;//查询获取的总页数
     private int pageIndex = 0;//初始显示的页数
     private String configid;
+    private boolean flagblack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,7 +166,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private void initView() {
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);
-        etSqlDetail.setSelection(etSqlDetail.length());
+        etSqlDetail.setSelection(etSqlDetail.getText().length());
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Log.i("info", "landscape"); // 横屏
             configid = String.valueOf(1);
@@ -190,7 +195,34 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
             /*返回按钮*/
             case R.id.ivCommoditySql:
                 sethideSoft(v);
-                finish();
+                setBlacksp();
+                if (flagblack = true) {
+                    finish();
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("保存提示");
+                    builder.setMessage("退出是否保存");
+                    builder.setPositiveButton("保存后退出"
+                            , new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    setCommoSave();
+                                    dialog.dismiss();
+                                    finish();
+                                }
+                            });
+                    builder.setNegativeButton("不保存，直接退出",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    finish();
+                                }
+                            });
+                    noticeDialog = builder.create();
+                    noticeDialog.setCanceledOnTouchOutside(false);
+                    noticeDialog.show();
+                }
                 break;
             /*查询*/
             case R.id.ivSearch:
@@ -274,10 +306,78 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     }
 
     /**
+     * 判断是否修改过数据
+     */
+    private void setBlacksp() {
+        sp = getSharedPreferences("my_sp", 0);
+        String CommodityQCMasterScore = sp.getString("CommodityQCMasterScore", "");
+        String dateSealedrewtimesign = sp.getString("dateSealedrewtimesign", "");
+        String dateDocbacktimesign = sp.getString("dateDocbacktimesign", "");
+        String CommodityPreMemo = sp.getString("CommodityPreMemo", "");
+        String datePredocdttimesign = sp.getString("datePredocdttimesign", "");
+        String datePredtimesign = sp.getString("datePredtimesign", "");
+        String CommodityPredoc = sp.getString("CommodityPredoc", "");
+        String CommodityFabricsok = sp.getString("CommodityFabricsok", "");
+        String CommodityAccessoriesok = sp.getString("CommodityAccessoriesok", "");
+        String CommoditySpcproDec = sp.getString("CommoditySpcproDec", "");
+        String CommoditySpcproMemo = sp.getString("CommoditySpcproMemo", "");
+        String CommodityCutqty = sp.getString("CommodityCutqty", "");
+        String dateSewFdttimesign = sp.getString("dateSewFdttimesign", "");
+        String dateSewMdttimesign = sp.getString("dateSewMdttimesign", "");
+        String datePrebdttimesign = sp.getString("datePrebdttimesign", "");
+        String dateQCbdttimesign = sp.getString("dateQCbdttimesign", "");
+        String CommodityQCbdtDoc = sp.getString("CommodityQCbdtDoc", "");
+        String datePremdttimesign = sp.getString("datePremdttimesign", "");
+        String dateQCmdttimesign = sp.getString("dateQCmdttimesign", "");
+        String CommodityQCmdtDoc = sp.getString("CommodityQCmdtDoc", "");
+        String datePreedttimesign = sp.getString("datePreedttimesign", "");
+        String dateQCMedttimesign = sp.getString("dateQCMedttimesign", "");
+        String CommodityQCedtDoc = sp.getString("CommodityQCedtDoc", "");
+        String dateFctmdttimesign = sp.getString("dateFctmdttimesign", "");
+        String dateFctedttimesign = sp.getString("dateFctedttimesign", "");
+        String datePackbdattimesign = sp.getString("datePackbdattimesign", "");
+        String CommodityPackqty2 = sp.getString("CommodityPackqty2", "");
+        String CommodityQCMemo = sp.getString("CommodityQCMemo", "");
+        String dateFactlcdattimesign = sp.getString("dateFactlcdattimesign", "");
+        String CommodityBatchid = sp.getString("CommodityBatchid", "");
+        String commohdTitle = sp.getString("commohdTitle", "");
+        String dateCtmchkdttimesign = sp.getString("dateCtmchkdttimesign", "");
+        String CommodityIPQCPedt = sp.getString("CommodityIPQCPedt", "");
+        String CommodityIPQCmdt = sp.getString("CommodityIPQCmdt", "");
+        String CommodityQAname = sp.getString("CommodityQAname", "");
+        String CommodityQAScore = sp.getString("CommodityQAScore", "");
+        String dateQAMemotimesign = sp.getString("dateQAMemotimesign", "");
+        if (CommodityQCMasterScore.equals("") && dateSealedrewtimesign.equals("")
+                && dateDocbacktimesign.equals("") && CommodityPreMemo.equals("")
+                && datePredocdttimesign.equals("") && datePredtimesign.equals("")
+                && CommodityPredoc.equals("") && CommodityFabricsok.equals("")
+                && CommodityAccessoriesok.equals("") && CommoditySpcproDec.equals("")
+                && CommoditySpcproMemo.equals("") && CommodityCutqty.equals("")
+                && dateSewFdttimesign.equals("") && dateSewMdttimesign.equals("")
+                && datePrebdttimesign.equals("") && dateQCbdttimesign.equals("")
+                && CommodityQCbdtDoc.equals("") && datePremdttimesign.equals("")
+                && dateQCmdttimesign.equals("") && CommodityQCmdtDoc.equals("")
+                && datePreedttimesign.equals("") && dateQCMedttimesign.equals("")
+                && CommodityQCedtDoc.equals("") && dateFctmdttimesign.equals("")
+                && dateFctedttimesign.equals("") && datePackbdattimesign.equals("")
+                && CommodityPackqty2.equals("") && CommodityQCMemo.equals("")
+                && dateFactlcdattimesign.equals("") && CommodityBatchid.equals("")
+                && commohdTitle.equals("") && dateCtmchkdttimesign.equals("")
+                && CommodityIPQCPedt.equals("") && CommodityIPQCmdt.equals("")
+                && CommodityQAname.equals("") && CommodityQAScore.equals("")
+                && dateQAMemotimesign.equals("")) {
+            flagblack = true;//都为空则直接退出
+        } else {
+            flagblack = false;//有数据则询问是否保存
+        }
+    }
+
+    /**
      * 判断软键盘是否弹出
+     *
      * @param v
      */
-    private void sethideSoft(View v){
+    private void sethideSoft(View v) {
         //判断软件盘是否弹出
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
@@ -1137,6 +1237,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
      * 完成后删除保存的临时信息
      */
     private void deletesp() {
+
         SharedPreferences.Editor editor = sp.edit();
         editor.remove("commoproid");
         editor.remove("CommodityQCMasterScore");//主管评分
@@ -1216,6 +1317,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         editor.remove("commonullqamemo");
         editor.commit();
     }
+
     /**
      * 禁止EditText输入特殊字符
      *
@@ -1228,12 +1330,47 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                 String speChat = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
                 Pattern pattern = Pattern.compile(speChat);
                 Matcher matcher = pattern.matcher(source.toString());
-                if (source.equals(" ")||source.equals("\n")||matcher.find())
+                if (source.equals(" ") || source.equals("\n") || matcher.find())
                     return "";
                 else
                     return null;
             }
         };
         editText.setFilters(new InputFilter[]{filter});
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            setBlacksp();
+            if (flagblack == true) {
+                finish();
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("保存提示");
+                builder.setMessage("退出是否保存");
+                builder.setPositiveButton("保存后退出"
+                        , new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                setCommoSave();
+                                dialog.dismiss();
+                                finish();
+                            }
+                        });
+                builder.setNegativeButton("不保存，直接退出",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                finish();
+                            }
+                        });
+                noticeDialog = builder.create();
+                noticeDialog.setCanceledOnTouchOutside(false);
+                noticeDialog.show();
+            }
+        }
+        return false;
     }
 }

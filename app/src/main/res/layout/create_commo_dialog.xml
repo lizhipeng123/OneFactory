@@ -179,6 +179,7 @@
                     android:button="@null" />
 
                 <TextView
+                    android:id="@+id/tvCommoDialogcheck"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="生产主管是否可空"

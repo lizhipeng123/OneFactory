@@ -30,18 +30,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *  生产日报条件查询dialog
+ *  生产日报条件查询dialog setOnCheckedChangeListener
  * Created by lizhipeng on 2017/4/26.
  */
 
 public class ProcationDialog extends Dialog {
     Activity content;
-    private View.OnClickListener mClickListener, mCancleLinstener;
-    private EditText etprodialogStyle, etprodialogFactory, etprodialogRecode;
-    private CheckBox checkboxNull;
-    private Button btnCancle, btnComfirm;
-    private Spinner tvprodialogProcedure;
-    private SharedPreferences sp;
+    private View.OnClickListener mClickListener, mCancleLinstener;//确定和取消按钮点击事件
+    private EditText etprodialogStyle, etprodialogFactory, etprodialogRecode;//需要填入的款号、工厂、制单人
+    private CheckBox checkboxNull;//单选框
+    private Button btnCancle, btnComfirm;//确定和取消按钮
+    private Spinner tvprodialogProcedure;//工序下拉控件
+    private TextView tvProDialogcheck;//是否可空
+    private SharedPreferences sp;//存放临时数据
     private SPUtils spUtils;
 
     public ProcationDialog(Context context) {
@@ -63,6 +64,9 @@ public class ProcationDialog extends Dialog {
         initViews();
     }
 
+    /**
+     * 实例化控件
+     */
     private void getViews() {
         etprodialogStyle = (EditText) findViewById(R.id.etprodialogStyle);
         etprodialogFactory = (EditText) findViewById(R.id.etprodialogFactory);
@@ -71,11 +75,15 @@ public class ProcationDialog extends Dialog {
         btnCancle = (Button) findViewById(R.id.btnCancle);
         btnComfirm = (Button) findViewById(R.id.btnComfirm);
         tvprodialogProcedure = (Spinner) findViewById(R.id.tvprodialogProcedure);
+        tvProDialogcheck = (TextView) findViewById(R.id.tvProDialogcheck);
         setEditTextInhibitInputSpace(etprodialogStyle);
         setEditTextInhibitInputSpace(etprodialogFactory);
         setEditTextInhibitInputSpace(etprodialogRecode);
     }
 
+    /**
+     * 初始化控件
+     */
     private void initViews() {
         sp = content.getSharedPreferences("my_sp", 0);
         Window dialogWindow = this.getWindow();
@@ -129,6 +137,17 @@ public class ProcationDialog extends Dialog {
         etprodialogRecode.addTextChangedListener(etproRecode);
         btnComfirm.setOnClickListener(mClickListener);
         btnCancle.setOnClickListener(mCancleLinstener);
+        /*点击文本改变checkbox状态*/
+        tvProDialogcheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkboxNull.toggle();
+                checkboxNull.isChecked();
+                boolean ischeck = checkboxNull.isChecked();
+                String is = String.valueOf(ischeck);
+                spUtils.put(content,"ischeckedd",is);
+            }
+        });
         checkboxNull.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
