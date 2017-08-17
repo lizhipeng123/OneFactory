@@ -123,7 +123,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         }
         getViews();
         initViews();
-        checkAppVersion(false);
+//        checkAppVersion(false);
         String name = sp.getString("username", "");
         String passwd = sp.getString("passwd", "");
         boolean choseRemember = sp.getBoolean("remember", false);

@@ -69,7 +69,7 @@ import java.util.Hashtable;
  * @author Sean Owen
  */
 public final class CaptureActivity extends Activity
-        implements SurfaceHolder.Callback {
+        implements SurfaceHolder.Callback, View.OnClickListener {
     private static final String TAG =
             CaptureActivity.class.getSimpleName();
     private CameraManager cameraManager;
@@ -82,16 +82,17 @@ public final class CaptureActivity extends Activity
     private static final int IMAGE = 1;
     private static final int REQUEST_CODE = 234;
     private ImageView ivBack;
-    private TextView tvPhotoSearch;
     private SurfaceView scanPreview = null;
     private RelativeLayout scanContainer;
     private RelativeLayout scanCropView;
     private ImageView scanLine;
+    private TextView iv_light, qrcode_ic_back, tvPhotoSearch;
     private OnBooleanListener onPermissionListener;
     private Rect mCropRect = null;
     private boolean isHasSurface = false;
     private Bitmap scanBitmap;
     private String imagePath;
+    boolean isOpenLight=false;
 
     public Handler getHandler() {
         return handler;
@@ -128,6 +129,10 @@ public final class CaptureActivity extends Activity
                 finish();
             }
         });
+        iv_light = (TextView) findViewById(R.id.iv_light);
+        iv_light.setOnClickListener(this);
+        qrcode_ic_back = (TextView) findViewById(R.id.qrcode_ic_back);
+        qrcode_ic_back.setOnClickListener(this);
         tvPhotoSearch = (TextView) findViewById(R.id.tvPhotoSearch);
         tvPhotoSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,6 +166,7 @@ public final class CaptureActivity extends Activity
 
     /**
      * 适配权限
+     *
      * @param requestCode
      * @param permissions
      * @param grantResults
@@ -482,6 +488,7 @@ public final class CaptureActivity extends Activity
 
     /**
      * 解析部分图片
+     *
      * @param path
      * @return
      */
@@ -598,5 +605,29 @@ public final class CaptureActivity extends Activity
             }
         }
         return yuv;
+    }
+
+    /**
+     * 开关闪关灯
+     */
+    public void switchLight(){
+        if(isOpenLight){
+            cameraManager.offLight();
+        }else{
+            cameraManager.openLight();
+        }
+        isOpenLight=!isOpenLight;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_light:
+                switchLight();
+                break;
+            case R.id.qrcode_ic_back:
+                finish();
+                break;
+        }
     }
 }

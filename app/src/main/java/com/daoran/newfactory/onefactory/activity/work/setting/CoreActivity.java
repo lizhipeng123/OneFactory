@@ -1,8 +1,10 @@
 package com.daoran.newfactory.onefactory.activity.work.setting;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -10,6 +12,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +24,7 @@ import android.widget.TextView;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
+import com.daoran.newfactory.onefactory.util.Listener.OnBooleanListener;
 import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 import com.daoran.newfactory.onefactory.util.file.image.BitmapTools;
 import com.google.zxing.BarcodeFormat;
@@ -55,10 +61,22 @@ public class CoreActivity extends BaseFrangmentActivity
     private SharedPreferences sp;
     private SPUtils spUtils;
     private Tencent mTencent;
+    private OnBooleanListener onPermissionListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*申请相机权限*/
+        onPermissionRequests(Manifest.permission.CAMERA, new OnBooleanListener() {
+            @Override
+            public void onClick(boolean bln) {
+                if (bln) {
+                    ToastUtils.ShowToastMessage("权限通过", CoreActivity.this);
+                } else {
+                    ToastUtils.ShowToastMessage("权限拒绝", CoreActivity.this);
+                }
+            }
+        });
         setContentView(R.layout.activity_core);
         mTencent = Tencent.createInstance("1106135321", this.getApplicationContext());
         getViews();
@@ -78,6 +96,32 @@ public class CoreActivity extends BaseFrangmentActivity
 
     private void initViews() {
 
+    }
+
+    public void onPermissionRequests(String permission,
+                                     OnBooleanListener onBooleanListener) {
+        onPermissionListener = onBooleanListener;
+        Log.d("CoreActivity", "0");
+        if (ContextCompat.checkSelfPermission(this,
+                permission)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Should we show an explanation?
+            Log.d("CoreActivity", "1");
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_CONTACTS)) {
+                //权限已有
+                onPermissionListener.onClick(true);
+            } else {
+                //没有权限，申请一下
+                ActivityCompat.requestPermissions(this,
+                        new String[]{permission},
+                        1);
+            }
+        } else {
+            onPermissionListener.onClick(true);
+            Log.d("CoreActivity", "2" + ContextCompat.checkSelfPermission(this,
+                    permission));
+        }
     }
 
     /**
@@ -181,6 +225,7 @@ public class CoreActivity extends BaseFrangmentActivity
 
     /**
      * 回调
+     *
      * @param view
      */
     public void scan(View view) {
@@ -211,7 +256,7 @@ public class CoreActivity extends BaseFrangmentActivity
      */
     public void QQshare() {
         sp = getSharedPreferences("my_sp", 0);
-        String apkpath = sp.getString("apkpath", "");
+        String apkpath = sp.getString("applicationapkpath", "");
         ShareListener shareListener = new ShareListener();
         final Bundle params = new Bundle();
         params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);

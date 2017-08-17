@@ -8171,8 +8171,26 @@ public class ProductionAdapter extends BaseAdapter {
                 viewHolder.tvProSingularSystem.setEnabled(false);
                 viewHolder.tvProSingularSystem.setText(getItem(position).getPqty());
 
-                viewHolder.tvProColor.setEnabled(false);
+                viewHolder.tvProColor.setEnabled(true);
                 viewHolder.tvProColor.setText(getItem(position).getProdcol());
+                viewHolder.tvProColor.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setMessage(getItem(position).getProdcol());
+                        builder.setNegativeButton("退出",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog = builder.create();
+                        alertDialog.setCanceledOnTouchOutside(false);
+                        alertDialog.show();
+                        return false;
+                    }
+                });
 
                 viewHolder.tvProTaskNumber.setEnabled(false);
                 final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
@@ -8182,8 +8200,26 @@ public class ProductionAdapter extends BaseAdapter {
                 }
                 editTexTaskNumber.setText(getItem(position).getTaskqty());
 
-                viewHolder.tvProSize.setEnabled(false);
+                viewHolder.tvProSize.setEnabled(true);
                 viewHolder.tvProSize.setText(getItem(position).getMdl());
+                viewHolder.tvProSize.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setMessage(getItem(position).getMdl());
+                        builder.setNegativeButton("退出",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog = builder.create();
+                        alertDialog.setCanceledOnTouchOutside(false);
+                        alertDialog.show();
+                        return false;
+                    }
+                });
 
                 viewHolder.tvProClippingNumber.setEnabled(false);
                 viewHolder.tvProClippingNumber.setText(getItem(position).getFactcutqty());
@@ -8726,8 +8762,26 @@ public class ProductionAdapter extends BaseAdapter {
             viewHolder.tvProSingularSystem.setEnabled(false);
             viewHolder.tvProSingularSystem.setText(getItem(position).getPqty());
 
-            viewHolder.tvProColor.setEnabled(false);
-            viewHolder.tvProColor.setText(getItem(position).getProdcol());
+            viewHolder.tvProColor.setEnabled(true);
+            viewHolder.tvProColor.setText(getItem(position).getProdcol()); viewHolder.tvProColor.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage(getItem(position).getProdcol());
+                    builder.setNegativeButton("退出",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog = builder.create();
+                    alertDialog.setCanceledOnTouchOutside(false);
+                    alertDialog.show();
+                    return false;
+                }
+            });
+
 
             viewHolder.tvProTaskNumber.setEnabled(false);
             final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
@@ -8737,8 +8791,26 @@ public class ProductionAdapter extends BaseAdapter {
             }
             editTexTaskNumber.setText(getItem(position).getTaskqty());
 
-            viewHolder.tvProSize.setEnabled(false);
+            viewHolder.tvProSize.setEnabled(true);
             viewHolder.tvProSize.setText(getItem(position).getMdl());
+            viewHolder.tvProSize.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage(getItem(position).getMdl());
+                    builder.setNegativeButton("退出",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog = builder.create();
+                    alertDialog.setCanceledOnTouchOutside(false);
+                    alertDialog.show();
+                    return false;
+                }
+            });
 
             viewHolder.tvProClippingNumber.setEnabled(false);
             viewHolder.tvProClippingNumber.setText(getItem(position).getFactcutqty());

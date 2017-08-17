@@ -198,6 +198,11 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".activity.side.SideActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
         <!--qq分享-->
         <activity
             android:name="com.tencent.tauth.AuthActivity"

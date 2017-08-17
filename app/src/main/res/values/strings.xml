@@ -307,6 +307,7 @@
     <string name="male">男</string>
     <string name="female">女</string>
     <string name="other">其他</string>
+    <string name="scan_allcode_hint">将二维码或条形码对入取景框，即可自动扫描</string>
     <string name="phone_number">手机号码</string>
     <string name="set_head_image">设置头像</string>
     <string name="user_info_update_success">设置成功</string>

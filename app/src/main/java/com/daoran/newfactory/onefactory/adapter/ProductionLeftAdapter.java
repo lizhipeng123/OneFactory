@@ -17,6 +17,7 @@ import com.daoran.newfactory.onefactory.activity.work.production.ProductionCopyC
 import com.daoran.newfactory.onefactory.bean.ProducationDetailBean;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.PhoneSaveUtil;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
+import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,9 +72,18 @@ public class ProductionLeftAdapter extends BaseAdapter {
         }
         String productionItem = getItem(position).getItem();
         holder.tvLeft.setText(productionItem);
-        holder.lin_content.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+           /*判断item中制单人是否是登录用户，是为可改，否为不可改*/
+        sp = context.getSharedPreferences("my_sp", 0);
+        String nameid = sp.getString("usernamerecoder", "");
+        String recorder = getItem(position).getRecorder();
+        if (recorder == null) {
+            recorder = "";
+        }
+        if (!recorder.equals("")) {
+            if (recorder.equals(nameid)) {
+                holder.lin_content.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
                         String prorecorid = getItem(position).getRecordid();
                         spUtils.put(context, "prorecorid", prorecorid);//制单人id
                         String proid = String.valueOf(getItem(position).getID());
@@ -161,8 +171,17 @@ public class ProductionLeftAdapter extends BaseAdapter {
                         context.startActivity(intent);
                         ProductionActivity productionActivity = new ProductionActivity();
                         productionActivity.finish();
+                    }
+                });
+            } else {
+                holder.lin_content.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ToastUtils.ShowToastMessage("登录人不是制单人，无法复制", context);
+                    }
+                });
             }
-        });
+        }
         return convertView;
     }
 

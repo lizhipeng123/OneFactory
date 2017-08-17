@@ -1,14 +1,18 @@
 package com.daoran.newfactory.onefactory.fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,6 +66,15 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private SwipeRefreshLayout swipeRefreshLayout;
     ScrollWrokAdapter adapter;
 
+    protected String[] needPermissions = {
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.READ_PHONE_STATE
+    };
+
+    private boolean isNeedCheck = true;
     private List<WorkBean> workBeen = new ArrayList<WorkBean>();
     private WorkBean workBean;
     private ScrollGridView sgv_gridview;
@@ -69,6 +82,8 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private String sl;
 
     private PopupWindow popupWindow;
+
+    private static final int PERMISSON_REQUESTCODE = 0;
 
     private WorkPwSwitchBean workPwSwitchBean;
     private List<WorkPwSwitchBean.Data> switchBeendatalist
@@ -123,6 +138,9 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
         spUtils.put(mactivity, "usernamerecoder", namebuld);
+        if (isNeedCheck) {
+            checkPermissions(needPermissions);
+        }
     }
 
     /**
@@ -154,6 +172,43 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
         swipeRefreshLayout.setOnRefreshListener(this);
+    }
+
+    /**
+     * 适配7.0权限
+     *
+     * @param
+     * @since 2.5.0
+     */
+    private void checkPermissions(String... permissions) {
+        List<String> needRequestPermissonList = findDeniedPermissions(permissions);
+        if (null != needRequestPermissonList
+                && needRequestPermissonList.size() > 0) {
+            ActivityCompat.requestPermissions(mactivity,
+                    needRequestPermissonList.toArray(
+                            new String[needRequestPermissonList.size()]),
+                    PERMISSON_REQUESTCODE);
+        }
+    }
+
+    /**
+     * 获取权限集中需要申请权限的列表
+     *
+     * @param permissions
+     * @return
+     * @since 2.5.0
+     */
+    private List<String> findDeniedPermissions(String[] permissions) {
+        List<String> needRequestPermissonList = new ArrayList<String>();
+        for (String perm : permissions) {
+            if (ContextCompat.checkSelfPermission(mactivity,
+                    perm) != PackageManager.PERMISSION_GRANTED
+                    || ActivityCompat.shouldShowRequestPermissionRationale(
+                    mactivity, perm)) {
+                needRequestPermissonList.add(perm);
+            }
+        }
+        return needRequestPermissonList;
     }
 
     /**

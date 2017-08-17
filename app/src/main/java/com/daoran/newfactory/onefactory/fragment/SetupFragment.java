@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.login.LoginMainActivity;
+import com.daoran.newfactory.onefactory.activity.side.SideActivity;
 import com.daoran.newfactory.onefactory.activity.work.setting.AboutActivity;
 import com.daoran.newfactory.onefactory.activity.work.setting.CoreActivity;
 import com.daoran.newfactory.onefactory.activity.work.setting.ExcelSDActivity;
@@ -90,6 +91,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout rlAbout;
     private RelativeLayout rlExcelSD;
     private RelativeLayout rlYunxin;
+    private RelativeLayout rlside;
     private TextView tvwifimanager, tvwifissid;
 
     private static final int DOWN_NOSDCARD = 0;
@@ -143,6 +145,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         rlAbout = (RelativeLayout) view.findViewById(R.id.rlAbout);
         rlExcelSD = (RelativeLayout) view.findViewById(R.id.rlExcelSD);
         rlYunxin = (RelativeLayout) view.findViewById(R.id.rlYunxin);
+        rlside = (RelativeLayout) view.findViewById(R.id.rlside);
         sp = mactivity.getSharedPreferences("my_sp", 0);
         String vercode = sp.getString("Applicationscode", "");
         tvNewVersion.setText(vercode);
@@ -164,6 +167,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         rlAbout.setOnClickListener(this);
         rlExcelSD.setOnClickListener(this);
         rlYunxin.setOnClickListener(this);
+        rlside.setOnClickListener(this);
     }
 
     @Override
@@ -269,11 +273,16 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                     startApp(mactivity, "com.netease.nim.demo");
                 }
                 break;
+            case R.id.rlside:
+                Intent intentside = new Intent(mactivity, SideActivity.class);
+                mactivity.startActivity(intentside);
+                break;
         }
     }
 
     /**
      * 安装app
+     *
      * @param context
      * @param packagename
      * @return

@@ -32,7 +32,6 @@ import java.util.List;
  * 主框架
  */
 public class MainActivity extends BaseFrangmentActivity {
-
     private FragmentTabHost mTabHost;
     private LayoutInflater mInflater;
     private AlertDialog noticeDialog;
