@@ -11,11 +11,12 @@
 
         <ImageView
             android:id="@+id/ivCommoditySql"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dimen_60"
+            android:layout_height="@dimen/dimen_60"
+            android:layout_marginLeft="@dimen/dimen_20"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:src="@mipmap/btn_back" />
+            android:src="@mipmap/ali_back_two" />
 
         <View
             android:id="@+id/viewtitletwo"
@@ -32,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="查货跟踪单"
-            android:textColor="@color/black"
+            android:textColor="@color/icon_color"
             android:textSize="@dimen/dimen_55sp" />
 
         <ImageView
@@ -40,9 +41,9 @@
             android:layout_width="@dimen/dimen_70"
             android:layout_height="@dimen/dimen_70"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_30"
+            android:layout_marginLeft="@dimen/dimen_20"
             android:layout_toRightOf="@+id/viewtitletwo"
-            android:src="@mipmap/search" />
+            android:src="@mipmap/ali_search_two" />
 
         <!--<Button-->
         <!--android:id="@+id/btnCommoRefresh"-->
@@ -61,6 +62,7 @@
             android:layout_marginLeft="@dimen/dimen_50"
             android:layout_toLeftOf="@+id/viewtitle"
             android:background="@drawable/shape_btn_newsbuild_boild"
+            android:textColor="@color/icon_color"
             android:text="保存" />
 
         <View
@@ -836,6 +838,7 @@
                     android:inputType="phone|number"
                     android:numeric="integer"
                     android:paddingLeft="15dp"
+                    android:textColor="@color/icon_color"
                     android:paddingRight="15dp"
                     android:text="1"
                     android:textSize="20sp" />
@@ -865,6 +868,7 @@
                     android:layout_height="@dimen/dimen_100"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dimen_30"
+                    android:textColor="@color/icon_color"
                     android:background="@drawable/shape_btn_newsbuild_boild"
                     android:text="确定" />
 
@@ -880,12 +884,14 @@
                     android:textSize="@dimen/dimen_50sp" />
 
                 <TextView
+                    android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dimen_30"
                     android:gravity="center"
                     android:text="条"
+                    android:textColor="@color/icon_color"
                     android:textSize="@dimen/dimen_50sp" />
             </LinearLayout>
 

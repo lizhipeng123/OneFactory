@@ -11,18 +11,19 @@
 
         <ImageView
             android:id="@+id/ivCommoditySql"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dimen_60"
+            android:layout_height="@dimen/dimen_60"
             android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/dimen_20"
             android:layout_centerVertical="true"
-            android:src="@mipmap/btn_back" />
+            android:src="@mipmap/ali_back_two" />
 
         <View
             android:id="@+id/viewtitletwo"
             android:layout_width="1px"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_20"
+            android:layout_marginLeft="@dimen/dimen_50"
             android:layout_toRightOf="@+id/ivCommoditySql"
             android:background="#FF909090" />
 
@@ -32,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="查货跟踪单"
-            android:textColor="@color/black"
+            android:textColor="@color/icon_color"
             android:textSize="@dimen/dimen_45sp" />
 
         <ImageView
@@ -40,19 +41,20 @@
             android:layout_width="@dimen/dimen_60"
             android:layout_height="@dimen/dimen_60"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_30"
+            android:layout_marginLeft="@dimen/dimen_50"
             android:layout_toRightOf="@+id/viewtitletwo"
-            android:src="@mipmap/search" />
+            android:src="@mipmap/ali_search_two" />
 
         <Button
             android:id="@+id/btnCommoSave"
             android:layout_width="@dimen/dimen_170"
             android:layout_height="@dimen/dimen_70"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_50"
-            android:layout_toLeftOf="@+id/viewtitle"
             android:background="@drawable/shape_btn_newsbuild_boild"
-            android:text="保存" />
+            android:text="保存"
+            android:layout_centerVertical="true"
+            android:textColor="@color/icon_color"
+            android:layout_toStartOf="@+id/viewtitle" />
 
         <View
             android:id="@+id/viewtitle"
@@ -812,6 +814,7 @@
                     android:gravity="center"
                     android:inputType="phone|number"
                     android:numeric="integer"
+                    android:textColor="@color/icon_color"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:text="1"
@@ -833,6 +836,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
                     android:gravity="center"
+                    android:textColor="@color/icon_color"
                     android:text="0"
                     android:textSize="20sp" />
 
@@ -843,6 +847,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dimen_30"
                     android:background="@drawable/shape_btn_newsbuild_boild"
+                    android:textColor="@color/icon_color"
                     android:text="确定" />
 
                 <Spinner
@@ -863,6 +868,7 @@
                     android:layout_marginLeft="@dimen/dimen_30"
                     android:gravity="center"
                     android:text="条"
+                    android:textColor="@color/icon_color"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
 

@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="生产单查询"
-                android:textColor="@color/black"
+                android:textColor="@color/icon_color"
                 android:textSize="@dimen/dimen_40sp" />
         </LinearLayout>
 
@@ -49,7 +49,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="款号"
-                    android:textColor="@color/black"
+                    android:textColor="@color/icon_color"
                     android:textSize="@dimen/dimen_40sp" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -71,7 +71,7 @@
                     android:layout_marginLeft="@dimen/dimen_50"
                     android:background="@drawable/shape_edittext_sql_boild"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/icon_color" />
 
 
             </LinearLayout>
@@ -87,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="生产主管"
-                    android:textColor="@color/black"
+                    android:textColor="@color/icon_color"
                     android:textSize="@dimen/dimen_40sp" />
 
                 <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
@@ -97,7 +97,7 @@
                     android:layout_marginLeft="@dimen/dimen_50"
                     android:background="@drawable/shape_edittext_sql_boild"
                     android:gravity="center"
-                    android:textColor="@color/black"
+                    android:textColor="@color/icon_color"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
 
@@ -112,7 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="跟单员"
-                    android:textColor="@color/black"
+                    android:textColor="@color/icon_color"
                     android:textSize="@dimen/dimen_40sp" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -127,7 +127,7 @@
                     android:layout_marginLeft="@dimen/dimen_50"
                     android:background="@drawable/shape_edittext_sql_boild"
                     android:gravity="center"
-                    android:textColor="@color/black"
+                    android:textColor="@color/icon_color"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
 
@@ -142,13 +142,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="巡检"
-                    android:textColor="@color/black"
+                    android:textColor="@color/icon_color"
                     android:textSize="@dimen/dimen_40sp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="    "
-                    android:textColor="@color/black"
+                    android:textColor="@color/icon_color"
                     android:textSize="@dimen/dimen_40sp" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -163,7 +163,7 @@
                     android:layout_marginLeft="@dimen/dimen_50"
                     android:background="@drawable/shape_edittext_sql_boild"
                     android:gravity="center"
-                    android:textColor="@color/black"
+                    android:textColor="@color/icon_color"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
 
@@ -186,7 +186,7 @@
                     android:layout_height="wrap_content"
                     android:text="生产主管是否可空"
                     android:layout_marginLeft="10dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/icon_color"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
         </LinearLayout>

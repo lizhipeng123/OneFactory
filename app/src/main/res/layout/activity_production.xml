@@ -12,18 +12,20 @@
 
         <ImageView
             android:id="@+id/ivProductionBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dimen_70"
+            android:layout_height="@dimen/dimen_70"
+            android:layout_marginLeft="@dimen/dimen_20"
+            android:layout_marginRight="@dimen/dimen_10"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:src="@mipmap/btn_back" />
+            android:src="@mipmap/ali_back_two" />
 
         <View
             android:id="@+id/viewtitletwo"
             android:layout_width="1px"
             android:layout_height="@dimen/dimen_100"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_20"
+            android:layout_marginLeft="@dimen/dimen_50"
             android:layout_toRightOf="@+id/ivProductionBack"
             android:background="#FF909090" />
 
@@ -34,17 +36,19 @@
             android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"
             android:text="生产日报"
-            android:textColor="@color/black"
+            android:textColor="@color/icon_color"
             android:textSize="@dimen/dimen_55sp" />
 
         <ImageView
             android:id="@+id/ivSearch"
             android:layout_width="@dimen/dimen_70"
             android:layout_height="@dimen/dimen_70"
+            android:layout_marginLeft="@dimen/dimen_50"
+            android:src="@mipmap/ali_search_two"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_30"
-            android:layout_toRightOf="@+id/viewtitletwo"
-            android:src="@mipmap/search" />
+            android:layout_alignTop="@+id/spinnermenu"
+            android:layout_toEndOf="@+id/viewtitletwo"
+            android:layout_marginStart="11dp" />
 
         <Button
             android:id="@+id/btnProSave"
@@ -53,7 +57,8 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/viewtitle"
             android:background="@drawable/shape_btn_newsbuild_boild"
-            android:text="保存" />
+            android:text="保存"
+            android:textColor="@color/icon_color"/>
 
         <View
             android:id="@+id/viewtitle"
@@ -858,6 +863,7 @@
                     android:numeric="integer"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
+                    android:textColor="@color/icon_color"
                     android:text="1"
                     android:textSize="20sp" />
 
@@ -875,6 +881,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
+                    android:textColor="@color/icon_color"
                     android:text="0"
                     android:textSize="20sp" />
 
@@ -885,6 +892,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dimen_30"
                     android:background="@drawable/shape_btn_newsbuild_boild"
+                    android:textColor="@color/icon_color"
                     android:text="确定" />
 
                 <!--<TextView-->
@@ -898,14 +906,13 @@
 
                 <Spinner
                     android:id="@+id/spinnProPageClumns"
-                    android:layout_width="@dimen/dimen_150"
+                    android:layout_width="48dp"
                     android:layout_height="@dimen/dimen_100"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dimen_30"
                     android:background="@drawable/spinner_bg"
                     android:entries="@array/clumnsCommon"
                     android:gravity="center_vertical"
-                    android:text="每页10行"
                     android:textSize="@dimen/dimen_50sp" />
 
                 <TextView
@@ -914,6 +921,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dimen_30"
                     android:gravity="center"
+                    android:textColor="@color/icon_color"
                     android:text="条"
                     android:textSize="@dimen/dimen_50sp" />
             </LinearLayout>

@@ -849,7 +849,6 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         mData.setAdapter(adapter);
                                         mLeftAdapter = new ProductionLeftAdapter(ProductionActivity.this, detailBeenList);
                                         lv_left.setAdapter(mLeftAdapter);
-//                                        adapter.notifyDataSetChanged();
                                     } else {
                                         ll_visibi.setVisibility(View.VISIBLE);
                                         scroll_content.setVisibility(View.GONE);
@@ -1477,36 +1476,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                 });
                 thread.start();
             } else {
-//                for(int i=0;i<detailBeenList.size();i++){
-//                    String dureprotionstr = detailBeenList.get(i).getWorkingProcedure();
-//                    if(dureprotionstr.equals("裁床")){
-//                        String durepcolorstr = detailBeenList.get(i).getProdcol();
-//                        String durepRecordid = detailBeenList.get(i).getRecordid();
-//                        String durepSalesid = String.valueOf(detailBeenList.get(i).getSalesid());
-//                        String durepItem = detailBeenList.get(i).getItem();
-//                        String durepdocumentary = detailBeenList.get(i).getPrddocumentary();
-//                        String durepSubfactory = detailBeenList.get(i).getSubfactory();
-//                        if(durepcolorstr.contains("/")){
-//                            try {
-//                                String[] colornull = null;
-//                                colornull = durepcolorstr.split("/");
-//                                List<String> colordurlist = Arrays.asList(colornull);
-//                                String liststrr = PhoneSaveUtil.SceneList2String(colordurlist);
-//                                List<String> colorlist = PhoneSaveUtil.String2SceneList(liststrr);
-//                                ProducationDetailBean.DataBean dataBeanbean= new ProducationDetailBean.DataBean();
-//                                for(int j=0;j<colorlist.size();j++){
-//                                    dataBeanbean.setProdcol(colorlist.get(j));
-//                                    System.out.print(dataBeanbean);
-//                                }
-//                                System.out.print(dataBeanbean);
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            } catch (ClassNotFoundException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }
-//                }
+
                 /*如果有多个相同颜色的款号，则判断其符合条件的工序和月份是否存在修改的工序*/
                 if (colorlistlength > 1) {
                     if (flagprodurelist == true && flagproduremonth == true) {

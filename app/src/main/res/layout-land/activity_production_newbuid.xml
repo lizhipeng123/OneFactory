@@ -12,18 +12,19 @@
 
         <ImageView
             android:id="@+id/ivProductionBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dimen_60"
+            android:layout_height="@dimen/dimen_60"
             android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/dimen_20"
             android:layout_centerVertical="true"
-            android:src="@mipmap/btn_back" />
+            android:src="@mipmap/ali_back_two" />
 
         <View
             android:id="@+id/viewtitletwo"
             android:layout_width="1px"
             android:layout_height="@dimen/dimen_100"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_20"
+            android:layout_marginLeft="@dimen/dimen_50"
             android:layout_toRightOf="@+id/ivProductionBack"
             android:background="#FF909090" />
 
@@ -34,7 +35,7 @@
             android:layout_marginLeft="@dimen/dimen_50"
             android:layout_toRightOf="@+id/viewtitletwo"
             android:text="款号选择"
-            android:textColor="@color/black"
+            android:textColor="@color/icon_color"
             android:textSize="@dimen/dimen_45sp" />
 
         <Button
@@ -78,11 +79,10 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-
             android:background="@drawable/spinner_bg"
             android:gravity="center"
             android:text="选择工序"
-            android:textColor="@color/black"
+            android:textColor="@color/icon_color"
             android:textSize="@dimen/dimen_30sp" />
 
         <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
@@ -111,7 +111,7 @@
             android:background="@drawable/shape_btn_newsbuild_boild"
             android:gravity="center"
             android:text="查找"
-            android:textColor="@color/black"
+            android:textColor="@color/icon_color"
             android:textSize="@dimen/dimen_30sp" />
     </LinearLayout>
 
@@ -139,7 +139,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="款号"
-                android:textColor="@color/black"
+                android:textColor="@color/icon_color"
                 android:textSize="@dimen/dimen_30sp" />
         </LinearLayout>
 
@@ -189,7 +189,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="跟单"
-                        android:textColor="@color/black"
+                        android:textColor="@color/icon_color"
                         android:textSize="@dimen/dimen_30sp" />
 
                     <View
@@ -203,7 +203,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="工厂"
-                        android:textColor="@color/black"
+                        android:textColor="@color/icon_color"
                         android:textSize="@dimen/dimen_30sp" />
 
                     <View
@@ -217,7 +217,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="部门/组别"
-                        android:textColor="@color/black"
+                        android:textColor="@color/icon_color"
                         android:textSize="@dimen/dimen_30sp" />
 
                     <View
@@ -231,7 +231,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="工序"
-                        android:textColor="@color/black"
+                        android:textColor="@color/icon_color"
                         android:textSize="@dimen/dimen_30sp" />
 
                     <View
@@ -245,7 +245,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="组别人数"
-                        android:textColor="@color/black"
+                        android:textColor="@color/icon_color"
                         android:textSize="@dimen/dimen_30sp" />
 
                     <View
@@ -259,7 +259,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="制单数"
-                        android:textColor="@color/black"
+                        android:textColor="@color/icon_color"
                         android:textSize="@dimen/dimen_30sp" />
 
                     <View
@@ -273,7 +273,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="任务数"
-                        android:textColor="@color/black"
+                        android:textColor="@color/icon_color"
                         android:textSize="@dimen/dimen_30sp" />
 
                     <View
@@ -287,7 +287,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="尺码"
-                        android:textColor="@color/black"
+                        android:textColor="@color/icon_color"
                         android:textSize="@dimen/dimen_30sp" />
 
                     <View
@@ -301,7 +301,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="花色"
-                        android:textColor="@color/black"
+                        android:textColor="@color/icon_color"
                         android:textSize="@dimen/dimen_30sp" />
 
                     <View
@@ -315,7 +315,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="实裁数"
-                        android:textColor="@color/black"
+                        android:textColor="@color/icon_color"
                         android:textSize="@dimen/dimen_30sp" />
 
                     <View
@@ -329,7 +329,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="总完工数"
-                        android:textColor="@color/black"
+                        android:textColor="@color/icon_color"
                         android:textSize="@dimen/dimen_30sp" />
 
                     <View
@@ -343,7 +343,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="状态"
-                        android:textColor="@color/black"
+                        android:textColor="@color/icon_color"
                         android:textSize="@dimen/dimen_30sp" />
 
                     <View
@@ -475,6 +475,7 @@
                     android:numeric="integer"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
+                    android:textColor="@color/icon_color"
                     android:text="1"
                     android:textSize="20sp" />
 
@@ -493,6 +494,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="5dp"
                     android:text="0"
+                    android:textColor="@color/icon_color"
                     android:textSize="20sp" />
 
                 <Button
@@ -500,6 +502,7 @@
                     android:layout_width="@dimen/dimen_170"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:textColor="@color/icon_color"
                     android:layout_marginLeft="@dimen/dimen_30"
                     android:background="@drawable/shape_btn_newsbuild_boild"
                     android:text="确定" />
@@ -522,6 +525,7 @@
                     android:layout_marginLeft="@dimen/dimen_30"
                     android:gravity="center"
                     android:text="条"
+                    android:textColor="@color/icon_color"
                     android:textSize="@dimen/dimen_30sp" />
             </LinearLayout>
 

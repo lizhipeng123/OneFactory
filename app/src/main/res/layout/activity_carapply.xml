@@ -13,18 +13,19 @@
 
         <ImageView
             android:id="@+id/ivBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dimen_60"
+            android:layout_height="@dimen/dimen_60"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:src="@mipmap/btn_back" />
+            android:layout_marginLeft="@dimen/dimen_20"
+            android:src="@mipmap/ali_back_two" />
         <View
             android:id="@+id/viewtitle"
             android:layout_width="1px"
             android:layout_height="@dimen/dimen_100"
             android:layout_toRightOf="@+id/ivBack"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_20"
+            android:layout_marginLeft="@dimen/dimen_50"
             android:background="#FF909090"/>
         <TextView
             android:id="@+id/tvTbarTitle"
@@ -36,7 +37,7 @@
             android:gravity="center"
             android:layout_marginLeft="@dimen/dimen_50"
             android:text="出车单详情"
-            android:textColor="@color/black"
+            android:textColor="@color/icon_color"
             android:textSize="@dimen/dimen_55sp" />
     </RelativeLayout>
 
@@ -84,7 +85,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="编号："
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_58sp" />
 
                         <TextView
@@ -92,7 +93,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="170324004"
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_50sp" />
                     </LinearLayout>
 
@@ -106,7 +107,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="申请人："
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_58sp" />
 
                         <TextView
@@ -114,7 +115,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="zhangsan"
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_50sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -132,7 +133,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="地点："
-                        android:textColor="@color/black"
+                        android:textColor="@color/icon_color"
                         android:textSize="@dimen/dimen_58sp" />
 
                     <TextView
@@ -140,7 +141,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="绍兴"
-                        android:textColor="@color/black"
+                        android:textColor="@color/icon_color"
                         android:textSize="@dimen/dimen_50sp" />
                 </LinearLayout>
 
@@ -157,7 +158,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="申请日期："
-                        android:textColor="@color/black"
+                        android:textColor="@color/icon_color"
                         android:textSize="@dimen/dimen_58sp" />
 
                     <TextView
@@ -165,7 +166,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="2017-03-24 15:13:02"
-                        android:textColor="@color/black"
+                        android:textColor="@color/icon_color"
                         android:textSize="@dimen/dimen_50sp" />
                 </LinearLayout>
 
@@ -182,7 +183,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="事由："
-                        android:textColor="@color/black"
+                        android:textColor="@color/icon_color"
                         android:textSize="@dimen/dimen_58sp" />
 
                     <TextView
@@ -190,7 +191,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="面料"
-                        android:textColor="@color/black"
+                        android:textColor="@color/icon_color"
                         android:textSize="@dimen/dimen_50sp" />
                 </LinearLayout>
 
@@ -207,7 +208,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="预计出车时间"
-                        android:textColor="@color/black"
+                        android:textColor="@color/icon_color"
                         android:textSize="@dimen/dimen_58sp" />
 
                     <LinearLayout
@@ -221,14 +222,14 @@
                             android:layout_height="wrap_content"
                             android:paddingTop="@dimen/dimen_20"
                             android:text="2017/03/24 15:13"
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_50sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="至"
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_50sp" />
 
                         <TextView
@@ -236,7 +237,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="2017/03/24 15:13"
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_50sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -251,7 +252,7 @@
                 android:paddingLeft="@dimen/dimen_20"
                 android:paddingRight="@dimen/dimen_20"
                 android:text="以下由司机根据实际情况填写："
-                android:textColor="@color/black"
+                android:textColor="@color/icon_color"
                 android:textSize="@dimen/dimen_63sp" />
 
             <LinearLayout
@@ -283,7 +284,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="司机："
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_58sp" />
 
                         <Spinner
@@ -304,7 +305,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="车牌："
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_60sp" />
 
                         <Spinner
@@ -333,7 +334,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="出发公里数："
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_58sp" />
 
                         <EditText
@@ -354,7 +355,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="结束公里数："
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_60sp" />
 
                         <EditText
@@ -385,7 +386,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="本次公里数："
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_58sp" />
 
                         <EditText
@@ -406,7 +407,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="等待时间："
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_60sp" />
 
                         <EditText
@@ -437,7 +438,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="过路费："
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_58sp" />
 
                         <EditText
@@ -465,7 +466,7 @@
                             android:layout_height="wrap_content"
                             android:background="@color/lightsteelblue"
                             android:focusableInTouchMode="false"
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_58sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -492,7 +493,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="实际出车时间："
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_58sp" />
 
                         <EditText
@@ -515,7 +516,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="至"
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_60sp" />
 
                         <EditText
@@ -546,7 +547,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="其他："
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_58sp" />
 
                         <EditText
@@ -579,7 +580,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="是否长途："
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_58sp" />
 
                         <CheckBox
@@ -611,7 +612,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="备注："
-                            android:textColor="@color/black"
+                            android:textColor="@color/icon_color"
                             android:textSize="@dimen/dimen_58sp" />
 
                         <EditText

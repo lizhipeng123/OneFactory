@@ -13,18 +13,19 @@
 
         <ImageView
             android:id="@+id/ivSiganSqlDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dimen_60"
+            android:layout_height="@dimen/dimen_60"
+            android:layout_marginLeft="@dimen/dimen_20"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:src="@mipmap/btn_back" />
+            android:src="@mipmap/ali_back_two" />
 
         <View
             android:id="@+id/viewtitletwo"
             android:layout_width="1px"
             android:layout_height="@dimen/dimen_100"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_20"
+            android:layout_marginLeft="@dimen/dimen_50"
             android:layout_toRightOf="@+id/ivSiganSqlDetail"
             android:background="#FF909090" />
 
@@ -34,9 +35,8 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_50"
-
             android:text="签到查询"
-            android:textColor="@color/black"
+            android:textColor="@color/icon_color"
             android:textSize="@dimen/dimen_55sp" />
 
         <ImageView
@@ -46,7 +46,7 @@
             android:layout_toRightOf="@+id/viewtitletwo"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_40"
-            android:src="@mipmap/search" />
+            android:src="@mipmap/ali_search_two" />
 
         <Button
             android:id="@+id/spinnermenu"

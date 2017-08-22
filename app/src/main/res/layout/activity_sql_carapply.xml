@@ -18,7 +18,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="出车单展示"
-            android:textColor="@color/black"
+            android:textColor="@color/icon_color"
             android:textSize="@dimen/dimen_55sp" />
 
         <ImageView
@@ -27,16 +27,16 @@
             android:layout_height="@dimen/dimen_70"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/viewtitle"
-            android:layout_marginLeft="@dimen/dimen_30"
-            android:src="@mipmap/search" />
+            android:layout_marginLeft="@dimen/dimen_50"
+            android:src="@mipmap/ali_search_two" />
 
         <ImageView
             android:id="@+id/ivBack"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
+            android:layout_width="@dimen/dimen_60"
+            android:layout_height="@dimen/dimen_60"
+            android:layout_marginLeft="@dimen/dimen_20"
             android:layout_centerVertical="true"
-            android:src="@mipmap/btn_back" />
+            android:src="@mipmap/ali_back_two" />
         <Button
             android:id="@+id/btnExcel"
             android:layout_width="@dimen/dimen_170"
@@ -44,6 +44,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dimen_15"
+            android:textColor="@color/icon_color"
             android:background="@drawable/shape_btn_newsbuild_boild"
             android:text="excel"/>
         <View
@@ -51,7 +52,7 @@
             android:layout_width="1px"
             android:layout_height="@dimen/dimen_100"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_20"
+            android:layout_marginLeft="@dimen/dimen_50"
             android:layout_toRightOf="@+id/ivBack"
             android:background="#FF909090" />
     </RelativeLayout>
@@ -77,7 +78,7 @@
             android:paddingBottom="@dimen/dimen_20"
             android:paddingTop="@dimen/dimen_20"
             android:text="@string/carid"
-            android:textColor="@color/black"
+            android:textColor="@color/icon_color"
             android:textSize="@dimen/dimen_50sp" />
 
         <TextView
@@ -89,7 +90,7 @@
             android:paddingBottom="@dimen/dimen_20"
             android:paddingTop="@dimen/dimen_20"
             android:text="@string/applyname"
-            android:textColor="@color/black"
+            android:textColor="@color/icon_color"
             android:textSize="@dimen/dimen_50sp" />
 
         <TextView
@@ -101,7 +102,7 @@
             android:paddingBottom="@dimen/dimen_20"
             android:paddingTop="@dimen/dimen_20"
             android:text="@string/cardate"
-            android:textColor="@color/black"
+            android:textColor="@color/icon_color"
             android:textSize="@dimen/dimen_50sp" />
     </LinearLayout>
 
