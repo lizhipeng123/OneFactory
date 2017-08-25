@@ -1,7 +1,6 @@
 package com.daoran.newfactory.onefactory.activity.work.car;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -47,7 +46,6 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
     private ContentDialog dialog;//条件查询dialog弹出框
     private LinearLayout ll_visibi;//隐藏的空页面
     private PullToRefreshListView listview;//可刷新的listview
-
     private SqlCarApplyBean.DataBean dataBean;//列表显示的实体
     private List<SqlCarApplyBean.DataBean> dataBeenlist =
             new ArrayList<SqlCarApplyBean.DataBean>();//保存excel文件的list集合
@@ -192,19 +190,6 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
             ToastUtils.ShowToastMessage(getString(R.string.noHttp), SqlcarApplyActivity.this);
         }
     }
-
-    DialogInterface.OnClickListener listenerwifi = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case android.app.AlertDialog.BUTTON_POSITIVE://确定
-                    finish();
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
 
     @Override
     public void onListItemClick(Object o) {

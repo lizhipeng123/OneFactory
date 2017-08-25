@@ -14,21 +14,26 @@ public class ResgisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getViews();
+        initViews();
+        initDatas();
+        setListener();
     }
 
-    private void initViews(){
-
-    }
-
-    private void initDatas(){
-
-    }
-
-    private void getViews(){
+    private void initViews() {
 
     }
 
-    private void setListener(){
+    private void initDatas() {
+
+    }
+
+    private void getViews() {
+
+    }
+
+    private void setListener() {
 
     }
 

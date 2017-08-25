@@ -23,11 +23,8 @@ import java.util.List;
 /**
  * Pull To Refresh Listview
  * Created by lizhipeng on 17/3/19.
- * <p/>
  * 支持PullToRefreshListView 和 普通的Listview
- * <p/>
  * 使用方法
- * <p/>
  * 1.继承BaseListActivity
  * 2.实现抽象方法。
  * 3.调用 init(int layoutId, int listViewId)；

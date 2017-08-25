@@ -1237,7 +1237,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
      * 完成后删除保存的临时信息
      */
     private void deletesp() {
-
         SharedPreferences.Editor editor = sp.edit();
         editor.remove("commoproid");
         editor.remove("CommodityQCMasterScore");//主管评分

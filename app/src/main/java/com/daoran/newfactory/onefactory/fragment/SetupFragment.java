@@ -15,6 +15,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -708,12 +709,17 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
      */
     private void installApk() {
         File apkfile = new File(apkFilePath);
-        if (!apkfile.exists()) {
-            return;
-        }
         Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setDataAndType(Uri.parse("file://" + apkfile.toString()),
-                "application/vnd.android.package-archive");
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.addCategory(Intent.CATEGORY_DEFAULT);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            i.setDataAndType(Uri.parse("file://" + apkfile.toString()),
+                    "application/vnd.android.package-archive");
+            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        } else {
+            i.setDataAndType(Uri.parse("file://" + apkfile.toString()),
+                    "application/vnd.android.package-archive");
+        }
         startActivity(i);
     }
 

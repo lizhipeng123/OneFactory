@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ProviderInfo;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -17,6 +18,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.FileProvider;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
@@ -30,6 +32,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daoran.newfactory.onefactory.BuildConfig;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.main.MainActivity;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
@@ -74,6 +77,7 @@ import java.util.regex.Pattern;
  * Created by lizhipeng on 2017/4/10.
  */
 public class LoginMainActivity extends BaseFrangmentActivity {
+
     private Button btnLogin;
     private EditTextWithDelete etUsername, etPassword;
     private SPUtils spUtils;
@@ -123,7 +127,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         }
         getViews();
         initViews();
-//        checkAppVersion(false);
+        checkAppVersion(false);
         String name = sp.getString("username", "");
         String passwd = sp.getString("passwd", "");
         boolean choseRemember = sp.getBoolean("remember", false);
@@ -207,7 +211,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                 String speChat = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
                 Pattern pattern = Pattern.compile(speChat);
                 Matcher matcher = pattern.matcher(source.toString());
-                if (source.equals(" ")||source.equals("\n")||matcher.find())
+                if (source.equals(" ") || source.equals("\n") || matcher.find())
                     return "";
                 else
                     return null;
@@ -285,148 +289,148 @@ public class LoginMainActivity extends BaseFrangmentActivity {
 //                dialog.setButton("确定", listenerwifi);
 //                dialog.show();
 //            } else {
-                final ProgressDialog progressDialog = ProgressDialog.show(this,
-                        getResources().getString(R.string.login_his_later), getResources().getString(R.string.logining), false, true);
-                List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(NetUtil.createParam("Logid", etUsername.getText().toString()));
-                params.add(NetUtil.createParam("pwd", etPassword.getText().toString()));
-                params.add(NetUtil.createParam("Ischeckpwd", true));
-                params.add(NetUtil.createParam("Company", "杭州道然进出口有限公司"));
-                RequestParams requestParams = new RequestParams(params);
-                NetUtil.getAsyncHttpClient().post(loginuserUrl, requestParams, new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(String content) {
-                        super.onSuccess(content);
-                        System.out.print(content);
-                        Thread thread = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    Thread.sleep(3000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                progressDialog.dismiss();
+            final ProgressDialog progressDialog = ProgressDialog.show(this,
+                    getResources().getString(R.string.login_his_later), getResources().getString(R.string.logining), false, true);
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(NetUtil.createParam("Logid", etUsername.getText().toString()));
+            params.add(NetUtil.createParam("pwd", etPassword.getText().toString()));
+            params.add(NetUtil.createParam("Ischeckpwd", true));
+            params.add(NetUtil.createParam("Company", "杭州道然进出口有限公司"));
+            RequestParams requestParams = new RequestParams(params);
+            NetUtil.getAsyncHttpClient().post(loginuserUrl, requestParams, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(String content) {
+                    super.onSuccess(content);
+                    System.out.print(content);
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(3000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
-                        });
-                        thread.start();
-                        userNameValue = etUsername.getText().toString();
-                        passwordValue = etPassword.getText().toString();
-                        Editor editor = sp.edit();
-                        Gson gson = new Gson();
-                        UsergetBean userBean = gson.fromJson(content, UsergetBean.class);
-                        if (userBean.isStatus() == true) {
-                            spUtils.put(LoginMainActivity.this, "username", userNameValue);
-                            spUtils.put(LoginMainActivity.this, "passwd", passwordValue);
-                            //记住密码
-                            if (checkBoxPw.isChecked()) {
-                                spUtils.put(LoginMainActivity.this, "remember", true);
-                                String listwork = sp.getString("workbeenlist", "");
-                                workPwSwitchBean = new Gson().fromJson(listwork, WorkPwSwitchBean.class);
-                                //实体类等于空，也就是第一次进的时候，数据是空的
-                                if (workPwSwitchBean == null) {
-                                    workPwSwitchBean = new WorkPwSwitchBean();
-                                    switchBean = new WorkPwSwitchBean.Data();
-                                    String uuname = userBean.getU_name();
+                            progressDialog.dismiss();
+                        }
+                    });
+                    thread.start();
+                    userNameValue = etUsername.getText().toString();
+                    passwordValue = etPassword.getText().toString();
+                    Editor editor = sp.edit();
+                    Gson gson = new Gson();
+                    UsergetBean userBean = gson.fromJson(content, UsergetBean.class);
+                    if (userBean.isStatus() == true) {
+                        spUtils.put(LoginMainActivity.this, "username", userNameValue);
+                        spUtils.put(LoginMainActivity.this, "passwd", passwordValue);
+                        //记住密码
+                        if (checkBoxPw.isChecked()) {
+                            spUtils.put(LoginMainActivity.this, "remember", true);
+                            String listwork = sp.getString("workbeenlist", "");
+                            workPwSwitchBean = new Gson().fromJson(listwork, WorkPwSwitchBean.class);
+                            //实体类等于空，也就是第一次进的时候，数据是空的
+                            if (workPwSwitchBean == null) {
+                                workPwSwitchBean = new WorkPwSwitchBean();
+                                switchBean = new WorkPwSwitchBean.Data();
+                                String uuname = userBean.getU_name();
+                                switchBean.setU_name(uuname);
+                                String uulogid = userBean.getLogid();
+                                switchBean.setLogid(uulogid);
+                                switchBean.setPasswork(passwordValue);
+                                switchBeendatalist.add(switchBean);
+                                workPwSwitchBean.setDatas(switchBeendatalist);
+                            } else {
+                                switchBeendatalist = workPwSwitchBean.getDatas();
+                                switchBean = new WorkPwSwitchBean.Data();
+                                String uuname = userBean.getU_name();
+                                String uulogid = userBean.getLogid();
+                                String[] uname = uuname.split(",");
+                                String[] listname = new String[switchBeendatalist.size()];
+                                for (int i = 0; i < switchBeendatalist.size(); i++) {
+                                    listname[i] = switchBeendatalist.get(i).getU_name();
+                                }
+                                System.out.print(switchBeendatalist);
+                                System.out.print(listname);
+                                boolean booname = containsAll(listname, uname);
+                                //添加账号信息，如果不相同则添加，相同则不添加
+                                if (booname == false) {
                                     switchBean.setU_name(uuname);
-                                    String uulogid = userBean.getLogid();
                                     switchBean.setLogid(uulogid);
                                     switchBean.setPasswork(passwordValue);
                                     switchBeendatalist.add(switchBean);
                                     workPwSwitchBean.setDatas(switchBeendatalist);
                                 } else {
-                                    switchBeendatalist = workPwSwitchBean.getDatas();
-                                    switchBean = new WorkPwSwitchBean.Data();
-                                    String uuname = userBean.getU_name();
-                                    String uulogid = userBean.getLogid();
-                                    String[] uname = uuname.split(",");
-                                    String[] listname = new String[switchBeendatalist.size()];
-                                    for (int i = 0; i < switchBeendatalist.size(); i++) {
-                                        listname[i] = switchBeendatalist.get(i).getU_name();
-                                    }
-                                    System.out.print(switchBeendatalist);
-                                    System.out.print(listname);
-                                    boolean booname = containsAll(listname, uname);
-                                    //添加账号信息，如果不相同则添加，相同则不添加
-                                    if (booname == false) {
-                                        switchBean.setU_name(uuname);
-                                        switchBean.setLogid(uulogid);
-                                        switchBean.setPasswork(passwordValue);
-                                        switchBeendatalist.add(switchBean);
-                                        workPwSwitchBean.setDatas(switchBeendatalist);
-                                    } else {
-                                        ToastUtils.ShowToastMessage("已有当前账号,登录中", LoginMainActivity.this);
-                                    }
+                                    ToastUtils.ShowToastMessage("已有当前账号,登录中", LoginMainActivity.this);
                                 }
-                                System.out.print(workPwSwitchBean);
-                                String workbeenlist = gson.toJson(switchBeendatalist);
-                                String worklist = gson.toJson(workPwSwitchBean);
-                                System.out.print(worklist);
-                                System.out.print(workbeenlist);
-                                spUtils.put(LoginMainActivity.this, "workbeenlist", worklist);
-                            } else {
-                                spUtils.put(LoginMainActivity.this, "remember", false);
                             }
-                            if (checkboxopen.isChecked()) {
-                                spUtils.put(LoginMainActivity.this, "autologin", true);
-                            } else {
-                                spUtils.put(LoginMainActivity.this, "autologin", false);
-                            }
-                            editor.commit();
-                            spUtils.put(getApplicationContext(), "name", userBean.getU_name());
-                            spUtils.put(getApplicationContext(), "proname", userBean.getU_name());
-                            spUtils.put(getApplicationContext(), "commoname", userBean.getU_name());
-                            spUtils.put(getApplicationContext(), "commologinid", userBean.getLogid());
-                            MobclickAgent.setScenarioType(LoginMainActivity.this,
-                                    MobclickAgent.EScenarioType.E_UM_NORMAL);
-                            MobclickAgent.setDebugMode(true);
-                            MobclickAgent.onProfileSignIn(userNameValue);
-                            Intent intent = new Intent(LoginMainActivity.this, MainActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putString("u_name", userBean.getU_name());
-                            intent.putExtras(bundle);
-                            startActivity(intent);
+                            System.out.print(workPwSwitchBean);
+                            String workbeenlist = gson.toJson(switchBeendatalist);
+                            String worklist = gson.toJson(workPwSwitchBean);
+                            System.out.print(worklist);
+                            System.out.print(workbeenlist);
+                            spUtils.put(LoginMainActivity.this, "workbeenlist", worklist);
                         } else {
-                            ToastUtils.ShowToastMessage(R.string.user_tips, LoginMainActivity.this);
-                            ResponseDialog.closeLoading();
+                            spUtils.put(LoginMainActivity.this, "remember", false);
                         }
+                        if (checkboxopen.isChecked()) {
+                            spUtils.put(LoginMainActivity.this, "autologin", true);
+                        } else {
+                            spUtils.put(LoginMainActivity.this, "autologin", false);
+                        }
+                        editor.commit();
+                        spUtils.put(getApplicationContext(), "name", userBean.getU_name());
+                        spUtils.put(getApplicationContext(), "proname", userBean.getU_name());
+                        spUtils.put(getApplicationContext(), "commoname", userBean.getU_name());
+                        spUtils.put(getApplicationContext(), "commologinid", userBean.getLogid());
+                        MobclickAgent.setScenarioType(LoginMainActivity.this,
+                                MobclickAgent.EScenarioType.E_UM_NORMAL);
+                        MobclickAgent.setDebugMode(true);
+                        MobclickAgent.onProfileSignIn(userNameValue);
+                        Intent intent = new Intent(LoginMainActivity.this, MainActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("u_name", userBean.getU_name());
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    } else {
+                        ToastUtils.ShowToastMessage(R.string.user_tips, LoginMainActivity.this);
+                        ResponseDialog.closeLoading();
                     }
+                }
 
-                    @Override
-                    public void onFailure(Throwable error, String content) {
-                        super.onFailure(error, content);
-                        ToastUtils.ShowToastMessage(R.string.login_has_error, LoginMainActivity.this);
-                        Thread thread = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    Thread.sleep(3000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                progressDialog.dismiss();
+                @Override
+                public void onFailure(Throwable error, String content) {
+                    super.onFailure(error, content);
+                    ToastUtils.ShowToastMessage(R.string.login_has_error, LoginMainActivity.this);
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(3000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
-                        });
-                        thread.start();
-                    }
+                            progressDialog.dismiss();
+                        }
+                    });
+                    thread.start();
+                }
 
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        Thread thread = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    Thread.sleep(3000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                progressDialog.dismiss();
+                @Override
+                public void onFinish() {
+                    super.onFinish();
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(3000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
-                        });
-                        thread.start();
-                    }
-                });
+                            progressDialog.dismiss();
+                        }
+                    });
+                    thread.start();
+                }
+            });
 //            }
         } else {
             ToastUtils.ShowToastMessage(getString(R.string.noHttp), LoginMainActivity.this);
@@ -645,6 +649,11 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                 // 判断是否挂载了SD卡
                 String storageState = Environment.getExternalStorageState();
                 if (storageState.equals(Environment.MEDIA_MOUNTED)) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                        File
+                    } else {
+
+                    }
                     savePath = Environment.getExternalStorageDirectory()
                             .getAbsolutePath() + "/CL/Update/";
                     File file = new File(savePath);
@@ -732,12 +741,17 @@ public class LoginMainActivity extends BaseFrangmentActivity {
      */
     private void installApk() {
         File apkfile = new File(apkFilePath);
-        if (!apkfile.exists()) {
-            return;
-        }
         Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setDataAndType(Uri.parse("file://" + apkfile.toString()),
-                "application/vnd.android.package-archive");
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.addCategory(Intent.CATEGORY_DEFAULT);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            i.setDataAndType(Uri.parse("file://" + apkfile.toString()),
+                    "application/vnd.android.package-archive");
+            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        } else {
+            i.setDataAndType(Uri.parse("file://" + apkfile.toString()),
+                    "application/vnd.android.package-archive");
+        }
         startActivity(i);
     }
 
