@@ -154,7 +154,7 @@ public class ExcelSDActivity extends BaseFrangmentActivity
                 if (flag == true) {
                     ToastUtils.ShowToastMessage("打开文件成功", ExcelSDActivity.this);
                 } else {
-                    ToastUtils.ShowToastMessage("打开文件失败", ExcelSDActivity.this);
+                    ToastUtils.ShowToastMessage("手机中未安装wps，打开失败", ExcelSDActivity.this);
                 }
             }
         } catch (IOException e) {

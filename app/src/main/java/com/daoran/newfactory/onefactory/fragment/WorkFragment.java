@@ -37,10 +37,9 @@ import com.daoran.newfactory.onefactory.util.Listener.XXListener;
 import com.daoran.newfactory.onefactory.util.file.json.StringUtil;
 import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 import com.daoran.newfactory.onefactory.view.listview.ScrollGridView;
-//import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.google.gson.Gson;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -130,6 +129,9 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         super.onResume();
         String namebuld = sp.getString("name", "");
         spUtils.put(mactivity, "name", namebuld);
+        if (namebuld.equals("") && namebuld == null) {
+            namebuld = "长按重新登录";
+        }
         idworkname.setText(namebuld);
         idworkname.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -337,6 +339,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     /**
      * 两个数组比较是否存在
+     *
      * @param array1
      * @param array2
      * @return

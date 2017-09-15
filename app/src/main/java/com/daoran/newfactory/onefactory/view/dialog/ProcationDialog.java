@@ -30,7 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *  生产日报条件查询dialog setOnCheckedChangeListener
+ * 生产日报条件查询dialog setOnCheckedChangeListener
  * Created by lizhipeng on 2017/4/26.
  */
 
@@ -92,28 +92,28 @@ public class ProcationDialog extends Dialog {
         WindowManager.LayoutParams p = dialogWindow.getAttributes();
         p.width = (int) (display.getWidth() * 0.8);
         dialogWindow.setAttributes(p);
-        String etaaname = sp.getString("proname","");
+        String etaaname = sp.getString("proname", "");
         etprodialogRecode.setText(etaaname);
-        String Factory = sp.getString("etprodialogFactory","");
+        String Factory = sp.getString("etprodialogFactory", "");
         etprodialogFactory.setText(Factory);
-        String productionleftItem = sp.getString("productionleftItem","");
+        String productionleftItem = sp.getString("productionleftItem", "");
         etprodialogStyle.setText(productionleftItem);
-        if(productionleftItem.equals("")){
+        if (productionleftItem.equals("")) {
             etprodialogRecode.setText(etaaname);
-        }else{
+        } else {
             etprodialogRecode.setText("");
         }
         String[] spinnerProcedure = content.getResources().getStringArray(R.array.Procedure);
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>
-                        (content, R.layout.adapter_mytopactionbar_spinner, spinnerProcedure){
+                        (content, R.layout.adapter_mytopactionbar_spinner, spinnerProcedure) {
                     @Override
                     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-                        if(convertView==null){
+                        if (convertView == null) {
                             convertView = getLayoutInflater().inflate(
-                                    R.layout.adapter_mytopactionbar_spinner_item,parent,false);
+                                    R.layout.adapter_mytopactionbar_spinner_item, parent, false);
                         }
-                        TextView spinnerText=(TextView)convertView.findViewById(R.id.spinner_textView);
+                        TextView spinnerText = (TextView) convertView.findViewById(R.id.spinner_textView);
                         spinnerText.setText(getItem(position));
                         return convertView;
                     }
@@ -145,14 +145,14 @@ public class ProcationDialog extends Dialog {
                 checkboxNull.isChecked();
                 boolean ischeck = checkboxNull.isChecked();
                 String is = String.valueOf(ischeck);
-                spUtils.put(content,"ischeckedd",is);
+                spUtils.put(content, "ischeckedd", is);
             }
         });
         checkboxNull.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 String is = String.valueOf(isChecked);
-                spUtils.put(content,"ischeckedd",is);
+                spUtils.put(content, "ischeckedd", is);
             }
         });
         this.setCancelable(true);
@@ -235,6 +235,7 @@ public class ProcationDialog extends Dialog {
 
     /**
      * 禁止EditText输入空格
+     *
      * @param editText
      */
     public static void setEditTextInhibitInputSpace(EditText editText) {
@@ -244,7 +245,7 @@ public class ProcationDialog extends Dialog {
                 String speChat = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
                 Pattern pattern = Pattern.compile(speChat);
                 Matcher matcher = pattern.matcher(source.toString());
-                if (source.equals(" ")||source.equals("\n")||matcher.find())
+                if (source.equals(" ") || source.equals("\n") || matcher.find())
                     return "";
                 else
                     return null;

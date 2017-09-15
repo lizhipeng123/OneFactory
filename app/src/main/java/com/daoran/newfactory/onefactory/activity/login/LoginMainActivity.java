@@ -54,9 +54,8 @@ import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.squareup.picasso.Picasso;
-import com.umeng.analytics.MobclickAgent;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.NameValuePair;
 
 import java.io.File;
@@ -192,6 +191,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
     private void initViews() {
         setEditTextInhibitInputSpeChat(etUsername);
         setEditTextInhibitInputSpeChat(etPassword);
+//        image_login.setImageDrawable(getResources().getDrawable(R.mipmap.daoran));
         Picasso.with(LoginMainActivity.this)
                 .load(R.mipmap.daoran)
                 .error(R.mipmap.daoran)
@@ -275,13 +275,14 @@ public class LoginMainActivity extends BaseFrangmentActivity {
      */
     private void postLogin() {
         String loginuserUrl = HttpUrl.debugoneUrl + "Login/UserLogin/";
+//        getCurrentVersion();
         if (NetWork.isNetWorkAvailable(this)) {
             /*登录是否设置保存时间，以及加密*/
             /*检测是否为可用WiFi*/
-            WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            String infossid = wifiInfo.getSSID();
-            infossid = infossid.replace("\"", "");
+//            WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+//            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+//            String infossid = wifiInfo.getSSID();
+//            infossid = infossid.replace("\"", "");
 //            if (infossid.equals("taoxinxi")) {
 //                AlertDialog dialog = new AlertDialog.Builder(this).create();
 //                dialog.setTitle("系统提示");
@@ -381,10 +382,10 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                         spUtils.put(getApplicationContext(), "proname", userBean.getU_name());
                         spUtils.put(getApplicationContext(), "commoname", userBean.getU_name());
                         spUtils.put(getApplicationContext(), "commologinid", userBean.getLogid());
-                        MobclickAgent.setScenarioType(LoginMainActivity.this,
-                                MobclickAgent.EScenarioType.E_UM_NORMAL);
-                        MobclickAgent.setDebugMode(true);
-                        MobclickAgent.onProfileSignIn(userNameValue);
+//                        MobclickAgent.setScenarioType(LoginMainActivity.this,
+//                                MobclickAgent.EScenarioType.E_UM_NORMAL);
+//                        MobclickAgent.setDebugMode(true);
+//                        MobclickAgent.onProfileSignIn(userNameValue);
                         Intent intent = new Intent(LoginMainActivity.this, MainActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("u_name", userBean.getU_name());
@@ -499,7 +500,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                         if (!versioncode.equals(vercode)) {
                             String scode = "需要更新到" + vercode;
                             spUtils.put(getApplicationContext(), "Applicationscode", scode);
-                            showNoticeDialog(0, slience);
+//                            showNoticeDialog(0, slience);
                         } else {
                             if (!slience) {
                                 String scode = "已经是最新版本" + vercode;

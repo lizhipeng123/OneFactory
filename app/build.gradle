@@ -32,7 +32,6 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -110,25 +109,26 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.squareup.okio:okio:1.13.0'
-    compile files('libry/mta-sdk-1.6.2.jar')
-    compile files('libry/open_sdk_r5788.jar')
-    compile files('libry/PullToRefreshListView.jar')
-    compile files('libry/pulltorefresh-3.2.2.jar')
-    compile files('libry/commons-logging-1.1.1.jar')
-    compile files('libry/httpclient-4.1.2.jar')
-    compile files('libry/httpcore-4.0.jar')
-    compile files('libry/xUtils-2.6.14.jar')
-    compile files('libry/picasso-2.5.2.jar')
-    compile files('libry/json-lib-0.9.jar')
     compile files('baidulibry/baidumapapi_v3_2_0.jar')
     compile files('baidulibry/locSDK_5.01.jar')
-    compile files('libry/core-3.2.1.jar')
     compile project(':epubReader')
     compile project(':library')
     apt 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
-    compile files('libry/poi-3.16.jar')
-    compile files('libry/jxl.jar')
-    compile files('libry/commons-lang.jar')
-    compile files('libry/fastjson-1.1.34.android.jar')
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
+    compile project(':calendar')
+    compile files('libs/commons-logging-1.1.1.jar')
+    compile files('libs/core-3.2.1.jar')
+    compile files('libs/fastjson-1.1.34.android.jar')
+    compile files('libs/httpclient-4.1.2.jar')
+    compile files('libs/httpcore-4.0.jar')
+    compile files('libs/json-lib-0.9.jar')
+    compile files('libs/jxl.jar')
+    compile files('libs/mta-sdk-1.6.2.jar')
+    compile files('libs/open_sdk_r5788.jar')
+    compile files('libs/picasso-2.5.2.jar')
+    compile files('libs/poi-3.16.jar')
+    compile files('libs/pulltorefresh-3.2.2.jar')
+    compile files('libs/PullToRefreshListView.jar')
+    compile files('libs/xUtils-2.6.14.jar')
+    compile 'org.apache.commons:commons-lang3:3.6'
 }

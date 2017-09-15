@@ -400,12 +400,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         SignOpenActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-//        if (requestCode == PERMISSON_REQUESTCODE) {
-////            if (!verifyPermissions(grantResults)) {
-//                showMissingPermissionDialog();
-////                isNeedCheck = false;
-////            }
-//        }
     }
 
     /**

@@ -37,8 +37,8 @@ import com.daoran.newfactory.onefactory.bean.CommoditydetailBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
-import com.daoran.newfactory.onefactory.util.file.json.StringUtil;
 import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
+import com.daoran.newfactory.onefactory.util.file.json.StringUtil;
 import com.daoran.newfactory.onefactory.util.file.save.CommodityExcelUtil;
 import com.daoran.newfactory.onefactory.view.dialog.CommoDialog;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
@@ -1192,6 +1192,10 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         editor.remove("CommodityQAScore");//QA首扎件数
         editor.remove("dateQAMemotimesign");//QA首扎日
 
+        editor.remove("etproProcedure");
+        editor.remove("commoRecode");
+        editor.remove("commoStyle");
+
         editor.remove("commonulltitle");//后道
         editor.remove("commonullitem");
         editor.remove("commonullsearledrev");
@@ -1276,6 +1280,9 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         editor.remove("CommodityQAname");//QA首扎
         editor.remove("CommodityQAScore");//QA首扎件数
         editor.remove("dateQAMemotimesign");//QA首扎日
+        editor.remove("etproProcedure");
+        editor.remove("commoRecode");
+        editor.remove("commoStyle");
 
         editor.remove("commonulltitle");//后道
         editor.remove("commonullitem");

@@ -11,6 +11,8 @@
     <string name="open">开启</string>
     <string name="openlogin">自动登录</string>
 
+    <string name="schedule_input_you_do_thing">Input what to do</string>
+
     <string name="work">工作</string>
     <string name="office">在办</string>
     <string name="information">资讯</string>
@@ -411,6 +413,24 @@
         <item>1</item> 
         <item>2</item> 
     </string-array>
+
+    <string-array name="calendar_month">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
+    <string name="calendar_year">%d-</string>
+
     <string name="nrtc_setting_other_device_default_rotation_key">nrtc_setting_other_device_default_rotation_key</string>
     <string name="nrtc_setting_other_device_default_rotation">设备默认旋转角度(特殊设备使用)</string>
     <string name="nrtc_setting_other_device_rotation_fixed_offset_key">nrtc_setting_other_device_rotation_fixed_offset_key</string>
@@ -448,4 +468,38 @@
     <string name="nrtc_setting_voe_dtx_key">nrtc_setting_voe_dtx_key</string>
     <string name="nrtc_setting_voe_dtx">人声检测</string>
 
+    <string name="hour">Hour</string>
+    <string name="schedule_show_finish_task">Show completed</string>
+    <string name="finished">Finished</string>
+    <string name="finish">Finish</string>
+    <string name="start">Start</string>
+    <string name="schedule_input_content_is_no_null">Content can\'t be empty.</string>
+    <string name="menu_schedule">Schedule</string>
+    <string name="menu_event_set">Events</string>
+    <string name="menu_no_category">Unclassified </string>
+    <string name="menu_add_event_set">Add event list</string>
+    <string name="event_set_delete_this_event_set">Delete events?</string>
+    <string name="event_set_select_color">Choose color</string>
+    <string name="schedule_event_detail_setting">Detail setting</string>
+    <string name="event_set_list_name">List name</string>
+    <string name="event_set_color">Color</string>
+    <string name="event_set_name_is_not_null">List name can\'t be empty.</string>
+    <string name="exit_app_hint">Click to exit.</string>
+    <string name="calendar_day">%d day</string>
+    <string name="calendar_today">Today</string>
+    <string name="schedule_delete_this_schedule">Delete the schedule?</string>
+    <string name="schedule_hide_finish_task">Hide completed</string>
+    <string name="select_event_set">Choose events</string>
+    <string name="add_location">Add spot</string>
+    
+    <string name="remarks">Reminders</string>
+    <string name="please_input_desc">Input the reminders</string>
+    <string name="date_format">yyyy-MM-dd HH:mm</string>
+    <string name="date_format_no_time">%1$s-%2$s-%3$s</string>
+    <string name="click_here_select_date">Click to choose time</string>
+    <string name="click_here_select_location">Click to select location</string>
+    <string name="click_input_location">Click to input location</string>
+
+    <!--schedule-->
+    <string name="schedule_title">Schedule title</string>
 </resources>

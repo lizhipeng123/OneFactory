@@ -21,7 +21,6 @@ import com.daoran.newfactory.onefactory.activity.main.MainActivity;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.UsergetBean;
 import com.daoran.newfactory.onefactory.bean.WorkPwSwitchBean;
-import com.daoran.newfactory.onefactory.fragment.WorkFragment;
 import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetUtil;
@@ -33,7 +32,7 @@ import com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.google.gson.Gson;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.NameValuePair;
 
 import java.util.ArrayList;

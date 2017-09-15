@@ -38,6 +38,8 @@ import com.daoran.newfactory.onefactory.activity.side.SideActivity;
 import com.daoran.newfactory.onefactory.activity.work.setting.AboutActivity;
 import com.daoran.newfactory.onefactory.activity.work.setting.CoreActivity;
 import com.daoran.newfactory.onefactory.activity.work.setting.ExcelSDActivity;
+import com.daoran.newfactory.onefactory.activity.work.setting.MonthActivity;
+import com.daoran.newfactory.onefactory.activity.work.setting.PictureActivity;
 import com.daoran.newfactory.onefactory.bean.VerCodeBean;
 import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
@@ -93,6 +95,8 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout rlExcelSD;
     private RelativeLayout rlYunxin;
     private RelativeLayout rlside;
+    private RelativeLayout rlPhoto;
+    private RelativeLayout rlrili;
     private TextView tvwifimanager, tvwifissid;
 
     private static final int DOWN_NOSDCARD = 0;
@@ -147,6 +151,8 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         rlExcelSD = (RelativeLayout) view.findViewById(R.id.rlExcelSD);
         rlYunxin = (RelativeLayout) view.findViewById(R.id.rlYunxin);
         rlside = (RelativeLayout) view.findViewById(R.id.rlside);
+        rlPhoto = (RelativeLayout) view.findViewById(R.id.rlPhoto);
+        rlrili = (RelativeLayout) view.findViewById(R.id.rlrili);
         sp = mactivity.getSharedPreferences("my_sp", 0);
         String vercode = sp.getString("Applicationscode", "");
         tvNewVersion.setText(vercode);
@@ -169,6 +175,8 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         rlExcelSD.setOnClickListener(this);
         rlYunxin.setOnClickListener(this);
         rlside.setOnClickListener(this);
+        rlPhoto.setOnClickListener(this);
+        rlrili.setOnClickListener(this);
     }
 
     @Override
@@ -274,9 +282,19 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                     startApp(mactivity, "com.netease.nim.demo");
                 }
                 break;
+            /*分类菜单（隐藏中）*/
             case R.id.rlside:
                 Intent intentside = new Intent(mactivity, SideActivity.class);
                 mactivity.startActivity(intentside);
+                break;
+            /*图片*/
+            case R.id.rlPhoto:
+                Intent intentphoto = new Intent(mactivity, PictureActivity.class);
+                mactivity.startActivity(intentphoto);
+                break;
+            case R.id.rlrili:
+                Intent intentrili = new Intent(mactivity, MonthActivity.class);
+                mactivity.startActivity(intentrili);
                 break;
         }
     }

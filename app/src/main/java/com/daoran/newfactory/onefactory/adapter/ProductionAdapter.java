@@ -8140,9 +8140,6 @@ public class ProductionAdapter extends BaseAdapter {
                 String productionRecordat = getItem(position).getRecordat();
                 viewHolder.tvProRecordat.setText(productionRecordat);
             } else {
-//                viewHolder.tv_data.setEnabled(false);
-//                viewHolder.tv_data.setText(getItem(position).getItem());
-
                 viewHolder.tvProDocumentary.setEnabled(false);
                 viewHolder.tvProDocumentary.setText(getItem(position).getPrddocumentary());
 

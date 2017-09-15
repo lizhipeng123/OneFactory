@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:popupMenuStyle">@style/popMenu_style</item>
     </style>
+
     <style name="Theme.Start" parent="android:style/Theme.Black.NoTitleBar.Fullscreen">
         <!--<item name="android:windowBackground">@drawable/appstartimg</item>-->
         <item name="android:windowNoTitle">true</item>
@@ -64,6 +65,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
+
     <style name="loading_dialog" parent="android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
@@ -72,14 +74,17 @@
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
-    <style name="tagging_edittext_style" >
+
+    <style name="tagging_edittext_style">
         <item name="android:textColorHint">@color/public_anhui_color</item>
         <item name="android:textColor">@color/form_text_color_tagging</item>
     </style>
+
     <style name="TextView.DefaultStyle">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/menu_text_size</item>
     </style>
+
     <style name="MenuFragmentStyle" parent="AppTheme">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:colorForeground">@android:color/transparent</item>
@@ -94,17 +99,54 @@
         <item name="android:paddingRight">6dip</item>
         <item name="android:textSize">10sp</item>
     </style>
+
     <style name="myActionMenu">
         <item name="android:textSize">5sp</item>
         <item name="android:textColor">@color/red</item>
     </style>
+
     <style name="TextView">
         <item name="android:textSize">5sp</item>
         <item name="android:textColor">@color/red</item>
     </style>
+
+    <style name="my_dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
     <style name="popMenu_style" parent="@android:style/Widget.Holo.Light.PopupMenu">
         <item name="android:textSize">5sp</item>
         <item name="android:listPreferredItemHeight">5dp</item>
         <item name="android:labelTextSize">5sp</item>
+    </style>
+
+    <style name="dialogstyle_style" parent="android:Animation">
+        <item name="@android:windowEnterAnimation">@anim/dialog_enter</item>
+        <item name="@android:windowExitAnimation">@anim/dialog_exit</item>
+    </style>
+
+    <style name="DialogFullScreen" parent="DialogStyle" />
+
+    <style name="DialogStyle" parent="Base.Theme.AppCompat.Light.Dialog">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:actionBarSize">@dimen/action_bar_height</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
     </style>
 </resources>

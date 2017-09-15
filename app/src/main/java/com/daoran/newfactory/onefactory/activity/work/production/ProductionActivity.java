@@ -40,7 +40,6 @@ import com.daoran.newfactory.onefactory.bean.ProductionDetailBooleanBean;
 import com.daoran.newfactory.onefactory.bean.Propostbean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
-import com.daoran.newfactory.onefactory.util.Http.sharedparams.PhoneSaveUtil;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.Listener.SelectItemInterface;
 import com.daoran.newfactory.onefactory.util.file.json.StringUtil;
@@ -57,7 +56,8 @@ import com.google.gson.JsonSyntaxException;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.apache.commons.lang.ArrayUtils;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -434,7 +434,6 @@ public class ProductionActivity extends BaseFrangmentActivity
             commonamedure = "";
         }
         String Factory = sp.getString("etprodialogFactory", "");//工厂
-//        String Recode = sp.getString("etprodialogRecode", "");//制单人
         String getsize = sp.getString("clumnsprospinner", "");
         if (getsize.equals("")) {
             getsize = String.valueOf(10);
@@ -666,7 +665,6 @@ public class ProductionActivity extends BaseFrangmentActivity
         if (getsize.equals("")) {
             getsize = String.valueOf(10);
         }
-//        String Recode = sp.getString("etprodialogRecode", "");
         String Procedure = sp.getString("Procedure", "");
         String stis = sp.getString("ischeckedd", "");
         if (Procedure.equals("全部")) {
@@ -1908,6 +1906,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     }
 
     /**
+     * 初始化
      * 进入生产日报表时查询有关当前登录用户的数据，并在修改保存时调用其实体类
      * 判断当前用户是否创建过相同款号，相同工序的条目
      */
@@ -2306,6 +2305,7 @@ public class ProductionActivity extends BaseFrangmentActivity
         editor.remove("prosavedepartment");
         editor.remove("probooleanProcedureTitle");
         editor.remove("prosavestate");
+        editor.remove("etprodialogFactory");
 
         editor.remove("pronullothers");
         editor.remove("pronulltasknumber");
@@ -2434,6 +2434,7 @@ public class ProductionActivity extends BaseFrangmentActivity
         editor.remove("prosavedepartment");
         editor.remove("probooleanProcedureTitle");
         editor.remove("prosavestate");
+        editor.remove("etprodialogFactory");
 
         editor.remove("pronullothers");
         editor.remove("pronulltasknumber");
