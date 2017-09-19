@@ -197,8 +197,7 @@
                 android:paddingBottom="@dimen/dimen_40"
                 android:paddingLeft="@dimen/dimen_30"
                 android:paddingRight="@dimen/dimen_30"
-                android:paddingTop="@dimen/dimen_40"
-                android:visibility="gone">
+                android:paddingTop="@dimen/dimen_40">
 
                 <TextView
                     android:id="@+id/tvPhoto"
@@ -225,8 +224,7 @@
                 android:paddingBottom="@dimen/dimen_40"
                 android:paddingLeft="@dimen/dimen_30"
                 android:paddingRight="@dimen/dimen_30"
-                android:paddingTop="@dimen/dimen_40"
-                android:visibility="gone">
+                android:paddingTop="@dimen/dimen_40">
 
                 <TextView
                     android:id="@+id/tvrili"
@@ -253,8 +251,7 @@
                 android:paddingBottom="@dimen/dimen_40"
                 android:paddingLeft="@dimen/dimen_30"
                 android:paddingRight="@dimen/dimen_30"
-                android:paddingTop="@dimen/dimen_40"
-                android:visibility="gone">
+                android:paddingTop="@dimen/dimen_40">
 
                 <TextView
                     android:id="@+id/tvYunxin"

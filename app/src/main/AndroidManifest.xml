@@ -32,7 +32,6 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- 允许用户调用相册权限-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission" />
     <uses-permission android:name="android.permission.RESTART_PACKAGES" />

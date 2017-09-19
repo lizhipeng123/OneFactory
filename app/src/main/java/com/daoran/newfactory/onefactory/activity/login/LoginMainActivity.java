@@ -303,97 +303,102 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                 public void onSuccess(String content) {
                     super.onSuccess(content);
                     System.out.print(content);
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                Thread.sleep(3000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            progressDialog.dismiss();
-                        }
-                    });
-                    thread.start();
-                    userNameValue = etUsername.getText().toString();
-                    passwordValue = etPassword.getText().toString();
-                    Editor editor = sp.edit();
-                    Gson gson = new Gson();
-                    UsergetBean userBean = gson.fromJson(content, UsergetBean.class);
-                    if (userBean.isStatus() == true) {
-                        spUtils.put(LoginMainActivity.this, "username", userNameValue);
-                        spUtils.put(LoginMainActivity.this, "passwd", passwordValue);
-                        //记住密码
-                        if (checkBoxPw.isChecked()) {
-                            spUtils.put(LoginMainActivity.this, "remember", true);
-                            String listwork = sp.getString("workbeenlist", "");
-                            workPwSwitchBean = new Gson().fromJson(listwork, WorkPwSwitchBean.class);
-                            //实体类等于空，也就是第一次进的时候，数据是空的
-                            if (workPwSwitchBean == null) {
-                                workPwSwitchBean = new WorkPwSwitchBean();
-                                switchBean = new WorkPwSwitchBean.Data();
-                                String uuname = userBean.getU_name();
-                                switchBean.setU_name(uuname);
-                                String uulogid = userBean.getLogid();
-                                switchBean.setLogid(uulogid);
-                                switchBean.setPasswork(passwordValue);
-                                switchBeendatalist.add(switchBean);
-                                workPwSwitchBean.setDatas(switchBeendatalist);
-                            } else {
-                                switchBeendatalist = workPwSwitchBean.getDatas();
-                                switchBean = new WorkPwSwitchBean.Data();
-                                String uuname = userBean.getU_name();
-                                String uulogid = userBean.getLogid();
-                                String[] uname = uuname.split(",");
-                                String[] listname = new String[switchBeendatalist.size()];
-                                for (int i = 0; i < switchBeendatalist.size(); i++) {
-                                    listname[i] = switchBeendatalist.get(i).getU_name();
+                    if (!content.equals("null")) {
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(3000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
                                 }
-                                System.out.print(switchBeendatalist);
-                                System.out.print(listname);
-                                boolean booname = containsAll(listname, uname);
-                                //添加账号信息，如果不相同则添加，相同则不添加
-                                if (booname == false) {
+                                progressDialog.dismiss();
+                            }
+                        });
+                        thread.start();
+                        userNameValue = etUsername.getText().toString();
+                        passwordValue = etPassword.getText().toString();
+                        Editor editor = sp.edit();
+                        Gson gson = new Gson();
+                        UsergetBean userBean = gson.fromJson(content, UsergetBean.class);
+                        if (userBean.isStatus() == true) {
+                            spUtils.put(LoginMainActivity.this, "username", userNameValue);
+                            spUtils.put(LoginMainActivity.this, "passwd", passwordValue);
+                            //记住密码
+                            if (checkBoxPw.isChecked()) {
+                                spUtils.put(LoginMainActivity.this, "remember", true);
+                                String listwork = sp.getString("workbeenlist", "");
+                                workPwSwitchBean = new Gson().fromJson(listwork, WorkPwSwitchBean.class);
+                                //实体类等于空，也就是第一次进的时候，数据是空的
+                                if (workPwSwitchBean == null) {
+                                    workPwSwitchBean = new WorkPwSwitchBean();
+                                    switchBean = new WorkPwSwitchBean.Data();
+                                    String uuname = userBean.getU_name();
                                     switchBean.setU_name(uuname);
+                                    String uulogid = userBean.getLogid();
                                     switchBean.setLogid(uulogid);
                                     switchBean.setPasswork(passwordValue);
                                     switchBeendatalist.add(switchBean);
                                     workPwSwitchBean.setDatas(switchBeendatalist);
                                 } else {
-                                    ToastUtils.ShowToastMessage("已有当前账号,登录中", LoginMainActivity.this);
+                                    switchBeendatalist = workPwSwitchBean.getDatas();
+                                    switchBean = new WorkPwSwitchBean.Data();
+                                    String uuname = userBean.getU_name();
+                                    String uulogid = userBean.getLogid();
+                                    String[] uname = uuname.split(",");
+                                    String[] listname = new String[switchBeendatalist.size()];
+                                    for (int i = 0; i < switchBeendatalist.size(); i++) {
+                                        listname[i] = switchBeendatalist.get(i).getU_name();
+                                    }
+                                    System.out.print(switchBeendatalist);
+                                    System.out.print(listname);
+                                    boolean booname = containsAll(listname, uname);
+                                    //添加账号信息，如果不相同则添加，相同则不添加
+                                    if (booname == false) {
+                                        switchBean.setU_name(uuname);
+                                        switchBean.setLogid(uulogid);
+                                        switchBean.setPasswork(passwordValue);
+                                        switchBeendatalist.add(switchBean);
+                                        workPwSwitchBean.setDatas(switchBeendatalist);
+                                    } else {
+                                        ToastUtils.ShowToastMessage("已有当前账号,登录中", LoginMainActivity.this);
+                                    }
                                 }
+                                System.out.print(workPwSwitchBean);
+                                String workbeenlist = gson.toJson(switchBeendatalist);
+                                String worklist = gson.toJson(workPwSwitchBean);
+                                System.out.print(worklist);
+                                System.out.print(workbeenlist);
+                                spUtils.put(LoginMainActivity.this, "workbeenlist", worklist);
+                            } else {
+                                spUtils.put(LoginMainActivity.this, "remember", false);
                             }
-                            System.out.print(workPwSwitchBean);
-                            String workbeenlist = gson.toJson(switchBeendatalist);
-                            String worklist = gson.toJson(workPwSwitchBean);
-                            System.out.print(worklist);
-                            System.out.print(workbeenlist);
-                            spUtils.put(LoginMainActivity.this, "workbeenlist", worklist);
-                        } else {
-                            spUtils.put(LoginMainActivity.this, "remember", false);
-                        }
-                        if (checkboxopen.isChecked()) {
-                            spUtils.put(LoginMainActivity.this, "autologin", true);
-                        } else {
-                            spUtils.put(LoginMainActivity.this, "autologin", false);
-                        }
-                        editor.commit();
-                        spUtils.put(getApplicationContext(), "name", userBean.getU_name());
-                        spUtils.put(getApplicationContext(), "proname", userBean.getU_name());
-                        spUtils.put(getApplicationContext(), "commoname", userBean.getU_name());
-                        spUtils.put(getApplicationContext(), "commologinid", userBean.getLogid());
+                            if (checkboxopen.isChecked()) {
+                                spUtils.put(LoginMainActivity.this, "autologin", true);
+                            } else {
+                                spUtils.put(LoginMainActivity.this, "autologin", false);
+                            }
+                            editor.commit();
+                            spUtils.put(getApplicationContext(), "name", userBean.getU_name());
+                            spUtils.put(getApplicationContext(), "proname", userBean.getU_name());
+                            spUtils.put(getApplicationContext(), "commoname", userBean.getU_name());
+                            spUtils.put(getApplicationContext(), "commologinid", userBean.getLogid());
 //                        MobclickAgent.setScenarioType(LoginMainActivity.this,
 //                                MobclickAgent.EScenarioType.E_UM_NORMAL);
 //                        MobclickAgent.setDebugMode(true);
 //                        MobclickAgent.onProfileSignIn(userNameValue);
-                        Intent intent = new Intent(LoginMainActivity.this, MainActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("u_name", userBean.getU_name());
-                        intent.putExtras(bundle);
-                        startActivity(intent);
+                            Intent intent = new Intent(LoginMainActivity.this, MainActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("u_name", userBean.getU_name());
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        } else {
+                            ToastUtils.ShowToastMessage(R.string.user_tips, LoginMainActivity.this);
+                            ResponseDialog.closeLoading();
+                        }
                     } else {
-                        ToastUtils.ShowToastMessage(R.string.user_tips, LoginMainActivity.this);
-                        ResponseDialog.closeLoading();
+                        progressDialog.dismiss();
+                        ToastUtils.ShowToastMessage("返回为空,请确认本机ip", LoginMainActivity.this);
                     }
                 }
 
