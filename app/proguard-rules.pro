@@ -15,4 +15,22 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
-
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+-dontwarn net.sf.json.**
+-dontwarn org.apache.**
+-dontwarn butterknife.internal.**
+-dontwarn com.squareup.picasso.**
+-dontwarn com.youku.player.**
+-dontwarn nl.siegmann.epublib.utilities.**
+-dontwarn okio.Okio.**
+-dontwarn okio.Segment.**
+-dontwarn com.autonavi.**
+-dontwarn com.handmark.pulltorefresh.library.**
+-dontwarn com.i5tong.epubreaderlib.view.pulltorefresh.**
+-dontwarn nl.siegmann.epublib.domain.**
+-dontwarn org.joda.time.**
+-dontwarn com.amap.apis.utils.**
+-dontwarn nl.siegmann.epublib.epub.**
+-dontwarn okio.**
+-keep class com.daoran.newfactory.onefactory.**

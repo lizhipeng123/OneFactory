@@ -48,24 +48,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:label">
-        <!--声明一个文件广播-->
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.daoran.newfactory.onefactory.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
-
-        <!-- 开发者申请的Key -->
-        <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="85547ccec1838f47b9aab22f5582332a" />
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="59795831b27b0a69e5001585" />
         <!-- 启动页 -->
         <activity
             android:name=".activity.start.StartActivity"
@@ -90,6 +72,34 @@
             android:name=".activity.guide.GuideActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
+        <!-- Bugly升级SDK配置开始  -->
+        <activity
+            android:name="com.tencent.bugly.beta.ui.BetaActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|locale"
+            android:theme="@android:style/Theme.Translucent" />
+
+        <!--声明一个文件广播-->
+        <provider
+            android:name=".util.utils.ProviderUtil"
+            android:authorities="com.daoran.newfactory.onefactory.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="name,authorities,exported,grantUriPermissions">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"
+                tools:replace="name,resource" />
+        </provider>
+
+        <!-- 开发者申请的Key -->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="85547ccec1838f47b9aab22f5582332a" />
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="59795831b27b0a69e5001585" />
+
 
         <!-- 登录 -->
         <!-- 注册 -->
@@ -215,8 +225,8 @@
         <activity
             android:name=".activity.work.setting.MonthActivity"
             android:launchMode="singleTask"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <activity
             android:name=".activity.work.setting.PictureSelectActivity"
@@ -236,6 +246,7 @@
                 <data android:scheme="tencent1106135321" />
             </intent-filter>
         </activity>
+
 
         <!--qq分享-->
         <activity

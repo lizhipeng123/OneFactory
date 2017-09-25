@@ -32,6 +32,13 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+            minifyEnabled false
+            signingConfig signingConfigs.debug
         }
     }
 
@@ -70,15 +77,19 @@ android {
             manifestPlaceholders = [APP_NAME: "dfAPP_baidu", APP_CHANNEL: "baidu"]
         }
     }
-    applicationVariants.all {
-        variant ->
-            variant.outputs.each { output ->
-                def outputFile = output.outputFile
-                if (outputFile != null && outputFile.name.endsWith(".apk")) {
-                    def fileName = "dfAPP_${releaseTime()}_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
-                    output.outputFile = new File(outputFile.parent, fileName)
-                }
-            }
+//    applicationVariants.all {
+//        variant ->
+//            variant.outputs.each { output ->
+//                def outputFile = output.outputFile
+//                if (outputFile != null && outputFile.name.endsWith(".apk")) {
+//                    def fileName = "dfAPP_${releaseTime()}_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
+//                    output.outputFile = new File(outputFile.parent, fileName)
+//                }
+//            }
+//    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
     }
 }
 
@@ -106,7 +117,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.0'
     compile 'com.github.hotchemi:permissionsdispatcher:2.0.0'
     compile 'com.github.hotchemi:permissionsdispatcher:2.3.1'
-    compile 'com.android.support:multidex:1.0.0'
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.squareup.okio:okio:1.13.0'
     compile files('baidulibry/baidumapapi_v3_2_0.jar')
@@ -131,4 +142,8 @@ dependencies {
     compile files('libs/PullToRefreshListView.jar')
     compile files('libs/xUtils-2.6.14.jar')
     compile 'org.apache.commons:commons-lang3:3.6'
+    compile 'com.tencent.bugly:crashreport_upgrade:1.3.1'
+    // 升级SDK
 }
+// 依赖插件脚本
+apply from: 'tinker-support.gradle'

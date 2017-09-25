@@ -224,7 +224,8 @@
                 android:paddingBottom="@dimen/dimen_40"
                 android:paddingLeft="@dimen/dimen_30"
                 android:paddingRight="@dimen/dimen_30"
-                android:paddingTop="@dimen/dimen_40">
+                android:paddingTop="@dimen/dimen_40"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tvrili"
@@ -241,7 +242,33 @@
                     android:layout_centerInParent="true"
                     android:src="@mipmap/setting_three" />
             </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlnew"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_20"
+                android:background="@color/aliceblue"
+                android:paddingBottom="@dimen/dimen_40"
+                android:paddingLeft="@dimen/dimen_30"
+                android:paddingRight="@dimen/dimen_30"
+                android:paddingTop="@dimen/dimen_40"
+                android:visibility="gone">
 
+                <TextView
+                    android:id="@+id/tvrlnew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="新建"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_55sp" />
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_43"
+                    android:layout_height="@dimen/dimen_43"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/setting_three" />
+            </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/rlYunxin"
                 android:layout_width="match_parent"
