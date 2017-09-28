@@ -7,12 +7,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -45,10 +47,12 @@ import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.RequestParams;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
+import com.daoran.newfactory.onefactory.util.bsdiff.PatchUtils;
 import com.daoran.newfactory.onefactory.util.file.json.StringUtil;
 import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 import com.daoran.newfactory.onefactory.util.application.settings.Comfig;
 import com.daoran.newfactory.onefactory.util.file.image.CropSquareTransformation;
+import com.daoran.newfactory.onefactory.util.file.setting.FileUtils;
 import com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.google.gson.Gson;
@@ -93,10 +97,11 @@ public class LoginMainActivity extends BaseFrangmentActivity {
     private int curVersionCode;
     private VerCodeBean codeBean;
     private AlertDialog noticeDialog;
-    private ProgressBar mProgress;
-    private TextView mProgressText;
-    protected boolean interceptFlag;
-    private AlertDialog downloadDialog;
+    private ProgressBar mProgress, nProgress;
+    private TextView mProgressText, nProgressText;
+    protected boolean interceptFlag, inupdateFlag;
+    private AlertDialog downloadDialog, updateloadDialog;
+    private TextView tvcode;
 
     private static final int DOWN_NOSDCARD = 0;
     private static final int DOWN_UPDATE = 1;
@@ -105,12 +110,19 @@ public class LoginMainActivity extends BaseFrangmentActivity {
     private static final int DIALOG_TYPE_LATEST = 0;
     private static final int DIALOG_TYPE_FAIL = 1;
 
-    protected int progress;
-    protected String apkFileSize;
-    protected String tmpFileSize;
+    // 成功
+    private static final int WHAT_SUCCESS = 1;
+    // 合成失败
+    private static final int WHAT_FAIL_PATCH = 0;
+
+    protected int progress, updateProgress;
+    protected String apkFileSize, apkUpdateFileSize;
+    protected String tmpFileSize, tmpUpdateFileSize;
     protected String savePath;
     protected String apkFilePath;
     protected String tmpFilePath;
+
+    private String patchPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +138,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         }
         getViews();
         initViews();
-        checkAppVersion(false);
+        checkAppVersion(true);
         String name = sp.getString("username", "");
         String passwd = sp.getString("passwd", "");
         boolean choseRemember = sp.getBoolean("remember", false);
@@ -183,6 +195,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         btnLogin = (Button) findViewById(R.id.btnLogin);
         checkboxopen = (CheckBox) findViewById(R.id.checkboxopen);
         image_login = (ImageView) findViewById(R.id.image_login);
+        tvcode = (TextView) findViewById(R.id.tvcode);
     }
 
     /**
@@ -462,6 +475,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                             getPackageInfo(getPackageName(), 0);
             curVersionName = info.versionName;
             curVersionCode = info.versionCode;
+            tvcode.setText("v" + curVersionName);
             spUtils.put(LoginMainActivity.this, "curVersionCode", curVersionName);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace(System.err);
@@ -503,8 +517,31 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                         spUtils.put(LoginMainActivity.this, "applicationreason", reason);
                         String versioncode = String.valueOf(curVersionName);
                         if (!versioncode.equals(vercode)) {
-                            String scode = "需要更新到" + vercode;
-                            spUtils.put(getApplicationContext(), "Applicationscode", scode);
+                            if (versioncode.equals("1.0.0")) {
+                                patchPath = "http://owrlsx373.bkt.clouddn.com/patch.patch";
+                                showUpdateApk("1.0.1");
+                                return;
+                            } else if (versioncode.equals("1.0.1")) {
+                                patchPath = "http://owrlsx373.bkt.clouddn.com/patch1.patch";
+                                showUpdateApk("1.0.2");
+                                return;
+                            } else if (versioncode.equals("1.0.2")) {
+                                patchPath = "http://owrlsx373.bkt.clouddn.com/patch2.patch";
+                                showUpdateApk("1.0.3");
+                                return;
+                            } else if (versioncode.equals("1.0.3")) {
+                                patchPath = "http://owrlsx373.bkt.clouddn.com/patch3.patch";
+                                showUpdateApk("1.0.4");
+                                return;
+                            } else if (versioncode.equals("1.0.4")) {
+                                patchPath = "http://owrlsx373.bkt.clouddn.com/patch4.patch";
+                                showUpdateApk("1.0.5");
+                                return;
+                            } else if (versioncode.equals("1.0.5")) {
+                                patchPath = "http://owrlsx373.bkt.clouddn.com/patch5.patch";
+                                showUpdateApk("1.0.6");
+                                return;
+                            }
 //                            showNoticeDialog(0, slience);
                         } else {
                             if (!slience) {
@@ -539,6 +576,26 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         } else {
             ToastUtils.ShowToastMessage("当前网络不可用，请重新尝试", LoginMainActivity.this);
         }
+    }
+
+    private void showUpdateApk(String vCode) {
+        getSelfApkPath();
+//                setDate();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("软件版本更新");
+        builder.setMessage("增量更新：v" + vCode + "版本");
+        builder.setPositiveButton("立即更新",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        showuupdateDownloadDialog(1);
+                    }
+                });
+        noticeDialog = builder.create();
+        noticeDialog.setCanceledOnTouchOutside(false);
+        noticeDialog.setCancelable(false);
+        noticeDialog.show();
     }
 
     /**
@@ -759,6 +816,214 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                     "application/vnd.android.package-archive");
         }
         startActivity(i);
+    }
+
+    private void showuupdateDownloadDialog(int focuseUpdate) {
+        AlertDialog.Builder buildupdate = new AlertDialog.Builder(this);
+        buildupdate.setTitle("正在下载新版本");
+        final LayoutInflater inflater = LayoutInflater.from(this);
+        View v = inflater.inflate(R.layout.update_progress, null);
+        nProgress = (ProgressBar) v.findViewById(R.id.update_progress);
+        nProgressText = (TextView) v.findViewById(R.id.update_progress_text);
+        buildupdate.setView(v);
+        if (focuseUpdate == 0) {
+            buildupdate.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    dialog.dismiss();
+                    inupdateFlag = true;
+                }
+            });
+        }
+        updateloadDialog = buildupdate.create();
+        updateloadDialog.setCanceledOnTouchOutside(false);
+        updateloadDialog.setCancelable(focuseUpdate != 1);
+        updateloadDialog.show();
+        updateLoadApk();
+    }
+
+    private Thread updateLoadThread;
+
+    private void updateLoadApk() {
+        updateLoadThread = new Thread(mupdateApkRunnable);
+        updateLoadThread.start();
+    }
+
+    /**
+     * 开启线程更新app
+     */
+    private Runnable mupdateApkRunnable = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                String apkName = "CLApp_" + "Dfapp" + ".patch";
+                // 判断是否挂载了SD卡
+                String storageState = Environment.getExternalStorageState();
+                if (storageState.equals(Environment.MEDIA_MOUNTED)) {
+                    savePath = Environment.getExternalStorageDirectory()
+                            .getAbsolutePath() + "/dfAppupdate/";
+                    File file = new File(savePath);
+                    if (!file.exists()) {
+                        file.mkdirs();
+                    }
+                    apkFilePath = savePath + apkName;
+                }
+                // 没有挂载SD卡，无法下载文件
+                if (apkFilePath == null || apkFilePath == "") {
+                    mUpdateHandler.sendEmptyMessage(DOWN_NOSDCARD);
+                    return;
+                }
+                File ApkFile = new File(apkFilePath);
+                // 是否已下载更新文件
+                if (ApkFile.exists()) {
+                    updateloadDialog.dismiss();
+//                    installApk();
+                    new PatchTask().execute();
+                    return;
+                }
+                // 输出临时下载文件
+                File tmpFile = new File(apkFilePath);
+                FileOutputStream fos = new FileOutputStream(tmpFile);
+                sp = LoginMainActivity.this.getSharedPreferences("my_sp", 0);
+                String apkpath = patchPath;
+                URL url = new URL(apkpath);
+                HttpURLConnection conn = (HttpURLConnection) url
+                        .openConnection();
+                conn.connect();
+                int length = conn.getContentLength();
+                InputStream is = conn.getInputStream();
+                // 显示文件大小格式：2个小数点显示
+                DecimalFormat df = new DecimalFormat("0.00");
+                // 进度条下面显示的总文件大小
+                apkUpdateFileSize = df.format((float) length / 1024 / 1024) + "MB";
+                int count = 0;
+                byte buf[] = new byte[1024];
+                do {
+                    int numread = is.read(buf);
+                    count += numread;
+                    // 进度条下面显示的当前下载文件大小
+                    tmpUpdateFileSize = df.format((float) count / 1024 / 1024) + "MB";
+                    // 当前进度值
+                    updateProgress = (int) (((float) count / length) * 100);
+                    // 更新进度
+                    mUpdateHandler.sendEmptyMessage(DOWN_UPDATE);
+                    if (numread <= 0) {
+                        // 下载完成 - 将临时下载文件转成APK文件
+                        if (tmpFile.renameTo(ApkFile)) {
+                            // 通知安装
+                            mUpdateHandler.sendEmptyMessage(DOWN_OVER);
+                        }
+                        break;
+                    }
+                    fos.write(buf, 0, numread);
+                } while (!interceptFlag);// 点击取消就停止下载
+                fos.close();
+                is.close();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    private Handler mUpdateHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case DOWN_UPDATE:
+                    nProgress.setProgress(updateProgress);
+                    nProgressText.setText(tmpUpdateFileSize + "/" + apkUpdateFileSize);
+                    break;
+                case DOWN_OVER:
+                    updateloadDialog.dismiss();
+//                    installApk();
+                    new PatchTask().execute();
+                    break;
+                case DOWN_NOSDCARD:
+                    updateloadDialog.dismiss();
+                    ToastUtils.ShowToastMessage("无法下载安装文件，请检查SD卡是否挂载"
+                            , LoginMainActivity.this);
+                    break;
+            }
+        }
+    };
+
+    private class PatchTask extends AsyncTask<String, Void, Integer> {
+
+        @Override
+        protected Integer doInBackground(String... params) {
+            final String
+//                    appDir,
+                    newDir, patchDir;
+
+            try {
+                // 指定包名的程序源文件路径
+                sp = LoginMainActivity.this.getSharedPreferences("my_sp", 0);
+                String infosouDir = sp.getString("infosouDir", "");
+//                appDir = Environment.getExternalStorageDirectory()
+//                        .getAbsolutePath() + "/CL/Update/dfAPP_2017-09-15_13130_v1.0.0_ali.apk";
+                newDir = Environment.getExternalStorageDirectory()
+                        .getAbsolutePath() + "/dfAppupdate/newPatchdaff.apk";
+                patchDir = Environment.getExternalStorageDirectory()
+                        .getAbsolutePath() + "/dfAppupdate/" + "CLApp_" +
+                        "Dfapp" + ".patch";
+//                Log.i("jw", "newapp:" + newDir + ",oldapp:" + appDir);
+                File oldAppFile = new File(infosouDir);
+                File patchFile = new File(patchDir);
+                final File newFile = new File(newDir);
+                if (!patchFile.exists()) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ToastUtils.ShowToastMessage("文件不存在...", LoginMainActivity.this);
+                        }
+                    });
+                    return WHAT_FAIL_PATCH;
+                }
+
+                int result = PatchUtils.getInstance().patch(infosouDir, newDir, patchDir);
+                if (result == 0) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "合成APK成功", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setDataAndType(Uri.parse("file://" + newFile.toString()),
+                                    "application/vnd.android.package-archive");
+                            startActivity(intent);
+                        }
+                    });
+                    FileUtils.deleteFile(patchDir);
+                    FileUtils.deleteFile(newDir);
+                    return WHAT_SUCCESS;
+                } else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ToastUtils.ShowToastMessage("合成APK失败", LoginMainActivity.this);
+                        }
+                    });
+                    return WHAT_FAIL_PATCH;
+                }
+            } catch (Exception e) {
+                Log.i("jw", "error:" + Log.getStackTraceString(e));
+            }
+            return WHAT_FAIL_PATCH;
+        }
+    }
+
+    //获取本应用的apk包路径
+    public String getSelfApkPath() {
+        List<ApplicationInfo> installList = getPackageManager().getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES);
+        for (int i = 0; i < installList.size(); i++) {
+            ApplicationInfo info = installList.get(i);
+            if (info.packageName.equals(getPackageName())) {
+                Log.i("jw", "publicdir:" + info.publicSourceDir + ",sourcedir:" + info.sourceDir);
+                spUtils.put(this, "infosouDir", info.sourceDir.toString());
+                return info.sourceDir;
+            }
+        }
+        return null;
     }
 
     @Override
