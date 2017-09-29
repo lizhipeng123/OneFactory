@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
@@ -84,7 +86,9 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     int pageIndex = 0;
     int pageCount;
     private String configid;
-
+    private static final int DOWN_NOSDCARD = 0;
+    private static final int DOWN_NO = 1;
+    private static final int DOWN_ERROR = 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -202,23 +206,23 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                     Thread.sleep(2000);
                                     if (mListData.size() != 0) {
                                         Looper.prepare();
-                                        ToastUtils.ShowToastMessage("写入成功", SignDetailActivity.this);
                                         SignDetailExcelUtil.writeExcel(SignDetailActivity.this,
                                                 mListData,
                                                 "dfsignexcel+" + new Date().toString());
                                         progressDialog.dismiss();
+                                        mSaveHandler.sendEmptyMessage(DOWN_NOSDCARD);
                                         Looper.loop();
                                     } else {
                                         Looper.prepare();
-                                        ToastUtils.ShowToastMessage("没有数据", SignDetailActivity.this);
                                         progressDialog.dismiss();
+                                        mSaveHandler.sendEmptyMessage(DOWN_NO);
                                         Looper.loop();
                                     }
                                 } catch (Exception e) {
                                     Looper.prepare();
-                                    ToastUtils.ShowToastMessage("写入失败", SignDetailActivity.this);
                                     e.printStackTrace();
                                     progressDialog.dismiss();
+                                    mSaveHandler.sendEmptyMessage(DOWN_ERROR);
                                     Looper.loop();
                                 }
                             }
@@ -237,6 +241,22 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         });
         popupMenu.show();
     }
+
+    private Handler mSaveHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case DOWN_NOSDCARD:
+                    ToastUtils.ShowToastMessage("保存成功，请在Excel文件中查看",SignDetailActivity.this);
+                    break;
+                case DOWN_NO:
+                    ToastUtils.ShowToastMessage("没有数据",SignDetailActivity.this);
+                    break;
+                case DOWN_ERROR:
+                    ToastUtils.ShowToastMessage("保存失败",SignDetailActivity.this);
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onClick(View v) {

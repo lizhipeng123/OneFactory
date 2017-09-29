@@ -4,7 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -13,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.commo.CommoditySqlActivity;
 import com.daoran.newfactory.onefactory.adapter.SqlCarApplyAdapter;
 import com.daoran.newfactory.onefactory.base.BaseListActivity;
 import com.daoran.newfactory.onefactory.bean.SqlCarApplyBean;
@@ -52,6 +55,10 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
     private SharedPreferences sp;//取值地址
     private SPUtils spUtils;//存储上传地址
     private Button btnExcel;//点击保存Excel控件
+
+    private static final int DOWN_NOSDCARD = 0;
+    private static final int DOWN_NO = 1;
+    private static final int DOWN_ERROR = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -260,23 +267,23 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                             Thread.sleep(2000);
                             if(dataBeenlist.size()!=0){
                                 Looper.prepare();
-                                ToastUtils.ShowToastMessage("写入成功", SqlcarApplyActivity.this);
                                 ExcelUtil.writeExcel(SqlcarApplyActivity.this,
                                         dataBeenlist,
                                         "dfcarexcel+" + new Date().toString());
                                 progressDialog.dismiss();
+                                mSaveHandler.sendEmptyMessage(DOWN_NOSDCARD);
                                 Looper.loop();
                             }else{
                                 Looper.prepare();
-                                ToastUtils.ShowToastMessage("没有数据", SqlcarApplyActivity.this);
                                 progressDialog.dismiss();
+                                mSaveHandler.sendEmptyMessage(DOWN_NO);
                                 Looper.loop();
                             }
                         } catch (Exception e) {
                             Looper.prepare();
-                            ToastUtils.ShowToastMessage("写入失败", SqlcarApplyActivity.this);
                             e.printStackTrace();
                             progressDialog.dismiss();
+                            mSaveHandler.sendEmptyMessage(DOWN_ERROR);
                             Looper.loop();
                         }
                     }
@@ -285,4 +292,20 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                 break;
         }
     }
+
+    private Handler mSaveHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case DOWN_NOSDCARD:
+                    ToastUtils.ShowToastMessage("保存成功，请在Excel文件中查看",SqlcarApplyActivity.this);
+                    break;
+                case DOWN_NO:
+                    ToastUtils.ShowToastMessage("没有数据",SqlcarApplyActivity.this);
+                    break;
+                case DOWN_ERROR:
+                    ToastUtils.ShowToastMessage("保存失败",SqlcarApplyActivity.this);
+                    break;
+            }
+        }
+    };
 }

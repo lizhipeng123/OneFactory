@@ -9,7 +9,9 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
@@ -59,9 +61,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -113,6 +113,10 @@ public class ProductionActivity extends BaseFrangmentActivity
     private boolean flagmonthsize;
     private String configid;
     private boolean flagblack;
+
+    private static final int DOWN_NOSDCARD = 0;
+    private static final int DOWN_NO = 1;
+    private static final int DOWN_ERROR = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -2141,27 +2145,24 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     Thread.sleep(2000);
                                     if (detailBeenList.size() != 0) {
                                         Looper.prepare();
-                                        ToastUtils.ShowToastMessage("写入成功",
-                                                ProductionActivity.this);
                                         ProductionExcelUtil.writeExcel(ProductionActivity.this,
                                                 detailBeenList,
                                                 "dfProExcel+" + new Date().toString());
                                         progressDialog.dismiss();
+                                        mSaveHandler.sendEmptyMessage(DOWN_NOSDCARD);
                                         Looper.loop();
 
                                     } else {
                                         Looper.prepare();
-                                        ToastUtils.ShowToastMessage("没有数据",
-                                                ProductionActivity.this);
                                         progressDialog.dismiss();
+                                        mSaveHandler.sendEmptyMessage(DOWN_NO);
                                         Looper.loop();
                                     }
                                 } catch (Exception e) {
                                     Looper.prepare();
-                                    ToastUtils.ShowToastMessage("写入失败",
-                                            ProductionActivity.this);
                                     e.printStackTrace();
                                     progressDialog.dismiss();
+                                    mSaveHandler.sendEmptyMessage(DOWN_ERROR);
                                     Looper.loop();
                                 }
                             }
@@ -2180,6 +2181,22 @@ public class ProductionActivity extends BaseFrangmentActivity
         });
         popupMenu.show();
     }
+
+    private Handler mSaveHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case DOWN_NOSDCARD:
+                    ToastUtils.ShowToastMessage("保存成功，请在Excel文件中查看",ProductionActivity.this);
+                    break;
+                case DOWN_NO:
+                    ToastUtils.ShowToastMessage("没有数据",ProductionActivity.this);
+                    break;
+                case DOWN_ERROR:
+                    ToastUtils.ShowToastMessage("保存失败",ProductionActivity.this);
+                    break;
+            }
+        }
+    };
 
     /**
      * 判断软键盘是否弹出

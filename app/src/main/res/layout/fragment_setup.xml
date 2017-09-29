@@ -78,7 +78,7 @@
                     android:id="@+id/tvVersion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="检查新版本"
+                    android:text="全量更新"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen_55sp" />
 
@@ -197,7 +197,8 @@
                 android:paddingBottom="@dimen/dimen_40"
                 android:paddingLeft="@dimen/dimen_30"
                 android:paddingRight="@dimen/dimen_30"
-                android:paddingTop="@dimen/dimen_40">
+                android:paddingTop="@dimen/dimen_40"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tvPhoto"
@@ -278,7 +279,8 @@
                 android:paddingBottom="@dimen/dimen_40"
                 android:paddingLeft="@dimen/dimen_30"
                 android:paddingRight="@dimen/dimen_30"
-                android:paddingTop="@dimen/dimen_40">
+                android:paddingTop="@dimen/dimen_40"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tvYunxin"

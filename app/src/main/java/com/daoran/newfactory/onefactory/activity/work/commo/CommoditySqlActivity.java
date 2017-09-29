@@ -8,7 +8,9 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
@@ -97,6 +99,10 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private int pageIndex = 0;//初始显示的页数
     private String configid;
     private boolean flagblack;
+
+    private static final int DOWN_NOSDCARD = 0;
+    private static final int DOWN_NO = 1;
+    private static final int DOWN_ERROR = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -427,26 +433,23 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                     Thread.sleep(2000);
                                     if (dataBeen.size() != 0) {
                                         Looper.prepare();
-                                        ToastUtils.ShowToastMessage("写入成功",
-                                                CommoditySqlActivity.this);
                                         CommodityExcelUtil.writeExcel(CommoditySqlActivity.this,
                                                 dataBeen,
                                                 "dfCommoExcel+" + new Date().toString());
                                         progressDialog.dismiss();
+                                        mSaveHandler.sendEmptyMessage(DOWN_NOSDCARD);
                                         Looper.loop();
                                     } else {
                                         Looper.prepare();
-                                        ToastUtils.ShowToastMessage("没有数据",
-                                                CommoditySqlActivity.this);
                                         progressDialog.dismiss();
+                                        mSaveHandler.sendEmptyMessage(DOWN_NO);
                                         Looper.loop();
                                     }
                                 } catch (Exception e) {
                                     Looper.prepare();
-                                    ToastUtils.ShowToastMessage("写入失败",
-                                            CommoditySqlActivity.this);
                                     e.printStackTrace();
                                     progressDialog.dismiss();
+                                    mSaveHandler.sendEmptyMessage(DOWN_ERROR);
                                     Looper.loop();
                                 }
                             }
@@ -465,6 +468,22 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         });
         popupMenu.show();
     }
+
+    private Handler mSaveHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case DOWN_NOSDCARD:
+                    ToastUtils.ShowToastMessage("保存成功，请在Excel文件中查看",CommoditySqlActivity.this);
+                    break;
+                case DOWN_NO:
+                    ToastUtils.ShowToastMessage("没有数据",CommoditySqlActivity.this);
+                    break;
+                case DOWN_ERROR:
+                    ToastUtils.ShowToastMessage("保存失败",CommoditySqlActivity.this);
+                    break;
+            }
+        }
+    };
 
     /**
      * 查询按钮弹出框
