@@ -514,111 +514,33 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                         if (!versioncode.equals(vercode)) {
                             if (versioncode.equals("1.0.0")) {
                                 patchPath = "http://owrlsx373.bkt.clouddn.com/patch.patch";
-                                try {
-                                    URL urll = new URL(patchPath);
-                                    HttpURLConnection conn = (HttpURLConnection) urll.openConnection();
-                                    Long toasize = Long.parseLong(conn.getHeaderField("Content-Length"));
-                                    if (toasize > 30) {
-                                        showUpdateApk("1.0.1");
-                                        spUtils.put(getApplicationContext(), "Applicationscode", "新版本: v" + vercode);
-                                    } else {
-                                        ToastUtils.ShowToastMessage("已是最新版本", LoginMainActivity.this);
-                                    }
-                                } catch (MalformedURLException e) {
-                                    e.printStackTrace();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                                showUpdateApk("1.0.1");
+                                spUtils.put(getApplicationContext(), "Applicationscode", "新版本: v" + vercode);
                                 return;
                             } else if (versioncode.equals("1.0.1")) {
                                 patchPath = "http://owrlsx373.bkt.clouddn.com/patch1.patch";
-                                try {
-                                    URL urll = new URL(patchPath);
-                                    HttpURLConnection conn = (HttpURLConnection) urll.openConnection();
-                                    Long toasize = Long.parseLong(conn.getHeaderField("Content-Length"));
-                                    if (toasize > 30) {
-                                        showUpdateApk("1.0.2");
-                                        spUtils.put(getApplicationContext(), "Applicationscode", "新版本: v" + vercode);
-                                    } else {
-                                        ToastUtils.ShowToastMessage("已是最新版本", LoginMainActivity.this);
-                                    }
-                                } catch (MalformedURLException e) {
-                                    e.printStackTrace();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                                showUpdateApk("1.0.2");
+                                spUtils.put(getApplicationContext(), "Applicationscode", "新版本: v" + vercode);
                                 return;
                             } else if (versioncode.equals("1.0.2")) {
                                 patchPath = "http://owrlsx373.bkt.clouddn.com/patch2.patch";
-                                try {
-                                    URL urll = new URL(patchPath);
-                                    HttpURLConnection conn = (HttpURLConnection) urll.openConnection();
-                                    Long toasize = Long.parseLong(conn.getHeaderField("Content-Length"));
-                                    if (toasize > 30) {
-                                        showUpdateApk("1.0.3");
-                                        spUtils.put(getApplicationContext(), "Applicationscode", "新版本: v" + vercode);
-                                    } else {
-                                        ToastUtils.ShowToastMessage("已是最新版本", LoginMainActivity.this);
-                                    }
-                                } catch (MalformedURLException e) {
-                                    e.printStackTrace();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                                showUpdateApk("1.0.3");
+                                spUtils.put(getApplicationContext(), "Applicationscode", "新版本: v" + vercode);
                                 return;
                             } else if (versioncode.equals("1.0.3")) {
                                 patchPath = "http://owrlsx373.bkt.clouddn.com/patch3.patch";
-                                try {
-                                    URL urll = new URL(patchPath);
-                                    HttpURLConnection conn = (HttpURLConnection) urll.openConnection();
-                                    Long toasize = Long.parseLong(conn.getHeaderField("Content-Length"));
-                                    if (toasize > 30) {
-                                        showUpdateApk("1.0.4");
-                                        spUtils.put(getApplicationContext(), "Applicationscode", "新版本: v" + vercode);
-                                    } else {
-                                        ToastUtils.ShowToastMessage("已是最新版本", LoginMainActivity.this);
-                                    }
-                                } catch (MalformedURLException e) {
-                                    e.printStackTrace();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                                showUpdateApk("1.0.4");
+                                spUtils.put(getApplicationContext(), "Applicationscode", "新版本: v" + vercode);
                                 return;
                             } else if (versioncode.equals("1.0.4")) {
                                 patchPath = "http://owrlsx373.bkt.clouddn.com/patch4.patch";
-                                try {
-                                    URL urll = new URL(patchPath);
-                                    HttpURLConnection conn = (HttpURLConnection) urll.openConnection();
-                                    Long toasize = Long.parseLong(conn.getHeaderField("Content-Length"));
-                                    if (toasize > 30) {
-                                        showUpdateApk("1.0.5");
-                                        spUtils.put(getApplicationContext(), "Applicationscode", "新版本: v" + vercode);
-                                    } else {
-                                        ToastUtils.ShowToastMessage("已是最新版本", LoginMainActivity.this);
-                                    }
-                                } catch (MalformedURLException e) {
-                                    e.printStackTrace();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                                showUpdateApk("1.0.5");
+                                spUtils.put(getApplicationContext(), "Applicationscode", "新版本: v" + vercode);
                                 return;
                             } else if (versioncode.equals("1.0.5")) {
                                 patchPath = "http://owrlsx373.bkt.clouddn.com/patch5.patch";
-                                try {
-                                    URL urll = new URL(patchPath);
-                                    HttpURLConnection conn = (HttpURLConnection) urll.openConnection();
-                                    Long toasize = Long.parseLong(conn.getHeaderField("Content-Length"));
-                                    if (toasize > 30) {
-                                        showUpdateApk("1.0.6");
-                                        spUtils.put(getApplicationContext(), "Applicationscode", "新版本: v" + vercode);
-                                    } else {
-                                        ToastUtils.ShowToastMessage("已是最新版本", LoginMainActivity.this);
-                                    }
-                                } catch (MalformedURLException e) {
-                                    e.printStackTrace();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                                showUpdateApk("1.0.6");
+                                spUtils.put(getApplicationContext(), "Applicationscode", "新版本: v" + vercode);
                                 return;
                             }
                         } else {
