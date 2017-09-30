@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -36,6 +37,7 @@ import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.Listener.XXListener;
 import com.daoran.newfactory.onefactory.util.file.json.StringUtil;
 import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
+import com.daoran.newfactory.onefactory.util.file.setting.FileUtils;
 import com.daoran.newfactory.onefactory.view.listview.ScrollGridView;
 import com.google.gson.Gson;
 
@@ -121,6 +123,13 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         initViews();
         setPhoneMenu();
         setListener();
+        String newDir = Environment.getExternalStorageDirectory()
+                .getAbsolutePath() + "/dfAppupdate/newPatchdaff.apk";//创建的新apk地址
+        String patchDir = Environment.getExternalStorageDirectory()
+                .getAbsolutePath() + "/dfAppupdate/" + "CLApp_" +
+                "Dfapp" + ".patch";//已转到本地的增量包patch
+        FileUtils.deleteFile(patchDir);
+        FileUtils.deleteFile(newDir);
         return view;
     }
 
