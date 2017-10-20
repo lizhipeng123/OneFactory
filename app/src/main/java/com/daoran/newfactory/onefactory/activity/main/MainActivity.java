@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.TabHostBean;
-import com.daoran.newfactory.onefactory.fragment.DrawerFragment;
 import com.daoran.newfactory.onefactory.fragment.InformationFragment;
 import com.daoran.newfactory.onefactory.fragment.OfficeFragment;
 import com.daoran.newfactory.onefactory.fragment.SetupFragment;
@@ -32,48 +31,41 @@ import java.util.List;
  * 主框架
  */
 public class MainActivity extends BaseFrangmentActivity {
-    private FragmentTabHost mTabHost;
-    private LayoutInflater mInflater;
-    private AlertDialog noticeDialog;
-    private List<TabHostBean> mTabs = new ArrayList<>(4);
-    private DrawerFragment drawerFragment;
-    private Fragment navigation_drawer;
+    private FragmentTabHost mTabHost;//底部切换模块
+    private LayoutInflater mInflater;//用来查找res/layout下的xml布局,并且实例化
+    private AlertDialog noticeDialog;//退出弹窗
+    private List<TabHostBean> mTabs = new ArrayList<>(4);//便签组
+    //    private DrawerFragment drawerFragment;
+    //    private Fragment navigation_drawer;
     String idd;
     int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        id = getIntent().getIntExtra(idd, 0);
-        getViews();
+        setContentView(R.layout.activity_main);//加载主页面
+        id = getIntent().getIntExtra(idd, 0);//接收添加账号传过来的id以便刷新本页
+        getViews();//调用实例化控件方法
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //虚拟键盘按回退退出提示
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             // 创建退出对话框
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("系统提示");
-            builder.setMessage("确定要退出吗");
+            builder.setTitle("系统提示");//dialog标题
+            builder.setMessage("确定要退出吗");//dialog内容
+            //点击确定按钮退出程序
             builder.setPositiveButton("确定"
                     , new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            int currentVersion = android.os.Build.VERSION.SDK_INT;
-                            if (currentVersion > android.os.Build.VERSION_CODES.ECLAIR_MR1) {
-                                Intent startMain = new Intent(Intent.ACTION_MAIN);
-                                startMain.addCategory(Intent.CATEGORY_HOME);
-                                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(startMain);
-                                System.exit(0);
-                            } else {//android2.1
-                                ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-                                am.restartPackage(getPackageName());
-                            }
-                            dialog.dismiss();
+                            System.exit(0);//终止程序（系统方法，强制性）
+                            dialog.dismiss();//关闭dialog
                         }
                     });
+            //点击取消按钮则关闭dialog
             builder.setNegativeButton("取消",
                     new DialogInterface.OnClickListener() {
                         @Override
@@ -82,47 +74,24 @@ public class MainActivity extends BaseFrangmentActivity {
                         }
                     });
             noticeDialog = builder.create();
-            noticeDialog.setCanceledOnTouchOutside(false);
-            noticeDialog.show();
+            noticeDialog.setCanceledOnTouchOutside(false);//点击屏幕dialog不会消失，只有点击物理返回键才会消失
+            noticeDialog.show();//使回退时，弹窗可以正常运行
         }
         return false;
     }
 
     /**
-     * 监听对话框里面的button点击事件
-     */
-    DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case AlertDialog.BUTTON_POSITIVE:// "确认"按钮退出程序
-                    int currentVersion = android.os.Build.VERSION.SDK_INT;
-                    if (currentVersion > android.os.Build.VERSION_CODES.ECLAIR_MR1) {
-                        Intent startMain = new Intent(Intent.ACTION_MAIN);
-                        startMain.addCategory(Intent.CATEGORY_HOME);
-                        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(startMain);
-                        System.exit(0);
-                    } else {//android2.1
-                        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-                        am.restartPackage(getPackageName());
-                    }
-                    break;
-                case AlertDialog.BUTTON_NEGATIVE:// "取消"第二个按钮取消对话框
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
-
-    /**
      * 操作控件
      */
     private void getViews() {
+        //添加侧滑页面
 //        drawerFragment = (DrawerFragment) getSupportFragmentManager().
 //                findFragmentById(R.id.navigation_drawer);
 //        drawerFragment.setUp(R.id.navigation_drawer,
 //                (DrawerLayout) findViewById(R.id.activity_main));
+        /**
+         * bean中添加tab中要显示的文字，图片，内容
+         */
         TabHostBean tab_work = new TabHostBean(R.string.work,
                 R.drawable.selector_icon_work, WorkFragment.class);
         TabHostBean tab_office = new TabHostBean(R.string.office,
@@ -131,38 +100,43 @@ public class MainActivity extends BaseFrangmentActivity {
                 R.drawable.selector_icon_people, InformationFragment.class);
         TabHostBean tab_setup = new TabHostBean(R.string.setup,
                 R.drawable.selector_icon_my, SetupFragment.class);
-        mTabs.add(tab_work);
-        mTabs.add(tab_office);
-        mTabs.add(tab_information);
-        mTabs.add(tab_setup);
+        //list中绑定tabhost相关联的名称，图片，页面
+        mTabs.add(tab_work);//绑定工作页面相关信息
+        mTabs.add(tab_office);//绑定在办页面相关信息
+        mTabs.add(tab_information);//绑定资讯页面相关信息
+        mTabs.add(tab_setup);//绑定设置页面相关信息
 
-        mInflater = LayoutInflater.from(this);
-        mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
-        mTabHost.setup(this, getSupportFragmentManager(), R.id.flLayoutTabcontent);
-        for (TabHostBean bean : mTabs) {
+        mInflater = LayoutInflater.from(this);//实例化当前页面的xml布局
+        mTabHost = (FragmentTabHost)
+                findViewById(android.R.id.tabhost);//实例化tabhost对象
+        mTabHost.setup(this, getSupportFragmentManager(),
+                R.id.flLayoutTabcontent);//设置替换哪个布局
+        for (TabHostBean bean : mTabs) {//为每一个tab按钮设置图标，文字，内容
             TabHost.TabSpec tabSpec = mTabHost.newTabSpec(getString(bean.getTitle()));
-            tabSpec.setIndicator(getTabItemView(bean));
-            mTabHost.addTab(tabSpec, bean.getFragment(), null);
+            tabSpec.setIndicator(getTabItemView(bean));//添加图片
+            mTabHost.addTab(tabSpec, bean.getFragment(), null);//添加页面
         }
+        //设置tab边框颜色
         mTabHost.getTabWidget().setDividerDrawable(R.color.transparent);
-        if(id==1){
-            Fragment workFragment = new WorkFragment();
+        if (id == 1) {//刷新当前页面
+            Fragment workFragment = new WorkFragment();//实例化工作页面，并且刷新
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.flLayoutTabcontent,workFragment);
+            fragmentTransaction.replace(R.id.flLayoutTabcontent, workFragment);//在本页面中刷新workFragment
         }
     }
 
-    public void setChantWrokFragment() {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-//        ft.replace(R.id.mainLayout,WorkFragment.class);
-        ft.addToBackStack(null);
-        ft.commit();
-    }
+//    public void setChantWrokFragment() {
+//        FragmentManager fm = getSupportFragmentManager();
+//        FragmentTransaction ft = fm.beginTransaction();
+////        ft.replace(R.id.mainLayout,WorkFragment.class);
+//        ft.addToBackStack(null);
+//        ft.commit();
+//    }
 
     /**
-     * 底部菜单项
+     * 加载底部菜单项
+     *
      * @param bean
      * @return
      */

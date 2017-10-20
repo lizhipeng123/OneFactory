@@ -58,15 +58,16 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     Activity mactivity;
     private static final int REFRESH_COMPLETE = 0X110;
     private View view;
-    private LinearLayout llOpenCarDetail;
-    private TextView tvOpenCarDetail;
-    private ImageView ivopenCarDetail;
-    private TextView idworkname;
+    private LinearLayout llOpenCarDetail;//listview中item布局
+    private TextView tvOpenCarDetail;//item中各项功能名称
+    private ImageView ivopenCarDetail;//item中各项功能图片
+    private TextView idworkname;//切换用户的显示文本按钮
     private SharedPreferences sp;
     private SPUtils spUtils;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;//工作模块除了顶部之外的页面layout
     ScrollWrokAdapter adapter;
 
+    /*重新登陆后赋予的权限*/
     protected String[] needPermissions = {
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -76,28 +77,29 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     };
 
     private boolean isNeedCheck = true;
-    private List<WorkBean> workBeen = new ArrayList<WorkBean>();
-    private WorkBean workBean;
-    private ScrollGridView sgv_gridview;
+    private List<WorkBean> workBeen = new ArrayList<WorkBean>();//菜单bean的list集合
+    private WorkBean workBean;//菜单bean实体类
+    private ScrollGridView sgv_gridview;//工作模块显示的各个功能控件
     private String workitemview;
     private String sl;
 
-    private PopupWindow popupWindow;
+    private PopupWindow popupWindow;//长按左侧文本按钮弹出的窗体控件
 
     private static final int PERMISSON_REQUESTCODE = 0;
 
-    private WorkPwSwitchBean workPwSwitchBean;
+    private WorkPwSwitchBean workPwSwitchBean;//保存的用户实体类
     private List<WorkPwSwitchBean.Data> switchBeendatalist
-            = new ArrayList<WorkPwSwitchBean.Data>();
-    private WorkPwSwitchAdapter switchAdapter;
+            = new ArrayList<WorkPwSwitchBean.Data>();//用户实体集合
+    private WorkPwSwitchAdapter switchAdapter;//用户list显示列表
     private DrawerFragment drawerFragment;
+    //工作模块中间gridview每个item显示的图片（已固定要显示的图片）
     private String[] intimage = {String.valueOf(R.mipmap.count_500),
             String.valueOf(R.mipmap.daily),
             String.valueOf(R.mipmap.navigation_20),
             String.valueOf(R.mipmap.prd_220),
             String.valueOf(R.mipmap.regedit_220),
             String.valueOf(R.mipmap.ucar_220)};
-
+    //开启线程刷新当前工作页面
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -118,11 +120,15 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mactivity = getActivity();
+        //加载工作页面
         view = inflater.inflate(R.layout.fragment_work, container, false);
         getViews();
         initViews();
         setPhoneMenu();
         setListener();
+        /**
+         * 登录进来之后删除本机存储中的新版apk与path从增量包
+         */
         String newDir = Environment.getExternalStorageDirectory()
                 .getAbsolutePath() + "/dfAppupdate/newPatchdaff.apk";//创建的新apk地址
         String patchDir = Environment.getExternalStorageDirectory()
@@ -134,7 +140,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     @Override
-    public void onResume() {
+    public void onResume() {//执行完onCreate之后执行此状态
         super.onResume();
         String namebuld = sp.getString("name", "");
         spUtils.put(mactivity, "name", namebuld);
@@ -142,12 +148,12 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             namebuld = "长按重新登录";
         }
         idworkname.setText(namebuld);
-        idworkname.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                drawerFragment.openDeawer();
-            }
-        });
+//        idworkname.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                drawerFragment.openDeawer();
+//            }
+//        });
         spUtils.put(mactivity, "usernamerecoder", namebuld);
         if (isNeedCheck) {
             checkPermissions(needPermissions);
@@ -174,7 +180,11 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 //        drawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) getActivity().findViewById(R.id.activity_main));
     }
 
+    /**
+     * 点击事件
+     */
     private void setListener() {
+        //长按左侧用户名按钮后弹出添加账号或切换用户弹窗
         idworkname.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -182,6 +192,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 return false;
             }
         });
+        //刷新当前页面
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 
@@ -212,11 +223,12 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private List<String> findDeniedPermissions(String[] permissions) {
         List<String> needRequestPermissonList = new ArrayList<String>();
         for (String perm : permissions) {
+            //判断
             if (ContextCompat.checkSelfPermission(mactivity,
                     perm) != PackageManager.PERMISSION_GRANTED
                     || ActivityCompat.shouldShowRequestPermissionRationale(
                     mactivity, perm)) {
-                needRequestPermissonList.add(perm);
+                needRequestPermissonList.add(perm);//集合中添加权限
             }
         }
         return needRequestPermissonList;
@@ -247,7 +259,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     }
                 });
                 thread.start();
-                workBeen.clear();
+                workBeen.clear();//先清空当前用户菜单，防止重复加载
                 String ress = content.replace("\\", "");
                 String ression = StringUtil.sideTrim(ress, "\"");
                 String resscontent = ression.replace("\'", "\"");
@@ -279,7 +291,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     JSONObject jsonObject = new JSONObject(sl);
                     workitemview = jsonObject.getString("text");
                     sgv_gridview = (ScrollGridView) view.findViewById(R.id.sgv_gridview);
-                    sgv_gridview.setAdapter(new ScrollWrokAdapter(getActivity(), workBeen));
+                    sgv_gridview.setAdapter(new ScrollWrokAdapter(getActivity(), workBeen));//填充菜单数据
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -303,13 +315,15 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private void initPopWindow() {
         View contenview = LayoutInflater.from(mactivity.getApplicationContext()).
                 inflate(R.layout.popupwindow_name_switch, null);
+        //设置弹出的用户菜单界面
         popupWindow = new PopupWindow(
                 mactivity.findViewById(R.id.mainLayout), 500, 600, true);
         popupWindow.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
         popupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
-        popupWindow.setContentView(contenview);
+        popupWindow.setContentView(contenview);//加载xml界面
         TextView tvPwSwitch = (TextView) contenview.findViewById(R.id.tvPwSwitch);
         tvPwSwitch.setText("添加账号");
+        //点击添加账号后跳转添加账号页面
         tvPwSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -319,6 +333,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 popupWindow.dismiss();
             }
         });
+        //处理已保存的所有用户列表
         ListView llPwSwitch = (ListView) contenview.findViewById(R.id.llPwSwitch);
         String listwork = sp.getString("workbeenlist", "");
         workPwSwitchBean = new Gson().fromJson(listwork, WorkPwSwitchBean.class);
@@ -333,12 +348,12 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 }
             }
             switchAdapter = new WorkPwSwitchAdapter(mactivity.getApplicationContext(), switchBeendatalist);
-            llPwSwitch.setAdapter(switchAdapter);
+            llPwSwitch.setAdapter(switchAdapter);//填充list
             switchAdapter.setOnXXClickListener(new XXListener() {
                 @Override
                 public void onXXClick() {
                     popupWindow.dismiss();
-                    setPhoneMenu();
+                    setPhoneMenu();//点击某一项时可以切换用户并且刷新页面
                 }
             });
         }
@@ -364,7 +379,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);//新打开的activity关闭后返回的数据
         if (resultCode == 2) {
             if (requestCode == 1) {
                 getViews();

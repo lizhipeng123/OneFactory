@@ -64,7 +64,7 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pwswitch_work);
         sp = getSharedPreferences("my_sp", 0);
-        if (Build.VERSION.SDK_INT >= 21) {//赋予权限，适配6.0以上
+        if (Build.VERSION.SDK_INT >= 21) {//沉浸式标题栏，适配6.0以上
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
@@ -336,12 +336,15 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            //登录按钮
             case R.id.btnLogin:
                 if (validate()) {
-                    //判断软件盘是否弹出
+                    //判断软件盘是否弹出（InputMethodManager为软键盘管理类）
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (imm != null) {
+                    if (imm != null) {//判断为空防止运行时异常
                         if (imm.hideSoftInputFromWindow(v.getWindowToken(), 0)) {
+                            //windowtaken为之前请求显示软件盘的view的windowtaken，0为标记不管任何情况都可以隐藏
+                            // 实际情况是，使用任意布局中已经加载的view的windowtaken都可以隐藏软键盘
                             imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
                                     0);
                         } else {
@@ -352,6 +355,7 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
                     postLogin();
                 }
                 break;
+            //取消按钮（退出当前页）
             case R.id.tvPwSwitchCancle:
                 Intent intent = new Intent(WorkPwSwitchActivity.this, MainActivity.class);
                 intent.putExtra(id, 1);

@@ -125,20 +125,23 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         sp = getSharedPreferences("my_sp", 0);
-        if (Build.VERSION.SDK_INT >= 21) {
+        if (Build.VERSION.SDK_INT >= 21) {//android沉浸式标题栏
             View decorView = getWindow().getDecorView();
+            //View.SYSTEM_UI_FLAG_FULLSCREEN  activity全局显示，但状态栏不会隐藏覆盖
+            //View.SYSTEM_UI_FLAG_LAYOUT_STABLE 防止状态栏隐藏
             int option = View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             decorView.setSystemUiVisibility(option);
+            //设置状态栏颜色
             getWindow().setStatusBarColor(getResources().getColor(R.color.lightblue));
         }
         getViews();
         initViews();
-        checkAppVersion(true);
-        String name = sp.getString("username", "");
-        String passwd = sp.getString("passwd", "");
-        boolean choseRemember = sp.getBoolean("remember", false);
-        boolean choseAutoLogin = sp.getBoolean("autologin", false);
+        checkAppVersion(true);//调用版本更新
+        String name = sp.getString("username", "");//保存的用户名
+        String passwd = sp.getString("passwd", "");//保存的密码
+        boolean choseRemember = sp.getBoolean("remember", false);//保存的记住密码状态
+        boolean choseAutoLogin = sp.getBoolean("autologin", false);//保存的直接登录状态
         if (choseRemember == true) {
             etUsername.setText(name);
             etUsername.setSelection(etUsername.length());
@@ -156,10 +159,11 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                 postLogin();
             }
         }
+        //点击登录按钮的事件
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validate()) {
+                if (validate()) {//判断非空
                     postLogin();
                 }
             }
@@ -200,8 +204,9 @@ public class LoginMainActivity extends BaseFrangmentActivity {
      * 操作控件
      */
     private void initViews() {
-        setEditTextInhibitInputSpeChat(etUsername);
-        setEditTextInhibitInputSpeChat(etPassword);
+        setEditTextInhibitInputSpeChat(etUsername);//用户名调用判断规范方法
+        setEditTextInhibitInputSpeChat(etPassword);//密码调用判断规范方法
+        //picasso加载登录页上方图片，并且处理为圆角
         Picasso.with(LoginMainActivity.this)
                 .load(R.mipmap.daoran)
                 .error(R.mipmap.daoran)
@@ -218,16 +223,18 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         InputFilter filter = new InputFilter() {
             @Override
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                //定义不可输入的字符
                 String speChat = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
                 Pattern pattern = Pattern.compile(speChat);
                 Matcher matcher = pattern.matcher(source.toString());
+                //如果输入有空格或者有以上不可输入字符，则输入框不输入字符
                 if (source.equals(" ") || source.equals("\n") || matcher.find())
                     return "";
                 else
                     return null;
             }
         };
-        editText.setFilters(new InputFilter[]{filter});
+        editText.setFilters(new InputFilter[]{filter});//添加exittext字符过滤
     }
 
     /**
@@ -301,7 +308,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                 dialog.show();
             } else {
                 final ProgressDialog progressDialog = ProgressDialog.show(this,
-                        getResources().getString(R.string.login_his_later), getResources().getString(R.string.logining), false, true);
+                        getResources().getString(R.string.login_his_later), getResources().getString(R.string.logining), false, true);//等待加载弹窗
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
                 params.add(NetUtil.createParam("Logid", etUsername.getText().toString()));
                 params.add(NetUtil.createParam("pwd", etPassword.getText().toString()));
@@ -313,7 +320,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                     public void onSuccess(String content) {
                         super.onSuccess(content);
                         System.out.print(content);
-                        if (!content.equals("null")) {
+                        if (!content.equals("null")) {//如果返回结果不为空则执行方法内部
                             Thread thread = new Thread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -340,6 +347,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                                     String listwork = sp.getString("workbeenlist", "");
                                     workPwSwitchBean = new Gson().fromJson(listwork, WorkPwSwitchBean.class);
                                     //实体类等于空，也就是第一次进的时候，数据是空的
+                                    //第一次加载为空时，添加当前登录人信息到bean类保存
                                     if (workPwSwitchBean == null) {
                                         workPwSwitchBean = new WorkPwSwitchBean();
                                         switchBean = new WorkPwSwitchBean.Data();
@@ -350,7 +358,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                                         switchBean.setPasswork(passwordValue);
                                         switchBeendatalist.add(switchBean);
                                         workPwSwitchBean.setDatas(switchBeendatalist);
-                                    } else {
+                                    } else {//bean不为空时，继续按list顺序添加保存
                                         switchBeendatalist = workPwSwitchBean.getDatas();
                                         switchBean = new WorkPwSwitchBean.Data();
                                         String uuname = userBean.getU_name();
@@ -389,6 +397,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                                     spUtils.put(LoginMainActivity.this, "autologin", false);
                                 }
                                 editor.commit();
+                                //登录成功后，保存用户名与用户ID
                                 spUtils.put(getApplicationContext(), "name", userBean.getU_name());
                                 spUtils.put(getApplicationContext(), "proname", userBean.getU_name());
                                 spUtils.put(getApplicationContext(), "commoname", userBean.getU_name());
@@ -398,6 +407,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                                 bundle.putString("u_name", userBean.getU_name());
                                 intent.putExtras(bundle);
                                 startActivity(intent);
+
                             } else {
                                 ToastUtils.ShowToastMessage(R.string.user_tips, LoginMainActivity.this);
                                 ResponseDialog.closeLoading();
@@ -409,7 +419,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                     }
 
                     @Override
-                    public void onFailure(Throwable error, String content) {
+                    public void onFailure(Throwable error, String content) {//异常
                         super.onFailure(error, content);
                         ToastUtils.ShowToastMessage(R.string.login_has_error, LoginMainActivity.this);
                         Thread thread = new Thread(new Runnable() {
@@ -427,7 +437,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                     }
 
                     @Override
-                    public void onFinish() {
+                    public void onFinish() {//登录成功后所走方法
                         super.onFinish();
                         Thread thread = new Thread(new Runnable() {
                             @Override
@@ -438,6 +448,8 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                                     e.printStackTrace();
                                 }
                                 progressDialog.dismiss();
+
+                                LoginMainActivity.this.finish();
                             }
                         });
                         thread.start();
@@ -449,6 +461,13 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         }
     }
 
+    /**
+     * 比较两个数组
+     *
+     * @param array1
+     * @param array2
+     * @return
+     */
     private static boolean containsAll(String[] array1, String[] array2) {
         for (String str : array2) {
             if (!ArrayUtils.contains(array1, str)) {
@@ -466,8 +485,8 @@ public class LoginMainActivity extends BaseFrangmentActivity {
             PackageInfo info =
                     getPackageManager().
                             getPackageInfo(getPackageName(), 0);
-            curVersionName = info.versionName;
-            curVersionCode = info.versionCode;
+            curVersionName = info.versionName;//版本名称
+            curVersionCode = info.versionCode;//版本号
             tvcode.setText("v" + curVersionName);
             spUtils.put(LoginMainActivity.this, "curVersionCode", curVersionName);
         } catch (PackageManager.NameNotFoundException e) {
@@ -487,6 +506,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                 public void onSuccess(String content) {
                     super.onSuccess(content);
                     System.out.print(content);
+                    //转义字符
                     content = content.replace("{", "{\"");
                     System.out.print(content);
                     content = content.replace("\'", "\"");
@@ -617,7 +637,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         AlertDialog.Builder buildupdate = new AlertDialog.Builder(this);
         buildupdate.setTitle("正在下载新版本");
         final LayoutInflater inflater = LayoutInflater.from(this);
-        View v = inflater.inflate(R.layout.update_progress, null);
+        View v = inflater.inflate(R.layout.update_progress, null);//下载进度条
         nProgress = (ProgressBar) v.findViewById(R.id.update_progress);
         nProgressText = (TextView) v.findViewById(R.id.update_progress_text);
         buildupdate.setView(v);
@@ -633,8 +653,8 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         updateloadDialog = buildupdate.create();
         updateloadDialog.setCanceledOnTouchOutside(false);
         updateloadDialog.setCancelable(focuseUpdate != 1);
-        updateloadDialog.show();
-        updateLoadApk();
+        updateloadDialog.show();//使dialog可以正常运行
+        updateLoadApk();//开启线程下载文件
     }
 
     private Thread updateLoadThread;
@@ -654,24 +674,27 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         @Override
         public void run() {
             try {
-                String apkName = "CLApp_" + "Dfapp" + ".patch";
+                String apkName = "CLApp_" + "Dfapp" + ".patch";//命名patch文件
                 // 判断是否挂载了SD卡
                 String apkpath = patchPath;
-                URL url = new URL(apkpath);
+                URL url = new URL(apkpath);//将地址转化为url路径
                 HttpURLConnection conn = (HttpURLConnection) url
                         .openConnection();
+                //获取apk内容长度
                 Long toasize = Long.parseLong(conn.getHeaderField("Content-Length"));
+                //如果远程文件存在，则进入下面方法进行下载
                 if (toasize > 30) {
                     System.out.println("存在");
                     String storageState = Environment.getExternalStorageState();
                     if (storageState.equals(Environment.MEDIA_MOUNTED)) {
+                        //获取sd卡读写路径
                         savePath = Environment.getExternalStorageDirectory()
                                 .getAbsolutePath() + "/dfAppupdate/";
-                        File file = new File(savePath);
+                        File file = new File(savePath);//将地址转化为file路径
                         if (!file.exists()) {
-                            file.mkdirs();
+                            file.mkdirs();//创建该文件夹
                         }
-                        apkFilePath = savePath + apkName;
+                        apkFilePath = savePath + apkName;//拼接地址与命名
                     }
                     // 没有挂载SD卡，无法下载文件
                     if (apkFilePath == null || apkFilePath == "") {
@@ -679,7 +702,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                         return;
                     }
                     File ApkFile = new File(apkFilePath);
-                    // 是否已下载更新文件
+                    // 是否已下载更新文件，如果已经下载，则关闭进度条弹窗然后合并
                     if (ApkFile.exists()) {
                         updateloadDialog.dismiss();
                         new PatchTask().execute();
@@ -719,7 +742,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                         }
                         fos.write(buf, 0, numread);
                     } while (!interceptFlag);// 点击取消就停止下载
-                    fos.close();
+                    fos.close();//关闭文件传输流
                     is.close();
                 } else {
                     mUpdateHandler.sendEmptyMessage(DOWN_NOUPDATE);
@@ -738,19 +761,21 @@ public class LoginMainActivity extends BaseFrangmentActivity {
     private Handler mUpdateHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case DOWN_UPDATE:
+                case DOWN_UPDATE://正常更新下载
                     nProgress.setProgress(updateProgress);
                     nProgressText.setText(tmpUpdateFileSize + "/" + apkUpdateFileSize);
                     break;
-                case DOWN_OVER:
+                case DOWN_OVER://下载完毕
                     updateloadDialog.dismiss();
                     new PatchTask().execute();
                     break;
+                //sd卡没有找到
                 case DOWN_NOSDCARD:
                     updateloadDialog.dismiss();
                     ToastUtils.ShowToastMessage("无法下载安装文件，请检查SD卡是否挂载"
                             , LoginMainActivity.this);
                     break;
+                //找不到网络中的增量文件
                 case DOWN_NOUPDATE:
                     updateloadDialog.dismiss();
                     ToastUtils.ShowToastMessage("该增量文件不存在", LoginMainActivity.this);
@@ -771,6 +796,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                 // 指定包名的程序源文件路径
                 sp = LoginMainActivity.this.getSharedPreferences("my_sp", 0);
                 String infosouDir = sp.getString("infosouDir", "");
+                //获取到本地的patch文件地址以及命名合并apk的名称地址
                 newDir = Environment.getExternalStorageDirectory()
                         .getAbsolutePath() + "/dfAppupdate/newPatchdaff.apk";//创建的新apk地址
                 patchDir = Environment.getExternalStorageDirectory()
@@ -778,6 +804,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                         "Dfapp" + ".patch";//已转到本地的增量包patch
                 File patchFile = new File(patchDir);
                 final File newFile = new File(newDir);
+                //判断本地增量文件是否存在
                 if (!patchFile.exists()) {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -787,14 +814,16 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                     });
                     return WHAT_FAIL_PATCH;
                 }
-
+                //合并本地apk与远程patch差异包
                 int result = PatchUtils.getInstance().patch(infosouDir, newDir, patchDir);
+                //0为合并成功
                 if (result == 0) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             Toast.makeText(getApplicationContext(), "合成APK成功", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(Intent.ACTION_VIEW);
+                            //合并成功后打开该apk文件进行安装
                             intent.setDataAndType(Uri.parse("file://" + newFile.toString()),
                                     "application/vnd.android.package-archive");
                             startActivity(intent);
@@ -819,10 +848,12 @@ public class LoginMainActivity extends BaseFrangmentActivity {
 
     //获取本应用的apk包路径
     public String getSelfApkPath() {
+        //查询所有已安装的应用程序
         List<ApplicationInfo> installList = getPackageManager().
                 getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES);
-        for (int i = 0; i < installList.size(); i++) {
+        for (int i = 0; i < installList.size(); i++) {//循环所有应用程序
             ApplicationInfo info = installList.get(i);
+            //如果当前应用程序包名和本程序的包名一致则进入方法
             if (info.packageName.equals(getPackageName())) {
                 Log.i("jw", "publicdir:" + info.publicSourceDir + ",sourcedir:" + info.sourceDir);
                 spUtils.put(this, "infosouDir", info.sourceDir.toString());
