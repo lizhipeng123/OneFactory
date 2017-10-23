@@ -34,7 +34,8 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by Jimmy on 2016/10/11 0011.
+ * 自定义日历
+ * Created by （暂隐藏，未使用）
  */
 public class ScheduleFragment extends BaseFragment implements OnCalendarClickListener, View.OnClickListener,
         OnTaskFinishedListener<List<Schedule>>, SelectDateDialog.OnSelectDateListener {

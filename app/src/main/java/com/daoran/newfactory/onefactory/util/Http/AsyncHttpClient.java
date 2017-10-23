@@ -51,6 +51,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.zip.GZIPInputStream;
 
 /**
+ * 核心类，使用HttpClient执行网络请求，提供了get，put，post，delete，head等请求方法
  * @ClassName: AsyncHttpClient
  * @date 2013-4-25 上午9:39:52
  */

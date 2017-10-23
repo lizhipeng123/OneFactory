@@ -69,18 +69,18 @@ import okhttp3.MediaType;
 public class ProductionCopyComfigActivity extends BaseFrangmentActivity
         implements View.OnClickListener {
     private static final String TAG = "configtest";
-    private NoscrollListView mData;
+    private NoscrollListView mData;//主列表listview
     private SyncHorizontalScrollView mHeaderHorizontal;
     private SyncHorizontalScrollView mDataHorizontal;
-    private ImageView ivProductionBack;
+    private ImageView ivProductionBack;//返回图片按钮
     private List<ProductionNewlybooleanBean.DataBean> booleandatelist =
-            new ArrayList<ProductionNewlybooleanBean.DataBean>();
-    private ProductionNewlybooleanBean newlybooleanBean;
+            new ArrayList<ProductionNewlybooleanBean.DataBean>();//新建和复制生产日报时用于判断是否可以同一个人同一款号创建集合
+    private ProductionNewlybooleanBean newlybooleanBean;//新建和复制生产日报时用于判断是否可以同一个人同一款号创建实体
     private List<ProducationCopyNewlyComfigSaveBean> newlyComfigSaveBeen
-            = new ArrayList<ProducationCopyNewlyComfigSaveBean>();
-    private AlertDialog noticeDialog;
-    private Button btnProSave;
-    private MyAdatper comfigAdapter;
+            = new ArrayList<ProducationCopyNewlyComfigSaveBean>();//生产日报复制保存集合
+    private AlertDialog noticeDialog;//退出时是否保存弹出框
+    private Button btnProSave;//保存按钮
+    private MyAdatper comfigAdapter;//新建保存适配列表数据
     private TextView tvconfigone, tvconfigtwo, tvconfigthree, tvconfigfore, tvconfigfive,
             tvconfigsix, tvconfigseven, tvconfigeight, tvconfignine, tvconfigten, tvconfigeleven,
             tvconfigtwtlve, tvconfigtwthreeteen, tvconfigtwforeteen, tvconfigtwfifteen,
@@ -97,13 +97,13 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
             vconfigtwTwentytwo, vconfigtwTwentythree, vconfigtwTwentyfore,
             vconfigtwTwentyfive, vconfigtwTwentysix, vconfigtwTwentyseven,
             vconfigtwTwentyeight, vconfigtwTwentynine, vconfigtwThirty, vconfigtwThirtyone;
-    private SharedPreferences sp;
+    private SharedPreferences sp;//轻量级存储
     private SPUtils spUtils;
     private List<Map<String, Object>> mdate;
     private int year, month, datetime, hour, minute, second;
     int isprodure;
     private List<ProducationCopyDailyBean> dailyBeanList =
-            new ArrayList<ProducationCopyDailyBean>();
+            new ArrayList<ProducationCopyDailyBean>();//生产日报新建保存集合
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +114,8 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
         setNewlyComfig();
         setListener();
         sp = getSharedPreferences("my_sp", 0);
-        String isprodure = sp.getString("isprodure", "");
+        String isprodure = sp.getString("isprodure", "");//款号选择页面选择的工序
+        //如果选择的是裁床，则隐藏掉每日数量的输入框
         if (isprodure.equals("0")) {
             tvconfigone.setVisibility(View.VISIBLE);
             tvconfigtwo.setVisibility(View.VISIBLE);
@@ -319,6 +320,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
 
     /**
      * 控件操作
+     * 默认填充款号选择传过来数据
      */
     private void initViews() {
         mDataHorizontal.setSrollView(mHeaderHorizontal);
@@ -328,7 +330,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                 "请稍候...", "正在查询中...", false, true);
         mdate = getData();
         comfigAdapter = new MyAdatper(this);
-        mData.setAdapter(comfigAdapter);
+        mData.setAdapter(comfigAdapter);//绑定
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -358,21 +360,21 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
      */
     private List<Map<String, Object>> getData() {
         sp = getSharedPreferences("my_sp", 0);
-        String tvnewlydate = sp.getString("copyitem", "");//款号
-        String tvnewlyDocumentary = sp.getString("copyDocumentary", "");//跟单
-        String tvnewlyFactory = sp.getString("copyFactory", "");//工厂
-        String tvnewlyDepartment = sp.getString("copyDepartment", "");//部门/组别
-        String tvnewlyProcedure = sp.getString("copyProcedure", "");//工序
-        String tvnewlyOthers = sp.getString("copyOthers", "");//组别人数
-        String tvnewSingularSystem = sp.getString("copySingularSystem", "");//制单数
-        String tvdate = sp.getString("copyTaskNumber", "");//任务数
-        String tvnewTaskNumber = sp.getString("copySize", "");//尺码
-        String tvnewlySize = sp.getString("copyyColor", "");//花色
-        String tvnewlyClippingNumber = sp.getString("copyClippingNumber", "");//实裁数
-        String tvnewlyCompletedLastMonth = sp.getString("copyTotalCompletion", "");//总完工数
-        String tvnewlyTotalCompletion = sp.getString("copyState", "");//状态
+        String tvnewlydate = sp.getString("copyitem", "");//生产日报点击款号传过来的款号
+        String tvnewlyDocumentary = sp.getString("copyDocumentary", "");//传过来的跟单
+        String tvnewlyFactory = sp.getString("copyFactory", "");//传过来的工厂
+        String tvnewlyDepartment = sp.getString("copyDepartment", "");//传过来的部门/组别
+        String tvnewlyProcedure = sp.getString("copyProcedure", "");//传过来的工序
+        String tvnewlyOthers = sp.getString("copyOthers", "");//传过来的组别人数
+        String tvnewSingularSystem = sp.getString("copySingularSystem", "");//传过来的制单数
+        String tvdate = sp.getString("copyTaskNumber", "");//传过来的任务数
+        String tvnewTaskNumber = sp.getString("copySize", "");//传过来的尺码
+        String tvnewlySize = sp.getString("copyyColor", "");//传过来的花色
+        String tvnewlyClippingNumber = sp.getString("copyClippingNumber", "");//传过来的实裁数
+        String tvnewlyCompletedLastMonth = sp.getString("copyTotalCompletion", "");//传过来的总完工数
+        String tvnewlyTotalCompletion = sp.getString("copyState", "");//传过来的状态
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();//将数据放入map集合
         map.put("copyitem", tvnewlydate);
         map.put("copyDocumentary", tvnewlyDocumentary);
         map.put("copyFactory", tvnewlyFactory);
@@ -437,6 +439,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
     private void sethideSoft(View v) {
         //判断软件盘是否弹出
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        //如果弹出则收回
         if (imm != null) {
             if (imm.hideSoftInputFromWindow(v.getWindowToken(), 0)) {
                 imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),

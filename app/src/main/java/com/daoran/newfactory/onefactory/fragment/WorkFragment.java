@@ -291,7 +291,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     JSONObject jsonObject = new JSONObject(sl);
                     workitemview = jsonObject.getString("text");
                     sgv_gridview = (ScrollGridView) view.findViewById(R.id.sgv_gridview);
-                    sgv_gridview.setAdapter(new ScrollWrokAdapter(getActivity(), workBeen));//填充菜单数据
+                    sgv_gridview.setAdapter(new ScrollWrokAdapter(getActivity(), workBeen));//填充菜单数据到视图
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -357,8 +357,8 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 }
             });
         }
-        popupWindow.setFocusable(true);
-        popupWindow.showAsDropDown(idworkname);
+        popupWindow.setFocusable(true);//设置为true才可以获取控件的点击事件
+        popupWindow.showAsDropDown(idworkname);//贴在点击控件的下方显示
     }
 
     /**

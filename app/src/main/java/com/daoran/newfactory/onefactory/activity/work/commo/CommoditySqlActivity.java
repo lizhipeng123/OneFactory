@@ -77,21 +77,21 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private List<CommoditydetailBean.DataBean> dataBeen
             = new ArrayList<CommoditydetailBean.DataBean>();//查货信息实体集合
     private CommoditydetailBean commoditydetailBean;//列表实体bean
-    private CommoditySqlLeftAdapter leftAdapter;
+    private CommoditySqlLeftAdapter leftAdapter;//左侧编号列表适配
     private CommoditySqlAdapter sqlAdapter;//列表适配
-    private ClumnsResultBean resultBean;
+    private ClumnsResultBean resultBean;//列权限实体
 
-    private AlertDialog noticeDialog;
+    private AlertDialog noticeDialog;//退出当前页提示弹窗
     private TextView tvSignPage;//显示的总页数
     private EditText etSqlDetail;//输入的页数
     private Button btnSignPage;//翻页确认
     private Button btnCommoSave;//保存
-    private Button spinnermenu;
-    private LinearLayout ll_visibi;
-    private TextView tv_visibi;
-    private ScrollView scroll_content;
-    private Spinner spinnCommoPageClumns;
-    private ImageView ivUpLeftPage, ivDownRightPage;
+    private Button spinnermenu;//最右侧菜单
+    private LinearLayout ll_visibi;//空数据显示的页面
+    private TextView tv_visibi;//空数据显示的页面信息
+    private ScrollView scroll_content;//查货跟踪可上下滑动的视图
+    private Spinner spinnCommoPageClumns;//选择每页显示的条目数
+    private ImageView ivUpLeftPage, ivDownRightPage;//上一页，下一页控件
 
     private SharedPreferences sp;//轻量级存储本地数据
     private SPUtils spUtils;
@@ -100,6 +100,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private String configid;
     private boolean flagblack;
 
+    /*保存excel时开启线程的状态*/
     private static final int DOWN_NOSDCARD = 0;
     private static final int DOWN_NO = 1;
     private static final int DOWN_ERROR = 2;
@@ -144,19 +145,22 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
      * 填充查货跟踪单每页显示条目spinner数据
      */
     private void getClumnsSpinner() {
+        //将资源转化成string数组
         String[] spinner = getResources().getStringArray(R.array.clumnsCommon);
+        //填充数据
         ArrayAdapter<String> adapterclumns = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, spinner);
         adapterclumns.setDropDownViewResource(R.layout.dropdown_stytle);
         spinnCommoPageClumns.setAdapter(adapterclumns);
+        //列表点击事件选择每页显示的条目数
         spinnCommoPageClumns.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] languages = getResources().
                         getStringArray(R.array.clumnsCommon);
                 spUtils.put(CommoditySqlActivity.this,
-                        "clumnsspinner", languages[position]);
-                setData();
+                        "clumnsspinner", languages[position]);//将选择的条目数保存到存储中
+                setData();//查询
             }
 
             @Override
@@ -202,6 +206,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
             case R.id.ivCommoditySql:
                 sethideSoft(v);
                 setBlacksp();
+                //如果没有修改过数据，就直接退出。如果修改过则弹出框提示是否保存
                 if (flagblack = true) {
                     finish();
                 } else {
@@ -403,6 +408,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
      * @param view
      */
     private void showPopupMenu(View view) {
+        //实例化加载popupmenu菜单，
         PopupMenu popupMenu = new PopupMenu(CommoditySqlActivity.this, view);
         popupMenu.getMenuInflater().inflate(R.menu.menu_commo, popupMenu.getMenu());
         // menu的item点击事件

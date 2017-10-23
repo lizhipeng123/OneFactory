@@ -16,6 +16,7 @@ import java.net.UnknownHostException;
 
 /**
  * @version V1.0
+ * 继承自Runnabler，被submit至线程池执行网络请求并发送start，success等消息
  * @Description: TODO
  * @date 2013-4-26 下午7:46:18
  */

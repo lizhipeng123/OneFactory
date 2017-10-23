@@ -80,7 +80,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     private NoscrollListView mData;//listview的列表
     private NoscrollListView lv_left;//左侧编号
     private ProcationDialog procationDialog;//条件查询的dialog
-    private ProductionLeftAdapter mLeftAdapter;
+    private ProductionLeftAdapter mLeftAdapter;//左侧编号适配数据
 
     private SyncHorizontalScrollView mHeaderHorizontal;//标题scrollview
     private SyncHorizontalScrollView mDataHorizontal;//列表scrollview
@@ -97,23 +97,24 @@ public class ProductionActivity extends BaseFrangmentActivity
     private EditText etSqlDetail;//底部页码输入框
     private TextView tvSignPage;//页数显示
     private Button btnSignPage, btnProSave, spinnermenu;//翻页确定、保存确定，菜单menu
-    private ImageView ivUpLeftPage, ivDownRightPage;
-    private AlertDialog noticeDialog;
+    private ImageView ivUpLeftPage, ivDownRightPage;//上下翻页图片按钮
+    private AlertDialog noticeDialog;//点击返回提示信息
 
     private SharedPreferences sp;//存储
     private SPUtils spUtils;
     private int pageCount;//总页数int
     private int pageIndex = 0;//初始页数0
-    private LinearLayout ll_visibi;//
-    private TextView tv_visibi;
-    private ScrollView scroll_content;
-    private Spinner spinnProPageClumns;
+    private LinearLayout ll_visibi;//空数据显示的页面
+    private TextView tv_visibi;//空数据显示的页面信息
+    private ScrollView scroll_content;//生产日报可上下滑动的视图
+    private Spinner spinnProPageClumns;//选择每页显示的条目数
     int keyHeight = 0;
     int screenHeight = 0;
     private boolean flagmonthsize;
     private String configid;
     private boolean flagblack;
 
+    /*保存excel时开启线程的状态*/
     private static final int DOWN_NOSDCARD = 0;
     private static final int DOWN_NO = 1;
     private static final int DOWN_ERROR = 2;
@@ -174,7 +175,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                     return null;
             }
         };
-        editText.setFilters(new InputFilter[]{filter});
+        editText.setFilters(new InputFilter[]{filter});//过滤可输入的字符
     }
 
     /**
@@ -191,6 +192,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] languages = getResources().
                         getStringArray(R.array.clumnsCommon);
+                //将选择的条目数保存到轻量级存储中
                 spUtils.put(ProductionActivity.this,
                         "clumnsprospinner", languages[position]);
                 setData();
@@ -208,11 +210,12 @@ public class ProductionActivity extends BaseFrangmentActivity
      */
     private void initView() {
         mDataHorizontal.setSrollView(mHeaderHorizontal);
-        mHeaderHorizontal.setSrollView(mDataHorizontal);//横竖SyncHorizontalScrollView适配
+        mHeaderHorizontal.setSrollView(mDataHorizontal);//关联滑动SyncHorizontalScrollView适配
         etSqlDetail.setSelection(etSqlDetail.getText().length());//将光标移到文本最后
+        //判断当前是横屏还是竖屏
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Log.i("info", "landscape"); // 横屏
-            configid = String.valueOf(1);
+            configid = String.valueOf(1);//赋值使横竖屏切换易于判断
         } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             Log.i("info", "portrait"); // 竖屏
             configid = String.valueOf(2);
@@ -237,8 +240,10 @@ public class ProductionActivity extends BaseFrangmentActivity
         switch (v.getId()) {
             /*返回按钮*/
             case R.id.ivProductionBack:
-                sethideSoft(v);
-                setBlackpro();
+                sethideSoft(v);//判断软键盘是否弹出
+                setBlackpro();//返回时判断是否修改过数据
+                //如果修改没有修改过数据则直接返回
+                //如果修改过数据，则提示是否保存上传后再退出
                 if (flagblack == true) {
                     finish();
                 } else {
@@ -249,7 +254,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                             , new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    setSave();
+                                    setSave();//执行上传数据方法
                                     dialog.dismiss();
                                     finish();
                                 }
@@ -269,14 +274,15 @@ public class ProductionActivity extends BaseFrangmentActivity
                 break;
             /*条件查询弹出框*/
             case R.id.ivSearch:
-                sethideSoft(v);
-                ShowDialog(v);
+                sethideSoft(v);//判断软键盘是否弹出
+                ShowDialog(v);//弹出
                 break;
             /*按页查询*/
             case R.id.btnSignPage:
                 sethideSoft(v);
                 String txt = etSqlDetail.getText().toString();
                 String txtcount = tvSignPage.getText().toString();
+                //判断页数输入框是否为空，否则不能点击
                 if (txt.equals("")) {
                     ToastUtils.ShowToastMessage("页码不能为空", ProductionActivity.this);
                 } else {
@@ -309,6 +315,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             case R.id.ivUpLeftPage:
                 sethideSoft(v);
                 String etsql = etSqlDetail.getText().toString();
+                //判断页码输入框是否为空
                 if (etsql.equals("")) {
                     ToastUtils.ShowToastMessage("页码不能为空", ProductionActivity.this);
                 } else {
@@ -425,20 +432,21 @@ public class ProductionActivity extends BaseFrangmentActivity
         sp = ProductionActivity.this.getSharedPreferences("my_sp", 0);
         final ProgressDialog progressDialog = ProgressDialog.show(this,
                 "请稍候...", "正在查询中...", false, true);
-        String namedure = sp.getString("proname", "");//制单人
-        String Style = sp.getString("etprodialogStyle", "");//款号
-        String commostyle = sp.getString("productionleftItem", "");
-        String commonamedure;
-        String itemstyle;
+        String namedure = sp.getString("proname", "");//条件查询dialog中监听制单人的输入信息
+        String Style = sp.getString("etprodialogStyle", "");//条件查询dialog中监听款号的输入信息
+        String commostyle = sp.getString("productionleftItem", "");//查货跟踪长按传过来的款号
+        String commonamedure;//进行查询的制单人变量
+        String itemstyle;//进行查询的款号变量
+        //如果查货跟踪传过来款号为空，则将dialog监听款号的信息传给变量，然后由变量进行查询
         if (commostyle.equals("")) {
             itemstyle = Style;
             commonamedure = namedure;
         } else {
             itemstyle = commostyle;
-            commonamedure = "";
+            commonamedure = "";//如果不为空，则查询查货跟踪穿过来的款号
         }
-        String Factory = sp.getString("etprodialogFactory", "");//工厂
-        String getsize = sp.getString("clumnsprospinner", "");
+        String Factory = sp.getString("etprodialogFactory", "");//条件查询dialog中监听工厂的输入信息
+        String getsize = sp.getString("clumnsprospinner", "");//spinner中选择的工序
         if (getsize.equals("")) {
             getsize = String.valueOf(10);
         }
@@ -1058,7 +1066,7 @@ public class ProductionActivity extends BaseFrangmentActivity
     }
 
     /**
-     * 修改保存
+     * 修改保存上传
      */
     private void setSave() {
         sp = getSharedPreferences("my_sp", 0);
@@ -2186,13 +2194,13 @@ public class ProductionActivity extends BaseFrangmentActivity
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case DOWN_NOSDCARD:
-                    ToastUtils.ShowToastMessage("保存成功，请在Excel文件中查看",ProductionActivity.this);
+                    ToastUtils.ShowToastMessage("保存成功，请在Excel文件中查看", ProductionActivity.this);
                     break;
                 case DOWN_NO:
-                    ToastUtils.ShowToastMessage("没有数据",ProductionActivity.this);
+                    ToastUtils.ShowToastMessage("没有数据", ProductionActivity.this);
                     break;
                 case DOWN_ERROR:
-                    ToastUtils.ShowToastMessage("保存失败",ProductionActivity.this);
+                    ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
                     break;
             }
         }

@@ -16,6 +16,8 @@ import java.io.IOException;
 
 /**
  * @version V1.0
+ * 接收请求结果，一般重写onSuccess及onFailure接收请求成功或失败的消息，
+ * 还有onStart，onFinish等消息
  * @Description: TODO
  * @date 2013-4-26 下午4:47:22
  */

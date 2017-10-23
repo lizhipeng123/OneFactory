@@ -30,6 +30,7 @@ import android.util.Log;
 /**
  * Finishes an activity after a period of inactivity if the device is on battery
  * power.
+ * 定时器用于二次扫描
  */
 public class InactivityTimer {
 

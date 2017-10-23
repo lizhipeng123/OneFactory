@@ -72,25 +72,25 @@ public final class CaptureActivity extends Activity
         implements SurfaceHolder.Callback, View.OnClickListener {
     private static final String TAG =
             CaptureActivity.class.getSimpleName();
-    private CameraManager cameraManager;
-    private CaptureActivityHandler handler;
-    private InactivityTimer inactivityTimer;
-    private BeepManager beepManager;
+    private CameraManager cameraManager;//系统相机服务
+    private CaptureActivityHandler handler;//针对于扫面任务的线程
+    private InactivityTimer inactivityTimer;//二维码扫描定时器
+    private BeepManager beepManager;//震动/蜂鸣提示
     private SharedPreferences sp;//存储
     private SPUtils spUtils;
     //调用系统相册-选择图片
     private static final int IMAGE = 1;
     private static final int REQUEST_CODE = 234;
-    private ImageView ivBack;
+    private ImageView ivBack;//返回图片按钮
     private SurfaceView scanPreview = null;
-    private RelativeLayout scanContainer;
-    private RelativeLayout scanCropView;
-    private ImageView scanLine;
+    private RelativeLayout scanContainer;//顶部标题之下的主页面
+    private RelativeLayout scanCropView;//二维码扫描框
+    private ImageView scanLine;//二维码扫描横杠
     private TextView iv_light, qrcode_ic_back, tvPhotoSearch;
-    private OnBooleanListener onPermissionListener;
-    private Rect mCropRect = null;
+    private OnBooleanListener onPermissionListener;//自定义二维码扫描是否成功接口
+    private Rect mCropRect = null;//裁剪矩形画布
     private boolean isHasSurface = false;
-    private Bitmap scanBitmap;
+    private Bitmap scanBitmap;//保存的图片类型
     private String imagePath;
     boolean isOpenLight=false;
 
@@ -105,6 +105,7 @@ public final class CaptureActivity extends Activity
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        //二维码扫描调用自定义接口判断权限是否通过
         onPermissionRequests(Manifest.permission.CAMERA, new OnBooleanListener() {
             @Override
             public void onClick(boolean bln) {

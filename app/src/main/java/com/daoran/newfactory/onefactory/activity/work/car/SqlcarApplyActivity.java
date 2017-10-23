@@ -44,8 +44,8 @@ import okhttp3.Request;
  */
 
 public class SqlcarApplyActivity extends BaseListActivity implements View.OnClickListener {
-    private ImageView ivBack, ivSearch;
-    private TextView tvInitialDate;
+    private ImageView ivBack, ivSearch;//返回与查询图片按钮
+    private TextView tvInitialDate;//出车单初始日期
     private ContentDialog dialog;//条件查询dialog弹出框
     private LinearLayout ll_visibi;//隐藏的空页面
     private PullToRefreshListView listview;//可刷新的listview

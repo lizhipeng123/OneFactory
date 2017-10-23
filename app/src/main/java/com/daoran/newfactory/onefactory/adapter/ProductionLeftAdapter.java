@@ -81,9 +81,9 @@ public class ProductionLeftAdapter extends BaseAdapter {
         }
         if (!recorder.equals("")) {
             if (recorder.equals(nameid)) {
-                holder.lin_content.setOnClickListener(new View.OnClickListener() {
+                holder.lin_content.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public boolean onLongClick(View v) {
                         String prorecorid = getItem(position).getRecordid();
                         spUtils.put(context, "prorecorid", prorecorid);//制单人id
                         String proid = String.valueOf(getItem(position).getID());
@@ -171,6 +171,7 @@ public class ProductionLeftAdapter extends BaseAdapter {
                         context.startActivity(intent);
                         ProductionActivity productionActivity = new ProductionActivity();
                         productionActivity.finish();
+                        return false;
                     }
                 });
             } else {

@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 
+/**
+ * 引导页最后一页
+ */
 public class GuiderFragment extends Fragment {
     //回调接口
     public interface OnLoginRegisterListener {
@@ -31,7 +34,7 @@ public class GuiderFragment extends Fragment {
         Bundle data = new Bundle();
         data.putInt("resId", resId);
         data.putBoolean("isLast", isLast);
-        fragment.setArguments(data);
+        fragment.setArguments(data);//fragment中保存bundle的值
         return fragment;
     }
 
@@ -39,6 +42,11 @@ public class GuiderFragment extends Fragment {
         super();
     }
 
+    /**
+     * 回调接口放在这里（fragment与activity相关联时调用,第一个执行）
+     * Android6.0以上已改成onAttach(Context context)之前是onAttach(Activity activity)
+     * @param context
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -58,6 +66,13 @@ public class GuiderFragment extends Fragment {
         }
     }
 
+    /**
+     * 此为Android 创建fragment对应的视图
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,

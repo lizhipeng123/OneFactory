@@ -33,6 +33,7 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
+ * 记事日历（暂隐藏）
  * Created by lizhipeng on 2016/10/12 0012.
  */
 public class EventSetFragment extends BaseFragment implements View.OnClickListener, OnTaskFinishedListener<List<Schedule>>, SelectDateDialog.OnSelectDateListener {

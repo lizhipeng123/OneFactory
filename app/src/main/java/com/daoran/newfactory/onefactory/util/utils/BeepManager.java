@@ -34,6 +34,7 @@ import java.io.IOException;
 
 
 /**
+ * 震动/蜂鸣提示
  */
 public class BeepManager implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, Closeable {
 

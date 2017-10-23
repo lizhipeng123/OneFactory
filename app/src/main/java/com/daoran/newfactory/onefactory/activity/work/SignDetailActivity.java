@@ -60,32 +60,33 @@ import okhttp3.Call;
  */
 
 public class SignDetailActivity extends BaseFrangmentActivity implements View.OnClickListener {
-    private NoscrollListView mLeft;
-    private NoscrollListView mData;
-    private SignDetailAdapter detailAdapter;
-    private SignDetailLeftAdapter leftAdapter;
-    private SyncHorizontalScrollView mHeaderHorizontal;
-    private SyncHorizontalScrollView mDataHorizontal;
-    private List<SignDetailBean.DataBean> mListData = new ArrayList<SignDetailBean.DataBean>();
-    private SignDetailBean signBean;
-    private ImageView ivSiganSqlDetail;
-    private ImageView ivSearch;
-    private SignContentDialog dialog;
-    private EditText etSqlDetail;
-    private TextView tvSignPage;
-    private Button btnSignPage;
-    private LinearLayout ll_visibi;
-    private TextView tv_visibi;
-    private ScrollView scroll_content;
-    private Spinner spinnSignPageClumns;
-    private ImageView ivUpLeftPage, ivDownRightPage;
+    private NoscrollListView mLeft;//页面左侧视图（签到信息编号）
+    private NoscrollListView mData;//页面右侧视图（签到信息主体内容）
+    private SignDetailAdapter detailAdapter;//页面右侧列表适配（签到信息主体内容）
+    private SignDetailLeftAdapter leftAdapter;//页面左侧列表适配（签到信息编号）
+    private SyncHorizontalScrollView mHeaderHorizontal;//可滑动scrollview视图顶部（签到信息命名列）
+    private SyncHorizontalScrollView mDataHorizontal;//可滑动scrollview视图列表（签到信息主体视图）
+    private List<SignDetailBean.DataBean> mListData = new ArrayList<SignDetailBean.DataBean>();//列表内容签到信息集合
+    private SignDetailBean signBean;//签到信息实体类
+    private ImageView ivSiganSqlDetail;//返回图片按钮
+    private ImageView ivSearch;//条件查询图片按钮
+    private SignContentDialog dialog;//顶部右侧刷新等弹出菜单
+    private EditText etSqlDetail;//页数输入框
+    private TextView tvSignPage;//总页数
+    private Button btnSignPage;//按页数查询按钮
+    private LinearLayout ll_visibi;//没有数据时显示的页面
+    private TextView tv_visibi;//空数据显示的信息
+    private ScrollView scroll_content;//签到信息内容可上下滑动
+    private Spinner spinnSignPageClumns;//每页显示的条目数
+    private ImageView ivUpLeftPage, ivDownRightPage;//上下翻页图片按钮
     private Button spinnermenu;
 
     private SharedPreferences sp;
     private SPUtils spUtils;
-    int pageIndex = 0;
-    int pageCount;
+    int pageIndex = 0;//初始页数
+    int pageCount;//总页数
     private String configid;
+    //保存数据为excel时开启线程的状态
     private static final int DOWN_NOSDCARD = 0;
     private static final int DOWN_NO = 1;
     private static final int DOWN_ERROR = 2;

@@ -73,44 +73,44 @@ import static com.umeng.analytics.MobclickAgent.onProfileSignOff;
 
 public class SetupFragment extends Fragment implements View.OnClickListener {
     Activity mactivity;
-    private Toolbar tbarSetup;
+    private Toolbar tbarSetup;//页面顶部标题
     private View view;
-    private RelativeLayout rlAgainLogin, rlEditionUpdate;
-    private TextView tvVersion, tvNewVersion;
-    private VerCodeBean codeBean;
+    private RelativeLayout rlAgainLogin, rlEditionUpdate;//登录与更新布局控件
+    private TextView tvVersion, tvNewVersion;//版本号显示文本控件
+    private VerCodeBean codeBean;//版本更新实体
 
-    private String curVersionName;
-    private int curVersionCode;
-    private VerCodeBean bean;
-    private AlertDialog noticeDialog;
-    private ProgressBar mProgress;
-    private TextView mProgressText;
+    private String curVersionName;//检测出的版本名称
+    private int curVersionCode;//检测出的版本号
+    private AlertDialog noticeDialog;//更新弹窗
+    private ProgressBar mProgress;//更新进度条
+    private TextView mProgressText;//更新显示的大小
     protected boolean interceptFlag;
-    private AlertDialog downloadDialog;
-    private TextView tv_clean;
-    private RelativeLayout rlClean;
-    private RelativeLayout rlwifi;
-    private RelativeLayout rlCore;
-    private RelativeLayout rlAbout;
-    private RelativeLayout rlExcelSD;
-    private RelativeLayout rlYunxin;
-    private RelativeLayout rlside;
-    private RelativeLayout rlPhoto;
-    private RelativeLayout rlrili;
+    private AlertDialog downloadDialog;//下载的对话框弹窗
+    private TextView tv_clean;//清除缓存的文本布局
+    private RelativeLayout rlClean;//清除缓存的布局
+    private RelativeLayout rlwifi;//检测WiFi布局（隐藏，暂未使用）
+    private RelativeLayout rlCore;//二维码布局
+    private RelativeLayout rlAbout;//关于的布局
+    private RelativeLayout rlExcelSD;//excel文件布局
+    private RelativeLayout rlYunxin;//云信布局（隐藏，暂未使用）
+    private RelativeLayout rlside;//分类菜单布局（隐藏，暂未使用）
+    private RelativeLayout rlPhoto;//图片布局（隐藏，暂未使用）
+    private RelativeLayout rlrili;//日历布局（隐藏，暂未使用）
     private TextView tvwifimanager, tvwifissid;
 
-    private static final int DOWN_NOSDCARD = 0;
-    private static final int DOWN_UPDATE = 1;
-    private static final int DOWN_OVER = 2;
+    /*下载文件的状态*/
+    private static final int DOWN_NOSDCARD = 0;//未找到sd卡
+    private static final int DOWN_UPDATE = 1;//
+    private static final int DOWN_OVER = 2;//下载完成
 
     private static final int DIALOG_TYPE_LATEST = 0;
     private static final int DIALOG_TYPE_FAIL = 1;
     protected int progress;
-    protected String apkFileSize;
-    protected String tmpFileSize;
-    protected String savePath;
-    protected String apkFilePath;
-    protected String tmpFilePath;
+    protected String apkFileSize;//命名apk文件名称
+    protected String tmpFileSize;//命名临时下载文件名称
+    protected String savePath;//命名保存地址
+    protected String apkFilePath;//命名apk文件保存地址
+    protected String tmpFilePath;//命名临时下载文件保存地址
 
     private Dialog progressDialog;
     private SharedPreferences sp;
@@ -257,7 +257,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 Intent intentExcel = new Intent(mactivity, ExcelSDActivity.class);
                 mactivity.startActivity(intentExcel);
                 break;
-            /*云信*/
+            /*云信（隐藏中）*/
             case R.id.rlYunxin:
                 boolean isinstall = isAppInstalled(mactivity, "com.netease.nim.demo");
                 if (isinstall == false) {
@@ -287,11 +287,12 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 Intent intentside = new Intent(mactivity, SideActivity.class);
                 mactivity.startActivity(intentside);
                 break;
-            /*图片*/
+            /*图片（隐藏中）*/
             case R.id.rlPhoto:
                 Intent intentphoto = new Intent(mactivity, PictureActivity.class);
                 mactivity.startActivity(intentphoto);
                 break;
+            /*自定义日历（隐藏中）*/
             case R.id.rlrili:
                 Intent intentrili = new Intent(mactivity, MonthActivity.class);
                 mactivity.startActivity(intentrili);
@@ -309,6 +310,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     private boolean isAppInstalled(Context context, String packagename) {
         PackageInfo packageInfo;
         try {
+            //获取应用信息
             packageInfo = context.getPackageManager().getPackageInfo(packagename, 0);
         } catch (PackageManager.NameNotFoundException e) {
             packageInfo = null;
@@ -383,10 +385,15 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * 传输apk文件
+     * @param inputStream
+     * @param file
+     */
     public void inputStreamToFile(InputStream inputStream, File file) {
-        OutputStream outputStream = null;
+        OutputStream outputStream = null;//准备传输对象
         try {
-            outputStream = new FileOutputStream(file);
+            outputStream = new FileOutputStream(file);//将指定数据写入文件
             int read = 0;
             byte[] bytes = new byte[1024];
             while ((read = inputStream.read(bytes)) != -1) {
@@ -395,7 +402,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
             System.out.println("Done!");
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
+        } finally {//最后执行（不管有没有异常）
             if (inputStream != null) {
                 try {
                     inputStream.close();

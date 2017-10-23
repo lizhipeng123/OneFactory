@@ -18,6 +18,7 @@ import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
  * night cursing the moment you thought youd be clever
  * enough to "optimize" the code below.
  * Now close this file and go play with something else.
+ * 侧滑页（暂隐藏）
  * Created by lizhipeng on 2017/5/18.
  */
 

@@ -29,6 +29,7 @@ public class StartActivity extends BaseFrangmentActivity {
     }
 
     private void initViews() {
+        //判断是否登录过用户
         auto_login = PreferencesUtils.getString(this, Comfig.USERNAME)
                 != null && PreferencesUtils.getString(this, Comfig.PASSWORD) != null;
         //如果第一次打开则先进去引导页，否则直接进入首页

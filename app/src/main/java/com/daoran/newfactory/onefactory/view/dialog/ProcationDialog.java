@@ -68,7 +68,7 @@ public class ProcationDialog extends Dialog {
      * 实例化控件
      */
     private void getViews() {
-        etprodialogStyle = (EditText) findViewById(R.id.etprodialogStyle);
+        etprodialogStyle = (EditText) findViewById(R.id.etprodialogStyle);//款号
         etprodialogFactory = (EditText) findViewById(R.id.etprodialogFactory);
         etprodialogRecode = (EditText) findViewById(R.id.etprodialogRecode);
         checkboxNull = (CheckBox) findViewById(R.id.checkboxNull);
@@ -92,18 +92,22 @@ public class ProcationDialog extends Dialog {
         WindowManager.LayoutParams p = dialogWindow.getAttributes();
         p.width = (int) (display.getWidth() * 0.8);
         dialogWindow.setAttributes(p);
-        String etaaname = sp.getString("proname", "");
-        etprodialogRecode.setText(etaaname);
-        String Factory = sp.getString("etprodialogFactory", "");
-        etprodialogFactory.setText(Factory);
-        String productionleftItem = sp.getString("productionleftItem", "");
-        etprodialogStyle.setText(productionleftItem);
+        String etaaname = sp.getString("proname", "");//登录页登录之后传过来的用户名
+        etprodialogRecode.setText(etaaname);//将用户名填充制单人
+        String Factory = sp.getString("etprodialogFactory", "");//工厂输入框监听传过来的输入信息
+        etprodialogFactory.setText(Factory);//填充工厂
+        String productionleftItem = sp.getString("productionleftItem", "");//查货跟踪长按传过来的款号
+        String productionDialogitem = sp.getString("etprodialogStyle", "");//本dialog监听款号输入框穿过来的信息
+        //如果查货跟踪穿过来的款号为空，则按照本地页面dialog监听的款号填充查询
         if (productionleftItem.equals("")) {
             etprodialogRecode.setText(etaaname);
-        } else {
+            etprodialogStyle.setText(productionDialogitem);//填充款号到输入框
+        } else {//如果不为空，则根据查货跟踪传过来的款号填充查询
             etprodialogRecode.setText("");
+            etprodialogStyle.setText(productionleftItem);//填充款号到输入框
         }
         String[] spinnerProcedure = content.getResources().getStringArray(R.array.Procedure);
+        //填充工序资源信息到spinner中
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>
                         (content, R.layout.adapter_mytopactionbar_spinner, spinnerProcedure) {
@@ -185,6 +189,8 @@ public class ProcationDialog extends Dialog {
 
     /**
      * 监听工厂输入信息
+     * 初始化的工厂信息是空的，在添加过之后，将信息保存到存储信息中，
+     * 供procationActivity调用查询
      */
     private TextWatcher etprodialog = new TextWatcher() {
         @Override
@@ -210,6 +216,8 @@ public class ProcationDialog extends Dialog {
 
     /**
      * 监听制单人输入信息
+     * 初始为当前登录用户，这里方法修改过制单人之后，
+     * 将新添加的制单人替换到存储信息中，再传到procationActivity中进行查询
      */
     private TextWatcher etproRecode = new TextWatcher() {
         @Override

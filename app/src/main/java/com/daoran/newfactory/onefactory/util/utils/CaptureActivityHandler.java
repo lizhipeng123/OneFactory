@@ -31,8 +31,8 @@ import com.google.zxing.Result;
 /**
  * This class handles all the messaging which comprises the state machine for
  * capture.
- *
- * @author dswitkin@google.com (Daniel Switkin)
+ * 针对于扫描任务的线程
+ * @author
  */
 public class CaptureActivityHandler extends Handler {
 

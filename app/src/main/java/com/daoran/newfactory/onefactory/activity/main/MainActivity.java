@@ -73,7 +73,7 @@ public class MainActivity extends BaseFrangmentActivity {
                             dialog.dismiss();
                         }
                     });
-            noticeDialog = builder.create();
+            noticeDialog = builder.create();//调用create()方法创建AlertDialog对象
             noticeDialog.setCanceledOnTouchOutside(false);//点击屏幕dialog不会消失，只有点击物理返回键才会消失
             noticeDialog.show();//使回退时，弹窗可以正常运行
         }

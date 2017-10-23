@@ -9,7 +9,7 @@ import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 
 /**
- * 初始化操作
+ * 初始化操作（使得分包情况下可以正常运行程序）
  * Created by lizhipeng on 2017/7/18.
  */
 
@@ -18,7 +18,7 @@ public class CrashApplication extends MultiDexApplication {
     public void onCreate() {
         // TODO Auto-generated method stub
         super.onCreate();
-        Bugly.init(this, "52c746d40d", false);
+        Bugly.init(this, "52c746d40d", false);//腾讯分享口令
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(getApplicationContext());
     }

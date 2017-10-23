@@ -79,26 +79,26 @@ import java.util.regex.Pattern;
 public class LoginMainActivity extends BaseFrangmentActivity {
 
     private Button btnLogin;//登录按钮
-    private EditTextWithDelete etUsername, etPassword;
+    private EditTextWithDelete etUsername, etPassword;//自定义用户名，密码填写框
     private SPUtils spUtils;
-    private CheckBox checkBoxPw, checkboxopen;
-    private SharedPreferences sp;
-    private String userNameValue, passwordValue;
-    private ImageView image_login;
-    private WorkPwSwitchBean workPwSwitchBean;
-    private WorkPwSwitchBean.Data switchBean;
+    private CheckBox checkBoxPw, checkboxopen;//保存密码与自动登录勾选框
+    private SharedPreferences sp;//存储方式
+    private String userNameValue, passwordValue;//用户名，密码临时保存字段
+    private ImageView image_login;//登录页app图标
+    private WorkPwSwitchBean workPwSwitchBean;//切换用户保存的实体类
+    private WorkPwSwitchBean.Data switchBean;//切换用户保存的具体信息（相当于集合）
     private List<WorkPwSwitchBean.Data> switchBeendatalist
             = new ArrayList<WorkPwSwitchBean.Data>();//将已登录的用户保存到类中
 
     private String curVersionName;//版本信息
     private int curVersionCode;//版本号
-    private VerCodeBean codeBean;
-    private AlertDialog noticeDialog;//下载弹窗
-    private ProgressBar nProgress;
+    private VerCodeBean codeBean;//版本更新保存的实体
+    private AlertDialog noticeDialog;//下载确认弹窗
+    private ProgressBar nProgress;//下载进度条
     private TextView nProgressText;
-    protected boolean interceptFlag, inupdateFlag;
-    private AlertDialog updateloadDialog;
-    private TextView tvcode;
+    protected boolean interceptFlag, inupdateFlag;//是否取消安装和下载
+    private AlertDialog updateloadDialog;//下载对话框dialog
+    private TextView tvcode;//显示的版本号
     private TextView text_notuse;
 
     //下载返回handler通信结果
@@ -112,9 +112,9 @@ public class LoginMainActivity extends BaseFrangmentActivity {
     // 合成失败
     private static final int WHAT_FAIL_PATCH = 0;
 
-    protected int progress, updateProgress;
-    protected String apkUpdateFileSize;
-    protected String tmpUpdateFileSize;
+    protected int progress, updateProgress;//进度条进度
+    protected String apkUpdateFileSize;//命名的apk文件大小
+    protected String tmpUpdateFileSize;//命名的临时保存文件大小
     protected String savePath;//临时保存地址
     protected String apkFilePath;//apk地址
 
@@ -124,11 +124,11 @@ public class LoginMainActivity extends BaseFrangmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        sp = getSharedPreferences("my_sp", 0);
-        if (Build.VERSION.SDK_INT >= 21) {//android沉浸式标题栏
+        sp = getSharedPreferences("my_sp", 0);//my_sp为轻量级存储文件，5.0以上只能设置后面参数为0，以下可以设置具体权限
+        if (Build.VERSION.SDK_INT >= 21) {//android沉浸式状态栏，只有5.0以上，才会有沉浸式状态栏
             View decorView = getWindow().getDecorView();
-            //View.SYSTEM_UI_FLAG_FULLSCREEN  activity全局显示，但状态栏不会隐藏覆盖
-            //View.SYSTEM_UI_FLAG_LAYOUT_STABLE 防止状态栏隐藏
+            //View.SYSTEM_UI_FLAG_FULLSCREEN 表示 activity全局显示，但状态栏不会隐藏覆盖
+            //View.SYSTEM_UI_FLAG_LAYOUT_STABLE 表示 防止状态栏隐藏
             int option = View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             decorView.setSystemUiVisibility(option);
@@ -137,11 +137,12 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         }
         getViews();
         initViews();
-        checkAppVersion(true);//调用版本更新
+        checkAppVersion(true);//调用版本更新，调用状态默认为true，强制更新
         String name = sp.getString("username", "");//保存的用户名
         String passwd = sp.getString("passwd", "");//保存的密码
         boolean choseRemember = sp.getBoolean("remember", false);//保存的记住密码状态
         boolean choseAutoLogin = sp.getBoolean("autologin", false);//保存的直接登录状态
+        //如果勾选了记住密码，则将用户名和密码添加到实体类中保存，并记住勾选状态以便下次展示
         if (choseRemember == true) {
             etUsername.setText(name);
             etUsername.setSelection(etUsername.length());
@@ -149,12 +150,14 @@ public class LoginMainActivity extends BaseFrangmentActivity {
             etPassword.setSelection(etPassword.length());
             checkBoxPw.setChecked(true);
         }
+        //如果勾选了自动登录，则将记住密码的状态自动调整为已勾选，并且保存用户名和密码，下次进入登录页，则不需输入账号信息，直接登录首页
         if (choseAutoLogin) {
             checkboxopen.setChecked(true);
             etUsername.setText(name);
             etUsername.setSelection(etUsername.length());
             etPassword.setText(passwd);
             etPassword.setSelection(etPassword.length());
+            //防止用户名为空
             if (etUsername.getText().toString() != null) {
                 postLogin();
             }
@@ -164,7 +167,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
             @Override
             public void onClick(View v) {
                 if (validate()) {//判断非空
-                    postLogin();
+                    postLogin();//登录方法
                 }
             }
         });
@@ -208,10 +211,10 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         setEditTextInhibitInputSpeChat(etPassword);//密码调用判断规范方法
         //picasso加载登录页上方图片，并且处理为圆角
         Picasso.with(LoginMainActivity.this)
-                .load(R.mipmap.daoran)
-                .error(R.mipmap.daoran)
-                .transform(new CropSquareTransformation())
-                .into(image_login);
+                .load(R.mipmap.daoran)//正常加载的图片
+                .error(R.mipmap.daoran)//异常加载的图片
+                .transform(new CropSquareTransformation())//调用自定义接口，处理图片
+                .into(image_login);//设置显示的控件
     }
 
     /**
@@ -220,6 +223,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
      * @param editText
      */
     public static void setEditTextInhibitInputSpeChat(EditText editText) {
+        //输入过滤器
         InputFilter filter = new InputFilter() {
             @Override
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
@@ -262,15 +266,15 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         boolean result = true;
         String message = "";
         try {
-            String username = etUsername.getText().toString().trim();
-            if (username.equals("")) {
+            String username = etUsername.getText().toString().trim();//截取账号字符（去掉首尾字符）
+            if (username.equals("")) {//判断字符串是否为空
                 message = "请输入账号";
-                etUsername.requestFocus();
+                etUsername.requestFocus();//获取控件焦点
                 result = false;
                 return result;
             }
-            String password = etPassword.getText().toString().trim();
-            if (password.length() == 0) {
+            String password = etPassword.getText().toString().trim();//截取密码字符（去掉首尾字符）
+            if (password.length() == 0) {//判断字符串长度是否为空
                 message = "请输入密码";
                 etPassword.setHint("请输入密码");
                 etPassword.requestFocus();
@@ -280,7 +284,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         } catch (Exception e) {
             Log.e(getClass().getName(), "validate==>" + e.getMessage());
         } finally {
-            if (!result) {
+            if (!result) {//无论成功还是异常，都走这个里面
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             }
         }
@@ -293,6 +297,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
     private void postLogin() {
         String loginuserUrl = HttpUrl.debugoneUrl + "Login/UserLogin/";
 //        getCurrentVersion();
+        //判断网络是否是可连接的状态
         if (NetWork.isNetWorkAvailable(this)) {
             /*登录是否设置保存时间，以及加密*/
             /*检测是否为可用WiFi*/
@@ -300,6 +305,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
             String infossid = wifiInfo.getSSID();
             infossid = infossid.replace("\"", "");
+            //如果当前WiFi是预定的测试WiFi，则不允许登录，切换当前WiFi后，符合要求则执行后面的方法
             if (infossid.equals("taoxinxi")) {
                 AlertDialog dialog = new AlertDialog.Builder(this).create();
                 dialog.setTitle("系统提示");
@@ -319,23 +325,24 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                     @Override
                     public void onSuccess(String content) {
                         super.onSuccess(content);
-                        System.out.print(content);
+                        System.out.print(content);//打印返回的结果
                         if (!content.equals("null")) {//如果返回结果不为空则执行方法内部
+                            //开启线程延时3秒关闭
                             Thread thread = new Thread(new Runnable() {
                                 @Override
                                 public void run() {
                                     try {
-                                        Thread.sleep(3000);
+                                        Thread.sleep(3000);//睡眠时间设置长度
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
                                     progressDialog.dismiss();
                                 }
                             });
-                            thread.start();
+                            thread.start();//start方法启动线程，必须添加
                             userNameValue = etUsername.getText().toString();
                             passwordValue = etPassword.getText().toString();
-                            Editor editor = sp.edit();
+                            Editor editor = sp.edit();//开启editor内部接口可写入数据
                             Gson gson = new Gson();
                             UsergetBean userBean = gson.fromJson(content, UsergetBean.class);
                             if (userBean.isStatus() == true) {
