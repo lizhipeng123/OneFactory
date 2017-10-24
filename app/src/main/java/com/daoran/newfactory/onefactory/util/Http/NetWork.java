@@ -5,7 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 /**
- *  网络判断
+ *  网络判断是否可用
  * Created by lizhipeng on 2017/3/23.
  */
 

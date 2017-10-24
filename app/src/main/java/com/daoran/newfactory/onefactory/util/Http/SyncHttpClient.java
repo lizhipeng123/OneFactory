@@ -9,6 +9,7 @@ import org.apache.http.protocol.HttpContext;
 
 /**
  * @version V1.0
+ * 线程封装
  * @Description: TODO
  * @date 2013-4-26 下午2:47:55
  */

@@ -300,8 +300,8 @@ public class NetUtil {
 
             throw new IOException("");
         }
-        String fileName = getFileName(url);
-        InputStream is = getFileIS(url);
+        String fileName = getFileName(url);//获取文件的名字
+        InputStream is = getFileIS(url);//获取数据流对象
         OutputStream os = (FileOutputStream) LocalFileOperating.getLocalOS(context, fileName);
         LocalFileOperating.writeLocalFile(context, is, os);
         return fileName;

@@ -1,6 +1,8 @@
 package com.daoran.newfactory.onefactory.util.bsdiff;
 
-
+/**
+ * 生成patch增量包
+ */
 public class DiffUtils {
 	
 	static DiffUtils instance;

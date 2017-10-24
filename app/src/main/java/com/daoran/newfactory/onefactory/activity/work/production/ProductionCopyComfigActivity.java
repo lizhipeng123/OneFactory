@@ -458,48 +458,53 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
         if (NetWork.isNetWorkAvailable(this)) {
             String stridata = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
             sp = getSharedPreferences("my_sp", 0);
-            String liststr = sp.getString("mycopylistStr", "");
-            String tvnewlydate = sp.getString("copyitem", "");//款号
-            String tvnewlyDocumentary = sp.getString("copyDocumentary", "");//跟单
-            String tvnewlyFactory = sp.getString("copyFactory", "");//工厂
-            String tvnewlyDepartment = sp.getString("copyDepartment", "");//部门/组别
-            String tvnewlyProcedure = sp.getString("copyProcedure", "");//工序
-            String proProcedureadapterTitle = sp.getString("ConfigProcedure", "");//工序adapter中修改过的
+            String liststr = sp.getString("mycopylistStr", "");//长按款号传过来的花色集合
+            String tvnewlydate = sp.getString("copyitem", "");//生产日报点击款号传过来的款号
+            String tvnewlyDocumentary = sp.getString("copyDocumentary", "");//生产日报点击款号传过来的跟单
+            String tvnewlyFactory = sp.getString("copyFactory", "");//生产日报点击款号传过来的工厂
+            String tvnewlyDepartment = sp.getString("copyDepartment", "");//生产日报点击款号传过来的部门/组别
+            String tvnewlyProcedure = sp.getString("copyProcedure", "");//生产日报点击款号传过来的工序
+            String proProcedureadapterTitle = sp.getString("ConfigProcedure", "");//本类工序adapter中修改过的
             String procudureTitle;//工序变量
+            //如果修改过工序,则将修改过的工序放入工序变量
+            //如果没有修改过工序,则默认取点击款号传过来的工序
             if (!proProcedureadapterTitle.equals("")) {
                 procudureTitle = proProcedureadapterTitle;
             } else {
                 procudureTitle = tvnewlyProcedure;
             }
-            String tvnewlyOthers = sp.getString("copyOthers", "");//组别人数
-            String tvnewSingularSystem = sp.getString("copySingularSystem", "");//制单数
-            String tvdate = sp.getString("copyTaskNumber", "");//任务数
-            String tvnewTaskNumber = sp.getString("copySize", "");//尺码
-            String tvnewlySize = sp.getString("copyyColor", "");//花色
-            String tvcopynewlycolor = sp.getString("configcolor", "");//表中传过来的花色
-            String tvnewlyClippingNumber = sp.getString("copyClippingNumber", "");//实裁数
-            String tvnewlyCompletedLastMonth = sp.getString("copyTotalCompletion", "");//总完工数
-            String copyBalanceAmount = sp.getString("copyBalanceAmount", "");//结余数量
-            String copyCompletedLastMonth = sp.getString("copyCompletedLastMonth", "");//上月完工
-            String tvnewlyTotalCompletion = sp.getString("copyState", "");//状态
-            String tvnewlyid = sp.getString("proadapterid", "");//id
-            String tvnewlyserid = sp.getString("prosalesid", "");//行id
-            String tvnewlyProYear = sp.getString("copyProYear", "");//年
-            String tvnewlyMonth = sp.getString("copyMonth", "");//月份
-            String productionMonth = sp.getString("ComfigMonth", "");//修改过的月份
-            String copyRecorder = sp.getString("copyRecorder", "");//制单人
-            String copyRecordat = sp.getString("copyRecordat", "");//制单时间
-            String copyRecordid = sp.getString("username", "");//当前用户
-            String copymonth;
+            String tvnewlyOthers = sp.getString("copyOthers", "");//生产日报点击款号传过来的组别人数
+            String tvnewSingularSystem = sp.getString("copySingularSystem", "");//生产日报点击款号传过来的制单数
+            String tvdate = sp.getString("copyTaskNumber", "");//生产日报点击款号传过来的任务数
+            String tvnewTaskNumber = sp.getString("copySize", "");//生产日报点击款号传过来的尺码
+            String tvnewlySize = sp.getString("copyyColor", "");//生产日报点击款号传过来的花色
+            String tvcopynewlycolor = sp.getString("configcolor", "");//生产日报点击款号传过来的表中传过来的花色
+            String tvnewlyClippingNumber = sp.getString("copyClippingNumber", "");//生产日报点击款号传过来的实裁数
+            String tvnewlyCompletedLastMonth = sp.getString("copyTotalCompletion", "");//生产日报点击款号传过来的总完工数
+            String copyBalanceAmount = sp.getString("copyBalanceAmount", "");//生产日报点击款号传过来的结余数量
+            String copyCompletedLastMonth = sp.getString("copyCompletedLastMonth", "");//生产日报点击款号传过来的上月完工
+            String tvnewlyTotalCompletion = sp.getString("copyState", "");//生产日报点击款号传过来的状态
+            String tvnewlyid = sp.getString("proadapterid", "");//生产日报点击款号传过来的id
+            String tvnewlyserid = sp.getString("prosalesid", "");//生产日报点击款号传过来的行id
+            String tvnewlyProYear = sp.getString("copyProYear", "");//生产日报点击款号传过来的年
+            String tvnewlyMonth = sp.getString("copyMonth", "");//生产日报点击款号传过来的月份
+            String productionMonth = sp.getString("ComfigMonth", "");//本adapter修改过的月份
+            String copyRecorder = sp.getString("copyRecorder", "");//生产日报点击款号传过来的制单人
+            String copyRecordat = sp.getString("copyRecordat", "");//生产日报点击款号传过来的制单时间
+            String copyRecordid = sp.getString("username", "");//登录页传过来的当前用户名
+            String copymonth;//月份变量
+            //如果修改过月份，则将修改过的月份放入月份变量中，
+            //如果没有修改过月份，则默认取款号传过来的月份
             if (productionMonth.equals("")) {
                 copymonth = tvnewlyMonth;
             } else {
                 copymonth = productionMonth;
             }
+            //如果工序是裁床，实裁数变为0
             if (tvnewlyProcedure.equals("裁床")) {
                 tvnewlyClippingNumber = String.valueOf(0);
             }
-            int listsize = booleandatelist.size();
+            int listsize = booleandatelist.size();//
             if (listsize == 0) {
                 listsize = 1;
             } else {
@@ -510,12 +515,16 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
             String[] arrsmonth = productionMonth.split(",");//修改的月份数组
             String[] arrsdatemonth = new String[listsize];
             String[] arrsdatepredure = new String[listsize];//符合条件的工序数组
+            //在循环中如果修改过数据，则将对应的款号，工序，月份，保存到数组中
             for (int i = 0; i < listsize; i++) {
                 if (listsize != 0) {
+                    //如果集合中的款号不为空,则将对应的款号添加到数组中
                     if (booleandatelist.get(i).getItem() != null) {
                         String woritem = booleandatelist.get(i).getItem();
                         String[] workitempro = woritem.split(",");
                         boolean probool = containsAll(arrsitem, workitempro);
+                        //如果款号对比一致的话，则数组赋值为空
+                        //如果款号不一致的话，则将集合中的工序和月份赋值到数组中
                         if (probool == true) {
                             arrsdatepredure[i] = booleandatelist.get(i).getWorkingProcedure();
                             arrsdatemonth[i] = booleandatelist.get(i).getMonth();
@@ -530,8 +539,10 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                 }
             }
             System.out.print(arrsdatepredure + "");//符合条件的工序
-            System.out.print(arrsdatemonth + "");
-            StringBuffer sb = new StringBuffer();
+            System.out.print(arrsdatemonth + "");//符合条件的月份
+            StringBuffer sb = new StringBuffer();//实例化截取字符串
+            //循环中，如果有字符是空值，则跳过，不取，
+            //如果有值，则数组中字符不变，将数组中的空值去掉，只保留有值的
             for (int i = 0; i < arrsdatepredure.length; i++) {
                 if ("".equals(arrsdatepredure[i])) {
                     continue;
@@ -562,10 +573,12 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                 System.out.print(arrsdatemonth[i] + "");
             }
             System.out.print(arrsdatemonth + "");
-            boolean monthbool = containsAll(arrsdatemonth, arrsmonth);
-            boolean predurebool = containsAll(arrsdatepredure, arrspredure);
+            boolean monthbool = containsAll(arrsdatemonth, arrsmonth);//判断月份是否有一样的
+            boolean predurebool = containsAll(arrsdatepredure, arrspredure);//判断工序是否有一样的
             final ProgressDialog progressDialog = ProgressDialog.show(this,
                     "请稍候...", "正在保存中...", false, true);
+            //如果工序一样，则继续判断月份，如果月份也一样，则提示存在相同的，不可保存
+            //只要工序，月份有一个不一样，则可以执行后面的方法保存
             if (predurebool == true) {
                 if (monthbool == true) {
                     ToastUtils.ShowToastMessage("已存在相同月份，工序的款号", ProductionCopyComfigActivity.this);
@@ -582,12 +595,14 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     });
                     thread.start();
                 } else {
+                    //如果工序是裁床，则需判断花色是否有多种，有则需创建多条数据
                     if (procudureTitle.equals("裁床")) {
                         if (!TextUtils.isEmpty(liststr)) {
                             List<String> list = null;
                             Gson gson = new Gson();
                             try {
                                 list = PhoneSaveUtil.String2SceneList(liststr);
+                                //循环中，将符合条件的数据加到实体bean中
                                 for (int j = 0; j < list.size(); j++) {
                                     ProducationCopyNewlyComfigSaveBean consaveBean =
                                             new ProducationCopyNewlyComfigSaveBean();
@@ -618,8 +633,9 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 }
                                 System.out.print(list);
                                 System.out.print(newlyComfigSaveBeen);
-                                String detailb = gson.toJson(newlyComfigSaveBeen);
-                                String dateee = detailb.replace("\"\"", "null");
+                                String detailb = gson.toJson(newlyComfigSaveBeen);//将实体bean数据转化为json
+                                String dateee = detailb.replace("\"\"", "null");//格式化
+                                //判断保存中的数据是否为空
                                 if (newlyComfigSaveBeen.equals("")) {
                                     ToastUtils.ShowToastMessage("没有数据可以保存", ProductionCopyComfigActivity.this);
                                     Thread thread = new Thread(new Runnable() {
@@ -637,9 +653,9 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 } else {
                                     if (NetWork.isNetWorkAvailable(this)) {
                                         OkHttpUtils.postString()
-                                                .url(stridata)
-                                                .content(dateee)
-                                                .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                                                .url(stridata)//url地址
+                                                .content(dateee)//要传输的json内容
+                                                .mediaType(MediaType.parse("application/json;charset=utf-8"))//传输格式
                                                 .build()
                                                 .execute(new StringCallback() {
                                                     @Override
@@ -1291,13 +1307,14 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
 
     /**
      * 新建时点击款号后查询有关当前登录用户的数据
+     * 查询当前用户在数据库中的全部数据，以便可以和将要复制保存的数据进行比较
      */
     private void setNewlyComfig() {
-        String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
+        String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";//查询生产日报全部的数据
         sp = getSharedPreferences("my_sp", 0);
         String namedure = sp.getString("usernamerecoder", "");//制单人
         String stis = sp.getString("ischeckedd", "");//是否为空
-        boolean stris = Boolean.parseBoolean(stis);
+        boolean stris = Boolean.parseBoolean(stis);//将字符串转化为Boolean类型（true或false）
         Gson gson = new Gson();
         Propostbean propostbean = new Propostbean();
         Propostbean.Conditions conditions = propostbean.new Conditions();
@@ -1309,30 +1326,32 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
         propostbean.setConditions(conditions);//外部嵌套
         propostbean.setPageNum(0);//默认第几页
         propostbean.setPageSize(500);//默认每页多少条数据
+        //先将数据添加到bean实体，然后转化成能上传的json数据
         String gsonbeanStr = gson.toJson(propostbean);
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this);
+            ResponseDialog.showLoading(this);//显示圆圈进度条
             OkHttpUtils.postString()
-                    .url(str)
-                    .content(gsonbeanStr)
-                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                    .url(str)//url接口地址
+                    .content(gsonbeanStr)//条件内容
+                    .mediaType(MediaType.parse("application/json;charset=utf-8"))//格式
                     .build()
                     .execute(new StringCallback() {
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
-                            ResponseDialog.closeLoading();
+                            ResponseDialog.closeLoading();//关闭dialog
                         }
 
                         @Override
                         public void onResponse(String response, int id) {
                             try {
-                                    /*成功返回的结果*/
+                                /*成功返回的结果*/
                                 System.out.print(response);
                                 String ress = response.replace("\\", "");
                                 System.out.print(ress);
                                 String ression = StringUtil.sideTrim(ress, "\"");
                                 System.out.print(ression);
+                                //将查询好的数据转化为实体bean
                                 newlybooleanBean = new Gson().fromJson(ression, ProductionNewlybooleanBean.class);
                                 booleandatelist = newlybooleanBean.getData();
                                 ResponseDialog.closeLoading();
@@ -1559,7 +1578,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
             String tvnewly = String.valueOf(mdate.get(position).get("copyitem"));
             System.out.print(tvnewly);
             viewHolder.tv_data.setText(tvnewly);
-            String nameid = sp.getString("usernamerecoder", "");
+            String nameid = sp.getString("usernamerecoder", "");//用户名
             String tvnewlyDocumen = String.valueOf(mdate.get(position).get("copyDocumentary"));
             String tvnewlyFactory = String.valueOf(mdate.get(position).get("copyFactory"));
             String tvnewlyDepartment = String.valueOf(mdate.get(position).get("copyDepartment"));
@@ -1588,6 +1607,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                 isprodure = 1;
                 sp = context.getSharedPreferences("my_sp", 0);
                 String strisprodure = String.valueOf(isprodure);
+                //判断用户名是否为空
                 if (nameid != null && !nameid.equals("")) {
                     viewHolder.tvProDocumentary.setText(tvnewlyDocumen);
                     viewHolder.tvProFactory.setText(tvnewlyFactory);
@@ -1602,13 +1622,13 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     viewHolder.tvProRecordat.setText(year + "/" + month + "/" + datetime);
                     String comfigitem = viewHolder.tv_data.getText().toString();
                     spUtils.put(context, "comfigitem", comfigitem);
-
+                    //保存轻量级存储
                     String configdocument = viewHolder.tvProDocumentary.getText().toString();
                     spUtils.put(context, "configdocument", configdocument);
 
                     String configfactory = viewHolder.tvProFactory.getText().toString();
                     spUtils.put(context, "configfactory", configfactory);
-
+                    //点击选择部门并保存到轻量级存储中
                     viewHolder.tvProDepartment.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -1633,7 +1653,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                             popupMenu.show();
                         }
                     });
-
+                    //点击选择工序并保存到轻量级存储中
                     viewHolder.tvProProcedure.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -1647,6 +1667,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                     spUtils.put(context, "ConfigProcedure", title);
                                     viewHolder.tvProProcedure.setText(title);
                                     booleandatelist.get(position).setMemoprdure(title);
+                                    //如果选择了裁床，则隐藏从1日到31日的输入框，否则就显示
                                     if (title.equals("裁床")) {
                                         tvconfigone.setVisibility(View.GONE);
                                         tvconfigtwo.setVisibility(View.GONE);
@@ -1912,6 +1933,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                         }
                     });
 
+                    //监听组别人数
                     final EditText editTexOthers = viewHolder.tvProOthers;
                     /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexOthers.getTag() instanceof TextWatcher) {
@@ -1957,12 +1979,15 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     /*光标放置在文本最后*/
                     viewHolder.tvProOthers.setSelection(viewHolder.tvProOthers.length());
 
+                    //制单数
                     String configsingular = viewHolder.tvProSingularSystem.getText().toString();
                     spUtils.put(context, "configsingular", configsingular);
 
+                    //花色
                     String configcolor = viewHolder.tvProColor.getText().toString();
                     spUtils.put(context, "configcolor", configcolor);
 
+                    //监听任务数
                     final EditText editTexTaskNumber = viewHolder.tvProTaskNumber;
                     /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     final int singular = Integer.parseInt(viewHolder.tvProSingularSystem.getText().toString());
@@ -2031,14 +2056,14 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     viewHolder.tvProTaskNumber.setSelection(viewHolder.tvProTaskNumber.length());
 
                     String configsize = viewHolder.tvProSize.getText().toString();
-                    spUtils.put(context, "configsize", configsize);
+                    spUtils.put(context, "configsize", configsize);//尺码
 
                     String configclipping = viewHolder.tvProClippingNumber.getText().toString();
-                    spUtils.put(context, "configclipping", configclipping);
+                    spUtils.put(context, "configclipping", configclipping);//实裁数
 
                     final EditText editTexLastMonth = viewHolder.tvProCompletedLastMonth;
                     /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
-                    if (editTexLastMonth.getTag() instanceof TextWatcher) {
+                    if (editTexLastMonth.getTag() instanceof TextWatcher) {//监听上月完工
                         editTexLastMonth.removeTextChangedListener((TextWatcher) editTexLastMonth.getTag());
                     }
                     viewHolder.tvProCompletedLastMonth.setText(tvnewlyCompletedLastMonth);
@@ -2067,12 +2092,12 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
 
                     viewHolder.tvProTotalCompletion.setText(tvnewlyCompletedLastMonth);
                     String configcompletion = viewHolder.tvProTotalCompletion.getText().toString();
-                    spUtils.put(context, "configcompletion", configcompletion);
+                    spUtils.put(context, "configcompletion", configcompletion);//总完工数
 
                     String configamount = viewHolder.tvProBalanceAmount.getText().toString();
-                    spUtils.put(context, "configamount", configamount);
+                    spUtils.put(context, "configamount", configamount);//结余数量
 
-
+                    //监听状态
                     viewHolder.tvProState.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -2098,10 +2123,11 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                         }
                     });
 
-                    viewHolder.tvProYear.setText(year + "");
+                    viewHolder.tvProYear.setText(year + "");//年
                     String configyear = viewHolder.tvProYear.getText().toString();
                     spUtils.put(context, "configyear", configyear);
 
+                    //可选择的月
                     String[] spinnermonth = context.getResources().getStringArray(R.array.timemonth);
                     ArrayAdapter<String> adapter =
                             new ArrayAdapter<String>(context,
@@ -2189,7 +2215,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     viewHolder.vProThirtyDay.setVisibility(View.GONE);
                     viewHolder.vProThirtyOneDay.setVisibility(View.GONE);
 
-                    final EditText editTexRemarks = viewHolder.tvProRemarks;
+                    final EditText editTexRemarks = viewHolder.tvProRemarks;//监听备注信息
                     /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexRemarks.getTag() instanceof TextWatcher) {
                         editTexRemarks.removeTextChangedListener((TextWatcher) editTexRemarks.getTag());
@@ -2217,14 +2243,14 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     /*光标放置在文本最后*/
                     viewHolder.tvProRemarks.setSelection(viewHolder.tvProRemarks.length());
 
-                    viewHolder.tvProRecorder.setText(nameid);
+                    viewHolder.tvProRecorder.setText(nameid);//制单人
                     String configrecorder = viewHolder.tvProRecorder.getText().toString();
                     spUtils.put(context, "configrecorder", configrecorder);
 
                     viewHolder.tvProRecordat.setText(year + "/" + month + "/" + datetime);
                     String configrecordat = viewHolder.tvProRecordat.getText().toString();
-                    spUtils.put(context, "configrecordat", configrecordat);
-                } else {
+                    spUtils.put(context, "configrecordat", configrecordat);//制单时间
+                } else {//
                     final EditText editTexOthers = viewHolder.tvProOthers;
                     /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexOthers.getTag() instanceof TextWatcher) {
@@ -2284,7 +2310,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                     viewHolder.vProThirtyDay.setVisibility(View.GONE);
                     viewHolder.vProThirtyOneDay.setVisibility(View.GONE);
                 }
-            } else {
+            } else {//工序不是裁床的情况，将1日到31日的输入框显示出来
                 viewHolder.vProOneDay.setVisibility(View.VISIBLE);
                 viewHolder.vProTwoDay.setVisibility(View.VISIBLE);
                 viewHolder.vProThreeDay.setVisibility(View.VISIBLE);
@@ -2642,7 +2668,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                         }
                     });
 
-                    final EditText editTexOthers = viewHolder.tvProOthers;
+                    final EditText editTexOthers = viewHolder.tvProOthers;//监听组别人数
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
                     if (editTexOthers.getTag() instanceof TextWatcher) {
                         editTexOthers.removeTextChangedListener((TextWatcher) editTexOthers.getTag());

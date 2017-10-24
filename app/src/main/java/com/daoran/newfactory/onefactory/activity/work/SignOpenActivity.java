@@ -86,12 +86,12 @@ public class SignOpenActivity extends BaseFrangmentActivity
         implements View.OnClickListener, PoiSearch.OnPoiSearchListener,
         LocationSource, AMapLocationListener, AMap.OnCameraChangeListener
         , ActivityCompat.OnRequestPermissionsResultCallback {
-    private MapView mapView;
-    private AMap aMap;
-    private AMapLocationClient mapLocationClient;
-    private AMapLocationClientOption mapLocationClientOption;
+    private MapView mapView;//地图控件
+    private AMap aMap;//初始化地图控制器对象
+    private AMapLocationClient mapLocationClient;//声明aMapLocationClient对象
+    private AMapLocationClientOption mapLocationClientOption;//声明AMapLocationClientOption对象
     private boolean isFirstLoc = true;
-    private double longitude;
+    private double longitude;//初始化经纬度
     private double latitude;
     private LocationSource.OnLocationChangedListener mListener;
     private PoiSearch.Query query;//poi查询类
@@ -102,27 +102,28 @@ public class SignOpenActivity extends BaseFrangmentActivity
     private MyLocationStyle myLocationStyle;
 
     private static final String TAG = "TAG";
+    //线程定位状态
     public static final String KEY_LAT = "lat";
     public static final String KEY_LNG = "lng";
     public static final String KEY_DES = "des";
 
     private String cityCode;
     private TextView tvSqltexttime;
-    private LinearLayout btnSignOk;
-    private Button btnCount;
-    private TextView tvSignAddress, tvSignDate;
-    private Spinner SpinnerSign, spinnerfineTune;
-    private EditText etRemark;
-    private ImageView ivSignBack;
+    private LinearLayout btnSignOk;//声明签到按钮
+    private Button btnCount;//签到统计按钮
+    private TextView tvSignAddress, tvSignDate;//声明显示的签到地址与签到日期控件
+    private Spinner SpinnerSign, spinnerfineTune;//声明spinner地址控件
+    private EditText etRemark;//声明备注控件
+    private ImageView ivSignBack;//声明返回控件
     private ImageView topBg;
     private ScrollView scrollviewSign;
     private ArrayAdapter<String> adapter;
     private ArrayList<String> locationList = new ArrayList<>();
 
     private int year, month, date, hour, minute, second;
-    private SharedPreferences sp;
+    private SharedPreferences sp;//轻量级存储框架
     private SPUtils spUtils;
-    private MarkerOptions mMarkerOptions;
+    private MarkerOptions mMarkerOptions;//初始化可标记的点
     private LocationManager locationManager;
     /**
      * 判断是否需要检测，防止不停的弹框
@@ -137,8 +138,10 @@ public class SignOpenActivity extends BaseFrangmentActivity
         setContentView(R.layout.activity_sign);
         sp = this.getSharedPreferences("my_sp", 0);
         tvSqltexttime = (TextView) findViewById(R.id.tvSqltexttime);
-        new TimeThread().start();
+        new TimeThread().start();//初始化启动时间线程
+        //获取地图控件的引用
         mapView = (MapView) findViewById(R.id.mapSigngaode);
+        //activity执行oncreate的时候执行mapview。创建地图
         mapView.onCreate(savedInstanceState);
         if (aMap == null) {
             aMap = mapView.getMap();
@@ -147,14 +150,14 @@ public class SignOpenActivity extends BaseFrangmentActivity
             settings.setMyLocationButtonEnabled(true);// 是否显示定位按钮
             aMap.setMyLocationEnabled(true);//显示定位层并且可以触发定位,默认是flase
         }
-        setUp();
+        setUp();//设置显示的地图模式
         mMarkerOptions = new MarkerOptions();
         mMarkerOptions.draggable(false);//可拖放性
         mMarkerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.guidepoint_red));
-        getViews();
+        getViews();//初始化控件
         initViews();
-        initSpinner();
-        init();
+        initSpinner();//初始化下拉控件并且加载数据
+        init();//处理定位相关信息
         myLocationStyle = new MyLocationStyle();
         myLocationStyle.strokeColor(Color.argb(0, 0, 0, 0));
         myLocationStyle.radiusFillColor(Color.argb(0, 0, 0, 0));
@@ -586,9 +589,10 @@ public class SignOpenActivity extends BaseFrangmentActivity
 
     /**
      * 判断软键盘是否弹出
+     *
      * @param v
      */
-    private void sethideSoft(View v){
+    private void sethideSoft(View v) {
         //判断软件盘是否弹出
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
@@ -624,7 +628,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
     protected void onResume() {
         super.onResume();
         if (mapView != null) {
-            mapView.onResume();
+            mapView.onResume();//重新绘制加载地图
         }
     }
 
@@ -632,7 +636,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
     protected void onPause() {
         super.onPause();
         if (mapView != null) {
-            mapView.onResume();
+            mapView.onPause();//暂停地图的绘制
         }
     }
 
@@ -640,7 +644,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
     protected void onDestroy() {
         super.onDestroy();
         if (mapView != null) {
-            mapView.onDestroy();
+            mapView.onDestroy();//销毁地图
             mapView = null;
         }
         mapLocationClient.onDestroy();//退出本页面时销毁定位客户端。
@@ -649,7 +653,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);//保存地图的当前状态
     }
 
     /**

@@ -335,6 +335,7 @@ public class ProductionActivity extends BaseFrangmentActivity
             case R.id.ivDownRightPage:
                 sethideSoft(v);
                 String etsql2 = etSqlDetail.getText().toString();
+                //判断页码输入框是否为空
                 if (etsql2.equals("")) {
                     ToastUtils.ShowToastMessage("页码不能为空", ProductionActivity.this);
                 } else {
@@ -450,7 +451,7 @@ public class ProductionActivity extends BaseFrangmentActivity
         if (getsize.equals("")) {
             getsize = String.valueOf(10);
         }
-        String Procedure = sp.getString("Procedure", "");//工序
+        String Procedure = sp.getString("Procedure", "");//条件查询dialog中选择的工序
         String stis = sp.getString("ischeckedd", "");//是否为空
         if (Procedure.equals("全部")) {
             boolean stris = Boolean.parseBoolean(stis);

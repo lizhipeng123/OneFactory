@@ -90,6 +90,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     private static final int DOWN_NOSDCARD = 0;
     private static final int DOWN_NO = 1;
     private static final int DOWN_ERROR = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,12 +154,13 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         ArrayAdapter<String> adapterclumns = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, spinner);
         adapterclumns.setDropDownViewResource(R.layout.dropdown_stytle);
-        spinnSignPageClumns.setAdapter(adapterclumns);
+        spinnSignPageClumns.setAdapter(adapterclumns);//绑定数据
         spinnSignPageClumns.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] languages = getResources().
                         getStringArray(R.array.clumnsCommon);
+                //将选择的条目数保存到轻量级存储中
                 spUtils.put(SignDetailActivity.this,
                         "clumnssignspinner", languages[position]);
                 setSignDetail();
@@ -247,13 +249,13 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case DOWN_NOSDCARD:
-                    ToastUtils.ShowToastMessage("保存成功，请在Excel文件中查看",SignDetailActivity.this);
+                    ToastUtils.ShowToastMessage("保存成功，请在Excel文件中查看", SignDetailActivity.this);
                     break;
                 case DOWN_NO:
-                    ToastUtils.ShowToastMessage("没有数据",SignDetailActivity.this);
+                    ToastUtils.ShowToastMessage("没有数据", SignDetailActivity.this);
                     break;
                 case DOWN_ERROR:
-                    ToastUtils.ShowToastMessage("保存失败",SignDetailActivity.this);
+                    ToastUtils.ShowToastMessage("保存失败", SignDetailActivity.this);
                     break;
             }
         }
@@ -346,7 +348,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         }
     }
 
-    private void sethideSoft(View v){
+    private void sethideSoft(View v) {
         //判断软件盘是否弹出
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
@@ -442,13 +444,14 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     private void setSignDetail() {
         String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
         sp = SignDetailActivity.this.getSharedPreferences("my_sp", 0);
-        String name = sp.getString("name", "");
-        String getsize = sp.getString("clumnssignspinner", "");
+        String name = sp.getString("name", "");//当前登录用户
+        String getsize = sp.getString("clumnssignspinner", "");//每页显示的条目数
+        //默认显示10条
         if (getsize.equals("")) {
             getsize = String.valueOf(10);
         }
-        String datetime = sp.getString("datetimesign", "");
-        String endtime = sp.getString("endtimesign", "");
+        String datetime = sp.getString("datetimesign", "");//起始日期
+        String endtime = sp.getString("endtimesign", "");//结束日期
         if (NetWork.isNetWorkAvailable(this)) {
             final ProgressDialog progressDialog = ProgressDialog.show(this,
                     "请稍候...", "正在查询中...", false, true);
@@ -456,13 +459,13 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
             OkHttpUtils
                     .post()
                     .url(str)
-                    .addParams("pageNum", "0")
-                    .addParams("pageSize", getsize)
-                    .addParams("recorder", name)
-                    .addParams("recordat_start", datetime)
-                    .addParams("recordat_end", endtime)
+                    .addParams("pageNum", "0")//起始页
+                    .addParams("pageSize", getsize)//每页显示的条目数
+                    .addParams("recorder", name)//制单人
+                    .addParams("recordat_start", datetime)//起始日期
+                    .addParams("recordat_end", endtime)//结束日期
                     .addParams("recordplace", "")
-                    .addParams("memo", "")
+                    .addParams("memo", "")//备注
                     .build()
                     .execute(new StringCallback() {
                         @Override
@@ -501,6 +504,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                 Gson gson = new Gson();
                                 signBean = gson.fromJson(response, SignDetailBean.class);
                                 mListData = signBean.getData();
+                                //判断是否有数据，如果没有则显示另一个页面
                                 if (signBean.getTotalCount() != 0) {
                                     ll_visibi.setVisibility(View.GONE);
                                     scroll_content.setVisibility(View.VISIBLE);
@@ -637,7 +641,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         dialog.show();
     }
 
-    /*取消*/
+    /*取消事件*/
     private View.OnClickListener onCancleListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -649,7 +653,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         }
     };
 
-    /*确认*/
+    /*确认事件*/
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

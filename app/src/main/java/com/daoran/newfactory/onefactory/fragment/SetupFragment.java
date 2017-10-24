@@ -100,7 +100,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
 
     /*下载文件的状态*/
     private static final int DOWN_NOSDCARD = 0;//未找到sd卡
-    private static final int DOWN_UPDATE = 1;//
+    private static final int DOWN_UPDATE = 1;//下载中
     private static final int DOWN_OVER = 2;//下载完成
 
     private static final int DIALOG_TYPE_LATEST = 0;

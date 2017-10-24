@@ -128,7 +128,7 @@ public class ProcationDialog extends Dialog {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] languages = content.getResources().getStringArray(R.array.Procedure);
-                spUtils.put(content, "Procedure", languages[position]);
+                spUtils.put(content, "Procedure", languages[position]);//将选择的工序保存到轻量级存储中
             }
 
             @Override
@@ -141,7 +141,7 @@ public class ProcationDialog extends Dialog {
         etprodialogRecode.addTextChangedListener(etproRecode);
         btnComfirm.setOnClickListener(mClickListener);
         btnCancle.setOnClickListener(mCancleLinstener);
-        /*点击文本改变checkbox状态*/
+        /*是否可空点击文本改变checkbox状态*/
         tvProDialogcheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

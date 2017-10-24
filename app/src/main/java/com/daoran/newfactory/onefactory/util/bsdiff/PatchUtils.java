@@ -1,5 +1,8 @@
 package com.daoran.newfactory.onefactory.util.bsdiff;
 
+/**
+ * 合并旧版安装包和patch增量包
+ */
 public class PatchUtils {
 
 	static PatchUtils instance;

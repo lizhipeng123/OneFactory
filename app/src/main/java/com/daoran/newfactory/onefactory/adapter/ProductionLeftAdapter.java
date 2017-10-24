@@ -119,7 +119,7 @@ public class ProductionLeftAdapter extends BaseAdapter {
                             SharedPreferences.Editor editor = spes.edit();
                             try {
                                 String liststr = PhoneSaveUtil.SceneList2String(list);
-                                editor.putString("mycopylistStr", liststr);
+                                editor.putString("mycopylistStr", liststr);//花色集合
                                 spUtils.put(context, "copyyColor", copyColor);//花色
                                 editor.commit();
                             } catch (IOException e) {

@@ -10,6 +10,7 @@ import com.tencent.bugly.beta.Beta;
 
 /**
  * 初始化操作（使得分包情况下可以正常运行程序）
+ * 进行分享操作之类
  * Created by lizhipeng on 2017/7/18.
  */
 
