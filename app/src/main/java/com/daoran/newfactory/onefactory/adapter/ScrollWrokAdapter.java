@@ -29,7 +29,7 @@ import java.util.List;
 
 public class ScrollWrokAdapter extends BaseAdapter {
     private Context context;
-    private List<WorkBean> workBeen = new ArrayList<WorkBean>();
+    private List<WorkBean> workBeen = new ArrayList<WorkBean>();//界面实体集合
 
     public ScrollWrokAdapter(Context context, List<WorkBean> workBeen) {
         this.context = context;
@@ -86,6 +86,7 @@ public class ScrollWrokAdapter extends BaseAdapter {
                 holder.ivopenCarDetail.setImageResource(R.mipmap.prd_220);
                 break;
         }
+        //点击不同的控件，根据点击的名称，跳转不同的界面
         holder.llOpenCarDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

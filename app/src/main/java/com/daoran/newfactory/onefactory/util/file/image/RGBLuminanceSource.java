@@ -5,6 +5,9 @@ import android.graphics.Bitmap;
 
 import com.google.zxing.LuminanceSource;
 
+/**
+ * 转换图片像素格式
+ */
 public class RGBLuminanceSource extends LuminanceSource {
 
 	private byte bitmapPixels[];

@@ -33,12 +33,12 @@ import java.util.regex.Pattern;
 
 public class SignContentDialog extends Dialog {
     Activity content;
-    private TextView tvInitialDate, tvEndDate;
-    private Button btnCancle, btnComfirm;
-    private View.OnClickListener mClickListener, mCancleLinstener;
-    private SharedPreferences sp;
+    private TextView tvInitialDate, tvEndDate;//起始日期与结束日期
+    private Button btnCancle, btnComfirm;//取消与确定按钮
+    private View.OnClickListener mClickListener, mCancleLinstener;//确定与取消点击事件
+    private SharedPreferences sp;//临时存储
     private SPUtils spUtils;
-    private EditText etAudit;
+    private EditText etAudit;//制单人填写框
 
     public SignContentDialog(Context context) {
         super(context);
@@ -59,6 +59,9 @@ public class SignContentDialog extends Dialog {
         initViews();
     }
 
+    /**
+     * 实例化控件
+     */
     private void getViews() {
         tvInitialDate = (TextView) findViewById(R.id.tvInitialDate);
         tvEndDate = (TextView) findViewById(R.id.tvEndDate);
@@ -68,6 +71,9 @@ public class SignContentDialog extends Dialog {
         setEditTextInhibitInputSpace(etAudit);
     }
 
+    /**
+     * 初始化加载
+     */
     private void initViews() {
         sp = content.getSharedPreferences("my_sp", 0);
         Window dialogWindow = this.getWindow();
@@ -76,16 +82,17 @@ public class SignContentDialog extends Dialog {
         WindowManager.LayoutParams p = dialogWindow.getAttributes();
         p.width = (int) (display.getWidth() * 0.8);
         dialogWindow.setAttributes(p);
-        String etaa = sp.getString("name", "");
+        String etaa = sp.getString("name", "");//制单人（登录人）
         etAudit.setText(etaa);
         etAudit.setSelection(etAudit.getText().length());
         etAudit.addTextChangedListener(textWatcher);
-        String tvInitial = sp.getString("datetimesign", "");
+        String tvInitial = sp.getString("datetimesign", "");//起始日期
         tvInitialDate.setText(tvInitial);
-        String tvend = sp.getString("endtimesign", "");
+        String tvend = sp.getString("endtimesign", "");//结束日期
         tvEndDate.setText(tvend);
         btnComfirm.setOnClickListener(mClickListener);
         btnCancle.setOnClickListener(mCancleLinstener);
+        //起始日期点击选择日期
         tvInitialDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,6 +137,7 @@ public class SignContentDialog extends Dialog {
                 datePickerDialog.show();
             }
         });
+        //结束日期点击选择日期
         tvEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,6 +189,7 @@ public class SignContentDialog extends Dialog {
         this.setCancelable(true);
     }
 
+    //监听制单人输入信息
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {

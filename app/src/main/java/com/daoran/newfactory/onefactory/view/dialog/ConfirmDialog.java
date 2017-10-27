@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.daoran.newfactory.onefactory.R;
 
 /**
+ * 删除提示dialog
  * Created by Jimmy on 2016/10/18 0018.
  */
 public class ConfirmDialog extends Dialog implements View.OnClickListener {

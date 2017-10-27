@@ -19,8 +19,8 @@ public class CropSquareTransformation implements Transformation {
 
     @Override
     public Bitmap transform(Bitmap source) {
-        int widthLight = source.getWidth();
-        int heightLight = source.getHeight();
+        int widthLight = source.getWidth();//获取图片宽度
+        int heightLight = source.getHeight();//获取图片高度
 
         Bitmap output = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
 
@@ -35,7 +35,7 @@ public class CropSquareTransformation implements Transformation {
         Paint paintImage = new Paint();
         paintImage.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP));
         canvas.drawBitmap(source, 0, 0, paintImage);
-        source.recycle();
+        source.recycle();//销毁对象
         return output;
     }
 

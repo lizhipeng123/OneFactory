@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 日程
  * Created by Jimmy on 2016/10/15 0015.
  */
 public class ScheduleDetailActivity extends BaseActivity implements View.OnClickListener, OnTaskFinishedListener<Map<Integer, EventSet>>, SelectDateDialog.OnSelectDateListener, InputLocationDialog.OnLocationBackListener, SelectEventSetDialog.OnSelectEventSetListener {

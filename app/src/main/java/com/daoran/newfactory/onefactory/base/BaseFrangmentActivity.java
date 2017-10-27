@@ -75,12 +75,14 @@ public class BaseFrangmentActivity extends FragmentActivity {
             progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             TextView msg = (TextView) progressDialog.findViewById(R.id.id_tv_loadingmsg);
             msg.setText(string);
+            //判断该组件可见不可见
             if (!progressDialog.isShowing()) {
-                progressDialog.show();
+                progressDialog.show();//如果不可见，则让他显示在当前页面上
             }
         }
     }
 
+    //关闭dialog
     public void dismissDialog() {
         if (this == null) {
             return;
@@ -91,7 +93,7 @@ public class BaseFrangmentActivity extends FragmentActivity {
     }
 
     private static final String TAG = "BaseActivity";
-
+    //回调
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         FragmentManager fm = getSupportFragmentManager();

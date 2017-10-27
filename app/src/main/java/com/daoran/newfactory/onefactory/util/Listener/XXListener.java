@@ -6,5 +6,5 @@ package com.daoran.newfactory.onefactory.util.Listener;
  */
 
 public interface XXListener {
-    public void onXXClick();
+     void onXXClick();
 }

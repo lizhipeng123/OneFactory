@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * Created by Administrator on 2016/10/19.
- *
+ * 设置路书的实体类
  * @auther madreain
  */
 

@@ -33,10 +33,10 @@ import java.util.List;
 
 public class CommoditySqlAdapter extends BaseAdapter {
     private static final String TAG = "commotest";
-    private Context context;
-    private List<CommoditydetailBean.DataBean> dataBeen;
-    private ArrayList attentionArr = new ArrayList();
-    private SharedPreferences sp;
+    private Context context;//创建上下文对象
+    private List<CommoditydetailBean.DataBean> dataBeen;//查货跟踪信息实体集合
+    private ArrayList attentionArr = new ArrayList();//
+    private SharedPreferences sp;//临时存储
     private SPUtils spUtils;
 
     public CommoditySqlAdapter(Context context, List<CommoditydetailBean.DataBean> dataBeen) {
@@ -173,15 +173,24 @@ public class CommoditySqlAdapter extends BaseAdapter {
         String nameid = sp.getString("usernamerecoder", "");
         String documentary = getItem(position).getPrddocumentary();
         String master = getItem(position).getPrdmaster();
+        //判断跟单是否为空
         if (documentary == null) {
             documentary = "";
         }
+        //判断主管是否为空
         if (master == null) {
             master = "";
         }
 
         /**
          * 判断生产主管是否是当前登录用户
+         * 如果是当前用户，则可以修改对应的字符
+         * 如果不是，则判断跟单是否是当前用户
+         * 可修改后道、主管评分、封样资料接收时间、大货资料接收时间、需要特别备注的情况、
+         * 预计产前报告时间、开产前会时间、大货面料情况、大货辅料情况、大货特殊工艺情况
+         * 特殊工艺特别备注、实裁数、上线日期、下线日期、预计早期时间、自查早期时间、
+         * 预计中期时间、自查中期时间、预计尾期时间、自查尾期时间、客查尾期时间、
+         * 客查中期时间、成品包装开始日期、装箱数量、离厂日期、业务员确认客查日期
          */
         if (master.equals(nameid)) {
             holder.lin_content.setOnClickListener(new View.OnClickListener() {
@@ -916,7 +925,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 }
             });
 
-            holder.tvCommoSewMdt.setEnabled(true);
+            holder.tvCommoSewMdt.setEnabled(true);//下线日期
             holder.tvCommoSewMdt.setText(getItem(position).getSewMdt());
             holder.tvCommoSewMdt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -983,7 +992,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 }
             });
 
-            holder.tvCommoSubfactory.setEnabled(true);
+            holder.tvCommoSubfactory.setEnabled(true);//加工厂
             holder.tvCommoSubfactory.setText(getItem(position).getSubfactory());
             holder.tvCommoSubfactory.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1127,7 +1136,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             });
 
 
-            holder.tvCommoPremdt.setEnabled(true);
+            holder.tvCommoPremdt.setEnabled(true);//预计中期时间
             holder.tvCommoPremdt.setText(getItem(position).getPremdt());
             holder.tvCommoPremdt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1194,7 +1203,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 }
             });
 
-            holder.tvCommoQCmdt.setEnabled(true);
+            holder.tvCommoQCmdt.setEnabled(true);//自查中期时间
             holder.tvCommoQCmdt.setText(getItem(position).getQCmdt());
             holder.tvCommoQCmdt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1262,7 +1271,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             });
 
 
-            holder.tvCommoPreedt.setEnabled(true);
+            holder.tvCommoPreedt.setEnabled(true);//预计尾期时间
             holder.tvCommoPreedt.setText(getItem(position).getPreedt());
             holder.tvCommoPreedt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1751,7 +1760,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 }
             });
 
-            holder.tvCommoBatchid.setEnabled(true);
+            holder.tvCommoBatchid.setEnabled(true);//查货批次
             final EditText editTextBatchid = holder.tvCommoBatchid;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextBatchid.getTag() instanceof TextWatcher) {
@@ -1795,7 +1804,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
 
             holder.tvCommoOurAfter.setEnabled(true);
 
-            holder.tvCommoCtmchkdt.setEnabled(true);
+            holder.tvCommoCtmchkdt.setEnabled(true);//业务员确认客查日期
             holder.tvCommoCtmchkdt.setText(getItem(position).getCtmchkdt());
             holder.tvCommoCtmchkdt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -2035,7 +2044,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             holder.tvCommoQAScore.setSelection(holder.tvCommoQAScore.length());
 
 
-            holder.tvCommoQAMemo.setEnabled(true);
+            holder.tvCommoQAMemo.setEnabled(true);//QA首扎日期
             holder.tvCommoQAMemo.setText(getItem(position).getQAMemo());
             holder.tvCommoQAMemo.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -2101,7 +2110,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                     datePickerDialog.show();
                 }
             });
-            holder.tvCommoPredoc.setEnabled(false);
+            holder.tvCommoPredoc.setEnabled(false);//产前会报告
             final EditText editTextPredoc = holder.tvCommoPredoc;
                 /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextPredoc.getTag() instanceof TextWatcher) {
@@ -2109,7 +2118,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             }
             editTextPredoc.setText(getItem(position).getPredoc());
 
-            holder.tvCommoQCbdtDoc.setEnabled(false);
+            holder.tvCommoQCbdtDoc.setEnabled(false);//早期报告
             final EditText editTextQCbdtDoc = holder.tvCommoQCbdtDoc;
                 /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQCbdtDoc.getTag() instanceof TextWatcher) {
@@ -2117,7 +2126,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             }
             editTextQCbdtDoc.setText(getItem(position).getQCbdtDoc());
 
-            holder.tvCommoQCmdtDoc.setEnabled(false);
+            holder.tvCommoQCmdtDoc.setEnabled(false);//中期报告
             final EditText editTextQCmdtDoc = holder.tvCommoQCmdtDoc;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQCmdtDoc.getTag() instanceof TextWatcher) {
@@ -2125,7 +2134,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
             }
             editTextQCmdtDoc.setText(getItem(position).getQCmdtDoc());
 
-            holder.tvCommoQCedtDoc.setEnabled(false);
+            holder.tvCommoQCedtDoc.setEnabled(false);//尾期报告
             final EditText editTextQCedtDoc = holder.tvCommoQCedtDoc;
             /*根据tag移除此前的监听事件，否则会造成数据丢失，错乱的问题*/
             if (editTextQCedtDoc.getTag() instanceof TextWatcher) {
@@ -2133,21 +2142,21 @@ public class CommoditySqlAdapter extends BaseAdapter {
             }
             editTextQCedtDoc.setText(getItem(position).getQCedtDoc());
 
-            holder.tvCommoThing.setEnabled(false);
+            holder.tvCommoThing.setEnabled(false);//件查
             final EditText editTextThing = holder.tvCommoThing;
             if (editTextThing.getTag() instanceof TextWatcher) {
                 editTextThing.removeTextChangedListener((TextWatcher) editTextThing.getTag());
             }
             editTextThing.setText(getItem(position).getChker());
 
-            holder.tvCommoThingAddress.setEnabled(false);
+            holder.tvCommoThingAddress.setEnabled(false);//查货地点（件查）
             final EditText editTextThingAddress = holder.tvCommoThingAddress;
             if (editTextThingAddress.getTag() instanceof TextWatcher) {
                 editTextThingAddress.removeTextChangedListener((TextWatcher) editTextThingAddress.getTag());
             }
             editTextThingAddress.setText(getItem(position).getChkplace());
 
-            holder.tvCommoThingExpectedTime.setEnabled(false);
+            holder.tvCommoThingExpectedTime.setEnabled(false);//预计件查时间
             holder.tvCommoThingExpectedTime.setText(getItem(position).getChkpdt());
             holder.tvCommoThingExpectedTime.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -2155,7 +2164,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 }
             });
 
-            holder.tvCommoThingTime.setEnabled(false);
+            holder.tvCommoThingTime.setEnabled(false);//实际件查时间
             holder.tvCommoThingTime.setText(getItem(position).getChkfctdt());
             holder.tvCommoThingTime.setOnClickListener(new View.OnClickListener() {
                 @Override

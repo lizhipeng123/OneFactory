@@ -21,6 +21,7 @@ import com.jimmy.common.listener.OnTaskFinishedListener;
 import java.util.List;
 
 /**
+ * 日历适配
  * Created by Jimmy on 2016/10/12 0012.
  */
 public class EventSetAdapter extends RecyclerView.Adapter<EventSetAdapter.EventSetViewHolder> {

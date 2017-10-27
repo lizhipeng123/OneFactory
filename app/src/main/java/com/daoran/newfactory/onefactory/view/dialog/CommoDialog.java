@@ -32,10 +32,10 @@ import java.util.regex.Pattern;
 
 public class CommoDialog extends Dialog {
     Activity content;
-    private View.OnClickListener mClickListener, mCancleLinstener;
+    private View.OnClickListener mClickListener, mCancleLinstener;//监听确认和取消
     private EditText etprodialogStyle, etprodialogFactory, etprodialogRecode, etprodialogProcedure;
-    private CheckBox checkboxNull;
-    private Button btnCancle, btnComfirm;
+    private CheckBox checkboxNull;//是否为空
+    private Button btnCancle, btnComfirm;//确认和取消按钮
     private TextView tvCommoDialogcheck;
     private SharedPreferences sp;
     private SPUtils spUtils;
@@ -88,14 +88,15 @@ public class CommoDialog extends Dialog {
         WindowManager.LayoutParams p = dialogWindow.getAttributes();
         p.width = (int) (display.getWidth() * 0.8);
         dialogWindow.setAttributes(p);
-        String style = sp.getString("commoStyle", "");
+        String style = sp.getString("commoStyle", "");//款号
         etprodialogStyle.setText(style);
 //        String factory = sp.getString("commoFactory", "");
-        String factoryname = sp.getString("commoname","");
+        //默认查询当前登录用户的相关信息
+        String factoryname = sp.getString("commoname","");//登录之后传过来的跟单
         etprodialogFactory.setText(factoryname);
-        String recode = sp.getString("commoRecode", "");
+        String recode = sp.getString("commoRecode", "");//巡检
         etprodialogRecode.setText(recode);
-        String precedure = sp.getString("etproProcedure", "");
+        String precedure = sp.getString("etproProcedure", "");//生产主管
         etprodialogProcedure.setText(precedure);
         etprodialogStyle.addTextChangedListener(etproStyle);//款号
         etprodialogFactory.addTextChangedListener(etproFactory);//跟单

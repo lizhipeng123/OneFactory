@@ -19,27 +19,30 @@ import java.util.List;
  */
 
 public class SqlCarApplyAdapter extends BaseAdapter {
-    private List<SqlCarApplyBean.DataBean> dataBeen;
-    private Context context;
+    private List<SqlCarApplyBean.DataBean> dataBeen;//用车单实体集合
+    private Context context;//上下文
 
     public SqlCarApplyAdapter(Context context) {
         this.dataBeen = new ArrayList<>();
         this.context = context;
     }
 
+    //清除数据
     public void clear() {
-        dataBeen.clear();
-        notifyDataSetChanged();
+        dataBeen.clear();//清除数据
+        notifyDataSetChanged();//重新加载
     }
 
+    //新增数据
     public void addAll(List<SqlCarApplyBean.DataBean> _c) {
-        dataBeen.addAll(_c);
-        notifyDataSetChanged();
+        dataBeen.addAll(_c);//新增数据
+        notifyDataSetChanged();//重新加载
     }
 
+    //替换数据
     public void replaceAll(List<SqlCarApplyBean.DataBean> _c) {
-        dataBeen.clear();
-        addAll(_c);
+        dataBeen.clear();//清除数据
+        addAll(_c);//新增数据
     }
 
     @Override
@@ -59,20 +62,20 @@ public class SqlCarApplyAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        SqlCarApplyAdapter.ViewHolder holder;
+        ViewHolder holder;
         if (convertView == null) {
-            holder = new ViewHolder();
+            holder = new ViewHolder();//实例化相关信息
             convertView = LayoutInflater.from(context).inflate(R.layout.item_sqlcar, null);
             holder.tvSqlCarId = (TextView) convertView.findViewById(R.id.tvSqlCarId);
             holder.tvSqlApplyName = (TextView) convertView.findViewById(R.id.tvSqlApplyName);
             holder.tvSqlCarDate = (TextView) convertView.findViewById(R.id.tvSqlCarDate);
-            convertView.setTag(holder);
+            convertView.setTag(holder);//将查找的view缓存起来可以多次使用，表示给view添加一个额外的数据
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();//将数据取出来
         }
-        holder.tvSqlCarId.setText(getItem(position).getCode());
-        holder.tvSqlApplyName.setText(getItem(position).getRecorder());
-        holder.tvSqlCarDate.setText(getItem(position).getRecordt());
+        holder.tvSqlCarId.setText(getItem(position).getCode());//编号
+        holder.tvSqlApplyName.setText(getItem(position).getRecorder());//申请人
+        holder.tvSqlCarDate.setText(getItem(position).getRecordt());//出车日期
         return convertView;
     }
 

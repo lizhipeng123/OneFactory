@@ -31,27 +31,31 @@ import java.util.List;
  * 4.调用getData();
  */
 public abstract class BaseListActivity extends BaseFrangmentActivity implements AdapterView.OnItemClickListener, PullToRefreshBase.OnRefreshListener2, PullToRefreshBase.OnPullEventListener, AdapterView.OnItemLongClickListener {
-    public PullToRefreshListView listView = null;
-    public BaseAdapter adapter;
-    private List datas;
-    public boolean isRefreshing = false;
-    public int defaultPageIndex = 0;
-    public int pageIndex = defaultPageIndex;
+    public PullToRefreshListView listView = null;//可刷新的listview控件
+    public BaseAdapter adapter;//适配listview数据列表
+    private List datas;//数据集合
+    public boolean isRefreshing = false;//是否刷新
+    public int defaultPageIndex = 0;//默认初始页
+    public int pageIndex = defaultPageIndex;//将默认初始页传给页数
     //    private View emptyView;
     private TextView emptyView;
 
+    //实例化控件
     public void init(int listViewId) {
         listView = (PullToRefreshListView) findViewById(listViewId);
         adapter = setListAdapter();
         listView.setOnItemClickListener(this);
         listView.setOnRefreshListener(this);
         listView.setOnPullEventListener(this);
+        //如果adapter不为空，则加载数据
         if (adapter != null) {
             listView.setAdapter(adapter);
         }
     }
 
+    //上拉加载事件
     public void setPullToRefreshListViewModeBOTH() {
+        //如果列表不为空，则添加上拉加载事件
         if (listView != null) {
             listView.setMode(PullToRefreshBase.Mode.BOTH);
             ILoadingLayout endLabels = listView.getLoadingLayoutProxy(false, true);
@@ -110,11 +114,11 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
      * 请求数据的方法。默认请求第一页
      */
     public void getData() {
-        pageIndex = defaultPageIndex;
+        pageIndex = defaultPageIndex;//默认请求第一页
         if (isRefreshing)
             return;
-        isRefreshing = true;
-        getData(pageIndex);
+        isRefreshing = true;//刷新设置为可刷新
+        getData(pageIndex);//执行查询数据
     }
 
     /**
@@ -140,12 +144,13 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
      */
     public void setListData(List datas) {
         this.datas = datas;
-        listView.onRefreshComplete();
-        isRefreshing = false;
+        listView.onRefreshComplete();//停止刷新操作
+        isRefreshing = false;//刷新手势之后，结束刷新事件
         //填充数据
         //无数据
         if (datas == null || datas.size() == 0) {
             if (pageIndex == defaultPageIndex) {
+                //如果没有数据时，则清空列表
                 if (adapter instanceof SqlCarApplyAdapter) {
                     ((SqlCarApplyAdapter) adapter).clear();
                 }
@@ -159,14 +164,14 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
             hideEmptyView();
             if (pageIndex == defaultPageIndex) {
                 if (adapter instanceof SqlCarApplyAdapter) {
-                    ((SqlCarApplyAdapter) adapter).replaceAll(datas);
+                    ((SqlCarApplyAdapter) adapter).replaceAll(datas);//替换数据
                 }
             } else {
                 if (adapter instanceof SqlCarApplyAdapter) {
-                    ((SqlCarApplyAdapter) adapter).addAll(datas);
+                    ((SqlCarApplyAdapter) adapter).addAll(datas);//新增数据
                 }
             }
-            pageIndex++;
+            pageIndex++;//页数累加
         }
     }
 
@@ -211,6 +216,7 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
         emptyView.setVisibility(View.VISIBLE);
     }
 
+    //显示页面
     public void hideEmptyView() {
         if (emptyView != null) {
             emptyView.setVisibility(View.GONE);
@@ -231,6 +237,7 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
             onListItemClick(parent.getAdapter().getItem(position));
     }
 
+    //点击listview中item的事件
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long l) {
         if (parent.getAdapter() != null)
@@ -256,6 +263,7 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
 
     @Override
     public void onPullDownToRefresh(PullToRefreshBase refreshView) {
+        //格式化时间
         String label = DateUtils.formatDateTime(this,
                 System.currentTimeMillis(),
                 DateUtils.FORMAT_SHOW_TIME
@@ -264,8 +272,9 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
         if (isRefreshing) {
             return;
         }
+        //使用proxy类对象，为layout对象中的textview赋值
         refreshView.getLoadingLayoutProxy()
-                .setLastUpdatedLabel(label);
+                .setLastUpdatedLabel(label);//设置更新时间
         getData();
     }
 

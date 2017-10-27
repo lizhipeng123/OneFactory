@@ -9,6 +9,7 @@ import com.daoran.newfactory.onefactory.R;
 
 
 /**
+ * 日程弹窗
  * Created by Jimmy on 2016/10/15 0015.
  */
 public class InputLocationDialog extends Dialog implements View.OnClickListener {

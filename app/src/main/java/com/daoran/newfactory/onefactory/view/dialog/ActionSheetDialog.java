@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 页面底部dialog弹窗
  * Created by lizhipeng on 2017/9/14.
  */
 

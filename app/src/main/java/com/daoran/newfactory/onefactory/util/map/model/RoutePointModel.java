@@ -2,7 +2,7 @@ package com.daoran.newfactory.onefactory.util.map.model;
 
 /**
  * Created by Administrator on 2016/10/19.
- *
+ *  设置经纬度及位置的实体类
  * @auther madreain
  */
 

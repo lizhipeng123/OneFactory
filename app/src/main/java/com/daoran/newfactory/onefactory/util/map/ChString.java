@@ -1,5 +1,8 @@
 package com.daoran.newfactory.onefactory.util.map;
 
+/**
+ * 设置字段
+ */
 public class ChString {
 	public static final String Kilometer = "\u516c\u91cc";// "公里";
 	public static final String Meter = "\u7c73";// "米";

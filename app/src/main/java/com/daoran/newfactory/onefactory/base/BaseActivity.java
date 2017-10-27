@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.daoran.newfactory.onefactory.R;
 
 /**
- *
+ * activity公共类
  */
 public abstract class BaseActivity extends AppCompatActivity {
     public ViewGroup contentView;//中间布局

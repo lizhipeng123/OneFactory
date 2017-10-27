@@ -36,12 +36,12 @@ import java.util.List;
  */
 
 public class WorkPwSwitchAdapter extends BaseAdapter {
-    private Context context;
+    private Context context;//上下文
     private List<WorkPwSwitchBean.Data> switchBeendatalist
-            = new ArrayList<WorkPwSwitchBean.Data>();
+            = new ArrayList<WorkPwSwitchBean.Data>();//保存账号信息的实体集合
     private SPUtils spUtils;
     private SharedPreferences sp;
-    private XXListener mXXListener;
+    private XXListener mXXListener;//回调接口
 
     public void setOnXXClickListener(XXListener XXListener) {
         this.mXXListener = XXListener;
@@ -80,12 +80,13 @@ public class WorkPwSwitchAdapter extends BaseAdapter {
         }
         sp = context.getSharedPreferences("my_sp", 0);
         viewHolder.tvWorkPwswitch.setText(getItem(position).getU_name());
+        //点击某个用户后，将这个用户的账号和密码传到登录方法，然后登录
         viewHolder.tvWorkPwswitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String uname = getItem(position).getLogid();
-                String upassword = getItem(position).getPasswork();
-                postLogin(uname, upassword);
+                String uname = getItem(position).getLogid();//获得账号
+                String upassword = getItem(position).getPasswork();//获得密码
+                postLogin(uname, upassword);//传递账号和密码
             }
         });
         return convertView;
@@ -95,7 +96,7 @@ public class WorkPwSwitchAdapter extends BaseAdapter {
 
     /**
      * 切换登录
-     *
+     * 此方法和登录页方法基本一致
      * @param uname
      * @param upassword
      */
@@ -112,20 +113,21 @@ public class WorkPwSwitchAdapter extends BaseAdapter {
                 @Override
                 public void onSuccess(String content) {
                     super.onSuccess(content);
-                    System.out.print(content);
+                    System.out.print(content);//打印返回的数据
                     Gson gson = new Gson();
                     UsergetBean userBean = gson.fromJson(content, UsergetBean.class);
+                    //判断用户名和密码是否正确
                     if (userBean.isStatus() == true) {
                         spUtils.put(context, "username", uname);
                         spUtils.put(context, "passwd", upassword);
-                        spUtils.put(context.getApplicationContext(), "name", userBean.getU_name());
-                        spUtils.put(context.getApplicationContext(), "proname", userBean.getU_name());
-                        spUtils.put(context.getApplicationContext(), "commoname", userBean.getU_name());
-                        spUtils.put(context.getApplicationContext(), "commologinid", userBean.getLogid());
+                        spUtils.put(context.getApplicationContext(), "name", userBean.getU_name());//用户名,适用于总体项目
+                        spUtils.put(context.getApplicationContext(), "proname", userBean.getU_name());//用户名，适用于生产日报模块
+                        spUtils.put(context.getApplicationContext(), "commoname", userBean.getU_name());//用户名，适用于查货跟踪模块
+                        spUtils.put(context.getApplicationContext(), "commologinid", userBean.getLogid());//账号
                         Intent intent = new Intent(context, MainActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("u_name", userBean.getU_name());
-                        intent.putExtras(bundle);
+                        Bundle bundle = new Bundle();//实例化传递参数的类（bundle是一个key-value对，传递时需要一一对应key值和value值）
+                        bundle.putString("u_name", userBean.getU_name());//取的时候，需要key
+                        intent.putExtras(bundle);//将获取到的用户名传递到将要跳转的页面
                         context.startActivity(intent);
                         ResponseDialog.closeLoading();
                     } else {
@@ -144,8 +146,7 @@ public class WorkPwSwitchAdapter extends BaseAdapter {
                 @Override
                 public void onFinish() {
                     super.onFinish();
-                    mXXListener.onXXClick();
-
+                    mXXListener.onXXClick();//方法执行完后，回调接口
                     ResponseDialog.closeLoading();
                 }
             });
@@ -155,6 +156,6 @@ public class WorkPwSwitchAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        TextView tvWorkPwswitch;
+        TextView tvWorkPwswitch;//显示的用户名控件
     }
 }

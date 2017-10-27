@@ -8,14 +8,14 @@ package com.daoran.newfactory.onefactory.bean;
 public class CommodityPostBean {
 
     private Conditions conditions;
-    private int pageNum;
-    private int pageSize;
+    private int pageNum;//页数
+    private int pageSize;//
     public class Conditions {
-        private String item;
-        private String prddocumentary;
-        private String prdmaster;
-        private String IPQC;
-        private Boolean prdmasterisnull;
+        private String item;//款号
+        private String prddocumentary;//制单人
+        private String prdmaster;//生产主管
+        private String IPQC;//巡检
+        private Boolean prdmasterisnull;//生产主管是否为空
 
         public String getItem() {
             return item;

@@ -35,9 +35,9 @@ import java.util.regex.Pattern;
 public class ContentDialog extends Dialog {
 
     Activity content;
-    private Spinner spinnerAudit;
+    private Spinner spinnerAudit;//审核状态选择spinner
     private TextView tvInitialDate, tvEndDate;
-    private Button btnCancle, btnComfirm;
+    private Button btnCancle, btnComfirm;//确认和取消按钮
 
     private View.OnClickListener mClickListener, mCancleLinstener;
     private AdapterView.OnItemClickListener spinnerListener;
@@ -50,6 +50,7 @@ public class ContentDialog extends Dialog {
         this.content = context;
     }
 
+    //构造方法
     public ContentDialog(Activity context, int theme, View.OnClickListener clickListener, View.OnClickListener mCancleLinstener) {
         super(context, theme);
         this.content = context;
@@ -65,6 +66,7 @@ public class ContentDialog extends Dialog {
         initViews();
     }
 
+    //实例化控件
     private void getViews() {
         tvInitialDate = (TextView) findViewById(R.id.tvInitialDate);
         tvEndDate = (TextView) findViewById(R.id.tvEndDate);
@@ -73,6 +75,7 @@ public class ContentDialog extends Dialog {
         btnComfirm = (Button) findViewById(R.id.btnComfirm);
     }
 
+    //初始化控件信息
     private void initViews() {
         sp = content.getSharedPreferences("my_sp", 0);
         Window dialogWindow = this.getWindow();
