@@ -17,7 +17,6 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_40"
-            android:background="@drawable/selector_pro_text_press_color"
             android:gravity="center"
             android:paddingBottom="@dimen/dimen_30"
             android:paddingLeft="@dimen/dimen_30"

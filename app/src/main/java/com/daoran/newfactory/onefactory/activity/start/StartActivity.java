@@ -3,6 +3,8 @@ package com.daoran.newfactory.onefactory.activity.start;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.daoran.newfactory.onefactory.R;
@@ -24,6 +26,9 @@ public class StartActivity extends BaseFrangmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_start);
         initViews();
     }
@@ -34,7 +39,7 @@ public class StartActivity extends BaseFrangmentActivity {
                 != null && PreferencesUtils.getString(this, Comfig.PASSWORD) != null;
         //如果第一次打开则先进去引导页，否则直接进入首页
         if (auto_login) {
-            DelayToLogin(1500);
+            DelayToLogin(1500);//传入等待时间
         } else {
             DelayToLoginActivity(1500);
         }

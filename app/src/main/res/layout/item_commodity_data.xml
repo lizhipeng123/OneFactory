@@ -732,4 +732,8 @@
             android:layout_height="50dp"
             android:background="#cccccc" />
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#cccccc" />
 </LinearLayout>

@@ -243,6 +243,7 @@
                     android:layout_centerInParent="true"
                     android:src="@mipmap/setting_three" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rlnew"
                 android:layout_width="match_parent"
@@ -270,6 +271,7 @@
                     android:layout_centerInParent="true"
                     android:src="@mipmap/setting_three" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rlYunxin"
                 android:layout_width="match_parent"
@@ -329,6 +331,45 @@
             <!--android:layout_width="fill_parent"-->
             <!--android:layout_height="1px"-->
             <!--android:background="#FF909090" />-->
+
+            <RelativeLayout
+                android:id="@+id/rlcopyname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_20"
+                android:background="@color/aliceblue"
+                android:paddingBottom="@dimen/dimen_40"
+                android:paddingLeft="@dimen/dimen_30"
+                android:paddingRight="@dimen/dimen_30"
+                android:paddingTop="@dimen/dimen_40"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tvcopyname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="用户管理"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_55sp" />
+
+                <TextView
+                    android:id="@+id/tvcopynames"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/dimen_50"
+                    android:layout_toLeftOf="@+id/ivcopynames"
+                    android:layout_centerInParent="true"
+                    android:text="user"
+                    android:textSize="@dimen/dimen_50sp" />
+
+                <ImageView
+                    android:id="@+id/ivcopynames"
+                    android:layout_width="@dimen/dimen_43"
+                    android:layout_height="@dimen/dimen_43"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/setting_three" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/rlAbout"
@@ -426,6 +467,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tvwifimanager" />
             </RelativeLayout>
+
 
         </LinearLayout>
     </com.daoran.newfactory.onefactory.view.listview.BounceScrollView>

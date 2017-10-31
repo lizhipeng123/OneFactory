@@ -200,7 +200,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         image_login = (ImageView) findViewById(R.id.image_login);
         tvcode = (TextView) findViewById(R.id.tvcode);
         text_notuse = (TextView) findViewById(R.id.text_notuse);
-        text_notuse.requestFocus();
+        text_notuse.requestFocus();//在此控件设置焦点
     }
 
     /**
@@ -263,7 +263,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
      * @return
      */
     private boolean validate() {
-        boolean result = true;
+        boolean result = true;//默认设置为true
         String message = "";
         try {
             String username = etUsername.getText().toString().trim();//截取账号字符（去掉首尾字符）
@@ -288,7 +288,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             }
         }
-        return result;
+        return result;//返回判断的结果
     }
 
     /**
@@ -390,7 +390,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                                         }
                                     }
                                     System.out.print(workPwSwitchBean);
-                                    String workbeenlist = gson.toJson(switchBeendatalist);
+                                    String workbeenlist = gson.toJson(switchBeendatalist);//将查询出的数据转化为json
                                     String worklist = gson.toJson(workPwSwitchBean);
                                     System.out.print(worklist);
                                     System.out.print(workbeenlist);
@@ -444,7 +444,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                     }
 
                     @Override
-                    public void onFinish() {//登录成功后所走方法
+                    public void onFinish() {//最后执行所走方法
                         super.onFinish();
                         Thread thread = new Thread(new Runnable() {
                             @Override
@@ -469,7 +469,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
     }
 
     /**
-     * 比较两个数组
+     * 比较两个数组是否存在相同的值s
      *
      * @param array1
      * @param array2
@@ -611,7 +611,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
      * @param vCode
      */
     private void showUpdateApk(String vCode) {
-        getSelfApkPath();
+        getSelfApkPath();//获取apk包的路径
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("软件版本更新");
         builder.setMessage("增量更新：v" + vCode + "版本");
@@ -624,11 +624,14 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                     }
                 });
         noticeDialog = builder.create();
-        noticeDialog.setCanceledOnTouchOutside(false);
+        noticeDialog.setCanceledOnTouchOutside(false);//点击物理返回键，dialog不消失
         noticeDialog.setCancelable(false);
         noticeDialog.show();
     }
 
+    /**
+     * 查询当前连接的wifi名称
+     */
     private void startWifi() {
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
@@ -636,7 +639,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
     }
 
     /**
-     * 下载增量包进度条
+     * 下载增量包的进度条
      *
      * @param focuseUpdate
      */
@@ -664,14 +667,14 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         updateLoadApk();//开启线程下载文件
     }
 
-    private Thread updateLoadThread;
+    private Thread updateLoadThread;//下载线程
 
     /**
      * 开启线程
      */
     private void updateLoadApk() {
         updateLoadThread = new Thread(mupdateApkRunnable);
-        updateLoadThread.start();
+        updateLoadThread.start();//启动
     }
 
     /**
@@ -720,10 +723,10 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                     FileOutputStream fos = new FileOutputStream(tmpFile);
                     sp = LoginMainActivity.this.getSharedPreferences("my_sp", 0);
 
-                    conn.connect();
-                    int length = conn.getContentLength();
+                    conn.connect();//连接
+                    int length = conn.getContentLength();//获取文件的长度(总字节)
 
-                    InputStream is = conn.getInputStream();
+                    InputStream is = conn.getInputStream();//输入流
                     // 显示文件大小格式：2个小数点显示
                     DecimalFormat df = new DecimalFormat("0.00");
                     // 进度条下面显示的总文件大小
@@ -809,7 +812,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                 patchDir = Environment.getExternalStorageDirectory()
                         .getAbsolutePath() + "/dfAppupdate/" + "CLApp_" +
                         "Dfapp" + ".patch";//已转到本地的增量包patch
-                File patchFile = new File(patchDir);
+                File patchFile = new File(patchDir);//转换格式
                 final File newFile = new File(newDir);
                 //判断本地增量文件是否存在
                 if (!patchFile.exists()) {
@@ -855,10 +858,10 @@ public class LoginMainActivity extends BaseFrangmentActivity {
 
     //获取本应用的apk包路径
     public String getSelfApkPath() {
-        //查询所有已安装的应用程序
+        //查询所有已安装的应用程序package的集合
         List<ApplicationInfo> installList = getPackageManager().
                 getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES);
-        for (int i = 0; i < installList.size(); i++) {//循环所有应用程序
+        for (int i = 0; i < installList.size(); i++) {//循环所有应用程序的集合
             ApplicationInfo info = installList.get(i);
             //如果当前应用程序包名和本程序的包名一致则进入方法
             if (info.packageName.equals(getPackageName())) {

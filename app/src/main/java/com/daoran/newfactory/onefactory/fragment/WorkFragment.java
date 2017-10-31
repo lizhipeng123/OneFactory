@@ -184,14 +184,14 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
      * 点击事件
      */
     private void setListener() {
-        //长按左侧用户名按钮后弹出添加账号或切换用户弹窗
-        idworkname.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                initPopWindow();
-                return false;
-            }
-        });
+//        //长按左侧用户名按钮后弹出添加账号或切换用户弹窗
+//        idworkname.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                initPopWindow();
+//                return false;
+//            }
+//        });
         //刷新当前页面
         swipeRefreshLayout.setOnRefreshListener(this);
     }

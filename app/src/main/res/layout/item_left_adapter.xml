@@ -18,4 +18,8 @@
             android:textColor="@color/black"
             android:text="第1行"/>
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#cccccc" />
 </LinearLayout>

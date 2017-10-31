@@ -96,7 +96,9 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout rlside;//分类菜单布局（隐藏，暂未使用）
     private RelativeLayout rlPhoto;//图片布局（隐藏，暂未使用）
     private RelativeLayout rlrili;//日历布局（隐藏，暂未使用）
+    private RelativeLayout rlcopyname;//切换用户
     private TextView tvwifimanager, tvwifissid;
+    private TextView tvcopynames;
 
     /*下载文件的状态*/
     private static final int DOWN_NOSDCARD = 0;//未找到sd卡
@@ -153,8 +155,12 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         rlside = (RelativeLayout) view.findViewById(R.id.rlside);
         rlPhoto = (RelativeLayout) view.findViewById(R.id.rlPhoto);
         rlrili = (RelativeLayout) view.findViewById(R.id.rlrili);
+        rlcopyname = (RelativeLayout) view.findViewById(R.id.rlcopyname);
+        tvcopynames = (TextView) view.findViewById(R.id.tvcopynames);
         sp = mactivity.getSharedPreferences("my_sp", 0);
         String vercode = sp.getString("Applicationscode", "");
+        String namebuld = sp.getString("name", "");
+        tvcopynames.setText(namebuld);
         tvNewVersion.setText(vercode);
         String cleanmana = getAppCacheSize();
         tv_clean.setText(cleanmana);
@@ -177,6 +183,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         rlside.setOnClickListener(this);
         rlPhoto.setOnClickListener(this);
         rlrili.setOnClickListener(this);
+        rlcopyname.setOnClickListener(this);
     }
 
     @Override
@@ -297,6 +304,10 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 Intent intentrili = new Intent(mactivity, MonthActivity.class);
                 mactivity.startActivity(intentrili);
                 break;
+            /*用户管理*/
+            case R.id.rlcopyname:
+
+                break;
         }
     }
 
@@ -387,6 +398,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
 
     /**
      * 传输apk文件
+     *
      * @param inputStream
      * @param file
      */

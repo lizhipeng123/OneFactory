@@ -132,11 +132,15 @@ public class SignOpenActivity extends BaseFrangmentActivity
     private static final int msgKey1 = 1;
     String strprolong1;
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign);
         sp = this.getSharedPreferences("my_sp", 0);
+        progressDialog = ProgressDialog.show(this,
+                "请稍候...", "初始化中...", false, true);
         tvSqltexttime = (TextView) findViewById(R.id.tvSqltexttime);
         new TimeThread().start();//初始化启动时间线程
         //获取地图控件的引用
@@ -149,6 +153,11 @@ public class SignOpenActivity extends BaseFrangmentActivity
             aMap.setLocationSource(this);//设置了定位的监听,这里要实现LocationSource接口
             settings.setMyLocationButtonEnabled(true);// 是否显示定位按钮
             aMap.setMyLocationEnabled(true);//显示定位层并且可以触发定位,默认是flase
+            myLocationStyle = new MyLocationStyle();
+            myLocationStyle.strokeColor(Color.argb(0, 0, 0, 0));
+            myLocationStyle.radiusFillColor(Color.argb(0, 0, 0, 0));
+            myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);
+            aMap.setMyLocationStyle(myLocationStyle);
         }
         setUp();//设置显示的地图模式
         mMarkerOptions = new MarkerOptions();
@@ -157,10 +166,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
         getViews();//初始化控件
         initViews();
         initSpinner();//初始化下拉控件并且加载数据
-        init();//处理定位相关信息
-        myLocationStyle = new MyLocationStyle();
-        myLocationStyle.strokeColor(Color.argb(0, 0, 0, 0));
-        myLocationStyle.radiusFillColor(Color.argb(0, 0, 0, 0));
         SignOpenActivityPermissionsDispatcher.startLocationWithCheck(this);
     }
 
@@ -252,57 +257,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
     }
 
     /**
-     * 定位处理
-     */
-    private void init() {
-        if (mapLocationClient == null) {
-            mapLocationClient = new AMapLocationClient(getApplicationContext());
-            mapLocationClient.setLocationListener(this);
-            //初始化定位参数
-            mapLocationClientOption = new AMapLocationClientOption();
-            //设置定位模式为Hight_Accuracy高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-            mapLocationClientOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-            //设置是否返回地址信息（默认返回地址信息）
-            mapLocationClientOption.setNeedAddress(true);
-            //设置是否只定位一次,默认为false
-            mapLocationClientOption.setOnceLocation(false);
-            //设置是否强制刷新WIFI，默认为强制刷新
-            mapLocationClientOption.setWifiActiveScan(true);
-            //设置是否允许模拟位置,默认为false，不允许模拟位置
-            mapLocationClientOption.setMockEnable(false);
-            //设置定位间隔,单位毫秒,默认为2000ms
-            mapLocationClientOption.setInterval(1000);
-            //设置定位回调监听
-            mapLocationClient.setLocationListener(new AMapLocationListener() {
-
-                @Override
-                public void onLocationChanged(AMapLocation amapLocation) {
-                    if (amapLocation != null) {
-                        if (amapLocation.getErrorCode() == 0) {
-                            //解析定位结果
-                            Log.i(TAG, amapLocation.getPoiName());
-                            latitude = amapLocation.getLatitude();
-                            longitude = amapLocation.getLongitude();
-                            cityCode = amapLocation.getCity();
-                            doSearch();
-                            mapLocationClient.stopLocation();
-                        } else if (
-                                amapLocation.getErrorCode() == 12) {
-                            Toast.makeText(getApplicationContext(), "权限不足，请在设置中授予相应权限", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Log.e(TAG, "error code = " + amapLocation.getErrorCode());
-                        }
-                    }
-                }
-            });
-            //给定位客户端对象设置定位参数
-            mapLocationClient.setLocationOption(mapLocationClientOption);
-            //启动定位
-            mapLocationClient.startLocation();
-        }
-    }
-
-    /**
      * 设置显示的地图模式
      */
     private void setUp() {
@@ -350,13 +304,25 @@ public class SignOpenActivity extends BaseFrangmentActivity
         spinnerfineTune.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                final ProgressDialog progressDialog = ProgressDialog.show(SignOpenActivity.this,
-                        "请稍候...", "初始化定位中...", false, true);
+//                final ProgressDialog progressDialog1 = ProgressDialog.show(SignOpenActivity.this,
+//                        "请稍候...", "初始化定位中...", false, true);
                 String str = (String) spinnerfineTune.getSelectedItem();
                 spUtils.put(SignOpenActivity.this, "addressItem", str);
                 tvSignAddress = (TextView) findViewById(R.id.tvSignAddress);
                 tvSignAddress.setText(str);
-                Thread thread = new Thread(new Runnable() {
+//                Thread thread = new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        try {
+//                            Thread.sleep(1500);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                        progressDialog1.dismiss();
+//                    }
+//                });
+//                thread.start();
+                Thread thread1 = new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
@@ -367,7 +333,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
                         progressDialog.dismiss();
                     }
                 });
-                thread.start();
+                thread1.start();
             }
 
             @Override
@@ -751,6 +717,51 @@ public class SignOpenActivity extends BaseFrangmentActivity
     @Override
     public void activate(OnLocationChangedListener onLocationChangedListener) {
         mListener = onLocationChangedListener;
+        if (mapLocationClient == null) {
+            mapLocationClient = new AMapLocationClient(getApplicationContext());
+            mapLocationClient.setLocationListener(this);
+            //初始化定位参数
+            mapLocationClientOption = new AMapLocationClientOption();
+            //设置定位模式为Hight_Accuracy高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+            mapLocationClientOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+            //设置是否返回地址信息（默认返回地址信息）
+            mapLocationClientOption.setNeedAddress(true);
+            //设置是否只定位一次,默认为false
+            mapLocationClientOption.setOnceLocation(false);
+            //设置是否强制刷新WIFI，默认为强制刷新
+            mapLocationClientOption.setWifiActiveScan(true);
+            //设置是否允许模拟位置,默认为false，不允许模拟位置
+            mapLocationClientOption.setMockEnable(false);
+            //设置定位间隔,单位毫秒,默认为2000ms
+            mapLocationClientOption.setInterval(1000);
+            //设置定位回调监听
+            mapLocationClient.setLocationListener(new AMapLocationListener() {
+
+                @Override
+                public void onLocationChanged(AMapLocation amapLocation) {
+                    if (amapLocation != null) {
+                        if (amapLocation.getErrorCode() == 0) {
+                            //解析定位结果
+                            Log.i(TAG, amapLocation.getPoiName());
+                            latitude = amapLocation.getLatitude();
+                            longitude = amapLocation.getLongitude();
+                            cityCode = amapLocation.getCity();
+                            doSearch();
+                            mapLocationClient.stopLocation();
+                        } else if (
+                                amapLocation.getErrorCode() == 12) {
+                            Toast.makeText(getApplicationContext(), "权限不足，请在设置中授予相应权限", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.e(TAG, "error code = " + amapLocation.getErrorCode());
+                        }
+                    }
+                }
+            });
+            //给定位客户端对象设置定位参数
+            mapLocationClient.setLocationOption(mapLocationClientOption);
+            //启动定位
+            mapLocationClient.startLocation();
+        }
     }
 
     @Override

@@ -23,9 +23,9 @@ import com.daoran.newfactory.onefactory.view.image.IndicatorView;
 
 public class GuideActivity extends BaseFrangmentActivity
         implements GuiderFragment.OnLoginRegisterListener {
-    private ViewPager vpGuider;
-    private IndicatorView vIndicator;
-    private GuiderFragmentPagerAdapter mAdapter;
+    private ViewPager vpGuider;//引导页面放置多个图片
+    private IndicatorView vIndicator;//引导页底部小点
+    private GuiderFragmentPagerAdapter mAdapter;//引导页适配
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,7 @@ public class GuideActivity extends BaseFrangmentActivity
         //是否第一次打开app，如果是则进入引导页，否则进入登录页
         SharedPreferences sp = this.getSharedPreferences("guider", 0);
         boolean isFirstOpen = sp.getBoolean("isFirstOpen", true);
+        //如果不是第一次进入，则直接进入登陆页
         if (!isFirstOpen) {
             Intent intent = new Intent(this, LoginMainActivity.class);
             startActivity(intent);
@@ -60,11 +61,11 @@ public class GuideActivity extends BaseFrangmentActivity
      * 初始化View
      */
     private void initViews() {
-        int[] resIds = Comfig.getGuiderResIds();
+        int[] resIds = Comfig.getGuiderResIds();//调用数组中的图片
         mAdapter = new GuiderFragmentPagerAdapter(getSupportFragmentManager());
-        mAdapter.setResIds(resIds);
-        vpGuider.setAdapter(mAdapter);
-        vIndicator.setIndicatorCount(resIds.length);
+        mAdapter.setResIds(resIds);//将集合中的数据放入适配器中
+        vpGuider.setAdapter(mAdapter);//绑定数据
+        vIndicator.setIndicatorCount(resIds.length);//设置小圆点的数量
     }
 
     /**
@@ -75,9 +76,11 @@ public class GuideActivity extends BaseFrangmentActivity
             @Override
             public void transformPage(View page, float position) {
                 float pageWidth = page.getWidth();
-                if (position < -1) {
+                //0是当前view的position,1是当前view的下一个view的position,
+                // -1是当前view的上一个view的position
+                if (position < -1) {//当前页面在屏幕的左边
                     page.setAlpha(0);
-                } else if (position >= -1 && position < 0) {
+                } else if (position >= -1 && position < 0) {//滑动到左边的view时，默认的view的切换
                     page.setAlpha(1);
                     page.setTranslationX(0);
                     page.setScaleX(1);
@@ -87,7 +90,7 @@ public class GuideActivity extends BaseFrangmentActivity
                     page.setTranslationX(-position * pageWidth);
                     page.setScaleX((float) (position * -0.25 + 1));
                     page.setScaleY((float) (position * -0.25 + 1));
-                } else {
+                } else {//滑动到右边的view时，默认的view的切换
                     page.setAlpha(0);
                 }
             }
@@ -122,6 +125,7 @@ public class GuideActivity extends BaseFrangmentActivity
 
     /**
      * 设置为非第一次打开app
+     * 将判断变量设置为false
      */
     private void setSharedPreferences() {
         SharedPreferences sp = this.getSharedPreferences("guider", MODE_PRIVATE);

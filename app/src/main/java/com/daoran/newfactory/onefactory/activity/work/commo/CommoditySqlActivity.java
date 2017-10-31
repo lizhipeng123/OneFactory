@@ -544,25 +544,28 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         sp = this.getSharedPreferences("my_sp", 0);
         String recodename = sp.getString("commoname", "");//跟单
         String Style = sp.getString("commoStyle", "");//款号
-        String pagesize = sp.getString("clumnsspinner", "");
+        String pagesize = sp.getString("clumnsspinner", "");//每页显示的条目数
+        //默认显示为10条
         if (pagesize.equals("")) {
             pagesize = String.valueOf(10);
         }
         String Recode = sp.getString("commoRecode", "");//巡检
         String etprodialogProcedure = sp.getString("etprodialogProcedure", "");//生产主管
         String ischeck = sp.getString("ischeckedd", "");//是否可为空
-        boolean stris = Boolean.parseBoolean(ischeck);
+        boolean stris = Boolean.parseBoolean(ischeck);//转换成boolean类型
         Gson gson = new Gson();
+        //将获取到的数据放入bean中
         CommodityPostBean postBean = new CommodityPostBean();
         CommodityPostBean.Conditions conditions = postBean.new Conditions();
-        conditions.setItem(Style);
-        conditions.setPrddocumentary(recodename);
-        conditions.setPrdmaster(etprodialogProcedure);
-        conditions.setIPQC(Recode);
-        conditions.setPrdmasterisnull(stris);
-        postBean.setConditions(conditions);
+        conditions.setItem(Style);//填充款号
+        conditions.setPrddocumentary(recodename);//填充跟单
+        conditions.setPrdmaster(etprodialogProcedure);//填充生产主管
+        conditions.setIPQC(Recode);//填充巡检
+        conditions.setPrdmasterisnull(stris);//填充生产主管是否可空
+        postBean.setConditions(conditions);//填充父节点
         postBean.setPageNum(0);
         postBean.setPageSize(Integer.parseInt(pagesize));
+        //将bean中的数据转成json数据
         String stringpost = gson.toJson(postBean);
         if (NetWork.isNetWorkAvailable(this)) {
             final ProgressDialog progressDialog = ProgressDialog.show(this,
@@ -613,6 +616,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                 System.out.print(ression);
                                 commoditydetailBean = new Gson().fromJson(ression, CommoditydetailBean.class);
                                 dataBeen = commoditydetailBean.getData();
+                                //判断得到的数据是否为空,决定要显示的页面
                                 if (commoditydetailBean.getTotalCount() != 0) {
                                     ll_visibi.setVisibility(View.GONE);
                                     scroll_content.setVisibility(View.VISIBLE);
@@ -665,7 +669,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         if (Style.contains("\n")) {
             Style = "";
         }
-        String pagesize = sp.getString("clumnsspinner", "");
+        String pagesize = sp.getString("clumnsspinner", "");//每页显示的条目数
         String Recode = sp.getString("commoRecode", "");//巡检
         if (Recode.contains("\n")) {
             Recode = "";
@@ -674,7 +678,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         if (etprodialogProcedure.contains("\n")) {
             etprodialogProcedure = "";
         }
-        String ischeck = sp.getString("ischeckedd", "");//是否可为空
+        String ischeck = sp.getString("ischeckedd", "");//生产主管是否可为空
         boolean stris = Boolean.parseBoolean(ischeck);
         pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
         int Index = pageIndex - 1;
