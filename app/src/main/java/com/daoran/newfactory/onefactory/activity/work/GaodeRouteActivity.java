@@ -53,6 +53,7 @@ public class GaodeRouteActivity extends
             Uri mUri = Uri.parse("geo:" + LATITUDE_A + "," + LONGTITUDE_A + "?q=" + "杭州道然进出口有限公司");
             Intent mIntent = new Intent(Intent.ACTION_VIEW, mUri);
             startActivity(mIntent);
+            finish();
         } else if (isAvilible(this, "com.autonavi.minimap")) {
             ToastUtils.ShowToastMessage("即将用高德地图打开导航", this);
             try {
