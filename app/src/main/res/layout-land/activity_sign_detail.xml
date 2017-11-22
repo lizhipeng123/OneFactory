@@ -55,7 +55,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_30"
             android:layout_marginRight="@dimen/dimen_30"
-            android:background="@mipmap/em_add" />
+            android:background="@mipmap/spin_filp" />
     </RelativeLayout>
 
     <View

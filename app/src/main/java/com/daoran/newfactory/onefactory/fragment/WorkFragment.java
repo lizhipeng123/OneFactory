@@ -251,7 +251,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     @Override
                     public void run() {
                         try {
-                            Thread.sleep(2000);
+                            Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -399,7 +399,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
-        mHandler.sendEmptyMessageDelayed(REFRESH_COMPLETE, 2000);
+        mHandler.sendEmptyMessageDelayed(REFRESH_COMPLETE, 1000);
         ToastUtils.ShowToastMessage("刷新了", getActivity());
     }
 }

@@ -1,30 +1,21 @@
 package com.daoran.newfactory.onefactory.activity.work.commo;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,7 +32,6 @@ import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 import com.daoran.newfactory.onefactory.util.file.json.StringUtil;
-import com.daoran.newfactory.onefactory.util.file.save.CommodityExcelUtil;
 import com.daoran.newfactory.onefactory.view.dialog.CommoDialog;
 import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
@@ -52,7 +42,6 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -81,11 +70,9 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private CommoditySqlAdapter sqlAdapter;//列表适配
     private ClumnsResultBean resultBean;//列权限实体
 
-    private AlertDialog noticeDialog;//退出当前页提示弹窗
     private TextView tvSignPage;//显示的总页数
     private EditText etSqlDetail;//输入的页数
     private Button btnSignPage;//翻页确认
-    private Button btnCommoSave;//保存
     private Button spinnermenu;//最右侧菜单
     private LinearLayout ll_visibi;//空数据显示的页面
     private TextView tv_visibi;//空数据显示的页面信息
@@ -98,17 +85,13 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     private int pageCount;//查询获取的总页数
     private int pageIndex = 0;//初始显示的页数
     private String configid;
-    private boolean flagblack;
-
-    /*保存excel时开启线程的状态*/
-    private static final int DOWN_NOSDCARD = 0;
-    private static final int DOWN_NO = 1;
-    private static final int DOWN_ERROR = 2;
+    public static CommoditySqlActivity instance = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_commodity);//加载主页面
+        instance = this;
         getViews();
         initView();
         setData();
@@ -129,7 +112,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         tvSignPage = (TextView) findViewById(R.id.tvSignPage);
         btnSignPage = (Button) findViewById(R.id.btnSignPage);
         etSqlDetail = (EditText) findViewById(R.id.etSqlDetail);
-        btnCommoSave = (Button) findViewById(R.id.btnCommoSave);
         ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
         tv_visibi = (TextView) findViewById(R.id.tv_visibi);
         scroll_content = (ScrollView) findViewById(R.id.scroll_content);
@@ -193,7 +175,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         ivProductionBack.setOnClickListener(this);
         ivSearch.setOnClickListener(this);
         btnSignPage.setOnClickListener(this);
-        btnCommoSave.setOnClickListener(this);
         spinnermenu.setOnClickListener(this);
         ivUpLeftPage.setOnClickListener(this);
         ivDownRightPage.setOnClickListener(this);
@@ -204,45 +185,14 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         switch (v.getId()) {
             /*返回按钮*/
             case R.id.ivCommoditySql:
-                sethideSoft(v);
-                setBlacksp();
-                //如果没有修改过数据，就直接退出。如果修改过则弹出框提示是否保存
-                if (flagblack = true) {
-                    finish();
-                } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle("保存提示");
-                    builder.setMessage("退出是否保存");
-                    builder.setPositiveButton("保存后退出"
-                            , new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    setCommoSave();
-                                    dialog.dismiss();
-                                    finish();
-                                }
-                            });
-                    builder.setNegativeButton("不保存，直接退出",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    finish();
-                                }
-                            });
-                    noticeDialog = builder.create();
-                    noticeDialog.setCanceledOnTouchOutside(false);
-                    noticeDialog.show();
-                }
+                finish();
                 break;
             /*查询*/
             case R.id.ivSearch:
-                sethideSoft(v);
                 ShowDialog(v);
                 break;
             /*翻页确认按钮*/
             case R.id.btnSignPage:
-                sethideSoft(v);
                 String txt = etSqlDetail.getText().toString();
                 String txtcount = tvSignPage.getText().toString();
                 if (txt.equals("")) {
@@ -263,19 +213,18 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                     }
                 }
                 break;
-            /*保存*/
-            case R.id.btnCommoSave:
-                sethideSoft(v);
-                setCommoSave();
-                break;
             /*弹出菜单*/
             case R.id.spinnermenu:
-                sethideSoft(v);
-                showPopupMenu(spinnermenu);
+                if (configid.equals("1")) {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                } else if (configid.equals("2")) {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                } else {
+
+                }
                 break;
             /*上一页*/
             case R.id.ivUpLeftPage:
-                sethideSoft(v);
                 String stredit = etSqlDetail.getText().toString();
                 if (stredit.equals("")) {
                     ToastUtils.ShowToastMessage("页码不能为空", CommoditySqlActivity.this);
@@ -294,7 +243,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                 break;
             /*下一页*/
             case R.id.ivDownRightPage:
-                sethideSoft(v);
                 String stredit2 = etSqlDetail.getText().toString();
                 if (stredit2.equals("")) {
                     ToastUtils.ShowToastMessage("页码不能为空", CommoditySqlActivity.this);
@@ -316,180 +264,24 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         }
     }
 
-    /**
-     * 判断是否修改过数据
-     */
-    private void setBlacksp() {
-        sp = getSharedPreferences("my_sp", 0);
-        String CommodityQCMasterScore = sp.getString("CommodityQCMasterScore", "");
-        String dateSealedrewtimesign = sp.getString("dateSealedrewtimesign", "");
-        String dateDocbacktimesign = sp.getString("dateDocbacktimesign", "");
-        String CommodityPreMemo = sp.getString("CommodityPreMemo", "");
-        String datePredocdttimesign = sp.getString("datePredocdttimesign", "");
-        String datePredtimesign = sp.getString("datePredtimesign", "");
-        String CommodityPredoc = sp.getString("CommodityPredoc", "");
-        String CommodityFabricsok = sp.getString("CommodityFabricsok", "");
-        String CommodityAccessoriesok = sp.getString("CommodityAccessoriesok", "");
-        String CommoditySpcproDec = sp.getString("CommoditySpcproDec", "");
-        String CommoditySpcproMemo = sp.getString("CommoditySpcproMemo", "");
-        String CommodityCutqty = sp.getString("CommodityCutqty", "");
-        String dateSewFdttimesign = sp.getString("dateSewFdttimesign", "");
-        String dateSewMdttimesign = sp.getString("dateSewMdttimesign", "");
-        String datePrebdttimesign = sp.getString("datePrebdttimesign", "");
-        String dateQCbdttimesign = sp.getString("dateQCbdttimesign", "");
-        String CommodityQCbdtDoc = sp.getString("CommodityQCbdtDoc", "");
-        String datePremdttimesign = sp.getString("datePremdttimesign", "");
-        String dateQCmdttimesign = sp.getString("dateQCmdttimesign", "");
-        String CommodityQCmdtDoc = sp.getString("CommodityQCmdtDoc", "");
-        String datePreedttimesign = sp.getString("datePreedttimesign", "");
-        String dateQCMedttimesign = sp.getString("dateQCMedttimesign", "");
-        String CommodityQCedtDoc = sp.getString("CommodityQCedtDoc", "");
-        String dateFctmdttimesign = sp.getString("dateFctmdttimesign", "");
-        String dateFctedttimesign = sp.getString("dateFctedttimesign", "");
-        String datePackbdattimesign = sp.getString("datePackbdattimesign", "");
-        String CommodityPackqty2 = sp.getString("CommodityPackqty2", "");
-        String CommodityQCMemo = sp.getString("CommodityQCMemo", "");
-        String dateFactlcdattimesign = sp.getString("dateFactlcdattimesign", "");
-        String CommodityBatchid = sp.getString("CommodityBatchid", "");
-        String commohdTitle = sp.getString("commohdTitle", "");
-        String dateCtmchkdttimesign = sp.getString("dateCtmchkdttimesign", "");
-        String CommodityIPQCPedt = sp.getString("CommodityIPQCPedt", "");
-        String CommodityIPQCmdt = sp.getString("CommodityIPQCmdt", "");
-        String CommodityQAname = sp.getString("CommodityQAname", "");
-        String CommodityQAScore = sp.getString("CommodityQAScore", "");
-        String dateQAMemotimesign = sp.getString("dateQAMemotimesign", "");
-        if (CommodityQCMasterScore.equals("") && dateSealedrewtimesign.equals("")
-                && dateDocbacktimesign.equals("") && CommodityPreMemo.equals("")
-                && datePredocdttimesign.equals("") && datePredtimesign.equals("")
-                && CommodityPredoc.equals("") && CommodityFabricsok.equals("")
-                && CommodityAccessoriesok.equals("") && CommoditySpcproDec.equals("")
-                && CommoditySpcproMemo.equals("") && CommodityCutqty.equals("")
-                && dateSewFdttimesign.equals("") && dateSewMdttimesign.equals("")
-                && datePrebdttimesign.equals("") && dateQCbdttimesign.equals("")
-                && CommodityQCbdtDoc.equals("") && datePremdttimesign.equals("")
-                && dateQCmdttimesign.equals("") && CommodityQCmdtDoc.equals("")
-                && datePreedttimesign.equals("") && dateQCMedttimesign.equals("")
-                && CommodityQCedtDoc.equals("") && dateFctmdttimesign.equals("")
-                && dateFctedttimesign.equals("") && datePackbdattimesign.equals("")
-                && CommodityPackqty2.equals("") && CommodityQCMemo.equals("")
-                && dateFactlcdattimesign.equals("") && CommodityBatchid.equals("")
-                && commohdTitle.equals("") && dateCtmchkdttimesign.equals("")
-                && CommodityIPQCPedt.equals("") && CommodityIPQCmdt.equals("")
-                && CommodityQAname.equals("") && CommodityQAScore.equals("")
-                && dateQAMemotimesign.equals("")) {
-            flagblack = true;//都为空则直接退出
-        } else {
-            flagblack = false;//有数据则询问是否保存
-        }
-    }
-
-    /**
-     * 判断软键盘是否弹出
-     *
-     * @param v
-     */
-    private void sethideSoft(View v) {
-        //判断软件盘是否弹出
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            if (imm.hideSoftInputFromWindow(v.getWindowToken(), 0)) {
-                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
-                        0);
-            } else {
-                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
-                        0);
-            }
-        }
-    }
-
-    /**
-     * 弹出选择菜单
-     *
-     * @param view
-     */
-    private void showPopupMenu(View view) {
-        //实例化加载popupmenu菜单，
-        PopupMenu popupMenu = new PopupMenu(CommoditySqlActivity.this, view);
-        popupMenu.getMenuInflater().inflate(R.menu.menu_commo, popupMenu.getMenu());
-        // menu的item点击事件
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                String title = item.getTitle().toString();
-                switch (title) {
-                    case "刷新":
-                        setData();
-                        break;
-                    case "横竖屏切换":
-                        if (configid.equals("1")) {
-                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                        } else if (configid.equals("2")) {
-                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                        } else {
-
-                        }
-                        break;
-                    case "保存为Excel":
-                        final ProgressDialog progressDialog = ProgressDialog.show(CommoditySqlActivity.this,
-                                "请稍候...", "正在生成Excel中...", false, true);
-                        final Thread thread = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    Thread.sleep(2000);
-                                    if (dataBeen.size() != 0) {
-                                        Looper.prepare();
-                                        CommodityExcelUtil.writeExcel(CommoditySqlActivity.this,
-                                                dataBeen,
-                                                "dfCommoExcel+" + new Date().toString());
-                                        progressDialog.dismiss();
-                                        mSaveHandler.sendEmptyMessage(DOWN_NOSDCARD);
-                                        Looper.loop();
-                                    } else {
-                                        Looper.prepare();
-                                        progressDialog.dismiss();
-                                        mSaveHandler.sendEmptyMessage(DOWN_NO);
-                                        Looper.loop();
-                                    }
-                                } catch (Exception e) {
-                                    Looper.prepare();
-                                    e.printStackTrace();
-                                    progressDialog.dismiss();
-                                    mSaveHandler.sendEmptyMessage(DOWN_ERROR);
-                                    Looper.loop();
-                                }
-                            }
-                        });
-                        thread.start();
-                        break;
-                }
-                return false;
-            }
-        });
-        // PopupMenu关闭事件
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-            @Override
-            public void onDismiss(PopupMenu menu) {
-            }
-        });
-        popupMenu.show();
-    }
-
-    private Handler mSaveHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case DOWN_NOSDCARD:
-                    ToastUtils.ShowToastMessage("保存成功，请在Excel文件中查看",CommoditySqlActivity.this);
-                    break;
-                case DOWN_NO:
-                    ToastUtils.ShowToastMessage("没有数据",CommoditySqlActivity.this);
-                    break;
-                case DOWN_ERROR:
-                    ToastUtils.ShowToastMessage("保存失败",CommoditySqlActivity.this);
-                    break;
-            }
-        }
-    };
+//    /**
+//     * 判断软键盘是否弹出
+//     *
+//     * @param v
+//     */
+//    private void sethideSoft(View v) {
+//        //判断软件盘是否弹出
+//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//        if (imm != null) {
+//            if (imm.hideSoftInputFromWindow(v.getWindowToken(), 0)) {
+//                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+//                        0);
+//            } else {
+//                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+//                        0);
+//            }
+//        }
+//    }
 
     /**
      * 查询按钮弹出框
@@ -584,7 +376,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                 @Override
                                 public void run() {
                                     try {
-                                        Thread.sleep(1500);
+                                        Thread.sleep(1000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -602,7 +394,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(1500);
+                                            Thread.sleep(1000);
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
@@ -639,7 +431,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(1500);
+                                            Thread.sleep(1000);
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
@@ -711,7 +503,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                 @Override
                                 public void run() {
                                     try {
-                                        Thread.sleep(1500);
+                                        Thread.sleep(1000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -729,7 +521,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(1500);
+                                            Thread.sleep(1000);
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
@@ -765,7 +557,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(1500);
+                                            Thread.sleep(1000);
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
@@ -894,252 +686,6 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
     }
 
     /**
-     * 保存
-     */
-    private void setCommoSave() {
-        if (NetWork.isNetWorkAvailable(this)) {
-            sp = getSharedPreferences("my_sp", 0);
-            String saveurl = HttpUrl.debugoneUrl + "QACwork/SaveQACwork/";
-            System.out.print(dataBeen);
-            /*判断修改前和修改后的值是否相同*/
-            String commonulltitle = sp.getString("commonulltitle", "");//后道
-            if (commonulltitle.equals("")) {
-                commonulltitle = "1";
-            }
-            String commonullitem = sp.getString("commonullitem", "");//主管评分
-            if (commonullitem.equals("")) {
-                commonullitem = "1";
-            }
-            String commonullsearledrev = sp.getString("commonullsearledrev", "");//封样资料接收时间
-            if (commonullsearledrev.equals("")) {
-                commonullsearledrev = "1";
-            }
-            String commonulldocback = sp.getString("commonulldocback", "");//大货资料接收时间
-            if (commonulldocback.equals("")) {
-                commonulldocback = "1";
-            }
-            String commonullmemo = sp.getString("commonullmemo", "");//需要特别备注的情况
-            if (commonullmemo.equals("")) {
-                commonullmemo = "1";
-            }
-            String commonullpreducdt = sp.getString("commonullpreducdt", "");//预计产前报告时间
-            if (commonullpreducdt.equals("")) {
-                commonullpreducdt = "1";
-            }
-            String commonullpred = sp.getString("commonullpred", "");//开产前会时间
-            if (commonullpred.equals("")) {
-                commonullpred = "1";
-            }
-            String commonullpredoc = sp.getString("commonullpredoc", "");//产前会报告
-            if (commonullpredoc.equals("")) {
-                commonullpredoc = "1";
-            }
-            String commonullfabricsok = sp.getString("commonullfabricsok", "");//大货面料情况
-            if (commonullfabricsok.equals("")) {
-                commonullfabricsok = "1";
-            }
-            String commonullaccessori = sp.getString("commonullaccessori", "");//大货辅料情况
-            if (commonullaccessori.equals("")) {
-                commonullaccessori = "1";
-            }
-            String commonullspcprodec = sp.getString("commonullspcprodec", "");//大货特殊工艺情况
-            if (commonullspcprodec.equals("")) {
-                commonullspcprodec = "1";
-            }
-            String commonullspcpromemo = sp.getString("commonullspcpromemo", "");//特殊工艺特别备注
-            if (commonullspcpromemo.equals("")) {
-                commonullspcpromemo = "1";
-            }
-            String commonullcutqty = sp.getString("commonullcutqty", "");//实裁数
-            if (commonullcutqty.equals("")) {
-                commonullcutqty = "1";
-            }
-            String commonullsewfdt = sp.getString("commonullsewfdt", "");//上线日期
-            if (commonullsewfdt.equals("")) {
-                commonullsewfdt = "1";
-            }
-            String commonullsewmdt = sp.getString("commonullsewmdt", "");//下线日期
-            if (commonullsewmdt.equals("")) {
-                commonullsewmdt = "1";
-            }
-            String commonullprebdt = sp.getString("commonullprebdt", "");//预计早期时间
-            if (commonullprebdt.equals("")) {
-                commonullprebdt = "1";
-            }
-            String commonullqcbdt = sp.getString("commonullqcbdt", "");//自查早期时间
-            if (commonullqcbdt.equals("")) {
-                commonullqcbdt = "1";
-            }
-            String commonullqcbdtdoc = sp.getString("commonullqcbdtdoc", "");//早期报告
-            if (commonullqcbdtdoc.equals("")) {
-                commonullqcbdtdoc = "1";
-            }
-            String commonullpremdt = sp.getString("commonullpremdt", "");//预计中期时间
-            if (commonullpremdt.equals("")) {
-                commonullpremdt = "1";
-            }
-            String commonullqcmdt = sp.getString("commonullqcmdt", "");//自查中期时间
-            if (commonullqcmdt.equals("")) {
-                commonullqcmdt = "1";
-            }
-            String commonullqcmdtdoc = sp.getString("commonullqcmdtdoc", "");//中期报告
-            if (commonullqcmdtdoc.equals("")) {
-                commonullqcmdtdoc = "1";
-            }
-            String commonullpreedt = sp.getString("commonullpreedt", "");//预计尾期时间
-            if (commonullpreedt.equals("")) {
-                commonullpreedt = "1";
-            }
-            String commonullqcmedt = sp.getString("commonullqcmedt", "");//自查尾期时间
-            if (commonullqcmedt.equals("")) {
-                commonullqcmedt = "1";
-            }
-            String commonullqcedtdoc = sp.getString("commonullqcedtdoc", "");//尾查报告
-            if (commonullqcedtdoc.equals("")) {
-                commonullqcedtdoc = "1";
-            }
-            String commonullfctmdt = sp.getString("commonullfctmdt", "");//客查中期时间
-            if (commonullfctmdt.equals("")) {
-                commonullfctmdt = "1";
-            }
-            String commonullfctedt = sp.getString("commonullfctedt", "");//客查尾期时间
-            if (commonullfctedt.equals("")) {
-                commonullfctedt = "1";
-            }
-            String commonullpackbdat = sp.getString("commonullpackbdat", "");//成品包装开始时间
-            if (commonullpackbdat.equals("")) {
-                commonullpackbdat = "1";
-            }
-            String commonullpackqty2 = sp.getString("commonullpackqty2", "");//装箱数量
-            if (commonullpackqty2.equals("")) {
-                commonullpackqty2 = "1";
-            }
-            String commonullqcmemo = sp.getString("commonullqcmemo", "");//qc特别备注
-            if (commonullqcmemo.equals("")) {
-                commonullqcmemo = "1";
-            }
-            String commonullfactlcdat = sp.getString("commonullfactlcdat", "");//离厂日期
-            if (commonullfactlcdat.equals("")) {
-                commonullfactlcdat = "1";
-            }
-            String commonullBatchid = sp.getString("commonullBatchid", "");//查货批次
-            if (commonullBatchid.equals("")) {
-                commonullBatchid = "1";
-            }
-            String commonullCtmchkdt = sp.getString("commonullCtmchkdt", "");//业务员确认客查日期
-            if (commonullCtmchkdt.equals("")) {
-                commonullCtmchkdt = "1";
-            }
-            String commonullipqcpedt = sp.getString("commonullipqcpedt", "");//尾查预查
-            if (commonullipqcpedt.equals("")) {
-                commonullipqcpedt = "1";
-            }
-            String commonullipqcmdt = sp.getString("commonullipqcmdt", "");//巡检中查
-            if (commonullipqcmdt.equals("")) {
-                commonullipqcmdt = "1";
-            }
-            String commonullqaname = sp.getString("commonullqaname", "");//QA首扎
-            if (commonullqaname.equals("")) {
-                commonullqaname = "1";
-            }
-            String commonullqascore = sp.getString("commonullqascore", "");//QA首扎件数
-            if (commonullqascore.equals("")) {
-                commonullqascore = "1";
-            }
-            String commonullqamemo = sp.getString("commonullqamemo", "");//QA首扎日
-            if (commonullqamemo.equals("")) {
-                commonullqamemo = "1";
-            }
-            Gson gson = new Gson();
-            String commjson = gson.toJson(dataBeen);
-            String dateee = commjson.replace("\"\"", "null");
-            final ProgressDialog progressDialog = ProgressDialog.show(this,
-                    "请稍候...", "正在保存中...", false, true);
-            if (commonulltitle.equals("1") && commonullitem.equals("1") && commonullsearledrev.equals("1")
-                    && commonulldocback.equals("1") && commonullmemo.equals("1") && commonullpreducdt.equals("1")
-                    && commonullpred.equals("1") && commonullpredoc.equals("1") && commonullfabricsok.equals("1")
-                    && commonullaccessori.equals("1") && commonullspcprodec.equals("1") && commonullspcpromemo.equals("1")
-                    && commonullcutqty.equals("1") && commonullsewfdt.equals("1") && commonullsewmdt.equals("1")
-                    && commonullprebdt.equals("1") && commonullqcbdt.equals("1") && commonullqcbdtdoc.equals("1")
-                    && commonullpremdt.equals("1") && commonullqcmdt.equals("1") && commonullqcmdtdoc.equals("1")
-                    && commonullpreedt.equals("1") && commonullqcmedt.equals("1") && commonullqcedtdoc.equals("1")
-                    && commonullfctmdt.equals("1") && commonullfctedt.equals("1") && commonullpackbdat.equals("1")
-                    && commonullpackqty2.equals("1") && commonullqcmemo.equals("1") && commonullfactlcdat.equals("1")
-                    && commonullBatchid.equals("1") && commonullCtmchkdt.equals("1") && commonullipqcpedt.equals("1")
-                    && commonullipqcmdt.equals("1") && commonullqaname.equals("1") && commonullqascore.equals("1")
-                    && commonullqamemo.equals("1")) {
-                ToastUtils.ShowToastMessage("未修改表中数据", CommoditySqlActivity.this);
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(1500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        progressDialog.dismiss();
-                    }
-                });
-                thread.start();
-            } else {
-                OkHttpUtils.postString()
-                        .url(saveurl)
-                        .content(dateee)
-                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                e.printStackTrace();
-                                Thread thread = new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            Thread.sleep(1500);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                        progressDialog.dismiss();
-                                    }
-                                });
-                                thread.start();
-                                ToastUtils.ShowToastMessage("数据错误，请重新输入", CommoditySqlActivity.this);
-                            }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                System.out.print(response);
-                                Thread thread = new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            Thread.sleep(1500);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                        progressDialog.dismiss();
-                                    }
-                                });
-                                thread.start();
-                                response = response.replace("\\", "");
-                                String ression = StringUtil.sideTrim(response, "\"");
-                                System.out.print(ression);
-                                if (ression.equals("true")) {
-                                    ToastUtils.ShowToastMessage("保存成功", CommoditySqlActivity.this);
-                                    setData();
-                                } else {
-                                    ToastUtils.ShowToastMessage("保存失败", CommoditySqlActivity.this);
-                                }
-                                deletesp();
-                            }
-                        });
-            }
-        } else {
-            ToastUtils.ShowToastMessage(R.string.noHttp, CommoditySqlActivity.this);
-        }
-    }
-
-    /**
      * escape编解码
      *
      * @param src
@@ -1181,176 +727,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
      */
     @Override
     protected void onDestroy() {
-        SharedPreferences.Editor editor = sp.edit();
-        editor.remove("commoproid");
-        editor.remove("CommodityQCMasterScore");//主管评分
-        editor.remove("dateSealedrewtimesign");//封样资料接收时间
-        editor.remove("dateDocbacktimesign");//大货资料接收时间
-        editor.remove("CommodityPreMemo");//需要特别备注的情况
-        editor.remove("datePredocdttimesign");//预计产前报告时间
-        editor.remove("datePredtimesign");//开产前会时间
-        editor.remove("CommodityPredoc");//产前会报告
-        editor.remove("CommodityFabricsok");//大货面料情况
-        editor.remove("CommodityAccessoriesok");//大货辅料情况
-        editor.remove("CommoditySpcproDec");//大货特殊工艺情况
-        editor.remove("CommoditySpcproMemo");//特殊工艺特别备注
-        editor.remove("CommodityCutqty");//实裁数
-        editor.remove("dateSewFdttimesign");//上线日期
-        editor.remove("dateSewMdttimesign");//下线日期
-        editor.remove("datePrebdttimesign");//预计早期时间
-        editor.remove("dateQCbdttimesign");//自查早期时间
-        editor.remove("CommodityQCbdtDoc");//早期报告
-        editor.remove("datePremdttimesign");//预计中期时间
-        editor.remove("dateQCmdttimesign");//自查中期时间
-        editor.remove("CommodityQCmdtDoc");//中期报告
-        editor.remove("datePreedttimesign");//预计尾期时间
-        editor.remove("dateQCMedttimesign");//自查尾期时间
-        editor.remove("CommodityQCedtDoc");//尾期报告
-        editor.remove("dateFctmdttimesign");//客查中期时间
-        editor.remove("dateFctedttimesign");//客查尾期时间
-        editor.remove("datePackbdattimesign");//成品包装开始日期
-        editor.remove("CommodityPackqty2");//装箱数量
-        editor.remove("CommodityQCMemo");//QC特别备注
-        editor.remove("dateFactlcdattimesign");//离厂日期
-        editor.remove("CommodityBatchid");//查货批次
-        editor.remove("commohdTitle");//后道
-        editor.remove("dateCtmchkdttimesign");//业务员确认客查日期
-        editor.remove("CommodityIPQCPedt");//尾查预查
-        editor.remove("CommodityIPQCmdt");//巡检中查
-        editor.remove("CommodityQAname");//QA首扎
-        editor.remove("CommodityQAScore");//QA首扎件数
-        editor.remove("dateQAMemotimesign");//QA首扎日
-
-        editor.remove("etproProcedure");
-        editor.remove("commoRecode");
-        editor.remove("commoStyle");
-
-        editor.remove("commonulltitle");//后道
-        editor.remove("commonullitem");
-        editor.remove("commonullsearledrev");
-        editor.remove("commonulldocback");
-        editor.remove("commonullmemo");
-        editor.remove("commonullpreducdt");
-        editor.remove("commonullpred");
-        editor.remove("commonullpredoc");
-        editor.remove("commonullfabricsok");
-        editor.remove("commonullaccessori");
-        editor.remove("commonullspcprodec");
-        editor.remove("commonullspcpromemo");
-        editor.remove("commonullcutqty");
-        editor.remove("commonullsewfdt");
-        editor.remove("commonullsewmdt");
-        editor.remove("commonullprebdt");
-        editor.remove("commonullqcbdt");
-        editor.remove("commonullqcbdtdoc");
-        editor.remove("commonullpremdt");
-        editor.remove("commonullqcmdt");
-        editor.remove("commonullqcmdtdoc");
-        editor.remove("commonullpreedt");
-        editor.remove("commonullqcmedt");
-        editor.remove("commonullqcedtdoc");
-        editor.remove("commonullfctmdt");
-        editor.remove("commonullfctedt");
-        editor.remove("commonullpackbdat");
-        editor.remove("commonullpackqty2");
-        editor.remove("commonullqcmemo");
-        editor.remove("commonullfactlcdat");
-        editor.remove("commonullBatchid");
-        editor.remove("commonullCtmchkdt");
-        editor.remove("commonullipqcpedt");
-        editor.remove("commonullipqcmdt");
-        editor.remove("commonullqaname");
-        editor.remove("commonullqascore");
-        editor.remove("commonullqamemo");
-        editor.commit();
         super.onDestroy();
-    }
-
-    /**
-     * 完成后删除保存的临时信息
-     */
-    private void deletesp() {
-        SharedPreferences.Editor editor = sp.edit();
-        editor.remove("commoproid");
-        editor.remove("CommodityQCMasterScore");//主管评分
-        editor.remove("dateSealedrewtimesign");//封样资料接收时间
-        editor.remove("dateDocbacktimesign");//大货资料接收时间
-        editor.remove("CommodityPreMemo");//需要特别备注的情况
-        editor.remove("datePredocdttimesign");//预计产前报告时间
-        editor.remove("datePredtimesign");//开产前会时间
-        editor.remove("CommodityPredoc");//产前会报告
-        editor.remove("CommodityFabricsok");//大货面料情况
-        editor.remove("CommodityAccessoriesok");//大货辅料情况
-        editor.remove("CommoditySpcproDec");//大货特殊工艺情况
-        editor.remove("CommoditySpcproMemo");//特殊工艺特别备注
-        editor.remove("CommodityCutqty");//实裁数
-        editor.remove("dateSewFdttimesign");//上线日期
-        editor.remove("dateSewMdttimesign");//下线日期
-        editor.remove("datePrebdttimesign");//预计早期时间
-        editor.remove("dateQCbdttimesign");//自查早期时间
-        editor.remove("CommodityQCbdtDoc");//早期报告
-        editor.remove("datePremdttimesign");//预计中期时间
-        editor.remove("dateQCmdttimesign");//自查中期时间
-        editor.remove("CommodityQCmdtDoc");//中期报告
-        editor.remove("datePreedttimesign");//预计尾期时间
-        editor.remove("dateQCMedttimesign");//自查尾期时间
-        editor.remove("CommodityQCedtDoc");//尾期报告
-        editor.remove("dateFctmdttimesign");//客查中期时间
-        editor.remove("dateFctedttimesign");//客查尾期时间
-        editor.remove("datePackbdattimesign");//成品包装开始日期
-        editor.remove("CommodityPackqty2");//装箱数量
-        editor.remove("CommodityQCMemo");//QC特别备注
-        editor.remove("dateFactlcdattimesign");//离厂日期
-        editor.remove("CommodityBatchid");//查货批次
-        editor.remove("commohdTitle");//后道
-        editor.remove("dateCtmchkdttimesign");//业务员确认客查日期
-        editor.remove("CommodityIPQCPedt");//尾查预查
-        editor.remove("CommodityIPQCmdt");//巡检中查
-        editor.remove("CommodityQAname");//QA首扎
-        editor.remove("CommodityQAScore");//QA首扎件数
-        editor.remove("dateQAMemotimesign");//QA首扎日
-        editor.remove("etproProcedure");
-        editor.remove("commoRecode");
-        editor.remove("commoStyle");
-
-        editor.remove("commonulltitle");//后道
-        editor.remove("commonullitem");
-        editor.remove("commonullsearledrev");
-        editor.remove("commonulldocback");
-        editor.remove("commonullmemo");
-        editor.remove("commonullpreducdt");
-        editor.remove("commonullpred");
-        editor.remove("commonullpredoc");
-        editor.remove("commonullfabricsok");
-        editor.remove("commonullaccessori");
-        editor.remove("commonullspcprodec");
-        editor.remove("commonullspcpromemo");
-        editor.remove("commonullcutqty");
-        editor.remove("commonullsewfdt");
-        editor.remove("commonullsewmdt");
-        editor.remove("commonullprebdt");
-        editor.remove("commonullqcbdt");
-        editor.remove("commonullqcbdtdoc");
-        editor.remove("commonullpremdt");
-        editor.remove("commonullqcmdt");
-        editor.remove("commonullqcmdtdoc");
-        editor.remove("commonullpreedt");
-        editor.remove("commonullqcmedt");
-        editor.remove("commonullqcedtdoc");
-        editor.remove("commonullfctmdt");
-        editor.remove("commonullfctedt");
-        editor.remove("commonullpackbdat");
-        editor.remove("commonullpackqty2");
-        editor.remove("commonullqcmemo");
-        editor.remove("commonullfactlcdat");
-        editor.remove("commonullBatchid");
-        editor.remove("commonullCtmchkdt");
-        editor.remove("commonullipqcpedt");
-        editor.remove("commonullipqcmdt");
-        editor.remove("commonullqaname");
-        editor.remove("commonullqascore");
-        editor.remove("commonullqamemo");
-        editor.commit();
     }
 
     /**
@@ -1376,36 +753,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            setBlacksp();
-            if (flagblack == true) {
-                finish();
-            } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("保存提示");
-                builder.setMessage("退出是否保存");
-                builder.setPositiveButton("保存后退出"
-                        , new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                setCommoSave();
-                                dialog.dismiss();
-                                finish();
-                            }
-                        });
-                builder.setNegativeButton("不保存，直接退出",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                finish();
-                            }
-                        });
-                noticeDialog = builder.create();
-                noticeDialog.setCanceledOnTouchOutside(false);
-                noticeDialog.show();
-            }
-        }
+        finish();
         return false;
     }
 }

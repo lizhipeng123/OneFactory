@@ -219,8 +219,10 @@
 
         <activity
             android:name=".activity.work.commo.CommoditydetailActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
 
         <activity
             android:name=".activity.work.setting.MonthActivity"
@@ -233,6 +235,19 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".activity.work.production.ProductionNewlyComfigVerticalActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name=".activity.work.production.ProductionDetailActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <!--qq分享-->
         <activity
             android:name="com.tencent.tauth.AuthActivity"

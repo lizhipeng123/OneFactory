@@ -201,6 +201,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                                 startActivity(new Intent(getActivity(), LoginMainActivity.class));
                                 onProfileSignOff();
                                 dialog.dismiss();
+                                mactivity.finish();
                             }
                         });
                 builder1.setNegativeButton("取消",

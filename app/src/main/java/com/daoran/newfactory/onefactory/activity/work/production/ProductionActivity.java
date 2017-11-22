@@ -113,16 +113,13 @@ public class ProductionActivity extends BaseFrangmentActivity
     private boolean flagmonthsize;
     private String configid;
     private boolean flagblack;
-
-    /*保存excel时开启线程的状态*/
-    private static final int DOWN_NOSDCARD = 0;
-    private static final int DOWN_NO = 1;
-    private static final int DOWN_ERROR = 2;
+    public static ProductionActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_production);//显示主页面
+        instance = this;
         screenHeight = this.getWindowManager().getDefaultDisplay().getHeight();
         keyHeight = screenHeight / 3;
         getViews();
@@ -482,7 +479,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(1500);
+                                            Thread.sleep(1000);
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
@@ -501,7 +498,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         @Override
                                         public void run() {
                                             try {
-                                                Thread.sleep(1500);
+                                                Thread.sleep(1000);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
@@ -538,7 +535,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         @Override
                                         public void run() {
                                             try {
-                                                Thread.sleep(1500);
+                                                Thread.sleep(1000);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
@@ -581,7 +578,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(1500);
+                                            Thread.sleep(1000);
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
@@ -599,7 +596,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         @Override
                                         public void run() {
                                             try {
-                                                Thread.sleep(1500);
+                                                Thread.sleep(1000);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
@@ -637,7 +634,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         @Override
                                         public void run() {
                                             try {
-                                                Thread.sleep(1500);
+                                                Thread.sleep(1000);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
@@ -714,7 +711,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(1500);
+                                            Thread.sleep(1000);
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
@@ -732,7 +729,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         @Override
                                         public void run() {
                                             try {
-                                                Thread.sleep(1500);
+                                                Thread.sleep(1000);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
@@ -770,7 +767,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         @Override
                                         public void run() {
                                             try {
-                                                Thread.sleep(1500);
+                                                Thread.sleep(1000);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
@@ -817,7 +814,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(1500);
+                                            Thread.sleep(1000);
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
@@ -835,7 +832,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         @Override
                                         public void run() {
                                             try {
-                                                Thread.sleep(1500);
+                                                Thread.sleep(1000);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
@@ -872,7 +869,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         @Override
                                         public void run() {
                                             try {
-                                                Thread.sleep(1500);
+                                                Thread.sleep(1000);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
@@ -1478,7 +1475,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                     @Override
                     public void run() {
                         try {
-                            Thread.sleep(1500);
+                            Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -1487,7 +1484,6 @@ public class ProductionActivity extends BaseFrangmentActivity
                 });
                 thread.start();
             } else {
-
                 /*如果有多个相同颜色的款号，则判断其符合条件的工序和月份是否存在修改的工序*/
                 if (colorlistlength > 1) {
                     if (flagprodurelist == true && flagproduremonth == true) {
@@ -1497,7 +1493,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                 @Override
                                 public void run() {
                                     try {
-                                        Thread.sleep(1500);
+                                        Thread.sleep(1000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -1518,7 +1514,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                 @Override
                                                 public void run() {
                                                     try {
-                                                        Thread.sleep(1500);
+                                                        Thread.sleep(1000);
                                                     } catch (InterruptedException e) {
                                                         e.printStackTrace();
                                                     }
@@ -1550,7 +1546,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                 @Override
                                                 public void run() {
                                                     try {
-                                                        Thread.sleep(1500);
+                                                        Thread.sleep(1000);
 
                                                     } catch (InterruptedException e) {
                                                         e.printStackTrace();
@@ -1575,7 +1571,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                             @Override
                                             public void run() {
                                                 try {
-                                                    Thread.sleep(1500);
+                                                    Thread.sleep(1000);
                                                 } catch (InterruptedException e) {
                                                     e.printStackTrace();
                                                 }
@@ -1607,7 +1603,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                             @Override
                                             public void run() {
                                                 try {
-                                                    Thread.sleep(1500);
+                                                    Thread.sleep(1000);
 
                                                 } catch (InterruptedException e) {
                                                     e.printStackTrace();
@@ -1651,7 +1647,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                         @Override
                                         public void run() {
                                             try {
-                                                Thread.sleep(1500);
+                                                Thread.sleep(1000);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
@@ -1672,7 +1668,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                         @Override
                                                         public void run() {
                                                             try {
-                                                                Thread.sleep(1500);
+                                                                Thread.sleep(1000);
                                                             } catch (InterruptedException e) {
                                                                 e.printStackTrace();
                                                             }
@@ -1704,7 +1700,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                         @Override
                                                         public void run() {
                                                             try {
-                                                                Thread.sleep(1500);
+                                                                Thread.sleep(1000);
 
                                                             } catch (InterruptedException e) {
                                                                 e.printStackTrace();
@@ -1730,7 +1726,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                     @Override
                                                     public void run() {
                                                         try {
-                                                            Thread.sleep(1500);
+                                                            Thread.sleep(1000);
                                                         } catch (InterruptedException e) {
                                                             e.printStackTrace();
                                                         }
@@ -1762,7 +1758,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                     @Override
                                                     public void run() {
                                                         try {
-                                                            Thread.sleep(1500);
+                                                            Thread.sleep(1000);
                                                         } catch (InterruptedException e) {
                                                             e.printStackTrace();
                                                         }
@@ -1788,7 +1784,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                 @Override
                                                 public void run() {
                                                     try {
-                                                        Thread.sleep(1500);
+                                                        Thread.sleep(1000);
                                                     } catch (InterruptedException e) {
                                                         e.printStackTrace();
                                                     }
@@ -1820,7 +1816,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                 @Override
                                                 public void run() {
                                                     try {
-                                                        Thread.sleep(1500);
+                                                        Thread.sleep(1000);
 
                                                     } catch (InterruptedException e) {
                                                         e.printStackTrace();
@@ -1840,7 +1836,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(1500);
+                                            Thread.sleep(1000);
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
@@ -1863,7 +1859,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                     @Override
                                                     public void run() {
                                                         try {
-                                                            Thread.sleep(1500);
+                                                            Thread.sleep(1000);
                                                         } catch (InterruptedException e) {
                                                             e.printStackTrace();
                                                         }
@@ -1895,7 +1891,7 @@ public class ProductionActivity extends BaseFrangmentActivity
                                                     @Override
                                                     public void run() {
                                                         try {
-                                                            Thread.sleep(1500);
+                                                            Thread.sleep(1000);
 
                                                         } catch (InterruptedException e) {
                                                             e.printStackTrace();
@@ -2127,7 +2123,6 @@ public class ProductionActivity extends BaseFrangmentActivity
                         sethideSoft(view);
                         startActivity(new Intent(ProductionActivity.this,
                                 ProductionNewlyBuildActivity.class));
-                        ProductionActivity.this.finish();
                         break;
                     case "横竖屏切换":
                         sethideSoft(view);
@@ -2138,45 +2133,6 @@ public class ProductionActivity extends BaseFrangmentActivity
                         } else {
 
                         }
-                        break;
-                    case "刷新":
-                        deletesp();
-                        setData();
-                        break;
-                    case "保存为Excel":
-                        sethideSoft(view);
-                        final ProgressDialog progressDialog = ProgressDialog.show(ProductionActivity.this,
-                                "请稍候...", "正在生成Excel中...", false, true);
-                        final Thread thread = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    Thread.sleep(2000);
-                                    if (detailBeenList.size() != 0) {
-                                        Looper.prepare();
-                                        ProductionExcelUtil.writeExcel(ProductionActivity.this,
-                                                detailBeenList,
-                                                "dfProExcel+" + new Date().toString());
-                                        progressDialog.dismiss();
-                                        mSaveHandler.sendEmptyMessage(DOWN_NOSDCARD);
-                                        Looper.loop();
-
-                                    } else {
-                                        Looper.prepare();
-                                        progressDialog.dismiss();
-                                        mSaveHandler.sendEmptyMessage(DOWN_NO);
-                                        Looper.loop();
-                                    }
-                                } catch (Exception e) {
-                                    Looper.prepare();
-                                    e.printStackTrace();
-                                    progressDialog.dismiss();
-                                    mSaveHandler.sendEmptyMessage(DOWN_ERROR);
-                                    Looper.loop();
-                                }
-                            }
-                        });
-                        thread.start();
                         break;
                 }
                 return false;
@@ -2190,22 +2146,6 @@ public class ProductionActivity extends BaseFrangmentActivity
         });
         popupMenu.show();
     }
-
-    private Handler mSaveHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case DOWN_NOSDCARD:
-                    ToastUtils.ShowToastMessage("保存成功，请在Excel文件中查看", ProductionActivity.this);
-                    break;
-                case DOWN_NO:
-                    ToastUtils.ShowToastMessage("没有数据", ProductionActivity.this);
-                    break;
-                case DOWN_ERROR:
-                    ToastUtils.ShowToastMessage("保存失败", ProductionActivity.this);
-                    break;
-            }
-        }
-    };
 
     /**
      * 判断软键盘是否弹出

@@ -46,7 +46,8 @@
             android:layout_marginRight="@dimen/dimen_15"
             android:textColor="@color/icon_color"
             android:background="@drawable/shape_btn_newsbuild_boild"
-            android:text="excel"/>
+            android:text="excel"
+            android:visibility="gone"/>
         <View
             android:id="@+id/viewtitle"
             android:layout_width="1px"

@@ -73,7 +73,7 @@
 
         <TextView
             android:id="@+id/tvCommoSealedrev"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
@@ -89,7 +89,7 @@
 
         <TextView
             android:id="@+id/tvCommoDocback"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
@@ -150,7 +150,7 @@
 
         <TextView
             android:id="@+id/tvCommoPredocdt"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
@@ -227,7 +227,7 @@
 
         <EditText
             android:id="@+id/tvCommoSpcproDec"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
@@ -242,7 +242,7 @@
 
         <EditText
             android:id="@+id/tvCommoSpcproMemo"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
@@ -492,7 +492,7 @@
 
         <TextView
             android:id="@+id/tvCommoPackbdat"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"
@@ -584,7 +584,7 @@
 
         <TextView
             android:id="@+id/tvCommoCtmchkdt"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="@drawable/shape_text_sql_boild"

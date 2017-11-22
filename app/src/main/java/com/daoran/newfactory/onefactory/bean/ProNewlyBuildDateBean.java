@@ -3,14 +3,14 @@ package com.daoran.newfactory.onefactory.bean;
 import java.util.List;
 
 /**
- * 款号详情实体类
- * Created by lizhipeng on 2017/5/8.
+ * 创建时间：2017/11/21
+ * 编写人：lizhipeng
+ * 功能描述：
  */
 
-public class ProNewlyBuildBean {
-
+public class ProNewlyBuildDateBean {
     private int totalCount;
-    private List<DataBean> Data;
+    private List<ProNewlyBuildDateBean.DataBean> Data;
 
     public int getTotalCount() {
         return totalCount;
@@ -20,53 +20,15 @@ public class ProNewlyBuildBean {
         this.totalCount = totalCount;
     }
 
-    public List<DataBean> getData() {
+    public List<ProNewlyBuildDateBean.DataBean> getData() {
         return Data;
     }
 
-    public void setData(List<DataBean> Data) {
+    public void setData(List<ProNewlyBuildDateBean.DataBean> Data) {
         this.Data = Data;
     }
 
     public static class DataBean {
-        /**
-         * id : 11024
-         * salesid :
-         * item : PKT1145
-         * megitem : PKT1145
-         * prdtyp : 短袖衣连裤
-         * fsaler : 杨东东
-         * fsalerid : 0587
-         * psaler : 杨东东
-         * psalerid : 0587
-         * taskqty : 3600
-         * inbill : PM17020122
-         * subfactory :
-         * lbdat : 2017/5/14 0:00:00
-         * lcdat : 2017/5/5 0:00:00
-         * ctmid : 114
-         * ctmtxt : OASIS
-         * pqty : 3600
-         * taskdat : 2017/3/2 0:00:00
-         * prddocumentary :
-         * prddocumentaryid :
-         * prdmaster :
-         * styp : 大货
-         * ourmainpart :
-         * teamname : 无
-         * mtr : 人棉斜纹
-         * prodcol : 彩色
-         * sewamount :
-         * mdl : 6,8,10,12,14,16,18
-         * recordat : 2017/2/9 10:34:08
-         * subfactoryTeams :
-         * workers :
-         * factcutqty :
-         * prdstatus :
-         * workingProcedure : 车间
-         * sumCompletedQty : null
-         */
-
         private String id;//id
         private String salesid;//排单计划id
         private String item;//款号

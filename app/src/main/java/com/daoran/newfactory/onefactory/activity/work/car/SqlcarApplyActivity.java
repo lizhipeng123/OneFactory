@@ -107,7 +107,7 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                     .addParams("start", datetime)
                     .addParams("endtime", endtime)
                     .addParams("title", spinnerPosition)
-                    .addParams("pageNum", pageIndex + "0")
+                    .addParams("pageNum", pageIndex * 1 + "")
                     .addParams("pageSize", "10")
                     .build()
                     .execute(new StringCallback() {
@@ -129,7 +129,7 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                                 @Override
                                 public void run() {
                                     try {
-                                        Thread.sleep(1500);
+                                        Thread.sleep(1000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -147,7 +147,7 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(1500);
+                                            Thread.sleep(1000);
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
@@ -168,7 +168,7 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(1500);
+                                            Thread.sleep(1000);
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
@@ -182,7 +182,7 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(1500);
+                                            Thread.sleep(1000);
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
@@ -265,7 +265,7 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                     public void run() {
                         try {
                             Thread.sleep(2000);
-                            if(dataBeenlist.size()!=0){
+                            if (dataBeenlist.size() != 0) {
                                 Looper.prepare();
                                 ExcelUtil.writeExcel(SqlcarApplyActivity.this,
                                         dataBeenlist,
@@ -273,7 +273,7 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
                                 progressDialog.dismiss();
                                 mSaveHandler.sendEmptyMessage(DOWN_NOSDCARD);
                                 Looper.loop();
-                            }else{
+                            } else {
                                 Looper.prepare();
                                 progressDialog.dismiss();
                                 mSaveHandler.sendEmptyMessage(DOWN_NO);
@@ -297,13 +297,13 @@ public class SqlcarApplyActivity extends BaseListActivity implements View.OnClic
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case DOWN_NOSDCARD:
-                    ToastUtils.ShowToastMessage("保存成功，请在Excel文件中查看",SqlcarApplyActivity.this);
+                    ToastUtils.ShowToastMessage("保存成功，请在Excel文件中查看", SqlcarApplyActivity.this);
                     break;
                 case DOWN_NO:
-                    ToastUtils.ShowToastMessage("没有数据",SqlcarApplyActivity.this);
+                    ToastUtils.ShowToastMessage("没有数据", SqlcarApplyActivity.this);
                     break;
                 case DOWN_ERROR:
-                    ToastUtils.ShowToastMessage("保存失败",SqlcarApplyActivity.this);
+                    ToastUtils.ShowToastMessage("保存失败", SqlcarApplyActivity.this);
                     break;
             }
         }

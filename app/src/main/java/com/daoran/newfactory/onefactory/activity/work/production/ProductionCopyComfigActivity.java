@@ -335,7 +335,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
             @Override
             public void run() {
                 try {
-                    Thread.sleep(1500);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -586,7 +586,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                         @Override
                         public void run() {
                             try {
-                                Thread.sleep(1500);
+                                Thread.sleep(1000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -642,7 +642,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                         @Override
                                         public void run() {
                                             try {
-                                                Thread.sleep(1500);
+                                                Thread.sleep(1000);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
@@ -665,7 +665,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                             @Override
                                                             public void run() {
                                                                 try {
-                                                                    Thread.sleep(1500);
+                                                                    Thread.sleep(1000);
                                                                 } catch (InterruptedException e) {
                                                                     e.printStackTrace();
                                                                 }
@@ -682,7 +682,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                             @Override
                                                             public void run() {
                                                                 try {
-                                                                    Thread.sleep(1500);
+                                                                    Thread.sleep(1000);
                                                                 } catch (InterruptedException e) {
                                                                     e.printStackTrace();
                                                                 }
@@ -755,7 +755,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(1500);
+                                            Thread.sleep(1000);
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
@@ -778,7 +778,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                         @Override
                                                         public void run() {
                                                             try {
-                                                                Thread.sleep(1500);
+                                                                Thread.sleep(1000);
                                                             } catch (InterruptedException e) {
                                                                 e.printStackTrace();
                                                             }
@@ -795,7 +795,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                         @Override
                                                         public void run() {
                                                             try {
-                                                                Thread.sleep(1500);
+                                                                Thread.sleep(1000);
                                                             } catch (InterruptedException e) {
                                                                 e.printStackTrace();
                                                             }
@@ -864,7 +864,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 @Override
                                 public void run() {
                                     try {
-                                        Thread.sleep(1500);
+                                        Thread.sleep(1000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -887,7 +887,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                     @Override
                                                     public void run() {
                                                         try {
-                                                            Thread.sleep(1500);
+                                                            Thread.sleep(1000);
                                                         } catch (InterruptedException e) {
                                                             e.printStackTrace();
                                                         }
@@ -905,7 +905,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                     @Override
                                                     public void run() {
                                                         try {
-                                                            Thread.sleep(1500);
+                                                            Thread.sleep(1000);
                                                             String ression = StringUtil.sideTrim(response, "\"");
                                                             System.out.print(ression);
                                                             int resindex = Integer.parseInt(ression);
@@ -988,7 +988,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(1500);
+                                            Thread.sleep(1000);
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
@@ -1011,7 +1011,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                         @Override
                                                         public void run() {
                                                             try {
-                                                                Thread.sleep(1500);
+                                                                Thread.sleep(1000);
                                                             } catch (InterruptedException e) {
                                                                 e.printStackTrace();
                                                             }
@@ -1028,7 +1028,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                         @Override
                                                         public void run() {
                                                             try {
-                                                                Thread.sleep(1500);
+                                                                Thread.sleep(1000);
                                                             } catch (InterruptedException e) {
                                                                 e.printStackTrace();
                                                             }
@@ -1101,7 +1101,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                 @Override
                                 public void run() {
                                     try {
-                                        Thread.sleep(1500);
+                                        Thread.sleep(1000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -1124,7 +1124,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                     @Override
                                                     public void run() {
                                                         try {
-                                                            Thread.sleep(1500);
+                                                            Thread.sleep(1000);
                                                         } catch (InterruptedException e) {
                                                             e.printStackTrace();
                                                         }
@@ -1141,7 +1141,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                     @Override
                                                     public void run() {
                                                         try {
-                                                            Thread.sleep(1500);
+                                                            Thread.sleep(1000);
                                                         } catch (InterruptedException e) {
                                                             e.printStackTrace();
                                                         }
@@ -1210,7 +1210,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                             @Override
                             public void run() {
                                 try {
-                                    Thread.sleep(1500);
+                                    Thread.sleep(1000);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
@@ -1233,7 +1233,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                 @Override
                                                 public void run() {
                                                     try {
-                                                        Thread.sleep(1500);
+                                                        Thread.sleep(1000);
                                                     } catch (InterruptedException e) {
                                                         e.printStackTrace();
                                                     }
@@ -1250,7 +1250,7 @@ public class ProductionCopyComfigActivity extends BaseFrangmentActivity
                                                 @Override
                                                 public void run() {
                                                     try {
-                                                        Thread.sleep(1500);
+                                                        Thread.sleep(1000);
                                                     } catch (InterruptedException e) {
                                                         e.printStackTrace();
                                                     }

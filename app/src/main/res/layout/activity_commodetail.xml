@@ -4,4 +4,1396 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_150"
+        android:background="@color/lightblue">
+
+        <ImageView
+            android:id="@+id/ivCommoditySql"
+            android:layout_width="@dimen/dimen_60"
+            android:layout_height="@dimen/dimen_60"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_20"
+            android:src="@mipmap/ali_back_two" />
+
+        <View
+            android:id="@+id/viewtitletwo"
+            android:layout_width="1px"
+            android:layout_height="@dimen/dimen_100"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_20"
+            android:layout_toRightOf="@+id/ivCommoditySql"
+            android:background="#FF909090" />
+
+        <TextView
+            android:id="@+id/tvCommoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="查货跟踪单修改"
+            android:textColor="@color/icon_color"
+            android:textSize="@dimen/dimen_55sp" />
+
+        <Button
+            android:id="@+id/btnCommoSave"
+            android:layout_width="@dimen/dimen_170"
+            android:layout_height="@dimen/dimen_90"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_50"
+            android:layout_marginRight="@dimen/dimen_20"
+            android:layout_toLeftOf="@+id/viewtitle"
+            android:background="@drawable/shape_btn_newsbuild_boild"
+            android:text="保存"
+            android:textColor="@color/icon_color" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dimen_20"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="款号："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="客户："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_ctmtxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_text_menu"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dimen_20">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="工厂："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_factory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/dimen_10"
+                        android:text="tongkuan"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_text_menu"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dimen_20">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="数量："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/dimen_10"
+                        android:text="tongkuan"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="跟单员："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_prddocumentary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="生产主管："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_prdmaster"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="主管评分："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_qcmasterscore"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="封样资料接收时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_sealedrev"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="大货资料接收时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_docback"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="出货时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_lcdat"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="特别备注情况："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_prememo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_edittext_sql_boild"
+                    android:gravity="top|left"
+                    android:minLines="3"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="预计产前会报告时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_predocdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="开产前会时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_pred"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="产前会报告："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_predoc"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="面料情况："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_fabricsok"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_edittext_sql_boild"
+                    android:minLines="3"
+                    android:gravity="top|left"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="辅料情况："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_accessoriesok"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:background="@drawable/shape_edittext_sql_boild"
+                    android:text="tongkuan"
+                    android:minLines="3"
+                    android:gravity="top|left"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="特殊工艺情况："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_spcproDec"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:minLines="3"
+                    android:gravity="top|left"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:background="@drawable/shape_edittext_sql_boild"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="特殊工艺备注："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_spcpromemo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:minLines="3"
+                    android:gravity="top|left"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:background="@drawable/shape_edittext_sql_boild"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="实裁数："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_cutqty"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:numeric="integer"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="上线时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_sewfdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="下线时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_sewmdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="预计早期时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_prebdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="自查早期时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_QCbdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="早期报告："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_QCbdtDoc"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="预计中期时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_Premdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="自查中期时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_QCmdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="中期报告："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_QCmdtDoc"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="预计尾期时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_Preedt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="自查尾期时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_QCMedt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="尾期报告："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_QCedtDoc"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="客查中期时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_Fctmdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="客查尾期时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_Fctedt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="成品包装开始时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_Packbdat"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="装箱数量："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_Packqty2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:numeric="integer"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="QA特别备注："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_QCMemo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:background="@drawable/shape_edittext_sql_boild"
+                    android:text="tongkuan"
+                    android:minLines="3"
+                    android:gravity="top|left"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="离厂日期："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_Factlcdat"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="查货批次："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_Batchid"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
+                    android:numeric="integer"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="后道："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_OurAfter"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="业务员确认客查日期："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_Ctmchkdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="尾查预查："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_IPQCPedt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="巡检："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_IPQC"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="巡检中查："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_IPQCmdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="QA首扎："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_QAname"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="QA首扎件数："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_QAScore"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="QA首扎日期："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_QAMemo"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="件查："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_chker"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="预计件查时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_chkpdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="实际件查时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_commodetail_chkfctdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="查货地点(件查)："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_commodetail_chkplace"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

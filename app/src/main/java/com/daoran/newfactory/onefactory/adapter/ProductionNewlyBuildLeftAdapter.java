@@ -12,9 +12,11 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.work.production.ProductionNewlyComfigActivity;
+import com.daoran.newfactory.onefactory.activity.work.production.ProductionNewlyComfigVerticalActivity;
 import com.daoran.newfactory.onefactory.bean.ProNewlyBuildBean;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.PhoneSaveUtil;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
+import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -74,8 +76,9 @@ public class ProductionNewlyBuildLeftAdapter extends BaseAdapter {
             public void onClick(View v) {
                 sp = context.getSharedPreferences("my_sp", 0);
                 String salesid = getItem(position).getID();
-                String said = getItem(position).getSalesid();
                 spUtils.put(context, "tvnewlysalesid", salesid);
+                String said = getItem(position).getSalesid();
+                spUtils.put(context,"tvnewlySalid",said);
                 flag = true;
                 spUtils.put(context, "tvflag", flag);
                 String tvdate = getItem(position).getItem();
@@ -91,6 +94,9 @@ public class ProductionNewlyBuildLeftAdapter extends BaseAdapter {
                 if (tvProProcedure.equals("裁床")) {
                     isprodure = 1;
                     spUtils.put(context, "isprodure", String.valueOf(isprodure));
+                } else if (tvProProcedure.equals("选择工序")) {
+                    ToastUtils.ShowToastMessage("选择工序后再新建", context);
+                    return;
                 } else {
                     isprodure = 0;
                     spUtils.put(context, "isprodure", String.valueOf(isprodure));
@@ -115,7 +121,7 @@ public class ProductionNewlyBuildLeftAdapter extends BaseAdapter {
                     System.out.print(temp);
                     List<String> list = Arrays.asList(temp);
                     System.out.print(list);
-                    SharedPreferences spes = context.getSharedPreferences("mylist", 0);
+                    SharedPreferences spes = context.getSharedPreferences("my_sp", 0);
                     SharedPreferences.Editor editor = spes.edit();
                     try {
                         String liststr = PhoneSaveUtil.SceneList2String(list);
@@ -129,7 +135,8 @@ public class ProductionNewlyBuildLeftAdapter extends BaseAdapter {
                     System.out.print(tvProSize);
                     spUtils.put(context, "tvnewlySize", tvProSize);//花色
                 }
-
+                String tvctmtxt = getItem(position).getCtmtxt();
+                spUtils.put(context,"tvnewlyCtmtxt",tvctmtxt);//客户
                 String tvProClippingNumber = getItem(position).getFactcutqty();
                 spUtils.put(context, "tvnewlyClippingNumber", tvProClippingNumber);//实裁数
 
@@ -143,7 +150,7 @@ public class ProductionNewlyBuildLeftAdapter extends BaseAdapter {
                 String itemm = sp.getString("tvnewlydate", "");
                 /*从点击item中进入新建数据界面*/
                 Intent intent = new Intent(context,
-                        ProductionNewlyComfigActivity.class);
+                        ProductionNewlyComfigVerticalActivity.class);
                 context.startActivity(intent);
                 System.out.print(itemm);
             }

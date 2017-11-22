@@ -96,7 +96,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/spinner_bg"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dimen_50sp" />
+                    android:textSize="@dimen/dimen_50sp"
+                    android:visibility="gone"/>
             </LinearLayout>
 
             <LinearLayout

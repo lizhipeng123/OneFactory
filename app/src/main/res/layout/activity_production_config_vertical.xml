@@ -1,0 +1,1719 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_150"
+        android:background="@color/lightblue">
+
+        <ImageView
+            android:id="@+id/ivProductionBack"
+            android:layout_width="@dimen/dimen_60"
+            android:layout_height="@dimen/dimen_60"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_20"
+            android:src="@mipmap/ali_back_two" />
+
+        <View
+            android:id="@+id/viewtitletwo"
+            android:layout_width="1px"
+            android:layout_height="@dimen/dimen_120"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_50"
+            android:layout_toRightOf="@+id/ivProductionBack"
+            android:background="#FF909090" />
+
+        <TextView
+            android:id="@+id/tvProTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/dimen_50"
+            android:layout_toRightOf="@+id/viewtitletwo"
+            android:text="新建保存"
+            android:textColor="@color/icon_color"
+            android:textSize="@dimen/dimen_55sp" />
+
+        <Button
+            android:id="@+id/btnProSave"
+            android:layout_width="@dimen/dimen_170"
+            android:layout_height="@dimen/dimen_90"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/shape_btn_newsbuild_boild"
+            android:text="保存"
+            android:textColor="@color/icon_color" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dimen_20"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#cccccc" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="款号："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_config_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="客户："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_config_ctmtxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_text_menu"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dimen_20">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="工厂："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <TextView
+                        android:id="@+id/tv_config_subfactory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_text_menu"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dimen_20">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="制单数："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <TextView
+                        android:id="@+id/tv_config_pqty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_250"
+                    android:layout_height="wrap_content"
+                    android:text="跟单员："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_config_documentary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_250"
+                    android:layout_height="wrap_content"
+                    android:text="部门/组别："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_config_department"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/spinner_bg"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_15"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_250"
+                    android:layout_height="wrap_content"
+                    android:text="工序："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_config_procedure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/spinner_bg"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_15"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_250"
+                    android:layout_height="wrap_content"
+                    android:text="组别人数："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_config_others"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:cursorVisible="true"
+                    android:gravity="center_vertical"
+                    android:maxLines="8"
+                    android:numeric="integer"
+                    android:paddingLeft="@dimen/dimen_15"
+                    android:singleLine="true"
+                    android:text="sss2312"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_config_singularsystem"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_250"
+                    android:layout_height="wrap_content"
+                    android:text="任务数："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_config_singularsystem"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:cursorVisible="true"
+                    android:gravity="center_vertical"
+                    android:numeric="integer"
+                    android:paddingLeft="@dimen/dimen_15"
+                    android:singleLine="true"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_250"
+                    android:layout_height="wrap_content"
+                    android:text="尺码："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_config_size"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@color/grey_btn_color_pressed"
+                    android:cursorVisible="true"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_15"
+                    android:singleLine="true"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_250"
+                    android:layout_height="wrap_content"
+                    android:text="花色："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_config_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@color/grey_btn_color_pressed"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_15"
+                    android:singleLine="true"
+                    android:text="5464646454668722454545454545454545454545454545454545454545454545454545454545454"
+                    android:textColor="@color/icon_color"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_250"
+                    android:layout_height="wrap_content"
+                    android:text="裁床时间"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_config_cutdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/spinner_bg"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_15"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_250"
+                    android:layout_height="wrap_content"
+                    android:text="实裁数："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_config_clippingnumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:background="@color/grey_btn_color_pressed"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_list_config_pro_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.daoran.newfactory.onefactory.view.listview.NoscrollListView
+                            android:id="@+id/list_pro_config_vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_config_completedlast"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_250"
+                    android:layout_height="wrap_content"
+                    android:text="上月完工数："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_config_completedlastmonth"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:cursorVisible="true"
+                    android:gravity="center_vertical"
+                    android:numeric="integer"
+                    android:paddingLeft="@dimen/dimen_15"
+                    android:singleLine="true"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_250"
+                    android:layout_height="wrap_content"
+                    android:text="总完工数："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_config_totalcompletion"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@color/grey_btn_color_pressed"
+                    android:cursorVisible="true"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_15"
+                    android:singleLine="true"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_config_balanceamount"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_250"
+                    android:layout_height="wrap_content"
+                    android:text="结余数量："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_config_balanceamount"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@color/grey_btn_color_pressed"
+                    android:cursorVisible="true"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_15"
+                    android:singleLine="true"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_250"
+                    android:layout_height="wrap_content"
+                    android:text="状态："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_config_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@drawable/spinner_bg"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_15"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="年："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <TextView
+                        android:id="@+id/tv_config_year"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_marginRight="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:background="@color/grey_btn_color_pressed"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="月："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_month"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_marginRight="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_pro_config_one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="1日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_oneday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_10"
+                        android:layout_marginRight="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_pro_config_two_visi"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="2日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_twoday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="3日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_threeday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="4日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_foreday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_pro_config_three_visi"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="5日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_fiveday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="6日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_sixday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="7日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_servenday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_pro_config_fore_visi"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="8日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_eightday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="9日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_nineday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="10日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_tenday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_pro_config_five_visi"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="11日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_elevenday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="12日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_twelveday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="13日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_thirteenday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_pro_config_six_visi"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="14日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_fourteenday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="15日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_fifteenday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="16日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_sixteenday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_pro_config_serven_visi"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="17日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_seventeenday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="18日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_eighteenday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="19日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_nineteenday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_pro_config_eight_visi"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="20日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_twentyday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="21日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_TwentyOneDay"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="22日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_twentytwoday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_pro_config_nine_visi"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="23日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_twentyThreeday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="24日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_twentyforeday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="25日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_twentyfiveday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_pro_config_ten_visi"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="26日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_twentysixday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="27日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_twentysevenday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="28日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_twentyeightday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_pro_config_eleven_visi"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="29日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_twentynineday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="30日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_thirtyday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_250"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="31日："
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dimen_40sp" />
+
+                    <EditText
+                        android:id="@+id/et_config_thirtyoneday"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen_120"
+                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_weight="1"
+                        android:cursorVisible="true"
+                        android:gravity="center_vertical"
+                        android:numeric="integer"
+                        android:paddingLeft="@dimen/dimen_15"
+                        android:singleLine="true"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
+                        android:textSize="@dimen/dimen_40sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_250"
+                    android:layout_height="wrap_content"
+                    android:text="备注："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <EditText
+                    android:id="@+id/et_config_remarks"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:cursorVisible="true"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_15"
+                    android:singleLine="true"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_250"
+                    android:layout_height="wrap_content"
+                    android:text="制单人："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_config_recorder"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@color/grey_btn_color_pressed"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_15"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_text_menu"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_20">
+
+                <TextView
+                    android:layout_width="@dimen/dimen_250"
+                    android:layout_height="wrap_content"
+                    android:text="制单时间："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dimen_40sp" />
+
+                <TextView
+                    android:id="@+id/tv_config_recordat"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_120"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:background="@color/grey_btn_color_pressed"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dimen_15"
+                    android:textColor="@color/grey_btn_stroke_color_pressed"
+                    android:textSize="@dimen/dimen_40sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

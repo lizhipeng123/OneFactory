@@ -299,20 +299,20 @@ public class LoginMainActivity extends BaseFrangmentActivity {
 //        getCurrentVersion();
         //判断网络是否是可连接的状态
         if (NetWork.isNetWorkAvailable(this)) {
-            /*登录是否设置保存时间，以及加密*/
-            /*检测是否为可用WiFi*/
-            WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            String infossid = wifiInfo.getSSID();
-            infossid = infossid.replace("\"", "");
-            //如果当前WiFi是预定的测试WiFi，则不允许登录，切换当前WiFi后，符合要求则执行后面的方法
-            if (infossid.equals("taoxinxi")) {
-                AlertDialog dialog = new AlertDialog.Builder(this).create();
-                dialog.setTitle("系统提示");
-                dialog.setMessage("当前 " + infossid + " 为测试WiFi,请连接到公共WiFi或者流量状态");
-                dialog.setButton("确定", listenerwifi);
-                dialog.show();
-            } else {
+//            /*登录是否设置保存时间，以及加密*/
+//            /*检测是否为可用WiFi*/
+//            WifiManager wifiManager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+//            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+//            String infossid = wifiInfo.getSSID();
+//            infossid = infossid.replace("\"", "");
+//            //如果当前WiFi是预定的测试WiFi，则不允许登录，切换当前WiFi后，符合要求则执行后面的方法
+//            if (infossid.equals("taoxinxi")) {
+//                AlertDialog dialog = new AlertDialog.Builder(this).create();
+//                dialog.setTitle("系统提示");
+//                dialog.setMessage("当前 " + infossid + " 为测试WiFi,请连接到公共WiFi或者流量状态");
+//                dialog.setButton("确定", listenerwifi);
+//                dialog.show();
+//            } else {
                 final ProgressDialog progressDialog = ProgressDialog.show(this,
                         getResources().getString(R.string.login_his_later), getResources().getString(R.string.logining), false, true);//等待加载弹窗
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -332,7 +332,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                                 @Override
                                 public void run() {
                                     try {
-                                        Thread.sleep(3000);//睡眠时间设置长度
+                                        Thread.sleep(1000);//睡眠时间设置长度
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -433,7 +433,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                             @Override
                             public void run() {
                                 try {
-                                    Thread.sleep(3000);
+                                    Thread.sleep(1000);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
@@ -450,19 +450,17 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                             @Override
                             public void run() {
                                 try {
-                                    Thread.sleep(3000);
+                                    Thread.sleep(1000);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
                                 progressDialog.dismiss();
-
-                                LoginMainActivity.this.finish();
                             }
                         });
                         thread.start();
                     }
                 });
-            }
+//            }
         } else {
             ToastUtils.ShowToastMessage(getString(R.string.noHttp), LoginMainActivity.this);
         }

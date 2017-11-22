@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/create_user_dialog_view"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
     <LinearLayout
@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/dimen_30">
+            android:padding="@dimen/dimen_20">
 
             <TextView
                 android:layout_width="match_parent"
@@ -32,15 +32,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/dimen_70"
+            android:paddingBottom="@dimen/dimen_30"
             android:paddingLeft="@dimen/dimen_70"
             android:paddingRight="@dimen/dimen_70"
-            android:paddingTop="@dimen/dimen_70">
+            android:paddingTop="@dimen/dimen_30">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen_70"
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/dimen_50"
                 android:orientation="horizontal">
 
                 <TextView
@@ -77,7 +78,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen_70"
+                android:layout_marginBottom="@dimen/dimen_50"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -102,7 +103,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen_70"
+                android:layout_marginBottom="@dimen/dimen_50"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -132,7 +133,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen_70"
+                android:layout_marginBottom="@dimen/dimen_50"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -198,15 +199,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="@dimen/dimen_30"
+            android:paddingBottom="@dimen/dimen_20"
             android:paddingLeft="@dimen/dimen_70"
             android:paddingRight="@dimen/dimen_70"
-            android:paddingTop="@dimen/dimen_30">
+            android:paddingTop="@dimen/dimen_20">
 
             <Button
                 android:id="@+id/btnCancle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dimen_100"
                 android:layout_weight="1"
                 android:background="@drawable/shape_btn_sql_boild"
                 android:textColor="@color/white"
@@ -215,7 +216,7 @@
             <Button
                 android:id="@+id/btnComfirm"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dimen_100"
                 android:layout_marginLeft="@dimen/dimen_200"
                 android:background="@drawable/shape_btn_sql_boild"
                 android:textColor="@color/white"

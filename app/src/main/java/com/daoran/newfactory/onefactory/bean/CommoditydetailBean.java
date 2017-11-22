@@ -121,7 +121,7 @@ public class CommoditydetailBean {
         private String QAScore;//QA首扎件数
         private String QAMemo;//QA首扎日期
         private String ctmchkdt;//业务员确认客查日期
-        private String IPQC;
+        private String IPQC;//巡检
         private String IPQCid;
         private String IPQCmdt;//巡检中查
         private String IPQCPedt;//尾查预查

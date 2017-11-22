@@ -343,7 +343,13 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                 break;
             /*弹出菜单*/
             case R.id.spinnermenu:
-                showPopupMenu(spinnermenu);
+                if (configid.equals("1")) {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                } else if (configid.equals("2")) {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                } else {
+
+                }
                 break;
         }
     }
@@ -475,7 +481,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                 @Override
                                 public void run() {
                                     try {
-                                        Thread.sleep(1500);
+                                        Thread.sleep(1000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -492,7 +498,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                 @Override
                                 public void run() {
                                     try {
-                                        Thread.sleep(1500);
+                                        Thread.sleep(1000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -574,7 +580,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                 @Override
                                 public void run() {
                                     try {
-                                        Thread.sleep(1500);
+                                        Thread.sleep(1000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -591,7 +597,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                 @Override
                                 public void run() {
                                     try {
-                                        Thread.sleep(1500);
+                                        Thread.sleep(1000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }

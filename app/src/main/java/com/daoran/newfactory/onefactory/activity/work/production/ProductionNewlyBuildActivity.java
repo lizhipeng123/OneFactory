@@ -32,6 +32,7 @@ import com.daoran.newfactory.onefactory.adapter.ProductionNewlyBuildAdapter;
 import com.daoran.newfactory.onefactory.adapter.ProductionNewlyBuildLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.ProNewlyBuildBean;
+import com.daoran.newfactory.onefactory.bean.ProNewlyBuildDateBean;
 import com.daoran.newfactory.onefactory.bean.PropostNewlyBuildBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
@@ -55,7 +56,7 @@ import okhttp3.Call;
 import okhttp3.MediaType;
 
 /**
- * 新建生产日报选择款号
+ * 新建生产日报选择款号页面
  * Created by lizhipeng on 2017/5/2.
  */
 
@@ -104,12 +105,11 @@ public class ProductionNewlyBuildActivity
         super.onCreate(savedInstanceState);
         /*1是竖屏，2是横屏*/
         setContentView(R.layout.activity_production_newbuid);
-
         getViews();
         initViews();
         setListener();
         getClumnsSpinner();
-        setDate();
+//        setDate();
         lv_newbuild_data.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -244,7 +244,7 @@ public class ProductionNewlyBuildActivity
                                 @Override
                                 public void run() {
                                     try {
-                                        Thread.sleep(1500);
+                                        Thread.sleep(1000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -262,7 +262,7 @@ public class ProductionNewlyBuildActivity
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(1500);
+                                            Thread.sleep(1000);
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
@@ -276,6 +276,7 @@ public class ProductionNewlyBuildActivity
                                 System.out.print(ression);
                                 newlyBuildBean = new Gson().fromJson(ression, ProNewlyBuildBean.class);
                                 dataBeen = newlyBuildBean.getData();
+
                                 if (newlyBuildBean.getTotalCount() != 0) {
                                     ll_visibi.setVisibility(View.GONE);
                                     scroll_content.setVisibility(View.VISIBLE);
@@ -300,7 +301,7 @@ public class ProductionNewlyBuildActivity
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(1500);
+                                            Thread.sleep(1000);
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
@@ -315,6 +316,8 @@ public class ProductionNewlyBuildActivity
             ToastUtils.ShowToastMessage(R.string.noHttp, ProductionNewlyBuildActivity.this);
         }
     }
+
+
 
     /**
      * 根据工序及款号查找信息
@@ -370,7 +373,7 @@ public class ProductionNewlyBuildActivity
                                         @Override
                                         public void run() {
                                             try {
-                                                Thread.sleep(1500);
+                                                Thread.sleep(1000);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
@@ -409,7 +412,7 @@ public class ProductionNewlyBuildActivity
                                         @Override
                                         public void run() {
                                             try {
-                                                Thread.sleep(1500);
+                                                Thread.sleep(1000);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
@@ -467,7 +470,7 @@ public class ProductionNewlyBuildActivity
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(1500);
+                                            Thread.sleep(1000);
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
@@ -485,7 +488,7 @@ public class ProductionNewlyBuildActivity
                                         @Override
                                         public void run() {
                                             try {
-                                                Thread.sleep(1500);
+                                                Thread.sleep(1000);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
@@ -524,7 +527,7 @@ public class ProductionNewlyBuildActivity
                                         @Override
                                         public void run() {
                                             try {
-                                                Thread.sleep(1500);
+                                                Thread.sleep(1000);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
@@ -571,7 +574,7 @@ public class ProductionNewlyBuildActivity
                                         @Override
                                         public void run() {
                                             try {
-                                                Thread.sleep(1500);
+                                                Thread.sleep(1000);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
@@ -611,7 +614,7 @@ public class ProductionNewlyBuildActivity
                                         @Override
                                         public void run() {
                                             try {
-                                                Thread.sleep(1500);
+                                                Thread.sleep(1000);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
@@ -744,7 +747,7 @@ public class ProductionNewlyBuildActivity
                                         scroll_content.setVisibility(View.VISIBLE);
                                         System.out.print(dataBeen);
                                         pageCount = newlyBuildBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / finalGetsize);
+                                        String count = String.valueOf(pageCount / finalGetsize+1);
                                         tvNewbuildPage.setText(count);
                                         buildAdapter = new ProductionNewlyBuildAdapter(
                                                 ProductionNewlyBuildActivity.this, dataBeen);

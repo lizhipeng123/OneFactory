@@ -175,7 +175,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
             super.run();
             do {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                     Message msg = new Message();
                     msg.what = msgKey1;
                     mHandler.sendMessage(msg);
@@ -326,7 +326,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
                     @Override
                     public void run() {
                         try {
-                            Thread.sleep(1500);
+                            Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -659,7 +659,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
                                 @Override
                                 public void run() {
                                     try {
-                                        Thread.sleep(1500);
+                                        Thread.sleep(1000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -677,7 +677,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(1500);
+                                            Thread.sleep(1000);
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
@@ -698,7 +698,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(1500);
+                                            Thread.sleep(1000);
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
