@@ -316,7 +316,7 @@ public class CommoditySqlAdapter extends BaseAdapter {
                 spUtils.put(context,"commodetailIPQCid",commoIPQCid);
 
                 String commoQAname = getItem(position).getQAname();//QA首扎
-                spUtils.put(context, "commoQAname", commoQAname);
+                spUtils.put(context, "commodetailQAname", commoQAname);
 
                 String commofirstsamQA = getItem(position).getFirstsamQA();//QA首扎改后
                 spUtils.put(context,"commodetailfirstsamQA",commofirstsamQA);

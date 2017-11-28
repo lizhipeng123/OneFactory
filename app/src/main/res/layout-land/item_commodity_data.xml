@@ -55,7 +55,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvCommoQCMasterScore"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -133,7 +133,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvCommoPreMemo"
             android:layout_width="150dp"
             android:layout_height="match_parent"
@@ -180,7 +180,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvCommoPredoc"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -195,7 +195,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvCommoFabricsok"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -210,7 +210,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvCommoAccessoriesok"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -225,7 +225,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvCommoSpcproDec"
             android:layout_width="150dp"
             android:layout_height="match_parent"
@@ -240,7 +240,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvCommoSpcproMemo"
             android:layout_width="150dp"
             android:layout_height="match_parent"
@@ -255,7 +255,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvCommoCutqty"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -349,7 +349,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvCommoQCbdtDoc"
             android:layout_width="150dp"
             android:layout_height="match_parent"
@@ -396,7 +396,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvCommoQCmdtDoc"
             android:layout_width="150dp"
             android:layout_height="match_parent"
@@ -443,7 +443,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvCommoQCedtDoc"
             android:layout_width="150dp"
             android:layout_height="match_parent"
@@ -506,7 +506,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvCommoPackqty2"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -521,7 +521,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvCommoQCMemo"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -552,7 +552,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvCommoBatchid"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -598,7 +598,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvCommoIPQCPedt"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -613,7 +613,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvCommoIPQCmdt"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -628,7 +628,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvCommoQAname"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -643,7 +643,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvCommoQAScore"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -673,7 +673,7 @@
             android:layout_width="1px"
             android:layout_height="match_parent"
             android:background="#cccccc" />
-        <EditText
+        <TextView
             android:id="@+id/tvCommoThing"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -717,7 +717,7 @@
             android:layout_width="1px"
             android:layout_height="match_parent"
             android:background="#cccccc" />
-        <EditText
+        <TextView
             android:id="@+id/tvCommoThingAddress"
             android:layout_width="100dp"
             android:layout_height="match_parent"

@@ -58,9 +58,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/dimen_20"
+            android:background="@drawable/shape_text_menu"
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
@@ -87,6 +89,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_ctmtxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
@@ -114,6 +117,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_subfactory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -175,6 +179,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_prddocumentary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
@@ -202,11 +207,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_prdmaster"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -229,11 +236,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_QCMasterScore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -244,7 +253,7 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_qcmasterscore"
+                    android:id="@+id/tv_commodetail_QCMasterScore"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
@@ -256,11 +265,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_sealedrev"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -284,11 +295,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_docback"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -312,11 +325,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_lcdat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -340,11 +355,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_preMemo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -355,7 +372,7 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_prememo"
+                    android:id="@+id/tv_commodetail_preMemo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen_20"
@@ -369,11 +386,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_predocdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -397,11 +416,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_predt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -412,24 +433,26 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <TextView
-                    android:id="@+id/tv_commodetail_pred"
+                    android:id="@+id/tv_commodetail_predt"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
                     android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
-                    android:gravity="center_vertical"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_predoc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -440,7 +463,7 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_predoc"
+                    android:id="@+id/tv_commodetail_predoc"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
@@ -452,11 +475,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_fabricsok"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -467,13 +492,13 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_fabricsok"
+                    android:id="@+id/tv_commodetail_fabricsok"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen_20"
                     android:background="@drawable/shape_edittext_sql_boild"
-                    android:minLines="3"
                     android:gravity="top|left"
+                    android:minLines="3"
                     android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
@@ -481,11 +506,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_accessoriesok"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -496,25 +523,27 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_accessoriesok"
+                    android:id="@+id/tv_commodetail_accessoriesok"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen_20"
-                    android:paddingLeft="@dimen/dimen_10"
                     android:background="@drawable/shape_edittext_sql_boild"
-                    android:text="tongkuan"
-                    android:minLines="3"
                     android:gravity="top|left"
+                    android:minLines="3"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_spcproDec"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -525,25 +554,27 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_spcproDec"
+                    android:id="@+id/tv_commodetail_spcproDec"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen_20"
-                    android:minLines="3"
-                    android:gravity="top|left"
-                    android:paddingLeft="@dimen/dimen_10"
                     android:background="@drawable/shape_edittext_sql_boild"
+                    android:gravity="top|left"
+                    android:minLines="3"
+                    android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_spcproMemo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -554,25 +585,27 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_spcpromemo"
+                    android:id="@+id/tv_commodetail_spcproMemo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen_20"
-                    android:minLines="3"
-                    android:gravity="top|left"
-                    android:paddingLeft="@dimen/dimen_10"
                     android:background="@drawable/shape_edittext_sql_boild"
+                    android:gravity="top|left"
+                    android:minLines="3"
+                    android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_cutqty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -583,23 +616,26 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_cutqty"
+                    android:id="@+id/tv_commodetail_cutqty"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
                     android:gravity="center_vertical"
+                    android:numeric="integer"
                     android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
-                    android:numeric="integer"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_sewFdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -610,23 +646,26 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <TextView
-                    android:id="@+id/tv_commodetail_sewfdt"
+                    android:id="@+id/tv_commodetail_sewFdt"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
                     android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
-                    android:gravity="center_vertical"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_sewMdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -637,23 +676,26 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <TextView
-                    android:id="@+id/tv_commodetail_sewmdt"
+                    android:id="@+id/tv_commodetail_sewMdt"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
                     android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
-                    android:gravity="center_vertical"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_prebdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -669,18 +711,21 @@
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
                     android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
-                    android:gravity="center_vertical"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_QCbdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -691,22 +736,25 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_QCbdt"
+                    android:id="@+id/tv_commodetail_QCbdt"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
-                    android:gravity="center_vertical"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_QCbdtDoc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -717,22 +765,25 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_QCbdtDoc"
+                    android:id="@+id/tv_commodetail_QCbdtDoc"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
-                    android:gravity="center_vertical"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_premdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -743,23 +794,26 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <TextView
-                    android:id="@+id/tv_commodetail_Premdt"
+                    android:id="@+id/tv_commodetail_premdt"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
                     android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
-                    android:gravity="center_vertical"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_QCmdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -770,22 +824,25 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_QCmdt"
+                    android:id="@+id/tv_commodetail_QCmdt"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
-                    android:gravity="center_vertical"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_QCmdtDoc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -796,22 +853,25 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_QCmdtDoc"
+                    android:id="@+id/tv_commodetail_QCmdtDoc"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
-                    android:gravity="center_vertical"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_preedt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -822,23 +882,26 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <TextView
-                    android:id="@+id/tv_commodetail_Preedt"
+                    android:id="@+id/tv_commodetail_preedt"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
                     android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
-                    android:gravity="center_vertical"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_QCMedt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -849,22 +912,25 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_QCMedt"
+                    android:id="@+id/tv_commodetail_QCMedt"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
-                    android:gravity="center_vertical"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_QCedtDoc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -875,22 +941,25 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_QCedtDoc"
+                    android:id="@+id/tv_commodetail_QCedtDoc"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
-                    android:gravity="center_vertical"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_fctmdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -901,23 +970,26 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <TextView
-                    android:id="@+id/tv_commodetail_Fctmdt"
+                    android:id="@+id/tv_commodetail_fctmdt"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
                     android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
-                    android:gravity="center_vertical"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_fctedt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -928,23 +1000,26 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <TextView
-                    android:id="@+id/tv_commodetail_Fctedt"
+                    android:id="@+id/tv_commodetail_fctedt"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
                     android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
-                    android:gravity="center_vertical"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_packbdat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -955,23 +1030,26 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <TextView
-                    android:id="@+id/tv_commodetail_Packbdat"
+                    android:id="@+id/tv_commodetail_packbdat"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
                     android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
-                    android:gravity="center_vertical"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_packqty2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -982,23 +1060,26 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_Packqty2"
+                    android:id="@+id/tv_commodetail_packqty2"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
                     android:gravity="center_vertical"
+                    android:numeric="integer"
                     android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
-                    android:numeric="integer"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_QCMemo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -1009,24 +1090,27 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_QCMemo"
+                    android:id="@+id/tv_commodetail_QCMemo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dimen_20"
-                    android:paddingLeft="@dimen/dimen_10"
                     android:background="@drawable/shape_edittext_sql_boild"
-                    android:text="tongkuan"
-                    android:minLines="3"
                     android:gravity="top|left"
+                    android:minLines="3"
+                    android:paddingLeft="@dimen/dimen_10"
+                    android:text="tongkuan"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_factlcdat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -1037,23 +1121,26 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <TextView
-                    android:id="@+id/tv_commodetail_Factlcdat"
+                    android:id="@+id/tv_commodetail_factlcdat"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
                     android:background="@drawable/shape_text_sql_boild"
+                    android:gravity="center_vertical"
                     android:paddingLeft="@dimen/dimen_10"
                     android:text="tongkuan"
-                    android:gravity="center_vertical"
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_batchid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -1064,7 +1151,7 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_Batchid"
+                    android:id="@+id/tv_commodetail_batchid"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
@@ -1075,12 +1162,15 @@
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_ourAfter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -1091,7 +1181,7 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <TextView
-                    android:id="@+id/tv_commodetail_OurAfter"
+                    android:id="@+id/tv_commodetail_ourAfter"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
@@ -1102,12 +1192,15 @@
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_ctmchkdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -1118,7 +1211,7 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <TextView
-                    android:id="@+id/tv_commodetail_Ctmchkdt"
+                    android:id="@+id/tv_commodetail_ctmchkdt"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
@@ -1129,12 +1222,15 @@
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_IPQCPedt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -1156,12 +1252,15 @@
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_IPQC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -1182,12 +1281,15 @@
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_IPQCmdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -1209,12 +1311,15 @@
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_QAname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -1225,7 +1330,7 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_QAname"
+                    android:id="@+id/tv_commodetail_QAname"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
@@ -1235,12 +1340,15 @@
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_QAScore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -1251,7 +1359,7 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_QAScore"
+                    android:id="@+id/tv_commodetail_QAScore"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
@@ -1261,12 +1369,15 @@
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_QAMemo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -1288,12 +1399,15 @@
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_chker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -1304,7 +1418,7 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_chker"
+                    android:id="@+id/tv_commodetail_chker"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
@@ -1314,12 +1428,15 @@
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_chkpdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -1341,12 +1458,15 @@
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_chkfctdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -1368,12 +1488,15 @@
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/ll_PPSDetail_txt_chkplace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_text_menu"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="@dimen/dimen_20">
 
                 <TextView
@@ -1384,7 +1507,7 @@
                     android:textSize="@dimen/dimen_40sp" />
 
                 <EditText
-                    android:id="@+id/et_commodetail_chkplace"
+                    android:id="@+id/tv_commodetail_chkplace"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_120"
                     android:layout_marginLeft="@dimen/dimen_20"
@@ -1394,6 +1517,11 @@
                     android:textColor="@color/grey_btn_stroke_color_pressed"
                     android:textSize="@dimen/dimen_40sp" />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen_1"
+                android:background="@drawable/shape_text_menu"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

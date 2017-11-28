@@ -47,7 +47,26 @@ android {
     }
     sourceSets {
         main {
+            res.srcDirs =
+                    [
+                            'src/main/res/layouts/login',
+                            'src/main/res/layouts/main',
+                            'src/main/res/layouts/work_car',
+                            'src/main/res/layouts/work_production',
+                            'src/main/res/layouts/work_commo',
+                            'src/main/res/layouts/main_guide',
+                            'src/main/res/layouts/main_start',
+                            'src/main/res/layouts/work_setting',
+                            'src/main/res/layouts/work_sign',
+                            'src/main/res/layouts/main_fragment',
+                            'src/main/res/layouts/main_adapter',
+                            'src/main/res/layouts/util_view',
+                            'src/main/res/layouts/list_item',
+                            'src/main/res/layouts',
+                            'src/main/res'
+                    ]
             jniLibs.srcDirs = ['libs']
+
         }
     }
     repositories {

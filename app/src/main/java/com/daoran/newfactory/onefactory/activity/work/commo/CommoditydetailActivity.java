@@ -20,10 +20,12 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.bean.CommodityDetailColumBean;
 import com.daoran.newfactory.onefactory.bean.CommoditySaveBean;
 import com.daoran.newfactory.onefactory.bean.CommoditydetailBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
@@ -35,12 +37,16 @@ import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
+
+import static com.daoran.newfactory.onefactory.util.map.ChString.type;
 
 /**
  * 查货跟踪详情
@@ -57,6 +63,12 @@ public class CommoditydetailActivity extends Activity
     private List<CommoditydetailBean.DataBean> dataBeen
             = new ArrayList<CommoditydetailBean.DataBean>();//查货信息实体集合
     private ArrayList attentionArr = new ArrayList();
+
+    private List<CommodityDetailColumBean.JsonTextBean> jsonTextBeanlist =
+            new ArrayList<CommodityDetailColumBean.JsonTextBean>();
+    private CommodityDetailColumBean commodityDetailColumBean;
+
+
     private AlertDialog noticeDialog;//退出当前页提示弹窗
     private ImageView ivCommoditySql;
 
@@ -65,24 +77,49 @@ public class CommoditydetailActivity extends Activity
     private TextView tv_commodetail_date, tv_commodetail_ctmtxt, tv_commodetail_factory,
             tv_commodetail_count, tv_commodetail_prddocumentary, tv_commodetail_prdmaster,
             tv_commodetail_sealedrev, tv_commodetail_docback, tv_commodetail_lcdat,
-            tv_commodetail_predocdt, tv_commodetail_pred, tv_commodetail_sewfdt,
-            tv_commodetail_sewmdt, tv_commodetail_prebdt, tv_commodetail_Premdt,
-            tv_commodetail_Preedt, tv_commodetail_Fctmdt, tv_commodetail_Fctedt,
-            tv_commodetail_Packbdat, tv_commodetail_Factlcdat, tv_commodetail_OurAfter,
-            tv_commodetail_Ctmchkdt, tv_commodetail_IPQCPedt, tv_commodetail_IPQC,
+            tv_commodetail_predocdt, tv_commodetail_predt, tv_commodetail_sewFdt,
+            tv_commodetail_sewMdt, tv_commodetail_prebdt, tv_commodetail_premdt,
+            tv_commodetail_preedt, tv_commodetail_fctmdt, tv_commodetail_fctedt,
+            tv_commodetail_packbdat, tv_commodetail_factlcdat, tv_commodetail_ourAfter,
+            tv_commodetail_ctmchkdt, tv_commodetail_IPQCPedt, tv_commodetail_IPQC,
             tv_commodetail_IPQCmdt,
             tv_commodetail_QAMemo, tv_commodetail_chkpdt, tv_commodetail_chkfctdt;
 
-    private EditText et_commodetail_qcmasterscore, et_commodetail_prememo,
-            et_commodetail_predoc, et_commodetail_fabricsok, et_commodetail_accessoriesok,
-            et_commodetail_spcproDec, et_commodetail_spcpromemo, et_commodetail_cutqty,
-            et_commodetail_QCbdt, et_commodetail_QCbdtDoc, et_commodetail_QCmdt,
-            et_commodetail_QCmdtDoc, et_commodetail_QCMedt, et_commodetail_QCedtDoc,
-            et_commodetail_Packqty2, et_commodetail_QCMemo, et_commodetail_Batchid,
-            et_commodetail_chker, et_commodetail_QAname, et_commodetail_QAScore,
-            et_commodetail_chkplace;
+    private EditText tv_commodetail_QCMasterScore, tv_commodetail_preMemo,
+            tv_commodetail_predoc, tv_commodetail_fabricsok, tv_commodetail_accessoriesok,
+            tv_commodetail_spcproDec, tv_commodetail_spcproMemo, tv_commodetail_cutqty,
+            tv_commodetail_QCbdt, tv_commodetail_QCbdtDoc, tv_commodetail_QCmdt,
+            tv_commodetail_QCmdtDoc, tv_commodetail_QCMedt, tv_commodetail_QCedtDoc,
+            tv_commodetail_packqty2, tv_commodetail_QCMemo, tv_commodetail_batchid,
+            tv_commodetail_chker, tv_commodetail_QAname, tv_commodetail_QAScore,
+            tv_commodetail_chkplace;
 
     private String commodetailPrddocumentary, commodetailprdmaster, nameid, commodetailOurAfter;
+    private String[] columns = new String[]{"ID", "subfactory", "item", "sealedrev",
+            "docback", "predt", "lcdat", "sewFdt", "sewMdt", "taskqty",
+            "cutqty", "preMemo", "predoc", "fabricsok", "accessoriesok",
+            "spcproDec", "spcproMemo", "QCbdt", "QCmdt", "QCMedt", "QCbdtDoc",
+            "QCmdtDoc", "QCedtDoc", "fctmdt", "fctedt", "prddocumentary",
+            "packbdat", "packqty2", "QCMemo", "factlcdat", "ourAfter", "prdmaster",
+            "QCMasterScore", "batchid", "QAname", "QAScore", "QAMemo", "ctmtxt",
+            "ctmchkdt", "IPQCmdt", "IPQCPedt", "predocdt", "prebdt", "premdt",
+            "preedt"};
+    private List<String> columnlist = Arrays.asList(columns);
+
+    private LinearLayout ll_PPSDetail_txt_item, ll_PPSDetail_txt_ctmtxt, ll_PPSDetail_txt_subfactory,
+            ll_PPSDetail_txt_prdmaster, ll_PPSDetail_txt_prddocumentary, ll_PPSDetail_txt_QCMasterScore,
+            ll_PPSDetail_txt_sealedrev, ll_PPSDetail_txt_docback, ll_PPSDetail_txt_lcdat,
+            ll_PPSDetail_txt_preMemo, ll_PPSDetail_txt_predocdt, ll_PPSDetail_txt_predt, ll_PPSDetail_txt_predoc,
+            ll_PPSDetail_txt_fabricsok, ll_PPSDetail_txt_accessoriesok, ll_PPSDetail_txt_spcproDec,
+            ll_PPSDetail_txt_spcproMemo, ll_PPSDetail_txt_cutqty, ll_PPSDetail_txt_sewFdt,
+            ll_PPSDetail_txt_sewMdt, ll_PPSDetail_txt_prebdt, ll_PPSDetail_txt_QCbdt, ll_PPSDetail_txt_QCbdtDoc,
+            ll_PPSDetail_txt_premdt, ll_PPSDetail_txt_QCmdt, ll_PPSDetail_txt_QCmdtDoc, ll_PPSDetail_txt_preedt,
+            ll_PPSDetail_txt_QCMedt, ll_PPSDetail_txt_QCedtDoc, ll_PPSDetail_txt_fctmdt, ll_PPSDetail_txt_fctedt,
+            ll_PPSDetail_txt_packbdat, ll_PPSDetail_txt_packqty2, ll_PPSDetail_txt_QCMemo,
+            ll_PPSDetail_txt_factlcdat, ll_PPSDetail_txt_batchid, ll_PPSDetail_txt_ourAfter,
+            ll_PPSDetail_txt_ctmchkdt, ll_PPSDetail_txt_IPQCPedt, ll_PPSDetail_txt_IPQC, ll_PPSDetail_txt_IPQCmdt,
+            ll_PPSDetail_txt_QAname, ll_PPSDetail_txt_QAScore, ll_PPSDetail_txt_QAMemo, ll_PPSDetail_txt_chker,
+            ll_PPSDetail_txt_chkpdt, ll_PPSDetail_txt_chkfctdt, ll_PPSDetail_txt_chkplace;
 
     private boolean flagblack;
 
@@ -91,6 +128,7 @@ public class CommoditydetailActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_commodetail);
         getViews();
+        setColumRight();
         setViews();
         setListener();
     }
@@ -104,49 +142,98 @@ public class CommoditydetailActivity extends Activity
         tv_commodetail_count = (TextView) findViewById(R.id.tv_commodetail_count);//数量
         tv_commodetail_prddocumentary = (TextView) findViewById(R.id.tv_commodetail_prddocumentary);//跟单
         tv_commodetail_prdmaster = (TextView) findViewById(R.id.tv_commodetail_prdmaster);//生产主管
-        et_commodetail_qcmasterscore = (EditText) findViewById(R.id.et_commodetail_qcmasterscore);//主管评分
+        tv_commodetail_QCMasterScore = (EditText) findViewById(R.id.tv_commodetail_QCMasterScore);//主管评分
         tv_commodetail_sealedrev = (TextView) findViewById(R.id.tv_commodetail_sealedrev);//封样资料接收时间
         tv_commodetail_docback = (TextView) findViewById(R.id.tv_commodetail_docback);//大货资料接收时间
         tv_commodetail_lcdat = (TextView) findViewById(R.id.tv_commodetail_lcdat);//出货时间
-        et_commodetail_prememo = (EditText) findViewById(R.id.et_commodetail_prememo);//特别备注情况
+        tv_commodetail_preMemo = (EditText) findViewById(R.id.tv_commodetail_preMemo);//特别备注情况
         tv_commodetail_predocdt = (TextView) findViewById(R.id.tv_commodetail_predocdt);//预计产前会报告时间
-        tv_commodetail_pred = (TextView) findViewById(R.id.tv_commodetail_pred);//开产前会时间
-        et_commodetail_predoc = (EditText) findViewById(R.id.et_commodetail_predoc);//产前会报告
-        et_commodetail_fabricsok = (EditText) findViewById(R.id.et_commodetail_fabricsok);//面料情况
-        et_commodetail_accessoriesok = (EditText) findViewById(R.id.et_commodetail_accessoriesok);//辅料情况
-        et_commodetail_spcproDec = (EditText) findViewById(R.id.et_commodetail_spcproDec);//特殊工艺情况
-        et_commodetail_spcpromemo = (EditText) findViewById(R.id.et_commodetail_spcpromemo);//特殊工艺备注
-        et_commodetail_cutqty = (EditText) findViewById(R.id.et_commodetail_cutqty);//实裁数
-        tv_commodetail_sewfdt = (TextView) findViewById(R.id.tv_commodetail_sewfdt);//上线日期
-        tv_commodetail_sewmdt = (TextView) findViewById(R.id.tv_commodetail_sewmdt);//下线日期
+        tv_commodetail_predt = (TextView) findViewById(R.id.tv_commodetail_predt);//开产前会时间
+        tv_commodetail_predoc = (EditText) findViewById(R.id.tv_commodetail_predoc);//产前会报告
+        tv_commodetail_fabricsok = (EditText) findViewById(R.id.tv_commodetail_fabricsok);//面料情况
+        tv_commodetail_accessoriesok = (EditText) findViewById(R.id.tv_commodetail_accessoriesok);//辅料情况
+        tv_commodetail_spcproDec = (EditText) findViewById(R.id.tv_commodetail_spcproDec);//特殊工艺情况
+        tv_commodetail_spcproMemo = (EditText) findViewById(R.id.tv_commodetail_spcproMemo);//特殊工艺备注
+        tv_commodetail_cutqty = (EditText) findViewById(R.id.tv_commodetail_cutqty);//实裁数
+        tv_commodetail_sewFdt = (TextView) findViewById(R.id.tv_commodetail_sewFdt);//上线日期
+        tv_commodetail_sewMdt = (TextView) findViewById(R.id.tv_commodetail_sewMdt);//下线日期
         tv_commodetail_prebdt = (TextView) findViewById(R.id.tv_commodetail_prebdt);//预计早期时间
-        et_commodetail_QCbdt = (EditText) findViewById(R.id.et_commodetail_QCbdt);//自查早期时间
-        et_commodetail_QCbdtDoc = (EditText) findViewById(R.id.et_commodetail_QCbdtDoc);//早期报告
-        tv_commodetail_Premdt = (TextView) findViewById(R.id.tv_commodetail_Premdt);//预计中期时间
-        et_commodetail_QCmdt = (EditText) findViewById(R.id.et_commodetail_QCmdt);//自查中期时间
-        et_commodetail_QCmdtDoc = (EditText) findViewById(R.id.et_commodetail_QCmdtDoc);//中期报告
-        tv_commodetail_Preedt = (TextView) findViewById(R.id.tv_commodetail_Preedt);//预计尾期时间
-        et_commodetail_QCMedt = (EditText) findViewById(R.id.et_commodetail_QCMedt);//自查尾期时间
-        et_commodetail_QCedtDoc = (EditText) findViewById(R.id.et_commodetail_QCedtDoc);//尾期报告
-        tv_commodetail_Fctmdt = (TextView) findViewById(R.id.tv_commodetail_Fctmdt);//客查中期时间
-        tv_commodetail_Fctedt = (TextView) findViewById(R.id.tv_commodetail_Fctedt);//客查尾期时间
-        tv_commodetail_Packbdat = (TextView) findViewById(R.id.tv_commodetail_Packbdat);//成品包装开始日期
-        et_commodetail_Packqty2 = (EditText) findViewById(R.id.et_commodetail_Packqty2);//装箱数量
-        et_commodetail_QCMemo = (EditText) findViewById(R.id.et_commodetail_QCMemo);//QA特别备注
-        tv_commodetail_Factlcdat = (TextView) findViewById(R.id.tv_commodetail_Factlcdat);//离厂日期
-        et_commodetail_Batchid = (EditText) findViewById(R.id.et_commodetail_Batchid);//查货批次
-        tv_commodetail_OurAfter = (TextView) findViewById(R.id.tv_commodetail_OurAfter);//后道
-        tv_commodetail_Ctmchkdt = (TextView) findViewById(R.id.tv_commodetail_Ctmchkdt);//业务员确认客查日期
+        tv_commodetail_QCbdt = (EditText) findViewById(R.id.tv_commodetail_QCbdt);//自查早期时间
+        tv_commodetail_QCbdtDoc = (EditText) findViewById(R.id.tv_commodetail_QCbdtDoc);//早期报告
+        tv_commodetail_premdt = (TextView) findViewById(R.id.tv_commodetail_premdt);//预计中期时间
+        tv_commodetail_QCmdt = (EditText) findViewById(R.id.tv_commodetail_QCmdt);//自查中期时间
+        tv_commodetail_QCmdtDoc = (EditText) findViewById(R.id.tv_commodetail_QCmdtDoc);//中期报告
+        tv_commodetail_preedt = (TextView) findViewById(R.id.tv_commodetail_preedt);//预计尾期时间
+        tv_commodetail_QCMedt = (EditText) findViewById(R.id.tv_commodetail_QCMedt);//自查尾期时间
+        tv_commodetail_QCedtDoc = (EditText) findViewById(R.id.tv_commodetail_QCedtDoc);//尾期报告
+        tv_commodetail_fctmdt = (TextView) findViewById(R.id.tv_commodetail_fctmdt);//客查中期时间
+        tv_commodetail_fctedt = (TextView) findViewById(R.id.tv_commodetail_fctedt);//客查尾期时间
+        tv_commodetail_packbdat = (TextView) findViewById(R.id.tv_commodetail_packbdat);//成品包装开始日期
+        tv_commodetail_packqty2 = (EditText) findViewById(R.id.tv_commodetail_packqty2);//装箱数量
+        tv_commodetail_QCMemo = (EditText) findViewById(R.id.tv_commodetail_QCMemo);//QA特别备注
+        tv_commodetail_factlcdat = (TextView) findViewById(R.id.tv_commodetail_factlcdat);//离厂日期
+        tv_commodetail_batchid = (EditText) findViewById(R.id.tv_commodetail_batchid);//查货批次
+        tv_commodetail_ourAfter = (TextView) findViewById(R.id.tv_commodetail_ourAfter);//后道
+        tv_commodetail_ctmchkdt = (TextView) findViewById(R.id.tv_commodetail_ctmchkdt);//业务员确认客查日期
         tv_commodetail_IPQCPedt = (TextView) findViewById(R.id.tv_commodetail_IPQCPedt);//尾查预查
         tv_commodetail_IPQC = (TextView) findViewById(R.id.tv_commodetail_IPQC);//巡检
         tv_commodetail_IPQCmdt = (TextView) findViewById(R.id.tv_commodetail_IPQCmdt);//巡检中查
-        et_commodetail_QAname = (EditText) findViewById(R.id.et_commodetail_QAname);//QA首扎
-        et_commodetail_QAScore = (EditText) findViewById(R.id.et_commodetail_QAScore);//QA首扎件数
+        tv_commodetail_QAname = (EditText) findViewById(R.id.tv_commodetail_QAname);//QA首扎
+        tv_commodetail_QAScore = (EditText) findViewById(R.id.tv_commodetail_QAScore);//QA首扎件数
         tv_commodetail_QAMemo = (TextView) findViewById(R.id.tv_commodetail_QAMemo);//QA首扎日期
-        et_commodetail_chker = (EditText) findViewById(R.id.et_commodetail_chker);//件查
+        tv_commodetail_chker = (EditText) findViewById(R.id.tv_commodetail_chker);//件查
         tv_commodetail_chkpdt = (TextView) findViewById(R.id.tv_commodetail_chkpdt);//预计件查时间
         tv_commodetail_chkfctdt = (TextView) findViewById(R.id.tv_commodetail_chkfctdt);//实际件查时间
-        et_commodetail_chkplace = (EditText) findViewById(R.id.et_commodetail_chkplace);//查货地点(件查)
+        tv_commodetail_chkplace = (EditText) findViewById(R.id.tv_commodetail_chkplace);//查货地点(件查)
+
+        ll_PPSDetail_txt_item = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_item);
+        ll_PPSDetail_txt_ctmtxt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_ctmtxt);
+        ll_PPSDetail_txt_subfactory = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_subfactory);
+        ll_PPSDetail_txt_prdmaster = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_prdmaster);
+        ll_PPSDetail_txt_prddocumentary = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_prddocumentary);
+        ll_PPSDetail_txt_QCMasterScore = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_QCMasterScore);
+        ll_PPSDetail_txt_sealedrev = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_sealedrev);
+        ll_PPSDetail_txt_docback = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_docback);
+        ll_PPSDetail_txt_lcdat = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_lcdat);
+        ll_PPSDetail_txt_preMemo = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_preMemo);
+        ll_PPSDetail_txt_predocdt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_predocdt);
+        ll_PPSDetail_txt_predt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_predt);
+        ll_PPSDetail_txt_predoc = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_predoc);
+        ll_PPSDetail_txt_fabricsok = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_fabricsok);
+        ll_PPSDetail_txt_accessoriesok = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_accessoriesok);
+        ll_PPSDetail_txt_spcproDec = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_spcproDec);
+        ll_PPSDetail_txt_spcproMemo = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_spcproMemo);
+        ll_PPSDetail_txt_cutqty = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_cutqty);
+        ll_PPSDetail_txt_sewFdt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_sewFdt);
+        ll_PPSDetail_txt_sewMdt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_sewMdt);
+        ll_PPSDetail_txt_prebdt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_prebdt);
+        ll_PPSDetail_txt_QCbdt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_QCbdt);
+        ll_PPSDetail_txt_QCbdtDoc = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_QCbdtDoc);
+        ll_PPSDetail_txt_premdt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_premdt);
+        ll_PPSDetail_txt_QCmdt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_QCmdt);
+        ll_PPSDetail_txt_QCmdtDoc = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_QCmdtDoc);
+        ll_PPSDetail_txt_preedt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_preedt);
+        ll_PPSDetail_txt_QCMedt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_QCMedt);
+        ll_PPSDetail_txt_QCedtDoc = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_QCedtDoc);
+        ll_PPSDetail_txt_fctmdt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_fctmdt);
+        ll_PPSDetail_txt_fctedt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_fctedt);
+        ll_PPSDetail_txt_packbdat = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_packbdat);
+        ll_PPSDetail_txt_packqty2 = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_packqty2);
+        ll_PPSDetail_txt_QCMemo = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_QCMemo);
+        ll_PPSDetail_txt_factlcdat = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_factlcdat);
+        ll_PPSDetail_txt_batchid = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_batchid);
+        ll_PPSDetail_txt_ourAfter = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_ourAfter);
+        ll_PPSDetail_txt_ctmchkdt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_ctmchkdt);
+        ll_PPSDetail_txt_IPQCPedt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_IPQCPedt);
+        ll_PPSDetail_txt_IPQC = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_IPQC);
+        ll_PPSDetail_txt_IPQCmdt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_IPQCmdt);
+        ll_PPSDetail_txt_QAname = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_QAname);
+        ll_PPSDetail_txt_QAScore = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_QAScore);
+        ll_PPSDetail_txt_QAMemo = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_QAMemo);
+        ll_PPSDetail_txt_chker = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_chker);
+        ll_PPSDetail_txt_chkpdt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_chkpdt);
+        ll_PPSDetail_txt_chkfctdt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_chkfctdt);
+        ll_PPSDetail_txt_chkplace = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_chkplace);
     }
 
     private void setViews() {
@@ -195,7 +282,7 @@ public class CommoditydetailActivity extends Activity
         String commodetailIPQCPedt = sp.getString("commodetailIPQCPedt", "");//尾查预查
         String commodetailIPQCmdt = sp.getString("commodetailIPQCmdt", "");//巡检中查
         String commodetailIPQC = sp.getString("commodetailIPQC", "");//巡检
-        String commoQAname = sp.getString("commoQAname", "");//QA首扎
+        String commoQAname = sp.getString("commodetailfirstsamQA", "");//QA首扎
         String commodetailQAScore = sp.getString("commodetailQAScore", "");//QA首扎件数
         String commodetailQAMemo = sp.getString("commodetailQAMemo", "");//QA首扎日期
         String commodetailchker = sp.getString("commodetailchker", "");//件查
@@ -209,49 +296,49 @@ public class CommoditydetailActivity extends Activity
         tv_commodetail_count.setText(commodetailTaskqty);
         tv_commodetail_prddocumentary.setText(commodetailPrddocumentary);
         tv_commodetail_prdmaster.setText(commodetailprdmaster);
-        et_commodetail_qcmasterscore.setText(commodetailQCMasterScore);
+        tv_commodetail_QCMasterScore.setText(commodetailQCMasterScore);
         tv_commodetail_sealedrev.setText(commodetailSealedrev);
         tv_commodetail_docback.setText(commodetailDocback);
         tv_commodetail_lcdat.setText(commodetailLcdat);
-        et_commodetail_prememo.setText(commodetailPreMemo);
+        tv_commodetail_preMemo.setText(commodetailPreMemo);
         tv_commodetail_predocdt.setText(commodetailPredocdt);
-        tv_commodetail_pred.setText(commodetailPred);
-        et_commodetail_predoc.setText(commodetailPredoc);
-        et_commodetail_fabricsok.setText(commodetailFabricsok);
-        et_commodetail_accessoriesok.setText(commodetailAccessoriesok);
-        et_commodetail_spcproDec.setText(commodetailSpcproDec);
-        et_commodetail_spcpromemo.setText(commodetailSpcproMemo);
-        et_commodetail_cutqty.setText(commodetailCutqty);
-        tv_commodetail_sewfdt.setText(commodetailSewFdt);
-        tv_commodetail_sewmdt.setText(commodetailSewMdt);
+        tv_commodetail_predt.setText(commodetailPred);
+        tv_commodetail_predoc.setText(commodetailPredoc);
+        tv_commodetail_fabricsok.setText(commodetailFabricsok);
+        tv_commodetail_accessoriesok.setText(commodetailAccessoriesok);
+        tv_commodetail_spcproDec.setText(commodetailSpcproDec);
+        tv_commodetail_spcproMemo.setText(commodetailSpcproMemo);
+        tv_commodetail_cutqty.setText(commodetailCutqty);
+        tv_commodetail_sewFdt.setText(commodetailSewFdt);
+        tv_commodetail_sewMdt.setText(commodetailSewMdt);
         tv_commodetail_prebdt.setText(commodetailPrebdt);
-        et_commodetail_QCbdt.setText(commodetailQCbdt);
-        et_commodetail_QCbdtDoc.setText(commodetailQCbdtDoc);
-        tv_commodetail_Premdt.setText(commodetailPremdt);
-        et_commodetail_QCmdt.setText(commodetailQCmdt);
-        et_commodetail_QCmdtDoc.setText(commodetailQCmdtDoc);
-        tv_commodetail_Preedt.setText(commodetailPreedt);
-        et_commodetail_QCMedt.setText(commodetailQCMedt);
-        et_commodetail_QCedtDoc.setText(commodetailQCedtDoc);
-        tv_commodetail_Fctmdt.setText(commodetailFctmdt);
-        tv_commodetail_Fctedt.setText(commodetailFctedt);
-        tv_commodetail_Packbdat.setText(commodetailPackbdat);
-        et_commodetail_Packqty2.setText(commoPackqty2);
-        et_commodetail_QCMemo.setText(commodetailQCMemo);
-        tv_commodetail_Factlcdat.setText(commodetailFactlcdat);
-        et_commodetail_Batchid.setText(commodetailBatchid);
-        tv_commodetail_OurAfter.setText(commodetailOurAfter);
-        tv_commodetail_Ctmchkdt.setText(commodetailCtmchkdt);
+        tv_commodetail_QCbdt.setText(commodetailQCbdt);
+        tv_commodetail_QCbdtDoc.setText(commodetailQCbdtDoc);
+        tv_commodetail_premdt.setText(commodetailPremdt);
+        tv_commodetail_QCmdt.setText(commodetailQCmdt);
+        tv_commodetail_QCmdtDoc.setText(commodetailQCmdtDoc);
+        tv_commodetail_preedt.setText(commodetailPreedt);
+        tv_commodetail_QCMedt.setText(commodetailQCMedt);
+        tv_commodetail_QCedtDoc.setText(commodetailQCedtDoc);
+        tv_commodetail_fctmdt.setText(commodetailFctmdt);
+        tv_commodetail_fctedt.setText(commodetailFctedt);
+        tv_commodetail_packbdat.setText(commodetailPackbdat);
+        tv_commodetail_packqty2.setText(commoPackqty2);
+        tv_commodetail_QCMemo.setText(commodetailQCMemo);
+        tv_commodetail_factlcdat.setText(commodetailFactlcdat);
+        tv_commodetail_batchid.setText(commodetailBatchid);
+        tv_commodetail_ourAfter.setText(commodetailOurAfter);
+        tv_commodetail_ctmchkdt.setText(commodetailCtmchkdt);
         tv_commodetail_IPQCPedt.setText(commodetailIPQCPedt);
         tv_commodetail_IPQC.setText(commodetailIPQC);
         tv_commodetail_IPQCmdt.setText(commodetailIPQCmdt);
-        et_commodetail_QAname.setText(commoQAname);
-        et_commodetail_QAScore.setText(commodetailQAScore);
+        tv_commodetail_QAname.setText(commoQAname);
+        tv_commodetail_QAScore.setText(commodetailQAScore);
         tv_commodetail_QAMemo.setText(commodetailQAMemo);
-        et_commodetail_chker.setText(commodetailchker);
+        tv_commodetail_chker.setText(commodetailchker);
         tv_commodetail_chkpdt.setText(commodetailchkpdt);
         tv_commodetail_chkfctdt.setText(commodetailchkfctdt);
-        et_commodetail_chkplace.setText(commodetailchkplace);
+        tv_commodetail_chkplace.setText(commodetailchkplace);
         setVisibility();
     }
 
@@ -340,8 +427,8 @@ public class CommoditydetailActivity extends Activity
     private void setVisibility() {
         sp = getSharedPreferences("my_sp", 0);
         if (commodetailprdmaster.equals(nameid)) {//判断生产主管是否是当前用户
-            tv_commodetail_OurAfter.setEnabled(true);//后道弹出选择菜单
-            tv_commodetail_OurAfter.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_ourAfter.setEnabled(true);//后道弹出选择菜单
+            tv_commodetail_ourAfter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     PopupMenu popupMenu = new PopupMenu(getApplicationContext(), v);
@@ -375,10 +462,10 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_qcmasterscore.setEnabled(true);//生产主管频分
-            et_commodetail_qcmasterscore.setFilters(new
+            tv_commodetail_QCMasterScore.setEnabled(true);//生产主管频分
+            tv_commodetail_QCMasterScore.setFilters(new
                     InputFilter[]{new InputFilter.LengthFilter(10)});
-            et_commodetail_qcmasterscore.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            tv_commodetail_QCMasterScore.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (hasFocus) {//得到焦点
@@ -398,7 +485,7 @@ public class CommoditydetailActivity extends Activity
                             @Override
                             public void afterTextChanged(Editable s) {
                                 Log.d(TAG, "afterTextChanged");
-                                String proitem = et_commodetail_qcmasterscore.getText().toString();
+                                String proitem = tv_commodetail_QCMasterScore.getText().toString();
                                 String commoitem = sp.getString("commodetailQCMasterScore", "");
                                 if (commoitem == null) {
                                     commoitem = "";
@@ -414,10 +501,10 @@ public class CommoditydetailActivity extends Activity
                                 spUtils.put(getApplicationContext(), "CommodityQCMasterScore", proitem);//主管评分
                             }
                         };
-                        et_commodetail_qcmasterscore.addTextChangedListener(Tvqcmasterscore);
-                        et_commodetail_qcmasterscore.setTag(Tvqcmasterscore);
+                        tv_commodetail_QCMasterScore.addTextChangedListener(Tvqcmasterscore);
+                        tv_commodetail_QCMasterScore.setTag(Tvqcmasterscore);
                     } else {//失去焦点
-                        String qcmastertwoo = et_commodetail_qcmasterscore.getText().toString();
+                        String qcmastertwoo = tv_commodetail_QCMasterScore.getText().toString();
                         String commoitem = sp.getString("commodetailQCMasterScore", "");
                         if (commoitem == null) {
                             commoitem = "";
@@ -433,7 +520,7 @@ public class CommoditydetailActivity extends Activity
                 }
             });
             /*光标放置在文本最后*/
-            et_commodetail_qcmasterscore.setSelection(et_commodetail_qcmasterscore.length());
+            tv_commodetail_QCMasterScore.setSelection(tv_commodetail_QCMasterScore.length());
 
             tv_commodetail_sealedrev.setEnabled(true);//封样资料接收时间
             tv_commodetail_sealedrev.setOnClickListener(new View.OnClickListener() {
@@ -567,8 +654,8 @@ public class CommoditydetailActivity extends Activity
 
             tv_commodetail_lcdat.setEnabled(true);//出货时间
 
-            et_commodetail_prememo.setEnabled(true);//需要备注的特别情况
-            et_commodetail_prememo.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_preMemo.setEnabled(true);//需要备注的特别情况
+            tv_commodetail_preMemo.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -582,7 +669,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_prememo.getText().toString();
+                    String proitem = tv_commodetail_preMemo.getText().toString();
                     String commopromemo = sp.getString("commodetailPreMemo", "");
                     if (commopromemo == null) {
                         commopromemo = "";
@@ -597,7 +684,7 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityPreMemo", proitem);//需要特别备注的情况
                 }
             });
-            et_commodetail_prememo.setSelection(et_commodetail_prememo.length());
+            tv_commodetail_preMemo.setSelection(tv_commodetail_preMemo.length());
 
 
             tv_commodetail_predocdt.setEnabled(true);//预计产前会报告时间
@@ -665,8 +752,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            tv_commodetail_pred.setEnabled(true);//开产前会时间
-            tv_commodetail_pred.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_predt.setEnabled(true);//开产前会时间
+            tv_commodetail_predt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -685,7 +772,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_pred.setText(datetime);
+                                    tv_commodetail_predt.setText(datetime);
                                     String commopred = sp.getString("commodetailPred", "");
                                     if (commopred == null) {
                                         commopred = "";
@@ -704,7 +791,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_pred.setText("");
+                                    tv_commodetail_predt.setText("");
                                     String commopred = sp.getString("commodetailPred", "");
                                     if (commopred == null) {
                                         commopred = "";
@@ -730,8 +817,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_fabricsok.setEnabled(true);//大货面料情况
-            et_commodetail_fabricsok.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_fabricsok.setEnabled(true);//大货面料情况
+            tv_commodetail_fabricsok.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -745,7 +832,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_fabricsok.getText().toString();
+                    String proitem = tv_commodetail_fabricsok.getText().toString();
                     String commofabricsok = sp.getString("commodetailFabricsok", "");
                     if (commofabricsok == null) {
                         commofabricsok = "";
@@ -760,10 +847,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityFabricsok", proitem);//大货面料情况
                 }
             });
-            et_commodetail_fabricsok.setSelection(et_commodetail_fabricsok.length());
+            tv_commodetail_fabricsok.setSelection(tv_commodetail_fabricsok.length());
 
-            et_commodetail_accessoriesok.setEnabled(true);//大货辅料情况
-            et_commodetail_accessoriesok.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_accessoriesok.setEnabled(true);//大货辅料情况
+            tv_commodetail_accessoriesok.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -777,7 +864,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_accessoriesok.getText().toString();
+                    String proitem = tv_commodetail_accessoriesok.getText().toString();
                     String commoaccessori = sp.getString("commodetailAccessoriesok", "");
                     if (commoaccessori == null) {
                         commoaccessori = "";
@@ -792,10 +879,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityAccessoriesok", proitem);//大货辅料情况
                 }
             });
-            et_commodetail_accessoriesok.setSelection(et_commodetail_accessoriesok.length());
+            tv_commodetail_accessoriesok.setSelection(tv_commodetail_accessoriesok.length());
 
-            et_commodetail_spcproDec.setEnabled(true);//大货特殊工艺情况
-            et_commodetail_spcproDec.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_spcproDec.setEnabled(true);//大货特殊工艺情况
+            tv_commodetail_spcproDec.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -809,7 +896,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_spcproDec.getText().toString();
+                    String proitem = tv_commodetail_spcproDec.getText().toString();
                     String commospcprodec = sp.getString("commodetailSpcproDec", "");
                     if (commospcprodec == null) {
                         commospcprodec = "";
@@ -824,10 +911,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommoditySpcproDec", proitem);//大货特殊工艺情况
                 }
             });
-            et_commodetail_spcproDec.setSelection(et_commodetail_spcproDec.length());
+            tv_commodetail_spcproDec.setSelection(tv_commodetail_spcproDec.length());
 
-            et_commodetail_spcpromemo.setEnabled(true);//特殊工艺备注
-            et_commodetail_spcpromemo.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_spcproMemo.setEnabled(true);//特殊工艺备注
+            tv_commodetail_spcproMemo.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -841,7 +928,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_spcpromemo.getText().toString();
+                    String proitem = tv_commodetail_spcproMemo.getText().toString();
                     String commospcpromemo = sp.getString("commodetailSpcproMemo", "");
                     if (commospcpromemo == null) {
                         commospcpromemo = "";
@@ -856,12 +943,12 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommoditySpcproMemo", proitem);//特殊工艺特别备注
                 }
             });
-            et_commodetail_spcpromemo.setSelection(et_commodetail_spcpromemo.length());
+            tv_commodetail_spcproMemo.setSelection(tv_commodetail_spcproMemo.length());
 
-            et_commodetail_cutqty.setEnabled(true);//实裁数
-            et_commodetail_cutqty.setFilters(new
+            tv_commodetail_cutqty.setEnabled(true);//实裁数
+            tv_commodetail_cutqty.setFilters(new
                     InputFilter[]{new InputFilter.LengthFilter(10)});
-            et_commodetail_cutqty.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_cutqty.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -875,7 +962,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_cutqty.getText().toString();
+                    String proitem = tv_commodetail_cutqty.getText().toString();
                     String commocutqty = sp.getString("commodetailCutqty", "");
                     if (commocutqty == null) {
                         commocutqty = "";
@@ -890,10 +977,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityCutqty", proitem);//实裁数
                 }
             });
-            et_commodetail_cutqty.setSelection(et_commodetail_cutqty.length());
+            tv_commodetail_cutqty.setSelection(tv_commodetail_cutqty.length());
 
-            tv_commodetail_sewfdt.setEnabled(true);//上线日期
-            tv_commodetail_sewfdt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_sewFdt.setEnabled(true);//上线日期
+            tv_commodetail_sewFdt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -912,7 +999,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_sewfdt.setText(datetime);
+                                    tv_commodetail_sewFdt.setText(datetime);
                                     String commosewfdt = sp.getString("commodetailSewFdt", "");
                                     if (commosewfdt == null) {
                                         commosewfdt = "";
@@ -931,7 +1018,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_sewfdt.setText("");
+                                    tv_commodetail_sewFdt.setText("");
                                     String commosewfdt = sp.getString("commodetailSewFdt", "");
                                     if (commosewfdt == null) {
                                         commosewfdt = "";
@@ -957,8 +1044,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            tv_commodetail_sewmdt.setEnabled(true);//下线日期
-            tv_commodetail_sewmdt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_sewMdt.setEnabled(true);//下线日期
+            tv_commodetail_sewMdt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -977,7 +1064,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_sewmdt.setText(datetime);
+                                    tv_commodetail_sewMdt.setText(datetime);
                                     String commosewmdt = sp.getString("commodetailSewMdt", "");
                                     if (commosewmdt == null) {
                                         commosewmdt = "";
@@ -996,7 +1083,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_sewmdt.setText("");
+                                    tv_commodetail_sewMdt.setText("");
                                     String commosewmdt = sp.getString("commodetailSewMdt", "");
                                     if (commosewmdt == null) {
                                         commosewmdt = "";
@@ -1087,8 +1174,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_QCbdt.setEnabled(true);//自查早期时间
-            et_commodetail_QCbdt.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_QCbdt.setEnabled(true);//自查早期时间
+            tv_commodetail_QCbdt.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -1102,7 +1189,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_QCbdt.getText().toString();
+                    String proitem = tv_commodetail_QCbdt.getText().toString();
                     String commocutqty = sp.getString("commodetailQCbdt", "");
                     if (commocutqty == null) {
                         commocutqty = "";
@@ -1117,10 +1204,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "dateQCbdttimesign", proitem);//自查早期时间
                 }
             });
-            et_commodetail_QCbdt.setSelection(et_commodetail_QCbdt.length());
+            tv_commodetail_QCbdt.setSelection(tv_commodetail_QCbdt.length());
 
-            tv_commodetail_Premdt.setEnabled(true);//预计中期时间
-            tv_commodetail_Premdt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_premdt.setEnabled(true);//预计中期时间
+            tv_commodetail_premdt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -1139,7 +1226,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Premdt.setText(datetime);
+                                    tv_commodetail_premdt.setText(datetime);
                                     String commopremdt = sp.getString("commodetailPremdt", "");
                                     if (commopremdt == null) {
                                         commopremdt = "";
@@ -1158,7 +1245,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Premdt.setText("");
+                                    tv_commodetail_premdt.setText("");
                                     String commopremdt = sp.getString("commodetailPremdt", "");
                                     if (commopremdt == null) {
                                         commopremdt = "";
@@ -1184,8 +1271,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_QCmdt.setEnabled(true);//自查中期时间
-            et_commodetail_QCmdt.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_QCmdt.setEnabled(true);//自查中期时间
+            tv_commodetail_QCmdt.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -1199,7 +1286,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_QCmdt.getText().toString();
+                    String proitem = tv_commodetail_QCmdt.getText().toString();
                     String commocutqty = sp.getString("commodetailQCmdt", "");
                     if (commocutqty == null) {
                         commocutqty = "";
@@ -1214,10 +1301,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "dateQCmdttimesign", proitem);//自查中期时间
                 }
             });
-            et_commodetail_QCmdt.setSelection(et_commodetail_QCmdt.length());
+            tv_commodetail_QCmdt.setSelection(tv_commodetail_QCmdt.length());
 
-            tv_commodetail_Preedt.setEnabled(true);//预计尾期时间
-            tv_commodetail_Preedt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_preedt.setEnabled(true);//预计尾期时间
+            tv_commodetail_preedt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -1236,7 +1323,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Preedt.setText(datetime);
+                                    tv_commodetail_preedt.setText(datetime);
                                     String commopreedt = sp.getString("commodetailPreedt", "");
                                     if (commopreedt == null) {
                                         commopreedt = "";
@@ -1255,7 +1342,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Preedt.setText("");
+                                    tv_commodetail_preedt.setText("");
                                     String commopreedt = sp.getString("commodetailPreedt", "");
                                     if (commopreedt == null) {
                                         commopreedt = "";
@@ -1281,8 +1368,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_QCMedt.setEnabled(true);//自查尾期时间
-            et_commodetail_QCMedt.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_QCMedt.setEnabled(true);//自查尾期时间
+            tv_commodetail_QCMedt.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -1296,7 +1383,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_QCmdt.getText().toString();
+                    String proitem = tv_commodetail_QCmdt.getText().toString();
                     String commocutqty = sp.getString("commodetailQCmdt", "");
                     if (commocutqty == null) {
                         commocutqty = "";
@@ -1311,10 +1398,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "dateQCMedttimesign", proitem);//自查尾期时间
                 }
             });
-            et_commodetail_QCMedt.setSelection(et_commodetail_QCMedt.length());
+            tv_commodetail_QCMedt.setSelection(tv_commodetail_QCMedt.length());
 
-            tv_commodetail_Fctmdt.setEnabled(true);//客查中期时间
-            tv_commodetail_Fctmdt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_fctmdt.setEnabled(true);//客查中期时间
+            tv_commodetail_fctmdt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -1333,7 +1420,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Fctmdt.setText(datetime);
+                                    tv_commodetail_fctmdt.setText(datetime);
                                     String commofctmdt = sp.getString("commodetailFctmdt", "");
                                     if (commofctmdt == null) {
                                         commofctmdt = "";
@@ -1352,7 +1439,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Fctmdt.setText("");
+                                    tv_commodetail_fctmdt.setText("");
                                     String commofctmdt = sp.getString("commodetailFctmdt", "");
                                     if (commofctmdt == null) {
                                         commofctmdt = "";
@@ -1378,8 +1465,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            tv_commodetail_Fctedt.setEnabled(true);//客查尾期时间
-            tv_commodetail_Fctedt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_fctedt.setEnabled(true);//客查尾期时间
+            tv_commodetail_fctedt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -1398,7 +1485,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Fctedt.setText(datetime);
+                                    tv_commodetail_fctedt.setText(datetime);
                                     String commofctedt = sp.getString("commodetailFctedt", "");
                                     if (commofctedt == null) {
                                         commofctedt = "";
@@ -1417,7 +1504,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Fctedt.setText("");
+                                    tv_commodetail_fctedt.setText("");
                                     String commofctedt = sp.getString("commodetailFctedt", "");
                                     if (commofctedt == null) {
                                         commofctedt = "";
@@ -1443,8 +1530,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            tv_commodetail_Packbdat.setEnabled(true);//成品包装开始时间
-            tv_commodetail_Packbdat.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_packbdat.setEnabled(true);//成品包装开始时间
+            tv_commodetail_packbdat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -1463,7 +1550,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Packbdat.setText(datetime);
+                                    tv_commodetail_packbdat.setText(datetime);
                                     String commopackbdat = sp.getString("commodetailPackbdat", "");
                                     if (commopackbdat == null) {
                                         commopackbdat = "";
@@ -1482,7 +1569,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Packbdat.setText("");
+                                    tv_commodetail_packbdat.setText("");
                                     String commopackbdat = sp.getString("commodetailPackbdat", "");
                                     if (commopackbdat == null) {
                                         commopackbdat = "";
@@ -1508,10 +1595,10 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_Packqty2.setEnabled(true);//装箱数量
-            et_commodetail_Packqty2.setFilters(new
+            tv_commodetail_packqty2.setEnabled(true);//装箱数量
+            tv_commodetail_packqty2.setFilters(new
                     InputFilter[]{new InputFilter.LengthFilter(10)});
-            et_commodetail_Packqty2.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_packqty2.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -1525,7 +1612,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_Packqty2.getText().toString();
+                    String proitem = tv_commodetail_packqty2.getText().toString();
                     String commopackqty2 = sp.getString("commoPackqty2", "");
                     if (commopackqty2 == null) {
                         commopackqty2 = "";
@@ -1540,10 +1627,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityPackqty2", proitem);//装箱数量
                 }
             });
-            et_commodetail_Packqty2.setSelection(et_commodetail_Packqty2.length());
+            tv_commodetail_packqty2.setSelection(tv_commodetail_packqty2.length());
 
-            et_commodetail_QCMemo.setEnabled(true);//QC特别备注
-            et_commodetail_QCMemo.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_QCMemo.setEnabled(true);//QC特别备注
+            tv_commodetail_QCMemo.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -1557,7 +1644,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_QCMemo.getText().toString();
+                    String proitem = tv_commodetail_QCMemo.getText().toString();
                     String commoqcmemo = sp.getString("commodetailQCMemo", "");
                     if (commoqcmemo == null) {
                         commoqcmemo = "";
@@ -1572,10 +1659,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityQCMemo", proitem);//QC特别备注
                 }
             });
-            et_commodetail_QCMemo.setSelection(et_commodetail_QCMemo.length());
+            tv_commodetail_QCMemo.setSelection(tv_commodetail_QCMemo.length());
 
-            tv_commodetail_Factlcdat.setEnabled(true);//离厂日期
-            tv_commodetail_Factlcdat.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_factlcdat.setEnabled(true);//离厂日期
+            tv_commodetail_factlcdat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -1594,7 +1681,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Factlcdat.setText(datetime);
+                                    tv_commodetail_factlcdat.setText(datetime);
                                     String commofactlcdat = sp.getString("commodetailFactlcdat", "");
                                     if (commofactlcdat == null) {
                                         commofactlcdat = "";
@@ -1613,7 +1700,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Factlcdat.setText("");
+                                    tv_commodetail_factlcdat.setText("");
                                     String commofactlcdat = sp.getString("commodetailFactlcdat", "");
                                     if (commofactlcdat == null) {
                                         commofactlcdat = "";
@@ -1639,8 +1726,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_Batchid.setEnabled(true);//查获批次
-            et_commodetail_Batchid.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_batchid.setEnabled(true);//查获批次
+            tv_commodetail_batchid.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -1654,7 +1741,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_Batchid.getText().toString();
+                    String proitem = tv_commodetail_batchid.getText().toString();
                     String commoBatchid = sp.getString("commodetailBatchid", "");
                     if (commoBatchid == null) {
                         commoBatchid = "";
@@ -1669,10 +1756,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityBatchid", proitem);//查货批次
                 }
             });
-            et_commodetail_Batchid.setSelection(et_commodetail_Batchid.length());
+            tv_commodetail_batchid.setSelection(tv_commodetail_batchid.length());
 
-            tv_commodetail_Ctmchkdt.setEnabled(true);//业务员确认客查日期
-            tv_commodetail_Ctmchkdt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_ctmchkdt.setEnabled(true);//业务员确认客查日期
+            tv_commodetail_ctmchkdt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -1691,7 +1778,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Ctmchkdt.setText(datetime);
+                                    tv_commodetail_ctmchkdt.setText(datetime);
                                     String commoCtmchkdt = sp.getString("commodetailCtmchkdt", "");
                                     if (commoCtmchkdt == null) {
                                         commoCtmchkdt = "";
@@ -1710,7 +1797,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Ctmchkdt.setText("");
+                                    tv_commodetail_ctmchkdt.setText("");
                                     String commoCtmchkdt = sp.getString("commodetailCtmchkdt", "");
                                     if (commoCtmchkdt == null) {
                                         commoCtmchkdt = "";
@@ -1866,17 +1953,17 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_predoc.setEnabled(false);//产前会报告
-            et_commodetail_QCbdtDoc.setEnabled(false);//早期报告
-            et_commodetail_QCmdtDoc.setEnabled(false);//中期报告
-            et_commodetail_QCedtDoc.setEnabled(false);//尾期报告
-            et_commodetail_chker.setEnabled(false);//件查
-            et_commodetail_chkplace.setEnabled(false);//件查地址
-            et_commodetail_QAname.setEnabled(false);//QA首扎
-            et_commodetail_QAScore.setEnabled(false);//QA首扎件数
+            tv_commodetail_predoc.setEnabled(false);//产前会报告
+            tv_commodetail_QCbdtDoc.setEnabled(false);//早期报告
+            tv_commodetail_QCmdtDoc.setEnabled(false);//中期报告
+            tv_commodetail_QCedtDoc.setEnabled(false);//尾期报告
+            tv_commodetail_chker.setEnabled(false);//件查
+            tv_commodetail_chkplace.setEnabled(false);//件查地址
+            tv_commodetail_QAname.setEnabled(false);//QA首扎
+            tv_commodetail_QAScore.setEnabled(false);//QA首扎件数
         } else if (commodetailPrddocumentary.equals(nameid)) {//判断跟单是否是当前用户
-            tv_commodetail_OurAfter.setEnabled(true);//后道弹出选择菜单
-            tv_commodetail_OurAfter.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_ourAfter.setEnabled(true);//后道弹出选择菜单
+            tv_commodetail_ourAfter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     PopupMenu popupMenu = new PopupMenu(getApplicationContext(), v);
@@ -1910,7 +1997,7 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_qcmasterscore.setEnabled(false);//生产主管评分
+            tv_commodetail_QCMasterScore.setEnabled(false);//生产主管评分
 
             tv_commodetail_sealedrev.setEnabled(true);//封样资料接收时间
             tv_commodetail_sealedrev.setOnClickListener(new View.OnClickListener() {
@@ -2044,8 +2131,8 @@ public class CommoditydetailActivity extends Activity
 
             tv_commodetail_lcdat.setEnabled(true);//出货时间
 
-            et_commodetail_prememo.setEnabled(true);//需要备注的特别情况
-            et_commodetail_prememo.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_preMemo.setEnabled(true);//需要备注的特别情况
+            tv_commodetail_preMemo.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -2059,7 +2146,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_prememo.getText().toString();
+                    String proitem = tv_commodetail_preMemo.getText().toString();
                     String commopromemo = sp.getString("commodetailPreMemo", "");
                     if (commopromemo == null) {
                         commopromemo = "";
@@ -2074,7 +2161,7 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityPreMemo", proitem);//需要特别备注的情况
                 }
             });
-            et_commodetail_prememo.setSelection(et_commodetail_prememo.length());
+            tv_commodetail_preMemo.setSelection(tv_commodetail_preMemo.length());
 
 
             tv_commodetail_predocdt.setEnabled(true);//预计产前会报告时间
@@ -2142,8 +2229,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            tv_commodetail_pred.setEnabled(true);//开产前会时间
-            tv_commodetail_pred.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_predt.setEnabled(true);//开产前会时间
+            tv_commodetail_predt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -2162,7 +2249,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_pred.setText(datetime);
+                                    tv_commodetail_predt.setText(datetime);
                                     String commopred = sp.getString("commodetailPred", "");
                                     if (commopred == null) {
                                         commopred = "";
@@ -2181,7 +2268,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_pred.setText("");
+                                    tv_commodetail_predt.setText("");
                                     String commopred = sp.getString("commodetailPred", "");
                                     if (commopred == null) {
                                         commopred = "";
@@ -2207,8 +2294,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_fabricsok.setEnabled(true);//大货面料情况
-            et_commodetail_fabricsok.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_fabricsok.setEnabled(true);//大货面料情况
+            tv_commodetail_fabricsok.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -2222,7 +2309,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_fabricsok.getText().toString();
+                    String proitem = tv_commodetail_fabricsok.getText().toString();
                     String commofabricsok = sp.getString("commodetailFabricsok", "");
                     if (commofabricsok == null) {
                         commofabricsok = "";
@@ -2237,10 +2324,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityFabricsok", proitem);//大货面料情况
                 }
             });
-            et_commodetail_fabricsok.setSelection(et_commodetail_fabricsok.length());
+            tv_commodetail_fabricsok.setSelection(tv_commodetail_fabricsok.length());
 
-            et_commodetail_accessoriesok.setEnabled(true);//大货辅料情况
-            et_commodetail_accessoriesok.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_accessoriesok.setEnabled(true);//大货辅料情况
+            tv_commodetail_accessoriesok.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -2254,7 +2341,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_accessoriesok.getText().toString();
+                    String proitem = tv_commodetail_accessoriesok.getText().toString();
                     String commoaccessori = sp.getString("commodetailAccessoriesok", "");
                     if (commoaccessori == null) {
                         commoaccessori = "";
@@ -2269,10 +2356,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityAccessoriesok", proitem);//大货辅料情况
                 }
             });
-            et_commodetail_accessoriesok.setSelection(et_commodetail_accessoriesok.length());
+            tv_commodetail_accessoriesok.setSelection(tv_commodetail_accessoriesok.length());
 
-            et_commodetail_spcproDec.setEnabled(true);//大货特殊工艺情况
-            et_commodetail_spcproDec.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_spcproDec.setEnabled(true);//大货特殊工艺情况
+            tv_commodetail_spcproDec.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -2286,7 +2373,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_spcproDec.getText().toString();
+                    String proitem = tv_commodetail_spcproDec.getText().toString();
                     String commospcprodec = sp.getString("commodetailSpcproDec", "");
                     if (commospcprodec == null) {
                         commospcprodec = "";
@@ -2301,10 +2388,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommoditySpcproDec", proitem);//大货特殊工艺情况
                 }
             });
-            et_commodetail_spcproDec.setSelection(et_commodetail_spcproDec.length());
+            tv_commodetail_spcproDec.setSelection(tv_commodetail_spcproDec.length());
 
-            et_commodetail_spcpromemo.setEnabled(true);//特殊工艺备注
-            et_commodetail_spcpromemo.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_spcproMemo.setEnabled(true);//特殊工艺备注
+            tv_commodetail_spcproMemo.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -2318,7 +2405,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_spcpromemo.getText().toString();
+                    String proitem = tv_commodetail_spcproMemo.getText().toString();
                     String commospcpromemo = sp.getString("commodetailSpcproMemo", "");
                     if (commospcpromemo == null) {
                         commospcpromemo = "";
@@ -2333,12 +2420,12 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommoditySpcproMemo", proitem);//特殊工艺特别备注
                 }
             });
-            et_commodetail_spcpromemo.setSelection(et_commodetail_spcpromemo.length());
+            tv_commodetail_spcproMemo.setSelection(tv_commodetail_spcproMemo.length());
 
-            et_commodetail_cutqty.setEnabled(true);//实裁数
-            et_commodetail_cutqty.setFilters(new
+            tv_commodetail_cutqty.setEnabled(true);//实裁数
+            tv_commodetail_cutqty.setFilters(new
                     InputFilter[]{new InputFilter.LengthFilter(10)});
-            et_commodetail_cutqty.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_cutqty.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -2352,7 +2439,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_cutqty.getText().toString();
+                    String proitem = tv_commodetail_cutqty.getText().toString();
                     String commocutqty = sp.getString("commodetailCutqty", "");
                     if (commocutqty == null) {
                         commocutqty = "";
@@ -2367,10 +2454,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityCutqty", proitem);//实裁数
                 }
             });
-            et_commodetail_cutqty.setSelection(et_commodetail_cutqty.length());
+            tv_commodetail_cutqty.setSelection(tv_commodetail_cutqty.length());
 
-            tv_commodetail_sewfdt.setEnabled(true);//上线日期
-            tv_commodetail_sewfdt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_sewFdt.setEnabled(true);//上线日期
+            tv_commodetail_sewFdt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -2389,7 +2476,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_sewfdt.setText(datetime);
+                                    tv_commodetail_sewFdt.setText(datetime);
                                     String commosewfdt = sp.getString("commodetailSewFdt", "");
                                     if (commosewfdt == null) {
                                         commosewfdt = "";
@@ -2408,7 +2495,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_sewfdt.setText("");
+                                    tv_commodetail_sewFdt.setText("");
                                     String commosewfdt = sp.getString("commodetailSewFdt", "");
                                     if (commosewfdt == null) {
                                         commosewfdt = "";
@@ -2434,8 +2521,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            tv_commodetail_sewmdt.setEnabled(true);//下线日期
-            tv_commodetail_sewmdt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_sewMdt.setEnabled(true);//下线日期
+            tv_commodetail_sewMdt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -2454,7 +2541,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_sewmdt.setText(datetime);
+                                    tv_commodetail_sewMdt.setText(datetime);
                                     String commosewmdt = sp.getString("commodetailSewMdt", "");
                                     if (commosewmdt == null) {
                                         commosewmdt = "";
@@ -2473,7 +2560,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_sewmdt.setText("");
+                                    tv_commodetail_sewMdt.setText("");
                                     String commosewmdt = sp.getString("commodetailSewMdt", "");
                                     if (commosewmdt == null) {
                                         commosewmdt = "";
@@ -2564,8 +2651,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_QCbdt.setEnabled(true);//自查早期时间
-            et_commodetail_QCbdt.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_QCbdt.setEnabled(true);//自查早期时间
+            tv_commodetail_QCbdt.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -2579,7 +2666,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_QCbdt.getText().toString();
+                    String proitem = tv_commodetail_QCbdt.getText().toString();
                     String commocutqty = sp.getString("commodetailQCbdt", "");
                     if (commocutqty == null) {
                         commocutqty = "";
@@ -2594,10 +2681,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "dateQCbdttimesign", proitem);//自查早期时间
                 }
             });
-            et_commodetail_QCbdt.setSelection(et_commodetail_QCbdt.length());
+            tv_commodetail_QCbdt.setSelection(tv_commodetail_QCbdt.length());
 
-            tv_commodetail_Premdt.setEnabled(true);//预计中期时间
-            tv_commodetail_Premdt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_premdt.setEnabled(true);//预计中期时间
+            tv_commodetail_premdt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -2616,7 +2703,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Premdt.setText(datetime);
+                                    tv_commodetail_premdt.setText(datetime);
                                     String commopremdt = sp.getString("commodetailPremdt", "");
                                     if (commopremdt == null) {
                                         commopremdt = "";
@@ -2635,7 +2722,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Premdt.setText("");
+                                    tv_commodetail_premdt.setText("");
                                     String commopremdt = sp.getString("commodetailPremdt", "");
                                     if (commopremdt == null) {
                                         commopremdt = "";
@@ -2661,8 +2748,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_QCmdt.setEnabled(true);//自查中期时间
-            et_commodetail_QCmdt.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_QCmdt.setEnabled(true);//自查中期时间
+            tv_commodetail_QCmdt.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -2676,7 +2763,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_QCmdt.getText().toString();
+                    String proitem = tv_commodetail_QCmdt.getText().toString();
                     String commocutqty = sp.getString("commodetailQCmdt", "");
                     if (commocutqty == null) {
                         commocutqty = "";
@@ -2691,10 +2778,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "dateQCmdttimesign", proitem);//自查中期时间
                 }
             });
-            et_commodetail_QCmdt.setSelection(et_commodetail_QCmdt.length());
+            tv_commodetail_QCmdt.setSelection(tv_commodetail_QCmdt.length());
 
-            tv_commodetail_Preedt.setEnabled(true);//预计尾期时间
-            tv_commodetail_Preedt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_preedt.setEnabled(true);//预计尾期时间
+            tv_commodetail_preedt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -2713,7 +2800,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Preedt.setText(datetime);
+                                    tv_commodetail_preedt.setText(datetime);
                                     String commopreedt = sp.getString("commodetailPreedt", "");
                                     if (commopreedt == null) {
                                         commopreedt = "";
@@ -2732,7 +2819,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Preedt.setText("");
+                                    tv_commodetail_preedt.setText("");
                                     String commopreedt = sp.getString("commodetailPreedt", "");
                                     if (commopreedt == null) {
                                         commopreedt = "";
@@ -2758,8 +2845,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_QCMedt.setEnabled(true);//自查尾期时间
-            et_commodetail_QCMedt.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_QCMedt.setEnabled(true);//自查尾期时间
+            tv_commodetail_QCMedt.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -2773,7 +2860,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_QCmdt.getText().toString();
+                    String proitem = tv_commodetail_QCmdt.getText().toString();
                     String commocutqty = sp.getString("commodetailQCmdt", "");
                     if (commocutqty == null) {
                         commocutqty = "";
@@ -2788,10 +2875,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "dateQCMedttimesign", proitem);//自查尾期时间
                 }
             });
-            et_commodetail_QCMedt.setSelection(et_commodetail_QCMedt.length());
+            tv_commodetail_QCMedt.setSelection(tv_commodetail_QCMedt.length());
 
-            tv_commodetail_Fctmdt.setEnabled(true);//客查中期时间
-            tv_commodetail_Fctmdt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_fctmdt.setEnabled(true);//客查中期时间
+            tv_commodetail_fctmdt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -2810,7 +2897,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Fctmdt.setText(datetime);
+                                    tv_commodetail_fctmdt.setText(datetime);
                                     String commofctmdt = sp.getString("commodetailFctmdt", "");
                                     if (commofctmdt == null) {
                                         commofctmdt = "";
@@ -2829,7 +2916,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Fctmdt.setText("");
+                                    tv_commodetail_fctmdt.setText("");
                                     String commofctmdt = sp.getString("commodetailFctmdt", "");
                                     if (commofctmdt == null) {
                                         commofctmdt = "";
@@ -2855,8 +2942,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            tv_commodetail_Fctedt.setEnabled(true);//客查尾期时间
-            tv_commodetail_Fctedt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_fctedt.setEnabled(true);//客查尾期时间
+            tv_commodetail_fctedt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -2875,7 +2962,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Fctedt.setText(datetime);
+                                    tv_commodetail_fctedt.setText(datetime);
                                     String commofctedt = sp.getString("commodetailFctedt", "");
                                     if (commofctedt == null) {
                                         commofctedt = "";
@@ -2894,7 +2981,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Fctedt.setText("");
+                                    tv_commodetail_fctedt.setText("");
                                     String commofctedt = sp.getString("commodetailFctedt", "");
                                     if (commofctedt == null) {
                                         commofctedt = "";
@@ -2920,8 +3007,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            tv_commodetail_Packbdat.setEnabled(true);//成品包装开始时间
-            tv_commodetail_Packbdat.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_packbdat.setEnabled(true);//成品包装开始时间
+            tv_commodetail_packbdat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -2940,7 +3027,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Packbdat.setText(datetime);
+                                    tv_commodetail_packbdat.setText(datetime);
                                     String commopackbdat = sp.getString("commodetailPackbdat", "");
                                     if (commopackbdat == null) {
                                         commopackbdat = "";
@@ -2959,7 +3046,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Packbdat.setText("");
+                                    tv_commodetail_packbdat.setText("");
                                     String commopackbdat = sp.getString("commodetailPackbdat", "");
                                     if (commopackbdat == null) {
                                         commopackbdat = "";
@@ -2985,10 +3072,10 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_Packqty2.setEnabled(true);//装箱数量
-            et_commodetail_Packqty2.setFilters(new
+            tv_commodetail_packqty2.setEnabled(true);//装箱数量
+            tv_commodetail_packqty2.setFilters(new
                     InputFilter[]{new InputFilter.LengthFilter(10)});
-            et_commodetail_Packqty2.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_packqty2.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -3002,7 +3089,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_Packqty2.getText().toString();
+                    String proitem = tv_commodetail_packqty2.getText().toString();
                     String commopackqty2 = sp.getString("commoPackqty2", "");
                     if (commopackqty2 == null) {
                         commopackqty2 = "";
@@ -3017,10 +3104,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityPackqty2", proitem);//装箱数量
                 }
             });
-            et_commodetail_Packqty2.setSelection(et_commodetail_Packqty2.length());
+            tv_commodetail_packqty2.setSelection(tv_commodetail_packqty2.length());
 
-            et_commodetail_QCMemo.setEnabled(true);//QC特别备注
-            et_commodetail_QCMemo.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_QCMemo.setEnabled(true);//QC特别备注
+            tv_commodetail_QCMemo.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -3034,7 +3121,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_QCMemo.getText().toString();
+                    String proitem = tv_commodetail_QCMemo.getText().toString();
                     String commoqcmemo = sp.getString("commodetailQCMemo", "");
                     if (commoqcmemo == null) {
                         commoqcmemo = "";
@@ -3049,10 +3136,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityQCMemo", proitem);//QC特别备注
                 }
             });
-            et_commodetail_QCMemo.setSelection(et_commodetail_QCMemo.length());
+            tv_commodetail_QCMemo.setSelection(tv_commodetail_QCMemo.length());
 
-            tv_commodetail_Factlcdat.setEnabled(true);//离厂日期
-            tv_commodetail_Factlcdat.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_factlcdat.setEnabled(true);//离厂日期
+            tv_commodetail_factlcdat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -3071,7 +3158,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Factlcdat.setText(datetime);
+                                    tv_commodetail_factlcdat.setText(datetime);
                                     String commofactlcdat = sp.getString("commodetailFactlcdat", "");
                                     if (commofactlcdat == null) {
                                         commofactlcdat = "";
@@ -3090,7 +3177,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Factlcdat.setText("");
+                                    tv_commodetail_factlcdat.setText("");
                                     String commofactlcdat = sp.getString("commodetailFactlcdat", "");
                                     if (commofactlcdat == null) {
                                         commofactlcdat = "";
@@ -3116,8 +3203,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_Batchid.setEnabled(true);//查获批次
-            et_commodetail_Batchid.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_batchid.setEnabled(true);//查获批次
+            tv_commodetail_batchid.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -3131,7 +3218,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_Batchid.getText().toString();
+                    String proitem = tv_commodetail_batchid.getText().toString();
                     String commoBatchid = sp.getString("commodetailBatchid", "");
                     if (commoBatchid == null) {
                         commoBatchid = "";
@@ -3146,10 +3233,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityBatchid", proitem);//查货批次
                 }
             });
-            et_commodetail_Batchid.setSelection(et_commodetail_Batchid.length());
+            tv_commodetail_batchid.setSelection(tv_commodetail_batchid.length());
 
-            tv_commodetail_Ctmchkdt.setEnabled(true);//业务员确认客查日期
-            tv_commodetail_Ctmchkdt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_ctmchkdt.setEnabled(true);//业务员确认客查日期
+            tv_commodetail_ctmchkdt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -3168,7 +3255,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Ctmchkdt.setText(datetime);
+                                    tv_commodetail_ctmchkdt.setText(datetime);
                                     String commoCtmchkdt = sp.getString("commodetailCtmchkdt", "");
                                     if (commoCtmchkdt == null) {
                                         commoCtmchkdt = "";
@@ -3187,7 +3274,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Ctmchkdt.setText("");
+                                    tv_commodetail_ctmchkdt.setText("");
                                     String commoCtmchkdt = sp.getString("commodetailCtmchkdt", "");
                                     if (commoCtmchkdt == null) {
                                         commoCtmchkdt = "";
@@ -3343,17 +3430,17 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_predoc.setEnabled(false);//产前会报告
-            et_commodetail_QCbdtDoc.setEnabled(false);//早期报告
-            et_commodetail_QCmdtDoc.setEnabled(false);//中期报告
-            et_commodetail_QCedtDoc.setEnabled(false);//尾期报告
-            et_commodetail_chker.setEnabled(false);//件查
-            et_commodetail_chkplace.setEnabled(false);//件查地址
-            et_commodetail_QAname.setEnabled(false);//QA首扎
-            et_commodetail_QAScore.setEnabled(false);//QA首扎件数
+            tv_commodetail_predoc.setEnabled(false);//产前会报告
+            tv_commodetail_QCbdtDoc.setEnabled(false);//早期报告
+            tv_commodetail_QCmdtDoc.setEnabled(false);//中期报告
+            tv_commodetail_QCedtDoc.setEnabled(false);//尾期报告
+            tv_commodetail_chker.setEnabled(false);//件查
+            tv_commodetail_chkplace.setEnabled(false);//件查地址
+            tv_commodetail_QAname.setEnabled(false);//QA首扎
+            tv_commodetail_QAScore.setEnabled(false);//QA首扎件数
         } else if (nameid.equals("陈慧萍")) {//判断登录人是否是陈慧萍（跟单负责人）
-            tv_commodetail_OurAfter.setEnabled(true);//后道弹出选择菜单
-            tv_commodetail_OurAfter.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_ourAfter.setEnabled(true);//后道弹出选择菜单
+            tv_commodetail_ourAfter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     PopupMenu popupMenu = new PopupMenu(getApplicationContext(), v);
@@ -3387,7 +3474,7 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_qcmasterscore.setEnabled(false);//生产主管评分
+            tv_commodetail_QCMasterScore.setEnabled(false);//生产主管评分
 
             tv_commodetail_sealedrev.setEnabled(true);//封样资料接收时间
             tv_commodetail_sealedrev.setOnClickListener(new View.OnClickListener() {
@@ -3519,8 +3606,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_prememo.setEnabled(true);//需要备注的特别情况
-            et_commodetail_prememo.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_preMemo.setEnabled(true);//需要备注的特别情况
+            tv_commodetail_preMemo.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -3534,7 +3621,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_prememo.getText().toString();
+                    String proitem = tv_commodetail_preMemo.getText().toString();
                     String commopromemo = sp.getString("commodetailPreMemo", "");
                     if (commopromemo == null) {
                         commopromemo = "";
@@ -3549,7 +3636,7 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityPreMemo", proitem);//需要特别备注的情况
                 }
             });
-            et_commodetail_prememo.setSelection(et_commodetail_prememo.length());
+            tv_commodetail_preMemo.setSelection(tv_commodetail_preMemo.length());
 
 
             tv_commodetail_predocdt.setEnabled(true);//预计产前会报告时间
@@ -3617,8 +3704,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            tv_commodetail_pred.setEnabled(true);//开产前会时间
-            tv_commodetail_pred.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_predt.setEnabled(true);//开产前会时间
+            tv_commodetail_predt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -3637,7 +3724,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_pred.setText(datetime);
+                                    tv_commodetail_predt.setText(datetime);
                                     String commopred = sp.getString("commodetailPred", "");
                                     if (commopred == null) {
                                         commopred = "";
@@ -3656,7 +3743,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_pred.setText("");
+                                    tv_commodetail_predt.setText("");
                                     String commopred = sp.getString("commodetailPred", "");
                                     if (commopred == null) {
                                         commopred = "";
@@ -3682,8 +3769,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_fabricsok.setEnabled(true);//大货面料情况
-            et_commodetail_fabricsok.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_fabricsok.setEnabled(true);//大货面料情况
+            tv_commodetail_fabricsok.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -3697,7 +3784,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_fabricsok.getText().toString();
+                    String proitem = tv_commodetail_fabricsok.getText().toString();
                     String commofabricsok = sp.getString("commodetailFabricsok", "");
                     if (commofabricsok == null) {
                         commofabricsok = "";
@@ -3712,10 +3799,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityFabricsok", proitem);//大货面料情况
                 }
             });
-            et_commodetail_fabricsok.setSelection(et_commodetail_fabricsok.length());
+            tv_commodetail_fabricsok.setSelection(tv_commodetail_fabricsok.length());
 
-            et_commodetail_accessoriesok.setEnabled(true);//大货辅料情况
-            et_commodetail_accessoriesok.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_accessoriesok.setEnabled(true);//大货辅料情况
+            tv_commodetail_accessoriesok.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -3729,7 +3816,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_accessoriesok.getText().toString();
+                    String proitem = tv_commodetail_accessoriesok.getText().toString();
                     String commoaccessori = sp.getString("commodetailAccessoriesok", "");
                     if (commoaccessori == null) {
                         commoaccessori = "";
@@ -3744,10 +3831,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityAccessoriesok", proitem);//大货辅料情况
                 }
             });
-            et_commodetail_accessoriesok.setSelection(et_commodetail_accessoriesok.length());
+            tv_commodetail_accessoriesok.setSelection(tv_commodetail_accessoriesok.length());
 
-            et_commodetail_spcproDec.setEnabled(true);//大货特殊工艺情况
-            et_commodetail_spcproDec.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_spcproDec.setEnabled(true);//大货特殊工艺情况
+            tv_commodetail_spcproDec.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -3761,7 +3848,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_spcproDec.getText().toString();
+                    String proitem = tv_commodetail_spcproDec.getText().toString();
                     String commospcprodec = sp.getString("commodetailSpcproDec", "");
                     if (commospcprodec == null) {
                         commospcprodec = "";
@@ -3776,10 +3863,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommoditySpcproDec", proitem);//大货特殊工艺情况
                 }
             });
-            et_commodetail_spcproDec.setSelection(et_commodetail_spcproDec.length());
+            tv_commodetail_spcproDec.setSelection(tv_commodetail_spcproDec.length());
 
-            et_commodetail_spcpromemo.setEnabled(true);//特殊工艺备注
-            et_commodetail_spcpromemo.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_spcproMemo.setEnabled(true);//特殊工艺备注
+            tv_commodetail_spcproMemo.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -3793,7 +3880,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_spcpromemo.getText().toString();
+                    String proitem = tv_commodetail_spcproMemo.getText().toString();
                     String commospcpromemo = sp.getString("commodetailSpcproMemo", "");
                     if (commospcpromemo == null) {
                         commospcpromemo = "";
@@ -3808,12 +3895,12 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommoditySpcproMemo", proitem);//特殊工艺特别备注
                 }
             });
-            et_commodetail_spcpromemo.setSelection(et_commodetail_spcpromemo.length());
+            tv_commodetail_spcproMemo.setSelection(tv_commodetail_spcproMemo.length());
 
-            et_commodetail_cutqty.setEnabled(true);//实裁数
-            et_commodetail_cutqty.setFilters(new
+            tv_commodetail_cutqty.setEnabled(true);//实裁数
+            tv_commodetail_cutqty.setFilters(new
                     InputFilter[]{new InputFilter.LengthFilter(10)});
-            et_commodetail_cutqty.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_cutqty.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -3827,7 +3914,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_cutqty.getText().toString();
+                    String proitem = tv_commodetail_cutqty.getText().toString();
                     String commocutqty = sp.getString("commodetailCutqty", "");
                     if (commocutqty == null) {
                         commocutqty = "";
@@ -3842,10 +3929,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityCutqty", proitem);//实裁数
                 }
             });
-            et_commodetail_cutqty.setSelection(et_commodetail_cutqty.length());
+            tv_commodetail_cutqty.setSelection(tv_commodetail_cutqty.length());
 
-            tv_commodetail_sewfdt.setEnabled(true);//上线日期
-            tv_commodetail_sewfdt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_sewFdt.setEnabled(true);//上线日期
+            tv_commodetail_sewFdt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -3864,7 +3951,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_sewfdt.setText(datetime);
+                                    tv_commodetail_sewFdt.setText(datetime);
                                     String commosewfdt = sp.getString("commodetailSewFdt", "");
                                     if (commosewfdt == null) {
                                         commosewfdt = "";
@@ -3883,7 +3970,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_sewfdt.setText("");
+                                    tv_commodetail_sewFdt.setText("");
                                     String commosewfdt = sp.getString("commodetailSewFdt", "");
                                     if (commosewfdt == null) {
                                         commosewfdt = "";
@@ -3909,8 +3996,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            tv_commodetail_sewmdt.setEnabled(true);//下线日期
-            tv_commodetail_sewmdt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_sewMdt.setEnabled(true);//下线日期
+            tv_commodetail_sewMdt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -3929,7 +4016,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_sewmdt.setText(datetime);
+                                    tv_commodetail_sewMdt.setText(datetime);
                                     String commosewmdt = sp.getString("commodetailSewMdt", "");
                                     if (commosewmdt == null) {
                                         commosewmdt = "";
@@ -3948,7 +4035,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_sewmdt.setText("");
+                                    tv_commodetail_sewMdt.setText("");
                                     String commosewmdt = sp.getString("commodetailSewMdt", "");
                                     if (commosewmdt == null) {
                                         commosewmdt = "";
@@ -4039,8 +4126,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_QCbdt.setEnabled(true);//自查早期时间
-            et_commodetail_QCbdt.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_QCbdt.setEnabled(true);//自查早期时间
+            tv_commodetail_QCbdt.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -4054,7 +4141,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_QCbdt.getText().toString();
+                    String proitem = tv_commodetail_QCbdt.getText().toString();
                     String commocutqty = sp.getString("commodetailQCbdt", "");
                     if (commocutqty == null) {
                         commocutqty = "";
@@ -4069,10 +4156,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "dateQCbdttimesign", proitem);//自查早期时间
                 }
             });
-            et_commodetail_QCbdt.setSelection(et_commodetail_QCbdt.length());
+            tv_commodetail_QCbdt.setSelection(tv_commodetail_QCbdt.length());
 
-            tv_commodetail_Premdt.setEnabled(true);//预计中期时间
-            tv_commodetail_Premdt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_premdt.setEnabled(true);//预计中期时间
+            tv_commodetail_premdt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -4091,7 +4178,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Premdt.setText(datetime);
+                                    tv_commodetail_premdt.setText(datetime);
                                     String commopremdt = sp.getString("commodetailPremdt", "");
                                     if (commopremdt == null) {
                                         commopremdt = "";
@@ -4110,7 +4197,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Premdt.setText("");
+                                    tv_commodetail_premdt.setText("");
                                     String commopremdt = sp.getString("commodetailPremdt", "");
                                     if (commopremdt == null) {
                                         commopremdt = "";
@@ -4136,8 +4223,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_QCmdt.setEnabled(true);//自查中期时间
-            et_commodetail_QCmdt.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_QCmdt.setEnabled(true);//自查中期时间
+            tv_commodetail_QCmdt.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -4151,7 +4238,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_QCmdt.getText().toString();
+                    String proitem = tv_commodetail_QCmdt.getText().toString();
                     String commocutqty = sp.getString("commodetailQCmdt", "");
                     if (commocutqty == null) {
                         commocutqty = "";
@@ -4166,10 +4253,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "dateQCmdttimesign", proitem);//自查中期时间
                 }
             });
-            et_commodetail_QCmdt.setSelection(et_commodetail_QCmdt.length());
+            tv_commodetail_QCmdt.setSelection(tv_commodetail_QCmdt.length());
 
-            tv_commodetail_Preedt.setEnabled(true);//预计尾期时间
-            tv_commodetail_Preedt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_preedt.setEnabled(true);//预计尾期时间
+            tv_commodetail_preedt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -4188,7 +4275,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Preedt.setText(datetime);
+                                    tv_commodetail_preedt.setText(datetime);
                                     String commopreedt = sp.getString("commodetailPreedt", "");
                                     if (commopreedt == null) {
                                         commopreedt = "";
@@ -4207,7 +4294,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Preedt.setText("");
+                                    tv_commodetail_preedt.setText("");
                                     String commopreedt = sp.getString("commodetailPreedt", "");
                                     if (commopreedt == null) {
                                         commopreedt = "";
@@ -4233,8 +4320,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_QCMedt.setEnabled(true);//自查尾期时间
-            et_commodetail_QCMedt.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_QCMedt.setEnabled(true);//自查尾期时间
+            tv_commodetail_QCMedt.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -4248,7 +4335,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_QCmdt.getText().toString();
+                    String proitem = tv_commodetail_QCmdt.getText().toString();
                     String commocutqty = sp.getString("commodetailQCmdt", "");
                     if (commocutqty == null) {
                         commocutqty = "";
@@ -4263,10 +4350,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "dateQCMedttimesign", proitem);//自查尾期时间
                 }
             });
-            et_commodetail_QCMedt.setSelection(et_commodetail_QCMedt.length());
+            tv_commodetail_QCMedt.setSelection(tv_commodetail_QCMedt.length());
 
-            tv_commodetail_Fctmdt.setEnabled(true);//客查中期时间
-            tv_commodetail_Fctmdt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_fctmdt.setEnabled(true);//客查中期时间
+            tv_commodetail_fctmdt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -4285,7 +4372,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Fctmdt.setText(datetime);
+                                    tv_commodetail_fctmdt.setText(datetime);
                                     String commofctmdt = sp.getString("commodetailFctmdt", "");
                                     if (commofctmdt == null) {
                                         commofctmdt = "";
@@ -4304,7 +4391,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Fctmdt.setText("");
+                                    tv_commodetail_fctmdt.setText("");
                                     String commofctmdt = sp.getString("commodetailFctmdt", "");
                                     if (commofctmdt == null) {
                                         commofctmdt = "";
@@ -4330,8 +4417,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            tv_commodetail_Fctedt.setEnabled(true);//客查尾期时间
-            tv_commodetail_Fctedt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_fctedt.setEnabled(true);//客查尾期时间
+            tv_commodetail_fctedt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -4350,7 +4437,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Fctedt.setText(datetime);
+                                    tv_commodetail_fctedt.setText(datetime);
                                     String commofctedt = sp.getString("commodetailFctedt", "");
                                     if (commofctedt == null) {
                                         commofctedt = "";
@@ -4369,7 +4456,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Fctedt.setText("");
+                                    tv_commodetail_fctedt.setText("");
                                     String commofctedt = sp.getString("commodetailFctedt", "");
                                     if (commofctedt == null) {
                                         commofctedt = "";
@@ -4395,8 +4482,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            tv_commodetail_Packbdat.setEnabled(true);//成品包装开始时间
-            tv_commodetail_Packbdat.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_packbdat.setEnabled(true);//成品包装开始时间
+            tv_commodetail_packbdat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -4415,7 +4502,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Packbdat.setText(datetime);
+                                    tv_commodetail_packbdat.setText(datetime);
                                     String commopackbdat = sp.getString("commodetailPackbdat", "");
                                     if (commopackbdat == null) {
                                         commopackbdat = "";
@@ -4434,7 +4521,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Packbdat.setText("");
+                                    tv_commodetail_packbdat.setText("");
                                     String commopackbdat = sp.getString("commodetailPackbdat", "");
                                     if (commopackbdat == null) {
                                         commopackbdat = "";
@@ -4460,10 +4547,10 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_Packqty2.setEnabled(true);//装箱数量
-            et_commodetail_Packqty2.setFilters(new
+            tv_commodetail_packqty2.setEnabled(true);//装箱数量
+            tv_commodetail_packqty2.setFilters(new
                     InputFilter[]{new InputFilter.LengthFilter(10)});
-            et_commodetail_Packqty2.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_packqty2.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -4477,7 +4564,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_Packqty2.getText().toString();
+                    String proitem = tv_commodetail_packqty2.getText().toString();
                     String commopackqty2 = sp.getString("commoPackqty2", "");
                     if (commopackqty2 == null) {
                         commopackqty2 = "";
@@ -4492,10 +4579,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityPackqty2", proitem);//装箱数量
                 }
             });
-            et_commodetail_Packqty2.setSelection(et_commodetail_Packqty2.length());
+            tv_commodetail_packqty2.setSelection(tv_commodetail_packqty2.length());
 
-            et_commodetail_QCMemo.setEnabled(true);//QC特别备注
-            et_commodetail_QCMemo.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_QCMemo.setEnabled(true);//QC特别备注
+            tv_commodetail_QCMemo.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -4509,7 +4596,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_QCMemo.getText().toString();
+                    String proitem = tv_commodetail_QCMemo.getText().toString();
                     String commoqcmemo = sp.getString("commodetailQCMemo", "");
                     if (commoqcmemo == null) {
                         commoqcmemo = "";
@@ -4524,10 +4611,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityQCMemo", proitem);//QC特别备注
                 }
             });
-            et_commodetail_QCMemo.setSelection(et_commodetail_QCMemo.length());
+            tv_commodetail_QCMemo.setSelection(tv_commodetail_QCMemo.length());
 
-            tv_commodetail_Factlcdat.setEnabled(true);//离厂日期
-            tv_commodetail_Factlcdat.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_factlcdat.setEnabled(true);//离厂日期
+            tv_commodetail_factlcdat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -4546,7 +4633,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Factlcdat.setText(datetime);
+                                    tv_commodetail_factlcdat.setText(datetime);
                                     String commofactlcdat = sp.getString("commodetailFactlcdat", "");
                                     if (commofactlcdat == null) {
                                         commofactlcdat = "";
@@ -4565,7 +4652,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Factlcdat.setText("");
+                                    tv_commodetail_factlcdat.setText("");
                                     String commofactlcdat = sp.getString("commodetailFactlcdat", "");
                                     if (commofactlcdat == null) {
                                         commofactlcdat = "";
@@ -4591,8 +4678,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_Batchid.setEnabled(true);//查获批次
-            et_commodetail_Batchid.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_batchid.setEnabled(true);//查获批次
+            tv_commodetail_batchid.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -4606,7 +4693,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_Batchid.getText().toString();
+                    String proitem = tv_commodetail_batchid.getText().toString();
                     String commoBatchid = sp.getString("commodetailBatchid", "");
                     if (commoBatchid == null) {
                         commoBatchid = "";
@@ -4621,10 +4708,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityBatchid", proitem);//查货批次
                 }
             });
-            et_commodetail_Batchid.setSelection(et_commodetail_Batchid.length());
+            tv_commodetail_batchid.setSelection(tv_commodetail_batchid.length());
 
-            tv_commodetail_Ctmchkdt.setEnabled(true);//业务员确认客查日期
-            tv_commodetail_Ctmchkdt.setOnClickListener(new View.OnClickListener() {
+            tv_commodetail_ctmchkdt.setEnabled(true);//业务员确认客查日期
+            tv_commodetail_ctmchkdt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
@@ -4643,7 +4730,7 @@ public class CommoditydetailActivity extends Activity
                                     int month = datePicker.getMonth();
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
-                                    tv_commodetail_Ctmchkdt.setText(datetime);
+                                    tv_commodetail_ctmchkdt.setText(datetime);
                                     String commoCtmchkdt = sp.getString("commodetailCtmchkdt", "");
                                     if (commoCtmchkdt == null) {
                                         commoCtmchkdt = "";
@@ -4662,7 +4749,7 @@ public class CommoditydetailActivity extends Activity
                             , "清除", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    tv_commodetail_Ctmchkdt.setText("");
+                                    tv_commodetail_ctmchkdt.setText("");
                                     String commoCtmchkdt = sp.getString("commodetailCtmchkdt", "");
                                     if (commoCtmchkdt == null) {
                                         commoCtmchkdt = "";
@@ -4818,8 +4905,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_QAname.setEnabled(false);//QA首扎
-            et_commodetail_QAname.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_QAname.setEnabled(false);//QA首扎
+            tv_commodetail_QAname.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -4833,7 +4920,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_QAname.getText().toString();
+                    String proitem = tv_commodetail_QAname.getText().toString();
                     String commoQaname = sp.getString("commoQAname", "");
                     if (commoQaname == null) {
                         commoQaname = "";
@@ -4848,10 +4935,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityQAname", proitem);//QA首扎
                 }
             });
-            et_commodetail_QAname.setSelection(et_commodetail_QAname.length());
+            tv_commodetail_QAname.setSelection(tv_commodetail_QAname.length());
 
-            et_commodetail_QAScore.setEnabled(false);//QA首扎件数
-            et_commodetail_QAScore.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_QAScore.setEnabled(false);//QA首扎件数
+            tv_commodetail_QAScore.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -4865,7 +4952,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_QAScore.getText().toString();
+                    String proitem = tv_commodetail_QAScore.getText().toString();
                     String commoqascore = sp.getString("commodetailQAScore", "");//QA首扎件数
                     if (commoqascore == null) {
                         commoqascore = "";
@@ -4880,7 +4967,7 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityQAScore", proitem);//QA首扎件数
                 }
             });
-            et_commodetail_QAScore.setSelection(et_commodetail_QAScore.length());
+            tv_commodetail_QAScore.setSelection(tv_commodetail_QAScore.length());
 
             tv_commodetail_QAMemo.setEnabled(false);//QA首扎日期
             tv_commodetail_QAMemo.setOnClickListener(new View.OnClickListener() {
@@ -4947,8 +5034,8 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_predoc.setEnabled(true);//产前会报告
-            et_commodetail_predoc.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_predoc.setEnabled(true);//产前会报告
+            tv_commodetail_predoc.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -4962,7 +5049,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_predoc.getText().toString();
+                    String proitem = tv_commodetail_predoc.getText().toString();
                     String commopredoc = sp.getString("commodetailPredoc", "");//产前会报告
                     if (commopredoc == null) {
                         commopredoc = "";
@@ -4977,10 +5064,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityPredoc", proitem);//产前会报告
                 }
             });
-            et_commodetail_predoc.setSelection(et_commodetail_predoc.length());
+            tv_commodetail_predoc.setSelection(tv_commodetail_predoc.length());
 
-            et_commodetail_QCbdtDoc.setEnabled(true);//早期报告
-            et_commodetail_QCbdtDoc.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_QCbdtDoc.setEnabled(true);//早期报告
+            tv_commodetail_QCbdtDoc.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -4994,7 +5081,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_QCbdtDoc.getText().toString();
+                    String proitem = tv_commodetail_QCbdtDoc.getText().toString();
                     String commoqcbdtdoc = sp.getString("commodetailQCbdtDoc", "");//早期报告
                     if (commoqcbdtdoc == null) {
                         commoqcbdtdoc = "";
@@ -5009,10 +5096,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "Commodityqcbdtdoc", proitem);//早期报告
                 }
             });
-            et_commodetail_QCbdtDoc.setSelection(et_commodetail_QCbdtDoc.length());
+            tv_commodetail_QCbdtDoc.setSelection(tv_commodetail_QCbdtDoc.length());
 
-            et_commodetail_QCmdtDoc.setEnabled(true);//中期报告
-            et_commodetail_QCmdtDoc.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_QCmdtDoc.setEnabled(true);//中期报告
+            tv_commodetail_QCmdtDoc.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -5026,7 +5113,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_QCmdtDoc.getText().toString();
+                    String proitem = tv_commodetail_QCmdtDoc.getText().toString();
                     String commoqcmdtdoc = sp.getString("commodetailQCmdtDoc", "");//中期报告
                     if (commoqcmdtdoc == null) {
                         commoqcmdtdoc = "";
@@ -5041,10 +5128,10 @@ public class CommoditydetailActivity extends Activity
                     spUtils.put(getApplicationContext(), "CommodityQCmdtDoc", proitem);//中期报告
                 }
             });
-            et_commodetail_QCmdtDoc.setSelection(et_commodetail_QCmdtDoc.length());
+            tv_commodetail_QCmdtDoc.setSelection(tv_commodetail_QCmdtDoc.length());
 
-            et_commodetail_QCedtDoc.setEnabled(true);//尾期报告
-            et_commodetail_QCedtDoc.addTextChangedListener(new TextWatcher() {
+            tv_commodetail_QCedtDoc.setEnabled(true);//尾期报告
+            tv_commodetail_QCedtDoc.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     Log.d(TAG, "beforeTextChanged");
@@ -5058,7 +5145,7 @@ public class CommoditydetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    String proitem = et_commodetail_QCedtDoc.getText().toString();
+                    String proitem = tv_commodetail_QCedtDoc.getText().toString();
                     String commoqcedtdoc = sp.getString("commodetailQCedtDoc", "");//尾期报告
                     if (commoqcedtdoc == null) {
                         commoqcedtdoc = "";
@@ -5074,34 +5161,147 @@ public class CommoditydetailActivity extends Activity
                 }
             });
 
-            et_commodetail_chker.setEnabled(false);//件查
-            et_commodetail_chkplace.setEnabled(false);//件查地址
+            tv_commodetail_chker.setEnabled(false);//件查
+            tv_commodetail_chkplace.setEnabled(false);//件查地址
         } else {
-            tv_commodetail_OurAfter.setEnabled(false);
-            et_commodetail_qcmasterscore.setEnabled(false);//生产主管评分
+            tv_commodetail_ourAfter.setEnabled(false);
+            tv_commodetail_QCMasterScore.setEnabled(false);//生产主管评分
             tv_commodetail_sealedrev.setEnabled(false);//封样资料接收时间
             tv_commodetail_docback.setEnabled(false);//大货资料接收时间
-            et_commodetail_predoc.setEnabled(false);//产前会报告
-            et_commodetail_QCbdtDoc.setEnabled(false);//早期报告
-            et_commodetail_QCmdtDoc.setEnabled(false);//中期报告
-            et_commodetail_QCedtDoc.setEnabled(false);//尾期报告
-            et_commodetail_chker.setEnabled(false);//件查
-            et_commodetail_QAname.setEnabled(false);//QA首扎
-            et_commodetail_QAScore.setEnabled(false);//QA首扎件数
-            et_commodetail_chkplace.setEnabled(false);//件查地址
-            et_commodetail_Batchid.setEnabled(false);//查获批次
-            et_commodetail_QCMemo.setEnabled(false);//QC特别备注
-            et_commodetail_Packqty2.setEnabled(false);//装箱数量
-            et_commodetail_QCMedt.setEnabled(false);//自查尾期时间
-            et_commodetail_QCmdt.setEnabled(false);//自查中期时间
-            et_commodetail_QCbdt.setEnabled(false);//自查早期时间
-            et_commodetail_cutqty.setEnabled(false);//实裁数
-            et_commodetail_fabricsok.setEnabled(false);//大货面料情况
-            et_commodetail_accessoriesok.setEnabled(false);//大货辅料情况
-            et_commodetail_spcproDec.setEnabled(false);//大货特殊工艺情况
-            et_commodetail_spcpromemo.setEnabled(false);//特殊工艺备注
-            et_commodetail_prememo.setEnabled(false);//需要备注的特别情况
+            tv_commodetail_predoc.setEnabled(false);//产前会报告
+            tv_commodetail_QCbdtDoc.setEnabled(false);//早期报告
+            tv_commodetail_QCmdtDoc.setEnabled(false);//中期报告
+            tv_commodetail_QCedtDoc.setEnabled(false);//尾期报告
+            tv_commodetail_chker.setEnabled(false);//件查
+            tv_commodetail_QAname.setEnabled(false);//QA首扎
+            tv_commodetail_QAScore.setEnabled(false);//QA首扎件数
+            tv_commodetail_chkplace.setEnabled(false);//件查地址
+            tv_commodetail_batchid.setEnabled(false);//查获批次
+            tv_commodetail_QCMemo.setEnabled(false);//QC特别备注
+            tv_commodetail_packqty2.setEnabled(false);//装箱数量
+            tv_commodetail_QCMedt.setEnabled(false);//自查尾期时间
+            tv_commodetail_QCmdt.setEnabled(false);//自查中期时间
+            tv_commodetail_QCbdt.setEnabled(false);//自查早期时间
+            tv_commodetail_cutqty.setEnabled(false);//实裁数
+            tv_commodetail_fabricsok.setEnabled(false);//大货面料情况
+            tv_commodetail_accessoriesok.setEnabled(false);//大货辅料情况
+            tv_commodetail_spcproDec.setEnabled(false);//大货特殊工艺情况
+            tv_commodetail_spcproMemo.setEnabled(false);//特殊工艺备注
+            tv_commodetail_preMemo.setEnabled(false);//需要备注的特别情况
 
+        }
+    }
+
+    /*列权限请求分配*/
+    private void setColumRight() {
+        sp = getSharedPreferences("my_sp", 0);
+        String commologinid = sp.getString("commologinid", "");
+        String args = "pd_saleslist,查货跟踪表," + commologinid;
+        String idcolum = HttpUrl.debugoneUrl + "Common/GetClumns/?id=" + args;
+        if (NetWork.isNetWorkAvailable(this)) {
+            OkHttpUtils
+                    .get()
+                    .url(idcolum)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            System.out.println(response);
+                            String ress = response.replace("\\", "");
+                            ress = ress.replace("\"[{", "[{");
+                            ress = ress.replace("}]\"", "}]");
+                            commodityDetailColumBean = new Gson().
+                                    fromJson(ress, CommodityDetailColumBean.class);
+                            if (commodityDetailColumBean.getJsonText() != null) {
+                                jsonTextBeanlist = commodityDetailColumBean.getJsonText();
+                            }
+                            System.out.println(jsonTextBeanlist);
+                            String jsontext = String.valueOf(commodityDetailColumBean.getJsonText());
+                            if (jsontext.equals("null")) {
+                                for (int i = 0; i < columnlist.size(); i++) {
+                                    String sfil = ("ll_PPSDetail_txt_" + columnlist.get(i));
+                                    try {
+                                        Field field = R.id.class.getField(sfil);
+                                        int idd = field.getInt(new R.id());
+                                        View view = findViewById(idd);
+                                        view.setVisibility(View.VISIBLE);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } else {
+                                for (int i = 0; i < jsonTextBeanlist.size(); i++) {
+                                    int pid = Integer.parseInt(jsonTextBeanlist.get(i).getPId());
+                                    if (pid > 0 && jsonTextBeanlist.get(i).isChecked() == true) {
+                                        for (int j = 0; j < columnlist.size(); j++) {
+                                            String columstr = columnlist.get(j);
+                                            String columnname = jsonTextBeanlist.get(i).getColumnName();
+                                            if (columstr == columnname || columstr.equals(columnname)) {
+                                                if (jsonTextBeanlist.get(i).getName().equals("修改")) {
+                                                    String sfil = ("ll_PPSDetail_txt_" + jsonTextBeanlist.get(i).getColumnName());
+                                                    try {
+                                                        Field field = R.id.class.getField(sfil);
+                                                        int idd = field.getInt(new R.id());
+                                                        View view = findViewById(idd);
+                                                        view.setVisibility(View.VISIBLE);
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                } else if (jsonTextBeanlist.get(i).getName().equals("查看")) {
+                                                    String sfil = ("ll_PPSDetail_txt_" + jsonTextBeanlist.get(i).getColumnName());
+                                                    try {
+                                                        Field field = R.id.class.getField(sfil);
+                                                        int idd = field.getInt(new R.id());
+                                                        View view = findViewById(idd);
+                                                        view.setVisibility(View.VISIBLE);
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                } else {
+                                                    String sfil = ("ll_PPSDetail_txt_" + jsonTextBeanlist.get(i).getColumnName());
+                                                    try {
+                                                        Field field = R.id.class.getField(sfil);
+                                                        int idd = field.getInt(new R.id());
+                                                        View view = findViewById(idd);
+                                                        view.setVisibility(View.GONE);
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                                break;
+                                            }
+                                        }
+                                    } else {
+                                        continue;
+                                    }
+                                }
+                            }
+                            setVisityQA();
+                        }
+                    });
+        } else {
+            ToastUtils.ShowToastMessage(R.string.noHttp,
+                    CommoditydetailActivity.this);
+        }
+    }
+
+    private void setVisityQA() {
+        sp = getSharedPreferences("my_sp", 0);
+        String qaname = tv_commodetail_QAname.getText().toString();
+        String commoname = sp.getString("commoname", "");
+        if (qaname.equals("") || qaname.equals(commoname)) {
+            ll_PPSDetail_txt_QAname.setVisibility(View.VISIBLE);
+            ll_PPSDetail_txt_QAScore.setVisibility(View.VISIBLE);
+            ll_PPSDetail_txt_QAMemo.setVisibility(View.VISIBLE);
+        } else {
+            ll_PPSDetail_txt_QAname.setVisibility(View.GONE);
+            ll_PPSDetail_txt_QAScore.setVisibility(View.GONE);
+            ll_PPSDetail_txt_QAMemo.setVisibility(View.GONE);
         }
     }
 

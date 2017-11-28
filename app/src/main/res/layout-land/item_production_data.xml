@@ -73,7 +73,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProOthers"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -119,7 +119,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProTaskNumber"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -165,7 +165,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProCompletedLastMonth"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -257,7 +257,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProOneDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -273,7 +273,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProTwoDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -289,7 +289,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProThreeDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -305,7 +305,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProForeDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -321,7 +321,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProFiveDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -337,7 +337,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProSixDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -353,7 +353,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProSevenDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -369,7 +369,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProEightDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -385,7 +385,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProNineDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -401,7 +401,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProTenDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -417,7 +417,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProElevenDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -433,7 +433,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProTwelveDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -449,7 +449,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProThirteenDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -465,7 +465,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProFourteenDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -481,7 +481,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProFifteenDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -497,7 +497,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProSixteenDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -513,7 +513,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProSeventeenDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -529,7 +529,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProEighteenDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -545,7 +545,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProNineteenDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -561,7 +561,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProTwentyDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -577,7 +577,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProTwentyOneDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -593,7 +593,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProTwentyTwoDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -609,7 +609,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProTwentyThreeDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -625,7 +625,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProTwentyForeDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -641,7 +641,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProTwentyFiveDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -657,7 +657,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProTwentySixDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -673,7 +673,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProTwentySevenDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -689,7 +689,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProTwentyEightDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -705,7 +705,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProTwentyNineDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -721,7 +721,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProThirtyDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -737,7 +737,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProThirtyOneDay"
             android:layout_width="100dp"
             android:layout_height="match_parent"
@@ -753,7 +753,7 @@
             android:layout_height="match_parent"
             android:background="#cccccc" />
 
-        <EditText
+        <TextView
             android:id="@+id/tvProRemarks"
             android:layout_width="170dp"
             android:layout_height="match_parent"

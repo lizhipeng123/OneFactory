@@ -234,10 +234,11 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                     if (index < 0) {
                         ToastUtils.ShowToastMessage("已经是第一页", CommoditySqlActivity.this);
                     } else {
-                        String indexstr = String.valueOf(index + 1);
-                        etSqlDetail.setText(indexstr);
-                        etSqlDetail.setSelection(indexstr.length());
-                        setPageDate(index);
+                        String indexstr = String.valueOf(index);
+                        int indexcount = index + 1;
+                        etSqlDetail.setText(String.valueOf(indexcount));
+                        etSqlDetail.setSelection(String.valueOf(indexcount).length());
+                        setPageDate(indexstr);
                     }
                 }
                 break;
@@ -248,16 +249,18 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
                     ToastUtils.ShowToastMessage("页码不能为空", CommoditySqlActivity.this);
                 } else {
                     int pageIndexx = Integer.parseInt(stredit2);
-                    int index2 = pageIndexx + 1;
+                    int index2 = pageIndexx;
                     String maxpageindex = tvSignPage.getText().toString();
                     int indexmax = Integer.parseInt(maxpageindex);
-                    if (index2 > indexmax) {
+                    int index3 = index2+1;
+                    if (index3 > indexmax) {
                         ToastUtils.ShowToastMessage("已经是最后一页", CommoditySqlActivity.this);
                     } else {
                         String index2str = String.valueOf(index2);
-                        etSqlDetail.setText(index2str);
-                        etSqlDetail.setSelection(index2str.length());
-                        setPageDate(index2);
+                        int indexcount = index2 + 1;
+                        etSqlDetail.setText(String.valueOf(indexcount));
+                        etSqlDetail.setSelection(String.valueOf(indexcount).length());
+                        setPageDate(index2str);
                     }
                 }
                 break;
@@ -578,7 +581,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
      *
      * @param pageIndexin
      */
-    private void setPageDate(int pageIndexin) {
+    private void setPageDate(String pageIndexin) {
         ResponseDialog.showLoading(this);
         String str = HttpUrl.debugoneUrl + "QACwork/BindSearchQACworkAPP/";
         sp = CommoditySqlActivity.this.getSharedPreferences("my_sp", 0);
@@ -598,7 +601,7 @@ public class CommoditySqlActivity extends BaseFrangmentActivity
         conditions.setIPQC(Recode);
         conditions.setPrdmasterisnull(stris);
         postBean.setConditions(conditions);
-        postBean.setPageNum(pageIndexin);
+        postBean.setPageNum(Integer.parseInt(pageIndexin));
         postBean.setPageSize(Integer.parseInt(pagesize));
         String stringpost = gson.toJson(postBean);
         if (NetWork.isNetWorkAvailable(this)) {
