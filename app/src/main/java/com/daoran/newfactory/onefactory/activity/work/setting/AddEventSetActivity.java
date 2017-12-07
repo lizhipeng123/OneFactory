@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.util.file.date.JeekUtils;
 import com.daoran.newfactory.onefactory.util.task.eventset.AddEventSetTask;
-import com.daoran.newfactory.onefactory.view.dialog.SelectColorDialog;
+import com.daoran.newfactory.onefactory.view.dialog.utildialog.SelectColorDialog;
 import com.jimmy.common.base.app.BaseActivity;
 import com.jimmy.common.bean.EventSet;
 import com.jimmy.common.listener.OnTaskFinishedListener;

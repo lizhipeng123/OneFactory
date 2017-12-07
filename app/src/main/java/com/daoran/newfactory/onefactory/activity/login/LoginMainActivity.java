@@ -35,9 +35,9 @@ import android.widget.Toast;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.main.MainActivity;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
-import com.daoran.newfactory.onefactory.bean.UsergetBean;
-import com.daoran.newfactory.onefactory.bean.VerCodeBean;
-import com.daoran.newfactory.onefactory.bean.WorkPwSwitchBean;
+import com.daoran.newfactory.onefactory.bean.loginbean.UsergetBean;
+import com.daoran.newfactory.onefactory.bean.loginbean.VerCodeBean;
+import com.daoran.newfactory.onefactory.bean.loginbean.WorkPwSwitchBean;
 import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetUtil;
@@ -48,9 +48,9 @@ import com.daoran.newfactory.onefactory.util.bsdiff.PatchUtils;
 import com.daoran.newfactory.onefactory.util.file.json.StringUtil;
 import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 import com.daoran.newfactory.onefactory.util.file.image.CropSquareTransformation;
-import com.daoran.newfactory.onefactory.util.file.setting.FileUtils;
+import com.daoran.newfactory.onefactory.util.utils.Util;
 import com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete;
-import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
+import com.daoran.newfactory.onefactory.view.dialog.utildialog.ResponseDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.squareup.picasso.Picasso;
@@ -59,7 +59,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.NameValuePair;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -78,10 +77,10 @@ import java.util.regex.Pattern;
  */
 public class LoginMainActivity extends BaseFrangmentActivity {
 
-    private Button btnLogin;//登录按钮
-    private EditTextWithDelete etUsername, etPassword;//自定义用户名，密码填写框
+    private Button Login_div_loginbutton;//登录按钮
+    private EditTextWithDelete Login_txt_username, Login_txt_password;//自定义用户名，密码填写框
     private SPUtils spUtils;
-    private CheckBox checkBoxPw, checkboxopen;//保存密码与自动登录勾选框
+    private CheckBox Login_chk_password, Login_chk_aotulogin;//保存密码与自动登录勾选框
     private SharedPreferences sp;//存储方式
     private String userNameValue, passwordValue;//用户名，密码临时保存字段
     private ImageView image_login;//登录页app图标
@@ -94,7 +93,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
     private int curVersionCode;//版本号
     private VerCodeBean codeBean;//版本更新保存的实体
     private AlertDialog noticeDialog;//下载确认弹窗
-    private ProgressBar nProgress;//下载进度条
+    private ProgressBar progress_update;//下载进度条
     private TextView nProgressText;
     protected boolean interceptFlag, inupdateFlag;//是否取消安装和下载
     private AlertDialog updateloadDialog;//下载对话框dialog
@@ -112,7 +111,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
     // 合成失败
     private static final int WHAT_FAIL_PATCH = 0;
 
-    protected int progress, updateProgress;//进度条进度
+    protected int intprogress, int_updateProgress;//进度条进度
     protected String apkUpdateFileSize;//命名的apk文件大小
     protected String tmpUpdateFileSize;//命名的临时保存文件大小
     protected String savePath;//临时保存地址
@@ -144,26 +143,26 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         boolean choseAutoLogin = sp.getBoolean("autologin", false);//保存的直接登录状态
         //如果勾选了记住密码，则将用户名和密码添加到实体类中保存，并记住勾选状态以便下次展示
         if (choseRemember == true) {
-            etUsername.setText(name);
-            etUsername.setSelection(etUsername.length());
-            etPassword.setText(passwd);
-            etPassword.setSelection(etPassword.length());
-            checkBoxPw.setChecked(true);
+            Login_txt_username.setText(name);
+            Login_txt_username.setSelection(Login_txt_username.length());
+            Login_txt_password.setText(passwd);
+            Login_txt_password.setSelection(Login_txt_password.length());
+            Login_chk_password.setChecked(true);
         }
         //如果勾选了自动登录，则将记住密码的状态自动调整为已勾选，并且保存用户名和密码，下次进入登录页，则不需输入账号信息，直接登录首页
         if (choseAutoLogin) {
-            checkboxopen.setChecked(true);
-            etUsername.setText(name);
-            etUsername.setSelection(etUsername.length());
-            etPassword.setText(passwd);
-            etPassword.setSelection(etPassword.length());
+            Login_chk_aotulogin.setChecked(true);
+            Login_txt_username.setText(name);
+            Login_txt_username.setSelection(Login_txt_username.length());
+            Login_txt_password.setText(passwd);
+            Login_txt_password.setSelection(Login_txt_password.length());
             //防止用户名为空
-            if (etUsername.getText().toString() != null) {
+            if (Login_txt_username.getText().toString() != null) {
                 postLogin();
             }
         }
         //点击登录按钮的事件
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        Login_div_loginbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (validate()) {//判断非空
@@ -173,9 +172,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         });
     }
 
-    /**
-     * wifi监听弹出事件
-     */
+    /*wifi监听弹出事件*/
     DialogInterface.OnClickListener listenerwifi = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
@@ -188,27 +185,23 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         }
     };
 
-    /**
-     * 实例化控件
-     */
+    /*实例化控件*/
     private void getViews() {
-        etUsername = (EditTextWithDelete) findViewById(R.id.etUsername);
-        etPassword = (EditTextWithDelete) findViewById(R.id.etPassword);
-        checkBoxPw = (CheckBox) findViewById(R.id.checkBoxPw);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        checkboxopen = (CheckBox) findViewById(R.id.checkboxopen);
+        Login_txt_username = (EditTextWithDelete) findViewById(R.id.Login_txt_username);
+        Login_txt_password = (EditTextWithDelete) findViewById(R.id.Login_txt_password);
+        Login_chk_password = (CheckBox) findViewById(R.id.Login_chk_password);
+        Login_div_loginbutton = (Button) findViewById(R.id.Login_div_loginbutton);
+        Login_chk_aotulogin = (CheckBox) findViewById(R.id.Login_chk_aotulogin);
         image_login = (ImageView) findViewById(R.id.image_login);
         tvcode = (TextView) findViewById(R.id.tvcode);
         text_notuse = (TextView) findViewById(R.id.text_notuse);
         text_notuse.requestFocus();//在此控件设置焦点
     }
 
-    /**
-     * 操作控件
-     */
+    /*操作控件*/
     private void initViews() {
-        setEditTextInhibitInputSpeChat(etUsername);//用户名调用判断规范方法
-        setEditTextInhibitInputSpeChat(etPassword);//密码调用判断规范方法
+        Util.setEditTextInhibitInputSpeChat(Login_txt_username);//用户名调用判断规范方法
+        Util.setEditTextInhibitInputSpeChat(Login_txt_password);//密码调用判断规范方法
         //picasso加载登录页上方图片，并且处理为圆角
         Picasso.with(LoginMainActivity.this)
                 .load(R.mipmap.daoran)//正常加载的图片
@@ -217,35 +210,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                 .into(image_login);//设置显示的控件
     }
 
-    /**
-     * 禁止EditText输入特殊字符
-     *
-     * @param editText
-     */
-    public static void setEditTextInhibitInputSpeChat(EditText editText) {
-        //输入过滤器
-        InputFilter filter = new InputFilter() {
-            @Override
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                //定义不可输入的字符
-                String speChat = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
-                Pattern pattern = Pattern.compile(speChat);
-                Matcher matcher = pattern.matcher(source.toString());
-                //如果输入有空格或者有以上不可输入字符，则输入框不输入字符
-                if (source.equals(" ") || source.equals("\n") || matcher.find())
-                    return "";
-                else
-                    return null;
-            }
-        };
-        editText.setFilters(new InputFilter[]{filter});//添加exittext字符过滤
-    }
-
-    /**
-     * 禁止EditText输入空格
-     *
-     * @param editText
-     */
+    /*禁止EditText输入空格*/
     public static void setEditTextInhibitInputSpace(EditText editText) {
         InputFilter filter = new InputFilter() {
             @Override
@@ -257,27 +222,23 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         editText.setFilters(new InputFilter[]{filter});
     }
 
-    /**
-     * 非空验证
-     *
-     * @return
-     */
+    /*非空验证*/
     private boolean validate() {
         boolean result = true;//默认设置为true
         String message = "";
         try {
-            String username = etUsername.getText().toString().trim();//截取账号字符（去掉首尾字符）
+            String username = Login_txt_username.getText().toString().trim();//截取账号字符（去掉首尾字符）
             if (username.equals("")) {//判断字符串是否为空
                 message = "请输入账号";
-                etUsername.requestFocus();//获取控件焦点
+                Login_txt_username.requestFocus();//获取控件焦点
                 result = false;
                 return result;
             }
-            String password = etPassword.getText().toString().trim();//截取密码字符（去掉首尾字符）
+            String password = Login_txt_password.getText().toString().trim();//截取密码字符（去掉首尾字符）
             if (password.length() == 0) {//判断字符串长度是否为空
                 message = "请输入密码";
-                etPassword.setHint("请输入密码");
-                etPassword.requestFocus();
+                Login_txt_password.setHint("请输入密码");
+                Login_txt_password.requestFocus();
                 result = false;
                 return result;
             }
@@ -291,9 +252,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         return result;//返回判断的结果
     }
 
-    /**
-     * 登录请求
-     */
+    /*登录请求*/
     private void postLogin() {
         String loginuserUrl = HttpUrl.debugoneUrl + "Login/UserLogin/";
 //        getCurrentVersion();
@@ -316,8 +275,8 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                 final ProgressDialog progressDialog = ProgressDialog.show(this,
                         getResources().getString(R.string.login_his_later), getResources().getString(R.string.logining), false, true);//等待加载弹窗
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(NetUtil.createParam("Logid", etUsername.getText().toString()));
-                params.add(NetUtil.createParam("pwd", etPassword.getText().toString()));
+                params.add(NetUtil.createParam("Logid", Login_txt_username.getText().toString()));
+                params.add(NetUtil.createParam("pwd", Login_txt_password.getText().toString()));
                 params.add(NetUtil.createParam("Ischeckpwd", true));
                 params.add(NetUtil.createParam("Company", "杭州道然进出口有限公司"));
                 RequestParams requestParams = new RequestParams(params);
@@ -327,7 +286,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                         super.onSuccess(content);
                         System.out.print(content);//打印返回的结果
                         if (!content.equals("null")) {//如果返回结果不为空则执行方法内部
-                            //开启线程延时3秒关闭
+                            //开启线程延时1秒关闭
                             Thread thread = new Thread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -340,8 +299,8 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                                 }
                             });
                             thread.start();//start方法启动线程，必须添加
-                            userNameValue = etUsername.getText().toString();
-                            passwordValue = etPassword.getText().toString();
+                            userNameValue = Login_txt_username.getText().toString();
+                            passwordValue = Login_txt_password.getText().toString();
                             Editor editor = sp.edit();//开启editor内部接口可写入数据
                             Gson gson = new Gson();
                             UsergetBean userBean = gson.fromJson(content, UsergetBean.class);
@@ -349,7 +308,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                                 spUtils.put(LoginMainActivity.this, "username", userNameValue);
                                 spUtils.put(LoginMainActivity.this, "passwd", passwordValue);
                                 //记住密码
-                                if (checkBoxPw.isChecked()) {
+                                if (Login_chk_password.isChecked()) {
                                     spUtils.put(LoginMainActivity.this, "remember", true);
                                     String listwork = sp.getString("workbeenlist", "");
                                     workPwSwitchBean = new Gson().fromJson(listwork, WorkPwSwitchBean.class);
@@ -398,7 +357,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                                 } else {
                                     spUtils.put(LoginMainActivity.this, "remember", false);
                                 }
-                                if (checkboxopen.isChecked()) {
+                                if (Login_chk_aotulogin.isChecked()) {
                                     spUtils.put(LoginMainActivity.this, "autologin", true);
                                 } else {
                                     spUtils.put(LoginMainActivity.this, "autologin", false);
@@ -466,13 +425,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         }
     }
 
-    /**
-     * 比较两个数组是否存在相同的值s
-     *
-     * @param array1
-     * @param array2
-     * @return
-     */
+    /*比较两个数组是否存在相同的值*/
     private static boolean containsAll(String[] array1, String[] array2) {
         for (String str : array2) {
             if (!ArrayUtils.contains(array1, str)) {
@@ -482,9 +435,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         return true;
     }
 
-    /**
-     * 获取本机版本号
-     */
+    /*获取本机版本号*/
     private void getCurrentVersion() {
         try {
             PackageInfo info =
@@ -500,9 +451,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         }
     }
 
-    /**
-     * 版本更新
-     */
+    /*版本更新*/
     private void checkAppVersion(final boolean slience) {
         getCurrentVersion();
         String strversion = HttpUrl.debugoneUrl + "AppVersion/GetAppVersion";
@@ -604,11 +553,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         }
     }
 
-    /**
-     * 增量更新弹窗
-     *
-     * @param vCode
-     */
+    /*增量更新弹窗*/
     private void showUpdateApk(String vCode) {
         getSelfApkPath();//获取apk包的路径
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -628,26 +573,20 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         noticeDialog.show();
     }
 
-    /**
-     * 查询当前连接的wifi名称
-     */
+    /*查询当前连接的wifi名称*/
     private void startWifi() {
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         String infossid = wifiInfo.getSSID();
     }
 
-    /**
-     * 下载增量包的进度条
-     *
-     * @param focuseUpdate
-     */
+    /*下载增量包的进度条*/
     private void showuupdateDownloadDialog(int focuseUpdate) {
         AlertDialog.Builder buildupdate = new AlertDialog.Builder(this);
         buildupdate.setTitle("正在下载新版本");
         final LayoutInflater inflater = LayoutInflater.from(this);
         View v = inflater.inflate(R.layout.update_progress, null);//下载进度条
-        nProgress = (ProgressBar) v.findViewById(R.id.update_progress);
+        progress_update = (ProgressBar) v.findViewById(R.id.update_progress);
         nProgressText = (TextView) v.findViewById(R.id.update_progress_text);
         buildupdate.setView(v);
         if (focuseUpdate == 0) {
@@ -668,17 +607,13 @@ public class LoginMainActivity extends BaseFrangmentActivity {
 
     private Thread updateLoadThread;//下载线程
 
-    /**
-     * 开启线程
-     */
+    /*开启下载线程*/
     private void updateLoadApk() {
         updateLoadThread = new Thread(mupdateApkRunnable);
         updateLoadThread.start();//启动
     }
 
-    /**
-     * 开启线程将网络文件下载到本地
-     */
+    /*开启线程将网络文件下载到本地*/
     private Runnable mupdateApkRunnable = new Runnable() {
         @Override
         public void run() {
@@ -738,7 +673,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                         // 进度条下面显示的当前下载文件大小
                         tmpUpdateFileSize = df.format((float) count / 1024 / 1024) + "MB";
                         // 当前进度值
-                        updateProgress = (int) (((float) count / length) * 100);
+                        int_updateProgress = (int) (((float) count / length) * 100);
                         // 更新进度
                         mUpdateHandler.sendEmptyMessage(DOWN_UPDATE);
                         if (numread <= 0) {
@@ -764,14 +699,12 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         }
     };
 
-    /**
-     * 线程中的通信机制弹出信息
-     */
+    /*线程中的通信机制弹出信息*/
     private Handler mUpdateHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case DOWN_UPDATE://正常更新下载
-                    nProgress.setProgress(updateProgress);
+                    progress_update.setProgress(int_updateProgress);
                     nProgressText.setText(tmpUpdateFileSize + "/" + apkUpdateFileSize);
                     break;
                 case DOWN_OVER://下载完毕
@@ -793,9 +726,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         }
     };
 
-    /**
-     * 合并网络patch增量包和本地旧apk，并安装
-     */
+    /*合并网络patch增量包和本地旧apk，并安装*/
     private class PatchTask extends AsyncTask<String, Void, Integer> {
 
         @Override
@@ -855,7 +786,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         }
     }
 
-    //获取本应用的apk包路径
+    /*获取本应用的apk包路径*/
     public String getSelfApkPath() {
         //查询所有已安装的应用程序package的集合
         List<ApplicationInfo> installList = getPackageManager().

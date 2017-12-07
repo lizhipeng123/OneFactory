@@ -5,7 +5,7 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.widget.Toast;
 
-import com.daoran.newfactory.onefactory.bean.CommoditydetailBean;
+import com.daoran.newfactory.onefactory.bean.qacworkbean.QACworkPageDataBean;
 import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 
 import java.io.File;
@@ -35,7 +35,7 @@ public class CommodityExcelUtil {
 
     public static void writeExcel(
             final Context context,
-            final List<CommoditydetailBean.DataBean> exportOrder,
+            final List<QACworkPageDataBean.DataBean> exportOrder,
             String fileName) throws Exception {
         if (!Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED) && getAvailableStorage()
@@ -77,7 +77,7 @@ public class CommodityExcelUtil {
             @Override
             public void run() {
                 for (int i = 0; i < exportOrder.size(); i++) {
-                    CommoditydetailBean.DataBean order = exportOrder.get(i);
+                    QACworkPageDataBean.DataBean order = exportOrder.get(i);
                     Label orderNum = new Label(0, i + 1, order.getItem());//款号
                     Label ctmtxt = new Label(1, i + 1, order.getCtmtxt());//客户
                     Label prddocumentaryLabel = new Label(2, i + 1, order.getPrddocumentary());//跟单

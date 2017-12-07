@@ -26,10 +26,10 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.work.setting.WorkPwSwitchActivity;
-import com.daoran.newfactory.onefactory.adapter.ScrollWrokAdapter;
-import com.daoran.newfactory.onefactory.adapter.WorkPwSwitchAdapter;
-import com.daoran.newfactory.onefactory.bean.WorkBean;
-import com.daoran.newfactory.onefactory.bean.WorkPwSwitchBean;
+import com.daoran.newfactory.onefactory.adapter.settingadapter.ScrollWrokAdapter;
+import com.daoran.newfactory.onefactory.adapter.settingadapter.WorkPwSwitchAdapter;
+import com.daoran.newfactory.onefactory.bean.loginbean.WorkBean;
+import com.daoran.newfactory.onefactory.bean.loginbean.WorkPwSwitchBean;
 import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetUtil;

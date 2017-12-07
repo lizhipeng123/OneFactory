@@ -17,10 +17,10 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.adapter.ScheduleAdapter;
+import com.daoran.newfactory.onefactory.adapter.settingadapter.ScheduleAdapter;
 import com.daoran.newfactory.onefactory.util.task.eventset.GetScheduleTask;
 import com.daoran.newfactory.onefactory.util.task.schedule.AddScheduleTask;
-import com.daoran.newfactory.onefactory.view.dialog.SelectDateDialog;
+import com.daoran.newfactory.onefactory.view.dialog.settingdialog.SelectDateDialog;
 import com.jeek.calendar.widget.calendar.schedule.ScheduleRecyclerView;
 import com.jimmy.common.base.app.BaseFragment;
 import com.jimmy.common.bean.EventSet;

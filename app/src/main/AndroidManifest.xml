@@ -110,7 +110,7 @@
 
         <!-- 出车单展示 -->
         <activity
-            android:name=".activity.work.car.CarapplyActivity"
+            android:name=".activity.work.car.ReqCarmDetailActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
@@ -122,14 +122,14 @@
 
         <!-- 生产日报查询类 -->
         <activity
-            android:name=".activity.work.production.ProductionActivity"
+            android:name=".activity.work.ftydl.FTYDLSearchActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <!-- 查货跟踪查询类 -->
         <activity
-            android:name=".activity.work.commo.CommoditySqlActivity"
+            android:name=".activity.work.qacwork.QACworkSearchActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
@@ -148,21 +148,17 @@
 
         <!-- 用车单详情 -->
         <activity
-            android:name=".activity.work.car.SqlcarApplyActivity"
+            android:name=".activity.work.car.ReqcarmSearchActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <!-- 新建生产日报 -->
         <activity
-            android:name=".activity.work.production.ProductionNewlyBuildActivity"
+            android:name=".activity.work.ftydl.FTYDLSearchNewlyBuildActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <!-- 新建保存 -->
-        <activity
-            android:name=".activity.work.production.ProductionNewlyComfigActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
 
         <!--重新写的签到界面-->
         <activity
@@ -208,9 +204,12 @@
 
         <!--生产日报复制保存-->
         <activity
-            android:name=".activity.work.production.ProductionCopyComfigActivity"
+            android:name=".activity.work.ftydl.FTYDLSearchCopyDetailActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden" />
 
         <activity
             android:name=".activity.side.SideActivity"
@@ -218,7 +217,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.work.commo.CommoditydetailActivity"
+            android:name=".activity.work.qacwork.QACworkDetailActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
@@ -236,14 +235,14 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.work.production.ProductionNewlyComfigVerticalActivity"
+            android:name=".activity.work.ftydl.FTYDLNewlyComfigDetailActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name=".activity.work.production.ProductionDetailActivity"
+            android:name=".activity.work.ftydl.FTYDLSearchDetailActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"

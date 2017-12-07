@@ -52,7 +52,7 @@
                             android:focusable="true"
                             android:focusableInTouchMode="true" />
                         <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
-                            android:id="@+id/etUsername"
+                            android:id="@+id/Login_txt_username"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/shape_edittext_sql_boild"
@@ -71,7 +71,7 @@
                             android:textSize="@dimen/dimen_50sp" />
 
                         <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
-                            android:id="@+id/etPassword"
+                            android:id="@+id/Login_txt_password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen_42"
@@ -104,7 +104,7 @@
                                 android:orientation="horizontal">
 
                                 <CheckBox
-                                    android:id="@+id/checkBoxPw"
+                                    android:id="@+id/Login_chk_password"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/chk_agee_provision_background"
@@ -127,7 +127,7 @@
                                 android:orientation="horizontal">
 
                                 <CheckBox
-                                    android:id="@+id/checkboxopen"
+                                    android:id="@+id/Login_chk_aotulogin"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/chk_agee_provision_background"
@@ -145,7 +145,7 @@
                         </RelativeLayout>
 
                         <Button
-                            android:id="@+id/btnLogin"
+                            android:id="@+id/Login_div_loginbutton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dimen_100"

@@ -1,9 +1,7 @@
 package com.daoran.newfactory.onefactory.activity.main;
 
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,7 +15,7 @@ import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
-import com.daoran.newfactory.onefactory.bean.TabHostBean;
+import com.daoran.newfactory.onefactory.bean.settingbean.TabHostBean;
 import com.daoran.newfactory.onefactory.fragment.InformationFragment;
 import com.daoran.newfactory.onefactory.fragment.OfficeFragment;
 import com.daoran.newfactory.onefactory.fragment.SetupFragment;
@@ -80,18 +78,14 @@ public class MainActivity extends BaseFrangmentActivity {
         return false;
     }
 
-    /**
-     * 操作控件
-     */
+    /*操作控件*/
     private void getViews() {
         //添加侧滑页面
 //        drawerFragment = (DrawerFragment) getSupportFragmentManager().
 //                findFragmentById(R.id.navigation_drawer);
 //        drawerFragment.setUp(R.id.navigation_drawer,
 //                (DrawerLayout) findViewById(R.id.activity_main));
-        /**
-         * bean中添加tab中要显示的文字，图片，内容
-         */
+        /*bean中添加tab中要显示的文字，图片，内容*/
         TabHostBean tab_work = new TabHostBean(R.string.work,
                 R.drawable.selector_icon_work, WorkFragment.class);
         TabHostBean tab_office = new TabHostBean(R.string.office,
@@ -134,12 +128,7 @@ public class MainActivity extends BaseFrangmentActivity {
 //        ft.commit();
 //    }
 
-    /**
-     * 加载底部菜单项
-     *
-     * @param bean
-     * @return
-     */
+    /*加载底部菜单项*/
     private View getTabItemView(TabHostBean bean) {
         View view = mInflater.inflate(R.layout.tabitem_home, null);
         ImageView imageView = (ImageView) view.findViewById(R.id.tab_icon);

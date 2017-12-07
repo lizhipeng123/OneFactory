@@ -1,18 +1,11 @@
 package com.daoran.newfactory.onefactory.activity.work;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -21,25 +14,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.adapter.SignDetailAdapter;
-import com.daoran.newfactory.onefactory.adapter.SignDetailLeftAdapter;
+import com.daoran.newfactory.onefactory.adapter.signadapter.SignDetailAdapter;
+import com.daoran.newfactory.onefactory.adapter.signadapter.SignDetailLeftAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
-import com.daoran.newfactory.onefactory.bean.SignDetailBean;
+import com.daoran.newfactory.onefactory.bean.signbean.SignDailyBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
-import com.daoran.newfactory.onefactory.util.file.save.SignDetailExcelUtil;
-import com.daoran.newfactory.onefactory.view.dialog.SignContentDialog;
+import com.daoran.newfactory.onefactory.util.utils.Util;
+import com.daoran.newfactory.onefactory.view.dialog.signdialog.SignSearchDialog;
 import com.daoran.newfactory.onefactory.view.listview.NoscrollListView;
 import com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView;
-import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
+import com.daoran.newfactory.onefactory.view.dialog.utildialog.ResponseDialog;
 import com.google.gson.JsonSyntaxException;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -47,10 +39,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import okhttp3.Call;
 
@@ -60,17 +49,17 @@ import okhttp3.Call;
  */
 
 public class SignDetailActivity extends BaseFrangmentActivity implements View.OnClickListener {
-    private NoscrollListView mLeft;//页面左侧视图（签到信息编号）
-    private NoscrollListView mData;//页面右侧视图（签到信息主体内容）
+    private NoscrollListView lv_left;//页面左侧视图（签到信息编号）
+    private NoscrollListView lv_data;//页面右侧视图（签到信息主体内容）
     private SignDetailAdapter detailAdapter;//页面右侧列表适配（签到信息主体内容）
     private SignDetailLeftAdapter leftAdapter;//页面左侧列表适配（签到信息编号）
-    private SyncHorizontalScrollView mHeaderHorizontal;//可滑动scrollview视图顶部（签到信息命名列）
-    private SyncHorizontalScrollView mDataHorizontal;//可滑动scrollview视图列表（签到信息主体视图）
-    private List<SignDetailBean.DataBean> mListData = new ArrayList<SignDetailBean.DataBean>();//列表内容签到信息集合
-    private SignDetailBean signBean;//签到信息实体类
+    private SyncHorizontalScrollView header_horizontal;//可滑动scrollview视图顶部（签到信息命名列）
+    private SyncHorizontalScrollView data_horizontal;//可滑动scrollview视图列表（签到信息主体视图）
+    private List<SignDailyBean.DataBean> mListData = new ArrayList<SignDailyBean.DataBean>();//列表内容签到信息集合
+    private SignDailyBean signBean;//签到信息实体类
     private ImageView ivSiganSqlDetail;//返回图片按钮
     private ImageView ivSearch;//条件查询图片按钮
-    private SignContentDialog dialog;//顶部右侧刷新等弹出菜单
+    private SignSearchDialog dialog;//顶部右侧刷新等弹出菜单
     private EditText etSqlDetail;//页数输入框
     private TextView tvSignPage;//总页数
     private Button btnSignPage;//按页数查询按钮
@@ -86,10 +75,6 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     int pageIndex = 0;//初始页数
     int pageCount;//总页数
     private String configid;
-    //保存数据为excel时开启线程的状态
-    private static final int DOWN_NOSDCARD = 0;
-    private static final int DOWN_NO = 1;
-    private static final int DOWN_ERROR = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,21 +82,18 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         setContentView(R.layout.activity_sign_detail);
         initView();
         getViews();
-        setSignDetail();
     }
 
-    /**
-     * 实例化控件
-     */
+    /*实例化控件*/
     private void initView() {
         ivSiganSqlDetail = (ImageView) findViewById(R.id.ivSiganSqlDetail);
-        mData = (NoscrollListView) findViewById(R.id.lv_data);
-        mLeft = (NoscrollListView) findViewById(R.id.lv_left);
-        mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
-        mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
+        lv_data = (NoscrollListView) findViewById(R.id.lv_data);
+        lv_left = (NoscrollListView) findViewById(R.id.lv_left);
+        data_horizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
+        header_horizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
         ivSearch = (ImageView) findViewById(R.id.ivSearch);
-        mDataHorizontal.setSrollView(mHeaderHorizontal);
-        mHeaderHorizontal.setSrollView(mDataHorizontal);
+        data_horizontal.setSrollView(header_horizontal);
+        header_horizontal.setSrollView(data_horizontal);
         etSqlDetail = (EditText) findViewById(R.id.etSqlDetail);
         tvSignPage = (TextView) findViewById(R.id.tvSignPage);
         btnSignPage = (Button) findViewById(R.id.btnSignPage);
@@ -122,13 +104,11 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         ivUpLeftPage = (ImageView) findViewById(R.id.ivUpLeftPage);
         ivDownRightPage = (ImageView) findViewById(R.id.ivDownRightPage);
         spinnermenu = (Button) findViewById(R.id.spinnermenu);
-        setEditTextInhibitInputSpeChat(etSqlDetail);
+        Util.setEditTextInhibitInputSpeChat(etSqlDetail);
         getClumnsSpinner();
     }
 
-    /**
-     * 操作控件
-     */
+    /*操作控件*/
     private void getViews() {
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Log.i("info", "landscape"); // 横屏
@@ -146,9 +126,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         spinnermenu.setOnClickListener(this);
     }
 
-    /**
-     * 填充签到查询每页显示条目spinner数据
-     */
+    /*填充签到查询每页显示条目spinner数据*/
     private void getClumnsSpinner() {
         String[] spinner = getResources().getStringArray(R.array.clumnsCommon);
         ArrayAdapter<String> adapterclumns = new ArrayAdapter<String>(this,
@@ -280,11 +258,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         }
     }
 
-    /**
-     * 上一页下一页
-     *
-     * @param pageIndex1
-     */
+    /*上一页下一页*/
     private void setPageDate(String pageIndex1) {
         String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
         sp = SignDetailActivity.this.getSharedPreferences("my_sp", 0);
@@ -313,6 +287,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
+                            ResponseDialog.closeLoading();
                         }
 
                         @Override
@@ -320,7 +295,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                             System.out.print(response);
                             try {
                                 Gson gson = new Gson();
-                                signBean = gson.fromJson(response, SignDetailBean.class);
+                                signBean = gson.fromJson(response, SignDailyBean.class);
                                 mListData = signBean.getData();
                                 if (signBean.getTotalCount() != 0) {
                                     ll_visibi.setVisibility(View.GONE);
@@ -332,9 +307,9 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                     System.out.print(count);
                                     tvSignPage.setText(count);
                                     detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
-                                    mData.setAdapter(detailAdapter);
+                                    lv_data.setAdapter(detailAdapter);
                                     leftAdapter = new SignDetailLeftAdapter(SignDetailActivity.this, mListData);
-                                    mLeft.setAdapter(leftAdapter);
+                                    lv_left.setAdapter(leftAdapter);
                                     detailAdapter.notifyDataSetChanged();
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
@@ -356,9 +331,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         }
     }
 
-    /**
-     * 签到查询服务器
-     */
+    /*签到查询*/
     private void setSignDetail() {
         String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
         sp = SignDetailActivity.this.getSharedPreferences("my_sp", 0);
@@ -371,8 +344,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         String datetime = sp.getString("datetimesign", "");//起始日期
         String endtime = sp.getString("endtimesign", "");//结束日期
         if (NetWork.isNetWorkAvailable(this)) {
-            final ProgressDialog progressDialog = ProgressDialog.show(this,
-                    "请稍候...", "正在查询中...", false, true);
+            ResponseDialog.showLoading(this,"正在查询");
             final int finalGetsize = Integer.parseInt(getsize);
             OkHttpUtils
                     .post()
@@ -389,38 +361,15 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
-                            Thread thread = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        Thread.sleep(1000);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                    progressDialog.dismiss();
-                                }
-                            });
-                            thread.start();
+                            ResponseDialog.closeLoading();
                         }
 
                         @Override
                         public void onResponse(String response, int id) {
                             System.out.print(response);
-                            Thread thread = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        Thread.sleep(1000);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                    progressDialog.dismiss();
-                                }
-                            });
-                            thread.start();
                             try {
                                 Gson gson = new Gson();
-                                signBean = gson.fromJson(response, SignDetailBean.class);
+                                signBean = gson.fromJson(response, SignDailyBean.class);
                                 mListData = signBean.getData();
                                 //判断是否有数据，如果没有则显示另一个页面
                                 if (signBean.getTotalCount() != 0) {
@@ -433,19 +382,22 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                     System.out.print(count);
                                     tvSignPage.setText(count);
                                     detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
-                                    mData.setAdapter(detailAdapter);
+                                    lv_data.setAdapter(detailAdapter);
                                     leftAdapter = new SignDetailLeftAdapter(SignDetailActivity.this, mListData);
-                                    mLeft.setAdapter(leftAdapter);
+                                    lv_left.setAdapter(leftAdapter);
                                     detailAdapter.notifyDataSetChanged();
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
                                     scroll_content.setVisibility(View.GONE);
                                     tv_visibi.setText("没有更多信息");
                                 }
+                                ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
+                                ResponseDialog.closeLoading();
                             } catch (Exception e) {
                                 e.printStackTrace();
+                                ResponseDialog.closeLoading();
                             }
                         }
                     });
@@ -454,9 +406,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         }
     }
 
-    /**
-     * 翻页查找
-     */
+    /*翻页查找*/
     private void setPageSignDetail() {
         String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
         sp = SignDetailActivity.this.getSharedPreferences("my_sp", 0);
@@ -470,8 +420,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
         String index = String.valueOf(pageIndex - 1);
         if (NetWork.isNetWorkAvailable(this)) {
-            final ProgressDialog progressDialog = ProgressDialog.show(this,
-                    "请稍候...", "正在查询中...", false, true);
+            ResponseDialog.showLoading(this,"正在查询");
             final int finalGetsize = Integer.parseInt(getsize);
             OkHttpUtils
                     .post()
@@ -488,38 +437,15 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
-                            Thread thread = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        Thread.sleep(1000);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                    progressDialog.dismiss();
-                                }
-                            });
-                            thread.start();
+                            ResponseDialog.closeLoading();
                         }
 
                         @Override
                         public void onResponse(String response, int id) {
                             System.out.print(response);
-                            Thread thread = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        Thread.sleep(1000);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                    progressDialog.dismiss();
-                                }
-                            });
-                            thread.start();
                             try {
                                 Gson gson = new Gson();
-                                signBean = gson.fromJson(response, SignDetailBean.class);
+                                signBean = gson.fromJson(response, SignDailyBean.class);
                                 mListData = signBean.getData();
                                 if (signBean.getTotalCount() != 0) {
                                     ll_visibi.setVisibility(View.GONE);
@@ -531,19 +457,21 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
                                     System.out.print(count);
                                     tvSignPage.setText(count);
                                     detailAdapter = new SignDetailAdapter(mListData, SignDetailActivity.this);
-                                    mData.setAdapter(detailAdapter);
+                                    lv_data.setAdapter(detailAdapter);
                                     leftAdapter = new SignDetailLeftAdapter(SignDetailActivity.this, mListData);
-                                    mLeft.setAdapter(leftAdapter);
+                                    lv_left.setAdapter(leftAdapter);
                                     detailAdapter.notifyDataSetChanged();
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
                                     scroll_content.setVisibility(View.GONE);
                                     tv_visibi.setText("没有更多信息");
                                 }
+                                ResponseDialog.closeLoading();
                             } catch (JsonSyntaxException e) {
                                 ToastUtils.ShowToastMessage("获取列表失败,请重新再试", SignDetailActivity.this);
-
+                                ResponseDialog.closeLoading();
                             } catch (Exception e) {
+                                ResponseDialog.closeLoading();
                                 e.printStackTrace();
                             }
                         }
@@ -554,7 +482,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     }
 
     private void showDialog(View view) {
-        dialog = new SignContentDialog(this,
+        dialog = new SignSearchDialog(this,
                 R.style.dialogstyle, onClickListener, onCancleListener);
         dialog.show();
     }
@@ -589,25 +517,4 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
             }
         }
     };
-
-    /**
-     * 禁止EditText输入特殊字符
-     *
-     * @param editText
-     */
-    public static void setEditTextInhibitInputSpeChat(EditText editText) {
-        InputFilter filter = new InputFilter() {
-            @Override
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                String speChat = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
-                Pattern pattern = Pattern.compile(speChat);
-                Matcher matcher = pattern.matcher(source.toString());
-                if (source.equals(" ") || source.equals("\n") || matcher.find())
-                    return "";
-                else
-                    return null;
-            }
-        };
-        editText.setFilters(new InputFilter[]{filter});
-    }
 }

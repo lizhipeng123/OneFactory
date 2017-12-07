@@ -88,16 +88,15 @@
         <com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete
             android:id="@+id/etNewbuild"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dimen_90"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="3"
             android:background="@drawable/shape_edittext_sql_boild"
             android:hint="请输入款号"
-            android:paddingBottom="@dimen/dimen_20"
             android:paddingLeft="@dimen/dimen_42"
+            android:singleLine="true"
             android:paddingRight="@dimen/dimen_42"
-            android:paddingTop="@dimen/dimen_20"
             android:textColorHint="@color/defaultTextColor"
             android:textSize="@dimen/dimen_30sp" />
 

@@ -6,7 +6,7 @@ import android.os.StatFs;
 import android.widget.Toast;
 
 
-import com.daoran.newfactory.onefactory.bean.SignDetailBean;
+import com.daoran.newfactory.onefactory.bean.signbean.SignDailyBean;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,7 +34,7 @@ public class SignDetailExcelUtil {
 
     public static void writeExcel(
             final Context context,
-            final List<SignDetailBean.DataBean> exportOrder,
+            final List<SignDailyBean.DataBean> exportOrder,
             String fileName) throws Exception {
         if (!Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED) && getAvailableStorage()
@@ -69,7 +69,7 @@ public class SignDetailExcelUtil {
             @Override
             public void run() {
                 for (int i = 0; i < exportOrder.size(); i++) {
-                    SignDetailBean.DataBean order = exportOrder.get(i);
+                    SignDailyBean.DataBean order = exportOrder.get(i);
                     Label orderNum = new Label(0, i + 1, order.getCode());
                     Label restaurant = new Label(1, i + 1, order.getRecorder());
                     Label regedittyp = new Label(2, i + 1, order.getRegedittyp());

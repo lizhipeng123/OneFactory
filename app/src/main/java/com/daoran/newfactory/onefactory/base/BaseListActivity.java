@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.adapter.SqlCarApplyAdapter;
+import com.daoran.newfactory.onefactory.adapter.reqcaradapter.ReqCarSearchAdapter;
 import com.i5tong.epubreaderlib.view.pulltorefresh.ILoadingLayout;
 import com.i5tong.epubreaderlib.view.pulltorefresh.PullToRefreshBase;
 import com.i5tong.epubreaderlib.view.pulltorefresh.PullToRefreshListView;
@@ -151,8 +151,8 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
         if (datas == null || datas.size() == 0) {
             if (pageIndex == defaultPageIndex) {
                 //如果没有数据时，则清空列表
-                if (adapter instanceof SqlCarApplyAdapter) {
-                    ((SqlCarApplyAdapter) adapter).clear();
+                if (adapter instanceof ReqCarSearchAdapter) {
+                    ((ReqCarSearchAdapter) adapter).clear();
                 }
                 setEmptyView();
             } else {
@@ -163,12 +163,12 @@ public abstract class BaseListActivity extends BaseFrangmentActivity implements 
                 return;
             hideEmptyView();
             if (pageIndex == defaultPageIndex) {
-                if (adapter instanceof SqlCarApplyAdapter) {
-                    ((SqlCarApplyAdapter) adapter).replaceAll(datas);//替换数据
+                if (adapter instanceof ReqCarSearchAdapter) {
+                    ((ReqCarSearchAdapter) adapter).replaceAll(datas);//替换数据
                 }
             } else {
-                if (adapter instanceof SqlCarApplyAdapter) {
-                    ((SqlCarApplyAdapter) adapter).addAll(datas);//新增数据
+                if (adapter instanceof ReqCarSearchAdapter) {
+                    ((ReqCarSearchAdapter) adapter).addAll(datas);//新增数据
                 }
             }
             pageIndex++;//页数累加

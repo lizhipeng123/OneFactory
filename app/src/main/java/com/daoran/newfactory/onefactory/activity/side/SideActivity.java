@@ -10,9 +10,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.adapter.SideAdatper;
+import com.daoran.newfactory.onefactory.adapter.settingadapter.SideAdatper;
 import com.daoran.newfactory.onefactory.fragment.SideFragment;
-import com.daoran.newfactory.onefactory.bean.PersionInfo;
+import com.daoran.newfactory.onefactory.bean.settingbean.PersionInfo;
 
 import java.util.ArrayList;
 import java.util.List;

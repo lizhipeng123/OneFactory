@@ -1,0 +1,984 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_150"
+        android:background="@color/lightblue">
+
+        <ImageView
+            android:id="@+id/ivCommoditySql"
+            android:layout_width="@dimen/dimen_60"
+            android:layout_height="@dimen/dimen_60"
+            android:layout_marginLeft="@dimen/dimen_20"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ali_back_two" />
+
+        <View
+            android:id="@+id/viewtitletwo"
+            android:layout_width="1px"
+            android:layout_height="@dimen/dimen_100"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_20"
+            android:layout_toRightOf="@+id/ivCommoditySql"
+            android:background="#FF909090" />
+
+        <TextView
+            android:id="@+id/tvCommoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="查货跟踪单"
+            android:textColor="@color/icon_color"
+            android:textSize="@dimen/dimen_55sp" />
+
+        <ImageView
+            android:id="@+id/ivSearch"
+            android:layout_width="@dimen/dimen_70"
+            android:layout_height="@dimen/dimen_70"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_20"
+            android:layout_toRightOf="@+id/viewtitletwo"
+            android:src="@mipmap/ali_search_two" />
+
+        <View
+            android:id="@+id/viewtitle"
+            android:layout_width="1px"
+            android:layout_height="@dimen/dimen_100"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_20"
+            android:layout_toLeftOf="@+id/spinnermenu"
+            android:background="#FF909090" />
+
+        <Button
+            android:id="@+id/spinnermenu"
+            android:layout_width="@dimen/dimen_80"
+            android:layout_height="@dimen/dimen_80"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_30"
+            android:layout_marginRight="@dimen/dimen_30"
+            android:background="@mipmap/spin_filp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="#FF909090" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/lightblue"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_id"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="款号" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <LinearLayout
+            android:id="@+id/lin_header_content"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="3"
+            android:orientation="vertical">
+
+            <com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView
+                android:id="@+id/header_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:overScrollMode="never"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/lin_year_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_ctmtxt"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="客户" />
+
+                    <View
+                        android:id="@+id/tvviewctmtxt"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_prddocumentary"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="跟单" />
+
+                    <View
+                        android:id="@+id/tvviewprddocumentary"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_prdmaster"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="生产主管" />
+
+                    <View
+                        android:id="@+id/tvviewprdmaster"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_QCMasterScore"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="主管评分" />
+
+                    <View
+                        android:id="@+id/tvviewQCMasterScore"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_sealedrev"
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="封样资料接收时间" />
+
+                    <View
+                        android:id="@+id/tvviewsealedrev"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_docback"
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="大货资料接收时间" />
+
+                    <View
+                        android:id="@+id/tvviewdocback"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_lcdat"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="出货时间" />
+
+                    <View
+                        android:id="@+id/tvviewlcdat"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_count"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="制单数量" />
+
+                    <View
+                        android:id="@+id/tvviewtaskqty"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_preMemo"
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="需要特别备注的情况" />
+
+                    <View
+                        android:id="@+id/tvviewpreMemo"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_predocdt"
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="预计产前报告时间" />
+
+                    <View
+                        android:id="@+id/tvviewpredocdt"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_predt"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="开产前会时间" />
+
+                    <View
+                        android:id="@+id/tvviewpredt"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_predoc"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="产前会报告" />
+
+                    <View
+                        android:id="@+id/tvviewpredoc"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_fabricsok"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="大货面料情况" />
+
+                    <View
+                        android:id="@+id/tvviewfabricsok"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_accessoriesok"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="大货辅料情况" />
+
+                    <View
+                        android:id="@+id/tvviewaccessoriesok"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_spcproDec"
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="大货特殊工艺情况" />
+
+                    <View
+                        android:id="@+id/tvviewspcproDec"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_spcproMemo"
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="特殊工艺特别备注" />
+
+                    <View
+                        android:id="@+id/tvviewspcproMemo"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_cutqty"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="实裁数" />
+
+                    <View
+                        android:id="@+id/tvviewcutqty"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_sewFdt"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="上线日期" />
+
+                    <View
+                        android:id="@+id/tvviewsewFdt"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_sewMdt"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="下线日期" />
+
+                    <View
+                        android:id="@+id/tvviewsewMdt"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_subfactory"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="加工厂" />
+
+                    <View
+                        android:id="@+id/tvviewsubfactory"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_prebdt"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="预计早期时间" />
+
+                    <View
+                        android:id="@+id/tvviewprebdt"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_QCbdt"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="自查早期时间" />
+
+                    <View
+                        android:id="@+id/tvviewQCbdt"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/ll_PPSDetail_txt_QCbdtDoc"
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="早期报告" />
+
+                    <View
+                        android:id="@+id/tvviewQCbdtDoc"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_premdt"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="预计中期时间" />
+
+                    <View
+                        android:id="@+id/tvviewpremdt"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_QCmdt"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="自查中期时间" />
+
+                    <View
+                        android:id="@+id/tvviewQCmdt"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_QCmdtDoc"
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="中期报告" />
+
+                    <View
+                        android:id="@+id/tvviewQCmdtDoc"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_preedt"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="预计尾期时间" />
+
+                    <View
+                        android:id="@+id/tvviewpreedt"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_QCMedt"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="自查尾期时间" />
+
+                    <View
+                        android:id="@+id/tvviewQCMedt"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_QCedtDoc"
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="尾期报告" />
+
+                    <View
+                        android:id="@+id/tvviewQCedtDoc"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_fctmdt"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="客查中期时间" />
+
+                    <View
+                        android:id="@+id/tvviewfctmdt"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_fctedt"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="客查尾期时间" />
+
+                    <View
+                        android:id="@+id/tvviewfctedt"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_packbdat"
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="成品包装开始日期" />
+
+                    <View
+                        android:id="@+id/tvviewpackbdat"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_packqty2"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="装箱数量" />
+
+                    <View
+                        android:id="@+id/tvviewpackqty2"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_QCMemo"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="QC特别备注" />
+
+                    <View
+                        android:id="@+id/tvviewQCMemo"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_factlcdat"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="离厂日期" />
+
+                    <View
+                        android:id="@+id/tvviewfactlcdat"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_batchid"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="查货批次" />
+
+                    <View
+                        android:id="@+id/tvviewbatchid"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_ourAfter"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="后道" />
+
+                    <View
+                        android:id="@+id/tvviewourAfter"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_ctmchkdt"
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="业务员确认客查日期" />
+
+                    <View
+                        android:id="@+id/tvviewctmchkdt"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_IPQCPedt"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="尾查预查" />
+
+                    <View
+                        android:id="@+id/tvviewIPQCPedt"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_IPQC"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="巡检" />
+
+                    <View
+                        android:id="@+id/tvviewIPQC"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_IPQCmdt"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="巡检中查" />
+
+                    <View
+                        android:id="@+id/tvviewIPQCmdt"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_QAname"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="QA首扎" />
+
+                    <View
+                        android:id="@+id/tvviewQAname"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_QAScore"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="QA首扎件数" />
+
+                    <View
+                        android:id="@+id/tvviewQAScore"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_QAMemo"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="QA首扎日" />
+
+                    <View
+                        android:id="@+id/tvviewQAMemo"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_chker"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="件查" />
+
+                    <View
+                        android:id="@+id/tvviewchker"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_chkpdt"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="预计件查时间" />
+
+                    <View
+                        android:id="@+id/tvviewchkpdt"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_chkfctdt"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="实际件查时间" />
+
+                    <View
+                        android:id="@+id/tvviewchkfctdt"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+
+                    <TextView
+                        android:id="@+id/tv_commodetail_chkplace"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="查货地点(件查)" />
+
+                    <View
+                        android:id="@+id/tvviewchkplace"
+                        android:layout_width="1px"
+                        android:layout_height="50dp"
+                        android:background="@color/darkgray" />
+                </LinearLayout>
+            </com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#FF909090" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_visibi"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/lightblue"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/null_comm_img" />
+
+            <TextView
+                android:id="@+id/tv_visibi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/scroll_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:orientation="horizontal">
+
+                <com.daoran.newfactory.onefactory.view.listview.NoscrollListView
+                    android:id="@+id/lv_cleft"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:overScrollMode="never"
+                    android:scrollbars="none" />
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:background="#cccccc" />
+
+                <LinearLayout
+                    android:id="@+id/lin_data_content"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView
+                        android:id="@+id/data_horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:overScrollMode="never"
+                        android:scrollbars="none">
+
+                        <com.daoran.newfactory.onefactory.view.listview.NoscrollListView
+                            android:id="@+id/lv_data"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:overScrollMode="never"
+                            android:scrollbars="none" />
+                    </com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="9"
+            android:background="@color/lightblue"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/ivUpLeftPage"
+                android:layout_width="@dimen/dimen_100"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_20"
+                android:src="@mipmap/left49" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/etSqlDetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_90"
+                    android:layout_gravity="center"
+                    android:background="@drawable/shape_edittext_sql_boild"
+                    android:gravity="center"
+                    android:inputType="phone|number"
+                    android:numeric="integer"
+                    android:paddingLeft="15dp"
+                    android:textColor="@color/icon_color"
+                    android:paddingRight="15dp"
+                    android:text="1"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:text="/"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tvSignPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/btnSignPage"
+                    android:layout_width="@dimen/dimen_170"
+                    android:layout_height="@dimen/dimen_100"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dimen_30"
+                    android:textColor="@color/icon_color"
+                    android:background="@drawable/shape_btn_newsbuild_boild"
+                    android:text="确定" />
+
+                <Spinner
+                    android:id="@+id/spinnCommoPageClumns"
+                    android:layout_width="@dimen/dimen_150"
+                    android:layout_height="@dimen/dimen_100"
+                    android:layout_marginLeft="@dimen/dimen_30"
+                    android:background="@drawable/spinner_bg"
+                    android:entries="@array/clumnsCommon"
+                    android:gravity="center_vertical"
+                    android:text="每页10行"
+                    android:textSize="@dimen/dimen_50sp" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dimen_30"
+                    android:gravity="center"
+                    android:text="条"
+                    android:textColor="@color/icon_color"
+                    android:textSize="@dimen/dimen_50sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/ivDownRightPage"
+                android:layout_width="@dimen/dimen_100"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dimen_20"
+                android:rotation="180"
+                android:src="@mipmap/left49" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.bean.PersionInfo;
+import com.daoran.newfactory.onefactory.bean.settingbean.PersionInfo;
 
 /**
  * Created by lizhipeng on 2017/8/17.

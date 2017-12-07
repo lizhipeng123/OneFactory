@@ -5,7 +5,7 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.widget.Toast;
 
-import com.daoran.newfactory.onefactory.bean.SqlCarApplyBean;
+import com.daoran.newfactory.onefactory.bean.reqcarbean.ReqCarDailyBean;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,7 +32,7 @@ public class ExcelUtil {
 
     public static void writeExcel(
             final Context context,
-            final List<SqlCarApplyBean.DataBean> exportOrder,
+            final List<ReqCarDailyBean.DataBean> exportOrder,
             String fileName) throws Exception {
         if (!Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED) && getAvailableStorage()
@@ -67,7 +67,7 @@ public class ExcelUtil {
             @Override
             public void run() {
                 for (int i = 0; i < exportOrder.size(); i++) {
-                    SqlCarApplyBean.DataBean order = exportOrder.get(i);
+                    ReqCarDailyBean.DataBean order = exportOrder.get(i);
                     Label orderNum = new Label(0, i + 1, order.getCode());
                     Label restaurant = new Label(1, i + 1, order.getRecorder());
                     Label nameLabel = new Label(2, i + 1, order.getRecordt());

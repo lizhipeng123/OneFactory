@@ -1,0 +1,805 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lin_content"
+    android:descendantFocusability="blocksDescendants"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvCommoctmtxt"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewctmtxt"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoprddocumentary"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewprddocumentary"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoprdmaster"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewprdmaster"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoQCMasterScore"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:numeric="integer"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewQCMasterScore"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommosealedrev"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewsealedrev"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommodocback"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewdocback"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommolcdat"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewlcdat"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommotaskqty"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewtaskqty"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommopreMemo"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewpreMemo"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommopredocdt"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewpredocdt"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommopredt"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewpredt"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommopredoc"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewpredoc"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommofabricsok"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewfabricsok"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoaccessoriesok"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewaccessoriesok"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommospcproDec"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewspcproDec"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommospcproMemo"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewspcproMemo"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommocutqty"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewcutqty"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommosewFdt"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewsewFdt"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommosewMdt"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewsewMdt"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommosubfactory"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewsubfactory"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoprebdt"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewprebdt"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoQCbdt"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewQCbdt"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoQCbdtDoc"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewQCbdtDoc"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommopremdt"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewpremdt"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoQCmdt"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewQCmdt"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoQCmdtDoc"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewQCmdtDoc"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommopreedt"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewpreedt"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoQCMedt"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewQCMedt"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoQCedtDoc"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewQCedtDoc"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommofctmdt"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewfctmdt"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommofctedt"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewfctedt"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommopackbdat"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewpackbdat"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommopackqty2"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewpackqty2"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoQCMemo"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewQCMemo"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommofactlcdat"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewfactlcdat"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommobatchid"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewbatchid"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoourAfter"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewourAfter"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoctmchkdt"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewctmchkdt"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoIPQCPedt"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewIPQCPedt"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+        <TextView
+            android:id="@+id/tvCommoIPQC"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewIPQC"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+        <TextView
+            android:id="@+id/tvCommoIPQCmdt"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewIPQCmdt"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoQAname"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewQAname"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoQAScore"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewQAScore"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoQAMemo"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewQAMemo"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoThing"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewThing"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoThingExpectedTime"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewThingExpectedTime"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoThingTime"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_text_sql_boild"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewThingTime"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+
+        <TextView
+            android:id="@+id/tvCommoThingAddress"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_40sp" />
+
+        <View
+            android:id="@+id/tvviewThingAddress"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#cccccc" />
+</LinearLayout>

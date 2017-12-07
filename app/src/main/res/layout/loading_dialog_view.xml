@@ -7,7 +7,7 @@
     android:gravity="center"
     android:background="@drawable/dialog_bg"
     android:orientation="vertical">
-    <com.daoran.newfactory.onefactory.view.dialog.LVCircularRing
+    <com.daoran.newfactory.onefactory.view.dialog.utildialog.LVCircularRing
         android:id="@+id/lv_circularring"
         android:layout_width="50dp"
         android:layout_height="50dp" />

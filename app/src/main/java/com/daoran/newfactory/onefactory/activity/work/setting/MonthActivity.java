@@ -1,15 +1,12 @@
 package com.daoran.newfactory.onefactory.activity.work.setting;
 
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -24,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.adapter.EventSetAdapter;
+import com.daoran.newfactory.onefactory.adapter.settingadapter.EventSetAdapter;
 import com.daoran.newfactory.onefactory.base.BaseUIActivity;
 import com.daoran.newfactory.onefactory.fragment.EventSetFragment;
 import com.daoran.newfactory.onefactory.fragment.ScheduleFragment;

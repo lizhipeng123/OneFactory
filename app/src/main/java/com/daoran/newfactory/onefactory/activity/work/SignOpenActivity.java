@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -60,7 +59,7 @@ import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 import com.daoran.newfactory.onefactory.util.file.image.BitmapTools;
-import com.daoran.newfactory.onefactory.view.dialog.ResponseDialog;
+import com.daoran.newfactory.onefactory.view.dialog.utildialog.ResponseDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -90,9 +89,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
     private AMap aMap;//初始化地图控制器对象
     private AMapLocationClient mapLocationClient;//声明aMapLocationClient对象
     private AMapLocationClientOption mapLocationClientOption;//声明AMapLocationClientOption对象
-    private boolean isFirstLoc = true;
-    private double longitude;//初始化经纬度
-    private double latitude;
     private LocationSource.OnLocationChangedListener mListener;
     private PoiSearch.Query query;//poi查询类
     private PoiSearch poiSearch;//搜索
@@ -100,14 +96,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
     private String deepType;//搜索类型
     private Spinner spinnnerfileTune;
     private MyLocationStyle myLocationStyle;
-
-    private static final String TAG = "TAG";
-    //线程定位状态
-    public static final String KEY_LAT = "lat";
-    public static final String KEY_LNG = "lng";
-    public static final String KEY_DES = "des";
-
-    private String cityCode;
     private TextView tvSqltexttime;
     private LinearLayout btnSignOk;//声明签到按钮
     private Button btnCount;//签到统计按钮
@@ -117,22 +105,29 @@ public class SignOpenActivity extends BaseFrangmentActivity
     private ImageView ivSignBack;//声明返回控件
     private ImageView topBg;
     private ScrollView scrollviewSign;
+    private ProgressDialog progressDialog;
+
+    private static final String TAG = "TAG";
+    //线程定位状态
+    public static final String KEY_LAT = "lat";
+    public static final String KEY_LNG = "lng";
+    public static final String KEY_DES = "des";
+
+    private boolean isFirstLoc = true;
+    private double longitude;//初始化经纬度
+    private double latitude;
+    private String cityCode;//城市名
+    private int year, month, date, hour, minute, second;
+    String strprolong1;
+    private MarkerOptions mMarkerOptions;//初始化可标记的点
     private ArrayAdapter<String> adapter;
     private ArrayList<String> locationList = new ArrayList<>();
-
-    private int year, month, date, hour, minute, second;
     private SharedPreferences sp;//轻量级存储框架
     private SPUtils spUtils;
-    private MarkerOptions mMarkerOptions;//初始化可标记的点
-    private LocationManager locationManager;
-    /**
-     * 判断是否需要检测，防止不停的弹框
-     */
+
+    /*判断是否需要检测，防止不停的弹框*/
 //    private boolean isNeedCheck = true;
     private static final int msgKey1 = 1;
-    String strprolong1;
-
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,9 +181,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
         }
     }
 
-    /**
-     * 线程计时（时分秒）
-     */
+    /*线程计时（时分秒）*/
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -212,9 +205,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
         mapLocationClient.startLocation();
     }
 
-    /**
-     * 给予控件属性及方法
-     */
+    /*初始化控件*/
     private void initViews() {
         ivSignBack.setOnClickListener(this);
         btnCount.setOnClickListener(this);
@@ -238,9 +229,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
         topBg.setOnClickListener(this);
     }
 
-    /**
-     * 实例化控件
-     */
+    /*实例化控件*/
     private void getViews() {
         scrollviewSign = (ScrollView) findViewById(R.id.scrollviewSign);
         ivSignBack = (ImageView) findViewById(R.id.ivSignBack);
@@ -256,9 +245,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
         getDate();
     }
 
-    /**
-     * 设置显示的地图模式
-     */
+    /*设置显示的地图模式*/
     private void setUp() {
         aMap.setLocationSource(this);
         aMap.setOnCameraChangeListener(this);
@@ -267,9 +254,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
         aMap.moveCamera(CameraUpdateFactory.zoomTo(17.5f));
     }
 
-    /**
-     * 遍历查询周边地址特征
-     */
+    /*遍历查询周边地址特征*/
     private void initSpinner() {
         final String[] str = new String[]{"默认的地址类型", "汽车服务", "汽车销售", "汽车维修",
                 "摩托车服务", "餐饮服务", "购物服务", "生活服务", "体育休闲服务", "医疗保健服务",
@@ -296,32 +281,16 @@ public class SignOpenActivity extends BaseFrangmentActivity
         );
     }
 
-    /**
-     * 根据poi搜索出的结果填充周边地址
-     */
+    /*根据poi搜索出的结果填充周边地址*/
     private void initSign() {
         spinnerfineTune.setAdapter(new ArrayAdapter<>(SignOpenActivity.this, android.R.layout.simple_spinner_dropdown_item, locationList));
         spinnerfineTune.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                final ProgressDialog progressDialog1 = ProgressDialog.show(SignOpenActivity.this,
-//                        "请稍候...", "初始化定位中...", false, true);
                 String str = (String) spinnerfineTune.getSelectedItem();
                 spUtils.put(SignOpenActivity.this, "addressItem", str);
                 tvSignAddress = (TextView) findViewById(R.id.tvSignAddress);
                 tvSignAddress.setText(str);
-//                Thread thread = new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        try {
-//                            Thread.sleep(1500);
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                        progressDialog1.dismiss();
-//                    }
-//                });
-//                thread.start();
                 Thread thread1 = new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -335,7 +304,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
                 });
                 thread1.start();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -343,9 +311,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
         });
     }
 
-    /**
-     * poi搜索周边
-     */
+    /*poi搜索周边*/
     private void doSearch() {
         aMap.setOnMapClickListener(null);//进行poi搜索时清除掉地图点击事件
         query = new PoiSearch.Query("", deepType, cityCode);
@@ -371,11 +337,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
         SignOpenActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
-    /**
-     * 显示提示信息
-     *
-     * @since 2.5.0
-     */
+    /*显示提示信息*/
     private void showMissingPermissionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.notifyTitle);
@@ -408,11 +370,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
         return super.onKeyDown(keyCode, event);
     }
 
-    /**
-     * 启动应用的设置
-     *
-     * @since 2.5.0
-     */
+    /*启动应用的设置*/
     private void startAppSettings() {
         Intent intent = new Intent(
                 Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -420,9 +378,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
         startActivity(intent);
     }
 
-    /**
-     * 签到类型适配
-     */
+    /*签到类型适配*/
     private void getSpinner() {
         String[] spinner = getResources().getStringArray(R.array.signSpinner);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinner);
@@ -442,9 +398,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
         });
     }
 
-    /**
-     * 截屏保存图片之后上传签到信息
-     */
+    /*截屏保存图片之后上传签到信息*/
     private void getpicture() {
         aMap.getMapScreenShot(new AMap.OnMapScreenShotListener() {
             @Override
@@ -487,7 +441,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
                     topBg.setImageBitmap(bitmap);
                     String picurl = BitmapTools.convertIconToString(bitmap);
                     spUtils.put(SignOpenActivity.this, "picurl", picurl);
-                    setSignDebug();
+                    setSignSave();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -553,11 +507,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
         }
     }
 
-    /**
-     * 判断软键盘是否弹出
-     *
-     * @param v
-     */
+    /*判断软键盘是否弹出*/
     private void sethideSoft(View v) {
         //判断软件盘是否弹出
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -572,13 +522,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
         }
     }
 
-    /**
-     * 转换格式
-     *
-     * @param dataFormat
-     * @param timeStamp
-     * @return
-     */
+    /*转换格式*/
     public static String formatData(String dataFormat, long timeStamp) {
         if (timeStamp == 0) {
             return "";
@@ -622,13 +566,9 @@ public class SignOpenActivity extends BaseFrangmentActivity
         mapView.onSaveInstanceState(outState);//保存地图的当前状态
     }
 
-    /**
-     * 保存签到信息
-     */
-    private void setSignDebug() {
+    /*保存签到信息*/
+    private void setSignSave() {
         String url = HttpUrl.debugoneUrl + "OutRegister/SaveBill/";
-        final ProgressDialog progressDialog = ProgressDialog.show(this,
-                "请稍候...", "正在保存签到信息...", false, true);
         sp = this.getSharedPreferences("my_sp", 0);
         String recodername = sp.getString("name", "");
         String userna = sp.getString("username", "");
@@ -637,6 +577,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
         String picstr = sp.getString("picurl", "");
         String address = sp.getString("addressItem", "");
         if (NetWork.isNetWorkAvailable(this)) {
+            ResponseDialog.showLoading(this,"正在签到");
             OkHttpUtils.post()
                     .url(url)
                     .addParams("id", "")//id
@@ -655,38 +596,13 @@ public class SignOpenActivity extends BaseFrangmentActivity
                         public void onError(Call call, Exception e, int id) {
                             e.printStackTrace();
                             ToastUtils.ShowToastMessage("上传错误" + e, SignOpenActivity.this);
-                            Thread thread = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        Thread.sleep(1000);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                    progressDialog.dismiss();
-                                }
-                            });
-                            thread.start();
+                            ResponseDialog.closeLoading();
                         }
 
                         @Override
                         public void onResponse(String response, int id) {
                             try {
-                                System.out.print(response);
-                                Thread thread = new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            Thread.sleep(1000);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                        progressDialog.dismiss();
-                                    }
-                                });
-                                thread.start();
                                 String strresponse = String.valueOf(response.charAt(1));
-                                System.out.print(strresponse);
                                 if (strresponse.equals("1")) {
                                     ToastUtils.ShowToastMessage(R.string.signloadsuccess, SignOpenActivity.this);
                                 } else {
@@ -694,19 +610,8 @@ public class SignOpenActivity extends BaseFrangmentActivity
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                Thread thread = new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            Thread.sleep(1000);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                        progressDialog.dismiss();
-                                    }
-                                });
-                                thread.start();
                             }
+                            ResponseDialog.closeLoading();
                         }
                     });
         } else {
@@ -774,9 +679,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
         super.onStart();
     }
 
-    /**
-     * 获取系统时间
-     */
+    /*获取系统时间*/
     private void getDate() {
         Time t = new Time(); // or Time t=new Time("GMT+8");
         t.setToNow(); // 取得系统时间。

@@ -40,7 +40,7 @@ import com.daoran.newfactory.onefactory.activity.work.setting.CoreActivity;
 import com.daoran.newfactory.onefactory.activity.work.setting.ExcelSDActivity;
 import com.daoran.newfactory.onefactory.activity.work.setting.MonthActivity;
 import com.daoran.newfactory.onefactory.activity.work.setting.PictureActivity;
-import com.daoran.newfactory.onefactory.bean.VerCodeBean;
+import com.daoran.newfactory.onefactory.bean.loginbean.VerCodeBean;
 import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetUtil;

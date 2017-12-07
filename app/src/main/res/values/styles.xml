@@ -1,12 +1,12 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Base.Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/lightblue</item>
         <item name="colorPrimaryDark">@color/lightblue</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:popupMenuStyle">@style/popMenu_style</item>
+        <item name="popupMenuStyle">@style/popMenu_style</item>
     </style>
 
     <style name="Theme.Start" parent="android:style/Theme.Black.NoTitleBar.Fullscreen">
@@ -115,9 +115,10 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
-    <style name="popMenu_style" parent="@android:style/Widget.Holo.Light.PopupMenu">
+    <style name="popMenu_style" parent="@android:style/Widget.PopupMenu">
         <item name="android:textSize">5sp</item>
         <item name="android:listPreferredItemHeight">5dp</item>
+        <item name="android:popupBackground">@color/gray_bg</item>
         <item name="android:labelTextSize">5sp</item>
     </style>
 

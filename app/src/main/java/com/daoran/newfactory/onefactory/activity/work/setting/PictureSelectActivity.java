@@ -19,21 +19,14 @@ import android.widget.Toast;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
-import com.daoran.newfactory.onefactory.bean.PictureSetBean;
-import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
+import com.daoran.newfactory.onefactory.bean.settingbean.PictureSetBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
-import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
-import com.daoran.newfactory.onefactory.util.Http.RequestParams;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 import com.daoran.newfactory.onefactory.util.utils.Tools;
 import com.daoran.newfactory.onefactory.util.utils.Util;
 import com.lidroid.xutils.BitmapUtils;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.apache.http.NameValuePair;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,7 +36,6 @@ import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

@@ -3,6 +3,9 @@ package com.daoran.newfactory.onefactory.util.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.InputFilter;
+import android.text.Spanned;
+import android.widget.EditText;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -15,6 +18,28 @@ import java.util.regex.Pattern;
  * Created by ww on 2016/3/24.
  */
 public class Util {
+
+    /**
+     * 禁止EditText输入特殊字符
+     *
+     * @param editText
+     */
+    public static void setEditTextInhibitInputSpeChat(EditText editText) {
+        InputFilter filter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                String speChat = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+                Pattern pattern = Pattern.compile(speChat);
+                Matcher matcher = pattern.matcher(source.toString());
+                if (source.equals(" ") || source.equals("\n") || matcher.find())
+                    return "";
+                else
+                    return null;
+            }
+        };
+        editText.setFilters(new InputFilter[]{filter});
+    }
+
     // phone
     public static boolean isMobileNO(String mobiles) {
         Pattern p = Pattern.compile("(^1[3|4|5|7|8][0-9]\\d{8}$)");

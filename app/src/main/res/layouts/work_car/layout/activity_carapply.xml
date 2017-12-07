@@ -93,7 +93,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="170324004"
-                            android:textColor="@color/icon_color"
+                            android:textColor="@color/grey_btn_stroke_color_pressed"
                             android:textSize="@dimen/dimen_50sp" />
                     </LinearLayout>
 
@@ -115,7 +115,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="zhangsan"
-                            android:textColor="@color/icon_color"
+                            android:textColor="@color/grey_btn_stroke_color_pressed"
                             android:textSize="@dimen/dimen_50sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -141,7 +141,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="绍兴"
-                        android:textColor="@color/icon_color"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
                         android:textSize="@dimen/dimen_50sp" />
                 </LinearLayout>
 
@@ -166,7 +166,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="2017-03-24 15:13:02"
-                        android:textColor="@color/icon_color"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
                         android:textSize="@dimen/dimen_50sp" />
                 </LinearLayout>
 
@@ -191,7 +191,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="面料"
-                        android:textColor="@color/icon_color"
+                        android:textColor="@color/grey_btn_stroke_color_pressed"
                         android:textSize="@dimen/dimen_50sp" />
                 </LinearLayout>
 
@@ -222,7 +222,7 @@
                             android:layout_height="wrap_content"
                             android:paddingTop="@dimen/dimen_20"
                             android:text="2017/03/24 15:13"
-                            android:textColor="@color/icon_color"
+                            android:textColor="@color/grey_btn_stroke_color_pressed"
                             android:textSize="@dimen/dimen_50sp" />
 
                         <TextView
@@ -237,7 +237,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="2017/03/24 15:13"
-                            android:textColor="@color/icon_color"
+                            android:textColor="@color/grey_btn_stroke_color_pressed"
                             android:textSize="@dimen/dimen_50sp" />
                     </LinearLayout>
                 </LinearLayout>

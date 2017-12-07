@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <!--<include layout="@layout/toolbar" />-->
     <RelativeLayout
+        android:id="@+id/rl_title_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/lightblue">
@@ -58,7 +59,8 @@
             android:layout_toLeftOf="@+id/viewtitle"
             android:background="@drawable/shape_btn_newsbuild_boild"
             android:text="保存"
-            android:textColor="@color/icon_color" />
+            android:textColor="@color/icon_color"
+            android:visibility="gone" />
 
         <View
             android:id="@+id/viewtitle"
@@ -67,7 +69,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_30"
             android:layout_toLeftOf="@+id/spinnermenu"
-            android:background="@color/title_view_boild" />
+            android:background="@color/title_view_boild"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/spinnermenu"
@@ -82,20 +85,24 @@
     </RelativeLayout>
 
     <View
+        android:id="@+id/view_title_top"
         android:layout_width="match_parent"
         android:layout_height="1px"
+        android:layout_below="@+id/rl_title_top"
         android:background="@color/darkgray" />
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/rl_title_toptwo"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_below="@+id/view_title_top"
         android:background="@color/lightblue"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <RelativeLayout
+            android:id="@+id/ll_title_one"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -105,18 +112,20 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="款号" />
-        </LinearLayout>
+        </RelativeLayout>
 
         <View
+            android:id="@+id/view_title_one"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/ll_title_one"
             android:background="#cccccc" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/lin_header_content"
-            android:layout_width="0dp"
+            android:layout_width="fill_parent"
             android:layout_height="50dp"
-            android:layout_weight="3"
+            android:layout_toRightOf="@+id/view_title_one"
             android:orientation="vertical">
 
             <com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView
@@ -126,13 +135,14 @@
                 android:overScrollMode="never"
                 android:scrollbars="none">
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/lin_year_title"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_pro_one"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -140,616 +150,817 @@
                         android:text="跟单" />
 
                     <View
+                        android:id="@+id/view_one"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_one"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_two"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_one"
                         android:gravity="center"
                         android:text="工厂" />
 
                     <View
+                        android:id="@+id/view_two"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_two"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_three"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_two"
                         android:gravity="center"
                         android:text="部门/组别" />
 
                     <View
+                        android:id="@+id/view_three"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_three"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_fore"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_three"
                         android:gravity="center"
                         android:text="工序" />
 
                     <View
+                        android:id="@+id/view_fore"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_fore"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_five"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_fore"
                         android:gravity="center"
                         android:text="组别人数" />
 
                     <View
+                        android:id="@+id/view_five"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_five"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_six"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_five"
                         android:gravity="center"
                         android:text="制单数" />
 
                     <View
+                        android:id="@+id/view_six"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_six"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_seven"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_six"
                         android:gravity="center"
                         android:text="花色" />
 
                     <View
+                        android:id="@+id/view_seven"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_seven"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_eight"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_seven"
                         android:gravity="center"
                         android:text="任务数" />
 
                     <View
+                        android:id="@+id/view_eight"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_eight"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_nine"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_eight"
                         android:gravity="center"
                         android:text="尺码" />
 
                     <View
+                        android:id="@+id/view_nine"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_nine"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_ten"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_nine"
                         android:gravity="center"
                         android:text="实裁数" />
 
                     <View
+                        android:id="@+id/view_eleven"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_ten"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_twelve"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_eleven"
                         android:gravity="center"
                         android:text="上月完工" />
 
                     <View
+                        android:id="@+id/view_twelve"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_twelve"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_thirteen"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_twelve"
                         android:gravity="center"
                         android:text="总完工数" />
 
                     <View
+                        android:id="@+id/view_thirteen"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_thirteen"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_foreteen"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_thirteen"
                         android:gravity="center"
                         android:text="结余数量" />
 
                     <View
+                        android:id="@+id/view_foreteen"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_foreteen"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_fifteen"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_foreteen"
                         android:gravity="center"
                         android:text="状态" />
 
                     <View
+                        android:id="@+id/view_fifteen"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_fifteen"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_sixteen"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_fifteen"
                         android:gravity="center"
                         android:text="年" />
 
                     <View
+                        android:id="@+id/view_sixteen"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_sixteen"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_seventeen"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_sixteen"
                         android:gravity="center"
                         android:text="月" />
 
                     <View
+                        android:id="@+id/view_seventeen"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_seventeen"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_eighteen"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_seventeen"
                         android:gravity="center"
                         android:text="1日" />
 
                     <View
+                        android:id="@+id/view_eighteen"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_eighteen"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_nineteen"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_eighteen"
                         android:gravity="center"
                         android:text="2日" />
 
                     <View
+                        android:id="@+id/view_nineteen"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_nineteen"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_twenty"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_nineteen"
                         android:gravity="center"
                         android:text="3日" />
 
                     <View
+                        android:id="@+id/view_twenty"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_twenty"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_twentyone"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_twenty"
                         android:gravity="center"
                         android:text="4日" />
 
                     <View
+                        android:id="@+id/view_twentyone"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_twentyone"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_twentytwo"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_twentyone"
                         android:gravity="center"
                         android:text="5日" />
 
                     <View
+                        android:id="@+id/view_twentytwo"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_twentytwo"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_twentythree"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_twentytwo"
                         android:gravity="center"
                         android:text="6日" />
 
                     <View
+                        android:id="@+id/view_twentythree"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_twentythree"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_twentyfore"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_twentythree"
                         android:gravity="center"
                         android:text="7日" />
 
                     <View
+                        android:id="@+id/view_twentyfore"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_twentyfore"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_twentyfive"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_twentyfore"
                         android:gravity="center"
                         android:text="8日" />
 
                     <View
+                        android:id="@+id/view_twentyfive"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_twentyfive"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_twentysix"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_twentyfive"
                         android:gravity="center"
                         android:text="9日" />
 
                     <View
+                        android:id="@+id/view_twentysix"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_twentysix"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_twentyseven"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_twentysix"
                         android:gravity="center"
                         android:text="10日" />
 
                     <View
+                        android:id="@+id/view_twentyseven"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_twentyseven"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_twentyeight"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_twentyseven"
                         android:gravity="center"
                         android:text="11日" />
 
                     <View
+                        android:id="@+id/view_twentyeight"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_twentyeight"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_twentynine"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_twentyeight"
                         android:gravity="center"
                         android:text="12日" />
 
                     <View
+                        android:id="@+id/view_twentynine"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_twentynine"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_thirty"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_twentynine"
                         android:gravity="center"
                         android:text="13日" />
 
                     <View
+                        android:id="@+id/view_thirty"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_thirty"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_thirtyone"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_thirty"
                         android:gravity="center"
                         android:text="14日" />
 
                     <View
+                        android:id="@+id/view_thirtyone"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_thirtyone"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_thirtytwo"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_thirtyone"
                         android:gravity="center"
                         android:text="15日" />
 
                     <View
+                        android:id="@+id/view_thirtytwo"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_thirtytwo"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_thirtythree"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_thirtytwo"
                         android:gravity="center"
                         android:text="16日" />
 
                     <View
+                        android:id="@+id/view_thirtythree"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_thirtythree"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_thirtyfore"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_thirtythree"
                         android:gravity="center"
                         android:text="17日" />
 
                     <View
+                        android:id="@+id/view_thirtyfore"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_thirtyfore"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_thirtyfive"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_thirtyfore"
                         android:gravity="center"
                         android:text="18日" />
 
                     <View
+                        android:id="@+id/view_thirtyfive"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_thirtyfive"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_thirtysix"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_thirtyfive"
                         android:gravity="center"
                         android:text="19日" />
 
                     <View
+                        android:id="@+id/view_thirtysix"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_thirtysix"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_thirtyseven"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_thirtysix"
                         android:gravity="center"
                         android:text="20日" />
 
                     <View
+                        android:id="@+id/view_thirtyseven"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_thirtyseven"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_thirtyeight"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_thirtyseven"
                         android:gravity="center"
                         android:text="21日" />
 
                     <View
+                        android:id="@+id/view_thirtyeight"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_thirtyeight"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_thirtynine"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_thirtyeight"
                         android:gravity="center"
                         android:text="22日" />
 
                     <View
+                        android:id="@+id/view_thirtynine"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_thirtynine"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_forety"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_thirtynine"
                         android:gravity="center"
                         android:text="23日" />
 
                     <View
+                        android:id="@+id/view_forety"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_forety"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_foretyone"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_forety"
                         android:gravity="center"
                         android:text="24日" />
 
                     <View
+                        android:id="@+id/view_foretyone"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_foretyone"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_foretytwo"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_foretyone"
                         android:gravity="center"
                         android:text="25日" />
 
                     <View
+                        android:id="@+id/view_foretytwo"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_foretytwo"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_foretythree"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_foretytwo"
                         android:gravity="center"
                         android:text="26日" />
 
                     <View
+                        android:id="@+id/view_foretythree"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_foretythree"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_foretyfore"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_foretythree"
                         android:gravity="center"
                         android:text="27日" />
 
                     <View
+                        android:id="@+id/view_foretyfore"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_foretyfore"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_foretyfive"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_foretyfore"
                         android:gravity="center"
                         android:text="28日" />
 
                     <View
+                        android:id="@+id/view_foretyfive"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_foretyfive"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_foretysix"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_foretyfive"
                         android:gravity="center"
                         android:text="29日" />
 
                     <View
+                        android:id="@+id/view_foretysix"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_foretysix"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_foretyseven"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_foretysix"
                         android:gravity="center"
                         android:text="30日" />
 
                     <View
+                        android:id="@+id/view_foretyseven"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_foretyseven"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_foretyeight"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_foretyseven"
                         android:gravity="center"
                         android:text="31日" />
 
                     <View
+                        android:id="@+id/view_foretyeight"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_foretyeight"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_foretynine"
                         android:layout_width="170dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_foretyeight"
                         android:gravity="center"
                         android:text="备注" />
 
                     <View
+                        android:id="@+id/view_foretynine"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_foretynine"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_fifty"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_foretynine"
                         android:gravity="center"
                         android:text="制单人" />
 
                     <View
+                        android:id="@+id/view_fifty"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_fifty"
                         android:background="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/tv_pro_fiftyone"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
+                        android:layout_toRightOf="@+id/view_fifty"
                         android:gravity="center"
                         android:text="制单时间" />
 
                     <View
+                        android:id="@+id/view_fiftyone"
                         android:layout_width="1px"
                         android:layout_height="50dp"
+                        android:layout_toRightOf="@+id/tv_pro_fiftyone"
                         android:background="@color/darkgray" />
-                </LinearLayout>
+                </RelativeLayout>
             </com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView>
-        </LinearLayout>
-    </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
 
     <View
+        android:id="@+id/view_none_title_top"
         android:layout_width="match_parent"
         android:layout_height="1px"
+        android:layout_below="@+id/rl_title_toptwo"
         android:background="@color/darkgray" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/view_none_title_top"
         android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/ll_visibi"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:background="@color/lightblue"
             android:gravity="center"
@@ -775,11 +986,12 @@
             android:id="@+id/scroll_content"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1"
+            android:layout_below="@+id/ll_visibi"
+            android:layout_marginBottom="@dimen/dimen_150"
             android:overScrollMode="never"
             android:scrollbars="none">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_alignParentTop="true"
@@ -787,22 +999,23 @@
 
                 <com.daoran.newfactory.onefactory.view.listview.NoscrollListView
                     android:id="@+id/lv_pleft"
-                    android:layout_width="0dp"
+                    android:layout_width="100dp"
                     android:layout_height="fill_parent"
-                    android:layout_weight="1"
                     android:overScrollMode="never"
                     android:scrollbars="none" />
 
                 <View
+                    android:id="@+id/view_left"
                     android:layout_width="1px"
                     android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/lv_pleft"
                     android:background="#cccccc" />
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/lin_data_content"
-                    android:layout_width="0dp"
+                    android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:layout_weight="3"
+                    android:layout_toRightOf="@+id/view_left"
                     android:orientation="vertical">
 
                     <com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView
@@ -819,19 +1032,21 @@
                             android:overScrollMode="never"
                             android:scrollbars="none" />
                     </com.daoran.newfactory.onefactory.view.listview.SyncHorizontalScrollView>
-                </LinearLayout>
-            </LinearLayout>
+                </RelativeLayout>
+            </RelativeLayout>
         </ScrollView>
 
         <View
+            android:id="@+id/view_scroll"
             android:layout_width="match_parent"
             android:layout_height="1px"
+            android:layout_below="@+id/scroll_content"
             android:background="@color/darkgray" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="9"
+            android:layout_height="@dimen/dimen_150"
+            android:layout_alignParentBottom="true"
             android:background="@color/lightblue"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -936,5 +1151,5 @@
                 android:rotation="180"
                 android:src="@mipmap/left49" />
         </RelativeLayout>
-    </LinearLayout>
-</LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

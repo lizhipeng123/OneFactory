@@ -10,7 +10,7 @@ import android.view.WindowManager;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.login.LoginMainActivity;
-import com.daoran.newfactory.onefactory.adapter.GuiderFragmentPagerAdapter;
+import com.daoran.newfactory.onefactory.adapter.guideadapter.GuiderFragmentPagerAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.fragment.GuiderFragment;
 import com.daoran.newfactory.onefactory.util.application.settings.Comfig;
@@ -49,17 +49,13 @@ public class GuideActivity extends BaseFrangmentActivity
         setListeners();
     }
 
-    /**
-     * 获取View
-     */
+    /*获取View*/
     private void getViews() {
         vpGuider = (ViewPager) this.findViewById(R.id.vpGuider);
         vIndicator = (IndicatorView) this.findViewById(R.id.vIndicator);
     }
 
-    /**
-     * 初始化View
-     */
+    /*初始化View*/
     private void initViews() {
         int[] resIds = Comfig.getGuiderResIds();//调用数组中的图片
         mAdapter = new GuiderFragmentPagerAdapter(getSupportFragmentManager());
@@ -68,9 +64,7 @@ public class GuideActivity extends BaseFrangmentActivity
         vIndicator.setIndicatorCount(resIds.length);//设置小圆点的数量
     }
 
-    /**
-     * 设置监听
-     */
+    /*设置监听*/
     private void setListeners() {
         vpGuider.setPageTransformer(false, new ViewPager.PageTransformer() {
             @Override
@@ -123,10 +117,8 @@ public class GuideActivity extends BaseFrangmentActivity
         finish();
     }
 
-    /**
-     * 设置为非第一次打开app
-     * 将判断变量设置为false
-     */
+    /*设置为非第一次打开app*/
+    /* 将判断变量设置为false*/
     private void setSharedPreferences() {
         SharedPreferences sp = this.getSharedPreferences("guider", MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();

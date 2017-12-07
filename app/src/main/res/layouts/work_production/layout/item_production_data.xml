@@ -5,40 +5,34 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/lin_content"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal">
 
-        <!--<TextView-->
-            <!--android:id="@+id/tv_data"-->
-            <!--android:layout_width="100dp"-->
-            <!--android:layout_height="50dp"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:gravity="center"-->
-            <!--android:text=""-->
-            <!--android:textColor="@color/black"-->
-            <!--android:textSize="@dimen/dimen_40sp" />-->
-
-        <!--<View-->
-            <!--android:layout_width="1px"-->
-            <!--android:layout_height="50dp"-->
-            <!--android:background="#cccccc" />-->
+        <View
+            android:id="@+id/viewProOpen"
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:background="#cccccc" />
 
         <TextView
             android:id="@+id/tvProDocumentary"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProOpen"
             android:gravity="center"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProDocumentary"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProDocumentary"
             android:background="#cccccc" />
 
         <TextView
@@ -46,14 +40,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProDocumentary"
             android:gravity="center"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProFactory"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProFactory"
             android:background="#cccccc" />
 
         <TextView
@@ -61,15 +58,18 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_toRightOf="@+id/viewProFactory"
             android:background="@drawable/spinner_bg"
+            android:gravity="center"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProDepartment"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProDepartment"
             android:background="#cccccc" />
 
         <TextView
@@ -77,15 +77,18 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProDepartment"
+            android:background="@drawable/spinner_bg"
             android:gravity="center"
             android:text=""
-            android:background="@drawable/spinner_bg"
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProProcedure"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProProcedure"
             android:background="#cccccc" />
 
         <TextView
@@ -93,6 +96,7 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProProcedure"
             android:gravity="center"
             android:numeric="integer"
             android:text=""
@@ -100,8 +104,10 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProOthers"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProOthers"
             android:background="#cccccc" />
 
         <TextView
@@ -109,14 +115,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProOthers"
             android:gravity="center"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProSingularSystem"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProSingularSystem"
             android:background="#cccccc" />
 
         <TextView
@@ -124,14 +133,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProSingularSystem"
             android:gravity="center"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProColor"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProColor"
             android:background="#cccccc" />
 
         <TextView
@@ -139,6 +151,7 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProColor"
             android:gravity="center"
             android:numeric="integer"
             android:text=""
@@ -146,8 +159,10 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProTaskNumber"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProTaskNumber"
             android:background="#cccccc" />
 
         <TextView
@@ -155,14 +170,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProTaskNumber"
             android:gravity="center"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProSize"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProSize"
             android:background="#cccccc" />
 
         <TextView
@@ -170,14 +188,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProSize"
             android:gravity="center"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProClippingNumber"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProClippingNumber"
             android:background="#cccccc" />
 
         <TextView
@@ -185,6 +206,7 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProClippingNumber"
             android:gravity="center"
             android:numeric="integer"
             android:text=""
@@ -192,8 +214,10 @@
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProCompletedLastMonth"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProCompletedLastMonth"
             android:background="#cccccc" />
 
         <TextView
@@ -201,14 +225,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProCompletedLastMonth"
             android:gravity="center"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProTotalCompletion"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProTotalCompletion"
             android:background="#cccccc" />
 
         <TextView
@@ -216,14 +243,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProTotalCompletion"
             android:gravity="center"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProBalanceAmount"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProBalanceAmount"
             android:background="#cccccc" />
 
         <TextView
@@ -231,15 +261,18 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProBalanceAmount"
+            android:background="@drawable/spinner_bg"
             android:gravity="center"
             android:text=""
-            android:background="@drawable/spinner_bg"
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProState"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProState"
             android:background="#cccccc" />
 
         <TextView
@@ -247,14 +280,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProState"
             android:gravity="center"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProYear"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProYear"
             android:background="#cccccc" />
 
         <TextView
@@ -262,14 +298,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_toRightOf="@+id/viewProYear"
             android:background="@drawable/spinner_bg"
+            android:gravity="center"
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProMonth"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProMonth"
             android:background="#cccccc" />
 
         <TextView
@@ -277,15 +316,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProMonth"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProOneDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProOneDay"
             android:background="#cccccc" />
 
         <TextView
@@ -293,15 +334,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProOneDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProTwoDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProTwoDay"
             android:background="#cccccc" />
 
         <TextView
@@ -309,15 +352,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProTwoDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProThreeDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProThreeDay"
             android:background="#cccccc" />
 
         <TextView
@@ -325,15 +370,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProThreeDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProForeDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProForeDay"
             android:background="#cccccc" />
 
         <TextView
@@ -341,15 +388,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProForeDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProFiveDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProFiveDay"
             android:background="#cccccc" />
 
         <TextView
@@ -357,15 +406,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProFiveDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProSixDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProSixDay"
             android:background="#cccccc" />
 
         <TextView
@@ -373,15 +424,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProSixDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProSevenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProSevenDay"
             android:background="#cccccc" />
 
         <TextView
@@ -389,15 +442,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProSevenDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProEightDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProEightDay"
             android:background="#cccccc" />
 
         <TextView
@@ -405,15 +460,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProEightDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProNineDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProNineDay"
             android:background="#cccccc" />
 
         <TextView
@@ -421,15 +478,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProNineDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProTenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProTenDay"
             android:background="#cccccc" />
 
         <TextView
@@ -437,15 +496,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProTenDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProElevenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProElevenDay"
             android:background="#cccccc" />
 
         <TextView
@@ -453,15 +514,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProElevenDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProTwelveDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProTwelveDay"
             android:background="#cccccc" />
 
         <TextView
@@ -469,15 +532,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProTwelveDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProThirteenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProThirteenDay"
             android:background="#cccccc" />
 
         <TextView
@@ -485,15 +550,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProThirteenDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProFourteenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProFourteenDay"
             android:background="#cccccc" />
 
         <TextView
@@ -501,15 +568,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProFourteenDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProFifteenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProFifteenDay"
             android:background="#cccccc" />
 
         <TextView
@@ -517,15 +586,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProFifteenDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProSixteenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProSixteenDay"
             android:background="#cccccc" />
 
         <TextView
@@ -533,15 +604,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProSixteenDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProSeventeenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProSeventeenDay"
             android:background="#cccccc" />
 
         <TextView
@@ -549,15 +622,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProSeventeenDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProEighteenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProEighteenDay"
             android:background="#cccccc" />
 
         <TextView
@@ -565,15 +640,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProEighteenDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProNineteenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProNineteenDay"
             android:background="#cccccc" />
 
         <TextView
@@ -581,15 +658,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProNineteenDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProTwentyDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProTwentyDay"
             android:background="#cccccc" />
 
         <TextView
@@ -597,15 +676,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProTwentyDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProTwentyOneDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProTwentyOneDay"
             android:background="#cccccc" />
 
         <TextView
@@ -613,15 +694,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProTwentyOneDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProTwentyTwoDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProTwentyTwoDay"
             android:background="#cccccc" />
 
         <TextView
@@ -629,15 +712,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProTwentyTwoDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProTwentyThreeDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProTwentyThreeDay"
             android:background="#cccccc" />
 
         <TextView
@@ -645,15 +730,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProTwentyThreeDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProTwentyForeDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProTwentyForeDay"
             android:background="#cccccc" />
 
         <TextView
@@ -661,15 +748,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProTwentyForeDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProTwentyFiveDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProTwentyFiveDay"
             android:background="#cccccc" />
 
         <TextView
@@ -677,15 +766,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProTwentyFiveDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProTwentySixDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProTwentySixDay"
             android:background="#cccccc" />
 
         <TextView
@@ -693,15 +784,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProTwentySixDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProTwentySevenDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProTwentySevenDay"
             android:background="#cccccc" />
 
         <TextView
@@ -709,15 +802,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProTwentySevenDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProTwentyEightDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProTwentyEightDay"
             android:background="#cccccc" />
 
         <TextView
@@ -725,15 +820,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProTwentyEightDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProTwentyNineDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProTwentyNineDay"
             android:background="#cccccc" />
 
         <TextView
@@ -741,15 +838,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProTwentyNineDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProThirtyDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProThirtyDay"
             android:background="#cccccc" />
 
         <TextView
@@ -757,15 +856,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProThirtyDay"
             android:gravity="center"
-            android:numeric="integer"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProThirtyOneDay"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProThirtyOneDay"
             android:background="#cccccc" />
 
         <TextView
@@ -773,14 +874,17 @@
             android:layout_width="170dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProThirtyOneDay"
             android:gravity="center"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProRemarks"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProRemarks"
             android:background="#cccccc" />
 
         <TextView
@@ -788,14 +892,17 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProRemarks"
             android:gravity="center"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProRecorder"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProRecorder"
             android:background="#cccccc" />
 
         <TextView
@@ -803,16 +910,20 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_toRightOf="@+id/viewProRecorder"
             android:gravity="center"
             android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
         <View
+            android:id="@+id/viewProRecordat"
             android:layout_width="1px"
             android:layout_height="50dp"
+            android:layout_toRightOf="@+id/tvProRecordat"
             android:background="#cccccc" />
-    </LinearLayout>
+    </RelativeLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"

@@ -22,6 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/dimen_40"
+        android:numeric="integer"
         android:textColor="@color/icon_color"
         android:layout_weight="1"/>
 </LinearLayout>

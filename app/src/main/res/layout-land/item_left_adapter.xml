@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lin_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
-    <LinearLayout
-        android:id="@+id/lin_content"
+
+    <RelativeLayout
+        android:id="@+id/lin_content_item"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="vertical">
@@ -15,7 +17,13 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textColor="@color/black"
-            android:text="第1行"/>
-    </LinearLayout>
-</LinearLayout>
+            android:text="第1行"
+            android:textColor="@color/black" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/lin_content_item"
+        android:background="#cccccc" />
+</RelativeLayout>
