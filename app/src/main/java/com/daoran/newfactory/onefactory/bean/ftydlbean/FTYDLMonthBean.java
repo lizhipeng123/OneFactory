@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 创建时间：2017/12/1
  * 编写人：lizhipeng
- * 功能描述：相同款号，部门，工序的数据(防止与主bean重复)
+ * 功能描述：获取相同款号，部门，工序的全部数据(防止与主bean重复)
  */
 
 public class FTYDLMonthBean {

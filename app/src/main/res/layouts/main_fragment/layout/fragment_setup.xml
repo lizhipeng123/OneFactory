@@ -170,7 +170,8 @@
                 android:paddingBottom="@dimen/dimen_40"
                 android:paddingLeft="@dimen/dimen_30"
                 android:paddingRight="@dimen/dimen_30"
-                android:paddingTop="@dimen/dimen_40">
+                android:paddingTop="@dimen/dimen_40"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tvExcelSD"

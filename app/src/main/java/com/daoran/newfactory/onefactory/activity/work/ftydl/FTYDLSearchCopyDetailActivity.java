@@ -100,18 +100,13 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
             ll_pro_config_serven_visi, ll_pro_config_eight_visi,
             ll_pro_config_nine_visi, ll_pro_config_ten_visi,
             ll_pro_config_eleven_visi, ll_list_config_pro_vertical;
-
     private int year, month, datetime, hour, minute, second;
-    String lastqty, day1, day2, day3, day4, day5, day6, day7, day8, day9,
-            day10, day11, day12, day13, day14, day15, day16, day17, day18,
-            day19, day20, day21, day22, day23, day24, day25, day26, day27,
-            day28, day29, day30, day31;
     private String pronullpartment, saveothers, saveremarks,
             savestate, savetasknunber, savelastmonth, save1, save2, save3, save4,
             save5, save6, save7, save8, save9, save10, save11, save12, save13,
             save14, save15, save16, save17, save18, save19, save20, save21,
             save22, save23, save24, save25, save26, save27, save28, save29,
-            save30, save31;
+            save30, save31, saveSubDepartment;
 
     //上个页面传过来的所点击的数据
     private String tvnewlyItem, tvnewlyDepartment, isprodure, tvnewlyctmtxt, tvnewlyDocumentary,
@@ -128,11 +123,11 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
             tvnewlypsaler, tvnewlymemo, tvnewlyunit, tvnewlymegitem, tvnewlyteamname,
             tvnewlyrecordid, tvnewlycutbdt, tvnewlysewbdt, tvnewlysewedt, tvnewlysewDays, tvnewlyperqty, tvnewlycutamount, tvnewlysewamount, tvnewlypackamount, tvnewlyamount, tvnewlyperMachineQty, tvnewlysumMachineQty, tvnewlyprdmaster, tvnewlyleftQty, tvnewlylastMonQty, tvnewlyprddocumentaryid, tvnewlyisdiffc;
 
-    private String usernamerecoder, //登录人
+    private String usernamerecoder,recordid, //登录人
             monthnew, //复制月变量
             yearnew, //复制年变量
-            CountMonthstr,//总完工数
-            Countlastqty;//每日完工数
+            CountMonthstr//总完工数
+                    ;
     private boolean flagbooleanblack;
 
     private ListView list_pro_config_vertical;//实裁数下面的各花色产量集合
@@ -364,6 +359,7 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
         sp = getSharedPreferences("my_sp", 0);
         isprodure = sp.getString("FTYDLLeftIsProdure", "");
         usernamerecoder = sp.getString("usernamerecoder", "");//登录人
+        recordid = sp.getString("username", "");//制单人id(登录名)
         tvnewlyItem = sp.getString("tvFTYDLLeftItem", "");//款号
         tvnewlyctmtxt = sp.getString("tvFTYDLLeftCtmtxt", "");//客户
         tvnewlyDocumentary = sp.getString("tvFTYDLLeftDocumentary", "");//跟单
@@ -3233,6 +3229,7 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
                     for (int i = 0; i < newdataBeans.size(); i++) {
                         newdataBeans.get(i).setWorkers(saveothers);//组别人数
                         newdataBeans.get(i).setMemo(saveremarks);//备注
+                        newdataBeans.get(i).setSubfactoryTeams(saveSubDepartment);
                         int balan = Integer.parseInt(procalbeanlist.get(i).getBalanceAmount());
                         int clippingint;
                         int cli;
@@ -3254,10 +3251,12 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
                         newdataBeans.get(i).setSumCompletedQty(total);//总完工数
                         newdataBeans.get(i).setLastMonQty(savelastmonth);//上月完工数
                         newdataBeans.get(i).setFactcutqty(String.valueOf(cli));//实裁数
-                        newdataBeans.get(i).setRecordat(year + "/" + month + "/" + datetime);//制单时间
+                        newdataBeans.get(i).setRecordat(year + "/" + month + "/" + datetime
+                                + "/" + hour + "/" + minute + "/" + second);//制单时间
+                        newdataBeans.get(i).setRecorder(usernamerecoder);//制单人
+                        newdataBeans.get(i).setRecordid(recordid);//制单人id
                         newdataBeans.get(i).setMonth(monthnew);//月份
                         newdataBeans.get(i).setYear(yearnew);//年
-                        newdataBeans.get(i).setRecorder(usernamerecoder);//制单人
                         newdataBeans.get(i).setDay1("");//2
                         newdataBeans.get(i).setDay2("");//2
                         newdataBeans.get(i).setDay3("");//3
@@ -3359,12 +3358,14 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
                         String completion = tv_config_totalcompletion.getText().toString();
                         newdataBeans.get(i).setID(String.valueOf(0));//id
                         newdataBeans.get(i).setSalesid(id);//排单id
+                        newdataBeans.get(i).setRecordid(recordid);//制单人id
                         newdataBeans.get(i).setWorkers(saveothers);//组别人数
                         newdataBeans.get(i).setMemo(saveremarks);//备注
                         newdataBeans.get(i).setPrdstatus(savestate);//状态
                         newdataBeans.get(i).setTaskqty(savetasknunber);//任务数
                         newdataBeans.get(i).setLastMonQty(savelastmonth);//上月完工数
                         newdataBeans.get(i).setSumCompletedQty(CountMonthstr);//总完工数
+                        newdataBeans.get(i).setSubfactoryTeams(saveSubDepartment);//部门
                         newdataBeans.get(i).setLeftQty(
                                 String.valueOf(Integer.parseInt(savetasknunber) -
                                         Integer.parseInt(completion)));//结余数量
@@ -3402,6 +3403,9 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
                         newdataBeans.get(i).setDay29(save29);//29
                         newdataBeans.get(i).setDay30(save30);//30
                         newdataBeans.get(i).setDay31(save31);//31
+                        newdataBeans.get(i).setRecordat(year + "/" + month + "/" + datetime
+                                + "/" + hour + "/" + minute + "/" + second);//制单时间
+                        newdataBeans.get(i).setRecorder(usernamerecoder);//制单人
                     }
                 }
             } else {//如果修改了部门，则复制该条数据
@@ -3426,14 +3430,18 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
                         }
                         newdataBeans.get(i).setID(String.valueOf(0));//id
                         newdataBeans.get(i).setSalesid(id);//排单id
+                        newdataBeans.get(i).setRecordid(recordid);//制单人id
                         newdataBeans.get(i).setWorkers(saveothers);//组别人数
                         newdataBeans.get(i).setLeftQty(String.valueOf(balan - clippingint));//结余数量
                         newdataBeans.get(i).setSumCompletedQty(total);//总完工数
                         newdataBeans.get(i).setFactcutqty(String.valueOf(cli));//实裁数
                         newdataBeans.get(i).setPrdstatus(savestate);//状态
                         newdataBeans.get(i).setLastMonQty(savelastmonth);//上月完工数
+                        newdataBeans.get(i).setSubfactoryTeams(saveSubDepartment);//部门
                         newdataBeans.get(i).setMemo(saveremarks);//备注
-                        newdataBeans.get(i).setRecordat(year + "/" + month + "/" + datetime);//制单时间
+                        newdataBeans.get(i).setRecordat(year + "/" + month + "/" + datetime
+                                + "/" + hour + "/" + minute + "/" + second);//制单时间
+                        newdataBeans.get(i).setRecorder(usernamerecoder);//制单人
                         newdataBeans.get(i).setMonth(monthnew);//月份
                         newdataBeans.get(i).setYear(yearnew);//年
                         newdataBeans.get(i).setDay1("");//2
@@ -3467,18 +3475,83 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
                         newdataBeans.get(i).setDay29("");//29
                         newdataBeans.get(i).setDay30("");//30
                         newdataBeans.get(i).setDay31("");//31
+                        if (datetime == 1) {
+                            newdataBeans.get(i).setDay1(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 2) {
+                            newdataBeans.get(i).setDay2(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 3) {
+                            newdataBeans.get(i).setDay3(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 4) {
+                            newdataBeans.get(i).setDay4(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 5) {
+                            newdataBeans.get(i).setDay5(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 6) {
+                            newdataBeans.get(i).setDay6(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 7) {
+                            newdataBeans.get(i).setDay7(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 8) {
+                            newdataBeans.get(i).setDay8(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 9) {
+                            newdataBeans.get(i).setDay9(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 10) {
+                            newdataBeans.get(i).setDay10(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 11) {
+                            newdataBeans.get(i).setDay11(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 12) {
+                            newdataBeans.get(i).setDay12(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 13) {
+                            newdataBeans.get(i).setDay13(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 14) {
+                            newdataBeans.get(i).setDay14(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 15) {
+                            newdataBeans.get(i).setDay15(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 16) {
+                            newdataBeans.get(i).setDay16(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 17) {
+                            newdataBeans.get(i).setDay17(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 18) {
+                            newdataBeans.get(i).setDay18(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 19) {
+                            newdataBeans.get(i).setDay19(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 20) {
+                            newdataBeans.get(i).setDay20(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 21) {
+                            newdataBeans.get(i).setDay21(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 22) {
+                            newdataBeans.get(i).setDay22(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 23) {
+                            newdataBeans.get(i).setDay23(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 24) {
+                            newdataBeans.get(i).setDay24(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 25) {
+                            newdataBeans.get(i).setDay25(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 26) {
+                            newdataBeans.get(i).setDay26(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 27) {
+                            newdataBeans.get(i).setDay27(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 28) {
+                            newdataBeans.get(i).setDay28(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 29) {
+                            newdataBeans.get(i).setDay29(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 30) {
+                            newdataBeans.get(i).setDay30(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 31) {
+                            newdataBeans.get(i).setDay31(procalbeanlist.get(i).getProNum());
+                        }
                     }
-                } else {
+                } else {//除了裁床
                     for (int i = 0; i < newdataBeans.size(); i++) {
                         String completion = tv_config_totalcompletion.getText().toString();
                         newdataBeans.get(i).setID(String.valueOf(0));//id
                         newdataBeans.get(i).setSalesid(id);//排单id
+                        newdataBeans.get(i).setRecordid(recordid);//制单人id
                         newdataBeans.get(i).setWorkers(saveothers);//组别人数
                         newdataBeans.get(i).setMemo(saveremarks);//备注
                         newdataBeans.get(i).setPrdstatus(savestate);//状态
                         newdataBeans.get(i).setTaskqty(savetasknunber);//任务数
                         newdataBeans.get(i).setLastMonQty(savelastmonth);//上月完工数
                         newdataBeans.get(i).setSumCompletedQty(completion);//总完工数
+                        newdataBeans.get(i).setSubfactoryTeams(saveSubDepartment);//部门
                         newdataBeans.get(i).setLeftQty(
                                 String.valueOf(Integer.parseInt(savetasknunber) -
                                         Integer.parseInt(completion)));//结余数量
@@ -3516,6 +3589,9 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
                         newdataBeans.get(i).setDay29(save29);//29
                         newdataBeans.get(i).setDay30(save30);//30
                         newdataBeans.get(i).setDay31(save31);//31
+                        newdataBeans.get(i).setRecordat(year + "/" + month + "/" + datetime
+                                + "/" + hour + "/" + minute + "/" + second);//制单时间
+                        newdataBeans.get(i).setRecorder(usernamerecoder);//制单人
                     }
                 }
             }
@@ -3538,9 +3614,7 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
 
                         @Override
                         public void onResponse(final String response, int id) {
-                            System.out.print(response);
                             String ression = StringUtil.sideTrim(response, "\"");
-                            System.out.print(ression);
                             int resindex = Integer.parseInt(ression);
                             if (resindex > 3) {
                                 ToastUtils.ShowToastMessage("保存成功",
@@ -3578,6 +3652,14 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
             saveothers = tvnewlyOthers;
         } else {
             saveothers = prosaveothers;
+        }
+
+        String prosavedepartment = sp.getString("prosavedepartment",
+                "");//修改的部门组别
+        if (prosavedepartment.isEmpty() || prosavedepartment.equals(tvnewlyDepartment)) {
+            saveSubDepartment = tvnewlyDepartment;
+        } else {
+            saveSubDepartment = prosavedepartment;
         }
 
         String prosaveremarks = sp.getString("prosaveremarks", "");//修改的备注

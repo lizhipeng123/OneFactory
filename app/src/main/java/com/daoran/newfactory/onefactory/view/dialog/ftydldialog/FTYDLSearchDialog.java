@@ -92,7 +92,7 @@ public class FTYDLSearchDialog extends Dialog {
         WindowManager.LayoutParams p = dialogWindow.getAttributes();
         p.width = (int) (display.getWidth() * 0.8);
         dialogWindow.setAttributes(p);
-        String etaaname = sp.getString("proname", "");//登录页登录之后传过来的用户名
+        String etaaname = sp.getString("FTYDLName", "");//登录页登录之后传过来的用户名
         etprodialogRecode.setText(etaaname);//将用户名填充制单人
         String Factory = sp.getString("etprodialogFactory", "");//工厂输入框监听传过来的输入信息
         etprodialogFactory.setText(Factory);//填充工厂
@@ -231,7 +231,7 @@ public class FTYDLSearchDialog extends Dialog {
             System.out.println("-1-onTextChanged-->"
                     + etprodialogRecode.getText().toString() + "<--");
             String textchanged = etprodialogRecode.getText().toString();
-            spUtils.put(content, "proname", textchanged);
+            spUtils.put(content, "FTYDLName", textchanged);
         }
 
         @Override

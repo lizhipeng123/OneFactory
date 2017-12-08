@@ -1,5 +1,6 @@
 package com.daoran.newfactory.onefactory.base;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -93,7 +94,9 @@ public class BaseFrangmentActivity extends FragmentActivity {
     }
 
     private static final String TAG = "BaseActivity";
+
     //回调
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         FragmentManager fm = getSupportFragmentManager();
@@ -128,6 +131,7 @@ public class BaseFrangmentActivity extends FragmentActivity {
     private void handleResult(Fragment frag, int requestCode, int resultCode,
                               Intent data) {
         frag.onActivityResult(requestCode & 0xffff, resultCode, data);
+        @SuppressLint("RestrictedApi")
         List<Fragment> frags = frag.getChildFragmentManager().getFragments();
         if (frags != null) {
             for (Fragment f : frags) {

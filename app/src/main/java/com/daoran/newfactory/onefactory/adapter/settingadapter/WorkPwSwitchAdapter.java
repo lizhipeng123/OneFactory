@@ -121,7 +121,7 @@ public class WorkPwSwitchAdapter extends BaseAdapter {
                         spUtils.put(context, "username", uname);
                         spUtils.put(context, "passwd", upassword);
                         spUtils.put(context.getApplicationContext(), "name", userBean.getU_name());//用户名,适用于总体项目
-                        spUtils.put(context.getApplicationContext(), "proname", userBean.getU_name());//用户名，适用于生产日报模块
+                        spUtils.put(context.getApplicationContext(), "FTYDLName", userBean.getU_name());//用户名，适用于生产日报模块
                         spUtils.put(context.getApplicationContext(), "commoname", userBean.getU_name());//用户名，适用于查货跟踪模块
                         spUtils.put(context.getApplicationContext(), "commologinid", userBean.getLogid());//账号
                         Intent intent = new Intent(context, MainActivity.class);

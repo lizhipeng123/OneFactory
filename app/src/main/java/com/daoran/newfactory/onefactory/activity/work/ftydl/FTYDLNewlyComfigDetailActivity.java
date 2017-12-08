@@ -110,14 +110,11 @@ public class FTYDLNewlyComfigDetailActivity
             ll_pro_config_eleven_visi, ll_list_config_pro_vertical;
 
     private ImageView ivProductionBack;//返回按钮
-
     private Button btnProSave;//保存按钮
-
     private ListView list_pro_config_vertical;
     private AlertDialog noticeDialog;
-    private String otherConfigtext;
     //本类值判断变量
-    private String smonth, somemonth, CountMonthstr, columntitle,
+    private String smonth, somemonth, columntitle,
             proPrdstatusTitle, tvnewlyTotalCompletionn, someOther;
     //接收从上一个页面穿过来的数据变量
     private String nameid, isprodure, tvnewlyItem, tvnewlyctmtxt, tvnewlyDocumentary,
@@ -126,13 +123,7 @@ public class FTYDLNewlyComfigDetailActivity
             tvnewlyClippingNumber, tvnewlyCompletedLastMonth, tvnewlyTotal, pagesize,
             ischeckedd, recordid, salesid, productionDocumentaryid, productionOthers;
     //内部数值变量赋值
-    private String tvnewlyday1,
-            tvnewlyday2, tvnewlyday3, tvnewlyday4, tvnewlyday5, tvnewlyday6, tvnewlyday7,
-            tvnewlyday8, tvnewlyday9, tvnewlyday10, tvnewlyday11, tvnewlyday12, tvnewlyday13,
-            tvnewlyday14, tvnewlyday15, tvnewlyday16, tvnewlyday17, tvnewlyday18, tvnewlyday19,
-            tvnewlyday20, tvnewlyday21, tvnewlyday22, tvnewlyday23, tvnewlyday24, tvnewlyday25,
-            tvnewlyday26, tvnewlyday27, tvnewlyday28, tvnewlyday29, tvnewlyday30, tvnewlyday31,
-            tvnewlylastMonQty, productionTaskNumber, totalBalanceamount, productionMonth,
+    private String productionTaskNumber, totalBalanceamount, productionMonth,
             productionClippingNumber, productionCompletedLastMonth, productionTotalCompletion,
             proColumnTitle, tvColorTaskqtyss, productionBalanceAmount,
             productionOneDay, productionTwoDay, productionThreeDay, productionForeDay,
@@ -151,8 +142,6 @@ public class FTYDLNewlyComfigDetailActivity
             day19, day20, day21, day22, day23, day24, day25, day26, day27,
             day28, day29, day30, day31;
     private FTYDLNewlyVerticalAdatper verticalAdatper;
-    private FTYDLColSelectBean procalBean;
-    private FTYDLColSelectBean.Data procaldata;
     private List<FTYDLColSelectBean.Data> procaldataList
             = new ArrayList<FTYDLColSelectBean.Data>();
 
@@ -170,7 +159,6 @@ public class FTYDLNewlyComfigDetailActivity
         setSpUtils();
         getView();
         initView();
-//        setDateColor();
         setListener();
         setOnclickEdit();
     }
@@ -274,37 +262,6 @@ public class FTYDLNewlyComfigDetailActivity
         tv_config_totalcompletion.setText(tvnewlyCompletedLastMonth);//总完工数
         tv_config_state.setText(tvnewlyTotal);//状态
         tv_config_cutdate.setText(year + "/" + month + "/" + datetime);//裁床时间
-        tvnewlyday1 = et_config_oneday.getText().toString();
-        et_config_twoday.getText().toString();
-        et_config_threeday.getText().toString();
-        et_config_foreday.getText().toString();
-        et_config_fiveday.getText().toString();
-        et_config_sixday.getText().toString();
-        et_config_servenday.getText().toString();
-        et_config_eightday.getText().toString();
-        et_config_nineday.getText().toString();
-        et_config_tenday.getText().toString();
-        et_config_elevenday.getText().toString();
-        et_config_twelveday.getText().toString();
-        et_config_thirteenday.getText().toString();
-        et_config_fourteenday.getText().toString();
-        et_config_fifteenday.getText().toString();
-        et_config_sixteenday.getText().toString();
-        et_config_seventeenday.getText().toString();
-        et_config_eighteenday.getText().toString();
-        et_config_nineteenday.getText().toString();
-        et_config_twentyday.getText().toString();
-        et_config_TwentyOneDay.getText().toString();
-        et_config_twentytwoday.getText().toString();
-        et_config_twentyThreeday.getText().toString();
-        et_config_twentyforeday.getText().toString();
-        et_config_twentyfiveday.getText().toString();
-        et_config_twentysixday.getText().toString();
-        et_config_twentysevenday.getText().toString();
-        et_config_twentyeightday.getText().toString();
-        et_config_twentynineday.getText().toString();
-        et_config_thirtyday.getText().toString();
-        et_config_thirtyoneday.getText().toString();
         if (isprodure.equals("0")) {
             ll_config_singularsystem.setVisibility(View.VISIBLE);
             ll_config_completedlast.setVisibility(View.VISIBLE);
@@ -1993,7 +1950,7 @@ public class FTYDLNewlyComfigDetailActivity
 
     /*保存上传*/
     private void setSave() {
-        saveSpUtils();
+        saveSpUtils();//获取内部变动的数值
         String saveurl = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
         sp = getSharedPreferences("my_sp", 0);
         if (productionMonth.equals("")) {//月份判断数值
@@ -2033,20 +1990,6 @@ public class FTYDLNewlyComfigDetailActivity
             listsize = booleandatelist.size();
         }
         String[] arrsitem = tvnewlyItem.split(",");//修改的款号数组
-
-        String[] arrsmonth;//当前的月份
-        if (productionMonth.equals("")) {
-            arrsmonth = smonth.split(",");//修改的月份数组
-        } else {
-            arrsmonth = productionMonth.split(",");//修改的月份数组
-        }
-
-        String[] arrsteams;//当前的部门
-        if (proColumnTitle.equals("")) {
-            arrsteams = columntitle.split(",");
-        } else {
-            arrsteams = proColumnTitle.split(",");
-        }
         String[] arrsdatemonth = new String[listsize];
         String[] arrsdatepredure = new String[listsize];//符合条件的工序数组
         String[] arrsdateSubfactoryTeams = new String[listsize];//部门组别
@@ -2057,10 +2000,10 @@ public class FTYDLNewlyComfigDetailActivity
         } else {
             ResponseDialog.showLoading(this, "正在保存");
             if (booleandatelist.size() == 0) {
-            /*判断工序是否是裁床*/
+                /*判断工序是否是裁床*/
                 if (tvnewlyProcedure.equals("裁床")) {
                     try {
-                    /*如果花色为多条，则循环把这条数据分成多条数据*/
+                        /*如果花色为多条，则循环把这条数据分成多条数据*/
                         for (int j = 0; j < newdataBeans.size(); j++) {
                             FTYDLDetailSaveBean consaveBean =
                                     new FTYDLDetailSaveBean();
@@ -2161,8 +2104,6 @@ public class FTYDLNewlyComfigDetailActivity
                                     + "/" + hour + "/" + minute + "/" + second);
                             newlyComfigSaveBeen.add(consaveBean);
                         }
-                        System.out.print(newdataBeans);
-                        System.out.print(newlyComfigSaveBeen);
                         String detailb = gson.toJson(newlyComfigSaveBeen);
                         String dateee = detailb.replace("\"\"", "null");
                         if (NetWork.isNetWorkAvailable(this)) {
@@ -2180,19 +2121,17 @@ public class FTYDLNewlyComfigDetailActivity
 
                                         @Override
                                         public void onResponse(final String response, int id) {
-                                            System.out.print(response);
                                             String ression = StringUtil.sideTrim(response, "\"");
-                                            System.out.print(ression);
                                             int resindex = Integer.parseInt(ression);
                                             setNewlyComfig();
                                             if (resindex > 4) {
                                                 FTYDLSearchActivity.FTYDLSearchinstance.finish();
                                                 ToastUtils.ShowToastMessage("保存成功",
                                                         FTYDLNewlyComfigDetailActivity.this);
-                                                saveDestroy();
+                                                saveDestroy();//保存成功后删掉保存的数据
                                                 startActivity(new Intent(FTYDLNewlyComfigDetailActivity.this,
                                                         FTYDLSearchActivity.class));
-                                                procalbeanlist.clear();
+                                                procalbeanlist.clear();//清空集合
                                                 finish();
                                             } else if (resindex == 3) {
                                                 ToastUtils.ShowToastMessage("保存失败",
@@ -2281,7 +2220,6 @@ public class FTYDLNewlyComfigDetailActivity
                         consaveBean.setRecordat(year + "/" + month + "/" + datetime
                                 + "/" + hour + "/" + minute + "/" + second);//制单时间
                         newlyComfigSaveBeen.add(consaveBean);
-                        System.out.print(newlyComfigSaveBeen);
                         String detailb = gson.toJson(newlyComfigSaveBeen);
                         String dateee = detailb.replace("\"\"", "null");
                         if (newlyComfigSaveBeen.equals("")) {
@@ -2303,9 +2241,7 @@ public class FTYDLNewlyComfigDetailActivity
 
                                             @Override
                                             public void onResponse(final String response, int id) {
-                                                System.out.print(response);
                                                 String ression = StringUtil.sideTrim(response, "\"");
-                                                System.out.print(ression);
                                                 int resindex = Integer.parseInt(ression);
                                                 setNewlyComfig();
                                                 if (resindex > 4) {
@@ -2368,7 +2304,7 @@ public class FTYDLNewlyComfigDetailActivity
                         arrsdateSubfactoryTeams[i] = "";
                     }
                 }
-                StringBuffer sb = new StringBuffer();
+                StringBuffer sb = new StringBuffer();//循环去掉空的数据
                 for (int i = 0; i < arrsdatepredure.length; i++) {
                     if ("".equals(arrsdatepredure[i])) {
                         continue;
@@ -2416,7 +2352,6 @@ public class FTYDLNewlyComfigDetailActivity
                     System.out.print(arrsdateSubfactoryTeams[i] + "");
                 }
                 System.out.print(arrsdateSubfactoryTeams + "");
-                booleandatelist.size();
                 if (tvnewlyProcedure.equals("裁床")) {
                     try {
                         for (int j = 0; j < newdataBeans.size(); j++) {
@@ -2460,8 +2395,6 @@ public class FTYDLNewlyComfigDetailActivity
                                     + "/" + hour + "/" + minute + "/" + second);//制单时间
                             newlyComfigSaveBeen.add(consaveBean);
                         }
-                        System.out.print(newdataBeans);
-                        System.out.print(newlyComfigSaveBeen);
                         String detailb = gson.toJson(newlyComfigSaveBeen);
                         String dateee = detailb.replace("\"\"", "null");
                         if (NetWork.isNetWorkAvailable(this)) {
@@ -2479,9 +2412,7 @@ public class FTYDLNewlyComfigDetailActivity
 
                                         @Override
                                         public void onResponse(final String response, int id) {
-                                            System.out.print(response);
                                             String ression = StringUtil.sideTrim(response, "\"");
-                                            System.out.print(ression);
                                             int resindex = Integer.parseInt(ression);
                                             setNewlyComfig();
                                             if (resindex > 4) {
@@ -2580,7 +2511,6 @@ public class FTYDLNewlyComfigDetailActivity
                         consaveBean.setRecordat(year + "/" + month + "/" + datetime
                                 + "/" + hour + "/" + minute + "/" + second);//制单时间
                         newlyComfigSaveBeen.add(consaveBean);
-                        System.out.print(newlyComfigSaveBeen);
                         String detailb = gson.toJson(newlyComfigSaveBeen);
                         String dateee = detailb.replace("\"\"", "null");
                         if (newlyComfigSaveBeen.equals("")) {
@@ -2602,9 +2532,7 @@ public class FTYDLNewlyComfigDetailActivity
 
                                             @Override
                                             public void onResponse(final String response, int id) {
-                                                System.out.print(response);
                                                 String ression = StringUtil.sideTrim(response, "\"");
-                                                System.out.print(ression);
                                                 int resindex = Integer.parseInt(ression);
                                                 setNewlyComfig();
                                                 if (resindex > 4) {
@@ -2639,7 +2567,6 @@ public class FTYDLNewlyComfigDetailActivity
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-//                    }
                 }
             }
         }

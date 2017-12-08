@@ -285,7 +285,7 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
     private void setData() {
         String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
         sp = getSharedPreferences("my_sp", 0);
-        String namedure = sp.getString("proname", "");//条件查询dialog中监听制单人的输入信息
+        String namedure = sp.getString("FTYDLName", "");//条件查询dialog中监听制单人的输入信息
         String Style = sp.getString("etprodialogStyle", "");//条件查询dialog中监听款号的输入信息
         String commostyle = sp.getString("productionleftItem", "");//查货跟踪长按传过来的款号
         String commonamedure;//进行查询的制单人变量
@@ -446,7 +446,7 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
         String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
         sp = FTYDLSearchActivity.this.getSharedPreferences("my_sp", 0);
         /*获取条件查询dialog中输入的信息字段*/
-        String namedure = sp.getString("proname", "");
+        String namedure = sp.getString("FTYDLName", "");
         String commonamedure;
         String Style = sp.getString("etprodialogStyle", "");
         String commostyle = sp.getString("productionleftItem", "");
@@ -611,7 +611,7 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
         String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
         sp = FTYDLSearchActivity.this.getSharedPreferences("my_sp", 0);
         /*获取条件查询dialog中输入的信息字段*/
-        String namedure = sp.getString("proname", "");
+        String namedure = sp.getString("FTYDLName", "");
         String commonamedure;
         String Style = sp.getString("etprodialogStyle", "");
         String commostyle = sp.getString("productionleftItem", "");

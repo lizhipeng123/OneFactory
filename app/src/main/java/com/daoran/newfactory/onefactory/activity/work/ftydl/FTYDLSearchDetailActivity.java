@@ -1,5 +1,6 @@
 package com.daoran.newfactory.onefactory.activity.work.ftydl;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -8,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -99,11 +101,13 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
     private int year, month, datetime, hour, minute, second;//年,月,日,时,分,秒
     private ListView list_pro_config_vertical;//实裁数下面的各花色产量集合
     private boolean flagblack;
+    private AlertDialog noticeDialog;
 
     private String pronullpartment, saveothers, saveremarks, savestate,
             savetasknunber, savelastmonth, save1, save2, save3, save4, save5, save6, save7, save8,
             save9, save10, save11, save12, save13, save14, save15, save16, save17, save18, save19, save20, save21,
-            save22, save23, save24, save25, save26, save27, save28, save29, save30, save31;
+            save22, save23, save24, save25, save26, save27, save28, save29, save30, save31,
+            saveSubDepartment, saveboolean;
     //上个页面传过来的所点击的数据
     private String tvnewlyItem, tvnewlyDepartment, isprodure, tvnewlyctmtxt, tvnewlyDocumentary,
             tvnewlyFactory, tvnewlyOthers, tvnewlyProcedure, tvnyear, tvnmonth,
@@ -3147,8 +3151,6 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
         if (NetWork.isNetWorkAvailable(this)) {
             String saveurl = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
             setVariable();
-            System.out.println(procalbeanlist);
-            System.out.println(newdataBeans);
             ResponseDialog.showLoading(this, "正在保存");
             //如果没有修改部门或者月份，则不需要复制
             if (pronullpartment.equals("1")) {
@@ -3241,27 +3243,22 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                             newdataBeans.get(i).setDay31(procalbeanlist.get(i).getProNum());
                         }
                         newdataBeans.get(i).setPrdstatus(savestate);//状态
+                        newdataBeans.get(i).setSubfactoryTeams(saveSubDepartment);//部门组别
                     }
                 } else {//除了裁床之外的保存方式
                     for (int i = 0; i < newdataBeans.size(); i++) {
                         String completion = tv_config_totalcompletion.getText().toString();
                         newdataBeans.get(i).setWorkers(saveothers);//组别人数
                         newdataBeans.get(i).setMemo(saveremarks);//备注
+                        newdataBeans.get(i).setSubfactoryTeams(saveSubDepartment);//部门组别
                         newdataBeans.get(i).setPrdstatus(savestate);//状态
                         newdataBeans.get(i).setTaskqty(savetasknunber);//任务数
                         newdataBeans.get(i).setLastMonQty(savelastmonth);//上月完工数
                         newdataBeans.get(i).setSumCompletedQty(completion);//总完工数
                         newdataBeans.get(i).setLeftQty(
                                 String.valueOf(Integer.parseInt(savetasknunber) - Integer.parseInt(completion)));//结余数量
-                        int cli;
-                        if (procalbeanlist.get(i).getProClippingnumber() == null) {
-                            String tvprodetailClippingNumber = sp.getString("tvFTYDLDetailFactcutqty",
-                                    "");
-                            cli = Integer.parseInt(tvprodetailClippingNumber);
-                        } else {
-                            cli = Integer.parseInt(procalbeanlist.get(i).getProClippingnumber());
-                        }
-                        newdataBeans.get(i).setFactcutqty(String.valueOf(cli));
+                        String cli = tv_config_clippingnumber.getText().toString();
+                        newdataBeans.get(i).setFactcutqty(cli);
                         newdataBeans.get(i).setDay1(save1);//1
                         newdataBeans.get(i).setDay2(save2);//2
                         newdataBeans.get(i).setDay3(save3);//3
@@ -3298,7 +3295,6 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
             } else {//如果修改了部门，则复制该条数据
                 if (tvnewlyProcedure.equals("裁床")) {
                     for (int i = 0; i < newdataBeans.size(); i++) {
-
                         int balan = Integer.parseInt(procalbeanlist.get(i).getBalanceAmount());
                         int clippingint;
                         int cli;
@@ -3330,10 +3326,73 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         newdataBeans.get(i).setWorkers(saveothers);//组别人数
                         newdataBeans.get(i).setLeftQty(String.valueOf(balan - clippingint));//结余数量
                         newdataBeans.get(i).setSumCompletedQty(total);//总完工数
+                        newdataBeans.get(i).setSubfactoryTeams(saveSubDepartment);//部门组别
                         newdataBeans.get(i).setFactcutqty(String.valueOf(cli));//实裁数
                         newdataBeans.get(i).setPrdstatus(savestate);//状态
                         newdataBeans.get(i).setMemo(saveremarks);//备注
-                        newdataBeans.get(i).setRecordat(year + "/" + month + "/" + datetime);//制单时间
+                        if (datetime == 1) {
+                            newdataBeans.get(i).setDay1(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 2) {
+                            newdataBeans.get(i).setDay2(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 3) {
+                            newdataBeans.get(i).setDay3(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 4) {
+                            newdataBeans.get(i).setDay4(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 5) {
+                            newdataBeans.get(i).setDay5(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 6) {
+                            newdataBeans.get(i).setDay6(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 7) {
+                            newdataBeans.get(i).setDay7(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 8) {
+                            newdataBeans.get(i).setDay8(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 9) {
+                            newdataBeans.get(i).setDay9(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 10) {
+                            newdataBeans.get(i).setDay10(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 11) {
+                            newdataBeans.get(i).setDay11(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 12) {
+                            newdataBeans.get(i).setDay12(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 13) {
+                            newdataBeans.get(i).setDay13(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 14) {
+                            newdataBeans.get(i).setDay14(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 15) {
+                            newdataBeans.get(i).setDay15(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 16) {
+                            newdataBeans.get(i).setDay16(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 17) {
+                            newdataBeans.get(i).setDay17(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 18) {
+                            newdataBeans.get(i).setDay18(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 19) {
+                            newdataBeans.get(i).setDay19(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 20) {
+                            newdataBeans.get(i).setDay20(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 21) {
+                            newdataBeans.get(i).setDay21(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 22) {
+                            newdataBeans.get(i).setDay22(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 23) {
+                            newdataBeans.get(i).setDay23(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 24) {
+                            newdataBeans.get(i).setDay24(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 25) {
+                            newdataBeans.get(i).setDay25(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 26) {
+                            newdataBeans.get(i).setDay26(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 27) {
+                            newdataBeans.get(i).setDay27(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 28) {
+                            newdataBeans.get(i).setDay28(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 29) {
+                            newdataBeans.get(i).setDay29(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 30) {
+                            newdataBeans.get(i).setDay30(procalbeanlist.get(i).getProNum());
+                        } else if (datetime == 31) {
+                            newdataBeans.get(i).setDay31(procalbeanlist.get(i).getProNum());
+                        }
                     }
                 } else {
                     for (int i = 0; i < newdataBeans.size(); i++) {
@@ -3344,18 +3403,43 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         newdataBeans.get(i).setTaskqty(savetasknunber);//任务数
                         newdataBeans.get(i).setLastMonQty(savelastmonth);//上月完工数
                         newdataBeans.get(i).setSumCompletedQty(completion);//总完工数
+                        newdataBeans.get(i).setSubfactoryTeams(saveSubDepartment);//部门组别
                         newdataBeans.get(i).setLeftQty(
                                 String.valueOf(Integer.parseInt(savetasknunber) -
                                         Integer.parseInt(completion)));//结余数量
-                        int cli;
-                        if (procalbeanlist.get(i).getProClippingnumber() == null) {
-                            String tvprodetailClippingNumber = sp.getString("tvFTYDLDetailFactcutqty",
-                                    "");
-                            cli = Integer.parseInt(tvprodetailClippingNumber);
-                        } else {
-                            cli = Integer.parseInt(procalbeanlist.get(i).getProClippingnumber());
-                        }
-                        newdataBeans.get(i).setFactcutqty(String.valueOf(cli));//实裁数
+                        String cli = tv_config_clippingnumber.getText().toString();
+                        newdataBeans.get(i).setFactcutqty(cli);//实裁数
+                        newdataBeans.get(i).setDay1(save1);//1
+                        newdataBeans.get(i).setDay2(save2);//2
+                        newdataBeans.get(i).setDay3(save3);//3
+                        newdataBeans.get(i).setDay4(save4);//4
+                        newdataBeans.get(i).setDay5(save5);//5
+                        newdataBeans.get(i).setDay6(save6);//6
+                        newdataBeans.get(i).setDay7(save7);//7
+                        newdataBeans.get(i).setDay8(save8);//8
+                        newdataBeans.get(i).setDay9(save9);//9
+                        newdataBeans.get(i).setDay10(save10);//10
+                        newdataBeans.get(i).setDay11(save11);//11
+                        newdataBeans.get(i).setDay12(save12);//12
+                        newdataBeans.get(i).setDay13(save13);//13
+                        newdataBeans.get(i).setDay14(save14);//14
+                        newdataBeans.get(i).setDay15(save15);//15
+                        newdataBeans.get(i).setDay16(save16);//16
+                        newdataBeans.get(i).setDay17(save17);//17
+                        newdataBeans.get(i).setDay18(save18);//18
+                        newdataBeans.get(i).setDay19(save19);//19
+                        newdataBeans.get(i).setDay20(save20);//20
+                        newdataBeans.get(i).setDay21(save21);//21
+                        newdataBeans.get(i).setDay22(save22);//22
+                        newdataBeans.get(i).setDay23(save23);//23
+                        newdataBeans.get(i).setDay24(save24);//24
+                        newdataBeans.get(i).setDay25(save25);//25
+                        newdataBeans.get(i).setDay26(save26);//26
+                        newdataBeans.get(i).setDay27(save27);//27
+                        newdataBeans.get(i).setDay28(save28);//28
+                        newdataBeans.get(i).setDay29(save29);//29
+                        newdataBeans.get(i).setDay30(save30);//30
+                        newdataBeans.get(i).setDay31(save31);//31
                     }
                 }
             }
@@ -3487,191 +3571,265 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
         switch (v.getId()) {
             /*返回*/
             case R.id.ivProductionBack:
-                finish();
+                getBooleanSave();
+                if (saveboolean.equals("未修改")) {
+                    finish();
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("退出提示");
+                    builder.setMessage("有修改的数据,退出是否保存");
+                    builder.setPositiveButton("保存后退出"
+                            , new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    setSaveDate();
+                                    dialog.dismiss();
+                                    finish();
+                                }
+                            });
+                    builder.setNegativeButton("不保存，直接退出",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    procalbeanlist.clear();
+                                    finish();
+                                }
+                            });
+                    noticeDialog = builder.create();
+                    noticeDialog.setCanceledOnTouchOutside(false);
+                    noticeDialog.show();
+                }
                 break;
             /*保存*/
             case R.id.btnProSave:
-                sp = getSharedPreferences("my_sp", 0);
-                /*判断全部可填的数据是否都为空,空则转换成1，空则显示未修改数据*/
-                String pronullothers = sp.getString("pronullothers", "");//组别人数是否相同
-                if (pronullothers.equals("")) {
-                    pronullothers = "1";
-                }
-                String pronulltasknumber = sp.getString("pronulltasknumber", "");//任务数是否相同
-                if (pronulltasknumber.equals("")) {
-                    pronulltasknumber = "1";
-                }
-                String pronulllastmon = sp.getString("pronulllastmon", "");//上月完工数是否相同
-                if (pronulllastmon.equals("")) {
-                    pronulllastmon = "1";
-                }
-                String pronullprocedure = sp.getString("pronullprocedure", "");//工序是否相同
-                if (pronullprocedure.equals("")) {
-                    pronullprocedure = "1";
-                }
-                String pronullpartment = sp.getString("pronullpartment", "");//部门组别是否相同
-                if (pronullpartment.equals("")) {
-                    pronullpartment = "1";
-                }
-                String pronullstate = sp.getString("pronullstate", "");//状态是否相同
-                if (pronullstate.equals("")) {
-                    pronullstate = "1";
-                }
-                String pronullmonth = sp.getString("pronullmonth", "");//月份是否相同
-                if (pronullmonth.equals("")) {
-                    pronullmonth = "1";
-                }
-                String pronullday1 = sp.getString("pronullday1", "");//一日是否相同
-                if (pronullday1.equals("")) {
-                    pronullday1 = "1";
-                }
-                String pronullday2 = sp.getString("pronullday2", "");//二日
-                if (pronullday2.equals("")) {
-                    pronullday2 = "1";
-                }
-                String pronullday3 = sp.getString("pronullday3", "");
-                if (pronullday3.equals("")) {
-                    pronullday3 = "1";
-                }
-                String pronullday4 = sp.getString("pronullday4", "");
-                if (pronullday4.equals("")) {
-                    pronullday4 = "1";
-                }
-                String pronullday5 = sp.getString("pronullday5", "");
-                if (pronullday5.equals("")) {
-                    pronullday5 = "1";
-                }
-                String pronullday6 = sp.getString("pronullday6", "");
-                if (pronullday6.equals("")) {
-                    pronullday6 = "1";
-                }
-                String pronullday7 = sp.getString("pronullday7", "");
-                if (pronullday7.equals("")) {
-                    pronullday7 = "1";
-                }
-                String pronullday8 = sp.getString("pronullday8", "");
-                if (pronullday8.equals("")) {
-                    pronullday8 = "1";
-                }
-                String pronullday9 = sp.getString("pronullday9", "");
-                if (pronullday9.equals("")) {
-                    pronullday9 = "1";
-                }
-                String pronullday10 = sp.getString("pronullday10", "");
-                if (pronullday10.equals("")) {
-                    pronullday10 = "1";
-                }
-                String pronullday11 = sp.getString("pronullday11", "");
-                if (pronullday11.equals("")) {
-                    pronullday11 = "1";
-                }
-                String pronullday12 = sp.getString("pronullday12", "");
-                if (pronullday12.equals("")) {
-                    pronullday12 = "1";
-                }
-                String pronullday13 = sp.getString("pronullday13", "");
-                if (pronullday13.equals("")) {
-                    pronullday13 = "1";
-                }
-                String pronullday14 = sp.getString("pronullday14", "");
-                if (pronullday14.equals("")) {
-                    pronullday14 = "1";
-                }
-                String pronullday15 = sp.getString("pronullday15", "");
-                if (pronullday15.equals("")) {
-                    pronullday15 = "1";
-                }
-                String pronullday16 = sp.getString("pronullday16", "");
-                if (pronullday16.equals("")) {
-                    pronullday16 = "1";
-                }
-                String pronullday17 = sp.getString("pronullday17", "");
-                if (pronullday17.equals("")) {
-                    pronullday17 = "1";
-                }
-                String pronullday18 = sp.getString("pronullday18", "");
-                if (pronullday18.equals("")) {
-                    pronullday18 = "1";
-                }
-                String pronullday19 = sp.getString("pronullday19", "");
-                if (pronullday19.equals("")) {
-                    pronullday19 = "1";
-                }
-                String pronullday20 = sp.getString("pronullday20", "");
-                if (pronullday20.equals("")) {
-                    pronullday20 = "1";
-                }
-                String pronullday21 = sp.getString("pronullday21", "");
-                if (pronullday21.equals("")) {
-                    pronullday21 = "1";
-                }
-                String pronullday22 = sp.getString("pronullday22", "");
-                if (pronullday22.equals("")) {
-                    pronullday22 = "1";
-                }
-                String pronullday23 = sp.getString("pronullday23", "");
-                if (pronullday23.equals("")) {
-                    pronullday23 = "1";
-                }
-                String pronullday24 = sp.getString("pronullday24", "");
-                if (pronullday24.equals("")) {
-                    pronullday24 = "1";
-                }
-                String pronullday25 = sp.getString("pronullday25", "");
-                if (pronullday25.equals("")) {
-                    pronullday25 = "1";
-                }
-                String pronullday26 = sp.getString("pronullday26", "");
-                if (pronullday26.equals("")) {
-                    pronullday26 = "1";
-                }
-                String pronullday27 = sp.getString("pronullday27", "");
-                if (pronullday27.equals("")) {
-                    pronullday27 = "1";
-                }
-                String pronullday28 = sp.getString("pronullday28", "");
-                if (pronullday28.equals("")) {
-                    pronullday28 = "1";
-                }
-                String pronullday29 = sp.getString("pronullday29", "");
-                if (pronullday29.equals("")) {
-                    pronullday29 = "1";
-                }
-                String pronullday30 = sp.getString("pronullday30", "");
-                if (pronullday30.equals("")) {
-                    pronullday30 = "1";
-                }
-                String pronullday31 = sp.getString("pronullday31", "");
-                if (pronullday31.equals("")) {
-                    pronullday31 = "1";
-                }
-                String pronullmemo = sp.getString("pronullmemo", "");
-                if (pronullmemo.equals("")) {
-                    pronullmemo = "1";
-                }
-                String prosavecount = sp.getString("prosavecount", "");
-                if (prosavecount.equals("")) {
-                    prosavecount = "1";
-                }
-                if (prosavecount.equals("1") && pronullothers.equals("1") && pronulltasknumber.equals("1")
-                        && pronulllastmon.equals("1")
-                        && pronullday1.equals("1") && pronullday2.equals("1") && pronullday3.equals("1")
-                        && pronullday4.equals("1") && pronullday5.equals("1") && pronullday6.equals("1")
-                        && pronullday7.equals("1") && pronullday8.equals("1") && pronullday9.equals("1")
-                        && pronullday10.equals("1") && pronullday11.equals("1") && pronullday12.equals("1")
-                        && pronullday13.equals("1") && pronullday14.equals("1") && pronullday15.equals("1")
-                        && pronullday16.equals("1") && pronullday17.equals("1") && pronullday18.equals("1")
-                        && pronullday19.equals("1") && pronullday20.equals("1") && pronullday21.equals("1")
-                        && pronullday22.equals("1") && pronullday23.equals("1") && pronullday24.equals("1")
-                        && pronullday25.equals("1") && pronullday26.equals("1") && pronullday27.equals("1")
-                        && pronullday28.equals("1") && pronullday29.equals("1") && pronullday30.equals("1")
-                        && pronullmemo.equals("1") && pronullpartment.equals("1") && pronullmonth.equals("1")
-                        && pronullprocedure.equals("1") && pronullstate.equals("1") && pronullday31.equals("1")) {
+                getBooleanSave();
+                if (saveboolean.equals("未修改")) {
                     ToastUtils.ShowToastMessage("未修改表中数据", FTYDLSearchDetailActivity.this);
                 } else {
                     setSaveDate();
                 }
                 break;
+        }
+    }
+
+    @Override//物理返回
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            getBooleanSave();
+            if (saveboolean.equals("未修改")) {
+                finish();
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("退出提示");
+                builder.setMessage("有修改的数据,退出是否保存");
+                builder.setPositiveButton("保存后退出"
+                        , new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                setSaveDate();
+                                dialog.dismiss();
+                                finish();
+                            }
+                        });
+                builder.setNegativeButton("不保存，直接退出",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                procalbeanlist.clear();
+                                finish();
+                            }
+                        });
+                noticeDialog = builder.create();
+                noticeDialog.setCanceledOnTouchOutside(false);
+                noticeDialog.show();
+            }
+        }
+        return false;
+    }
+
+    /*判断是否修改过数据*/
+    private void getBooleanSave() {
+        sp = getSharedPreferences("my_sp", 0);
+                /*判断全部可填的数据是否都为空,空则转换成1，空则显示未修改数据*/
+        String pronullothers = sp.getString("pronullothers", "");//组别人数是否相同
+        if (pronullothers.equals("")) {
+            pronullothers = "1";
+        }
+        String pronulltasknumber = sp.getString("pronulltasknumber", "");//任务数是否相同
+        if (pronulltasknumber.equals("")) {
+            pronulltasknumber = "1";
+        }
+        String pronulllastmon = sp.getString("pronulllastmon", "");//上月完工数是否相同
+        if (pronulllastmon.equals("")) {
+            pronulllastmon = "1";
+        }
+        String pronullprocedure = sp.getString("pronullprocedure", "");//工序是否相同
+        if (pronullprocedure.equals("")) {
+            pronullprocedure = "1";
+        }
+        String pronullpartment = sp.getString("pronullpartment", "");//部门组别是否相同
+        if (pronullpartment.equals("")) {
+            pronullpartment = "1";
+        }
+        String pronullstate = sp.getString("pronullstate", "");//状态是否相同
+        if (pronullstate.equals("")) {
+            pronullstate = "1";
+        }
+        String pronullmonth = sp.getString("pronullmonth", "");//月份是否相同
+        if (pronullmonth.equals("")) {
+            pronullmonth = "1";
+        }
+        String pronullday1 = sp.getString("pronullday1", "");//一日是否相同
+        if (pronullday1.equals("")) {
+            pronullday1 = "1";
+        }
+        String pronullday2 = sp.getString("pronullday2", "");//二日
+        if (pronullday2.equals("")) {
+            pronullday2 = "1";
+        }
+        String pronullday3 = sp.getString("pronullday3", "");
+        if (pronullday3.equals("")) {
+            pronullday3 = "1";
+        }
+        String pronullday4 = sp.getString("pronullday4", "");
+        if (pronullday4.equals("")) {
+            pronullday4 = "1";
+        }
+        String pronullday5 = sp.getString("pronullday5", "");
+        if (pronullday5.equals("")) {
+            pronullday5 = "1";
+        }
+        String pronullday6 = sp.getString("pronullday6", "");
+        if (pronullday6.equals("")) {
+            pronullday6 = "1";
+        }
+        String pronullday7 = sp.getString("pronullday7", "");
+        if (pronullday7.equals("")) {
+            pronullday7 = "1";
+        }
+        String pronullday8 = sp.getString("pronullday8", "");
+        if (pronullday8.equals("")) {
+            pronullday8 = "1";
+        }
+        String pronullday9 = sp.getString("pronullday9", "");
+        if (pronullday9.equals("")) {
+            pronullday9 = "1";
+        }
+        String pronullday10 = sp.getString("pronullday10", "");
+        if (pronullday10.equals("")) {
+            pronullday10 = "1";
+        }
+        String pronullday11 = sp.getString("pronullday11", "");
+        if (pronullday11.equals("")) {
+            pronullday11 = "1";
+        }
+        String pronullday12 = sp.getString("pronullday12", "");
+        if (pronullday12.equals("")) {
+            pronullday12 = "1";
+        }
+        String pronullday13 = sp.getString("pronullday13", "");
+        if (pronullday13.equals("")) {
+            pronullday13 = "1";
+        }
+        String pronullday14 = sp.getString("pronullday14", "");
+        if (pronullday14.equals("")) {
+            pronullday14 = "1";
+        }
+        String pronullday15 = sp.getString("pronullday15", "");
+        if (pronullday15.equals("")) {
+            pronullday15 = "1";
+        }
+        String pronullday16 = sp.getString("pronullday16", "");
+        if (pronullday16.equals("")) {
+            pronullday16 = "1";
+        }
+        String pronullday17 = sp.getString("pronullday17", "");
+        if (pronullday17.equals("")) {
+            pronullday17 = "1";
+        }
+        String pronullday18 = sp.getString("pronullday18", "");
+        if (pronullday18.equals("")) {
+            pronullday18 = "1";
+        }
+        String pronullday19 = sp.getString("pronullday19", "");
+        if (pronullday19.equals("")) {
+            pronullday19 = "1";
+        }
+        String pronullday20 = sp.getString("pronullday20", "");
+        if (pronullday20.equals("")) {
+            pronullday20 = "1";
+        }
+        String pronullday21 = sp.getString("pronullday21", "");
+        if (pronullday21.equals("")) {
+            pronullday21 = "1";
+        }
+        String pronullday22 = sp.getString("pronullday22", "");
+        if (pronullday22.equals("")) {
+            pronullday22 = "1";
+        }
+        String pronullday23 = sp.getString("pronullday23", "");
+        if (pronullday23.equals("")) {
+            pronullday23 = "1";
+        }
+        String pronullday24 = sp.getString("pronullday24", "");
+        if (pronullday24.equals("")) {
+            pronullday24 = "1";
+        }
+        String pronullday25 = sp.getString("pronullday25", "");
+        if (pronullday25.equals("")) {
+            pronullday25 = "1";
+        }
+        String pronullday26 = sp.getString("pronullday26", "");
+        if (pronullday26.equals("")) {
+            pronullday26 = "1";
+        }
+        String pronullday27 = sp.getString("pronullday27", "");
+        if (pronullday27.equals("")) {
+            pronullday27 = "1";
+        }
+        String pronullday28 = sp.getString("pronullday28", "");
+        if (pronullday28.equals("")) {
+            pronullday28 = "1";
+        }
+        String pronullday29 = sp.getString("pronullday29", "");
+        if (pronullday29.equals("")) {
+            pronullday29 = "1";
+        }
+        String pronullday30 = sp.getString("pronullday30", "");
+        if (pronullday30.equals("")) {
+            pronullday30 = "1";
+        }
+        String pronullday31 = sp.getString("pronullday31", "");
+        if (pronullday31.equals("")) {
+            pronullday31 = "1";
+        }
+        String pronullmemo = sp.getString("pronullmemo", "");
+        if (pronullmemo.equals("")) {
+            pronullmemo = "1";
+        }
+        String prosavecount = sp.getString("prosavecount", "");
+        if (prosavecount.equals("")) {
+            prosavecount = "1";
+        }
+        if (prosavecount.equals("1") && pronullothers.equals("1") && pronulltasknumber.equals("1")
+                && pronulllastmon.equals("1")
+                && pronullday1.equals("1") && pronullday2.equals("1") && pronullday3.equals("1")
+                && pronullday4.equals("1") && pronullday5.equals("1") && pronullday6.equals("1")
+                && pronullday7.equals("1") && pronullday8.equals("1") && pronullday9.equals("1")
+                && pronullday10.equals("1") && pronullday11.equals("1") && pronullday12.equals("1")
+                && pronullday13.equals("1") && pronullday14.equals("1") && pronullday15.equals("1")
+                && pronullday16.equals("1") && pronullday17.equals("1") && pronullday18.equals("1")
+                && pronullday19.equals("1") && pronullday20.equals("1") && pronullday21.equals("1")
+                && pronullday22.equals("1") && pronullday23.equals("1") && pronullday24.equals("1")
+                && pronullday25.equals("1") && pronullday26.equals("1") && pronullday27.equals("1")
+                && pronullday28.equals("1") && pronullday29.equals("1") && pronullday30.equals("1")
+                && pronullmemo.equals("1") && pronullpartment.equals("1") && pronullmonth.equals("1")
+                && pronullprocedure.equals("1") && pronullstate.equals("1") && pronullday31.equals("1")) {
+            saveboolean = "未修改";
+        } else {
+            saveboolean = "已修改";
         }
     }
 
@@ -3711,6 +3869,14 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
             savestate = tvnewlyTotal;
         } else {
             savestate = prosavestate;
+        }
+
+        String prosavedepartment = sp.getString("prosavedepartment",
+                "");//修改的部门组别
+        if (prosavedepartment.isEmpty() || prosavedepartment.equals(tvnewlyDepartment)) {
+            saveSubDepartment = tvnewlyDepartment;
+        } else {
+            saveSubDepartment = prosavedepartment;
         }
 
         String prosavetasknunber = sp.
