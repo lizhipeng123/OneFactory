@@ -33,7 +33,8 @@ import java.util.regex.Pattern;
 public class QACworkSearchDialog extends Dialog {
     Activity content;
     private View.OnClickListener mClickListener, mCancleLinstener;//监听确认和取消
-    private EditText etprodialogStyle, etprodialogFactory, etprodialogRecode, etprodialogProcedure;
+    private EditText etprodialogItem, etprodialogPrddocumentary,
+            etprodialogIPQC, etprodialogprdmaster;
     private CheckBox checkboxNull;//是否为空
     private Button btnCancle, btnComfirm;//确认和取消按钮
     private TextView tvCommoDialogcheck;
@@ -63,18 +64,18 @@ public class QACworkSearchDialog extends Dialog {
      * 实例化控件
      */
     private void getViews() {
-        etprodialogStyle = (EditText) findViewById(R.id.etprodialogStyle);
-        etprodialogFactory = (EditText) findViewById(R.id.etprodialogFactory);
-        etprodialogRecode = (EditText) findViewById(R.id.etprodialogRecode);
-        etprodialogProcedure = (EditText) findViewById(R.id.etprodialogProcedure);
+        etprodialogItem = (EditText) findViewById(R.id.etprodialogStyle);
+        etprodialogPrddocumentary = (EditText) findViewById(R.id.etprodialogFactory);
+        etprodialogIPQC = (EditText) findViewById(R.id.etprodialogRecode);
+        etprodialogprdmaster = (EditText) findViewById(R.id.etprodialogProcedure);
         checkboxNull = (CheckBox) findViewById(R.id.checkboxNull);
         btnCancle = (Button) findViewById(R.id.btnCancle);
         btnComfirm = (Button) findViewById(R.id.btnComfirm);
         tvCommoDialogcheck = (TextView) findViewById(R.id.tvCommoDialogcheck);
-        setEditTextInhibitInputSpace(etprodialogStyle);
-        setEditTextInhibitInputSpace(etprodialogFactory);
-        setEditTextInhibitInputSpace(etprodialogRecode);
-        setEditTextInhibitInputSpace(etprodialogProcedure);
+        setEditTextInhibitInputSpace(etprodialogItem);
+        setEditTextInhibitInputSpace(etprodialogPrddocumentary);
+        setEditTextInhibitInputSpace(etprodialogIPQC);
+        setEditTextInhibitInputSpace(etprodialogprdmaster);
     }
 
     /**
@@ -88,20 +89,20 @@ public class QACworkSearchDialog extends Dialog {
         WindowManager.LayoutParams p = dialogWindow.getAttributes();
         p.width = (int) (display.getWidth() * 0.8);
         dialogWindow.setAttributes(p);
-        String style = sp.getString("commoStyle", "");//款号
-        etprodialogStyle.setText(style);
+        String style = sp.getString("QACworkDialogItem", "");//款号
+        etprodialogItem.setText(style);
 //        String factory = sp.getString("commoFactory", "");
         //默认查询当前登录用户的相关信息
-        String factoryname = sp.getString("commoname","");//登录之后传过来的跟单
-        etprodialogFactory.setText(factoryname);
-        String recode = sp.getString("commoRecode", "");//巡检
-        etprodialogRecode.setText(recode);
-        String precedure = sp.getString("etproProcedure", "");//生产主管
-        etprodialogProcedure.setText(precedure);
-        etprodialogStyle.addTextChangedListener(etproStyle);//款号
-        etprodialogFactory.addTextChangedListener(etproFactory);//跟单
-        etprodialogRecode.addTextChangedListener(etproRecode);//巡检
-        etprodialogProcedure.addTextChangedListener(etproProcedure);//生产主管
+        String factoryname = sp.getString("QACworkDialogPrddocumentary","");//登录之后传过来的跟单
+        etprodialogPrddocumentary.setText(factoryname);
+        String recode = sp.getString("QACworkDialogIPQC", "");//巡检
+        etprodialogIPQC.setText(recode);
+        String precedure = sp.getString("QACworkDialogprdmaster", "");//生产主管
+        etprodialogprdmaster.setText(precedure);
+        etprodialogItem.addTextChangedListener(etQACworkItem);//款号
+        etprodialogPrddocumentary.addTextChangedListener(etproPrddocumentary);//跟单
+        etprodialogIPQC.addTextChangedListener(etproIPQC);//巡检
+        etprodialogprdmaster.addTextChangedListener(etproProcedure);//生产主管
         btnComfirm.setOnClickListener(mClickListener);
         btnCancle.setOnClickListener(mCancleLinstener);
         tvCommoDialogcheck.setOnClickListener(new View.OnClickListener() {
@@ -111,14 +112,14 @@ public class QACworkSearchDialog extends Dialog {
                 checkboxNull.isChecked();
                 boolean ischeck = checkboxNull.isChecked();
                 String is = String.valueOf(ischeck);
-                spUtils.put(content,"ischeckedd",is);
+                spUtils.put(content,"QACworkCheckedd",is);
             }
         });
         checkboxNull.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 String is = String.valueOf(isChecked);
-                spUtils.put(content,"ischeckedd",is);
+                spUtils.put(content,"FTYDLCheckedd",is);
             }
         });
         this.setCancelable(true);
@@ -127,75 +128,75 @@ public class QACworkSearchDialog extends Dialog {
     /**
      * 监听款号输入信息
      */
-    private TextWatcher etproStyle = new TextWatcher() {
+    private TextWatcher etQACworkItem = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             System.out.println("-2-beforeTextChanged-->"
-                    + etprodialogStyle.getText().toString() + "<--");
+                    + etprodialogItem.getText().toString() + "<--");
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             System.out.println("-1-onTextChanged-->"
-                    + etprodialogStyle.getText().toString() + "<--");
-            String textchanged = etprodialogStyle.getText().toString();
-            spUtils.put(content, "commoStyle", textchanged);
+                    + etprodialogItem.getText().toString() + "<--");
+            String textchanged = etprodialogItem.getText().toString();
+            spUtils.put(content, "QACworkDialogItem", textchanged);
         }
 
         @Override
         public void afterTextChanged(Editable s) {
             System.out.println("-3-afterTextChanged-->"
-                    + etprodialogStyle.getText().toString() + "<--");
+                    + etprodialogItem.getText().toString() + "<--");
         }
     };
 
     /**
      * 监听跟单员输入信息
      */
-    private TextWatcher etproFactory = new TextWatcher() {
+    private TextWatcher etproPrddocumentary = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             System.out.println("-2-beforeTextChanged-->"
-                    + etprodialogFactory.getText().toString() + "<--");
+                    + etprodialogPrddocumentary.getText().toString() + "<--");
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             System.out.println("-1-onTextChanged-->"
-                    + etprodialogFactory.getText().toString() + "<--");
-            String textchanged = etprodialogFactory.getText().toString();
-            spUtils.put(content, "commoname", textchanged);
+                    + etprodialogPrddocumentary.getText().toString() + "<--");
+            String textchanged = etprodialogPrddocumentary.getText().toString();
+            spUtils.put(content, "QACworkDialogPrddocumentary", textchanged);
         }
 
         @Override
         public void afterTextChanged(Editable s) {
             System.out.println("-3-afterTextChanged-->"
-                    + etprodialogStyle.getText().toString() + "<--");
+                    + etprodialogPrddocumentary.getText().toString() + "<--");
         }
     };
 
     /**
      * 监听巡检输入信息
      */
-    private TextWatcher etproRecode = new TextWatcher() {
+    private TextWatcher etproIPQC = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             System.out.println("-2-beforeTextChanged-->"
-                    + etprodialogRecode.getText().toString() + "<--");
+                    + etprodialogIPQC.getText().toString() + "<--");
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             System.out.println("-1-onTextChanged-->"
-                    + etprodialogRecode.getText().toString() + "<--");
-            String textchanged = etprodialogRecode.getText().toString();
-            spUtils.put(content, "commoRecode", textchanged);
+                    + etprodialogIPQC.getText().toString() + "<--");
+            String textchanged = etprodialogIPQC.getText().toString();
+            spUtils.put(content, "QACworkDialogIPQC", textchanged);
         }
 
         @Override
         public void afterTextChanged(Editable s) {
             System.out.println("-3-afterTextChanged-->"
-                    + etprodialogRecode.getText().toString() + "<--");
+                    + etprodialogIPQC.getText().toString() + "<--");
         }
     };
 
@@ -206,21 +207,21 @@ public class QACworkSearchDialog extends Dialog {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             System.out.println("-2-beforeTextChanged-->"
-                    + etprodialogProcedure.getText().toString() + "<--");
+                    + etprodialogprdmaster.getText().toString() + "<--");
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             System.out.println("-1-onTextChanged-->"
-                    + etprodialogProcedure.getText().toString() + "<--");
-            String textchanged = etprodialogProcedure.getText().toString();
-            spUtils.put(content, "etproProcedure", textchanged);
+                    + etprodialogprdmaster.getText().toString() + "<--");
+            String textchanged = etprodialogprdmaster.getText().toString();
+            spUtils.put(content, "QACworkDialogprdmaster", textchanged);
         }
 
         @Override
         public void afterTextChanged(Editable s) {
             System.out.println("-3-afterTextChanged-->"
-                    + etprodialogProcedure.getText().toString() + "<--");
+                    + etprodialogprdmaster.getText().toString() + "<--");
         }
     };
 

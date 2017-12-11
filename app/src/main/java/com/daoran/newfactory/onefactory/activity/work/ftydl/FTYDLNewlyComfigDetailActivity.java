@@ -332,7 +332,7 @@ public class FTYDLNewlyComfigDetailActivity
                 "");//总完工数
         tvnewlyTotal = sp.getString("tvFTYDLNewlyPrdstatus", "");//状态
         pagesize = sp.getString("clumnsFTYDLpageSize", "");//每页数量
-        ischeckedd = sp.getString("ischeckedd", "");//选择制单人是否为空
+        ischeckedd = sp.getString("FTYDLCheckedd", "");//选择制单人是否为空
         recordid = sp.getString("username", "");//制单人id(登录名)
         salesid = sp.getString("tvFTYDLNewlyId", "");//款号行id
         productionDocumentaryid = sp.getString("tvFTYDLNewlyDocumentaryId", "");//跟单人id

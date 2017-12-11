@@ -132,16 +132,6 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
 
     private ListView list_pro_config_vertical;//实裁数下面的各花色产量集合
 
-    private List<FTYDLNewlybooleanBean.DataBean> booleandatelist =
-            new ArrayList<FTYDLNewlybooleanBean.DataBean>();//新建和复制生产日报时用于判断是否可以同一个人同一款号创建集合
-    private FTYDLNewlybooleanBean newlybooleanBean;//新建和复制生产日报时用于判断是否可以同一个人同一款号创建实体
-
-    private List<FTYDLDetailSaveBean> newlyComfigSaveBeen
-            = new ArrayList<FTYDLDetailSaveBean>();//生产日报复制保存集合
-
-    private List<FTYDLDetailSaveBean> dailyBeanList =
-            new ArrayList<FTYDLDetailSaveBean>();//生产日报复制保存集合
-
     private FTYDLFillColSltBean.Data fillcolBean;
     private List<FTYDLFillColSltBean.Data> listfillcolBean =
             new ArrayList<FTYDLFillColSltBean.Data>();//根据searid查询的花色数据集合
@@ -3223,7 +3213,6 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
             String stridata = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
             sp = getSharedPreferences("my_sp", 0);
             setVariable();
-            System.out.println(saveothers);
             if (pronullpartment.equals("1")) {
                 if (tvnewlyProcedure.equals("裁床")) {
                     for (int i = 0; i < newdataBeans.size(); i++) {

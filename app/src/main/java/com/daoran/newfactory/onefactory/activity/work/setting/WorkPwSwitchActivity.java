@@ -214,7 +214,7 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
                                 spUtils.put(WorkPwSwitchActivity.this, "passwd", passwordValue);
                                 spUtils.put(getApplicationContext(), "name", userBean.getU_name());
                                 spUtils.put(getApplicationContext(), "FTYDLName", userBean.getU_name());
-                                spUtils.put(getApplicationContext(), "commoname", userBean.getU_name());
+                                spUtils.put(getApplicationContext(), "QACworkDialogPrddocumentary", userBean.getU_name());
                                 spUtils.put(getApplicationContext(), "commologinid", userBean.getLogid());
                                 String listwork = sp.getString("workbeenlist", "");
                                 workPwSwitchBean = new Gson().fromJson(listwork, WorkPwSwitchBean.class);

@@ -42,6 +42,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 自定义网络请求(get/set)
+ */
 public class NetUtil {
     private static final String LogTag = NetUtil.class.getSimpleName();
 

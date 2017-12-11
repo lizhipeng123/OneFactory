@@ -6038,9 +6038,9 @@ public class QACworkDetailActivity extends Activity
         editor.remove("CommodityQAname");//QA首扎
         editor.remove("CommodityQAScore");//QA首扎件数
         editor.remove("dateQAMemotimesign");//QA首扎日
-        editor.remove("etproProcedure");
-        editor.remove("commoRecode");
-        editor.remove("commoStyle");
+        editor.remove("QACworkDialogprdmaster");
+        editor.remove("QACworkDialogIPQC");
+        editor.remove("QACworkDialogItem");
 
         editor.remove("commonulltitle");//后道
         editor.remove("commonullitem");
@@ -6124,9 +6124,9 @@ public class QACworkDetailActivity extends Activity
         editor.remove("CommodityQAScore");//QA首扎件数
         editor.remove("dateQAMemotimesign");//QA首扎日
 
-        editor.remove("etproProcedure");
-        editor.remove("commoRecode");
-        editor.remove("commoStyle");
+        editor.remove("QACworkDialogprdmaster");
+        editor.remove("QACworkDialogIPQC");
+        editor.remove("QACworkDialogItem");
 
         editor.remove("commonulltitle");//后道
         editor.remove("commonullitem");

@@ -502,4 +502,5 @@
 
     <!--schedule-->
     <string name="schedule_title">Schedule title</string>
+    <string name="errorHint">A error has happened %1$s.Please click <i><b>"REPORT"</b></i> to send the error information to us by email, Thanks!!!</string>
 </resources>

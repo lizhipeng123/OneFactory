@@ -366,7 +366,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
                                 //登录成功后，保存用户名与用户ID
                                 spUtils.put(getApplicationContext(), "name", userBean.getU_name());
                                 spUtils.put(getApplicationContext(), "FTYDLName", userBean.getU_name());
-                                spUtils.put(getApplicationContext(), "commoname", userBean.getU_name());
+                                spUtils.put(getApplicationContext(), "QACworkDialogPrddocumentary", userBean.getU_name());
                                 spUtils.put(getApplicationContext(), "commologinid", userBean.getLogid());
                                 Intent intent = new Intent(LoginMainActivity.this, MainActivity.class);
                                 Bundle bundle = new Bundle();

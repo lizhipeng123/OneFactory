@@ -94,10 +94,10 @@ public class FTYDLSearchDialog extends Dialog {
         dialogWindow.setAttributes(p);
         String etaaname = sp.getString("FTYDLName", "");//登录页登录之后传过来的用户名
         etprodialogRecode.setText(etaaname);//将用户名填充制单人
-        String Factory = sp.getString("etprodialogFactory", "");//工厂输入框监听传过来的输入信息
+        String Factory = sp.getString("FTYDLDialogFactory", "");//工厂输入框监听传过来的输入信息
         etprodialogFactory.setText(Factory);//填充工厂
         String productionleftItem = sp.getString("productionleftItem", "");//查货跟踪长按传过来的款号
-        String productionDialogitem = sp.getString("etprodialogStyle", "");//本dialog监听款号输入框穿过来的信息
+        String productionDialogitem = sp.getString("FTYDLDialogItem", "");//本dialog监听款号输入框穿过来的信息
         //如果查货跟踪穿过来的款号为空，则按照本地页面dialog监听的款号填充查询
         if (productionleftItem.equals("")) {
             etprodialogRecode.setText(etaaname);
@@ -128,7 +128,7 @@ public class FTYDLSearchDialog extends Dialog {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] languages = content.getResources().getStringArray(R.array.Procedure);
-                spUtils.put(content, "Procedure", languages[position]);//将选择的工序保存到轻量级存储中
+                spUtils.put(content, "FTYDLDialogProcedure", languages[position]);//将选择的工序保存到轻量级存储中
             }
 
             @Override
@@ -149,14 +149,14 @@ public class FTYDLSearchDialog extends Dialog {
                 checkboxNull.isChecked();
                 boolean ischeck = checkboxNull.isChecked();
                 String is = String.valueOf(ischeck);
-                spUtils.put(content, "ischeckedd", is);
+                spUtils.put(content, "FTYDLCheckedd", is);
             }
         });
         checkboxNull.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 String is = String.valueOf(isChecked);
-                spUtils.put(content, "ischeckedd", is);
+                spUtils.put(content, "FTYDLCheckedd", is);
             }
         });
         this.setCancelable(true);
@@ -177,7 +177,7 @@ public class FTYDLSearchDialog extends Dialog {
             System.out.println("-1-onTextChanged-->"
                     + etprodialogStyle.getText().toString() + "<--");
             String textchanged = etprodialogStyle.getText().toString();
-            spUtils.put(content, "etprodialogStyle", textchanged);
+            spUtils.put(content, "FTYDLDialogItem", textchanged);
         }
 
         @Override
@@ -204,7 +204,7 @@ public class FTYDLSearchDialog extends Dialog {
             System.out.println("-1-onTextChanged-->"
                     + etprodialogFactory.getText().toString() + "<--");
             String textchanged = etprodialogFactory.getText().toString();
-            spUtils.put(content, "etprodialogFactory", textchanged);
+            spUtils.put(content, "FTYDLDialogFactory", textchanged);
         }
 
         @Override

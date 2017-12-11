@@ -1,11 +1,14 @@
 package com.daoran.newfactory.onefactory.bean.loginbean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
- * 登录获取到的个人信息
+ * 登录获取到的个人信息(序列化)
  * Created by lizhipeng on 2017/3/24.
  */
 
-public class UsergetBean {
+public class UsergetBean implements Parcelable {
 
     private int id;//Id
     private String logid;//用户名
@@ -97,4 +100,55 @@ public class UsergetBean {
     public void setCanLogin(String canLogin) {
         CanLogin = canLogin;
     }
+
+    /*默认返回0*/
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    /*把值写入parcel中*/
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.logid);
+        dest.writeString(this.u_name);
+        dest.writeByte(this.status ? (byte) 1 : (byte) 0);
+        dest.writeString(this.log_date);
+        dest.writeString(this.deptno);
+        dest.writeString(this.logIP);
+        dest.writeString(this.deptname);
+        dest.writeString(this.Company);
+        dest.writeString(this.CanLogin);
+    }
+
+    public UsergetBean() {}
+
+    /*读的顺序必须和writeToParcel中写的顺序一致*/
+    protected UsergetBean(Parcel in) {
+        this.id = in.readInt();
+        this.logid = in.readString();
+        this.u_name = in.readString();
+        this.status = in.readByte() != 0;
+        this.log_date = in.readString();
+        this.deptno = in.readString();
+        this.logIP = in.readString();
+        this.deptname = in.readString();
+        this.Company = in.readString();
+        this.CanLogin = in.readString();
+    }
+
+    public static final Parcelable.Creator<UsergetBean> CREATOR = new Parcelable.Creator<UsergetBean>() {
+        /*从Parcel中读取数据*/
+        @Override
+        public UsergetBean createFromParcel(Parcel source) {
+            return new UsergetBean(source);
+        }
+
+        /*供外部类反序列化本类数组使用*/
+        @Override
+        public UsergetBean[] newArray(int size) {
+            return new UsergetBean[size];
+        }
+    };
 }

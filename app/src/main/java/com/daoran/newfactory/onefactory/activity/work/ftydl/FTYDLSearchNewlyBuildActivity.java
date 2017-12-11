@@ -90,7 +90,7 @@ public class FTYDLSearchNewlyBuildActivity
 
     private int pageCount;//请求获取的总页数
     private int pageIndex = 0;//初始页数
-    private String configid;
+    private String configid,pagesize;
 
     private SharedPreferences sp;//轻量级存储
     private SPUtils spUtils;//保存在手机中的目录
@@ -197,7 +197,7 @@ public class FTYDLSearchNewlyBuildActivity
     private void setDate() {
         sp = getSharedPreferences("my_sp", 0);
         String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
-        String pagesize = sp.getString("clumnsFTYDLpageSize", "");
+        pagesize = sp.getString("clumnsFTYDLpageSize", "");
         String editNewlyBuild = etNewbuild.getText().toString();//输入款号
         String spinner = spinnerNewbuild.getText().toString();
         if (pagesize.equals("")) {
@@ -237,7 +237,6 @@ public class FTYDLSearchNewlyBuildActivity
                                 if (newlyBuildBean.getTotalCount() != 0) {
                                     ll_visibi.setVisibility(View.GONE);
                                     scroll_content.setVisibility(View.VISIBLE);
-                                    System.out.print(dataBeen);
                                     pageCount = newlyBuildBean.getTotalCount();
                                     String count = String.valueOf(pageCount / finalGetsize + 1);
                                     tvNewbuildPage.setText(count);
@@ -268,7 +267,7 @@ public class FTYDLSearchNewlyBuildActivity
     private void setPageDate() {
         sp = getSharedPreferences("my_sp", 0);
         String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
-        String pagesize = sp.getString("clumnsFTYDLpageSize", "");
+        pagesize = sp.getString("clumnsFTYDLpageSize", "");
         if (pagesize.equals("")) {
             pagesize = String.valueOf(10);
         }
@@ -393,7 +392,6 @@ public class FTYDLSearchNewlyBuildActivity
                                     if (newlyBuildBean.getTotalCount() != 0) {
                                         ll_visibi.setVisibility(View.GONE);
                                         scroll_content.setVisibility(View.VISIBLE);
-                                        System.out.print(dataBeen);
                                         pageCount = newlyBuildBean.getTotalCount();
                                         String count = String.valueOf(pageCount / finalGetsize + 1);
                                         tvNewbuildPage.setText(count);
@@ -488,7 +486,7 @@ public class FTYDLSearchNewlyBuildActivity
         String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
         String spinner = spinnerNewbuild.getText().toString();//工序
         String editNewlyBuild = etNewbuild.getText().toString();//输入款号
-        String pagesize = sp.getString("clumnsFTYDLpageSize", "");
+        pagesize = sp.getString("clumnsFTYDLpageSize", "");
         if (pagesize.equals("")) {
             pagesize = String.valueOf(10);
         }

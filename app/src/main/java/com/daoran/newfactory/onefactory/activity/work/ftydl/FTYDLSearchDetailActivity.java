@@ -25,6 +25,8 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.adapter.ftydladapter.FTYDLDetailAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDetailColorBean;
+import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDetailCuttingBean;
+import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDetailDetailBean;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDetailSearchBean;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLFillColSltBean;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDetailSaveBean;
@@ -130,6 +132,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
             new ArrayList<FTYDLColCountBean.Data>();//裁床情况下，各个花色对应的每日产量以及总产量集合
 
     private FTYDLDetailColorBean.DataBean postdataBean;
+    private FTYDLDetailColorBean colorBean;
     private List<FTYDLDetailColorBean.DataBean> newdataBeans =
             new ArrayList<FTYDLDetailColorBean.DataBean>();//查询需要分色的相同款号的数据
 
@@ -142,6 +145,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
     private List<FTYDLMonthBean.DataBean> monthlistBean =
             new ArrayList<FTYDLMonthBean.DataBean>();//同款号，部门，工序的数据集合
     private FTYDLMonthBean ftydlMonthBean;
+
+    private FTYDLDetailCuttingBean.DataBean cuttingBean;
+    private List<FTYDLDetailCuttingBean.DataBean> cuttinglistBean =
+            new ArrayList<FTYDLDetailCuttingBean.DataBean>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -520,7 +528,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
             int tvsum = 0;
             for (int i = 0; i < newdataBeans.size(); i++) {
                 String sumcom = String.valueOf(newdataBeans.get(i).getSumCompletedQty());
-                if (sumcom == null) {
+                if (sumcom == null||sumcom.equals("")) {
                     sumcom = String.valueOf(0);
                 }
                 tvsum = tvsum + Integer.parseInt(sumcom);
@@ -581,8 +589,8 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
         tv_config_totalcompletion.setText(countmonth);
     }
 
-    /*查询需要分色的相同款号的单子*/
-    private void setDateNewly() {
+    /*裁床情况的精确查询*/
+    private void setDateCutting() {
         String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/SearchDailyData/";
         final Gson gson = new Gson();
         FTYDLDetailSaveBean saveBean = new FTYDLDetailSaveBean();
@@ -675,11 +683,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
         saveBean.setPrddocumentaryid(tvnewlyprddocumentaryid);
         saveBean.setIsdiffc(Boolean.parseBoolean(tvnewlyisdiffc));
         final String bean = gson.toJson(saveBean);
-        String dateee = bean.replace("\"\"", "null");
+//        String dateee = bean.replace("\"\"", "null");
         if (NetWork.isNetWorkAvailable(this)) {
             OkHttpUtils.postString()
                     .url(urlDaily)
-                    .content(dateee)
+                    .content(bean)
                     .mediaType(MediaType.parse("application/json;charset=utf-8"))
                     .build()
                     .execute(new StringCallback() {
@@ -693,13 +701,9 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                             String ress = response.replace("\\", "");
                             String ression = StringUtil.sideTrim(ress, "\"");
                             String ressi = ression.replace(":null", ":\"\"");
-                            Gson gson1 = new Gson();
                             JsonParser jsonParser = new JsonParser();
                             JsonElement element = jsonParser.parse(ressi);
-                            JsonObject jsonObject = null;
-                            if (element.isJsonObject()) {
-                                jsonObject = element.getAsJsonObject();
-                            }
+                            Gson gson1 = new Gson();
                             JsonArray jsonarray = null;
                             if (element.isJsonArray()) {
                                 jsonarray = element.getAsJsonArray();
@@ -718,6 +722,59 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
         }
     }
 
+    /*精确查询除了裁床之外*/
+    private void setDateNewly() {
+        String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
+        final Gson gson = new Gson();
+        final FTYDLDetailDetailBean detailDetailBean = new FTYDLDetailDetailBean();
+        FTYDLDetailDetailBean.Conditions conditions =
+                detailDetailBean.new Conditions();
+        conditions.setID(Integer.parseInt(id));
+        conditions.setItem(tvnewlyItem);//款号
+        conditions.setSalesid(Integer.parseInt(tvnewlySalid));
+        conditions.setWorkingProcedure(tvnewlyProcedure);//工序
+        conditions.setPrddocumentary(tvnewlyDocumentary);//跟单人
+        conditions.setRecordat(tvnewlyrecordat);//时间
+        conditions.setRecorder(tvnewlyrecorder);//制单人
+        conditions.setRecordid(tvnewlyrecordid);//制单人id
+        conditions.setProdcol(tvnewlyProdcol);//花色
+        conditions.setYear(tvnyear);//年
+        conditions.setMonth(tvnmonth);//月
+        conditions.setSubfactoryTeams(tvnewlyDepartment);//组别
+        conditions.setPrddocumentaryisnull(false);//制单人是否可空
+        detailDetailBean.setConditions(conditions);
+        detailDetailBean.setPageNum(0);
+        detailDetailBean.setPageSize(15);
+        final String bean = gson.toJson(detailDetailBean);
+        String dateee = bean.replace("\"\"", "null");
+        if (NetWork.isNetWorkAvailable(this)) {
+            OkHttpUtils.postString()
+                    .url(urlDaily)
+                    .content(dateee)
+                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            System.out.println(response);
+                            String ress = response.replace("\\", "");
+                            System.out.print(ress);
+                            String ression = StringUtil.sideTrim(ress, "\"");
+                            System.out.print(ression);
+                            colorBean = new Gson().fromJson(ression, FTYDLDetailColorBean.class);
+                            newdataBeans = colorBean.getData();
+                        }
+                    });
+        } else {
+            ToastUtils.ShowToastMessage(R.string.noHttp, FTYDLSearchDetailActivity.this);
+        }
+    }
+
     /*获取相同款号相同部门相同工序的全部数据*/
     private void setMonthSearch() {
         String strMonth = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
@@ -725,6 +782,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
         FTYDLDetailSearchBean.Conditions conditions = searchBean.new Conditions();
         conditions.setItem(tvnewlyItem);
         conditions.setWorkingProcedure(tvnewlyProcedure);
+        conditions.setSubfactoryTeams(tvnewlyDepartment);
         conditions.setPrddocumentary(usernamerecoder);
         conditions.setPrddocumentaryisnull(false);
         searchBean.setConditions(conditions);
@@ -754,7 +812,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         monthlistBean = ftydlMonthBean.getData();
                         System.out.println(monthlistBean);
                         setEnabled();
-                        setDateNewly();
+                        if(tvnewlyProcedure.equals("裁床")){
+                            setDateCutting();
+                        }else{
+                            setDateNewly();
+                        }
                     }
                 });
     }

@@ -5,20 +5,10 @@ import java.util.List;
 /**
  * 创建时间：2017/12/1
  * 编写人：lizhipeng
- * 功能描述：查询需要分色的相同款号的数据适配器
+ * 功能描述：精确查询同款号，部门，工序，制单人的数据实体
  */
 
-public class FTYDLDetailColorBean {
-    private int totalCount;
-
-    public int getTotalCount() {
-        return totalCount;
-    }
-
-    public void setTotalCount(int totalCount) {
-        this.totalCount = totalCount;
-    }
-
+public class FTYDLDetailCuttingBean {
     private List<DataBean> Data;
 
     public List<DataBean> getData() {

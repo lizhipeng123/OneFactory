@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/errorHint"
+        android:id="@+id/txtErrorHint" />
+    <EditText android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:id="@+id/editErrorContent"
+        android:editable="false" android:layout_weight="1"></EditText>
+    <LinearLayout android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:background="#96cdcd"
+        android:gravity="center" android:orientation="horizontal">
+        <Button android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:text="Report"
+            android:id="@+id/btnREPORT" android:layout_weight="1"></Button>
+        <Button android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:text="Cancel"
+            android:id="@+id/btnCANCEL" android:layout_weight="1"></Button>
+    </LinearLayout>
+</LinearLayout>

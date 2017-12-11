@@ -174,7 +174,7 @@ public class ReqcarmSearchActivity extends BaseListActivity implements View.OnCl
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btnComfirm:
-                    ReqcarmSearchActivity.this.getData();
+                    getData();
                     dialog.dismiss();
                     break;
             }
