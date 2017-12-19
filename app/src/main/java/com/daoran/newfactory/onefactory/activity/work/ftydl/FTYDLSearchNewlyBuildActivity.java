@@ -66,12 +66,12 @@ public class FTYDLSearchNewlyBuildActivity
 
     private ImageView ivProductionBack;//返回
     private Button btnNewbuildConfirm;//确定
-    private TextView spinnerNewbuild;//选择工序
+    private TextView spinnerProcedure;//选择工序
     private EditText etNewbuildDetail;//页数输入框
     private Button etNewbuildSql,//查找按钮
             btnNewbuildPage;//翻页确定按钮
     private TextView tvNewbuildPage;//
-    private EditText etNewbuild;//款号输入框
+    private EditText etItem;//款号输入框
     private ImageView ivUpLeftPage, ivDownRightPage;
     private ImageView ivNewlyFilp;
 
@@ -94,7 +94,6 @@ public class FTYDLSearchNewlyBuildActivity
 
     private SharedPreferences sp;//轻量级存储
     private SPUtils spUtils;//保存在手机中的目录
-    private int orientation;//横竖屏切换
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,8 +121,8 @@ public class FTYDLSearchNewlyBuildActivity
     private void getViews() {
         ivProductionBack = (ImageView) findViewById(R.id.ivProductionBack);
         btnNewbuildConfirm = (Button) findViewById(R.id.btnNewbuildConfirm);
-        spinnerNewbuild = (TextView) findViewById(R.id.spinnerNewbuild);
-        etNewbuild = (EditText) findViewById(R.id.etNewbuild);
+        spinnerProcedure = (TextView) findViewById(R.id.spinnerNewbuild);
+        etItem = (EditText) findViewById(R.id.etNewbuild);
         etNewbuildDetail = (EditText) findViewById(R.id.etNewbuildDetail);
         mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
         mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
@@ -140,7 +139,7 @@ public class FTYDLSearchNewlyBuildActivity
         ivDownRightPage = (ImageView) findViewById(R.id.ivDownRightPage);
         ivNewlyFilp = (ImageView) findViewById(R.id.ivNewlyFilp);
         Util.setEditTextInhibitInputSpeChat(etNewbuildDetail);
-        Util.setEditTextInhibitInputSpeChat(etNewbuild);
+        Util.setEditTextInhibitInputSpeChat(etItem);
     }
 
     /*初始化控件*/
@@ -160,7 +159,7 @@ public class FTYDLSearchNewlyBuildActivity
     /*控件赋予点击属性*/
     private void setListener() {
         ivProductionBack.setOnClickListener(this);
-        spinnerNewbuild.setOnClickListener(this);
+        spinnerProcedure.setOnClickListener(this);
         btnNewbuildPage.setOnClickListener(this);
         etNewbuildSql.setOnClickListener(this);
         btnNewbuildConfirm.setOnClickListener(this);
@@ -198,19 +197,19 @@ public class FTYDLSearchNewlyBuildActivity
         sp = getSharedPreferences("my_sp", 0);
         String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
         pagesize = sp.getString("clumnsFTYDLpageSize", "");
-        String editNewlyBuild = etNewbuild.getText().toString();//输入款号
-        String spinner = spinnerNewbuild.getText().toString();
+        String editItem = etItem.getText().toString();//输入款号
+        String WorkingProcedure = spinnerProcedure.getText().toString();
         if (pagesize.equals("")) {
             pagesize = String.valueOf(10);
         }
         Gson gson = new Gson();
         final FTYDLNewlyBuildSearchBean buildBean = new FTYDLNewlyBuildSearchBean();
         FTYDLNewlyBuildSearchBean.Conditions conditions = buildBean.new Conditions();
-        conditions.setItem(editNewlyBuild);
-        conditions.setWorkingProcedure(spinner);
+        conditions.setItem(editItem);//输入的款号
+        conditions.setWorkingProcedure(WorkingProcedure);//工序
         buildBean.setConditions(conditions);
-        buildBean.setPageNum(0);
-        buildBean.setPageSize(Integer.parseInt(pagesize));
+        buildBean.setPageNum(0);//起始显示的页数
+        buildBean.setPageSize(Integer.parseInt(pagesize));//每页显示的数量
         final String bean = gson.toJson(buildBean);
         if (NetWork.isNetWorkAvailable(this)) {
             ResponseDialog.showLoading(this, "正在查询");
@@ -271,9 +270,9 @@ public class FTYDLSearchNewlyBuildActivity
         if (pagesize.equals("")) {
             pagesize = String.valueOf(10);
         }
-        String spinner = spinnerNewbuild.getText().toString();
-        String editNewlyBuild = etNewbuild.getText().toString();//输入款号
-        if (spinner.equals("选择工序") || spinner == null) {
+        String WorkingProcedure = spinnerProcedure.getText().toString();
+        String editItem = etItem.getText().toString();//输入款号
+        if (WorkingProcedure.equals("选择工序") || WorkingProcedure == null) {
             new AlertDialog.Builder(FTYDLSearchNewlyBuildActivity.this).setTitle("提示信息")
                     .setMessage("请选择工序,再查找款号信息")
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -286,8 +285,8 @@ public class FTYDLSearchNewlyBuildActivity
             Gson gson = new Gson();
             final FTYDLNewlyBuildSearchBean buildBean = new FTYDLNewlyBuildSearchBean();
             FTYDLNewlyBuildSearchBean.Conditions conditions = buildBean.new Conditions();
-            conditions.setItem(editNewlyBuild);
-            conditions.setWorkingProcedure(spinner);
+            conditions.setItem(editItem);
+            conditions.setWorkingProcedure(WorkingProcedure);
             buildBean.setConditions(conditions);
             buildBean.setPageNum(0);
             buildBean.setPageSize(Integer.parseInt(pagesize));
@@ -349,15 +348,15 @@ public class FTYDLSearchNewlyBuildActivity
     private void setPagefistDate() {
         sp = getSharedPreferences("my_sp", 0);
         String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
-        String spinner = spinnerNewbuild.getText().toString();//工序
-        String editNewlyBuild = etNewbuild.getText().toString();//输入款号
+        String WorkingProcedure = spinnerProcedure.getText().toString();//工序
+        String editItem = etItem.getText().toString();//输入款号
         pageIndex = Integer.parseInt(etNewbuildDetail.getText().toString());
         int ind = pageIndex - 1;
         String pagesize = sp.getString("clumnsFTYDLpageSize", "");
         if (pagesize.equals("")) {
             pagesize = String.valueOf(10);
         }
-        if (spinner == "选择工序" || spinner.equals("选择工序")) {
+        if (WorkingProcedure == "选择工序" || WorkingProcedure.equals("选择工序")) {
             Gson gson = new Gson();
             final FTYDLNewlyBuildSearchBean buildBean = new FTYDLNewlyBuildSearchBean();
             FTYDLNewlyBuildSearchBean.Conditions conditions = buildBean.new Conditions();
@@ -421,8 +420,8 @@ public class FTYDLSearchNewlyBuildActivity
             Gson gson = new Gson();
             final FTYDLNewlyBuildSearchBean buildBean = new FTYDLNewlyBuildSearchBean();
             FTYDLNewlyBuildSearchBean.Conditions conditions = buildBean.new Conditions();
-            conditions.setItem(editNewlyBuild);
-            conditions.setWorkingProcedure(spinner);
+            conditions.setItem(editItem);
+            conditions.setWorkingProcedure(WorkingProcedure);
             buildBean.setConditions(conditions);
             buildBean.setPageNum(ind);
             buildBean.setPageSize(Integer.parseInt(pagesize));
@@ -484,13 +483,13 @@ public class FTYDLSearchNewlyBuildActivity
     private void setPageUpDate(String pageupdateindex) {
         sp = getSharedPreferences("my_sp", 0);
         String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
-        String spinner = spinnerNewbuild.getText().toString();//工序
-        String editNewlyBuild = etNewbuild.getText().toString();//输入款号
+        String WorkingProcedure = spinnerProcedure.getText().toString();//工序
+        String editItem= etItem.getText().toString();//输入款号
         pagesize = sp.getString("clumnsFTYDLpageSize", "");
         if (pagesize.equals("")) {
             pagesize = String.valueOf(10);
         }
-        if (spinner == "选择工序" || spinner.equals("选择工序")) {
+        if (WorkingProcedure == "选择工序" || WorkingProcedure.equals("选择工序")) {
             Gson gson = new Gson();
             final FTYDLNewlyBuildSearchBean buildBean = new FTYDLNewlyBuildSearchBean();
             FTYDLNewlyBuildSearchBean.Conditions conditions = buildBean.new Conditions();
@@ -554,8 +553,8 @@ public class FTYDLSearchNewlyBuildActivity
             Gson gson = new Gson();
             final FTYDLNewlyBuildSearchBean buildBean = new FTYDLNewlyBuildSearchBean();
             FTYDLNewlyBuildSearchBean.Conditions conditions = buildBean.new Conditions();
-            conditions.setItem(editNewlyBuild);
-            conditions.setWorkingProcedure(spinner);
+            conditions.setItem(editItem);
+            conditions.setWorkingProcedure(WorkingProcedure);
             buildBean.setConditions(conditions);
             buildBean.setPageNum(Integer.parseInt(pageupdateindex));
             buildBean.setPageSize(Integer.parseInt(pagesize));
@@ -631,8 +630,8 @@ public class FTYDLSearchNewlyBuildActivity
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         String title = item.getTitle().toString();
-                        spUtils.put(FTYDLSearchNewlyBuildActivity.this, "spinnerNewbuild", title);
-                        spinnerNewbuild.setText(title);
+                        spUtils.put(FTYDLSearchNewlyBuildActivity.this, "spinnerProcedure", title);
+                        spinnerProcedure.setText(title);
                         return false;
                     }
                 });

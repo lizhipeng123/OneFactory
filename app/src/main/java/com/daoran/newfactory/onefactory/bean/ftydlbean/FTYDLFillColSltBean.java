@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 创建时间：2017/11/27
  * 编写人：lizhipeng
- * 功能描述：
+ * 功能描述：获取id对应的花色以及数量
  */
 
 public class FTYDLFillColSltBean {

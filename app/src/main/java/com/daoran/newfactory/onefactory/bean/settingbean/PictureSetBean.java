@@ -3,6 +3,7 @@ package com.daoran.newfactory.onefactory.bean.settingbean;
 import java.util.List;
 
 /**
+ * 图片列表实体
  * Created by lizhipeng on 2017/9/15.
  */
 
@@ -19,13 +20,13 @@ public class PictureSetBean {
     }
 
     public static class Data {
-        private int id;
-        private String recorder;
-        private String memo;
-        private String pic;
-        private String picpath;
-        private String recorderID;
-        private String recordat;
+        private int id;//id
+        private String recorder;//制单人
+        private String memo;//备注
+        private String pic;//图片
+        private String picpath;//图片地址
+        private String recorderID;//制单人id
+        private String recordat;//制单时间
 
         public int getId() {
             return id;

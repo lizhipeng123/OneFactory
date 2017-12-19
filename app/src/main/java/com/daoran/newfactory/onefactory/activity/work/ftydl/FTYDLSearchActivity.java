@@ -58,8 +58,8 @@ import okhttp3.MediaType;
 public class FTYDLSearchActivity extends BaseFrangmentActivity
         implements View.OnClickListener, SelectItemInterface {
 
-    private NoscrollListView mData;//listview的列表
-    private NoscrollListView lv_left;//左侧编号
+    private NoscrollListView lv_data;//listview的列表
+    private NoscrollListView lv_pleft;//左侧编号
     private FTYDLSearchDialog FTYDLSearchDialog;//条件查询的dialog
     private FTYDLSearchLeftAdapter mLeftAdapter;//左侧编号适配数据
 
@@ -87,7 +87,7 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
     int keyHeight = 0;
     int screenHeight = 0;
     //本地变动的变量
-    private String configid, FTYDLSearchName, FTYDLSearchItem,clumn;
+    private String configid, FTYDLSearchName, FTYDLSearchItem,ClumnsFTYDLPage;
     //接收的变量
     private String FTYDLName,FTYDLDialogItem,FTYDLDialogFactory,FTYDLDialogProcedure,
             productionleftItem,FTYDLStis;
@@ -109,8 +109,8 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
     /*初始化控件*/
     private void getViews() {
         ivProductionBack = (ImageView) findViewById(R.id.ivProductionBack);
-        mData = (NoscrollListView) findViewById(R.id.lv_data);
-        lv_left = (NoscrollListView) findViewById(R.id.lv_pleft);
+        lv_data = (NoscrollListView) findViewById(R.id.lv_data);
+        lv_pleft = (NoscrollListView) findViewById(R.id.lv_pleft);
         ivSearch = (ImageView) findViewById(R.id.ivSearch);
         mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
         mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
@@ -143,7 +143,7 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                         getStringArray(R.array.clumnsCommon);
                 //将选择的条目数保存到轻量级存储中
                 spUtils.put(FTYDLSearchActivity.this,
-                        "clumnsprospinner", languages[position]);
+                        "ClumnsFTYDLPage", languages[position]);
                 setData();
             }
 
@@ -194,7 +194,7 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
         productionleftItem = sp.getString("productionleftItem",
                 "");//查货跟踪长按传过来的款号
         FTYDLStis = sp.getString("FTYDLCheckedd", "");//是否为空
-        clumn = sp.getString("clumnsprospinner",
+        ClumnsFTYDLPage = sp.getString("ClumnsFTYDLPage",
                 "");//spinner中选择的条目数
     }
 
@@ -211,8 +211,8 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
             FTYDLSearchName = "";//如果不为空，则查询查货跟踪穿过来的款号
         }
 
-        if (clumn.equals("")) {
-            clumn = String.valueOf(10);
+        if (ClumnsFTYDLPage.equals("")) {
+            ClumnsFTYDLPage = String.valueOf(10);
         }
         if (FTYDLDialogProcedure.equals("全部")) {
             boolean stris = Boolean.parseBoolean(FTYDLStis);
@@ -226,10 +226,10 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
             conditions.setPrddocumentaryisnull(stris);
             FTYDLSearchBean.setConditions(conditions);
             FTYDLSearchBean.setPageNum(0);
-            FTYDLSearchBean.setPageSize(Integer.parseInt(clumn));
+            FTYDLSearchBean.setPageSize(Integer.parseInt(ClumnsFTYDLPage));
             String gsonbeanStr = gson.toJson(FTYDLSearchBean);
             if (NetWork.isNetWorkAvailable(this)) {
-                final int finalGetsize = Integer.parseInt(clumn);
+                final int finalGetsize = Integer.parseInt(ClumnsFTYDLPage);
                 ResponseDialog.showLoading(this, "正在查询");
                 OkHttpUtils.postString()
                         .url(str)
@@ -258,9 +258,9 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                                         String count = String.valueOf(pageCount / finalGetsize + 1);
                                         tvSignPage.setText(count);
                                         mLeftAdapter = new FTYDLSearchLeftAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        lv_left.setAdapter(mLeftAdapter);
+                                        lv_pleft.setAdapter(mLeftAdapter);
                                         adapter = new FTYDLSearchAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        mData.setAdapter(adapter);
+                                        lv_data.setAdapter(adapter);
                                     } else {
                                         ll_visibi.setVisibility(View.VISIBLE);
                                         scroll_content.setVisibility(View.GONE);
@@ -288,10 +288,10 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
             conditions.setPrddocumentaryisnull(stris);
             FTYDLSearchBean.setConditions(conditions);
             FTYDLSearchBean.setPageNum(0);
-            FTYDLSearchBean.setPageSize(Integer.parseInt(clumn));
+            FTYDLSearchBean.setPageSize(Integer.parseInt(ClumnsFTYDLPage));
             String gsonbeanStr = gson.toJson(FTYDLSearchBean);/*字符串转为json字符串*/
             if (NetWork.isNetWorkAvailable(this)) {
-                final int finalGetsize = Integer.parseInt(clumn);
+                final int finalGetsize = Integer.parseInt(ClumnsFTYDLPage);
                 ResponseDialog.showLoading(this, "正在查询");
                 OkHttpUtils.postString()
                         .url(str)
@@ -323,9 +323,9 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                                         String count = String.valueOf(pageCount / finalGetsize + 1);
                                         tvSignPage.setText(count);
                                         mLeftAdapter = new FTYDLSearchLeftAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        lv_left.setAdapter(mLeftAdapter);
+                                        lv_pleft.setAdapter(mLeftAdapter);
                                         adapter = new FTYDLSearchAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        mData.setAdapter(adapter);
+                                        lv_data.setAdapter(adapter);
                                     } else {
                                         ll_visibi.setVisibility(View.VISIBLE);
                                         scroll_content.setVisibility(View.GONE);
@@ -356,8 +356,8 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
             FTYDLSearchItem = productionleftItem;
             FTYDLSearchName = "";
         }
-        if (clumn.equals("")) {
-            clumn = String.valueOf(10);
+        if (ClumnsFTYDLPage.equals("")) {
+            ClumnsFTYDLPage = String.valueOf(10);
         }
         if (FTYDLDialogProcedure.equals("全部")) {
             boolean stris = Boolean.parseBoolean(FTYDLStis);
@@ -373,11 +373,11 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
             conditions.setPrddocumentaryisnull(stris);
             FTYDLSearchBean.setConditions(conditions);
             FTYDLSearchBean.setPageNum(index);
-            FTYDLSearchBean.setPageSize(Integer.parseInt(clumn));
+            FTYDLSearchBean.setPageSize(Integer.parseInt(ClumnsFTYDLPage));
             String gsonbeanStr = gson.toJson(FTYDLSearchBean);
             if (NetWork.isNetWorkAvailable(this)) {
                 ResponseDialog.showLoading(this, "正在查询");
-                final int finalGetsize = Integer.parseInt(clumn);
+                final int finalGetsize = Integer.parseInt(ClumnsFTYDLPage);
                 OkHttpUtils.postString()
                         .url(str)
                         .content(gsonbeanStr)
@@ -409,9 +409,9 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                                         tvSignPage.setText(count);
 
                                         adapter = new FTYDLSearchAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        mData.setAdapter(adapter);
+                                        lv_data.setAdapter(adapter);
                                         mLeftAdapter = new FTYDLSearchLeftAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        lv_left.setAdapter(mLeftAdapter);
+                                        lv_pleft.setAdapter(mLeftAdapter);
                                     } else {
                                         ll_visibi.setVisibility(View.VISIBLE);
                                         scroll_content.setVisibility(View.GONE);
@@ -441,11 +441,11 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
             conditions.setPrddocumentaryisnull(stris);
             FTYDLSearchBean.setConditions(conditions);
             FTYDLSearchBean.setPageNum(index);
-            FTYDLSearchBean.setPageSize(Integer.parseInt(clumn));
+            FTYDLSearchBean.setPageSize(Integer.parseInt(ClumnsFTYDLPage));
             String gsonbeanStr = gson.toJson(FTYDLSearchBean);
             if (NetWork.isNetWorkAvailable(this)) {
                 ResponseDialog.showLoading(this, "正在查询");
-                final int finalGetsize = Integer.parseInt(clumn);
+                final int finalGetsize = Integer.parseInt(ClumnsFTYDLPage);
                 OkHttpUtils.postString()
                         .url(str)
                         .content(gsonbeanStr)
@@ -476,9 +476,9 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                                         String count = String.valueOf(pageCount / finalGetsize + 1);
                                         tvSignPage.setText(count);
                                         adapter = new FTYDLSearchAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        mData.setAdapter(adapter);
+                                        lv_data.setAdapter(adapter);
                                         mLeftAdapter = new FTYDLSearchLeftAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        lv_left.setAdapter(mLeftAdapter);
+                                        lv_pleft.setAdapter(mLeftAdapter);
                                     } else {
                                         ll_visibi.setVisibility(View.VISIBLE);
                                         scroll_content.setVisibility(View.GONE);
@@ -509,8 +509,8 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
             FTYDLSearchItem = productionleftItem;
             FTYDLSearchName = "";
         }
-        if (clumn.equals("")) {
-            clumn = String.valueOf(10);
+        if (ClumnsFTYDLPage.equals("")) {
+            ClumnsFTYDLPage = String.valueOf(10);
         }
         if (FTYDLDialogProcedure.equals("全部")) {
             boolean stris = Boolean.parseBoolean(FTYDLStis);
@@ -524,11 +524,11 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
             conditions.setPrddocumentaryisnull(stris);
             FTYDLSearchBean.setConditions(conditions);
             FTYDLSearchBean.setPageNum(Integer.parseInt(pageupIndex));
-            FTYDLSearchBean.setPageSize(Integer.parseInt(clumn));
+            FTYDLSearchBean.setPageSize(Integer.parseInt(ClumnsFTYDLPage));
             String gsonbeanStr = gson.toJson(FTYDLSearchBean);
             if (NetWork.isNetWorkAvailable(this)) {
                 ResponseDialog.showLoading(this, "正在查询");
-                final int finalGetsize = Integer.parseInt(clumn);
+                final int finalGetsize = Integer.parseInt(ClumnsFTYDLPage);
                 OkHttpUtils.postString()
                         .url(str)
                         .content(gsonbeanStr)
@@ -560,9 +560,9 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                                         tvSignPage.setText(count);
 
                                         adapter = new FTYDLSearchAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        mData.setAdapter(adapter);
+                                        lv_data.setAdapter(adapter);
                                         mLeftAdapter = new FTYDLSearchLeftAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        lv_left.setAdapter(mLeftAdapter);
+                                        lv_pleft.setAdapter(mLeftAdapter);
                                     } else {
                                         ll_visibi.setVisibility(View.VISIBLE);
                                         scroll_content.setVisibility(View.GONE);
@@ -592,11 +592,11 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
             conditions.setPrddocumentaryisnull(stris);
             FTYDLSearchBean.setConditions(conditions);
             FTYDLSearchBean.setPageNum(index);
-            FTYDLSearchBean.setPageSize(Integer.parseInt(clumn));
+            FTYDLSearchBean.setPageSize(Integer.parseInt(ClumnsFTYDLPage));
             String gsonbeanStr = gson.toJson(FTYDLSearchBean);
             if (NetWork.isNetWorkAvailable(this)) {
                 ResponseDialog.showLoading(this, "正在查询");
-                final int finalGetsize = Integer.parseInt(clumn);
+                final int finalGetsize = Integer.parseInt(ClumnsFTYDLPage);
                 OkHttpUtils.postString()
                         .url(str)
                         .content(gsonbeanStr)
@@ -627,9 +627,9 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                                         String count = String.valueOf(pageCount / finalGetsize + 1);
                                         tvSignPage.setText(count);
                                         adapter = new FTYDLSearchAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        mData.setAdapter(adapter);
+                                        lv_data.setAdapter(adapter);
                                         mLeftAdapter = new FTYDLSearchLeftAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        lv_left.setAdapter(mLeftAdapter);
+                                        lv_pleft.setAdapter(mLeftAdapter);
                                     } else {
                                         ll_visibi.setVisibility(View.VISIBLE);
                                         scroll_content.setVisibility(View.GONE);
@@ -747,10 +747,10 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
 
     @Override
     public void setSelectedItem(final int position) {
-        mData.postDelayed(new Runnable() {
+        lv_data.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mData.setSelection(position);
+                lv_data.setSelection(position);
             }
         }, 1000);
     }

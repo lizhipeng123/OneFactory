@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 创建时间：2017/11/21
  * 编写人：lizhipeng
- * 功能描述：款号选择中同款号的不同花色数据集合
+ * 功能描述：款号选择页面 同款号的不同花色数据集合
  */
 
 public class FTYDLFactoryDailyColBean {

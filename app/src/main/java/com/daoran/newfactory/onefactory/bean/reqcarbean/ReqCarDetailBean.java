@@ -8,60 +8,6 @@ import java.io.Serializable;
  */
 
 public class ReqCarDetailBean implements Serializable {
-
-    /**
-     * id : 6895
-     * code : CA170419001
-     * compytxt : null
-     * recordt : 2017-04-19T17:38:22
-     * recorder : 毕三军
-     * recordid : 0678
-     * handler : null
-     * handlid : null
-     * appstatus :
-     * ctemp1 : SS261
-     * ctemp2 : null
-     * isend : null
-     * isMsgCompleted : null
-     * assememo :
-     * memo :
-     * road : 按时
-     * withcarpsn :
-     * preoutdate : null
-     * reason : 按时
-     * driver :
-     * plateNumber :
-     * departureDate : null
-     * departureBdt : 2017/04/19 17:38
-     * departureEdt : 2017/04/20 17:38
-     * bKG : null
-     * eKG : null
-     * curKG : null
-     * islong : null
-     * isrange : null
-     * roadamount : null
-     * stopamount : null
-     * authorizeamount : null
-     * otheramount : null
-     * asseid1 :
-     * asser1 :
-     * assedat1 : null
-     * asseid2 : null
-     * asser2 : null
-     * assedat2 : null
-     * asseid3 : null
-     * asser3 : null
-     * assedat3 : null
-     * asseid4 : null
-     * asser4 : null
-     * assedat4 : null
-     * asseid5 : null
-     * asser5 : 否
-     * assedat5 : null
-     * printmemo : null
-     * isprivate : false
-     */
-
     private int id;//id唯一
     private String code;//用车单编号
     private String compytxt;

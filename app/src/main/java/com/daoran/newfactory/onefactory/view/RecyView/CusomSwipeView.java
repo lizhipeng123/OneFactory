@@ -12,55 +12,35 @@ import android.widget.AdapterView;
 import android.widget.Scroller;
 
 /**
+ * 可横向滑动删除item
+ * 自定义recycleView
  * Created by lizhipeng on 2017/4/19.
  */
 
 public class CusomSwipeView extends RecyclerView {
     private Orientation orientation = Orientation.HORIZONTAL;
-    /**
-     * 当前滑动的ListView　position
-     */
+    /*当前滑动的ListView　position*/
     private int slidePosition;
-    /**
-     * 手指按下X的坐标
-     */
+    /*手指按下X的坐标 */
     private int downY;
-    /**
-     * 手指按下Y的坐标
-     */
+    /*手指按下Y的坐标*/
     private int downX;
-    /**
-     * 屏幕宽度
-     */
+    /*屏幕宽度*/
     private int screenWidth;
-    /**
-     * ListView的item
-     */
+    /* ListView的item*/
     private View itemView;
-    /**
-     * 滑动类
-     */
+    /*滑动类*/
     private Scroller scroller;
     private static final int SNAP_VELOCITY = 600;
-    /**
-     * 速度追踪对象
-     */
+    /*速度追踪对象*/
     private VelocityTracker velocityTracker;
-    /**
-     * 是否响应滑动，默认为不响应
-     */
+    /*是否响应滑动，默认为不响应*/
     private boolean isSlide = false;
-    /**
-     * 认为是用户滑动的最小距离
-     */
+    /*认为是用户滑动的最小距离*/
     private int mTouchSlop;
-    /**
-     * 移除item后的回调接口
-     */
+    /*移除item后的回调接口*/
     private RemoveListener mRemoveListener;
-    /**
-     * 用来指示item滑出屏幕的方向,向左或者向右,用一个枚举值来标记
-     */
+    /*用来指示item滑出屏幕的方向,向左或者向右,用一个枚举值来标记*/
     private RemoveDirection removeDirection;
 
     // 滑动删除方向的枚举值
@@ -87,7 +67,6 @@ public class CusomSwipeView extends RecyclerView {
     }
 
     public void init(Context context) {
-
         if (orientation == Orientation.VERTICAL) {
             screenWidth = ((WindowManager) context
                     .getSystemService(Context.WINDOW_SERVICE))
@@ -101,18 +80,12 @@ public class CusomSwipeView extends RecyclerView {
         mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
     }
 
-    /**
-     * 设置滑动删除的回调接口
-     *
-     * @param removeListener
-     */
+    /*设置滑动删除的回调接口*/
     public void setRemoveListener(RemoveListener removeListener) {
         this.mRemoveListener = removeListener;
     }
 
-    /**
-     * 分发事件，主要做的是判断点击的是那个item, 以及通过postDelayed来设置响应左右滑动事件
-     */
+    /*分发事件，主要做的是判断点击的是那个item, 以及通过postDelayed来设置响应左右滑动事件*/
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
@@ -169,9 +142,7 @@ public class CusomSwipeView extends RecyclerView {
         return super.dispatchTouchEvent(event);
     }
 
-    /**
-     * 往右滑动，getScrollX()返回的是左边缘的距离，就是以View左边缘为原点到开始滑动的距离，所以向右边滑动为负值
-     */
+    /*往右滑动，getScrollX()返回的是左边缘的距离，就是以View左边缘为原点到开始滑动的距离，所以向右边滑动为负*/
     private void scrollRight() {
         if (orientation == Orientation.VERTICAL) {// 往右滑动
             removeDirection = RemoveDirection.RIGHT;
@@ -190,9 +161,7 @@ public class CusomSwipeView extends RecyclerView {
         }
     }
 
-    /**
-     * 向左滑动，根据上面我们知道向左滑动为正值
-     */
+    /*向左滑动，根据上面我们知道向左滑动为正值*/
     private void scrollLeft() {
         if (orientation == Orientation.VERTICAL) {// 往左滑动
             removeDirection = RemoveDirection.LEFT;
@@ -211,12 +180,9 @@ public class CusomSwipeView extends RecyclerView {
         }
     }
 
-    /**
-     * 根据手指滚动itemView的距离来判断是滚动到开始位置还是向左或者向右滚动
-     */
+    /*根据手指滚动itemView的距离来判断是滚动到开始位置还是向左或者向右滚动*/
     private void scrollByDistanceX() {
         // 如果向左滚动的距离大于屏幕的二分之一，就让其删除
-
         if (orientation == Orientation.VERTICAL) {
             if (itemView.getScrollX() >= screenWidth / 2) {
                 scrollLeft();
@@ -236,12 +202,9 @@ public class CusomSwipeView extends RecyclerView {
                 itemView.scrollTo(0, 0);
             }
         }
-
     }
 
-    /**
-     * 处理我们拖动ListView item的逻辑
-     */
+    /*处理我们拖动ListView item的逻辑*/
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if (isSlide && slidePosition != AdapterView.INVALID_POSITION
@@ -261,7 +224,6 @@ public class CusomSwipeView extends RecyclerView {
                             .setAction(MotionEvent.ACTION_CANCEL
                                     | (ev.getActionIndex() << MotionEvent.ACTION_POINTER_INDEX_SHIFT));
                     onTouchEvent(cancelEvent);
-
                     if (orientation == Orientation.VERTICAL) {
                         int deltaX = downX - x;
                         downX = x;
@@ -272,7 +234,6 @@ public class CusomSwipeView extends RecyclerView {
                         downY = y;
                         itemView.scrollBy(0, deltaY);
                     }
-
                     return true; // 拖动的时候ListView不滚动
                 case MotionEvent.ACTION_UP:
                     int velocityX = getScrollVelocity();
@@ -283,14 +244,12 @@ public class CusomSwipeView extends RecyclerView {
                     } else {
                         scrollByDistanceX();
                     }
-
                     recycleVelocityTracker();
                     // 手指离开的时候就不响应左右滚动
                     isSlide = false;
                     break;
             }
         }
-
         // 否则直接交给ListView来处理onTouchEvent事件
         return super.onTouchEvent(ev);
     }
@@ -301,38 +260,28 @@ public class CusomSwipeView extends RecyclerView {
         if (scroller.computeScrollOffset()) {
             // 让ListView item根据当前的滚动偏移量进行滚动
             itemView.scrollTo(scroller.getCurrX(), scroller.getCurrY());
-
             postInvalidate();
-
             // 滚动动画结束的时候调用回调接口
             if (scroller.isFinished()) {
                 if (mRemoveListener == null) {
                     throw new NullPointerException(
                             "RemoveListener is null, we should called setRemoveListener()");
                 }
-
                 itemView.scrollTo(0, 0);
                 mRemoveListener.removeItem(removeDirection, slidePosition);
             }
         }
     }
 
-    /**
-     * 添加用户的速度跟踪器
-     *
-     * @param event
-     */
+    /*添加用户的速度跟踪器*/
     private void addVelocityTracker(MotionEvent event) {
         if (velocityTracker == null) {
             velocityTracker = VelocityTracker.obtain();
         }
-
         velocityTracker.addMovement(event);
     }
 
-    /**
-     * 移除用户速度跟踪器
-     */
+    /*移除用户速度跟踪器*/
     private void recycleVelocityTracker() {
         if (velocityTracker != null) {
             velocityTracker.recycle();
@@ -340,11 +289,7 @@ public class CusomSwipeView extends RecyclerView {
         }
     }
 
-    /**
-     * 获取X方向的滑动速度,大于0向右滑动，反之向左
-     *
-     * @return
-     */
+    /*获取X方向的滑动速度,大于0向右滑动，反之向左*/
     private int getScrollVelocity() {
         if (orientation == Orientation.VERTICAL) {
             velocityTracker.computeCurrentVelocity(1000);
@@ -355,29 +300,22 @@ public class CusomSwipeView extends RecyclerView {
             int velocity = (int) velocityTracker.getYVelocity();
             return velocity;
         }
-
     }
 
-    /**
-     * 当ListView item滑出屏幕，回调这个接口 我们需要在回调方法removeItem()中移除该Item,然后刷新ListView
-     */
+    /*当ListView item滑出屏幕，回调这个接口 我们需要在回调方法removeItem()中移除该Item,然后刷新ListView*/
     public interface RemoveListener {
         public void removeItem(RemoveDirection direction, int position);
     }
 
     public static enum Orientation {
         HORIZONTAL(0), VERTICAL(1);
-
         private int value;
-
         private Orientation(int i) {
             value = i;
         }
-
         public int value() {
             return value;
         }
-
         public static Orientation valueOf(int i) {
             switch (i) {
                 case 0:

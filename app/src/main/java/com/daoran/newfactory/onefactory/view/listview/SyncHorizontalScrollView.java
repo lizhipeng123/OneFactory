@@ -36,6 +36,4 @@ public class SyncHorizontalScrollView extends HorizontalScrollView {
     public void setSrollView(View view) {
         mView = view;
     }
-
-
 }

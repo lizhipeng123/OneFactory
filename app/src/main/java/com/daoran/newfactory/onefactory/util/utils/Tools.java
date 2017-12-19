@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 
 /**
  * 各种类型转换
- * Created by djx on 16/1/18.
+ * Created by lzp on 16/1/18.
  */
 public class Tools {
     /*
@@ -56,9 +56,7 @@ public class Tools {
         }
     }
 
-    /**
-     * 年龄
-     */
+    /*年龄*/
     public static int getage(String update_time) {
         try {
             long cur = System.currentTimeMillis();
@@ -75,7 +73,6 @@ public class Tools {
             if (time * 10 < cur) {
                 time *= 1000;
             }
-
             int y = (cny - cy);
             return y;
         } catch (Exception e) {
@@ -83,9 +80,7 @@ public class Tools {
         return 0;
     }
 
-    /**
-     * 时间戳转日期
-     */
+    /*时间戳转日期*/
     public static CharSequence getDate(String update_time) {
         try {
             Long time = Long.valueOf(update_time);
@@ -102,9 +97,7 @@ public class Tools {
         return "";
     }
 
-    /**
-     * 时间戳转生日
-     */
+    /*时间戳转生日*/
     public static CharSequence getBirthday(String update_time) {
         try {
             Long time = Long.valueOf(update_time);
@@ -115,15 +108,12 @@ public class Tools {
             int cy = c.get(Calendar.YEAR);
             String str = cy + "-" + cm + "-" + cd;
             return str;
-
         } catch (Exception e) {
         }
         return "";
     }
 
-    /**
-     * 格式化时间
-     */
+    /*格式化时间*/
     public static CharSequence formatTime(String update_time) {
         try {
             long cur = System.currentTimeMillis();
@@ -138,7 +128,6 @@ public class Tools {
             if (time * 10 < cur) {
                 time *= 1000;
             }
-
             long d = (cur - time);
             if (d < 1000 * 10) {
                 return "刚刚";
@@ -168,9 +157,7 @@ public class Tools {
         return "";
     }
 
-    /**
-     * 格式化时间
-     */
+    /*格式化时间*/
     public static CharSequence formatTimeYMD(String update_time) {
         try {
             if (judgeTimeYMD(update_time)) {
@@ -182,7 +169,6 @@ public class Tools {
             if (time * 10 < cur) {
                 time *= 1000;
             }
-
             long d = (cur - time);
             SimpleDateFormat dateformat1 = new SimpleDateFormat("yyyy-MM-dd");
             String str = dateformat1.format(time);
@@ -190,7 +176,6 @@ public class Tools {
         } catch (Exception e) {
             return "";
         }
-
     }
 
     public static boolean judgeTimeYMD(String str) {
@@ -203,12 +188,7 @@ public class Tools {
         }
     }
 
-    /**
-     * 时间转成时间戳
-     *
-     * @param time
-     * @return
-     */
+    /*时间转成时间戳*/
     public static long timeToDate(String time) {
         try {
             Date date = new SimpleDateFormat("yyyy-MM-dd").parse(time);
@@ -231,11 +211,7 @@ public class Tools {
         return dm.widthPixels;// 宽度height = dm.heightPixels ;//高度
     }
 
-    /**
-     * 检测是否 存在SD卡
-     *
-     * @return
-     */
+    /*检测是否 存在SD卡*/
     public static boolean hasSdcard() {
         String state = Environment.getExternalStorageState();
         if (state.equals(Environment.MEDIA_MOUNTED)) {
@@ -245,11 +221,7 @@ public class Tools {
         }
     }
 
-    /**
-     * 检测网络是否存在
-     *
-     * @return
-     */
+    /*检测网络是否存在*/
     public static boolean checkNetwork(final Activity mActivity) {
         ConnectivityManager conn = (ConnectivityManager) mActivity
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -260,12 +232,7 @@ public class Tools {
         return false;
     }
 
-    /**
-     * 将String类型的日期转换成calendar
-     *
-     * @param str
-     * @return
-     */
+    /*将String类型的日期转换成calendar*/
     public static Calendar stringToCalendar(String str) {
         Calendar calendar = new GregorianCalendar(Locale.CHINA);
         try {
@@ -276,9 +243,7 @@ public class Tools {
         return calendar;
     }
 
-    /**
-     * 写文件到 SD卡
-     */
+    /*写文件到 SD卡*/
     public static void writeFileSdcard(String fileName, String message) {
         if (message.equals("[]")) {
             message = "";
@@ -287,7 +252,6 @@ public class Tools {
             // FileOutputStream fout = openFileOutput(fileName, MODE_PRIVATE);
             FileOutputStream fout = new FileOutputStream(fileName);
             File file = new File(fileName);
-
             if (!file.exists()) {
                 file.createNewFile();
             }
@@ -299,9 +263,7 @@ public class Tools {
         }
     }
 
-    /**
-     * 从SD卡读取信息
-     */
+    /*从SD卡读取信息*/
     public static String readFileSdcard(String fileName) {
         String res = "";
         File file = new File(fileName);
@@ -325,12 +287,7 @@ public class Tools {
         return res;
     }
 
-    /**
-     * 判断String 是否有内容
-     *
-     * @param str
-     * @return
-     */
+    /*判断String 是否有内容*/
     public static boolean StringHasContent(String str) {
         if (null == str || "".equals(str) || "null".equals(str)
                 || str.length() == 0) {
@@ -339,9 +296,7 @@ public class Tools {
         return true;
     }
 
-    /**
-     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
-     */
+    /*根据手机的分辨率从 dp 的单位 转成为 px(像素)*/
     public static int dip2px(Context context, float dpValue) {
         if (context == null) {
             return (int) dpValue;
@@ -350,9 +305,7 @@ public class Tools {
         return (int) (dpValue * scale + 0.5f);
     }
 
-    /**
-     * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
-     */
+    /*根据手机的分辨率从 px(像素) 的单位 转成为 dp*/
     public static int px2dip(Context context, float pxValue) {
         if (context == null) {
             return (int) pxValue;
@@ -361,12 +314,7 @@ public class Tools {
         return (int) (pxValue / scale + 0.5f);
     }
 
-    /**
-     * 将px值转换为sp值，保证文字大小不变
-     *
-     * @param pxValue
-     * @return
-     */
+    /*将px值转换为sp值，保证文字大小不变*/
     public static int px2sp(Context context, float pxValue) {
         if (context == null) {
             return (int) pxValue;
@@ -375,12 +323,7 @@ public class Tools {
         return (int) (pxValue / fontScale + 0.5f);
     }
 
-    /**
-     * 将sp值转换为px值，保证文字大小不变
-     *
-     * @param spValue
-     * @return
-     */
+    /*将sp值转换为px值，保证文字大小不变*/
     public static int sp2px(Context context, float spValue) {
         if (context == null) {
             return (int) spValue;
@@ -395,12 +338,7 @@ public class Tools {
         return dateFormat.format(date);
     }
 
-    /**
-     * 判断是否手机号码
-     *
-     * @param mobiles
-     * @return
-     */
+    /*判断是否手机号码*/
     public static boolean isMobileNum(String mobiles) {
         Pattern p = Pattern
                 .compile("[1][358]\\d{9}");
@@ -408,12 +346,7 @@ public class Tools {
         return m.matches();
     }
 
-    /**
-     * 给特殊字符编码
-     *
-     * @param txt
-     * @return
-     */
+    /*给特殊字符编码*/
     public static String urlEncoder(String txt) {
         try {
             return URLEncoder.encode(txt, "UTF-8");
@@ -422,12 +355,7 @@ public class Tools {
         }
     }
 
-    /**
-     * 给特殊字符解码
-     *
-     * @param txt
-     * @return
-     */
+    /*给特殊字符解码*/
     public static String urlDeCoder(String txt) {
         try {
             return URLDecoder.decode(txt, "UTF-8");

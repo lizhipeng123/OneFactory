@@ -1,11 +1,10 @@
 package com.daoran.newfactory.onefactory.activity.work.qacwork;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -45,8 +44,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -57,7 +54,7 @@ import okhttp3.MediaType;
  */
 public class QACworkSearchActivity extends BaseFrangmentActivity
         implements View.OnClickListener {
-    private NoscrollListView mData;//列表
+    private NoscrollListView lv_data;//列表
     private NoscrollListView lv_cleft;//左侧款号列表
     private SyncHorizontalScrollView mHeaderHorizontal;
     private SyncHorizontalScrollView mDataHorizontal;
@@ -148,7 +145,7 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
     /*初始化控件*/
     private void getViews() {
         ivProductionBack = (ImageView) findViewById(R.id.ivCommoditySql);
-        mData = (NoscrollListView) findViewById(R.id.lv_data);
+        lv_data = (NoscrollListView) findViewById(R.id.lv_data);
         lv_cleft = (NoscrollListView) findViewById(R.id.lv_cleft);
         mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
         mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
@@ -355,7 +352,7 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
     };
 
     /*接收条件弹窗传过来的数值*/
-    private void setSPUtils(){
+    private void setSPUtils() {
         sp = getSharedPreferences("my_sp", 0);
         Prddocumentary = sp.getString("QACworkDialogPrddocumentary", "");//跟单
         QACworkDialogItem = sp.getString("QACworkDialogItem", "");//款号
@@ -385,7 +382,7 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
         conditions.setIPQC(QACworkDialogIPQC);//填充巡检
         conditions.setPrdmasterisnull(stris);//填充生产主管是否可空
         postBean.setConditions(conditions);//填充父节点
-        postBean.setPageNum(0);
+        postBean.setPageNum(0);//起始页
         postBean.setPageSize(Integer.parseInt(pagesize));
         //将bean中的数据转成json数据
         String stringpost = gson.toJson(postBean);
@@ -420,9 +417,10 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
                                     tvSignPage.setText(count);
                                     sqlAdapter = new QACworkSearchAdapter(QACworkSearchActivity.this, dataBeen,
                                             jsonTextBeanlist);
-                                    mData.setAdapter(sqlAdapter);
+                                    lv_data.setAdapter(sqlAdapter);//绑定数据源
                                     leftAdapter = new QACworkSearchLeftAdapter(QACworkSearchActivity.this, dataBeen);
                                     lv_cleft.setAdapter(leftAdapter);
+                                    setQACworkLinter();
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
                                     scroll_content.setVisibility(View.GONE);
@@ -498,12 +496,14 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
                                     scroll_content.setVisibility(View.VISIBLE);
                                     pageCount = QACworkPageDataBean.getTotalCount();
                                     String count = String.valueOf(pageCount / finalGetsize + 1);
-                                    tvSignPage.setText(count);
+                                    tvSignPage.setText(count);//总页数
                                     sqlAdapter = new QACworkSearchAdapter(QACworkSearchActivity.this, dataBeen
                                             , jsonTextBeanlist);
-                                    mData.setAdapter(sqlAdapter);
-                                    leftAdapter = new QACworkSearchLeftAdapter(QACworkSearchActivity.this, dataBeen);
+                                    lv_data.setAdapter(sqlAdapter);//绑定数据源
+                                    leftAdapter = new QACworkSearchLeftAdapter(
+                                            QACworkSearchActivity.this, dataBeen);
                                     lv_cleft.setAdapter(leftAdapter);
+                                    setQACworkLinter();
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
                                     scroll_content.setVisibility(View.GONE);
@@ -569,9 +569,11 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
                                     tvSignPage.setText(count);
                                     sqlAdapter = new QACworkSearchAdapter(QACworkSearchActivity.this,
                                             dataBeen, jsonTextBeanlist);
-                                    mData.setAdapter(sqlAdapter);
-                                    leftAdapter = new QACworkSearchLeftAdapter(QACworkSearchActivity.this, dataBeen);
+                                    lv_data.setAdapter(sqlAdapter);//绑定数据源
+                                    leftAdapter = new QACworkSearchLeftAdapter(
+                                            QACworkSearchActivity.this, dataBeen);
                                     lv_cleft.setAdapter(leftAdapter);
+                                    setQACworkLinter();
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
                                     scroll_content.setVisibility(View.GONE);
@@ -606,7 +608,6 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
 
                     @Override
                     public void onResponse(String response, int id) {
-                        System.out.println(response);
                         String ress = response.replace("\\", "");
                         ress = ress.replace("\"[{", "[{");
                         ress = ress.replace("}]\"", "}]");
@@ -615,8 +616,9 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
                         if (QACworkRightsTableBean.getJsonText() != null) {
                             jsonTextBeanlist = QACworkRightsTableBean.getJsonText();
                         }
-                        System.out.println(jsonTextBeanlist);
                         String jsontext = String.valueOf(QACworkRightsTableBean.getJsonText());
+                        //判断如果为null，则默认显示全部的数据
+                        //如果不是null，则循环判断其中字段是否是修改或者是查看
                         if (jsontext.equals("null")) {
                             for (int i = 0; i < columnlist.size(); i++) {
                                 String sfil = ("tv_commodetail_" + columnlist.get(i));
@@ -797,27 +799,191 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
         }
     }
 
+    /*接口回调事件*/
+    private void setQACworkLinter(){
+        sqlAdapter.setmOnClickQACworkLinter(new QACworkSearchAdapter.OnClickQACworkLinter() {
+            @Override
+            public void myQACworkClick(int id) {
+                String proid = String.valueOf(dataBeen.get(id).getID());
+                spUtils.put(QACworkSearchActivity.this, "commodetailproid", proid);//id
+                String commoitem = dataBeen.get(id).getItem();//款号
+                spUtils.put(QACworkSearchActivity.this, "commodetailitem", commoitem);
+                String commoCtmtxt = dataBeen.get(id).getCtmtxt();//客户
+                spUtils.put(QACworkSearchActivity.this, "commodetailCtmtxt", commoCtmtxt);
+                String commoPrddocumentary =
+                        dataBeen.get(id).getPrddocumentary();//跟单
+                String prddocumentary;
+                if (commoPrddocumentary == null) {
+                    prddocumentary = "";
+                } else {
+                    prddocumentary = commoPrddocumentary;
+                }
+                spUtils.put(QACworkSearchActivity.this, "commodetailPrddocumentary", prddocumentary);
+                String commoSubfactory = dataBeen.get(id).getSubfactory();//工厂
+                spUtils.put(QACworkSearchActivity.this, "commodetailSubfactory", commoSubfactory);
+                String commoTaskqty = dataBeen.get(id).getTaskqty();//制单数量
+                spUtils.put(QACworkSearchActivity.this, "commodetailTaskqty", commoTaskqty);
+                String commoprdmaster = dataBeen.get(id).getPrdmaster();//生产主管
+                String prdmaster;
+                if (commoprdmaster == null) {
+                    prdmaster = "";
+                } else {
+                    prdmaster = commoprdmaster;
+                }
+                spUtils.put(QACworkSearchActivity.this, "commodetailprdmaster", prdmaster);
+
+                String prdmasterid = dataBeen.get(id).getPrdmasterid();//生产主管id
+                spUtils.put(QACworkSearchActivity.this, "commodetailprdmasterid", prdmasterid);
+
+                String commoQCMasterScore = dataBeen.get(id).getQCMasterScore();//主管评分
+                spUtils.put(QACworkSearchActivity.this, "commodetailQCMasterScore", commoQCMasterScore);
+
+                String commoSealedrev = dataBeen.get(id).getSealedrev();//封样资料接收时间
+                spUtils.put(QACworkSearchActivity.this, "commodetailSealedrev", commoSealedrev);
+
+                String commoDocback = dataBeen.get(id).getDocback();//大货资料接收时间
+                spUtils.put(QACworkSearchActivity.this, "commodetailDocback", commoDocback);
+
+                String commoLcdat = dataBeen.get(id).getLcdat();//出货时间
+                spUtils.put(QACworkSearchActivity.this, "commodetailLcdat", commoLcdat);
+
+                String commoPreMemo = dataBeen.get(id).getPreMemo();//特别备注情况
+                spUtils.put(QACworkSearchActivity.this, "commodetailPreMemo", commoPreMemo);
+
+                String commoPredocdt = dataBeen.get(id).getPredocdt();//预计产前会报告时间
+                spUtils.put(QACworkSearchActivity.this, "commodetailPredocdt", commoPredocdt);
+
+                String commoPred = dataBeen.get(id).getPredt();//开产前会时间
+                spUtils.put(QACworkSearchActivity.this, "commodetailPred", commoPred);
+
+                String commoPredoc =dataBeen.get(id).getPredoc();//产前会报告
+                spUtils.put(QACworkSearchActivity.this, "commodetailPredoc", commoPredoc);
+
+                String commoFabricsok = dataBeen.get(id).getFabricsok();//大货面料情况
+                spUtils.put(QACworkSearchActivity.this, "commodetailFabricsok", commoFabricsok);
+
+                String commoAccessoriesok = dataBeen.get(id).getAccessoriesok();//大货辅料情况
+                spUtils.put(QACworkSearchActivity.this, "commodetailAccessoriesok", commoAccessoriesok);
+
+                String commoSpcproDec = dataBeen.get(id).getSpcproDec();//特殊工艺情况
+                spUtils.put(QACworkSearchActivity.this, "commodetailSpcproDec", commoSpcproDec);
+
+                String commoSpcproMemo = dataBeen.get(id).getSpcproMemo();//特殊工艺备注
+                spUtils.put(QACworkSearchActivity.this, "commodetailSpcproMemo", commoSpcproMemo);
+
+                String commoCutqty = dataBeen.get(id).getCutqty();//实裁数
+                spUtils.put(QACworkSearchActivity.this, "commodetailCutqty", commoCutqty);
+
+                String commoSewFdt = dataBeen.get(id).getSewFdt();//上线日期
+                spUtils.put(QACworkSearchActivity.this, "commodetailSewFdt", commoSewFdt);
+
+                String commoSewMdt = dataBeen.get(id).getSewMdt();//下线日期
+                spUtils.put(QACworkSearchActivity.this, "commodetailSewMdt", commoSewMdt);
+
+                String commoPrebdt = dataBeen.get(id).getPrebdt();//预计早期时间
+                spUtils.put(QACworkSearchActivity.this, "commodetailPrebdt", commoPrebdt);
+
+                String commoQCbdt = dataBeen.get(id).getQCbdt();//自查早起时间
+                spUtils.put(QACworkSearchActivity.this, "commodetailQCbdt", commoQCbdt);
+
+                String commoQCbdtDoc = dataBeen.get(id).getQCbdtDoc();//早期报告
+                spUtils.put(QACworkSearchActivity.this, "commodetailQCbdtDoc", commoQCbdtDoc);
+
+                String commoPremdt = dataBeen.get(id).getPremdt();//预计中期时间
+                spUtils.put(QACworkSearchActivity.this, "commodetailPremdt", commoPremdt);
+
+                String commoQCmdt = dataBeen.get(id).getQCmdt();//自查中期时间
+                spUtils.put(QACworkSearchActivity.this, "commodetailQCmdt", commoQCmdt);
+
+                String commoQCmdtDoc = dataBeen.get(id).getQCmdtDoc();//中期报告
+                spUtils.put(QACworkSearchActivity.this, "commodetailQCmdtDoc", commoQCmdtDoc);
+
+                String commoPreedt = dataBeen.get(id).getPreedt();//预计尾期时间
+                spUtils.put(QACworkSearchActivity.this, "commodetailPreedt", commoPreedt);
+
+                String commoQCMedt = dataBeen.get(id).getQCMedt();//自查尾期时间
+                spUtils.put(QACworkSearchActivity.this, "commodetailQCMedt", commoQCMedt);
+
+                String commoQCedtDoc = dataBeen.get(id).getQCedtDoc();//尾期报告
+                spUtils.put(QACworkSearchActivity.this, "commodetailQCedtDoc", commoQCedtDoc);
+
+                String commoFctmdt = dataBeen.get(id).getFctmdt();//客查中期报告
+                spUtils.put(QACworkSearchActivity.this, "commodetailFctmdt", commoFctmdt);
+
+                String commoFctedt = dataBeen.get(id).getFctedt();//客查尾期报告
+                spUtils.put(QACworkSearchActivity.this, "commodetailFctedt", commoFctedt);
+
+                String commoPackbdat = dataBeen.get(id).getPackbdat();//成品包装开始日期
+                spUtils.put(QACworkSearchActivity.this, "commodetailPackbdat", commoPackbdat);
+
+                String commoPackqty2 = dataBeen.get(id).getPackqty2();//装箱数量
+                spUtils.put(QACworkSearchActivity.this, "commoPackqty2", commoPackqty2);
+
+                String commoQCMemo = dataBeen.get(id).getQCMemo();//QC特别备注
+                spUtils.put(QACworkSearchActivity.this, "commodetailQCMemo", commoQCMemo);
+
+                String commoFactlcdat = dataBeen.get(id).getFactlcdat();//离厂日期
+                spUtils.put(QACworkSearchActivity.this, "commodetailFactlcdat", commoFactlcdat);
+
+                String commoBatchid = dataBeen.get(id).getBatchid();//查获批次
+                spUtils.put(QACworkSearchActivity.this, "commodetailBatchid", commoBatchid);
+
+                String commoOurAfter = dataBeen.get(id).getOurAfter();//后道
+                spUtils.put(QACworkSearchActivity.this, "commodetailOurAfter", commoOurAfter);
+
+                String commoCtmchkdt =dataBeen.get(id).getCtmchkdt();//业务员确认客查日期
+                spUtils.put(QACworkSearchActivity.this, "commodetailCtmchkdt", commoCtmchkdt);
+
+                String commoIPQCPedt = dataBeen.get(id).getIPQCPedt();//尾查预查
+                spUtils.put(QACworkSearchActivity.this, "commodetailIPQCPedt", commoIPQCPedt);
+
+                String commoIPQCmdt = dataBeen.get(id).getIPQCmdt();//巡检中查
+                spUtils.put(QACworkSearchActivity.this, "commodetailIPQCmdt", commoIPQCmdt);
+
+                String commoIPQC = dataBeen.get(id).getIPQC();//巡检
+                spUtils.put(QACworkSearchActivity.this, "commodetailIPQC", commoIPQC);
+
+                String commoIPQCid = dataBeen.get(id).getIPQCid();//巡检id
+                spUtils.put(QACworkSearchActivity.this, "commodetailIPQCid", commoIPQCid);
+
+                String commoQAname = dataBeen.get(id).getQAname();//QA首扎
+                spUtils.put(QACworkSearchActivity.this, "commodetailQAname", commoQAname);
+
+                String commofirstsamQA = dataBeen.get(id).getFirstsamQA();//QA首扎改后
+                spUtils.put(QACworkSearchActivity.this, "commodetailfirstsamQA", commofirstsamQA);
+
+                String commoQAScore = dataBeen.get(id).getQAScore();//QA首扎件数
+                spUtils.put(QACworkSearchActivity.this, "commodetailQAScore", commoQAScore);
+
+                String commofirstsamQAid =dataBeen.get(id).getFirstsamQAid();//
+                spUtils.put(QACworkSearchActivity.this, "commodetailfirstsamQAid", commofirstsamQAid);
+
+                String commoQAMemo = dataBeen.get(id).getQAMemo();//QA首扎日期
+                spUtils.put(QACworkSearchActivity.this, "commodetailQAMemo", commoQAMemo);
+
+                String commochker = dataBeen.get(id).getChker();//件查
+                spUtils.put(QACworkSearchActivity.this, "commodetailchker", commochker);
+
+                String commochkpdt = dataBeen.get(id).getChkpdt();//预计件查时间
+                spUtils.put(QACworkSearchActivity.this, "commodetailchkpdt", commochkpdt);
+
+                String commochkfctdt = dataBeen.get(id).getChkfctdt();//实际件查时间
+                spUtils.put(QACworkSearchActivity.this, "commodetailchkfctdt", commochkfctdt);
+
+                String commochkplace = dataBeen.get(id).getChkplace();//件查地址
+                spUtils.put(QACworkSearchActivity.this, "commodetailchkplace", commochkplace);
+
+                Intent intent = new Intent(QACworkSearchActivity.this,
+                        QACworkDetailActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
     /*退出界面后删除轻量级存储my_sp中的数据*/
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    /*禁止EditText输入特殊字符*/
-    public static void setEditTextInhibitInputSpeChat(EditText editText) {
-        InputFilter filter = new InputFilter() {
-            @Override
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                String speChat = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
-                Pattern pattern = Pattern.compile(speChat);
-                Matcher matcher = pattern.matcher(source.toString());
-                if (source.equals(" ") || source.equals("\n") || matcher.find())
-                    return "";
-                else
-                    return null;
-            }
-        };
-        editText.setFilters(new InputFilter[]{filter});
     }
 
     @Override

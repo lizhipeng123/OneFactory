@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 创建时间：2017/11/17
  * 编写人：lizhipeng
- * 功能描述：新建时，裁床情况花色对应的每日数量及总完工数
+ * 功能描述：新建时，请求中填写的裁床情况花色对应的每日数量及总完工数
  */
 
 public class FTYDLColCountBean {

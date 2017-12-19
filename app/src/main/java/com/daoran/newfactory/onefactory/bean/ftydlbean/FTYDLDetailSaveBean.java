@@ -1,7 +1,7 @@
 package com.daoran.newfactory.onefactory.bean.ftydlbean;
 
 /**
- *  生产日报保存实体
+ *  生产日报保存的数据实体
  * Created by lizhipeng on 2017/5/12.
  */
 

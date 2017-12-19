@@ -35,12 +35,12 @@ public class BounceScrollView extends ScrollView {
         super(context, attrs);
     }
 
-    /***
-     * 根据 XML 生成视图工作完成.该函数在生成视图的最后调用，在所有子视图添加完之后. 即使子类覆盖了 onFinishInflate
-     * 方法，也应该调用父类的方法，使该方法得以执行.
-     */
+    /*根据 XML 生成视图工作完成.该函数在生成视图的最后调用*/
+    /* 在所有子视图添加完之后. 即使子类覆盖了 onFinishInflate*/
+    /* 方法，也应该调用父类的方法，使该方法得以执行.*/
     @Override
     protected void onFinishInflate() {
+        super.onFinishInflate();
         if (getChildCount() > 0) {
             inner = getChildAt(0);
             View view;
@@ -79,19 +79,13 @@ public class BounceScrollView extends ScrollView {
         return super.onInterceptTouchEvent(ev);
     }
 
-    /***
-     * 监听touch
-     */
+    /*监听touch*/
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         return super.onTouchEvent(ev);
     }
 
-    /***
-     * 触摸事件
-     *
-     * @param ev
-     */
+    /*触摸事件*/
     public void commOnTouchEvent(MotionEvent ev) {
         int action = ev.getAction();
         switch (action) {
@@ -132,9 +126,7 @@ public class BounceScrollView extends ScrollView {
         }
     }
 
-    /***
-     * 回缩动画
-     */
+    /*回缩动画*/
     public void animation() {
         // 开启移动动画
         TranslateAnimation ta = new TranslateAnimation(0, 0, inner.getTop(),
@@ -151,13 +143,8 @@ public class BounceScrollView extends ScrollView {
         return !normal.isEmpty();
     }
 
-    /***
-     * 是否需要移动布局 inner.getMeasuredHeight():获取的是控件的总高度
-     *
-     * getHeight()：获取的是屏幕的高度
-     *
-     * @return
-     */
+    /*是否需要移动布局 inner.getMeasuredHeight():获取的是控件的总高度*/
+     /* getHeight()：获取的是屏幕的高度*/
     public boolean isNeedMove() {
         int offset = inner.getMeasuredHeight() - getHeight();
         int scrollY = getScrollY();

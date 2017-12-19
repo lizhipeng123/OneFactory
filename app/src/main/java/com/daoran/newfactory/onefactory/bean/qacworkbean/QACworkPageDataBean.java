@@ -3,7 +3,7 @@ package com.daoran.newfactory.onefactory.bean.qacworkbean;
 import java.util.List;
 
 /**
- * 查货跟踪实体类
+ * 查货跟踪详情实体类
  * Created by lizhipeng on 2017/4/27.
  */
 
@@ -29,56 +29,6 @@ public class QACworkPageDataBean {
     }
 
     public static class DataBean {
-        /**
-         * ID : 11041
-         * subfactory : null
-         * item : SOFTtest
-         * ctmtxt : WHITE STUFF
-         * sealedrev : null
-         * docback : null
-         * predt : null
-         * lcdat : 2017/04/20
-         * sewFdt : null
-         * sewMdt : null
-         * taskqty : 2000.0
-         * cutqty : null
-         * preMemo : null
-         * predoc : null
-         * fabricsok : null
-         * accessoriesok : null
-         * spcproDec : null
-         * spcproMemo : null
-         * QCbdt : null
-         * QCmdt : null
-         * QCMedt : null
-         * QCbdtDoc : null
-         * QCmdtDoc : null
-         * QCedtDoc : null
-         * fctmdt : null
-         * fctedt : null
-         * prddocumentary : null
-         * QCMemo : null
-         * packbdat : null
-         * packqty2 : null
-         * factlcdat : null
-         * ourAfter : null
-         * prdmaster : null
-         * QCMasterScore : null
-         * batchid : null
-         * QAname : null
-         * firstsamQA : null
-         * QAScore : null
-         * QAMemo : null
-         * ctmchkdt : null
-         * IPQC : null
-         * IPQCmdt : null
-         * IPQCPedt : null
-         * predocdt : null
-         * prebdt : null
-         * premdt : null
-         * preedt : null
-         */
-
         private int ID;
         private String subfactory;//加工厂
         private String item;//款号

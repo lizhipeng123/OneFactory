@@ -34,7 +34,4 @@ public class ScrollGridView extends GridView {
                 MeasureSpec.AT_MOST);
         super.onMeasure(widthMeasureSpec, expandSpec);
     }
-
-
-
 }

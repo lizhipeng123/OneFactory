@@ -15,15 +15,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * 工具类
  * Created by ww on 2016/3/24.
  */
 public class Util {
 
-    /**
-     * 禁止EditText输入特殊字符
-     *
-     * @param editText
-     */
+    /*禁止EditText输入特殊字符*/
     public static void setEditTextInhibitInputSpeChat(EditText editText) {
         InputFilter filter = new InputFilter() {
             @Override
@@ -64,11 +61,7 @@ public class Util {
         return null;
     }
 
-    /**
-     * @param s
-     * @return
-     * @description 返回字符串里中文字或者全角字符的个数
-     */
+    /*返回字符串里中文字或者全角字符的个数*/
     public static int getChineseNum(String s) {
         int num = 0;
         char[] myChar = s.toCharArray();
@@ -105,7 +98,6 @@ public class Util {
         }
     }
 
-
     /**
      * 计算地球上任意两点(经纬度)距离
      *
@@ -134,12 +126,9 @@ public class Util {
         return d;
     }
 
-    /**
-     * 判断手机是否采用wifi连接
-     */
+    /*判断手机是否采用wifi连接*/
     public static boolean isWIFIConnected(Context context) {
         // Context.CONNECTIVITY_SERVICE).
-
         ConnectivityManager manager = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager

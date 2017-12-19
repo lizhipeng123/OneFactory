@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 创建时间：2017/12/1
  * 编写人：lizhipeng
- * 功能描述：查询需要分色的相同款号的数据适配器
+ * 功能描述：查询需要分色的相同款号的全部数据
  */
 
 public class FTYDLDetailColorBean {

@@ -16,17 +16,15 @@ import com.aspsine.swipetoloadlayout.SwipeRefreshTrigger;
 import com.aspsine.swipetoloadlayout.SwipeTrigger;
 
 /**
+ * 头部下拉刷新布局
  * Created by lizhipeng on 2017/4/19.
  */
 
 public class CircleRefreshHeaderView extends
         RelativeLayout implements SwipeTrigger,SwipeRefreshTrigger {
     CircleView mCircleView;
-
     TextView mDescText;
-
     private ObjectAnimator anim;
-
     private boolean isRelease;
 
     public CircleRefreshHeaderView(Context context) {
@@ -43,23 +41,16 @@ public class CircleRefreshHeaderView extends
         initView();
     }
 
-    /**
-     * 初始化布局
-     */
+    /*初始化布局*/
     private void initView() {
-
-        int circlewidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics());
-
+        int circlewidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30,
+                getResources().getDisplayMetrics());
         mCircleView = new CircleView(getContext());
-
         LinearLayout.LayoutParams circleParams = new LinearLayout.LayoutParams(circlewidth,circlewidth);
-
         mCircleView.setLayoutParams(circleParams);
-
         mDescText = new TextView(getContext());
-
-        LinearLayout.LayoutParams descParams = new LinearLayout.LayoutParams(circlewidth*3, ViewGroup.LayoutParams.WRAP_CONTENT);
-
+        LinearLayout.LayoutParams descParams = new LinearLayout.LayoutParams(circlewidth*3,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         descParams.gravity = Gravity.CENTER;
         descParams.setMargins(circlewidth/2,0,0,0);
         mDescText.setLayoutParams(descParams);
@@ -69,27 +60,25 @@ public class CircleRefreshHeaderView extends
 
         //添加线性的父布局
         LinearLayout ll = new LinearLayout(getContext());
-        RelativeLayout.LayoutParams llParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams llParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         llParams.addRule(CENTER_IN_PARENT);
         ll.setLayoutParams(llParams);
         ll.setPadding(10,10,10,10);
-
         ll.addView(mCircleView);
         ll.addView(mDescText);
-
         addView(ll);
     }
 
     @Override
     public void onRefresh() {
-
         //开始刷新，启动动画
-        anim = ObjectAnimator.ofFloat(mCircleView, "rotation", mCircleView.getRotation(), mCircleView.getRotation()+360f)
+        anim = ObjectAnimator.ofFloat(mCircleView, "rotation",
+                mCircleView.getRotation(), mCircleView.getRotation()+360f)
                 .setDuration(500);
         anim.setRepeatCount(ValueAnimator.INFINITE);
         anim.setRepeatMode(ValueAnimator.RESTART);
         anim.start();
-
         mDescText.setText("正在加载数据");
     }
 
@@ -106,13 +95,10 @@ public class CircleRefreshHeaderView extends
             } else {
                 mDescText.setText("松开刷新更多");
             }
-
             //如果是仍在下拉状态，则圆环跟随滑动进行滚动
             if (!isRelease)
                 mCircleView.setRotation(((float) yScroll) / getHeight() * 360f);
         }
-
-
     }
 
     @Override

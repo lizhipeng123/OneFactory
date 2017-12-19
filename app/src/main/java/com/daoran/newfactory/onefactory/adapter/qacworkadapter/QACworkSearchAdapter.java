@@ -42,6 +42,7 @@ public class QACworkSearchAdapter extends BaseAdapter {
             "preedt"};
     private List<String> columnlist = Arrays.asList(columns);
 
+    private OnClickQACworkLinter mOnClickQACworkLinter;
     private SPUtils spUtils;
 
     public QACworkSearchAdapter(Context context, List<QACworkPageDataBean.DataBean> dataBeen
@@ -225,283 +226,6 @@ public class QACworkSearchAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        /*判断item中制单人是否是登录用户，是为可改，否为不可改*/
-        holder.lin_content.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String proid = String.valueOf(getItem(position).getID());
-                spUtils.put(context, "commodetailproid", proid);//id
-                String commoitem = getItem(position).getItem();//款号
-                spUtils.put(context, "commodetailitem", commoitem);
-                String commoCtmtxt = getItem(position).getCtmtxt();//客户
-                spUtils.put(context, "commodetailCtmtxt", commoCtmtxt);
-                String commoPrddocumentary =
-                        getItem(position).getPrddocumentary();//跟单
-                String prddocumentary;
-                if (commoPrddocumentary == null) {
-                    prddocumentary = "";
-                } else {
-                    prddocumentary = commoPrddocumentary;
-                }
-                spUtils.put(context, "commodetailPrddocumentary", prddocumentary);
-                String commoSubfactory = getItem(position).getSubfactory();//工厂
-                spUtils.put(context, "commodetailSubfactory", commoSubfactory);
-                String commoTaskqty = getItem(position).getTaskqty();//制单数量
-                spUtils.put(context, "commodetailTaskqty", commoTaskqty);
-                String commoprdmaster = getItem(position).getPrdmaster();//生产主管
-                String prdmaster;
-                if (commoprdmaster == null) {
-                    prdmaster = "";
-                } else {
-                    prdmaster = commoprdmaster;
-                }
-                spUtils.put(context, "commodetailprdmaster", prdmaster);
-
-                String prdmasterid = getItem(position).getPrdmasterid();//生产主管id
-                spUtils.put(context, "commodetailprdmasterid", prdmasterid);
-
-                String commoQCMasterScore = getItem(position).getQCMasterScore();//主管评分
-                spUtils.put(context, "commodetailQCMasterScore", commoQCMasterScore);
-
-                String commoSealedrev = getItem(position).getSealedrev();//封样资料接收时间
-                spUtils.put(context, "commodetailSealedrev", commoSealedrev);
-
-                String commoDocback = getItem(position).getDocback();//大货资料接收时间
-                spUtils.put(context, "commodetailDocback", commoDocback);
-
-                String commoLcdat = getItem(position).getLcdat();//出货时间
-                spUtils.put(context, "commodetailLcdat", commoLcdat);
-
-                String commoPreMemo = getItem(position).getPreMemo();//特别备注情况
-                spUtils.put(context, "commodetailPreMemo", commoPreMemo);
-
-                String commoPredocdt = getItem(position).getPredocdt();//预计产前会报告时间
-                spUtils.put(context, "commodetailPredocdt", commoPredocdt);
-
-                String commoPred = getItem(position).getPredt();//开产前会时间
-                spUtils.put(context, "commodetailPred", commoPred);
-
-                String commoPredoc = getItem(position).getPredoc();//产前会报告
-                spUtils.put(context, "commodetailPredoc", commoPredoc);
-
-                String commoFabricsok = getItem(position).getFabricsok();//大货面料情况
-                spUtils.put(context, "commodetailFabricsok", commoFabricsok);
-
-                String commoAccessoriesok = getItem(position).getAccessoriesok();//大货辅料情况
-                spUtils.put(context, "commodetailAccessoriesok", commoAccessoriesok);
-
-                String commoSpcproDec = getItem(position).getSpcproDec();//特殊工艺情况
-                spUtils.put(context, "commodetailSpcproDec", commoSpcproDec);
-
-                String commoSpcproMemo = getItem(position).getSpcproMemo();//特殊工艺备注
-                spUtils.put(context, "commodetailSpcproMemo", commoSpcproMemo);
-
-                String commoCutqty = getItem(position).getCutqty();//实裁数
-                spUtils.put(context, "commodetailCutqty", commoCutqty);
-
-                String commoSewFdt = getItem(position).getSewFdt();//上线日期
-                spUtils.put(context, "commodetailSewFdt", commoSewFdt);
-
-                String commoSewMdt = getItem(position).getSewMdt();//下线日期
-                spUtils.put(context, "commodetailSewMdt", commoSewMdt);
-
-                String commoPrebdt = getItem(position).getPrebdt();//预计早期时间
-                spUtils.put(context, "commodetailPrebdt", commoPrebdt);
-
-                String commoQCbdt = getItem(position).getQCbdt();//自查早起时间
-                spUtils.put(context, "commodetailQCbdt", commoQCbdt);
-
-                String commoQCbdtDoc = getItem(position).getQCbdtDoc();//早期报告
-                spUtils.put(context, "commodetailQCbdtDoc", commoQCbdtDoc);
-
-                String commoPremdt = getItem(position).getPremdt();//预计中期时间
-                spUtils.put(context, "commodetailPremdt", commoPremdt);
-
-                String commoQCmdt = getItem(position).getQCmdt();//自查中期时间
-                spUtils.put(context, "commodetailQCmdt", commoQCmdt);
-
-                String commoQCmdtDoc = getItem(position).getQCmdtDoc();//中期报告
-                spUtils.put(context, "commodetailQCmdtDoc", commoQCmdtDoc);
-
-                String commoPreedt = getItem(position).getPreedt();//预计尾期时间
-                spUtils.put(context, "commodetailPreedt", commoPreedt);
-
-                String commoQCMedt = getItem(position).getQCMedt();//自查尾期时间
-                spUtils.put(context, "commodetailQCMedt", commoQCMedt);
-
-                String commoQCedtDoc = getItem(position).getQCedtDoc();//尾期报告
-                spUtils.put(context, "commodetailQCedtDoc", commoQCedtDoc);
-
-                String commoFctmdt = getItem(position).getFctmdt();//客查中期报告
-                spUtils.put(context, "commodetailFctmdt", commoFctmdt);
-
-                String commoFctedt = getItem(position).getFctedt();//客查尾期报告
-                spUtils.put(context, "commodetailFctedt", commoFctedt);
-
-                String commoPackbdat = getItem(position).getPackbdat();//成品包装开始日期
-                spUtils.put(context, "commodetailPackbdat", commoPackbdat);
-
-                String commoPackqty2 = getItem(position).getPackqty2();//装箱数量
-                spUtils.put(context, "commoPackqty2", commoPackqty2);
-
-                String commoQCMemo = getItem(position).getQCMemo();//QC特别备注
-                spUtils.put(context, "commodetailQCMemo", commoQCMemo);
-
-                String commoFactlcdat = getItem(position).getFactlcdat();//离厂日期
-                spUtils.put(context, "commodetailFactlcdat", commoFactlcdat);
-
-                String commoBatchid = getItem(position).getBatchid();//查获批次
-                spUtils.put(context, "commodetailBatchid", commoBatchid);
-
-                String commoOurAfter = getItem(position).getOurAfter();//后道
-                spUtils.put(context, "commodetailOurAfter", commoOurAfter);
-
-                String commoCtmchkdt = getItem(position).getCtmchkdt();//业务员确认客查日期
-                spUtils.put(context, "commodetailCtmchkdt", commoCtmchkdt);
-
-                String commoIPQCPedt = getItem(position).getIPQCPedt();//尾查预查
-                spUtils.put(context, "commodetailIPQCPedt", commoIPQCPedt);
-
-                String commoIPQCmdt = getItem(position).getIPQCmdt();//巡检中查
-                spUtils.put(context, "commodetailIPQCmdt", commoIPQCmdt);
-
-                String commoIPQC = getItem(position).getIPQC();//巡检
-                spUtils.put(context, "commodetailIPQC", commoIPQC);
-
-                String commoIPQCid = getItem(position).getIPQCid();//巡检id
-                spUtils.put(context, "commodetailIPQCid", commoIPQCid);
-
-                String commoQAname = getItem(position).getQAname();//QA首扎
-                spUtils.put(context, "commodetailQAname", commoQAname);
-
-                String commofirstsamQA = getItem(position).getFirstsamQA();//QA首扎改后
-                spUtils.put(context, "commodetailfirstsamQA", commofirstsamQA);
-
-                String commoQAScore = getItem(position).getQAScore();//QA首扎件数
-                spUtils.put(context, "commodetailQAScore", commoQAScore);
-
-                String commofirstsamQAid = getItem(position).getFirstsamQAid();//
-                spUtils.put(context, "commodetailfirstsamQAid", commofirstsamQAid);
-
-                String commoQAMemo = getItem(position).getQAMemo();//QA首扎日期
-                spUtils.put(context, "commodetailQAMemo", commoQAMemo);
-
-                String commochker = getItem(position).getChker();//件查
-                spUtils.put(context, "commodetailchker", commochker);
-
-                String commochkpdt = getItem(position).getChkpdt();//预计件查时间
-                spUtils.put(context, "commodetailchkpdt", commochkpdt);
-
-                String commochkfctdt = getItem(position).getChkfctdt();//实际件查时间
-                spUtils.put(context, "commodetailchkfctdt", commochkfctdt);
-
-                String commochkplace = getItem(position).getChkplace();//件查地址
-                spUtils.put(context, "commodetailchkplace", commochkplace);
-
-                Intent intent = new Intent(context, QACworkDetailActivity.class);
-                context.startActivity(intent);
-            }
-        });
-        String jsontext = String.valueOf(jsonTextBeanlist);
-        if (jsontext.equals("null") || jsontext.equals("[]")) {
-            for (int i = 0; i < columnlist.size(); i++) {
-                String sfil = ("tvCommo" + columnlist.get(i));
-                String tvview = ("tvview" + columnlist.get(i));
-                try {
-                    Field field = R.id.class.getField(sfil);
-                    int idd = field.getInt(new R.id());
-                    View view = convertView.findViewById(idd);
-                    view.setVisibility(View.VISIBLE);
-
-                    Field fieldtvview = R.id.class.getField(tvview);
-                    int iddtvview = fieldtvview.getInt(new R.id());
-                    View viewtvview = convertView.findViewById(iddtvview);
-                    viewtvview.setVisibility(View.VISIBLE);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            for (int i = 0; i < jsonTextBeanlist.size(); i++) {
-                int pid = Integer.parseInt(jsonTextBeanlist.get(i).getPId());
-                if (pid > 0 && jsonTextBeanlist.get(i).isChecked() == true) {
-                    for (int j = 0; j < columnlist.size(); j++) {
-                        String columstr = columnlist.get(j);
-                        String columnname = jsonTextBeanlist.get(i).getColumnName();
-                        if (columstr == columnname || columstr.equals(columnname)) {
-                            if (jsonTextBeanlist.get(i).getName().equals("修改")) {
-                                String sfil = ("tvCommo" + jsonTextBeanlist.get(i).getColumnName());
-                                String tvview = ("tvview" + jsonTextBeanlist.get(i).getColumnName());
-                                try {
-                                    Field field = R.id.class.getField(sfil);
-                                    int idd = field.getInt(new R.id());
-                                    View view = convertView.findViewById(idd);
-                                    view.setVisibility(View.VISIBLE);
-
-                                    Field fieldtvview = R.id.class.getField(tvview);
-                                    int iddtvview = fieldtvview.getInt(new R.id());
-                                    View viewtvview = convertView.findViewById(iddtvview);
-                                    viewtvview.setVisibility(View.VISIBLE);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            } else if (jsonTextBeanlist.get(i).getName().equals("查看")) {
-                                String sfil = ("tvCommo" + jsonTextBeanlist.get(i).getColumnName());
-                                String tvview = ("tvview" + jsonTextBeanlist.get(i).getColumnName());
-                                try {
-                                    Field field = R.id.class.getField(sfil);
-                                    int idd = field.getInt(new R.id());
-                                    View view = convertView.findViewById(idd);
-                                    view.setVisibility(View.VISIBLE);
-
-                                    Field fieldtvview = R.id.class.getField(tvview);
-                                    int iddtvview = fieldtvview.getInt(new R.id());
-                                    View viewtvview = convertView.findViewById(iddtvview);
-                                    viewtvview.setVisibility(View.VISIBLE);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            } else {
-                                String sfil = ("tvCommo" + jsonTextBeanlist.get(i).getColumnName());
-                                String tvview = ("tvview" + jsonTextBeanlist.get(i).getColumnName());
-                                try {
-                                    Field field = R.id.class.getField(sfil);
-                                    int idd = field.getInt(new R.id());
-                                    View view = convertView.findViewById(idd);
-                                    view.setVisibility(View.GONE);
-
-                                    Field fieldtvview = R.id.class.getField(tvview);
-                                    int iddtvview = fieldtvview.getInt(new R.id());
-                                    View viewtvview = convertView.findViewById(iddtvview);
-                                    viewtvview.setVisibility(View.GONE);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            break;
-                        }
-                    }
-                } else {
-                    continue;
-                }
-            }
-        }
-//        String qaname = getItem(position).getQAname();
-//        String commoname = sp.getString("commoname", "");
-//        if (qaname == null) {
-//            qaname = "";
-//        }
-//        if (qaname.equals("") || qaname.equals(commoname)) {
-//            holder.tvCommoQAname.setTextColor(Color.WHITE);
-//            holder.tvCommoQAScore.setTextColor(Color.WHITE);
-//            holder.tvCommoQAMemo.setTextColor(Color.WHITE);
-//        } else {
-//            holder.tvCommoQAname.setTextColor(Color.BLACK);
-//            holder.tvCommoQAScore.setTextColor(Color.BLACK);
-//            holder.tvCommoQAMemo.setTextColor(Color.BLACK);
-//        }
-
         /**
          * 判断生产主管是否是当前登录用户
          * 如果是当前用户，则可以修改对应的字符
@@ -606,6 +330,14 @@ public class QACworkSearchAdapter extends BaseAdapter {
         holder.tvCommoThingExpectedTime.setText(getItem(position).getChkpdt());
         //实际件查时间
         holder.tvCommoThingTime.setText(getItem(position).getChkfctdt());
+        if(mOnClickQACworkLinter!=null){
+            holder.lin_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnClickQACworkLinter.myQACworkClick(position);
+                }
+            });
+        }
         return convertView;
     }
 
@@ -635,5 +367,15 @@ public class QACworkSearchAdapter extends BaseAdapter {
                 tvviewfactlcdat, tvviewbatchid, tvviewourAfter, tvviewctmchkdt, tvviewIPQCPedt,
                 tvviewIPQCmdt, tvviewQAname, tvviewQAScore, tvviewQAMemo, tvviewThing,
                 tvviewThingExpectedTime, tvviewThingTime, tvviewThingAddress,tvviewIPQC;
+    }
+
+    /*创建回调函数,实例化接口具体化此*/
+    public interface OnClickQACworkLinter{
+        void myQACworkClick(int id);//创建回调函数
+    }
+
+    /*注册函数*/
+    public void setmOnClickQACworkLinter(OnClickQACworkLinter mOnClickQACworkLinter) {
+        this.mOnClickQACworkLinter = mOnClickQACworkLinter;
     }
 }

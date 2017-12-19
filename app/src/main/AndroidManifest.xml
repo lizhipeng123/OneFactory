@@ -215,32 +215,32 @@
             android:name=".activity.side.SideActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-
+        <!--查货跟踪详情页面-->
         <activity
             android:name=".activity.work.qacwork.QACworkDetailActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
+        <!--日历页面-->
         <activity
             android:name=".activity.work.setting.MonthActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-
+        <!--图片放置页面-->
         <activity
             android:name=".activity.work.setting.PictureSelectActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-
+        <!--新建保存页面-->
         <activity
             android:name=".activity.work.ftydl.FTYDLNewlyComfigDetailActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
+        <!--修改保存-->
         <activity
             android:name=".activity.work.ftydl.FTYDLSearchDetailActivity"
             android:configChanges="keyboardHidden|orientation"

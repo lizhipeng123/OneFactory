@@ -246,7 +246,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 noticeDialog.setCanceledOnTouchOutside(false);
                 noticeDialog.show();
                 break;
-            /**/
+            /*wifi*/
             case R.id.rlwifi:
                 startWifi();
                 break;

@@ -3,7 +3,7 @@ package com.daoran.newfactory.onefactory.bean.ftydlbean;
 import java.util.List;
 
 /**
- * 款号详情
+ * 款号选择页面列表数据
  * Created by lizhipeng on 2017/5/8.
  */
 

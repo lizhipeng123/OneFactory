@@ -3223,6 +3223,7 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
                         int clippingint;
                         int cli;
                         String total;
+                        //如果实裁数不为null，则添加填写的数量；如果为null，则填写原本的数量
                         if (procalbeanlist.get(i).getProClippingnumber() == null) {
                             String tvprodetailClippingNumber = sp.getString("tvFTYDLLeftFactcutqty",
                                     "");

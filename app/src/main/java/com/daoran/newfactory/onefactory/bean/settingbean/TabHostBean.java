@@ -6,9 +6,9 @@ package com.daoran.newfactory.onefactory.bean.settingbean;
  */
 
 public class TabHostBean {
-    private int title;
-    private int icon;
-    private Class Fragment;
+    private int title;//标题
+    private int icon;//图标
+    private Class Fragment;//模块
 
     public Class getFragment() {
         return Fragment;

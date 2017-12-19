@@ -10,19 +10,6 @@
         android:layout_height="50dp"
         android:orientation="horizontal">
 
-        <!--<TextView-->
-            <!--android:id="@+id/tv_data"-->
-            <!--android:layout_width="100dp"-->
-            <!--android:layout_height="50dp"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:gravity="center"-->
-            <!--android:text="" />-->
-
-        <!--<View-->
-            <!--android:layout_width="1px"-->
-            <!--android:layout_height="50dp"-->
-            <!--android:background="#cccccc" />-->
-
         <TextView
             android:id="@+id/tvsignName"
             android:layout_width="100dp"

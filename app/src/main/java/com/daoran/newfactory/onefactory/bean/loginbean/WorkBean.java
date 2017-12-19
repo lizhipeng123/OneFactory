@@ -6,13 +6,6 @@ package com.daoran.newfactory.onefactory.bean.loginbean;
  */
 
 public class WorkBean {
-
-    /**
-     * PhoneUrl : PublicAdm/UseCarApply/reqcarmSearch.html
-     * text : 用车申请单
-     * img : ../../../images/UCar.jpg
-     */
-
     private String PhoneUrl;//链接
     private String text;//文本
     private String img;//图片

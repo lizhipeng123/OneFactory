@@ -6123,8 +6123,7 @@ public class QACworkDetailActivity extends Activity
         editor.remove("CommodityQAname");//QA首扎
         editor.remove("CommodityQAScore");//QA首扎件数
         editor.remove("dateQAMemotimesign");//QA首扎日
-
-        editor.remove("QACworkDialogprdmaster");
+        editor.remove("QACworkDialogprdmaster");//生产主管
         editor.remove("QACworkDialogIPQC");
         editor.remove("QACworkDialogItem");
 

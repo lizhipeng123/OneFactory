@@ -54,7 +54,8 @@ import java.util.List;
  * Created by lizhipeng on 2017/3/22.
  */
 
-public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class WorkFragment extends Fragment
+        implements SwipeRefreshLayout.OnRefreshListener {
     Activity mactivity;
     private static final int REFRESH_COMPLETE = 0X110;
     private View view;
@@ -65,7 +66,6 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private SharedPreferences sp;
     private SPUtils spUtils;
     private SwipeRefreshLayout swipeRefreshLayout;//工作模块除了顶部之外的页面layout
-    ScrollWrokAdapter adapter;
 
     /*重新登陆后赋予的权限*/
     protected String[] needPermissions = {
@@ -78,7 +78,6 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private boolean isNeedCheck = true;
     private List<WorkBean> workBeen = new ArrayList<WorkBean>();//菜单bean的list集合
-    private WorkBean workBean;//菜单bean实体类
     private ScrollGridView sgv_gridview;//工作模块显示的各个功能控件
     private String workitemview;
     private String sl;
@@ -91,7 +90,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private List<WorkPwSwitchBean.Data> switchBeendatalist
             = new ArrayList<WorkPwSwitchBean.Data>();//用户实体集合
     private WorkPwSwitchAdapter switchAdapter;//用户list显示列表
-    private DrawerFragment drawerFragment;
+//    private DrawerFragment drawerFragment;
     //工作模块中间gridview每个item显示的图片（已固定要显示的图片）
     private String[] intimage = {String.valueOf(R.mipmap.count_500),
             String.valueOf(R.mipmap.daily),
@@ -106,6 +105,8 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             switch (msg.what) {
                 case REFRESH_COMPLETE:
                     swipeRefreshLayout.setRefreshing(false);
+                    setPhoneMenu();
+                    ToastUtils.ShowToastMessage("刷新了", getActivity());
                     break;
             }
         }
@@ -160,9 +161,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
     }
 
-    /**
-     * 实例化控件
-     */
+    /*实例化控件*/
     private void getViews() {
         tvOpenCarDetail = (TextView) view.findViewById(R.id.tvOpenCarDetail);
         idworkname = (TextView) view.findViewById(R.id.idworkname);
@@ -171,18 +170,14 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.id_swipe_ly);
     }
 
-    /**
-     * 操作控件
-     */
+    /*操作控件*/
     private void initViews() {
         /*需要的时候可以加上*/
 //        drawerFragment = (DrawerFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 //        drawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) getActivity().findViewById(R.id.activity_main));
     }
 
-    /**
-     * 点击事件
-     */
+    /*点击事件*/
     private void setListener() {
 //        //长按左侧用户名按钮后弹出添加账号或切换用户弹窗
 //        idworkname.setOnLongClickListener(new View.OnLongClickListener() {
@@ -196,12 +191,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 
-    /**
-     * 适配7.0权限
-     *
-     * @param
-     * @since 2.5.0
-     */
+    /*适配7.0权限*/
     private void checkPermissions(String... permissions) {
         List<String> needRequestPermissonList = findDeniedPermissions(permissions);
         if (null != needRequestPermissonList
@@ -213,13 +203,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
     }
 
-    /**
-     * 获取权限集中需要申请权限的列表
-     *
-     * @param permissions
-     * @return
-     * @since 2.5.0
-     */
+    /*获取权限集中需要申请权限的列表*/
     private List<String> findDeniedPermissions(String[] permissions) {
         List<String> needRequestPermissonList = new ArrayList<String>();
         for (String perm : permissions) {
@@ -234,9 +218,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         return needRequestPermissonList;
     }
 
-    /**
-     * 查询角色相关菜单
-     */
+    /*查询角色相关菜单*/
     private void setPhoneMenu() {
         sp = getContext().getSharedPreferences("my_sp", 0);
         String name = sp.getString("username", "");
@@ -263,12 +245,10 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 String ress = content.replace("\\", "");
                 String ression = StringUtil.sideTrim(ress, "\"");
                 String resscontent = ression.replace("\'", "\"");
-                System.out.print(resscontent);
                 String[] worklist = new String[workBeen.size()];
                 for (int i = 0; i < workBeen.size(); i++) {
                     worklist[i] = workBeen.get(i).getText();
                 }
-                System.out.print(worklist);
                 try {
                     //循环解析角色菜单添加到自定义实体类中
                     JSONArray temp = new JSONArray(resscontent);
@@ -286,7 +266,6 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
                         }
                     }
-                    System.out.print(workBeen);
                     sl = temp.getString(0);
                     JSONObject jsonObject = new JSONObject(sl);
                     workitemview = jsonObject.getString("text");
@@ -309,9 +288,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
     }
 
-    /**
-     * 长按弹出菜单
-     */
+    /*长按弹出菜单*/
     private void initPopWindow() {
         View contenview = LayoutInflater.from(mactivity.getApplicationContext()).
                 inflate(R.layout.popupwindow_name_switch, null);
@@ -361,13 +338,7 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         popupWindow.showAsDropDown(idworkname);//贴在点击控件的下方显示
     }
 
-    /**
-     * 两个数组比较是否存在
-     *
-     * @param array1
-     * @param array2
-     * @return
-     */
+    /*两个数组比较是否存在*/
     private static boolean containsAll(String[] array1, String[] array2) {
         for (String str : array2) {
             if (!ArrayUtils.contains(array1, str)) {
@@ -400,6 +371,6 @@ public class WorkFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onRefresh() {
         mHandler.sendEmptyMessageDelayed(REFRESH_COMPLETE, 1000);
-        ToastUtils.ShowToastMessage("刷新了", getActivity());
+
     }
 }

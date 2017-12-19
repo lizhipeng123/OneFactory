@@ -25,7 +25,6 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.adapter.ftydladapter.FTYDLDetailAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDetailColorBean;
-import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDetailCuttingBean;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDetailDetailBean;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDetailSearchBean;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLFillColSltBean;
@@ -103,8 +102,9 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
     private int year, month, datetime, hour, minute, second;//年,月,日,时,分,秒
     private ListView list_pro_config_vertical;//实裁数下面的各花色产量集合
     private boolean flagblack;
-    private AlertDialog noticeDialog;
+    private AlertDialog noticeDialog;//退出时的弹窗
 
+    /*本页面修改的数据*/
     private String pronullpartment, saveothers, saveremarks, savestate,
             savetasknunber, savelastmonth, save1, save2, save3, save4, save5, save6, save7, save8,
             save9, save10, save11, save12, save13, save14, save15, save16, save17, save18, save19, save20, save21,
@@ -125,7 +125,8 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
             tvnewlypsaler, tvnewlymemo, tvnewlyunit, tvnewlymegitem, tvnewlyteamname,
             tvnewlyrecordid, tvnewlycutbdt, tvnewlysewbdt, tvnewlysewedt, tvnewlysewDays, tvnewlyperqty, tvnewlycutamount, tvnewlysewamount, tvnewlypackamount, tvnewlyamount, tvnewlyperMachineQty, tvnewlysumMachineQty, tvnewlyprdmaster, tvnewlyleftQty, tvnewlylastMonQty, tvnewlyprddocumentaryid, tvnewlyisdiffc;
 
-    private String usernamerecoder, CountMonthstr;
+    private String usernamerecoder,//登录人
+            CountMonthstr;//计算的总数
 
     private FTYDLDetailAdapter verticalAdatper;//花色list适配
     private List<FTYDLColCountBean.Data> procalbeanlist =
@@ -145,11 +146,6 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
     private List<FTYDLMonthBean.DataBean> monthlistBean =
             new ArrayList<FTYDLMonthBean.DataBean>();//同款号，部门，工序的数据集合
     private FTYDLMonthBean ftydlMonthBean;
-
-    private FTYDLDetailCuttingBean.DataBean cuttingBean;
-    private List<FTYDLDetailCuttingBean.DataBean> cuttinglistBean =
-            new ArrayList<FTYDLDetailCuttingBean.DataBean>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -500,7 +496,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
         btnProSave.setOnClickListener(this);
     }
 
-    /*填充颜色list*/
+    /*填充颜色list列表*/
     private void setProcol() {
         try {
             for (int j = 0; j < newdataBeans.size(); j++) {
@@ -523,8 +519,6 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     }
                 }
             }
-            System.out.println(newdataBeans);
-            System.out.println(procalbeanlist);
             int tvsum = 0;
             for (int i = 0; i < newdataBeans.size(); i++) {
                 String sumcom = String.valueOf(newdataBeans.get(i).getSumCompletedQty());
@@ -541,62 +535,16 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
-    /*计算总数*/
-    private void setCount() {
-        String lastmonth = et_config_completedlastmonth.getText().toString();
-        String dayone = et_config_oneday.getText().toString();
-        String daytwo = et_config_twoday.getText().toString();
-        String dayThree = et_config_threeday.getText().toString();
-        String dayfore = et_config_foreday.getText().toString();
-        String dayfive = et_config_fiveday.getText().toString();
-        String daysix = et_config_sixday.getText().toString();
-        String daySeven = et_config_servenday.getText().toString();
-        String dayEight = et_config_eightday.getText().toString();
-        String dayNine = et_config_nineday.getText().toString();
-        String dayTen = et_config_tenday.getText().toString();
-        String dayEleven = et_config_elevenday.getText().toString();
-        String dayTwelve = et_config_twelveday.getText().toString();
-        String dayThirteen = et_config_thirteenday.getText().toString();
-        String dayFourteen = et_config_fourteenday.getText().toString();
-        String dayFifteen = et_config_fifteenday.getText().toString();
-        String daySixteen = et_config_sixteenday.getText().toString();
-        String daySeventeen = et_config_seventeenday.getText().toString();
-        String dayEighteen = et_config_eighteenday.getText().toString();
-        String dayNineteen = et_config_nineteenday.getText().toString();
-        String dayTwenty = et_config_twentyday.getText().toString();
-        String dayTwentyOne = et_config_TwentyOneDay.getText().toString();
-        String dayTwentyTwo = et_config_twentytwoday.getText().toString();
-        String dayTwentyThree = et_config_twentyThreeday.getText().toString();
-        String dayTwentyFore = et_config_twentyforeday.getText().toString();
-        String dayTwentyFive = et_config_twentyfiveday.getText().toString();
-        String dayTwentySix = et_config_twentysixday.getText().toString();
-        String dayTwentySeven = et_config_twentysevenday.getText().toString();
-        String dayTwentyEight = et_config_twentyeightday.getText().toString();
-        String dayTwentyNine = et_config_twentynineday.getText().toString();
-        String dayThirty = et_config_thirtyday.getText().toString();
-        String dayThirtyOne = et_config_thirtyoneday.getText().toString();
-        ProductionUtil productionUtil = new ProductionUtil();
-        String countmonth = productionUtil.CountMonth(lastmonth, dayone, daytwo
-                , dayThree, dayfore, dayfive, daysix, daySeven, dayEight, dayNine, dayTen,
-                dayEleven, dayTwelve, dayThirteen, dayFourteen, dayFifteen, daySixteen,
-                daySeventeen, dayEighteen, dayNineteen, dayTwenty, dayTwentyOne,
-                dayTwentyTwo, dayTwentyThree, dayTwentyFore, dayTwentyFive,
-                dayTwentySix, dayTwentySeven, dayTwentyEight, dayTwentyNine,
-                dayThirty, dayThirtyOne);
-        tv_config_totalcompletion.setText(countmonth);
-    }
-
-    /*裁床情况的精确查询*/
+    /*裁床情况的精确查询(同一id 款号等数据)*/
     private void setDateCutting() {
         String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/SearchDailyData/";
         final Gson gson = new Gson();
         FTYDLDetailSaveBean saveBean = new FTYDLDetailSaveBean();
-        saveBean.setID(Integer.parseInt(id));
-        saveBean.setSalesid(Integer.parseInt(tvnewlySalid));
-        saveBean.setItem(tvnewlyItem);
+        saveBean.setID(Integer.parseInt(id));//id
+        saveBean.setSalesid(Integer.parseInt(tvnewlySalid));//排单id
+        saveBean.setItem(tvnewlyItem);//款号
         saveBean.setPlanid(tvnewlyplanid);
         saveBean.setSn(Integer.parseInt(tvnewlysn));
         saveBean.setContractno(tvnewlycontractno);
@@ -604,31 +552,31 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
         saveBean.setArea(tvnewlyarea);
         saveBean.setCompanytxt(tvnewlycompanytxt);
         saveBean.setPo(tvnewlypo);
-        saveBean.setOitem(tvnewlyoitem);
-        saveBean.setMdl(tvnewMdl);
+        saveBean.setOitem(tvnewlyoitem);//原款号
+        saveBean.setMdl(tvnewMdl);//尺码
         saveBean.setCtmid(tvnewlyctmid);
         saveBean.setCtmtxt(tvnewlyctmtxt);
         saveBean.setCtmcompanytxt(tvnewlyctmcompanytxt);
         saveBean.setPrdtyp(tvnewlyprdtyp);
-        saveBean.setLcdat(tvnewlylcdat);
-        saveBean.setLbdat(tvnewlylbdat);
+        saveBean.setLcdat(tvnewlylcdat);//离厂日期
+        saveBean.setLbdat(tvnewlylbdat);//离岸日期
         saveBean.setStyp(tvnewlystyp);
         saveBean.setFsaler(tvnewlyfsaler);
         saveBean.setPsaler(tvnewlypsaler);
-        saveBean.setMemo(tvnewlymemo);
+        saveBean.setMemo(tvnewlymemo);//备注
         saveBean.setPqty(tvnewpqty);
         saveBean.setUnit(tvnewlyunit);
-        saveBean.setProdcol(tvnewlyProdcol);
-        saveBean.setMegitem(tvnewlymegitem);
+        saveBean.setProdcol(tvnewlyProdcol);//花色
+        saveBean.setMegitem(tvnewlymegitem);//合并款号
         saveBean.setTeamname(tvnewlyteamname);
-        saveBean.setRecordat(tvnewlyrecordat);
-        saveBean.setRecordid(tvnewlyrecordid);
-        saveBean.setRecorder(tvnewlyrecorder);
-        saveBean.setSubfactory(tvnewlyFactory);
-        saveBean.setWorkingProcedure(tvnewlyProcedure);
-        saveBean.setSubfactoryTeams(tvnewlyDepartment);
-        saveBean.setWorkers(tvnewlyOthers);
-        saveBean.setFactcutqty(tvnewlyClippingNumber);
+        saveBean.setRecordat(tvnewlyrecordat);//制单时间
+        saveBean.setRecordid(tvnewlyrecordid);//制单人id
+        saveBean.setRecorder(tvnewlyrecorder);//制单人
+        saveBean.setSubfactory(tvnewlyFactory);//工厂
+        saveBean.setWorkingProcedure(tvnewlyProcedure);//工序
+        saveBean.setSubfactoryTeams(tvnewlyDepartment);//部门
+        saveBean.setWorkers(tvnewlyOthers);//组别人数
+        saveBean.setFactcutqty(tvnewlyClippingNumber);//实裁数
         saveBean.setCutbdt(tvnewlycutbdt);
         saveBean.setSewbdt(tvnewlysewbdt);
         saveBean.setSewedt(tvnewlysewedt);
@@ -640,15 +588,15 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
         saveBean.setAmount(tvnewlyamount);
         saveBean.setPerMachineQty(tvnewlyperMachineQty);
         saveBean.setSumMachineQty(tvnewlysumMachineQty);
-        saveBean.setPrdstatus(tvnewlyTotal);
-        saveBean.setPrdmaster(tvnewlyprdmaster);
-        saveBean.setPrddocumentary(tvnewlyDocumentary);
-        saveBean.setTaskqty(tvTaskqty);
-        saveBean.setSumCompletedQty(tvnewlyCompletedLastMonth);
-        saveBean.setLeftQty(tvnewlyleftQty);
-        saveBean.setLastMonQty(tvnewlylastMonQty);
-        saveBean.setYear(tvnyear);
-        saveBean.setMonth(tvnmonth);
+        saveBean.setPrdstatus(tvnewlyTotal);//状态
+        saveBean.setPrdmaster(tvnewlyprdmaster);//主管
+        saveBean.setPrddocumentary(tvnewlyDocumentary);//跟单
+        saveBean.setTaskqty(tvTaskqty);//任务数
+        saveBean.setSumCompletedQty(tvnewlyCompletedLastMonth);//总完工数
+        saveBean.setLeftQty(tvnewlyleftQty);//结余数量
+        saveBean.setLastMonQty(tvnewlylastMonQty);//上月结余数量
+        saveBean.setYear(tvnyear);//年
+        saveBean.setMonth(tvnmonth);//月
         saveBean.setDay1(tvnewlyday1);
         saveBean.setDay2(tvnewlyday2);
         saveBean.setDay3(tvnewlyday3);
@@ -680,10 +628,9 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
         saveBean.setDay29(tvnewlyday29);
         saveBean.setDay30(tvnewlyday30);
         saveBean.setDay31(tvnewlyday31);
-        saveBean.setPrddocumentaryid(tvnewlyprddocumentaryid);
-        saveBean.setIsdiffc(Boolean.parseBoolean(tvnewlyisdiffc));
+        saveBean.setPrddocumentaryid(tvnewlyprddocumentaryid);//跟单id
+        saveBean.setIsdiffc(Boolean.parseBoolean(tvnewlyisdiffc));//是否分色
         final String bean = gson.toJson(saveBean);
-//        String dateee = bean.replace("\"\"", "null");
         if (NetWork.isNetWorkAvailable(this)) {
             OkHttpUtils.postString()
                     .url(urlDaily)
@@ -871,11 +818,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
     /*可输入状态*/
     private void setEnableTrue() {
         sp = getSharedPreferences("my_sp", 0);
-        btnProSave.setVisibility(View.VISIBLE);
         final ProductionUtil productionUtil = new ProductionUtil();
-        spUtils.put(FTYDLSearchDetailActivity.this, "procedureboolean", "1");
         saveBean = new FTYDLDetailSaveBean();
         postdataBean = new FTYDLDetailColorBean.DataBean();
+        btnProSave.setVisibility(View.VISIBLE);
+        spUtils.put(FTYDLSearchDetailActivity.this, "procedureboolean", "1");
         et_config_others.setEnabled(true);//组别人数
         final int MIN_MARK_OTHER = 0;
         final int MAX_MARK_OTHER = 999999;
@@ -932,7 +879,6 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
 
         et_config_singularsystem.setEnabled(true);//任务数
         final int singular = Integer.parseInt(et_config_singularsystem.getText().toString());
-        final int MIN_MARK = 0;
         et_config_singularsystem.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1146,7 +1092,6 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         if (proitem.equals("")) {
                             proitem = String.valueOf(0);
                         }
-
                     }
                     saveBean.setDay2(proitem);
                     spUtils.put(getApplicationContext(), "pronullday2", nullday2);
@@ -3529,9 +3474,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
 
                             @Override
                             public void onResponse(final String response, int id) {
-                                System.out.print(response);
                                 String ression = StringUtil.sideTrim(response, "\"");
-                                System.out.print(ression);
                                 int resindex = Integer.parseInt(ression);
                                 if (resindex > 3) {
                                     ToastUtils.ShowToastMessage("保存成功",

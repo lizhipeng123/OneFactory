@@ -6,16 +6,9 @@ package com.daoran.newfactory.onefactory.bean.loginbean;
  */
 
 public class VerCodeBean {
-
-    /**
-     * verCode : 0.2.3
-     * apkPath : http://www.taoandcompany.com/AppVersion/DFAPP.apk
-     * reason : 生产日报表新建和查获跟踪表的巡检显示
-     */
-
-    private String verCode;
-    private String apkPath;
-    private String reason;
+    private String verCode;//版本号
+    private String apkPath;//版本地址
+    private String reason;//版本信息
 
     public String getVerCode() {
         return verCode;

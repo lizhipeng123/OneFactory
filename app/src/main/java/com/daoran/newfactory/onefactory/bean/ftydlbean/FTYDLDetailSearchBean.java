@@ -3,7 +3,7 @@ package com.daoran.newfactory.onefactory.bean.ftydlbean;
 /**
  * 创建时间：2017/12/1
  * 编写人：lizhipeng
- * 功能描述：查询同款号，部门，工序，制单人的数据实体
+ * 功能描述：生产日报 请求条件的数据集合
  */
 
 public class FTYDLDetailSearchBean {

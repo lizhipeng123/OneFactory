@@ -11,23 +11,18 @@ import android.view.View;
 
 /**
  *
- * Recycle分割线，from hongyang csdn   针对线性布局
+ * Recycle分割线，针对线性布局
  * Created by Alex_MaHao on 2016/5/6.
  */
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
-
     private static final int[] ATTRS = new int[]{
             android.R.attr.listDivider
     };
 
     public static final int HORIZONTAL_LIST = LinearLayoutManager.HORIZONTAL;
-
     public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
-
     private Drawable mDivider;
-
     private int mOrientation;
-
     public DividerItemDecoration(Context context, int orientation) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
         mDivider = a.getDrawable(0);
@@ -44,20 +39,16 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void onDraw(Canvas c, RecyclerView parent) {
-
         if (mOrientation == VERTICAL_LIST) {
             drawVertical(c, parent);
         } else {
             drawHorizontal(c, parent);
         }
-
     }
-
 
     public void drawVertical(Canvas c, RecyclerView parent) {
         final int left = parent.getPaddingLeft();
         final int right = parent.getWidth() - parent.getPaddingRight();
-
         final int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
@@ -74,7 +65,6 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     public void drawHorizontal(Canvas c, RecyclerView parent) {
         final int top = parent.getPaddingTop();
         final int bottom = parent.getHeight() - parent.getPaddingBottom();
-
         final int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);

@@ -14,22 +14,12 @@ import android.view.View;
  * Created by Alex_MaHao on 2016/5/10.
  */
 public class CircleView extends View {
-
-    /**
-     * 控件的半径
-     */
+    /*控件的半径*/
     private int mRadius;
-
-    /**
-     * 绘制弧形的画笔
-     */
+    /*绘制弧形的画笔*/
     private Paint mArcPaint;
-
-    /**
-     * 绘制弧形的区域
-     */
+    /*绘制弧形的区域*/
     private RectF mRange;
-
 
     private int[] colors = {Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN};
 
@@ -71,13 +61,15 @@ public class CircleView extends View {
         if (widthMode == MeasureSpec.EXACTLY) {
             width = widthSize;
         } else {
-            width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, getResources().getDisplayMetrics());
+            width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    45, getResources().getDisplayMetrics());
         }
 
         if (heightMode == MeasureSpec.EXACTLY) {
             height = heightSize;
         } else {
-            height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, getResources().getDisplayMetrics());
+            height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    45, getResources().getDisplayMetrics());
         }
 
         //获取半径
@@ -90,7 +82,6 @@ public class CircleView extends View {
          mRange = new RectF(0, 0, mRadius * 2, mRadius * 2);
     }
 
-
     @Override
     protected void onDraw(Canvas canvas) {
 
@@ -98,8 +89,8 @@ public class CircleView extends View {
 
         for (int i = 0; i < 8; i++) {
             mArcPaint.setColor(colors[i%4]);
-            canvas.drawArc(mRange,-90f+degree*i,degree,true,mArcPaint);
+            canvas.drawArc(mRange,-90f+degree*i,degree,
+                    true,mArcPaint);
         }
-
     }
 }
