@@ -1106,58 +1106,6 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
         }
     }
 
-//    /*精确查询除了裁床之外*/
-//    private void setDateNewly() {
-//        String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/SearchDailyData/";
-//        final Gson gson = new Gson();
-//        final FTYDLDetailDetailBean detailDetailBean = new FTYDLDetailDetailBean();
-//        FTYDLDetailDetailBean.Conditions conditions =
-//                detailDetailBean.new Conditions();
-//        conditions.setID(Integer.parseInt(id));
-//        conditions.setItem(tvnewlyItem);//款号
-//        conditions.setSalesid(Integer.parseInt(tvnewlySalid));
-//        conditions.setWorkingProcedure(tvnewlyProcedure);//工序
-//        conditions.setPrddocumentary(tvnewlyDocumentary);//跟单人
-//        conditions.setRecordat(tvnewlyrecordat);//时间
-//        conditions.setRecorder(tvnewlyrecorder);//制单人
-//        conditions.setRecordid(tvnewlyrecordid);//制单人id
-//        conditions.setProdcol(tvnewlyProdcol);//花色
-//        conditions.setYear(tvnyear);//年
-//        conditions.setMonth(tvnmonth);//月
-//        conditions.setSubfactoryTeams(tvnewlyDepartment);//组别
-//        conditions.setPrddocumentaryisnull(false);//制单人是否可空
-//        detailDetailBean.setConditions(conditions);
-//        detailDetailBean.setPageNum(0);
-//        detailDetailBean.setPageSize(15);
-//        final String bean = gson.toJson(detailDetailBean);
-//        String dateee = bean.replace("\"\"", "null");
-//        if (NetWork.isNetWorkAvailable(this)) {
-//            OkHttpUtils.postString()
-//                    .url(urlDaily)
-//                    .content(dateee)
-//                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
-//                    .build()
-//                    .execute(new StringCallback() {
-//                        @Override
-//                        public void onError(Call call, Exception e, int id) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        @Override
-//                        public void onResponse(String response, int id) {
-//                            System.out.println(response);
-//                            String ress = response.replace("\\", "");
-//                            String ression = StringUtil.sideTrim(ress, "\"");
-//                            System.out.print(ression);
-//                            colorBean = new Gson().fromJson(ression, FTYDLDetailColorBean.class);
-//                            newdataBeans = colorBean.getData();
-//                        }
-//                    });
-//        } else {
-//            ToastUtils.ShowToastMessage(R.string.noHttp, FTYDLSearchDetailActivity.this);
-//        }
-//    }
-
     /*获取相同款号相同部门相同工序的全部数据*/
     private void setMonthSearch() {
         String strMonth = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";

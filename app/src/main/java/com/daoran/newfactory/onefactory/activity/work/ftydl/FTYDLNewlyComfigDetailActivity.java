@@ -30,6 +30,7 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.adapter.ftydladapter.FTYDLNewlyVerticalAdatper;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLColSelectBean;
+import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLFactoryDailyBean;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLFactoryDailyColBean;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDetailSaveBean;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLNewlybooleanBean;
@@ -141,6 +142,7 @@ public class FTYDLNewlyComfigDetailActivity
             day10, day11, day12, day13, day14, day15, day16, day17, day18,
             day19, day20, day21, day22, day23, day24, day25, day26, day27,
             day28, day29, day30, day31;
+    private int position;
     private FTYDLNewlyVerticalAdatper verticalAdatper;
     private List<FTYDLColSelectBean.Data> procaldataList
             = new ArrayList<FTYDLColSelectBean.Data>();
@@ -152,11 +154,14 @@ public class FTYDLNewlyComfigDetailActivity
     private List<FTYDLFactoryDailyColBean.DataBean> newdataBeans
             = new ArrayList<FTYDLFactoryDailyColBean.DataBean>();//初始化数据实体list
 
+    private List<FTYDLFactoryDailyBean.DataBean> buildDataBean =
+            new ArrayList<FTYDLFactoryDailyBean.DataBean>();//生产日报款号选择数据
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_production_config_vertical);
-        setSpUtils();
+        setSpUtils(buildDataBean);
         getView();
         initView();
         setListener();
@@ -300,7 +305,7 @@ public class FTYDLNewlyComfigDetailActivity
     }
 
     /*接收上一个页面传过来的点击的数据*/
-    private void setSpUtils() {
+    private void setSpUtils(List<FTYDLFactoryDailyBean.DataBean> buildDataBean) {
         sp = getSharedPreferences("my_sp", 0);
         Time t = new Time("GMT+8"); // or Time t=new Time("GMT+8");
         t.setToNow(); // 取得系统时间。
@@ -311,31 +316,34 @@ public class FTYDLNewlyComfigDetailActivity
         minute = t.minute;
         second = t.second;
         month = month + 1;
+        buildDataBean = getIntent().getParcelableArrayListExtra("buildDataBean");
         nameid = sp.getString("usernamerecoder", "");//登录人
         isprodure = sp.getString("FTYDLNewlyIsProdure", "");//判断是否是裁床
-        tvnewlyItem = sp.getString("tvFTYDLNewlyItem", "");//款号
-        tvnewlyctmtxt = sp.getString("tvFTYDLNewlyCtmtxt", "");//客户
-        tvnewlyDocumentary = sp.getString("tvFTYDLNewlyDocumentary", "");//跟单
-        tvnewlyFactory = sp.getString("tvFTYDLNewlyFactory", "");//工厂
-        tvnewlyDepartment = sp.getString("tvFTYDLNewlyDepartment",
-                "");//部门/组别
-        tvnewlyProcedure = sp.getString("tvFTYDLNewlyProcedure", "");//工序
-        tvnewlyOthers = sp.getString("tvFTYDLNewlyWorkers", "");//组别人数
-        tvnewSingularSystem = sp.getString("tvFTYDLNewlyPqty",
-                "");//制单数
-        tvnewlyTaskqty = sp.getString("tvFTYDLNewlyTaskqty", "");//任务数
-        tvnewlyMdl = sp.getString("tvFTYDLNewlyMdl", "");//尺码
-        tvnewlyProcol = sp.getString("tvFTYDLNewlyProcal", "");//花色
-        tvnewlyClippingNumber = sp.getString("tvFTYDLNewlyFactcutqty",
-                "");//实裁数
-        tvnewlyCompletedLastMonth = sp.getString("tvFTYDLNewlySumCompletedQty",
-                "");//总完工数
-        tvnewlyPrdstatus = sp.getString("tvFTYDLNewlyPrdstatus", "");//状态
-        pagesize = sp.getString("clumnsFTYDLpageSize", "");//每页数量
-        ischeckedd = sp.getString("FTYDLCheckedd", "");//选择制单人是否为空
+        position = Integer.parseInt(sp.getString("tvFTYDLBuildId", ""));//数据位置索引
         recordid = sp.getString("username", "");//制单人id(登录名)
-        salesid = sp.getString("tvFTYDLNewlyId", "");//款号行id
-        productionDocumentaryid = sp.getString("tvFTYDLNewlyDocumentaryId", "");//跟单人id
+
+        tvnewlyItem = buildDataBean.get(position).getItem();//款号
+        tvnewlyctmtxt = buildDataBean.get(position).getCtmtxt();//客户
+        tvnewlyDocumentary = buildDataBean.get(position).getPrddocumentary();//跟单
+        tvnewlyFactory = buildDataBean.get(position).getSubfactory();//工厂
+        tvnewlyDepartment = buildDataBean.get(position).getSubfactoryTeams();//部门/组别
+        tvnewlyProcedure = buildDataBean.get(position).getWorkingProcedure();//工序
+        tvnewlyOthers = buildDataBean.get(position).getWorkers();//组别人数
+        tvnewSingularSystem = buildDataBean.get(position).getPqty();//制单数
+        tvnewlyTaskqty = buildDataBean.get(position).getTaskqty();//任务数
+        tvnewlyMdl = buildDataBean.get(position).getMdl();//尺码
+        tvnewlyProcol = buildDataBean.get(position).getProdcol();//花色
+        tvnewlyClippingNumber = buildDataBean.get(position).getFactcutqty();//实裁数
+        if (buildDataBean.get(position).getSumCompletedQty() == null) {
+            tvnewlyCompletedLastMonth = "";
+        } else {
+            tvnewlyCompletedLastMonth = buildDataBean.get(position).getSumCompletedQty();//总完工数
+        }
+        tvnewlyPrdstatus = buildDataBean.get(position).getPrdstatus();//状态
+        salesid = buildDataBean.get(position).getID();//款号行id
+        productionDocumentaryid = buildDataBean.get(position).getPrddocumentaryid();//跟单人id
+
+        ischeckedd = sp.getString("FTYDLCheckedd", "");//选择制单人是否为空
     }
 
     //内部传值
@@ -1680,179 +1688,161 @@ public class FTYDLNewlyComfigDetailActivity
         spUtils.put(getApplicationContext(), "procomfigcountmonth", countmonth);
     }
 
-    private void setDateColor() {
-        sp = getSharedPreferences("my_sp", 0);
-        String tvnewlysalesid = sp.getString("tvFTYDLNewlyId", "");
-        String strurl = HttpUrl.debugoneUrl + "FactoryPlan/FTYDLColSelect/" + tvnewlysalesid;
-        if (NetWork.isNetWorkAvailable(this)) {
-            OkHttpUtils.post()
-                    .url(strurl)
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            e.printStackTrace();
-                        }
+//    private void setDateColor() {
+//        buildDataBean = getIntent().getParcelableArrayListExtra("buildDataBean");
+//        String tvnewlysalesid = buildDataBean.get(position).getID();
+//        String strurl = HttpUrl.debugoneUrl + "FactoryPlan/FTYDLColSelect/" + tvnewlysalesid;
+//        if (NetWork.isNetWorkAvailable(this)) {
+//            OkHttpUtils.post()
+//                    .url(strurl)
+//                    .build()
+//                    .execute(new StringCallback() {
+//                        @Override
+//                        public void onError(Call call, Exception e, int id) {
+//                            e.printStackTrace();
+//                        }
+//
+//                        @Override
+//                        public void onResponse(String response, int id) {
+//                            System.out.println(response);
+//                            Gson gson = new Gson();
+//                            String result = response;
+//                            Type listtype = new TypeToken<List<FTYDLColSelectBean.Data>>() {
+//                            }.getType();
+//                            procaldataList = gson.fromJson(result, listtype);
+////                            procalBean = new Gson().fromJson(response, FTYDLColSelectBean.class);
+////                            procaldataList = procalBean.getDatas();
+//                        }
+//                    });
+//        } else {
+//            ToastUtils.ShowToastMessage(R.string.noHttp,
+//                    FTYDLNewlyComfigDetailActivity.this);
+//        }
+//    }
 
-                        @Override
-                        public void onResponse(String response, int id) {
-                            System.out.println(response);
-                            Gson gson = new Gson();
-                            String result = response;
-                            Type listtype = new TypeToken<List<FTYDLColSelectBean.Data>>() {
-                            }.getType();
-                            procaldataList = gson.fromJson(result, listtype);
-//                            procalBean = new Gson().fromJson(response, FTYDLColSelectBean.class);
-//                            procaldataList = procalBean.getDatas();
-                        }
-                    });
-        } else {
-            ToastUtils.ShowToastMessage(R.string.noHttp,
-                    FTYDLNewlyComfigDetailActivity.this);
-        }
-    }
-
-    private void setCutDate() {
-        if (NetWork.isNetWorkAvailable(this)) {
-            String strcutdate = HttpUrl.debugoneUrl + "FactoryPlan/SearchDailyData/";
-            sp = getSharedPreferences("my_sp", 0);
-            String tvdatenewlyid = sp.getString("tvFTYDLNewlyId", "");
-            String tvdatenewlySalid = sp.getString("tvFTYDLNewlyId", "");//排单id
-            String tvdatenewlydate = sp.getString("tvFTYDLNewlyItem", "");//款号
-            String tvdatenewlyear = year + "";//年
-            String productionMonth = sp.getString("configMonth", "");//月
-            if (productionMonth.equals("")) {
-                somemonth = et_config_month.getText().toString();
-            } else {
-                somemonth = productionMonth;
-            }
-            String tvdatenewlyFactory = sp.getString(
-                    "tvFTYDLNewlyFactory", "");//工厂
-
-            String proColumnTitle = sp.getString("configdepartment", "");//部门
-            String proadaptertitle = sp.getString("tvFTYDLNewlyDepartment", "");//款号选择传过来的部门组别
-            String columntitle;//部门变量
-            if (proColumnTitle.equals("")) {//如果没有修改部门组别，就把款号传过来的部门加进去
-                columntitle = proadaptertitle;
-            } else {
-                columntitle = proColumnTitle;
-            }
-
-            String proProcedureadapterTitle = sp.getString("ConfigProcedure", "");//工序adapter中修改过的
-            String procudureTitle;//工序变量
-            //如果工序显示是空值或者为选择工序，则统一赋给变量为空值""，
-            //如果不是的话就把修改的工序赋给变量
-            if (tvnewlyProcedure.equals("选择工序") && proProcedureadapterTitle.equals("")) {
-                procudureTitle = "";
-            } else if (!proProcedureadapterTitle.equals("")) {
-                procudureTitle = proProcedureadapterTitle;
-            } else {
-                procudureTitle = tvnewlyProcedure;
-            }
-
-            String tvdatenewlySize = sp.getString(
-                    "tvFTYDLNewlyProcal", "");//花色
-            String tvdateda = sp.getString("proverPredocdttimesign", "");//裁床日期
-            String liststr = sp.getString("mylistStr", "");//花色集合
-            String tvnewlyCtmtxt = sp.getString("tvFTYDLNewlyCtmtxt", "");//客户
-            String tvnewSingularSystem = sp.getString("tvFTYDLNewlyPqty", "");//制单数
-            String tvnewlyDocumentary = sp.getString("tvFTYDLNewlyDocumentary", "");//跟单
-            String tvnewlyOthers = sp.getString("tvFTYDLNewlyWorkers", "");//组别人数
-            String tvColorTaskqty = sp.getString("tvFTYDLNewlyTaskqty", "");//任务数
-            String tvnewTaskNumber = sp.getString("tvFTYDLNewlyMdl", "");//尺码
-            String tvnewlyClippingNumber = sp.getString("tvFTYDLNewlyFactcutqty", "");//实裁数
-            String tvnewlyCompletedLastMonth = sp.getString("tvFTYDLNewlySumCompletedQty", "");//总完工数
-            String tvnewlyTotalCompletion = sp.getString("tvFTYDLNewlyPrdstatus", "");//生产状态
-            int salesidint = Integer.parseInt(tvdatenewlySalid);
-            if (liststr.equals("") || liststr.isEmpty()) {
-                Gson gson = new Gson();
-                FTYDLDetailSaveBean saveBean = new FTYDLDetailSaveBean();
-                saveBean.setID(salesidint);
-                saveBean.setSalesid(salesidint);
-                saveBean.setItem(tvdatenewlydate);
-                saveBean.setCtmtxt(tvnewlyCtmtxt);
-                saveBean.setYear(tvdatenewlyear);
-                saveBean.setMonth(somemonth);
-                saveBean.setSubfactory(tvdatenewlyFactory);
-                saveBean.setSubfactoryTeams(columntitle);
-                saveBean.setWorkingProcedure(procudureTitle);
-                saveBean.setProdcol(tvdatenewlySize);
-                saveBean.setPqty(tvnewSingularSystem);
-                saveBean.setPrddocumentary(tvnewlyDocumentary);
-                saveBean.setWorkers(tvnewlyOthers);
-                saveBean.setTaskqty(tvColorTaskqty);
-                saveBean.setMdl(tvnewTaskNumber);
-                saveBean.setFactcutqty(tvnewlyClippingNumber);
-                saveBean.setLastMonQty("");
-                saveBean.setSumCompletedQty(tvnewlyCompletedLastMonth);
-                saveBean.setLeftQty("");
-                saveBean.setPrdstatus(tvnewlyTotalCompletion);
-                String colcontent = gson.toJson(saveBean);
-                OkHttpUtils
-                        .postString()
-                        .url(strcutdate)
-                        .content(colcontent)
-                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                e.printStackTrace();
-                            }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                System.out.println(response);
-                            }
-                        });
-            } else {
-                try {
-                    Gson gson = new Gson();
-                    List<String> list = PhoneSaveUtil.String2SceneList(liststr);
-                    List<FTYDLColCountBean.Data> data =
-                            new ArrayList<FTYDLColCountBean.Data>();
-                    for (int i = 0; i < list.size(); i++) {
-                        FTYDLVerticalColBean colBean = new FTYDLVerticalColBean();
-                        colBean.setSalesid(Integer.parseInt(tvdatenewlySalid));
-                        colBean.setItem(tvdatenewlydate);
-
-                        String colcontent = gson.toJson(colBean);
-                        OkHttpUtils
-                                .postString()
-                                .url(strcutdate)
-                                .content(colcontent)
-                                .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                                .build()
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onError(Call call, Exception e, int id) {
-                                        e.printStackTrace();
-                                    }
-
-                                    @Override
-                                    public void onResponse(String response, int id) {
-                                        System.out.println(response);
-                                    }
-                                });
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            ToastUtils.ShowToastMessage(R.string.noHttp,
-                    FTYDLNewlyComfigDetailActivity.this);
-        }
-    }
+//    private void setCutDate() {
+//        if (NetWork.isNetWorkAvailable(this)) {
+//            String strcutdate = HttpUrl.debugoneUrl + "FactoryPlan/SearchDailyData/";
+//            buildDataBean = getIntent().getParcelableArrayListExtra("buildDataBean");
+//            sp = getSharedPreferences("my_sp", 0);
+//            String tvdatenewlyear = year + "";//年
+//            String productionMonth = sp.getString("configMonth", "");//月
+//            if (productionMonth.equals("")) {
+//                somemonth = et_config_month.getText().toString();
+//            } else {
+//                somemonth = productionMonth;
+//            }
+//            String tvdatenewlyFactory = sp.getString(
+//                    "tvFTYDLNewlyFactory", "");//工厂
+//
+//            String proColumnTitle = sp.getString("configdepartment", "");//部门
+//            String columntitle;//部门变量
+//            if (proColumnTitle.equals("")) {//如果没有修改部门组别，就把款号传过来的部门加进去
+//                columntitle = tvnewlyDepartment;
+//            } else {
+//                columntitle = proColumnTitle;
+//            }
+//
+//            String proProcedureadapterTitle = sp.getString("ConfigProcedure", "");//工序adapter中修改过的
+//            String procudureTitle;//工序变量
+//            //如果工序显示是空值或者为选择工序，则统一赋给变量为空值""，
+//            //如果不是的话就把修改的工序赋给变量
+//            if (tvnewlyProcedure.equals("选择工序") && proProcedureadapterTitle.equals("")) {
+//                procudureTitle = "";
+//            } else if (!proProcedureadapterTitle.equals("")) {
+//                procudureTitle = proProcedureadapterTitle;
+//            } else {
+//                procudureTitle = tvnewlyProcedure;
+//            }
+//
+//            String liststr = sp.getString("mylistStr", "");//花色集合
+//            int salesidint = Integer.parseInt(salesid);
+//            if (liststr.equals("") || liststr.isEmpty()) {
+//                Gson gson = new Gson();
+//                FTYDLDetailSaveBean saveBean = new FTYDLDetailSaveBean();
+//                saveBean.setID(salesidint);
+//                saveBean.setSalesid(salesidint);
+//                saveBean.setItem(tvnewlyItem);
+//                saveBean.setCtmtxt(tvnewlyctmtxt);
+//                saveBean.setYear(tvdatenewlyear);
+//                saveBean.setMonth(somemonth);
+//                saveBean.setSubfactory(tvdatenewlyFactory);
+//                saveBean.setSubfactoryTeams(columntitle);
+//                saveBean.setWorkingProcedure(procudureTitle);
+//                saveBean.setProdcol(tvnewlyProcol);
+//                saveBean.setPqty(tvnewSingularSystem);
+//                saveBean.setPrddocumentary(tvnewlyDocumentary);
+//                saveBean.setWorkers(tvnewlyOthers);
+//                saveBean.setTaskqty(tvnewlyTaskqty);
+//                saveBean.setMdl(tvnewlyMdl);
+//                saveBean.setFactcutqty(tvnewlyClippingNumber);
+//                saveBean.setLastMonQty("");
+//                saveBean.setSumCompletedQty(tvnewlyCompletedLastMonth);
+//                saveBean.setLeftQty("");
+//                saveBean.setPrdstatus(tvnewlyPrdstatus);
+//                String colcontent = gson.toJson(saveBean);
+//                OkHttpUtils
+//                        .postString()
+//                        .url(strcutdate)
+//                        .content(colcontent)
+//                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
+//                        .build()
+//                        .execute(new StringCallback() {
+//                            @Override
+//                            public void onError(Call call, Exception e, int id) {
+//                                e.printStackTrace();
+//                            }
+//
+//                            @Override
+//                            public void onResponse(String response, int id) {
+//                                System.out.println(response);
+//                            }
+//                        });
+//            } else {
+//                try {
+//                    Gson gson = new Gson();
+//                    List<String> list = PhoneSaveUtil.String2SceneList(liststr);
+//                    List<FTYDLColCountBean.Data> data =
+//                            new ArrayList<FTYDLColCountBean.Data>();
+//                    for (int i = 0; i < list.size(); i++) {
+//                        FTYDLVerticalColBean colBean = new FTYDLVerticalColBean();
+//                        colBean.setSalesid(Integer.parseInt(salesid));
+//                        colBean.setItem(tvnewlyItem);
+//                        String colcontent = gson.toJson(colBean);
+//                        OkHttpUtils
+//                                .postString()
+//                                .url(strcutdate)
+//                                .content(colcontent)
+//                                .mediaType(MediaType.parse("application/json;charset=utf-8"))
+//                                .build()
+//                                .execute(new StringCallback() {
+//                                    @Override
+//                                    public void onError(Call call, Exception e, int id) {
+//                                        e.printStackTrace();
+//                                    }
+//
+//                                    @Override
+//                                    public void onResponse(String response, int id) {
+//                                        System.out.println(response);
+//                                    }
+//                                });
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                } catch (ClassNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        } else {
+//            ToastUtils.ShowToastMessage(R.string.noHttp,
+//                    FTYDLNewlyComfigDetailActivity.this);
+//        }
+//    }
 
     /*查询需要分色的相同款号的单子*/
     public void setDateNewly() {
         String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
-        if (pagesize.equals("")) {
-            pagesize = String.valueOf(15);
-        }
+        pagesize = String.valueOf(15);
         Gson gson = new Gson();
         final FTYDLNewlyBuildColSearchBean buildBean = new FTYDLNewlyBuildColSearchBean();
         FTYDLNewlyBuildColSearchBean.Conditions conditions = buildBean.new Conditions();
@@ -1952,7 +1942,6 @@ public class FTYDLNewlyComfigDetailActivity
     private void setSave() {
         saveSpUtils();//获取内部变动的数值
         String saveurl = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
-        sp = getSharedPreferences("my_sp", 0);
         if (productionMonth.equals("")) {//月份判断数值
             smonth = et_config_month.getText().toString();
         } else {
@@ -2718,7 +2707,6 @@ public class FTYDLNewlyComfigDetailActivity
     private void saveDestroy() {
         SharedPreferences.Editor editor = sp.edit();
         editor.remove("mylistStr");//保存集合
-        editor.remove("tvFTYDLNewlyProcedure");//工序
         editor.remove("configdepartment");//部门
         editor.remove("tvFTYDLNewlyDepartment");//部门
         editor.remove("configMonth");//月份
@@ -2762,8 +2750,6 @@ public class FTYDLNewlyComfigDetailActivity
         editor.remove("configLastMonth");//上月完工
         editor.remove("configTaskQty");//任务数
         editor.remove("tvFTYDLNewlyPrdstatus");//状态
-        editor.remove("tvFTYDLNewlyItem");//款号
-        editor.remove("tvFTYDLNewlyDocumentary");//跟单
         editor.remove("tvFTYDLNewlyFactory");//工厂
         editor.remove("tvFTYDLNewlyWorkers");//组别人数
         editor.remove("tvFTYDLNewlyPqty");//制单数
@@ -2781,8 +2767,6 @@ public class FTYDLNewlyComfigDetailActivity
         //关闭界面时清除缓存中可输入的数据
         SharedPreferences.Editor editor = sp.edit();
         editor.remove("mylistStr");//保存集合
-        editor.remove("tvFTYDLNewlyItem");//款号
-        editor.remove("tvFTYDLNewlyProcedure");//工序
         editor.remove("tvFTYDLNewlyDepartment");//部门
         editor.remove("configdepartment");//部门
         editor.remove("configMonth");//月份
@@ -2828,7 +2812,6 @@ public class FTYDLNewlyComfigDetailActivity
         editor.remove("configTaskQty");//任务数
         editor.remove("tvFTYDLNewlyPrdstatus");//状态
         editor.remove("configPrdstatus");//状态
-        editor.remove("tvFTYDLNewlyDocumentary");//跟单
         editor.remove("tvFTYDLNewlyFactory");//工厂
         editor.remove("tvFTYDLNewlyPqty");//制单数
         editor.remove("tvFTYDLNewlyTaskqty");//任务数

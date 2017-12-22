@@ -1,5 +1,8 @@
 package com.daoran.newfactory.onefactory.bean.ftydlbean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -7,10 +10,26 @@ import java.util.List;
  * Created by lizhipeng on 2017/5/8.
  */
 
-public class FTYDLFactoryDailyBean {
+public class FTYDLFactoryDailyBean implements Parcelable {
 
     private int totalCount;
     private List<DataBean> Data;
+
+    protected FTYDLFactoryDailyBean(Parcel in) {
+        totalCount = in.readInt();
+    }
+
+    public static final Creator<FTYDLFactoryDailyBean> CREATOR = new Creator<FTYDLFactoryDailyBean>() {
+        @Override
+        public FTYDLFactoryDailyBean createFromParcel(Parcel in) {
+            return new FTYDLFactoryDailyBean(in);
+        }
+
+        @Override
+        public FTYDLFactoryDailyBean[] newArray(int size) {
+            return new FTYDLFactoryDailyBean[size];
+        }
+    };
 
     public int getTotalCount() {
         return totalCount;
@@ -28,7 +47,17 @@ public class FTYDLFactoryDailyBean {
         this.Data = Data;
     }
 
-    public static class DataBean {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(totalCount);
+    }
+
+    public static class DataBean implements Parcelable {
         private String id;//id
         private String salesid;//排单计划id
         private String item;//款号
@@ -64,6 +93,56 @@ public class FTYDLFactoryDailyBean {
         private String prdstatus;//生产情况
         private String workingProcedure;//工序
         private String sumCompletedQty;//已完工数
+
+        protected DataBean(Parcel in) {
+            id = in.readString();
+            salesid = in.readString();
+            item = in.readString();
+            megitem = in.readString();
+            prdtyp = in.readString();
+            fsaler = in.readString();
+            fsalerid = in.readString();
+            psaler = in.readString();
+            psalerid = in.readString();
+            taskqty = in.readString();
+            inbill = in.readString();
+            subfactory = in.readString();
+            lbdat = in.readString();
+            lcdat = in.readString();
+            ctmid = in.readString();
+            ctmtxt = in.readString();
+            pqty = in.readString();
+            taskdat = in.readString();
+            prddocumentary = in.readString();
+            prddocumentaryid = in.readString();
+            prdmaster = in.readString();
+            styp = in.readString();
+            ourmainpart = in.readString();
+            teamname = in.readString();
+            mtr = in.readString();
+            prodcol = in.readString();
+            sewamount = in.readString();
+            mdl = in.readString();
+            recordat = in.readString();
+            subfactoryTeams = in.readString();
+            workers = in.readString();
+            factcutqty = in.readString();
+            prdstatus = in.readString();
+            workingProcedure = in.readString();
+            sumCompletedQty = in.readString();
+        }
+
+        public static final Creator<DataBean> CREATOR = new Creator<DataBean>() {
+            @Override
+            public DataBean createFromParcel(Parcel in) {
+                return new DataBean(in);
+            }
+
+            @Override
+            public DataBean[] newArray(int size) {
+                return new DataBean[size];
+            }
+        };
 
         public String getID() {
             return id;
@@ -343,6 +422,50 @@ public class FTYDLFactoryDailyBean {
 
         public void setSumCompletedQty(String sumCompletedQty) {
             this.sumCompletedQty = sumCompletedQty;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(id);
+            dest.writeString(salesid);
+            dest.writeString(item);
+            dest.writeString(megitem);
+            dest.writeString(prdtyp);
+            dest.writeString(fsaler);
+            dest.writeString(fsalerid);
+            dest.writeString(psaler);
+            dest.writeString(psalerid);
+            dest.writeString(taskqty);
+            dest.writeString(inbill);
+            dest.writeString(subfactory);
+            dest.writeString(lbdat);
+            dest.writeString(lcdat);
+            dest.writeString(ctmid);
+            dest.writeString(ctmtxt);
+            dest.writeString(pqty);
+            dest.writeString(taskdat);
+            dest.writeString(prddocumentary);
+            dest.writeString(prddocumentaryid);
+            dest.writeString(prdmaster);
+            dest.writeString(styp);
+            dest.writeString(ourmainpart);
+            dest.writeString(teamname);
+            dest.writeString(mtr);
+            dest.writeString(prodcol);
+            dest.writeString(sewamount);
+            dest.writeString(mdl);
+            dest.writeString(recordat);
+            dest.writeString(subfactoryTeams);
+            dest.writeString(workers);
+            dest.writeString(factcutqty);
+            dest.writeString(prdstatus);
+            dest.writeString(workingProcedure);
+            dest.writeString(sumCompletedQty);
         }
     }
 }

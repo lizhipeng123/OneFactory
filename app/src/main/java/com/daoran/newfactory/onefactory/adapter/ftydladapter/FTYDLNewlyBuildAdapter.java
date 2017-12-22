@@ -32,6 +32,7 @@ public class FTYDLNewlyBuildAdapter extends BaseAdapter {
     private boolean flag = false;
     private AlertDialog alertDialog;
     private int isprodure;
+    private OnClickNewlyBuildLister mOnClickNewlyBuildLister;
 
     public FTYDLNewlyBuildAdapter(Context context,
                                   List<FTYDLFactoryDailyBean.DataBean> dataBeen) {
@@ -98,246 +99,75 @@ public class FTYDLNewlyBuildAdapter extends BaseAdapter {
         } else {
             viewHolder.lin_content.setBackgroundColor(Color.TRANSPARENT);
         }
-        //长按弹出花色具体信息
-        viewHolder.tvProSize.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage(getItem(position).getProdcol());
-                builder.setNegativeButton("退出",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog = builder.create();
-                alertDialog.setCanceledOnTouchOutside(false);
-                alertDialog.show();
-                return false;
-            }
-        });
-        //长按弹出尺码具体信息
-        viewHolder.tvProTaskNumber.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage(getItem(position).getMdl());
-                builder.setNegativeButton("退出",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog = builder.create();
-                alertDialog.setCanceledOnTouchOutside(false);
-                alertDialog.show();
-                return false;
-            }
-        });
-        viewHolder.tvProSize.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String salesid = getItem(position).getID();
-                spUtils.put(context, "tvFTYDLNewlyId", salesid);
-                String said = getItem(position).getSalesid();
-                spUtils.put(context,"tvFTYDLNewlySalesId",said);
-                flag = true;
-                spUtils.put(context, "FTYDLNewly", flag);
-                String tvdate = getItem(position).getItem();
-                spUtils.put(context, "tvFTYDLNewlyItem", tvdate);//款号
-                String tvProDocumentary = getItem(position).getPrddocumentary();
-                spUtils.put(context, "tvFTYDLNewlyDocumentary", tvProDocumentary);//跟单
-                String tvProDocumentaryid = getItem(position).getPrddocumentaryid();//跟单人id
-                spUtils.put(context,"tvFTYDLNewlyDocumentaryId",tvProDocumentaryid);
-                String tvProFactory = getItem(position).getSubfactory();
-                spUtils.put(context, "tvFTYDLNewlyFactory", tvProFactory);//工厂
-                String tvProDepartment = getItem(position).getSubfactoryTeams();
-                spUtils.put(context, "tvFTYDLNewlyDepartment", tvProDepartment);//部门
-                String tvProProcedure = getItem(position).getWorkingProcedure();
-                spUtils.put(context, "tvFTYDLNewlyProcedure", tvProProcedure);//工序
-                if (tvProProcedure.equals("裁床")) {
-                    isprodure = 1;
-                    spUtils.put(context, "FTYDLNewlyIsProdure", String.valueOf(isprodure));
-                } else if (tvProProcedure.equals("选择工序")) {
-                    ToastUtils.ShowToastMessage("选择工序后再新建", context);
-                    return;
-                } else {
-                    isprodure = 0;
-                    spUtils.put(context, "FTYDLNewlyIsProdure", String.valueOf(isprodure));
+//        //长按弹出花色具体信息
+//        viewHolder.tvProSize.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                builder.setMessage(getItem(position).getProdcol());
+//                builder.setNegativeButton("退出",
+//                        new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                            }
+//                        });
+//                alertDialog = builder.create();
+//                alertDialog.setCanceledOnTouchOutside(false);
+//                alertDialog.show();
+//                return false;
+//            }
+//        });
+//        //长按弹出尺码具体信息
+//        viewHolder.tvProTaskNumber.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                builder.setMessage(getItem(position).getMdl());
+//                builder.setNegativeButton("退出",
+//                        new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                            }
+//                        });
+//                alertDialog = builder.create();
+//                alertDialog.setCanceledOnTouchOutside(false);
+//                alertDialog.show();
+//                return false;
+//            }
+//        });
+        if (mOnClickNewlyBuildLister != null) {
+            viewHolder.tvProTaskNumber.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnClickNewlyBuildLister.myNewlyBuildClick(position);
                 }
-                String tvProOthers = getItem(position).getWorkers();
-                spUtils.put(context, "tvFTYDLNewlyWorkers", tvProOthers);//组别人数
+            });
+        }
 
-                String tvProPqty = getItem(position).getPqty();
-                spUtils.put(context, "tvFTYDLNewlyPqty", tvProPqty);//制单数
-
-                String tvProTaskqty = getItem(position).getTaskqty();
-                spUtils.put(context, "tvFTYDLNewlyTaskqty", tvProTaskqty);//任务数
-
-                String tvProMdl = getItem(position).getMdl();
-                spUtils.put(context, "tvFTYDLNewlyMdl", tvProMdl);//尺码
-
-                String tvProProdcol = getItem(position).getProdcol();
-                spUtils.put(context, "tvFTYDLNewlyProcal", tvProProdcol);//花色
-
-                String tvctmtxt = getItem(position).getCtmtxt();
-                spUtils.put(context,"tvFTYDLNewlyCtmtxt",tvctmtxt);//客户
-                String tvProFactcutqty = getItem(position).getFactcutqty();
-                spUtils.put(context, "tvFTYDLNewlyFactcutqty", tvProFactcutqty);//实裁数
-
-                String tvProSumCompletedQty = getItem(position).getSumCompletedQty();
-                spUtils.put(context, "tvFTYDLNewlySumCompletedQty", tvProSumCompletedQty);//总完工数
-
-                String tvProPrdstatus = getItem(position).getPrdstatus();
-                spUtils.put(context, "tvFTYDLNewlyPrdstatus", tvProPrdstatus);//状态
-
-                viewHolder.lin_content.setBackgroundResource(R.drawable.bill_record_item);
-                /*从点击item中进入新建数据界面*/
-                Intent intent = new Intent(context,
-                        FTYDLNewlyComfigDetailActivity.class);
-                context.startActivity(intent);
-            }
-        });
-
-        viewHolder.tvProTaskNumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String salesid = getItem(position).getID();
-                String said = getItem(position).getSalesid();
-                spUtils.put(context, "tvFTYDLNewlyId", salesid);
-                spUtils.put(context,"tvFTYDLNewlySalesId",said);
-                flag = true;
-                spUtils.put(context, "FTYDLNewly", flag);
-                String tvdate = getItem(position).getItem();
-                spUtils.put(context, "tvFTYDLNewlyItem", tvdate);//款号
-                String tvProDocumentary = getItem(position).getPrddocumentary();
-                spUtils.put(context, "tvFTYDLNewlyDocumentary", tvProDocumentary);//跟单
-                String tvProDocumentaryid = getItem(position).getPrddocumentaryid();//跟单人id
-                spUtils.put(context,"tvFTYDLNewlyDocumentaryId",tvProDocumentaryid);
-                String tvProFactory = getItem(position).getSubfactory();
-                spUtils.put(context, "tvFTYDLNewlyFactory", tvProFactory);//工厂
-                String tvProDepartment = getItem(position).getSubfactoryTeams();
-                spUtils.put(context, "tvFTYDLNewlyDepartment", tvProDepartment);//部门
-                String tvProProcedure = getItem(position).getWorkingProcedure();
-                spUtils.put(context, "tvFTYDLNewlyProcedure", tvProProcedure);//工序
-                if (tvProProcedure.equals("裁床")) {
-                    isprodure = 1;
-                    spUtils.put(context, "FTYDLNewlyIsProdure", String.valueOf(isprodure));
-                } else if (tvProProcedure.equals("选择工序")) {
-                    ToastUtils.ShowToastMessage("选择工序后再新建", context);
-                    return;
-                } else {
-                    isprodure = 0;
-                    spUtils.put(context, "FTYDLNewlyIsProdure", String.valueOf(isprodure));
+        if (mOnClickNewlyBuildLister != null) {
+            viewHolder.tvProSize.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnClickNewlyBuildLister.myNewlyBuildClick(position);
                 }
-                String tvProOthers = getItem(position).getWorkers();
-                spUtils.put(context, "tvFTYDLNewlyWorkers", tvProOthers);//组别人数
+            });
+        }
 
-                String tvProPqty = getItem(position).getPqty();
-                spUtils.put(context, "tvFTYDLNewlyPqty", tvProPqty);//制单数
-
-                String tvProTaskqty = getItem(position).getTaskqty();
-                spUtils.put(context, "tvFTYDLNewlyTaskqty", tvProTaskqty);//任务数
-
-                String tvProMdl = getItem(position).getMdl();
-                spUtils.put(context, "tvFTYDLNewlyMdl", tvProMdl);//尺码
-
-                String tvProProdcol = getItem(position).getProdcol();
-                spUtils.put(context, "tvFTYDLNewlyProcal", tvProProdcol);//花色
-
-                String tvctmtxt = getItem(position).getCtmtxt();
-                spUtils.put(context,"tvFTYDLNewlyCtmtxt",tvctmtxt);//客户
-
-                String tvProFactcutqty = getItem(position).getFactcutqty();
-                spUtils.put(context, "tvFTYDLNewlyFactcutqty", tvProFactcutqty);//实裁数
-
-                String tvProSumCompletedQty = getItem(position).getSumCompletedQty();
-                spUtils.put(context, "tvFTYDLNewlySumCompletedQty", tvProSumCompletedQty);//总完工数
-
-                String tvProPrdstatus = getItem(position).getPrdstatus();
-                spUtils.put(context, "tvFTYDLNewlyPrdstatus", tvProPrdstatus);//状态
-
-                viewHolder.lin_content.setBackgroundResource(R.drawable.bill_record_item);
-                /*从点击item中进入新建数据界面*/
-                Intent intent = new Intent(context,
-                        FTYDLNewlyComfigDetailActivity.class);
-                context.startActivity(intent);
-            }
-        });
-
-        viewHolder.lin_content.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String salesid = getItem(position).getID();
-                spUtils.put(context, "tvFTYDLNewlyId", salesid);
-                String said = getItem(position).getSalesid();
-                spUtils.put(context,"tvFTYDLNewlySalesId",said);
-                flag = true;
-                spUtils.put(context, "FTYDLNewly", flag);
-                String tvdate = getItem(position).getItem();
-                spUtils.put(context, "tvFTYDLNewlyItem", tvdate);//款号
-                String tvProDocumentary = getItem(position).getPrddocumentary();
-                spUtils.put(context, "tvFTYDLNewlyDocumentary", tvProDocumentary);//跟单
-                String tvProDocumentaryid = getItem(position).getPrddocumentaryid();//跟单人id
-                spUtils.put(context,"tvFTYDLNewlyDocumentaryId",tvProDocumentaryid);
-                String tvProFactory = getItem(position).getSubfactory();
-                spUtils.put(context, "tvFTYDLNewlyFactory", tvProFactory);//工厂
-                String tvProDepartment = getItem(position).getSubfactoryTeams();
-                spUtils.put(context, "tvFTYDLNewlyDepartment", tvProDepartment);//部门
-                String tvProProcedure = getItem(position).getWorkingProcedure();
-                spUtils.put(context, "tvFTYDLNewlyProcedure", tvProProcedure);//工序
-                if (tvProProcedure.equals("裁床")) {
-                    isprodure = 1;
-                    spUtils.put(context, "FTYDLNewlyIsProdure", String.valueOf(isprodure));
-                } else if (tvProProcedure.equals("选择工序")) {
-                    ToastUtils.ShowToastMessage("选择工序后再新建", context);
-                    return;
-                } else {
-                    isprodure = 0;
-                    spUtils.put(context, "FTYDLNewlyIsProdure", String.valueOf(isprodure));
+        if (mOnClickNewlyBuildLister != null) {
+            viewHolder.lin_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnClickNewlyBuildLister.myNewlyBuildClick(position);
                 }
-                String tvProOthers = getItem(position).getWorkers();
-                spUtils.put(context, "tvFTYDLNewlyWorkers", tvProOthers);//组别人数
-
-                String tvProPqty = getItem(position).getPqty();
-                spUtils.put(context, "tvFTYDLNewlyPqty", tvProPqty);//制单数
-
-                String tvProTaskqty = getItem(position).getTaskqty();
-                spUtils.put(context, "tvFTYDLNewlyTaskqty", tvProTaskqty);//任务数
-
-                String tvProMdl = getItem(position).getMdl();
-                spUtils.put(context, "tvFTYDLNewlyMdl", tvProMdl);//尺码
-
-                String tvProProdcol = getItem(position).getProdcol();
-                spUtils.put(context, "tvFTYDLNewlyProcal", tvProProdcol);//花色
-
-                String tvctmtxt = getItem(position).getCtmtxt();
-                spUtils.put(context,"tvFTYDLNewlyCtmtxt",tvctmtxt);//客户
-
-                String tvProFactcutqty = getItem(position).getFactcutqty();
-                spUtils.put(context, "tvFTYDLNewlyFactcutqty", tvProFactcutqty);//实裁数
-
-                String tvProSumCompletedQty = getItem(position).getSumCompletedQty();
-                spUtils.put(context, "tvFTYDLNewlySumCompletedQty", tvProSumCompletedQty);//总完工数
-
-                String tvProPrdstatus = getItem(position).getPrdstatus();
-                spUtils.put(context, "tvFTYDLNewlyPrdstatus", tvProPrdstatus);//状态
-
-                viewHolder.lin_content.setBackgroundResource(R.drawable.bill_record_item);
-                /*从点击item中进入新建数据界面*/
-                Intent intent = new Intent(context,
-                        FTYDLNewlyComfigDetailActivity.class);
-                context.startActivity(intent);
-            }
-        });
+            });
+        }
         return convertView;
     }
 
     class ViewHolder {
-        TextView tv_data,//款号
-                tvProDocumentary,//跟单
+        TextView tvProDocumentary,//跟单
                 tvProFactory,//工厂
                 tvProDepartment,//部门、组别
                 tvProProcedure,//工序
@@ -350,5 +180,15 @@ public class FTYDLNewlyBuildAdapter extends BaseAdapter {
                 tvProCompletedLastMonth,//总完工数
                 tvProTotalCompletion;//状态
         LinearLayout lin_content;
+    }
+
+    /*创建回调函数,实例化接口具体化此方法*/
+    public interface OnClickNewlyBuildLister {
+        void myNewlyBuildClick(int id);
+    }
+
+    /*注册函数*/
+    public void setmOnClickNewlyBuildLister(OnClickNewlyBuildLister mOnClickNewlyBuildLister) {
+        this.mOnClickNewlyBuildLister = mOnClickNewlyBuildLister;
     }
 }

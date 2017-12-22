@@ -6,15 +6,19 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.widget.Adapter;
 
+import com.daoran.newfactory.onefactory.activity.work.ftydl.FTYDLNewlyComfigDetailActivity;
 import com.daoran.newfactory.onefactory.activity.work.ftydl.FTYDLSearchActivity;
 import com.daoran.newfactory.onefactory.activity.work.ftydl.FTYDLSearchCopyDetailActivity;
 import com.daoran.newfactory.onefactory.activity.work.ftydl.FTYDLSearchDetailActivity;
 import com.daoran.newfactory.onefactory.activity.work.qacwork.QACworkDetailActivity;
 import com.daoran.newfactory.onefactory.activity.work.qacwork.QACworkSearchActivity;
+import com.daoran.newfactory.onefactory.adapter.ftydladapter.FTYDLNewlyBuildAdapter;
+import com.daoran.newfactory.onefactory.adapter.ftydladapter.FTYDLNewlyBuildLeftAdapter;
 import com.daoran.newfactory.onefactory.adapter.ftydladapter.FTYDLSearchAdapter;
 import com.daoran.newfactory.onefactory.adapter.ftydladapter.FTYDLSearchLeftAdapter;
 import com.daoran.newfactory.onefactory.adapter.qacworkadapter.QACworkSearchAdapter;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDailyBean;
+import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLFactoryDailyBean;
 import com.daoran.newfactory.onefactory.bean.qacworkbean.QACworkPageDataBean;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
@@ -36,10 +40,14 @@ public class SetListener {
             new ArrayList<FTYDLDailyBean.DataBean>();//生产日报数据
     List<QACworkPageDataBean.DataBean> qaCworkDataBean =
             new ArrayList<QACworkPageDataBean.DataBean>();//查货跟踪数据
+    List<FTYDLFactoryDailyBean.DataBean> buildDataBean=
+            new ArrayList<FTYDLFactoryDailyBean.DataBean>();//生产日报款号选择数据
 
     FTYDLSearchAdapter adapter;//生产日报总表适配器
     FTYDLSearchLeftAdapter leftAdapter;//生产日报左侧固定列表适配
     QACworkSearchAdapter qaCworkSearchAdapter;//查货跟踪总表适配
+    FTYDLNewlyBuildAdapter buildAdapter;//生产日报选择款号列表适配
+    FTYDLNewlyBuildLeftAdapter buildleftAdapter;//
 
     /*生产日报点击进入修改页面回调方法*/
     public void setFTYDLSearchLister(final Context context, FTYDLSearchAdapter adapter
@@ -140,6 +148,70 @@ public class SetListener {
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList("qaCworkDataBean",
                         (ArrayList<? extends Parcelable>) qaCworkDataBean);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+    }
+
+    /*生产日报进入新建页面回调方法*/
+    public void setFTYDLNewlyLister(final Context context, FTYDLNewlyBuildAdapter buildAdapter,
+                                    final List<FTYDLFactoryDailyBean.DataBean> buildDataBean){
+        this.context = context;
+        this.buildAdapter = buildAdapter;
+        this.buildDataBean = buildDataBean;
+        buildAdapter.setmOnClickNewlyBuildLister(new FTYDLNewlyBuildAdapter.OnClickNewlyBuildLister() {
+            @Override
+            public void myNewlyBuildClick(int id) {
+                String tvProProcedure = buildDataBean.get(id).getWorkingProcedure();
+                if (tvProProcedure.equals("裁床")) {
+                    isprodure = 1;
+                    spUtils.put(context, "FTYDLNewlyIsProdure", String.valueOf(isprodure));
+                } else if (tvProProcedure.equals("选择工序")) {
+                    ToastUtils.ShowToastMessage("选择工序后再新建", context);
+                    return;
+                } else {
+                    isprodure = 0;
+                    spUtils.put(context, "FTYDLNewlyIsProdure", String.valueOf(isprodure));
+                }
+                spUtils.put(context, "tvFTYDLBuildId", String.valueOf(id));//位置索引
+                Intent intent = new Intent(context,
+                        FTYDLNewlyComfigDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("buildDataBean",
+                        (ArrayList<? extends Parcelable>) buildDataBean);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
+    }
+
+    /*生产日报进入新建页面回调方法*/
+    public void setFTYDLNewlyLeftLister(final Context context, FTYDLNewlyBuildLeftAdapter buildleftAdapter,
+                                        final List<FTYDLFactoryDailyBean.DataBean> buildDataBean){
+        this.context = context;
+        this.buildleftAdapter = buildleftAdapter;
+        this.buildDataBean = buildDataBean;
+        buildleftAdapter.setmOnClickNewlyBuildLister(new FTYDLNewlyBuildLeftAdapter.OnClickNewlyBuildLister() {
+            @Override
+            public void myNewlyBuildClick(int id) {
+                String tvProProcedure = buildDataBean.get(id).getWorkingProcedure();
+                if (tvProProcedure.equals("裁床")) {
+                    isprodure = 1;
+                    spUtils.put(context, "FTYDLNewlyIsProdure", String.valueOf(isprodure));
+                } else if (tvProProcedure.equals("选择工序")) {
+                    ToastUtils.ShowToastMessage("选择工序后再新建", context);
+                    return;
+                } else {
+                    isprodure = 0;
+                    spUtils.put(context, "FTYDLNewlyIsProdure", String.valueOf(isprodure));
+                }
+                spUtils.put(context, "tvFTYDLBuildId", String.valueOf(id));//位置索引
+                Intent intent = new Intent(context,
+                        FTYDLNewlyComfigDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("buildDataBean",
+                        (ArrayList<? extends Parcelable>) buildDataBean);
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }
