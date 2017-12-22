@@ -27,6 +27,7 @@ import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.adapter.ftydladapter.FTYDLDetailAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLColCountBean;
+import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDailyBean;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDetailColorBean;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDetailSaveBean;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDetailSearchBean;
@@ -112,7 +113,7 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
     private String tvnewlyItem, tvnewlyDepartment, isprodure, tvnewlyctmtxt, tvnewlyDocumentary,
             tvnewlyFactory, tvnewlyOthers, tvnewlyProcedure, tvnyear, tvnmonth,
             tvnewpqty, tvTaskqty, tvnewMdl, tvnewlyProdcol, tvnewlyClippingNumber,
-            tvnewlyCompletedLastMonth, tvnewlyTotal, tvnewlyrecorder, tvnewlyrecordat, tvnewlyday1,
+            tvnewlyCompletedLastMonth, tvnewlyPrdstatus, tvnewlyrecorder, tvnewlyrecordat, tvnewlyday1,
             tvnewlyday2, tvnewlyday3, tvnewlyday4, tvnewlyday5, tvnewlyday6, tvnewlyday7,
             tvnewlyday8, tvnewlyday9, tvnewlyday10, tvnewlyday11, tvnewlyday12, tvnewlyday13,
             tvnewlyday14, tvnewlyday15, tvnewlyday16, tvnewlyday17, tvnewlyday18, tvnewlyday19,
@@ -149,7 +150,8 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
     private FTYDLMonthBean ftydlMonthBean;
 
     private FTYDLDetailSaveBean saveBean;//保存数据实体
-
+    List<FTYDLDailyBean.DataBean> detailBeenList =
+            new ArrayList<FTYDLDailyBean.DataBean>();
     private FTYDLDetailAdapter verticalAdatper;
 
     @Override
@@ -260,7 +262,7 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
         tv_config_clippingnumber.setText(tvnewlyCompletedLastMonth);//实裁数
         tv_config_totalcompletion.setText(tvnewlyCompletedLastMonth);//总完工数
         et_config_completedlastmonth.setText(tvnewlyCompletedLastMonth);//上月完工数
-        tv_config_state.setText(tvnewlyTotal);//状态
+        tv_config_state.setText(tvnewlyPrdstatus);//状态
         tv_config_recorder.setText(usernamerecoder);//制单人
         tv_config_recordat.setText(year + "/" + month + "/" + datetime);//制单时间
         String prodetailPredocdt = (year + "/" + month + "/" + datetime);
@@ -346,101 +348,534 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
 
     /*接收上一个页面传过来的点击的数据*/
     private void setSpUtils() {
+        detailBeenList = getIntent().getParcelableArrayListExtra("detailCopyBeenList");
         sp = getSharedPreferences("my_sp", 0);
-        isprodure = sp.getString("FTYDLLeftIsProdure", "");
+        int idpostion = Integer.parseInt(
+                sp.getString("tvFTYDLCopyId", ""));//接收的索引
+
+        isprodure = sp.getString("FTYDLLeftIsProdure", "");//是否是工序
         usernamerecoder = sp.getString("usernamerecoder", "");//登录人
         recordid = sp.getString("username", "");//制单人id(登录名)
-        tvnewlyItem = sp.getString("tvFTYDLLeftItem", "");//款号
-        tvnewlyctmtxt = sp.getString("tvFTYDLLeftCtmtxt", "");//客户
-        tvnewlyDocumentary = sp.getString("tvFTYDLLeftDocumentary", "");//跟单
-        tvnewlyFactory = sp.getString("tvFTYDLLeftFactory", "");//工厂
-        tvnewlyDepartment = sp.getString("tvFTYDLLeftFactoryTeams", "");//部门/组别
-        tvnewlyProcedure = sp.getString("tvFTYDLLeftProcedure", "");//工序
-        tvnewlyOthers = sp.getString("tvFTYDLLeftWorkers", "");//组别人数
-        tvnewpqty = sp.getString("tvFTYDLLeftPqty", "");//制单数
-        tvTaskqty = sp.getString("tvFTYDLLeftTaskqty", "");//任务数
-        tvnewMdl = sp.getString("tvFTYDLLeftMdl", "");//尺码
-        tvnewlyProdcol = sp.getString("tvFTYDLLeftProdcol", "");//花色
-        tvnewlyClippingNumber = sp.getString("tvFTYDLLeftFactcutqty",
-                "");//实裁数
-        tvnewlyCompletedLastMonth = sp.getString("tvFTYDLLeftSumCompletedQty",
-                "");//总完工数
-        tvnewlyTotal = sp.getString("tvFTYDLLeftPrdstatus", "");//状态
-        tvnewlyrecorder = sp.getString("tvFTYDLLeftRecorder", "");//制单人
-        tvnewlyrecordat = sp.getString("tvFTYDLLeftRecordat", "");//制单时间
-        tvnyear = sp.getString("tvFTYDLLeftYear", "");//年
-        tvnmonth = sp.getString("tvFTYDLLeftMonth", "");//月
-        tvnewlyday1 = sp.getString("tvFTYDLLeftDay1", "");//1
-        tvnewlyday2 = sp.getString("tvFTYDLLeftDay2", "");//2
-        tvnewlyday3 = sp.getString("tvFTYDLLeftDay3", "");//3
-        tvnewlyday4 = sp.getString("tvFTYDLLeftDay4", "");//4
-        tvnewlyday5 = sp.getString("tvFTYDLLeftDay5", "");//5
-        tvnewlyday6 = sp.getString("tvFTYDLLeftDay6", "");//6
-        tvnewlyday7 = sp.getString("tvFTYDLLeftDay7", "");//7
-        tvnewlyday8 = sp.getString("tvFTYDLLeftDay8", "");//8
-        tvnewlyday9 = sp.getString("tvFTYDLLeftDay9", "");//9
-        tvnewlyday10 = sp.getString("tvFTYDLLeftDay10", "");//10
-        tvnewlyday11 = sp.getString("tvFTYDLLeftDay11", "");//11
-        tvnewlyday12 = sp.getString("tvFTYDLLeftDay12", "");//12
-        tvnewlyday13 = sp.getString("tvFTYDLLeftDay13", "");//13
-        tvnewlyday14 = sp.getString("tvFTYDLLeftDay14", "");//14
-        tvnewlyday15 = sp.getString("tvFTYDLLeftDay15", "");//15
-        tvnewlyday16 = sp.getString("tvFTYDLLeftDay16", "");//16
-        tvnewlyday17 = sp.getString("tvFTYDLLeftDay17", "");//17
-        tvnewlyday18 = sp.getString("tvFTYDLLeftDay18", "");//18
-        tvnewlyday19 = sp.getString("tvFTYDLLeftDay19", "");//19
-        tvnewlyday20 = sp.getString("tvFTYDLLeftDay20", "");//20
-        tvnewlyday21 = sp.getString("tvFTYDLLeftDay21", "");//21
-        tvnewlyday22 = sp.getString("tvFTYDLLeftDay22", "");//22
-        tvnewlyday23 = sp.getString("tvFTYDLLeftDay23", "");//23
-        tvnewlyday24 = sp.getString("tvFTYDLLeftDay24", "");//24
-        tvnewlyday25 = sp.getString("tvFTYDLLeftDay25", "");//25
-        tvnewlyday26 = sp.getString("tvFTYDLLeftDay26", "");//26
-        tvnewlyday27 = sp.getString("tvFTYDLLeftDay27", "");//27
-        tvnewlyday28 = sp.getString("tvFTYDLLeftDay28", "");//28
-        tvnewlyday29 = sp.getString("tvFTYDLLeftDay29", "");//29
-        tvnewlyday30 = sp.getString("tvFTYDLLeftDay30", "");//30
-        tvnewlyday31 = sp.getString("tvFTYDLLeftDay31", "");//31
-        tvnewlySalid = sp.getString("tvFTYDLLeftSalesId", "");
-        id = sp.getString("tvFTYDLLeftId", "");//id
-        tvnewlyplanid = sp.getString("tvFTYDLLeftPlanId", "");//引用的工厂计划id
-        tvnewlysn = sp.getString("tvFTYDLLeftSn", "");//序列号
-        tvnewlycontractno = sp.getString("tvFTYDLLeftContractno", "");//销售合同号
-        tvnewlyinbill = sp.getString("tvFTYDLLeftInbill", "");//内部id
-        tvnewlyarea = sp.getString("tvFTYDLLeftArea", "");//片区号
-        tvnewlycompanytxt = sp.getString("tvFTYDLLeftCompanytxt", "");//公司名称
-        tvnewlypo = sp.getString("tvFTYDLLeftPo", "");//po
-        tvnewlyoitem = sp.getString("tvFTYDLLeftOitem", "");//原款号
-        tvnewlyctmid = sp.getString("tvFTYDLLeftCtmid", "");//客户id
-        tvnewlyctmcompanytxt = sp.getString("tvFTYDLLeftCtmcompanytxt",
-                "");//客户归属公司
-        tvnewlyprdtyp = sp.getString("tvFTYDLLeftPrdtyp", "");//产品大类
-        tvnewlylcdat = sp.getString("tvFTYDLLeftLcdat", "");//计划离厂日期
-        tvnewlylbdat = sp.getString("tvFTYDLLeftLbdat", "");//计划离岸日期
-        tvnewlystyp = sp.getString("tvFTYDLLeftStyp", "");//po类型
-        tvnewlyfsaler = sp.getString("tvFTYDLLeftFsaler", "");//外贸业务员
-        tvnewlypsaler = sp.getString("tvFTYDLLeftPsaler", "");//生产业务员
-        tvnewlymemo = sp.getString("tvFTYDLLeftMemo", "");//备注
-        tvnewlyunit = sp.getString("tvFTYDLLeftUnit", "");//单位
-        tvnewlymegitem = sp.getString("tvFTYDLLeftMegitem", "");//合并款号
-        tvnewlyteamname = sp.getString("tvFTYDLLeftTeamname", "");//外贸组别
-        tvnewlyrecordid = sp.getString("tvFTYDLLeftRecordid", "");//制单人id
-        tvnewlycutbdt = sp.getString("tvFTYDLLeftCutbdt", "");//开采日期
-        tvnewlysewbdt = sp.getString("tvFTYDLLeftSewbdt", "");//上线日期
-        tvnewlysewedt = sp.getString("tvFTYDLLeftSewedt", "");//完工日期
-        tvnewlysewDays = sp.getString("tvFTYDLLeftSewDays", "");//天数
-        tvnewlyperqty = sp.getString("tvFTYDLLeftPerqty", "");//人均件数
-        tvnewlycutamount = sp.getString("tvFTYDLLeftCutamount", "");//裁剪金额
-        tvnewlysewamount = sp.getString("tvFTYDLLeftSewamount", "");
-        tvnewlypackamount = sp.getString("tvFTYDLLeftPackamount", "");
-        tvnewlyamount = sp.getString("tvFTYDLLeftAmount", "");//总价
-        tvnewlyperMachineQty = sp.getString("tvFTYDLLeftPerMachineQty", "");//车间人均台产
-        tvnewlysumMachineQty = sp.getString("tvFTYDLLeftSumMachineQty", "");//台总产
-        tvnewlyprdmaster = sp.getString("tvFTYDLLeftPrdmaster", "");//生产主管
-        tvnewlyleftQty = sp.getString("tvFTYDLLeftLeftQty", "");//结余数量
-        tvnewlylastMonQty = sp.getString("tvFTYDLLeftLastMonQty", "");//上月结余数量
-        tvnewlyprddocumentaryid = sp.getString("tvFTYDLLeftPrdDocumentaryId", "");//跟单id
-        tvnewlyisdiffc = sp.getString("tvFTYDLLeftIsdiffc", "");//是否分色
+        if(detailBeenList.get(idpostion).getWorkingProcedure()==null){//工序
+            tvnewlyProcedure = "";
+        }else{
+            tvnewlyProcedure = detailBeenList.get(idpostion).getWorkingProcedure();
+        }
+
+        tvnewlyItem = detailBeenList.get(idpostion).getItem();//款号
+        if (detailBeenList.get(idpostion).getCtmtxt() == null) {//客户
+            tvnewlyctmtxt = "";
+        } else {
+            tvnewlyctmtxt = detailBeenList.get(idpostion).getCtmtxt();
+        }
+
+        if (detailBeenList.get(idpostion).getPrddocumentary() == null) {//跟单
+            tvnewlyDocumentary = "";
+        } else {
+            tvnewlyDocumentary = detailBeenList.get(idpostion).getPrddocumentary();
+        }
+
+        if (detailBeenList.get(idpostion).getSubfactory() == null) {//工厂
+            tvnewlyFactory = "";
+        } else {
+            tvnewlyFactory = detailBeenList.get(idpostion).getSubfactory();
+        }
+
+        if (detailBeenList.get(idpostion).getSubfactoryTeams() == null) {//部门组别
+            tvnewlyDepartment = "";
+        } else {
+            tvnewlyDepartment = detailBeenList.get(idpostion).getSubfactoryTeams();
+        }
+
+        if (detailBeenList.get(idpostion).getWorkers() == null) {//组别人数
+            tvnewlyOthers = "";
+        } else {
+            tvnewlyOthers = detailBeenList.get(idpostion).getWorkers();
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getPqty()) == null) {//制单数
+            tvnewpqty = "";
+        } else {
+            tvnewpqty = String.valueOf(detailBeenList.get(idpostion).getPqty());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getTaskqty()) == null) {//任务数
+            tvTaskqty = "";
+        } else {
+            tvTaskqty = String.valueOf(detailBeenList.get(idpostion).getTaskqty());
+        }
+
+        if (detailBeenList.get(idpostion).getMdl() == null) {//尺码
+            tvnewMdl = "";
+        } else {
+            tvnewMdl = detailBeenList.get(idpostion).getMdl();
+        }
+
+        if (detailBeenList.get(idpostion).getProdcol() == null) {//花色
+            tvnewlyProdcol = "";
+        } else {
+            tvnewlyProdcol = detailBeenList.get(idpostion).getProdcol();
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getFactcutqty()) == null) {//实裁数
+            tvnewlyClippingNumber = "";
+        } else {
+            tvnewlyClippingNumber = String.valueOf(detailBeenList.get(idpostion).getFactcutqty());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getSumCompletedQty()) == null) {//总完工数
+            tvnewlyCompletedLastMonth = "";
+        } else {
+            tvnewlyCompletedLastMonth = String.valueOf(detailBeenList.
+                    get(idpostion).getSumCompletedQty());
+        }
+
+        if (detailBeenList.get(idpostion).getPrdstatus() == null) {//状态
+            tvnewlyPrdstatus = "";
+        } else {
+            tvnewlyPrdstatus = detailBeenList.get(idpostion).getPrdstatus();
+        }
+
+        if (detailBeenList.get(idpostion).getRecorder() == null) {//制单人
+            tvnewlyrecorder = "";
+        } else {
+            tvnewlyrecorder = detailBeenList.get(idpostion).getRecorder();
+        }
+
+        if (detailBeenList.get(idpostion).getRecordat() == null) {//制单时间
+            tvnewlyrecordat = "";
+        } else {
+            tvnewlyrecordat = detailBeenList.get(idpostion).getRecordat();
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getYear()) == null) {//年
+            tvnyear = "";
+        } else {
+            tvnyear = String.valueOf(detailBeenList.get(idpostion).getYear());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getMonth()) == null) {//月
+            tvnmonth = "";
+        } else {
+            tvnmonth = String.valueOf(detailBeenList.get(idpostion).getMonth());
+        }
+
+        if (detailBeenList.get(idpostion).getDay1() == null) {//1
+            tvnewlyday1 = "";
+        } else {
+            tvnewlyday1 = detailBeenList.get(idpostion).getDay1();
+        }
+
+        if (detailBeenList.get(idpostion).getDay2() == null) {//2
+            tvnewlyday2 = "";
+        } else {
+            tvnewlyday2 = detailBeenList.get(idpostion).getDay2();
+        }
+
+        if (detailBeenList.get(idpostion).getDay3() == null) {//3
+            tvnewlyday3 = "";
+        } else {
+            tvnewlyday3 = detailBeenList.get(idpostion).getDay3();
+        }
+
+        if (detailBeenList.get(idpostion).getDay4() == null) {//4
+            tvnewlyday4 = "";
+        } else {
+            tvnewlyday4 = detailBeenList.get(idpostion).getDay4();
+        }
+
+        if (detailBeenList.get(idpostion).getDay5() == null) {//5
+            tvnewlyday5 = "";
+        } else {
+            tvnewlyday5 = detailBeenList.get(idpostion).getDay5();
+        }
+
+        if (detailBeenList.get(idpostion).getDay6() == null) {//6
+            tvnewlyday6 = "";
+        } else {
+            tvnewlyday6 = detailBeenList.get(idpostion).getDay6();
+        }
+
+        if (detailBeenList.get(idpostion).getDay7() == null) {//7
+            tvnewlyday7 = "";
+        } else {
+            tvnewlyday7 = detailBeenList.get(idpostion).getDay7();
+        }
+
+        if (detailBeenList.get(idpostion).getDay8() == null) {//8
+            tvnewlyday8 = "";
+        } else {
+            tvnewlyday8 = detailBeenList.get(idpostion).getDay8();
+        }
+
+        if (detailBeenList.get(idpostion).getDay9() == null) {//9
+            tvnewlyday9 = "";
+        } else {
+            tvnewlyday9 = detailBeenList.get(idpostion).getDay9();
+        }
+
+        if (detailBeenList.get(idpostion).getDay10() == null) {//10
+            tvnewlyday10 = "";
+        } else {
+            tvnewlyday10 = detailBeenList.get(idpostion).getDay10();
+        }
+
+        if (detailBeenList.get(idpostion).getDay11() == null) {//11
+            tvnewlyday11 = "";
+        } else {
+            tvnewlyday11 = detailBeenList.get(idpostion).getDay11();
+        }
+
+        if (detailBeenList.get(idpostion).getDay12() == null) {//12
+            tvnewlyday12 = "";
+        } else {
+            tvnewlyday12 = detailBeenList.get(idpostion).getDay12();
+        }
+
+        if (detailBeenList.get(idpostion).getDay13() == null) {//13
+            tvnewlyday13 = "";
+        } else {
+            tvnewlyday13 = detailBeenList.get(idpostion).getDay13();
+        }
+
+        if (detailBeenList.get(idpostion).getDay14() == null) {//14
+            tvnewlyday14 = "";
+        } else {
+            tvnewlyday14 = detailBeenList.get(idpostion).getDay14();
+        }
+
+        if (detailBeenList.get(idpostion).getDay15() == null) {//15
+            tvnewlyday15 = "";
+        } else {
+            tvnewlyday15 = detailBeenList.get(idpostion).getDay15();
+        }
+
+        if (detailBeenList.get(idpostion).getDay16() == null) {//16
+            tvnewlyday16 = "";
+        } else {
+            tvnewlyday16 = detailBeenList.get(idpostion).getDay16();
+        }
+
+        if (detailBeenList.get(idpostion).getDay17() == null) {//17
+            tvnewlyday17 = "";
+        } else {
+            tvnewlyday17 = detailBeenList.get(idpostion).getDay17();
+        }
+
+        if (detailBeenList.get(idpostion).getDay18() == null) {//18
+            tvnewlyday18 = "";
+        } else {
+            tvnewlyday18 = detailBeenList.get(idpostion).getDay18();
+        }
+
+        if (detailBeenList.get(idpostion).getDay19() == null) {//19
+            tvnewlyday19 = "";
+        } else {
+            tvnewlyday19 = detailBeenList.get(idpostion).getDay19();
+        }
+
+        if (detailBeenList.get(idpostion).getDay20() == null) {//20
+            tvnewlyday20 = "";
+        } else {
+            tvnewlyday20 = detailBeenList.get(idpostion).getDay20();
+        }
+
+        if (detailBeenList.get(idpostion).getDay21() == null) {//21
+            tvnewlyday21 = "";
+        } else {
+            tvnewlyday21 = detailBeenList.get(idpostion).getDay21();
+        }
+
+        if (detailBeenList.get(idpostion).getDay22() == null) {//22
+            tvnewlyday22 = "";
+        } else {
+            tvnewlyday22 = detailBeenList.get(idpostion).getDay22();
+        }
+
+        if (detailBeenList.get(idpostion).getDay23() == null) {//23
+            tvnewlyday23 = "";
+        } else {
+            tvnewlyday23 = detailBeenList.get(idpostion).getDay23();
+        }
+
+        if (detailBeenList.get(idpostion).getDay24() == null) {//24
+            tvnewlyday24 = "";
+        } else {
+            tvnewlyday24 = detailBeenList.get(idpostion).getDay24();
+        }
+
+        if (detailBeenList.get(idpostion).getDay25() == null) {//25
+            tvnewlyday25 = "";
+        } else {
+            tvnewlyday25 = detailBeenList.get(idpostion).getDay25();
+        }
+
+        if (detailBeenList.get(idpostion).getDay26() == null) {//26
+            tvnewlyday26 = "";
+        } else {
+            tvnewlyday26 = detailBeenList.get(idpostion).getDay26();
+        }
+
+        if (detailBeenList.get(idpostion).getDay27() == null) {//27
+            tvnewlyday27 = "";
+        } else {
+            tvnewlyday27 = detailBeenList.get(idpostion).getDay27();
+        }
+
+        if (detailBeenList.get(idpostion).getDay28() == null) {//28
+            tvnewlyday28 = "";
+        } else {
+            tvnewlyday28 = detailBeenList.get(idpostion).getDay28();
+        }
+
+        if (detailBeenList.get(idpostion).getDay29() == null) {//29
+            tvnewlyday29 = "";
+        } else {
+            tvnewlyday29 = detailBeenList.get(idpostion).getDay29();
+        }
+
+        if (detailBeenList.get(idpostion).getDay30() == null) {//30
+            tvnewlyday30 = "";
+        } else {
+            tvnewlyday30 = detailBeenList.get(idpostion).getDay30();
+        }
+
+        if (detailBeenList.get(idpostion).getDay31() == null) {//31
+            tvnewlyday31 = "";
+        } else {
+            tvnewlyday31 = detailBeenList.get(idpostion).getDay31();
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getSalesid()) == null) {//排单id
+            tvnewlySalid = "";
+        } else {
+            tvnewlySalid = String.valueOf(detailBeenList.get(idpostion).getSalesid());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getID()) == null) {//id
+            id = "";
+        } else {
+            id = String.valueOf(detailBeenList.get(idpostion).getID());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getPlanid()) == null) {///引用的工厂计划id
+            tvnewlyplanid = "";
+        } else {
+            tvnewlyplanid = String.valueOf(detailBeenList.get(idpostion).getPlanid());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getSn()) == null) {//序列号
+            tvnewlysn = "";
+        } else {
+            tvnewlysn = String.valueOf(detailBeenList.get(idpostion).getSn());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getContractno()) == null) {//销售合同号
+            tvnewlycontractno = "";
+        } else {
+            tvnewlycontractno = String.valueOf(detailBeenList.get(idpostion).getContractno());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getInbill()) == null) {//内部id
+            tvnewlyinbill = "";
+        } else {
+            tvnewlyinbill = String.valueOf(detailBeenList.get(idpostion).getInbill());
+        }
+        if (String.valueOf(detailBeenList.get(idpostion).getArea()) == null) {//片区号
+            tvnewlyarea = "";
+        } else {
+            tvnewlyarea = String.valueOf(detailBeenList.get(idpostion).getArea());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getCompanytxt()) == null) {//公司名称
+            tvnewlycompanytxt = "";
+        } else {
+            tvnewlycompanytxt = String.valueOf(detailBeenList.get(idpostion).getCompanytxt());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getPo()) == null) {//po
+            tvnewlypo = "";
+        } else {
+            tvnewlypo = String.valueOf(detailBeenList.get(idpostion).getPo());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getOitem()) == null) {//原款号
+            tvnewlyoitem = "";
+        } else {
+            tvnewlyoitem = String.valueOf(detailBeenList.get(idpostion).getOitem());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getCtmid()) == null) {//客户id
+            tvnewlyctmid = "";
+        } else {
+            tvnewlyctmid = String.valueOf(detailBeenList.get(idpostion).getCtmid());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getCtmcompanytxt()) == null) {//客户归属公司
+            tvnewlyctmcompanytxt = "";
+        } else {
+            tvnewlyctmcompanytxt = String.valueOf(detailBeenList.get(idpostion).getCtmcompanytxt());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getPrdtyp()) == null) {//产品大类
+            tvnewlyprdtyp = "";
+        } else {
+            tvnewlyprdtyp = String.valueOf(detailBeenList.get(idpostion).getPrdtyp());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getLcdat()) == null) {//计划离厂日期
+            tvnewlylcdat = "";
+        } else {
+            tvnewlylcdat = String.valueOf(detailBeenList.get(idpostion).getLcdat());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getLbdat()) == null) {//计划离岸日期
+            tvnewlylbdat = "";
+        } else {
+            tvnewlylbdat = String.valueOf(detailBeenList.get(idpostion).getLbdat());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getStyp()) == null) {//po类型
+            tvnewlystyp = "";
+        } else {
+            tvnewlystyp = String.valueOf(detailBeenList.get(idpostion).getStyp());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getFsaler()) == null) {//外贸业务员
+            tvnewlyfsaler = "";
+        } else {
+            tvnewlyfsaler = String.valueOf(detailBeenList.get(idpostion).getFsaler());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getPsaler()) == null) {//生产业务员
+            tvnewlypsaler = "";
+        } else {
+            tvnewlypsaler = String.valueOf(detailBeenList.get(idpostion).getPsaler());
+        }
+        if (String.valueOf(detailBeenList.get(idpostion).getMemo()) == null) {//备注
+            tvnewlymemo = "";
+        } else {
+            tvnewlymemo = String.valueOf(detailBeenList.get(idpostion).getMemo());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getUnit()) == null) {//单位
+            tvnewlyunit = "";
+        } else {
+            tvnewlyunit = String.valueOf(detailBeenList.get(idpostion).getUnit());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getMegitem()) == null) {//合并款号
+            tvnewlymegitem = "";
+        } else {
+            tvnewlymegitem = String.valueOf(detailBeenList.get(idpostion).getMegitem());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getTeamname()) == null) {//外贸组别
+            tvnewlyteamname = "";
+        } else {
+            tvnewlyteamname = String.valueOf(detailBeenList.get(idpostion).getTeamname());
+        }
+        if (String.valueOf(detailBeenList.get(idpostion).getRecordid()) == null) {//制单人id
+            tvnewlyrecordid = "";
+        } else {
+            tvnewlyrecordid = String.valueOf(detailBeenList.get(idpostion).getRecordid());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getCutbdt()) == null) {//开采日期
+            tvnewlycutbdt = "";
+        } else {
+            tvnewlycutbdt = String.valueOf(detailBeenList.get(idpostion).getCutbdt());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getSewbdt()) == null) {//上线日期
+            tvnewlysewbdt = "";
+        } else {
+            tvnewlysewbdt = String.valueOf(detailBeenList.get(idpostion).getSewbdt());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getSewedt()) == null) {//完工日期
+            tvnewlysewedt = "";
+        } else {
+            tvnewlysewedt = String.valueOf(detailBeenList.get(idpostion).getSewedt());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getSewDays()) == null) {//天数
+            tvnewlysewDays = "";
+        } else {
+            tvnewlysewDays = String.valueOf(detailBeenList.get(idpostion).getSewDays());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getPerqty()) == null) {//人均件数
+            tvnewlyperqty = "";
+        } else {
+            tvnewlyperqty = String.valueOf(detailBeenList.get(idpostion).getPerqty());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getCutamount()) == null) {//裁剪金额
+            tvnewlycutamount = "";
+        } else {
+            tvnewlycutamount = String.valueOf(detailBeenList.get(idpostion).getCutamount());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getSewamount()) == null) {
+            tvnewlysewamount = "";
+        } else {
+            tvnewlysewamount = String.valueOf(detailBeenList.get(idpostion).getSewamount());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getPackamount()) == null) {
+            tvnewlypackamount = "";
+        } else {
+            tvnewlypackamount = String.valueOf(detailBeenList.get(idpostion).getPackamount());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getAmount()) == null) {//总价
+            tvnewlyamount = "";
+        } else {
+            tvnewlyamount = String.valueOf(detailBeenList.get(idpostion).getAmount());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getPerMachineQty()) == null) {//车间人均台产
+            tvnewlyperMachineQty = "";
+        } else {
+            tvnewlyperMachineQty = String.valueOf(detailBeenList.get(idpostion).getPerMachineQty());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getSumMachineQty()) == null) {//台总产
+            tvnewlysumMachineQty = "";
+        } else {
+            tvnewlysumMachineQty = String.valueOf(detailBeenList.get(idpostion).getSumMachineQty());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getPrdmaster()) == null) {//生产主管
+            tvnewlyprdmaster = "";
+        } else {
+            tvnewlyprdmaster = String.valueOf(detailBeenList.get(idpostion).getPrdmaster());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getLeftQty()) == null) {//结余数量
+            tvnewlyleftQty = "";
+        } else {
+            tvnewlyleftQty = String.valueOf(detailBeenList.get(idpostion).getLeftQty());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getLastMonQty()) == null) {//上月结余数量
+            tvnewlylastMonQty = "";
+        } else {
+            tvnewlylastMonQty = String.valueOf(detailBeenList.get(idpostion).getLastMonQty());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getPrddocumentaryid()) == null) {//跟单id
+            tvnewlyprddocumentaryid = "";
+        } else {
+            tvnewlyprddocumentaryid = String.valueOf(detailBeenList.get(idpostion).getPrddocumentaryid());
+        }
+
+        if (String.valueOf(detailBeenList.get(idpostion).getIsdiffc()) == null) {//是否分色
+            tvnewlyisdiffc = "";
+        } else {
+            tvnewlyisdiffc = String.valueOf(detailBeenList.get(idpostion).getIsdiffc());
+        }
         Time t = new Time("GMT+8"); // or Time t=new Time("GMT+8");
         t.setToNow(); // 取得系统时间。
         year = t.year;
@@ -610,7 +1045,7 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
         saveBean.setAmount(tvnewlyamount);
         saveBean.setPerMachineQty(tvnewlyperMachineQty);
         saveBean.setSumMachineQty(tvnewlysumMachineQty);
-        saveBean.setPrdstatus(tvnewlyTotal);
+        saveBean.setPrdstatus(tvnewlyPrdstatus);
         saveBean.setPrdmaster(tvnewlyprdmaster);
         saveBean.setPrddocumentary(tvnewlyDocumentary);
         saveBean.setTaskqty(tvTaskqty);
@@ -3661,7 +4096,7 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
 
         String prosavestate = sp.getString("prosavestate", "");//修改的状态
         if (prosavestate.isEmpty()) {
-            savestate = tvnewlyTotal;
+            savestate = tvnewlyPrdstatus;
         } else {
             savestate = prosavestate;
         }

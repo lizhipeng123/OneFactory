@@ -30,9 +30,7 @@ import java.util.regex.Pattern;
  * Created by lzp on 16/1/18.
  */
 public class Tools {
-    /*
-     * 距离转换
-	 */
+    /*距离转换*/
     public static String distance(Double distance) {
 //        distance = distance / 1000;
 //        DecimalFormat df = new DecimalFormat("######0.00");

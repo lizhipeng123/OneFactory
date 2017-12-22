@@ -10,11 +10,7 @@ import java.util.Date;
  * @author djx
  */
 public class FileUtils {
-    /**
-     * 设置文件的名称
-     *
-     * @return fileName
-     */
+    /*设置文件的名称*/
     public static String setFileName() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssMS");
         Date curDate = new Date(System.currentTimeMillis());// 获取当前时间
@@ -22,12 +18,7 @@ public class FileUtils {
         return str;
     }
 
-    /**
-     * 获得缓存文件的大小
-     *
-     * @param file
-     * @return
-     */
+    /*获得缓存文件的大小*/
     public static int findAllFileSize(File file) {
         int countSize = 0;
         if (file.isDirectory()) {
@@ -45,11 +36,7 @@ public class FileUtils {
         return countSize;
     }
 
-    /**
-     * 删除缓存文件
-     *
-     * @param file
-     */
+    /*删除缓存文件*/
     public static void deleteAllFileSize(File file) {
         if (file.isDirectory()) {
             File[] files = file.listFiles();
@@ -65,12 +52,7 @@ public class FileUtils {
         }
     }
 
-    /**
-     * 删除单个文件
-     *
-     * @param filePath 被删除文件的文件名
-     * @return 文件删除成功返回true，否则返回false
-     */
+    /*删除单个文件*/
     public static boolean deleteFile(String filePath) {
         File file = new File(filePath);
         if (file.isFile() && file.exists()) {

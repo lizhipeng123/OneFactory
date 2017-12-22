@@ -120,7 +120,7 @@ public class FTYDLNewlyComfigDetailActivity
     private String nameid, isprodure, tvnewlyItem, tvnewlyctmtxt, tvnewlyDocumentary,
             tvnewlyFactory, tvnewlyDepartment, tvnewlyProcedure, tvnewlyOthers,
             tvnewSingularSystem, tvnewlyTaskqty, tvnewlyMdl, tvnewlyProcol,
-            tvnewlyClippingNumber, tvnewlyCompletedLastMonth, tvnewlyTotal, pagesize,
+            tvnewlyClippingNumber, tvnewlyCompletedLastMonth, tvnewlyPrdstatus, pagesize,
             ischeckedd, recordid, salesid, productionDocumentaryid, productionOthers;
     //内部数值变量赋值
     private String productionTaskNumber, totalBalanceamount, productionMonth,
@@ -260,7 +260,7 @@ public class FTYDLNewlyComfigDetailActivity
         et_config_color.setText(tvnewlyProcol);//花色
         tv_config_clippingnumber.setText(tvnewlyClippingNumber);//实裁数
         tv_config_totalcompletion.setText(tvnewlyCompletedLastMonth);//总完工数
-        tv_config_state.setText(tvnewlyTotal);//状态
+        tv_config_state.setText(tvnewlyPrdstatus);//状态
         tv_config_cutdate.setText(year + "/" + month + "/" + datetime);//裁床时间
         if (isprodure.equals("0")) {
             ll_config_singularsystem.setVisibility(View.VISIBLE);
@@ -330,7 +330,7 @@ public class FTYDLNewlyComfigDetailActivity
                 "");//实裁数
         tvnewlyCompletedLastMonth = sp.getString("tvFTYDLNewlySumCompletedQty",
                 "");//总完工数
-        tvnewlyTotal = sp.getString("tvFTYDLNewlyPrdstatus", "");//状态
+        tvnewlyPrdstatus = sp.getString("tvFTYDLNewlyPrdstatus", "");//状态
         pagesize = sp.getString("clumnsFTYDLpageSize", "");//每页数量
         ischeckedd = sp.getString("FTYDLCheckedd", "");//选择制单人是否为空
         recordid = sp.getString("username", "");//制单人id(登录名)
@@ -1978,7 +1978,7 @@ public class FTYDLNewlyComfigDetailActivity
         }
 
         if (proPrdstatusTitle.equals("")) {//状态
-            tvnewlyTotalCompletionn = tvnewlyTotal;
+            tvnewlyTotalCompletionn = tvnewlyPrdstatus;
         } else {
             tvnewlyTotalCompletionn = proPrdstatusTitle;
         }

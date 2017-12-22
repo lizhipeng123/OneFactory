@@ -125,6 +125,7 @@
             android:name=".activity.work.ftydl.FTYDLSearchActivity"
             android:configChanges="keyboardHidden"
             android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="portrait" />
 
         <!-- 查货跟踪查询类 -->

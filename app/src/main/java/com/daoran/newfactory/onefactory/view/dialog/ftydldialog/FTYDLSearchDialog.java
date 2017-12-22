@@ -5,11 +5,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -49,7 +51,9 @@ public class FTYDLSearchDialog extends Dialog {
         super(context);
     }
 
-    public FTYDLSearchDialog(Activity content, int theme, View.OnClickListener mClickListener, View.OnClickListener mCancleLinstener) {
+    public FTYDLSearchDialog(Activity content, int theme,
+                             View.OnClickListener mClickListener,
+                             View.OnClickListener mCancleLinstener) {
         super(content, theme);
         this.mClickListener = mClickListener;
         this.mCancleLinstener = mCancleLinstener;
@@ -64,9 +68,7 @@ public class FTYDLSearchDialog extends Dialog {
         initViews();
     }
 
-    /**
-     * 实例化控件
-     */
+    /*实例化控件*/
     private void getViews() {
         etprodialogStyle = (EditText) findViewById(R.id.etprodialogStyle);//款号
         etprodialogFactory = (EditText) findViewById(R.id.etprodialogFactory);
@@ -81,9 +83,7 @@ public class FTYDLSearchDialog extends Dialog {
         setEditTextInhibitInputSpace(etprodialogRecode);
     }
 
-    /**
-     * 初始化控件
-     */
+    /*初始化控件*/
     private void initViews() {
         sp = content.getSharedPreferences("my_sp", 0);
         Window dialogWindow = this.getWindow();
@@ -162,9 +162,7 @@ public class FTYDLSearchDialog extends Dialog {
         this.setCancelable(true);
     }
 
-    /**
-     * 监听款号输入信息
-     */
+    /*监听款号输入信息*/
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -187,11 +185,9 @@ public class FTYDLSearchDialog extends Dialog {
         }
     };
 
-    /**
-     * 监听工厂输入信息
-     * 初始化的工厂信息是空的，在添加过之后，将信息保存到存储信息中，
-     * 供procationActivity调用查询
-     */
+    /*监听工厂输入信息*/
+    /*初始化的工厂信息是空的，在添加过之后，将信息保存到存储信息中*/
+    /* 供procationActivity调用查询*/
     private TextWatcher etprodialog = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -214,11 +210,9 @@ public class FTYDLSearchDialog extends Dialog {
         }
     };
 
-    /**
-     * 监听制单人输入信息
-     * 初始为当前登录用户，这里方法修改过制单人之后，
-     * 将新添加的制单人替换到存储信息中，再传到procationActivity中进行查询
-     */
+    /*监听制单人输入信息*/
+    /*初始为当前登录用户，这里方法修改过制单人之后/
+    /*将新添加的制单人替换到存储信息中，再传到procationActivity中进行查询*/
     private TextWatcher etproRecode = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -241,11 +235,8 @@ public class FTYDLSearchDialog extends Dialog {
         }
     };
 
-    /**
-     * 禁止EditText输入空格
-     *
-     * @param editText
-     */
+
+    /*禁止EditText输入空格*/
     public static void setEditTextInhibitInputSpace(EditText editText) {
         InputFilter filter = new InputFilter() {
             @Override
