@@ -33,6 +33,7 @@ import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.Listener.SelectItemInterface;
+import com.daoran.newfactory.onefactory.util.Listener.SetListener;
 import com.daoran.newfactory.onefactory.util.file.json.StringUtil;
 import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 import com.daoran.newfactory.onefactory.util.utils.Util;
@@ -84,13 +85,11 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
     private TextView tv_visibi;//空数据显示的页面信息
     private ScrollView scroll_content;//生产日报可上下滑动的视图
     private Spinner spinnProPageClumns;//选择每页显示的条目数
-    int keyHeight = 0;
-    int screenHeight = 0;
     //本地变动的变量
-    private String configid, FTYDLSearchName, FTYDLSearchItem,ClumnsFTYDLPage;
+    private String configid, FTYDLSearchName, FTYDLSearchItem, ClumnsFTYDLPage;
     //接收的变量
-    private String FTYDLName,FTYDLDialogItem,FTYDLDialogFactory,FTYDLDialogProcedure,
-            productionleftItem,FTYDLStis;
+    private String FTYDLName, FTYDLDialogItem, FTYDLDialogFactory, FTYDLDialogProcedure,
+            productionleftItem, FTYDLStis;
 
     public static FTYDLSearchActivity FTYDLSearchinstance;//本页面实例
 
@@ -99,8 +98,6 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_production);//显示主页面
         FTYDLSearchinstance = this;
-        screenHeight = this.getWindowManager().getDefaultDisplay().getHeight();
-        keyHeight = screenHeight / 3;
         getViews();
         initView();
         setListener();
@@ -181,7 +178,7 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
     }
 
     /*接收数据*/
-    private void setSPUtils(){
+    private void setSPUtils() {
         sp = getSharedPreferences("my_sp", 0);
         FTYDLName = sp.getString("FTYDLName",
                 "");//条件查询dialog中监听制单人的输入信息
@@ -211,136 +208,79 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
             FTYDLSearchName = "";//如果不为空，则查询查货跟踪穿过来的款号
         }
 
-        if (ClumnsFTYDLPage.equals("")) {
+        if (ClumnsFTYDLPage.equals("")) {//默认每页显示的条数
             ClumnsFTYDLPage = String.valueOf(10);
         }
-        if (FTYDLDialogProcedure.equals("全部")) {
-            boolean stris = Boolean.parseBoolean(FTYDLStis);
-            Gson gson = new Gson();
-            FTYDLSearchBean FTYDLSearchBean = new FTYDLSearchBean();
-            FTYDLSearchBean.Conditions conditions = FTYDLSearchBean.new Conditions();
-            conditions.setItem(FTYDLSearchItem);
-            conditions.setPrddocumentary(FTYDLSearchName);
-            conditions.setSubfactory(FTYDLDialogFactory);
-            conditions.setWorkingProcedure("");
-            conditions.setPrddocumentaryisnull(stris);
-            FTYDLSearchBean.setConditions(conditions);
-            FTYDLSearchBean.setPageNum(0);
-            FTYDLSearchBean.setPageSize(Integer.parseInt(ClumnsFTYDLPage));
-            String gsonbeanStr = gson.toJson(FTYDLSearchBean);
-            if (NetWork.isNetWorkAvailable(this)) {
-                final int finalGetsize = Integer.parseInt(ClumnsFTYDLPage);
-                ResponseDialog.showLoading(this, "正在查询");
-                OkHttpUtils.postString()
-                        .url(str)
-                        .content(gsonbeanStr)
-                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
+        if (FTYDLDialogProcedure.equals("全部")) {//工序选择
+            FTYDLDialogProcedure = "";
+        }
+        boolean stris = Boolean.parseBoolean(FTYDLStis);
+        Gson gson = new Gson();
+        FTYDLSearchBean FTYDLSearchBean = new FTYDLSearchBean();
+        FTYDLSearchBean.Conditions conditions = FTYDLSearchBean.new Conditions();
+        conditions.setItem(FTYDLSearchItem);
+        conditions.setPrddocumentary(FTYDLSearchName);
+        conditions.setSubfactory(FTYDLDialogFactory);
+        conditions.setWorkingProcedure(FTYDLDialogProcedure);
+        conditions.setPrddocumentaryisnull(stris);
+        FTYDLSearchBean.setConditions(conditions);
+        FTYDLSearchBean.setPageNum(0);
+        FTYDLSearchBean.setPageSize(Integer.parseInt(ClumnsFTYDLPage));
+        String gsonbeanStr = gson.toJson(FTYDLSearchBean);/*字符串转为json字符串*/
+        if (NetWork.isNetWorkAvailable(this)) {
+            final int finalGetsize = Integer.parseInt(ClumnsFTYDLPage);
+            ResponseDialog.showLoading(this, "正在查询");
+            OkHttpUtils.postString()
+                    .url(str)
+                    .content(gsonbeanStr)
+                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                            ResponseDialog.closeLoading();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            try {
+                                String ress = response.replace("\\", "");
+                                String ression = StringUtil.sideTrim(ress, "\"");
+                                detailBean = new Gson().fromJson(ression, FTYDLDailyBean.class);
+                                detailBeenList = detailBean.getData();
+                                if (detailBean.getTotalCount() != 0) {
+                                    ll_visibi.setVisibility(View.GONE);
+                                    scroll_content.setVisibility(View.VISIBLE);
+                                    System.out.print(detailBeenList);
+                                    pageCount = detailBean.getTotalCount();
+                                    String count = String.valueOf(pageCount / finalGetsize + 1);
+                                    tvSignPage.setText(count);
+                                    mLeftAdapter = new FTYDLSearchLeftAdapter(FTYDLSearchActivity.this, detailBeenList);
+                                    lv_pleft.setAdapter(mLeftAdapter);
+                                    adapter = new FTYDLSearchAdapter(FTYDLSearchActivity.this, detailBeenList);
+                                    lv_data.setAdapter(adapter);
+                                    SetListener setListener = new SetListener();
+                                    setListener.setFTYDLSearchLister(
+                                            FTYDLSearchActivity.this, adapter, detailBeenList);
+                                    setListener.setFTYDLCopyLister(
+                                            FTYDLSearchActivity.this, mLeftAdapter, detailBeenList
+                                    );
+                                } else {
+                                    ll_visibi.setVisibility(View.VISIBLE);
+                                    scroll_content.setVisibility(View.GONE);
+                                    tv_visibi.setText("没有更多信息");
+                                }
+                                ResponseDialog.closeLoading();
+                            } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
                                 ResponseDialog.closeLoading();
                             }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                try {
-                                    /*成功返回的结果*/
-                                    String ress = response.replace("\\", "");
-                                    String ression = StringUtil.sideTrim(ress, "\"");
-                                    detailBean = new Gson().fromJson(ression, FTYDLDailyBean.class);
-                                    detailBeenList = detailBean.getData();
-                                    if (detailBean.getTotalCount() != 0) {
-                                        ll_visibi.setVisibility(View.GONE);
-                                        scroll_content.setVisibility(View.VISIBLE);
-                                        pageCount = detailBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / finalGetsize + 1);
-                                        tvSignPage.setText(count);
-                                        mLeftAdapter = new FTYDLSearchLeftAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        lv_pleft.setAdapter(mLeftAdapter);
-                                        adapter = new FTYDLSearchAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        lv_data.setAdapter(adapter);
-                                    } else {
-                                        ll_visibi.setVisibility(View.VISIBLE);
-                                        scroll_content.setVisibility(View.GONE);
-                                        tv_visibi.setText("没有更多信息");
-                                    }
-                                    ResponseDialog.closeLoading();
-                                } catch (JsonSyntaxException e) {
-                                    e.printStackTrace();
-                                    ResponseDialog.closeLoading();
-                                }
-                            }
-                        });
-            } else {
-                ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", FTYDLSearchActivity.this);
-            }
+                        }
+                    });
         } else {
-            boolean stris = Boolean.parseBoolean(FTYDLStis);
-            Gson gson = new Gson();
-            FTYDLSearchBean FTYDLSearchBean = new FTYDLSearchBean();
-            FTYDLSearchBean.Conditions conditions = FTYDLSearchBean.new Conditions();
-            conditions.setItem(FTYDLSearchItem);
-            conditions.setPrddocumentary(FTYDLSearchName);
-            conditions.setSubfactory(FTYDLDialogFactory);
-            conditions.setWorkingProcedure(FTYDLDialogProcedure);
-            conditions.setPrddocumentaryisnull(stris);
-            FTYDLSearchBean.setConditions(conditions);
-            FTYDLSearchBean.setPageNum(0);
-            FTYDLSearchBean.setPageSize(Integer.parseInt(ClumnsFTYDLPage));
-            String gsonbeanStr = gson.toJson(FTYDLSearchBean);/*字符串转为json字符串*/
-            if (NetWork.isNetWorkAvailable(this)) {
-                final int finalGetsize = Integer.parseInt(ClumnsFTYDLPage);
-                ResponseDialog.showLoading(this, "正在查询");
-                OkHttpUtils.postString()
-                        .url(str)
-                        .content(gsonbeanStr)
-                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                e.printStackTrace();
-                                ResponseDialog.closeLoading();
-                            }
+            ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", FTYDLSearchActivity.this);
 
-                            @Override
-                            public void onResponse(String response, int id) {
-                                try {
-                                    System.out.print(response);
-                                    String ress = response.replace("\\", "");
-                                    System.out.print(ress);
-                                    String ression = StringUtil.sideTrim(ress, "\"");
-                                    System.out.print(ression);
-                                    detailBean = new Gson().fromJson(ression, FTYDLDailyBean.class);
-                                    detailBeenList = detailBean.getData();
-                                    if (detailBean.getTotalCount() != 0) {
-                                        ll_visibi.setVisibility(View.GONE);
-                                        scroll_content.setVisibility(View.VISIBLE);
-                                        System.out.print(detailBeenList);
-                                        pageCount = detailBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / finalGetsize + 1);
-                                        tvSignPage.setText(count);
-                                        mLeftAdapter = new FTYDLSearchLeftAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        lv_pleft.setAdapter(mLeftAdapter);
-                                        adapter = new FTYDLSearchAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        lv_data.setAdapter(adapter);
-                                    } else {
-                                        ll_visibi.setVisibility(View.VISIBLE);
-                                        scroll_content.setVisibility(View.GONE);
-                                        tv_visibi.setText("没有更多信息");
-                                    }
-                                    ResponseDialog.closeLoading();
-                                } catch (JsonSyntaxException e) {
-                                    e.printStackTrace();
-                                    ResponseDialog.closeLoading();
-                                }
-                            }
-                        });
-            } else {
-                ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", FTYDLSearchActivity.this);
-            }
         }
     }
 
@@ -360,140 +300,81 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
             ClumnsFTYDLPage = String.valueOf(10);
         }
         if (FTYDLDialogProcedure.equals("全部")) {
-            boolean stris = Boolean.parseBoolean(FTYDLStis);
-            pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
-            int index = pageIndex - 1;
-            Gson gson = new Gson();
-            FTYDLSearchBean FTYDLSearchBean = new FTYDLSearchBean();
-            FTYDLSearchBean.Conditions conditions = FTYDLSearchBean.new Conditions();
-            conditions.setItem(FTYDLSearchItem);
-            conditions.setPrddocumentary(FTYDLSearchName);
-            conditions.setSubfactory(FTYDLDialogFactory);
-            conditions.setWorkingProcedure("");
-            conditions.setPrddocumentaryisnull(stris);
-            FTYDLSearchBean.setConditions(conditions);
-            FTYDLSearchBean.setPageNum(index);
-            FTYDLSearchBean.setPageSize(Integer.parseInt(ClumnsFTYDLPage));
-            String gsonbeanStr = gson.toJson(FTYDLSearchBean);
-            if (NetWork.isNetWorkAvailable(this)) {
-                ResponseDialog.showLoading(this, "正在查询");
-                final int finalGetsize = Integer.parseInt(ClumnsFTYDLPage);
-                OkHttpUtils.postString()
-                        .url(str)
-                        .content(gsonbeanStr)
-                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
+            FTYDLDialogProcedure = "";
+        }
+        boolean stris = Boolean.parseBoolean(FTYDLStis);
+        pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
+        int index = pageIndex - 1;
+        Gson gson = new Gson();
+        FTYDLSearchBean FTYDLSearchBean = new FTYDLSearchBean();
+        FTYDLSearchBean.Conditions conditions = FTYDLSearchBean.new Conditions();
+        conditions.setItem(FTYDLSearchItem);
+        conditions.setPrddocumentary(FTYDLSearchName);
+        conditions.setSubfactory(FTYDLDialogFactory);
+        conditions.setWorkingProcedure(FTYDLDialogProcedure);
+        conditions.setPrddocumentaryisnull(stris);
+        FTYDLSearchBean.setConditions(conditions);
+        FTYDLSearchBean.setPageNum(index);
+        FTYDLSearchBean.setPageSize(Integer.parseInt(ClumnsFTYDLPage));
+        String gsonbeanStr = gson.toJson(FTYDLSearchBean);
+        if (NetWork.isNetWorkAvailable(this)) {
+            ResponseDialog.showLoading(this, "正在查询");
+            final int finalGetsize = Integer.parseInt(ClumnsFTYDLPage);
+            OkHttpUtils.postString()
+                    .url(str)
+                    .content(gsonbeanStr)
+                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                            ResponseDialog.closeLoading();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            try {
+                                System.out.print(response);
+                                String ress = response.replace("\\", "");
+                                System.out.print(ress);
+                                String ression = StringUtil.sideTrim(ress, "\"");
+                                System.out.print(ression);
+                                detailBean = new Gson().fromJson(ression, FTYDLDailyBean.class);
+                                detailBeenList = detailBean.getData();
+                                if (detailBean.getTotalCount() != 0) {
+                                    ll_visibi.setVisibility(View.GONE);
+                                    scroll_content.setVisibility(View.VISIBLE);
+                                    System.out.print(detailBeenList);
+                                    pageCount = detailBean.getTotalCount();
+                                    String count = String.valueOf(pageCount / finalGetsize + 1);
+                                    tvSignPage.setText(count);
+                                    adapter = new FTYDLSearchAdapter(
+                                            FTYDLSearchActivity.this, detailBeenList);
+                                    lv_data.setAdapter(adapter);
+                                    mLeftAdapter = new FTYDLSearchLeftAdapter(
+                                            FTYDLSearchActivity.this, detailBeenList);
+                                    lv_pleft.setAdapter(mLeftAdapter);
+                                    SetListener setListener = new SetListener();
+                                    setListener.setFTYDLSearchLister(FTYDLSearchActivity.this,
+                                            adapter, detailBeenList);
+                                    setListener.setFTYDLCopyLister(
+                                            FTYDLSearchActivity.this, mLeftAdapter, detailBeenList
+                                    );
+                                } else {
+                                    ll_visibi.setVisibility(View.VISIBLE);
+                                    scroll_content.setVisibility(View.GONE);
+                                    tv_visibi.setText("没有更多信息");
+                                }
+                                ResponseDialog.closeLoading();
+                            } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
                                 ResponseDialog.closeLoading();
                             }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                try {
-                                    System.out.print(response);
-                                    String ress = response.replace("\\", "");
-                                    System.out.print(ress);
-                                    String ression = StringUtil.sideTrim(ress, "\"");
-                                    System.out.print(ression);
-                                    detailBean = new Gson().fromJson(ression, FTYDLDailyBean.class);
-                                    detailBeenList = detailBean.getData();
-                                    if (detailBean.getTotalCount() != 0) {
-                                        ll_visibi.setVisibility(View.GONE);
-                                        scroll_content.setVisibility(View.VISIBLE);
-                                        System.out.print(detailBeenList);
-                                        pageCount = detailBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / finalGetsize + 1);
-                                        tvSignPage.setText(count);
-
-                                        adapter = new FTYDLSearchAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        lv_data.setAdapter(adapter);
-                                        mLeftAdapter = new FTYDLSearchLeftAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        lv_pleft.setAdapter(mLeftAdapter);
-                                    } else {
-                                        ll_visibi.setVisibility(View.VISIBLE);
-                                        scroll_content.setVisibility(View.GONE);
-                                        tv_visibi.setText("没有更多信息");
-                                    }
-                                    ResponseDialog.closeLoading();
-                                } catch (JsonSyntaxException e) {
-                                    e.printStackTrace();
-                                    ResponseDialog.closeLoading();
-                                }
-                            }
-                        });
-            } else {
-                ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", FTYDLSearchActivity.this);
-            }
+                        }
+                    });
         } else {
-            boolean stris = Boolean.parseBoolean(FTYDLStis);
-            pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
-            int index = pageIndex - 1;
-            Gson gson = new Gson();
-            FTYDLSearchBean FTYDLSearchBean = new FTYDLSearchBean();
-            FTYDLSearchBean.Conditions conditions = FTYDLSearchBean.new Conditions();
-            conditions.setItem(FTYDLSearchItem);
-            conditions.setPrddocumentary(FTYDLSearchName);
-            conditions.setSubfactory(FTYDLDialogFactory);
-            conditions.setWorkingProcedure(FTYDLDialogProcedure);
-            conditions.setPrddocumentaryisnull(stris);
-            FTYDLSearchBean.setConditions(conditions);
-            FTYDLSearchBean.setPageNum(index);
-            FTYDLSearchBean.setPageSize(Integer.parseInt(ClumnsFTYDLPage));
-            String gsonbeanStr = gson.toJson(FTYDLSearchBean);
-            if (NetWork.isNetWorkAvailable(this)) {
-                ResponseDialog.showLoading(this, "正在查询");
-                final int finalGetsize = Integer.parseInt(ClumnsFTYDLPage);
-                OkHttpUtils.postString()
-                        .url(str)
-                        .content(gsonbeanStr)
-                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                e.printStackTrace();
-                                ResponseDialog.closeLoading();
-                            }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                try {
-                                    System.out.print(response);
-                                    String ress = response.replace("\\", "");
-                                    System.out.print(ress);
-                                    String ression = StringUtil.sideTrim(ress, "\"");
-                                    System.out.print(ression);
-                                    detailBean = new Gson().fromJson(ression, FTYDLDailyBean.class);
-                                    detailBeenList = detailBean.getData();
-                                    if (detailBean.getTotalCount() != 0) {
-                                        ll_visibi.setVisibility(View.GONE);
-                                        scroll_content.setVisibility(View.VISIBLE);
-                                        System.out.print(detailBeenList);
-                                        pageCount = detailBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / finalGetsize + 1);
-                                        tvSignPage.setText(count);
-                                        adapter = new FTYDLSearchAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        lv_data.setAdapter(adapter);
-                                        mLeftAdapter = new FTYDLSearchLeftAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        lv_pleft.setAdapter(mLeftAdapter);
-                                    } else {
-                                        ll_visibi.setVisibility(View.VISIBLE);
-                                        scroll_content.setVisibility(View.GONE);
-                                        tv_visibi.setText("没有更多信息");
-                                    }
-                                    ResponseDialog.closeLoading();
-                                } catch (JsonSyntaxException e) {
-                                    e.printStackTrace();
-                                    ResponseDialog.closeLoading();
-                                }
-                            }
-                        });
-            } else {
-                ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", FTYDLSearchActivity.this);
-            }
+            ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", FTYDLSearchActivity.this);
         }
     }
 
@@ -513,139 +394,78 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
             ClumnsFTYDLPage = String.valueOf(10);
         }
         if (FTYDLDialogProcedure.equals("全部")) {
-            boolean stris = Boolean.parseBoolean(FTYDLStis);
-            Gson gson = new Gson();
-            FTYDLSearchBean FTYDLSearchBean = new FTYDLSearchBean();
-            FTYDLSearchBean.Conditions conditions = FTYDLSearchBean.new Conditions();
-            conditions.setItem(FTYDLSearchItem);
-            conditions.setPrddocumentary(FTYDLSearchName);
-            conditions.setSubfactory(FTYDLDialogFactory);
-            conditions.setWorkingProcedure("");
-            conditions.setPrddocumentaryisnull(stris);
-            FTYDLSearchBean.setConditions(conditions);
-            FTYDLSearchBean.setPageNum(Integer.parseInt(pageupIndex));
-            FTYDLSearchBean.setPageSize(Integer.parseInt(ClumnsFTYDLPage));
-            String gsonbeanStr = gson.toJson(FTYDLSearchBean);
-            if (NetWork.isNetWorkAvailable(this)) {
-                ResponseDialog.showLoading(this, "正在查询");
-                final int finalGetsize = Integer.parseInt(ClumnsFTYDLPage);
-                OkHttpUtils.postString()
-                        .url(str)
-                        .content(gsonbeanStr)
-                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                e.printStackTrace();
-                                ResponseDialog.closeLoading();
-                            }
+            FTYDLDialogProcedure = "";
+        }
+        boolean stris = Boolean.parseBoolean(FTYDLStis);
+        pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
+        int index = pageIndex - 1;
+        Gson gson = new Gson();
+        FTYDLSearchBean FTYDLSearchBean = new FTYDLSearchBean();
+        FTYDLSearchBean.Conditions conditions = FTYDLSearchBean.new Conditions();
+        conditions.setItem(FTYDLSearchItem);
+        conditions.setPrddocumentary(FTYDLSearchName);
+        conditions.setSubfactory(FTYDLDialogFactory);
+        conditions.setWorkingProcedure(FTYDLDialogProcedure);
+        conditions.setPrddocumentaryisnull(stris);
+        FTYDLSearchBean.setConditions(conditions);
+        FTYDLSearchBean.setPageNum(index);
+        FTYDLSearchBean.setPageSize(Integer.parseInt(ClumnsFTYDLPage));
+        String gsonbeanStr = gson.toJson(FTYDLSearchBean);
+        if (NetWork.isNetWorkAvailable(this)) {
+            ResponseDialog.showLoading(this, "正在查询");
+            final int finalGetsize = Integer.parseInt(ClumnsFTYDLPage);
+            OkHttpUtils.postString()
+                    .url(str)
+                    .content(gsonbeanStr)
+                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                            ResponseDialog.closeLoading();
+                        }
 
-                            @Override
-                            public void onResponse(String response, int id) {
-                                try {
-                                    System.out.print(response);
-                                    String ress = response.replace("\\", "");
-                                    System.out.print(ress);
-                                    String ression = StringUtil.sideTrim(ress, "\"");
-                                    System.out.print(ression);
-                                    detailBean = new Gson().fromJson(ression, FTYDLDailyBean.class);
-                                    detailBeenList = detailBean.getData();
-                                    if (detailBean.getTotalCount() != 0) {
-                                        ll_visibi.setVisibility(View.GONE);
-                                        scroll_content.setVisibility(View.VISIBLE);
-                                        System.out.print(detailBeenList);
-                                        pageCount = detailBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / finalGetsize + 1);
-                                        tvSignPage.setText(count);
-
-                                        adapter = new FTYDLSearchAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        lv_data.setAdapter(adapter);
-                                        mLeftAdapter = new FTYDLSearchLeftAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        lv_pleft.setAdapter(mLeftAdapter);
-                                    } else {
-                                        ll_visibi.setVisibility(View.VISIBLE);
-                                        scroll_content.setVisibility(View.GONE);
-                                        tv_visibi.setText("没有更多信息");
-                                    }
-                                    ResponseDialog.closeLoading();
-                                } catch (JsonSyntaxException e) {
-                                    e.printStackTrace();
-                                    ResponseDialog.closeLoading();
+                        @Override
+                        public void onResponse(String response, int id) {
+                            try {
+                                String ress = response.replace("\\", "");
+                                String ression = StringUtil.sideTrim(ress, "\"");
+                                detailBean = new Gson().fromJson(ression, FTYDLDailyBean.class);
+                                detailBeenList = detailBean.getData();
+                                if (detailBean.getTotalCount() != 0) {
+                                    ll_visibi.setVisibility(View.GONE);
+                                    scroll_content.setVisibility(View.VISIBLE);
+                                    pageCount = detailBean.getTotalCount();
+                                    String count = String.valueOf(pageCount / finalGetsize + 1);
+                                    tvSignPage.setText(count);
+                                    adapter = new FTYDLSearchAdapter(
+                                            FTYDLSearchActivity.this, detailBeenList);
+                                    lv_data.setAdapter(adapter);
+                                    mLeftAdapter = new FTYDLSearchLeftAdapter(
+                                            FTYDLSearchActivity.this, detailBeenList);
+                                    lv_pleft.setAdapter(mLeftAdapter);
+                                    SetListener setListener = new SetListener();
+                                    setListener.setFTYDLSearchLister(FTYDLSearchActivity.this,
+                                            adapter, detailBeenList);
+                                    setListener.setFTYDLCopyLister(
+                                            FTYDLSearchActivity.this, mLeftAdapter, detailBeenList
+                                    );
+                                } else {
+                                    ll_visibi.setVisibility(View.VISIBLE);
+                                    scroll_content.setVisibility(View.GONE);
+                                    tv_visibi.setText("没有更多信息");
                                 }
-                            }
-                        });
-            } else {
-                ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", FTYDLSearchActivity.this);
-            }
-        } else {
-            boolean stris = Boolean.parseBoolean(FTYDLStis);
-            pageIndex = Integer.parseInt(etSqlDetail.getText().toString());
-            int index = pageIndex - 1;
-            Gson gson = new Gson();
-            FTYDLSearchBean FTYDLSearchBean = new FTYDLSearchBean();
-            FTYDLSearchBean.Conditions conditions = FTYDLSearchBean.new Conditions();
-            conditions.setItem(FTYDLSearchItem);
-            conditions.setPrddocumentary(FTYDLSearchName);
-            conditions.setSubfactory(FTYDLDialogFactory);
-            conditions.setWorkingProcedure(FTYDLDialogProcedure);
-            conditions.setPrddocumentaryisnull(stris);
-            FTYDLSearchBean.setConditions(conditions);
-            FTYDLSearchBean.setPageNum(index);
-            FTYDLSearchBean.setPageSize(Integer.parseInt(ClumnsFTYDLPage));
-            String gsonbeanStr = gson.toJson(FTYDLSearchBean);
-            if (NetWork.isNetWorkAvailable(this)) {
-                ResponseDialog.showLoading(this, "正在查询");
-                final int finalGetsize = Integer.parseInt(ClumnsFTYDLPage);
-                OkHttpUtils.postString()
-                        .url(str)
-                        .content(gsonbeanStr)
-                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                e.printStackTrace();
-                                ResponseDialog.closeLoading();
-                            }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                try {
-                                    System.out.print(response);
-                                    String ress = response.replace("\\", "");
-                                    System.out.print(ress);
-                                    String ression = StringUtil.sideTrim(ress, "\"");
-                                    System.out.print(ression);
-                                    detailBean = new Gson().fromJson(ression, FTYDLDailyBean.class);
-                                    detailBeenList = detailBean.getData();
-                                    if (detailBean.getTotalCount() != 0) {
-                                        ll_visibi.setVisibility(View.GONE);
-                                        scroll_content.setVisibility(View.VISIBLE);
-                                        System.out.print(detailBeenList);
-                                        pageCount = detailBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / finalGetsize + 1);
-                                        tvSignPage.setText(count);
-                                        adapter = new FTYDLSearchAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        lv_data.setAdapter(adapter);
-                                        mLeftAdapter = new FTYDLSearchLeftAdapter(FTYDLSearchActivity.this, detailBeenList);
-                                        lv_pleft.setAdapter(mLeftAdapter);
-                                    } else {
-                                        ll_visibi.setVisibility(View.VISIBLE);
-                                        scroll_content.setVisibility(View.GONE);
-                                        tv_visibi.setText("没有更多信息");
-                                    }
 //                                    setNewlyComfig();
-                                    ResponseDialog.closeLoading();
-                                } catch (JsonSyntaxException e) {
-                                    e.printStackTrace();
-                                    ResponseDialog.closeLoading();
-                                }
+                                ResponseDialog.closeLoading();
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                                ResponseDialog.closeLoading();
                             }
-                        });
-            } else {
-                ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", FTYDLSearchActivity.this);
-            }
+                        }
+                    });
+        } else {
+            ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", FTYDLSearchActivity.this);
         }
     }
 
@@ -654,6 +474,7 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
         FTYDLSearchDialog = new FTYDLSearchDialog(this,
                 R.style.dialogstyle, onClickListener, onCancleListener);
         FTYDLSearchDialog.show();
+        FTYDLSearchDialog.setCancelable(false);
     }
 
     /*确定*/
@@ -686,6 +507,642 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
             }
         }
     };
+
+//    private void setFTYDLSearchLister(){
+//        adapter.setmOnClickFTYDLSearchLinter(new FTYDLSearchAdapter.OnClickFTYDLSearchLinter() {
+//            @Override
+//            public void MyFTYDLSearchLinter(int id) {
+//                String salesid = String.valueOf(detailBeenList.get(id).getID());
+//                String said = String.valueOf(detailBeenList.get(id).getSalesid());
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailID", salesid);
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailSalesID", said);
+//                String planid = detailBeenList.get(id).getPlanid();//引用的工厂计划id
+//                if (planid == null) {
+//                    planid = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailPlanId", planid);
+//
+//                String sn = String.valueOf(detailBeenList.get(id).getSn());//序列号
+//                if (sn == null) {
+//                    sn = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailSn", sn);
+//
+//                String contractno = detailBeenList.get(id).getContractno();//销售合同号
+//                if (contractno == null) {
+//                    contractno = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailContractno", contractno);
+//
+//                String inbill = detailBeenList.get(id).getInbill();//内部id
+//                if (inbill == null) {
+//                    inbill = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailInbill", inbill);
+//
+//                String area = detailBeenList.get(id).getArea();//片区号
+//                if (area == null) {
+//                    area = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailArea", area);
+//
+//                String companytxt = detailBeenList.get(id).getCompanytxt();//公司名称
+//                if (companytxt == null) {
+//                    companytxt = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailCompanytxt", companytxt);
+//
+//                String po = detailBeenList.get(id).getPo();//po
+//                if (po == null) {
+//                    po = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailPo", po);
+//
+//                String tvdate = detailBeenList.get(id).getItem();
+//                if (tvdate == null) {
+//                    tvdate = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailItem", tvdate);//款号
+//
+//                String oitem = detailBeenList.get(id).getOitem();//原款号
+//                if (oitem == null) {
+//                    oitem = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailOitem", oitem);
+//
+//                String tvProMdl = detailBeenList.get(id).getMdl();
+//                if (tvProMdl == null) {
+//                    tvProMdl = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailMdl", tvProMdl);//尺码
+//
+//                String ctmid = detailBeenList.get(id).getCtmid();//客户id
+//                if (ctmid == null) {
+//                    ctmid = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailCtmid", ctmid);
+//
+//                String tvctmtxt = detailBeenList.get(id).getCtmtxt();
+//                if (tvctmtxt == null) {
+//                    tvctmtxt = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailCtmtxt", tvctmtxt);//客户
+//
+//                String ctmcompanytxt = detailBeenList.get(id).getCtmcompanytxt();//客户归属公司
+//                if (ctmcompanytxt == null) {
+//                    ctmcompanytxt = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailCtmcompanytxt", ctmcompanytxt);
+//
+//                String prdtyp = detailBeenList.get(id).getPrdtyp();//产品大类
+//                if (prdtyp == null) {
+//                    prdtyp = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailPrdtyp", prdtyp);
+//
+//                String lcdat = detailBeenList.get(id).getLcdat();//计划离厂日期
+//                if (lcdat == null) {
+//                    lcdat = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailLcdat", lcdat);
+//
+//                String lbdat = detailBeenList.get(id).getLbdat();//计划离岸日期
+//                if (lbdat == null) {
+//                    lbdat = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailLbdat", lbdat);
+//
+//                String styp = detailBeenList.get(id).getStyp();//po类型(分类)
+//                if (styp == null) {
+//                    styp = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailStyp", styp);
+//
+//                String fsaler = detailBeenList.get(id).getFsaler();//外贸业务员
+//                if (fsaler == null) {
+//                    fsaler = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailFsaler", fsaler);
+//
+//                String psaler = detailBeenList.get(id).getPsaler();//生产业务员
+//                if (psaler == null) {
+//                    psaler = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailPsaler", psaler);
+//
+//                String memo = detailBeenList.get(id).getMemo();//备注
+//                if (memo == null) {
+//                    memo = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailMemo", memo);
+//
+//                String tvProPqty = String.valueOf(detailBeenList.get(id).getPqty());
+//                if (tvProPqty == null) {
+//                    tvProPqty = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailPqty", tvProPqty);//制单数
+//
+//                String unit = detailBeenList.get(id).getUnit();//单位
+//                if (unit == null) {
+//                    unit = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailUnit", unit);
+//
+//                String tvProdcol = detailBeenList.get(id).getProdcol();
+//                if (tvProdcol == null) {
+//                    tvProdcol = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailProdcol", tvProdcol);//花色
+//
+//                String megitem = detailBeenList.get(id).getMegitem();//合并款号
+//                if (megitem == null) {
+//                    megitem = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailMegitem", megitem);
+//
+//                String teamname = detailBeenList.get(id).getTeamname();//外贸组别
+//                if (teamname == null) {
+//                    teamname = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailTeamname", teamname);
+//
+//                String recordat = detailBeenList.get(id).getRecordat();//制单时间
+//                if (recordat == null) {
+//                    recordat = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailRecordat", recordat);
+//
+//                String recordid = detailBeenList.get(id).getRecordid();//制单人id
+//                if (recordid == null) {
+//                    recordid = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailRecordid", recordid);
+//
+//                String recorder = detailBeenList.get(id).getRecorder();//制单人
+//                if (recorder == null) {
+//                    recorder = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailRecorder", recorder);
+//
+//                String tvProFactory = detailBeenList.get(id).getSubfactory();
+//                if (tvProFactory == null) {
+//                    tvProFactory = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailFactory", tvProFactory);//工厂
+//
+//                String tvProProcedure = detailBeenList.get(id).getWorkingProcedure();
+//                if (tvProProcedure == null) {
+//                    tvProProcedure = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailProcedure", tvProProcedure);//工序
+//
+//                String tvProFactoryTeams = detailBeenList.get(id).getSubfactoryTeams();
+//                if (tvProFactoryTeams == null) {
+//                    tvProFactoryTeams = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailFactoryTeams", tvProFactoryTeams);//部门
+//
+//                String tvProWorkers = detailBeenList.get(id).getWorkers();
+//                if (tvProWorkers == null) {
+//                    tvProWorkers = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailWorkers", tvProWorkers);//组别人数
+//
+//                String tvProFactcutqty = String.valueOf(detailBeenList.get(id).getFactcutqty());
+//                if (tvProFactcutqty == null) {
+//                    tvProFactcutqty = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailFactcutqty", tvProFactcutqty);//实裁数
+//
+//                String cutbdt = detailBeenList.get(id).getCutbdt();//开裁日期
+//                if (cutbdt == null) {
+//                    cutbdt = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailCutbdt", cutbdt);
+//
+//                String sewbdt = detailBeenList.get(id).getSewbdt();//上线日期
+//                if (sewbdt == null) {
+//                    sewbdt = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailSewbdt", sewbdt);
+//
+//                String sewedt = detailBeenList.get(id).getSewedt();//完工日期
+//                if (sewedt == null) {
+//                    sewedt = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailSewedt", sewedt);
+//
+//                String sewDays =detailBeenList.get(id).getSewDays();//天数
+//                if (sewDays == null) {
+//                    sewDays = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailSewDays", sewDays);
+//
+//                String perqty =detailBeenList.get(id).getPerqty();//人均件数
+//                if (perqty == null) {
+//                    perqty = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailPerqty", perqty);
+//
+//                String cutamount = detailBeenList.get(id).getCutamount();//裁剪金额
+//                if (cutamount == null) {
+//                    cutamount = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailCutamount", cutamount);
+//
+//                String sewamount = detailBeenList.get(id).getSewamount();
+//                if (sewamount == null) {
+//                    sewamount = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailSewamount", sewamount);
+//
+//                String packamount = detailBeenList.get(id).getPackamount();
+//                if (packamount == null) {
+//                    packamount = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailPackamount", packamount);
+//
+//                String amount = detailBeenList.get(id).getAmount();//总价
+//                if (amount == null) {
+//                    amount = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailAmount", amount);
+//
+//                String perMachineQty = detailBeenList.get(id).getPerMachineQty();//车间人均台产
+//                if (perMachineQty == null) {
+//                    perMachineQty = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailPerMachineQty", perMachineQty);
+//
+//                String sumMachineQty = detailBeenList.get(id).getSumMachineQty();//台总产
+//                if (sumMachineQty == null) {
+//                    sumMachineQty = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailSumMachineQty", sumMachineQty);
+//
+//                String tvProPrdstatus = detailBeenList.get(id).getPrdstatus();
+//                if (tvProPrdstatus == null) {
+//                    tvProPrdstatus = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailPrdstatus", tvProPrdstatus);//状态
+//
+//                String prdmaster = detailBeenList.get(id).getPrdmaster();//生产主管
+//                if (prdmaster == null) {
+//                    prdmaster = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailPrdmaster", prdmaster);
+//
+//                String tvProDocumentary = detailBeenList.get(id).getPrddocumentary();
+//                if (tvProDocumentary == null) {
+//                    tvProDocumentary = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDocumentary", tvProDocumentary);//跟单
+//
+//                String tvProColor = String.valueOf(detailBeenList.get(id).getTaskqty());
+//                if (tvProColor == null) {
+//                    tvProColor = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailTaskqty", tvProColor);//任务数
+//
+//                String tvProCompletedLastMonth = String.valueOf(detailBeenList.get(id).getSumCompletedQty());
+//                if (tvProCompletedLastMonth == null) {
+//                    tvProCompletedLastMonth = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailSumCompletedQty", tvProCompletedLastMonth);//总完工数
+//
+//                String leftQty = String.valueOf(detailBeenList.get(id).getLeftQty());//结余数量
+//                if (leftQty == null) {
+//                    leftQty = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailLeftQty", leftQty);
+//
+//                String lastMonQty = String.valueOf(detailBeenList.get(id).getLastMonQty());//上月结余数量
+//                if (lastMonQty == null) {
+//                    lastMonQty = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailLastMonQty", lastMonQty);
+//
+//                String year = String.valueOf(detailBeenList.get(id).getYear());//年
+//                if (year == null) {
+//                    year = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailYear", year);
+//
+//                String month = String.valueOf(detailBeenList.get(id).getMonth());//月
+//                if (month == null) {
+//                    month = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailMonth", month);
+//
+//                String day1 = detailBeenList.get(id).getDay1();
+//                if (day1 == null) {
+//                    day1 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay1", day1);
+//
+//                String day2 = detailBeenList.get(id).getDay2();
+//                if (day2 == null) {
+//                    day2 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay2", day2);
+//
+//                String day3 = detailBeenList.get(id).getDay3();
+//                if (day3 == null) {
+//                    day3 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay3", day3);
+//
+//                String day4 = detailBeenList.get(id).getDay4();
+//                if (day4 == null) {
+//                    day4 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay4", day4);
+//
+//                String day5 = detailBeenList.get(id).getDay5();
+//                if (day5 == null) {
+//                    day5 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay5", day5);
+//
+//                String day6 = detailBeenList.get(id).getDay6();
+//                if (day6 == null) {
+//                    day6 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay6", day6);
+//
+//                String day7 =detailBeenList.get(id).getDay7();
+//                if (day7 == null) {
+//                    day7 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay7", day7);
+//
+//                String day8 = detailBeenList.get(id).getDay8();
+//                if (day8 == null) {
+//                    day8 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay8", day8);
+//
+//                String day9 = detailBeenList.get(id).getDay9();
+//                if (day9 == null) {
+//                    day9 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay9", day9);
+//
+//                String day10 = detailBeenList.get(id).getDay10();
+//                if (day10 == null) {
+//                    day10 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay10", day10);
+//
+//                String day11 = detailBeenList.get(id).getDay11();
+//                if (day11 == null) {
+//                    day11 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay11", day11);
+//
+//                String day12 = detailBeenList.get(id).getDay12();
+//                if (day12 == null) {
+//                    day12 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay12", day12);
+//
+//                String day13 = detailBeenList.get(id).getDay13();
+//                if (day13 == null) {
+//                    day13 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay13", day13);
+//
+//                String day14 = detailBeenList.get(id).getDay14();
+//                if (day14 == null) {
+//                    day14 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay14", day14);
+//
+//                String day15 = detailBeenList.get(id).getDay15();
+//                if (day15 == null) {
+//                    day15 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay15", day15);
+//
+//                String day16 = detailBeenList.get(id).getDay16();
+//                if (day16 == null) {
+//                    day16 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay16", day16);
+//
+//                String day17 = detailBeenList.get(id).getDay17();
+//                if (day17 == null) {
+//                    day17 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay17", day17);
+//
+//                String day18 = detailBeenList.get(id).getDay18();
+//                if (day18 == null) {
+//                    day18 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay18", day18);
+//
+//                String day19 = detailBeenList.get(id).getDay19();
+//                if (day19 == null) {
+//                    day19 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay19", day19);
+//
+//                String day20 = detailBeenList.get(id).getDay20();
+//                if (day20 == null) {
+//                    day20 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay20", day20);
+//
+//                String day21 = detailBeenList.get(id).getDay21();
+//                if (day21 == null) {
+//                    day21 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay21", day21);
+//
+//                String day22 = detailBeenList.get(id).getDay22();
+//                if (day22 == null) {
+//                    day22 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay22", day22);
+//
+//                String day23 = detailBeenList.get(id).getDay23();
+//                if (day23 == null) {
+//                    day23 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay23", day23);
+//
+//                String day24 = detailBeenList.get(id).getDay24();
+//                if (day24 == null) {
+//                    day24 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay24", day24);
+//
+//                String day25 = detailBeenList.get(id).getDay25();
+//                if (day25 == null) {
+//                    day25 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay25", day25);
+//
+//                String day26 = detailBeenList.get(id).getDay26();
+//                if (day26 == null) {
+//                    day26 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay26", day26);
+//
+//                String day27 = detailBeenList.get(id).getDay27();
+//                if (day27 == null) {
+//                    day27 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay27", day27);
+//
+//                String day28 = detailBeenList.get(id).getDay28();
+//                if (day28 == null) {
+//                    day28 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay28", day28);
+//
+//                String day29 = detailBeenList.get(id).getDay29();
+//                if (day29 == null) {
+//                    day29 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay29", day29);
+//
+//                String day30 = detailBeenList.get(id).getDay30();
+//                if (day30 == null) {
+//                    day30 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay30", day30);
+//
+//                String day31 = detailBeenList.get(id).getDay31();
+//                if (day31 == null) {
+//                    day31 = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailDay31", day31);
+//
+//                String prddocumentaryid = detailBeenList.get(id).getPrddocumentaryid();//跟单id
+//                if (prddocumentaryid == null) {
+//                    prddocumentaryid = "";
+//                }
+//                spUtils.put(FTYDLSearchActivity.this,
+//                        "tvFTYDLDetailPrdDocumentaryId", prddocumentaryid);
+//
+//                boolean isdiffc = Boolean.parseBoolean(detailBeenList.get(id).getIsdiffc());
+//                String ssisdiffc = String.valueOf(detailBeenList.get(id).getIsdiffc());
+//                if (ssisdiffc == null) {
+//                    spUtils.put(FTYDLSearchActivity.this,
+//                            "tvFTYDLDetailIsdiffc", "");
+//                } else {
+//                    spUtils.put(FTYDLSearchActivity.this,
+//                            "tvFTYDLDetailBoolIsdiffc", isdiffc);
+//                    spUtils.put(FTYDLSearchActivity.this,
+//                            "tvFTYDLDetailIsdiffc", "");
+//                }
+//
+//                if (tvProProcedure.equals("裁床")) {
+//                    isprodure = 1;
+//                    spUtils.put(FTYDLSearchActivity.this,
+//                            "FTYDLDetailISProdure", String.valueOf(isprodure));
+//                } else if (tvProProcedure.equals("选择工序")) {
+//                    ToastUtils.ShowToastMessage("选择工序后再新建",
+//                            FTYDLSearchActivity.this);
+//                    return;
+//                } else {
+//                    isprodure = 0;
+//                    spUtils.put(FTYDLSearchActivity.this,
+//                            "FTYDLDetailISProdure", String.valueOf(isprodure));
+//                }
+//                startActivity(new Intent(FTYDLSearchActivity.this,
+//                        FTYDLSearchDetailActivity.class));
+//            }
+//        });
+//    }
 
     /*弹出选择菜单*/
     private void showPopupMenu(final View view) {

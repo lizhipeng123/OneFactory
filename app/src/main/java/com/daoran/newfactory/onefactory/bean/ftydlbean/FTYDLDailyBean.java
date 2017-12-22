@@ -1,5 +1,9 @@
 package com.daoran.newfactory.onefactory.bean.ftydlbean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,9 +12,29 @@ import java.util.List;
  * 生产日报点击修改时，判断裁床多色查询接收的全部数据
  */
 
-public class FTYDLDailyBean {
+public class FTYDLDailyBean implements Parcelable {
     private int totalCount;
     private List<DataBean> Data;
+
+    public FTYDLDailyBean() {}
+
+    public FTYDLDailyBean(Parcel in) {
+        totalCount = in.readInt();
+        Data = new ArrayList<>();
+        in.readTypedList(Data, DataBean.CREATOR);
+    }
+
+    public static final Creator<FTYDLDailyBean> CREATOR = new Creator<FTYDLDailyBean>() {
+        @Override
+        public FTYDLDailyBean createFromParcel(Parcel in) {
+            return new FTYDLDailyBean(in);
+        }
+
+        @Override
+        public FTYDLDailyBean[] newArray(int size) {
+            return new FTYDLDailyBean[size];
+        }
+    };
 
     public int getTotalCount() {
         return totalCount;
@@ -28,9 +52,17 @@ public class FTYDLDailyBean {
         this.Data = Data;
     }
 
-    public static class DataBean {
-        private int ID;
-        private int salesid;
+    @Override
+    public int describeContents() {return 0;}
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(totalCount);
+    }
+
+    public static class DataBean implements Parcelable {
+        private int ID;//id
+        private int salesid;//排单id
         private String planid;
         private int sn;
         private String contractno;
@@ -38,32 +70,32 @@ public class FTYDLDailyBean {
         private String area;
         private String companytxt;
         private String po;
-        private String item;
-        private String oitem;
-        private String mdl;
-        private String ctmid;
-        private String ctmtxt;
+        private String item;//款号
+        private String oitem;//原款号
+        private String mdl;//尺码
+        private String ctmid;//客户id
+        private String ctmtxt;//客户
         private String ctmcompanytxt;
         private String prdtyp;
-        private String lcdat;
-        private String lbdat;
+        private String lcdat;//离厂日期
+        private String lbdat;//离岸日期
         private String styp;
         private String fsaler;
         private String psaler;
-        private String memo;
-        private int pqty;
-        private String unit;
-        private String prodcol;
-        private String megitem;
+        private String memo;//备注
+        private int pqty;//制单数
+        private String unit;//单位
+        private String prodcol;//花色
+        private String megitem;//合并款号
         private String teamname;
-        private String recordat;
-        private String recorder;
-        private String recordid;
-        private String subfactory;
-        private String workingProcedure;
-        private String subfactoryTeams;
-        private String workers;
-        private int factcutqty;
+        private String recordat;//制单时间
+        private String recorder;//制单人
+        private String recordid;//制单人id
+        private String subfactory;//工厂
+        private String workingProcedure;//工序
+        private String subfactoryTeams;//部门组别
+        private String workers;//组别人数
+        private int factcutqty;//实裁数
         private String cutbdt;
         private String sewbdt;
         private String sewedt;
@@ -75,16 +107,16 @@ public class FTYDLDailyBean {
         private String amount;
         private String perMachineQty;
         private String sumMachineQty;
-        private String prdstatus;
-        private String prdmaster;
-        private String prddocumentary;
-        private String prddocumentaryid;
-        private int taskqty;
-        private int sumCompletedQty;
-        private int leftQty;
-        private int lastMonQty;
-        private int year;
-        private int month;
+        private String prdstatus;//状态
+        private String prdmaster;//主管
+        private String prddocumentary;//跟单
+        private String prddocumentaryid;//跟单id
+        private int taskqty;//任务数
+        private int sumCompletedQty;//总数
+        private int leftQty;//结余数量
+        private int lastMonQty;//上月结余数量
+        private int year;//年
+        private int month;//月
         private String day1;
         private String day2;
         private String day3;
@@ -116,7 +148,210 @@ public class FTYDLDailyBean {
         private String day29;
         private String day30;
         private String day31;
-        private String isdiffc;
+        private String isdiffc;//是否分色
+
+        public DataBean() {
+        }
+
+        protected DataBean(Parcel in) {
+            ID = in.readInt();
+            salesid = in.readInt();
+            planid = in.readString();
+            sn = in.readInt();
+            contractno = in.readString();
+            inbill = in.readString();
+            area = in.readString();
+            companytxt = in.readString();
+            po = in.readString();
+            item = in.readString();
+            oitem = in.readString();
+            mdl = in.readString();
+            ctmid = in.readString();
+            ctmtxt = in.readString();
+            ctmcompanytxt = in.readString();
+            prdtyp = in.readString();
+            lcdat = in.readString();
+            lbdat = in.readString();
+            styp = in.readString();
+            fsaler = in.readString();
+            psaler = in.readString();
+            memo = in.readString();
+            pqty = in.readInt();
+            unit = in.readString();
+            prodcol = in.readString();
+            megitem = in.readString();
+            teamname = in.readString();
+            recordat = in.readString();
+            recorder = in.readString();
+            recordid = in.readString();
+            subfactory = in.readString();
+            workingProcedure = in.readString();
+            subfactoryTeams = in.readString();
+            workers = in.readString();
+            factcutqty = in.readInt();
+            cutbdt = in.readString();
+            sewbdt = in.readString();
+            sewedt = in.readString();
+            sewDays = in.readString();
+            perqty = in.readString();
+            cutamount = in.readString();
+            sewamount = in.readString();
+            packamount = in.readString();
+            amount = in.readString();
+            perMachineQty = in.readString();
+            sumMachineQty = in.readString();
+            prdstatus = in.readString();
+            prdmaster = in.readString();
+            prddocumentary = in.readString();
+            prddocumentaryid = in.readString();
+            taskqty = in.readInt();
+            sumCompletedQty = in.readInt();
+            leftQty = in.readInt();
+            lastMonQty = in.readInt();
+            year = in.readInt();
+            month = in.readInt();
+            day1 = in.readString();
+            day2 = in.readString();
+            day3 = in.readString();
+            day4 = in.readString();
+            day5 = in.readString();
+            day6 = in.readString();
+            day7 = in.readString();
+            day8 = in.readString();
+            day9 = in.readString();
+            day10 = in.readString();
+            day11 = in.readString();
+            day12 = in.readString();
+            day13 = in.readString();
+            day14 = in.readString();
+            day15 = in.readString();
+            day16 = in.readString();
+            day17 = in.readString();
+            day18 = in.readString();
+            day19 = in.readString();
+            day20 = in.readString();
+            day21 = in.readString();
+            day22 = in.readString();
+            day23 = in.readString();
+            day24 = in.readString();
+            day25 = in.readString();
+            day26 = in.readString();
+            day27 = in.readString();
+            day28 = in.readString();
+            day29 = in.readString();
+            day30 = in.readString();
+            day31 = in.readString();
+            isdiffc = in.readString();
+        }
+
+        public static final Creator<DataBean> CREATOR = new Creator<DataBean>() {
+            @Override
+            public DataBean createFromParcel(Parcel in) {
+                return new DataBean(in);
+            }
+
+            @Override
+            public DataBean[] newArray(int size) {
+                return new DataBean[size];
+            }
+        };
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(ID);
+            dest.writeInt(salesid);
+            dest.writeString(planid);
+            dest.writeInt(sn);
+            dest.writeString(contractno);
+            dest.writeString(inbill);
+            dest.writeString(area);
+            dest.writeString(companytxt);
+            dest.writeString(po);
+            dest.writeString(item);
+            dest.writeString(oitem);
+            dest.writeString(mdl);
+            dest.writeString(ctmid);
+            dest.writeString(ctmtxt);
+            dest.writeString(ctmcompanytxt);
+            dest.writeString(prdtyp);
+            dest.writeString(lcdat);
+            dest.writeString(lbdat);
+            dest.writeString(styp);
+            dest.writeString(fsaler);
+            dest.writeString(psaler);
+            dest.writeString(memo);
+            dest.writeInt(pqty);
+            dest.writeString(unit);
+            dest.writeString(prodcol);
+            dest.writeString(megitem);
+            dest.writeString(teamname);
+            dest.writeString(recordat);
+            dest.writeString(recorder);
+            dest.writeString(recordid);
+            dest.writeString(subfactory);
+            dest.writeString(workingProcedure);
+            dest.writeString(subfactoryTeams);
+            dest.writeString(workers);
+            dest.writeInt(factcutqty);
+            dest.writeString(cutbdt);
+            dest.writeString(sewbdt);
+            dest.writeString(sewedt);
+            dest.writeString(sewDays);
+            dest.writeString(perqty);
+            dest.writeString(cutamount);
+            dest.writeString(sewamount);
+            dest.writeString(packamount);
+            dest.writeString(amount);
+            dest.writeString(perMachineQty);
+            dest.writeString(sumMachineQty);
+            dest.writeString(prdstatus);
+            dest.writeString(prdmaster);
+            dest.writeString(prddocumentary);
+            dest.writeString(prddocumentaryid);
+            dest.writeInt(taskqty);
+            dest.writeInt(sumCompletedQty);
+            dest.writeInt(leftQty);
+            dest.writeInt(lastMonQty);
+            dest.writeInt(year);
+            dest.writeInt(month);
+            dest.writeString(day1);
+            dest.writeString(day2);
+            dest.writeString(day3);
+            dest.writeString(day4);
+            dest.writeString(day5);
+            dest.writeString(day6);
+            dest.writeString(day7);
+            dest.writeString(day8);
+            dest.writeString(day9);
+            dest.writeString(day10);
+            dest.writeString(day11);
+            dest.writeString(day12);
+            dest.writeString(day13);
+            dest.writeString(day14);
+            dest.writeString(day15);
+            dest.writeString(day16);
+            dest.writeString(day17);
+            dest.writeString(day18);
+            dest.writeString(day19);
+            dest.writeString(day20);
+            dest.writeString(day21);
+            dest.writeString(day22);
+            dest.writeString(day23);
+            dest.writeString(day24);
+            dest.writeString(day25);
+            dest.writeString(day26);
+            dest.writeString(day27);
+            dest.writeString(day28);
+            dest.writeString(day29);
+            dest.writeString(day30);
+            dest.writeString(day31);
+            dest.writeString(isdiffc);
+        }
 
         public int getID() {
             return ID;

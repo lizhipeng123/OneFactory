@@ -226,110 +226,140 @@ public class QACworkSearchAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        /**
-         * 判断生产主管是否是当前登录用户
-         * 如果是当前用户，则可以修改对应的字符
-         * 如果不是，则判断跟单是否是当前用户
-         * 可修改后道、主管评分、封样资料接收时间、大货资料接收时间、需要特别备注的情况、
-         * 预计产前报告时间、开产前会时间、大货面料情况、大货辅料情况、大货特殊工艺情况
-         * 特殊工艺特别备注、实裁数、上线日期、下线日期、预计早期时间、自查早期时间、
-         * 预计中期时间、自查中期时间、预计尾期时间、自查尾期时间、客查尾期时间、
-         * 客查中期时间、成品包装开始日期、装箱数量、离厂日期、业务员确认客查日期
-         */
-        //客户
-        holder.tvCommoctmtxt.setText(getItem(position).getCtmtxt());
+
+        String jsontext = String.valueOf(jsonTextBeanlist);
+        if (jsontext.equals("null") || jsontext.equals("[]")) {
+            for (int i = 0; i < columnlist.size(); i++) {
+                String sfil = ("tvCommo" + columnlist.get(i));
+                String tvview = ("tvview" + columnlist.get(i));
+                try {
+                    Field field = R.id.class.getField(sfil);
+                    int idd = field.getInt(new R.id());
+                    View view = convertView.findViewById(idd);
+                    view.setVisibility(View.VISIBLE);
+
+                    Field fieldtvview = R.id.class.getField(tvview);
+                    int iddtvview = fieldtvview.getInt(new R.id());
+                    View viewtvview = convertView.findViewById(iddtvview);
+                    viewtvview.setVisibility(View.VISIBLE);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            for (int i = 0; i < jsonTextBeanlist.size(); i++) {
+                int pid = Integer.parseInt(jsonTextBeanlist.get(i).getPId());
+                if (pid > 0 && jsonTextBeanlist.get(i).isChecked() == true) {
+                    for (int j = 0; j < columnlist.size(); j++) {
+                        String columstr = columnlist.get(j);
+                        String columnname = jsonTextBeanlist.get(i).getColumnName();
+                        if (columstr == columnname || columstr.equals(columnname)) {
+                            if (jsonTextBeanlist.get(i).getName().equals("修改")) {
+                                String sfil = ("tvCommo" + jsonTextBeanlist.get(i).getColumnName());
+                                String tvview = ("tvview" + jsonTextBeanlist.get(i).getColumnName());
+                                try {
+                                    Field field = R.id.class.getField(sfil);
+                                    int idd = field.getInt(new R.id());
+                                    View view = convertView.findViewById(idd);
+                                    view.setVisibility(View.VISIBLE);
+
+                                    Field fieldtvview = R.id.class.getField(tvview);
+                                    int iddtvview = fieldtvview.getInt(new R.id());
+                                    View viewtvview = convertView.findViewById(iddtvview);
+                                    viewtvview.setVisibility(View.VISIBLE);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            } else if (jsonTextBeanlist.get(i).getName().equals("查看")) {
+                                String sfil = ("tvCommo" + jsonTextBeanlist.get(i).getColumnName());
+                                String tvview = ("tvview" + jsonTextBeanlist.get(i).getColumnName());
+                                try {
+                                    Field field = R.id.class.getField(sfil);
+                                    int idd = field.getInt(new R.id());
+                                    View view = convertView.findViewById(idd);
+                                    view.setVisibility(View.VISIBLE);
+
+                                    Field fieldtvview = R.id.class.getField(tvview);
+                                    int iddtvview = fieldtvview.getInt(new R.id());
+                                    View viewtvview = convertView.findViewById(iddtvview);
+                                    viewtvview.setVisibility(View.VISIBLE);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                String sfil = ("tvCommo" + jsonTextBeanlist.get(i).getColumnName());
+                                String tvview = ("tvview" + jsonTextBeanlist.get(i).getColumnName());
+                                try {
+                                    Field field = R.id.class.getField(sfil);
+                                    int idd = field.getInt(new R.id());
+                                    View view = convertView.findViewById(idd);
+                                    view.setVisibility(View.GONE);
+
+                                    Field fieldtvview = R.id.class.getField(tvview);
+                                    int iddtvview = fieldtvview.getInt(new R.id());
+                                    View viewtvview = convertView.findViewById(iddtvview);
+                                    viewtvview.setVisibility(View.GONE);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            break;
+                        }
+                    }
+                } else {
+                    continue;
+                }
+            }
+        }
+        holder.tvCommoctmtxt.setText(getItem(position).getCtmtxt());//客户
         holder.tvCommoIPQC.setText(getItem(position).getIPQC());//巡检
-        //跟单
-        holder.tvCommoprddocumentary.setText(getItem(position).getPrddocumentary());
-        //生产主管
-        holder.tvCommoprdmaster.setText(getItem(position).getPrdmaster());
+        holder.tvCommoprddocumentary.setText(getItem(position).getPrddocumentary());//跟单
+        holder.tvCommoprdmaster.setText(getItem(position).getPrdmaster());//生产主管
         holder.tvCommoourAfter.setText(getItem(position).getOurAfter());//后道
-        //主管评分
-        holder.tvCommoQCMasterScore.setText(getItem(position).getQCMasterScore());
-        //封样资料接收时间
-        holder.tvCommosealedrev.setText(getItem(position).getSealedrev());
-        //大货资料接收时间
-        holder.tvCommodocback.setText(getItem(position).getDocback());
-        //出货时间
-        holder.tvCommolcdat.setText(getItem(position).getLcdat());
-        //制单数量
-        holder.tvCommotaskqty.setText(getItem(position).getTaskqty());
-        //需要特别备注的情况
-        holder.tvCommopreMemo.setText(getItem(position).getPreMemo());
-        //预计产前报告时间
-        holder.tvCommopredocdt.setText(getItem(position).getPredocdt());
-        //开产前会时间
-        holder.tvCommopredt.setText(getItem(position).getPredt());
-        //大货面料情况
-        holder.tvCommofabricsok.setText(getItem(position).getFabricsok());
-        //大货辅料情况
-        holder.tvCommoaccessoriesok.setText(getItem(position).getAccessoriesok());
-        //大货特殊工艺情况
-        holder.tvCommospcproDec.setText(getItem(position).getSpcproDec());
-        //特殊工艺特别备注
-        holder.tvCommospcproMemo.setText(getItem(position).getSpcproMemo());
-        //实裁数
-        holder.tvCommocutqty.setText(getItem(position).getCutqty());
-        //上线日期
-        holder.tvCommosewFdt.setText(getItem(position).getSewFdt());
-        //下线日期
-        holder.tvCommosewMdt.setText(getItem(position).getSewMdt());
-        //加工厂
-        holder.tvCommosubfactory.setText(getItem(position).getSubfactory());
-        //预计早期时间
-        holder.tvCommoprebdt.setText(getItem(position).getPrebdt());
-        //自查早期时间
-        holder.tvCommoQCbdt.setText(getItem(position).getQCbdt());
-        //预计中期时间
-        holder.tvCommopremdt.setText(getItem(position).getPremdt());
-        //自查中期时间
-        holder.tvCommoQCmdt.setText(getItem(position).getQCmdt());
-        //预计尾期时间
-        holder.tvCommopreedt.setText(getItem(position).getPreedt());
-        //自查尾期时间
-        holder.tvCommoQCMedt.setText(getItem(position).getQCMedt());
-        //客查中期时间
-        holder.tvCommofctmdt.setText(getItem(position).getFctmdt());
-        //客查尾期时间
-        holder.tvCommofctedt.setText(getItem(position).getFctedt());
-        //成品包装开始时间
-        holder.tvCommopackbdat.setText(getItem(position).getPackbdat());
-        //装箱数量
-        holder.tvCommopackqty2.setText(getItem(position).getPackqty2());
-        //qc特别备注
-        holder.tvCommoQCMemo.setText(getItem(position).getQCMemo());
-        //离厂日期
-        holder.tvCommofactlcdat.setText(getItem(position).getFactlcdat());
-        //查货批次
-        holder.tvCommobatchid.setText(getItem(position).getBatchid());
-        //业务员确认客查日期
-        holder.tvCommoctmchkdt.setText(getItem(position).getCtmchkdt());
-        //尾查预查
-        holder.tvCommoIPQCPedt.setText(getItem(position).getIPQCPedt());
-        //巡检中查
-        holder.tvCommoIPQCmdt.setText(getItem(position).getIPQCmdt());
-        //QA首扎
-        holder.tvCommoQAname.setText(getItem(position).getFirstsamQA());
-        //QA首扎件数
-        holder.tvCommoQAScore.setText(getItem(position).getQAScore());
-        //QA首扎日期
-        holder.tvCommoQAMemo.setText(getItem(position).getQAMemo());
-        //产前会报告
-        holder.tvCommopredoc.setText(getItem(position).getPredoc());
-        //早期报告
-        holder.tvCommoQCbdtDoc.setText(getItem(position).getQCbdtDoc());
-        //中期报告
-        holder.tvCommoQCmdtDoc.setText(getItem(position).getQCmdtDoc());
-        //尾期报告
-        holder.tvCommoQCedtDoc.setText(getItem(position).getQCedtDoc());
-        //件查
-        holder.tvCommoThing.setText(getItem(position).getChker());
-        //查货地点（件查）
-        holder.tvCommoThingAddress.setText(getItem(position).getChkplace());
-        //预计件查时间
-        holder.tvCommoThingExpectedTime.setText(getItem(position).getChkpdt());
-        //实际件查时间
-        holder.tvCommoThingTime.setText(getItem(position).getChkfctdt());
+        holder.tvCommoQCMasterScore.setText(getItem(position).getQCMasterScore());//主管评分
+        holder.tvCommosealedrev.setText(getItem(position).getSealedrev());//封样资料接收时间
+        holder.tvCommodocback.setText(getItem(position).getDocback());//大货资料接收时间
+        holder.tvCommolcdat.setText(getItem(position).getLcdat());//出货时间
+        holder.tvCommotaskqty.setText(getItem(position).getTaskqty());//制单数量
+        holder.tvCommopreMemo.setText(getItem(position).getPreMemo());//需要特别备注的情况
+        holder.tvCommopredocdt.setText(getItem(position).getPredocdt());//预计产前报告时间
+        holder.tvCommopredt.setText(getItem(position).getPredt());//开产前会时间
+        holder.tvCommofabricsok.setText(getItem(position).getFabricsok());//大货面料情况
+        holder.tvCommoaccessoriesok.setText(getItem(position).getAccessoriesok());//大货辅料情况
+        holder.tvCommospcproDec.setText(getItem(position).getSpcproDec());//大货特殊工艺情况
+        holder.tvCommospcproMemo.setText(getItem(position).getSpcproMemo());//特殊工艺特别备注
+        holder.tvCommocutqty.setText(getItem(position).getCutqty());//实裁数
+        holder.tvCommosewFdt.setText(getItem(position).getSewFdt());//上线日期
+        holder.tvCommosewMdt.setText(getItem(position).getSewMdt());//下线日期
+        holder.tvCommosubfactory.setText(getItem(position).getSubfactory());//加工厂
+        holder.tvCommoprebdt.setText(getItem(position).getPrebdt());//预计早期时间
+        holder.tvCommoQCbdt.setText(getItem(position).getQCbdt());//自查早期时间
+        holder.tvCommopremdt.setText(getItem(position).getPremdt());//预计中期时间
+        holder.tvCommoQCmdt.setText(getItem(position).getQCmdt());//自查中期时间
+        holder.tvCommopreedt.setText(getItem(position).getPreedt());//预计尾期时间
+        holder.tvCommoQCMedt.setText(getItem(position).getQCMedt());//自查尾期时间
+        holder.tvCommofctmdt.setText(getItem(position).getFctmdt());//客查中期时间
+        holder.tvCommofctedt.setText(getItem(position).getFctedt());//客查尾期时间
+        holder.tvCommopackbdat.setText(getItem(position).getPackbdat());//成品包装开始时间
+        holder.tvCommopackqty2.setText(getItem(position).getPackqty2());//装箱数量
+        holder.tvCommoQCMemo.setText(getItem(position).getQCMemo());//qc特别备注
+        holder.tvCommofactlcdat.setText(getItem(position).getFactlcdat());//离厂日期
+        holder.tvCommobatchid.setText(getItem(position).getBatchid());//查货批次
+        holder.tvCommoctmchkdt.setText(getItem(position).getCtmchkdt());//业务员确认客查日期
+        holder.tvCommoIPQCPedt.setText(getItem(position).getIPQCPedt());//尾查预查
+        holder.tvCommoIPQCmdt.setText(getItem(position).getIPQCmdt());//巡检中查
+        holder.tvCommoQAname.setText(getItem(position).getFirstsamQA());//QA首扎
+        holder.tvCommoQAScore.setText(getItem(position).getQAScore());//QA首扎件数
+        holder.tvCommoQAMemo.setText(getItem(position).getQAMemo());//QA首扎日期
+        holder.tvCommopredoc.setText(getItem(position).getPredoc());//产前会报告
+        holder.tvCommoQCbdtDoc.setText(getItem(position).getQCbdtDoc());//早期报告
+        holder.tvCommoQCmdtDoc.setText(getItem(position).getQCmdtDoc());//中期报告
+        holder.tvCommoQCedtDoc.setText(getItem(position).getQCedtDoc());//尾期报告
+        holder.tvCommoThing.setText(getItem(position).getChker());//件查
+        holder.tvCommoThingAddress.setText(getItem(position).getChkplace());//查货地点（件查）
+        holder.tvCommoThingExpectedTime.setText(getItem(position).getChkpdt()); //预计件查时间
+        holder.tvCommoThingTime.setText(getItem(position).getChkfctdt());//实际件查时间
         if(mOnClickQACworkLinter!=null){
             holder.lin_content.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -369,7 +399,7 @@ public class QACworkSearchAdapter extends BaseAdapter {
                 tvviewThingExpectedTime, tvviewThingTime, tvviewThingAddress,tvviewIPQC;
     }
 
-    /*创建回调函数,实例化接口具体化此*/
+    /*创建回调函数,实例化接口具体化此方法*/
     public interface OnClickQACworkLinter{
         void myQACworkClick(int id);//创建回调函数
     }

@@ -1,5 +1,9 @@
 package com.daoran.newfactory.onefactory.bean.qacworkbean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,10 +11,28 @@ import java.util.List;
  * Created by lizhipeng on 2017/4/27.
  */
 
-public class QACworkPageDataBean {
+public class QACworkPageDataBean implements Parcelable {
 
     private int totalCount;
     private List<DataBean> Data;
+
+    protected QACworkPageDataBean(Parcel in) {
+        totalCount = in.readInt();
+        Data = new ArrayList<>();
+        in.readTypedList(Data,DataBean.CREATOR);
+    }
+
+    public static final Creator<QACworkPageDataBean> CREATOR = new Creator<QACworkPageDataBean>() {
+        @Override
+        public QACworkPageDataBean createFromParcel(Parcel in) {
+            return new QACworkPageDataBean(in);
+        }
+
+        @Override
+        public QACworkPageDataBean[] newArray(int size) {
+            return new QACworkPageDataBean[size];
+        }
+    };
 
     public int getTotalCount() {
         return totalCount;
@@ -28,7 +50,17 @@ public class QACworkPageDataBean {
         this.Data = Data;
     }
 
-    public static class DataBean {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(totalCount);
+    }
+
+    public static class DataBean implements Parcelable {
         private int ID;
         private String subfactory;//加工厂
         private String item;//款号
@@ -84,6 +116,76 @@ public class QACworkPageDataBean {
         private String chkpdt;//预计件查时间
         private String chkfctdt;//实际件查时间
         private String chkplace;//查货地点(件查)
+
+        protected DataBean(Parcel in) {
+            ID = in.readInt();
+            subfactory = in.readString();
+            item = in.readString();
+            ctmtxt = in.readString();
+            sealedrev = in.readString();
+            docback = in.readString();
+            predt = in.readString();
+            lcdat = in.readString();
+            sewFdt = in.readString();
+            sewMdt = in.readString();
+            taskqty = in.readString();
+            cutqty = in.readString();
+            preMemo = in.readString();
+            predoc = in.readString();
+            fabricsok = in.readString();
+            accessoriesok = in.readString();
+            spcproDec = in.readString();
+            spcproMemo = in.readString();
+            QCbdt = in.readString();
+            QCmdt = in.readString();
+            QCMedt = in.readString();
+            QCbdtDoc = in.readString();
+            QCmdtDoc = in.readString();
+            QCedtDoc = in.readString();
+            fctmdt = in.readString();
+            fctedt = in.readString();
+            prddocumentary = in.readString();
+            QCMemo = in.readString();
+            packbdat = in.readString();
+            packqty2 = in.readString();
+            factlcdat = in.readString();
+            ourAfter = in.readString();
+            prdmaster = in.readString();
+            prdmasterid = in.readString();
+            QCMasterScore = in.readString();
+            batchid = in.readString();
+            QAname = in.readString();
+            firstsamQA = in.readString();
+            firstsamQAid = in.readString();
+            QAScore = in.readString();
+            QAMemo = in.readString();
+            ctmchkdt = in.readString();
+            IPQC = in.readString();
+            IPQCid = in.readString();
+            IPQCmdt = in.readString();
+            IPQCPedt = in.readString();
+            predocdt = in.readString();
+            prebdt = in.readString();
+            premdt = in.readString();
+            preedt = in.readString();
+            chker = in.readString();
+            chkerid = in.readString();
+            chkpdt = in.readString();
+            chkfctdt = in.readString();
+            chkplace = in.readString();
+        }
+
+        public static final Creator<DataBean> CREATOR = new Creator<DataBean>() {
+            @Override
+            public DataBean createFromParcel(Parcel in) {
+                return new DataBean(in);
+            }
+
+            @Override
+            public DataBean[] newArray(int size) {
+                return new DataBean[size];
+            }
+        };
 
         public String getChker() {
             return chker;
@@ -523,6 +625,70 @@ public class QACworkPageDataBean {
 
         public void setPreedt(String preedt) {
             this.preedt = preedt;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(ID);
+            dest.writeString(subfactory);
+            dest.writeString(item);
+            dest.writeString(ctmtxt);
+            dest.writeString(sealedrev);
+            dest.writeString(docback);
+            dest.writeString(predt);
+            dest.writeString(lcdat);
+            dest.writeString(sewFdt);
+            dest.writeString(sewMdt);
+            dest.writeString(taskqty);
+            dest.writeString(cutqty);
+            dest.writeString(preMemo);
+            dest.writeString(predoc);
+            dest.writeString(fabricsok);
+            dest.writeString(accessoriesok);
+            dest.writeString(spcproDec);
+            dest.writeString(spcproMemo);
+            dest.writeString(QCbdt);
+            dest.writeString(QCmdt);
+            dest.writeString(QCMedt);
+            dest.writeString(QCbdtDoc);
+            dest.writeString(QCmdtDoc);
+            dest.writeString(QCedtDoc);
+            dest.writeString(fctmdt);
+            dest.writeString(fctedt);
+            dest.writeString(prddocumentary);
+            dest.writeString(QCMemo);
+            dest.writeString(packbdat);
+            dest.writeString(packqty2);
+            dest.writeString(factlcdat);
+            dest.writeString(ourAfter);
+            dest.writeString(prdmaster);
+            dest.writeString(prdmasterid);
+            dest.writeString(QCMasterScore);
+            dest.writeString(batchid);
+            dest.writeString(QAname);
+            dest.writeString(firstsamQA);
+            dest.writeString(firstsamQAid);
+            dest.writeString(QAScore);
+            dest.writeString(QAMemo);
+            dest.writeString(ctmchkdt);
+            dest.writeString(IPQC);
+            dest.writeString(IPQCid);
+            dest.writeString(IPQCmdt);
+            dest.writeString(IPQCPedt);
+            dest.writeString(predocdt);
+            dest.writeString(prebdt);
+            dest.writeString(premdt);
+            dest.writeString(preedt);
+            dest.writeString(chker);
+            dest.writeString(chkerid);
+            dest.writeString(chkpdt);
+            dest.writeString(chkfctdt);
+            dest.writeString(chkplace);
         }
     }
 }

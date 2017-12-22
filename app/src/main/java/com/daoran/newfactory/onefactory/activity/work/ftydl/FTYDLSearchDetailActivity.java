@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.adapter.ftydladapter.FTYDLDetailAdapter;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
+import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDailyBean;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDetailColorBean;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDetailDetailBean;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDetailSearchBean;
@@ -114,7 +115,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
     private String tvnewlyItem, tvnewlyDepartment, isprodure, tvnewlyctmtxt, tvnewlyDocumentary,
             tvnewlyFactory, tvnewlyOthers, tvnewlyProcedure, tvnyear, tvnmonth,
             tvnewpqty, tvTaskqty, tvnewMdl, tvnewlyProdcol, tvnewlyClippingNumber,
-            tvnewlyCompletedLastMonth, tvnewlyTotal, tvnewlyrecorder, tvnewlyrecordat, tvnewlyday1,
+            tvnewlyCompletedLastMonth, tvnewlyPrdstatus, tvnewlyrecorder, tvnewlyrecordat, tvnewlyday1,
             tvnewlyday2, tvnewlyday3, tvnewlyday4, tvnewlyday5, tvnewlyday6, tvnewlyday7,
             tvnewlyday8, tvnewlyday9, tvnewlyday10, tvnewlyday11, tvnewlyday12, tvnewlyday13,
             tvnewlyday14, tvnewlyday15, tvnewlyday16, tvnewlyday17, tvnewlyday18, tvnewlyday19,
@@ -127,6 +128,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
 
     private String usernamerecoder,//登录人
             CountMonthstr;//计算的总数
+    private int position;//数据索引位置
 
     private FTYDLDetailAdapter verticalAdatper;//花色list适配
     private List<FTYDLColCountBean.Data> procalbeanlist =
@@ -147,11 +149,14 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
             new ArrayList<FTYDLMonthBean.DataBean>();//同款号，部门，工序的数据集合
     private FTYDLMonthBean ftydlMonthBean;
 
+    List<FTYDLDailyBean.DataBean> detailBeenList =
+            new ArrayList<FTYDLDailyBean.DataBean>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_production_config_vertical);
-        setSpUtils();//获取变量
+        setSpUtils(detailBeenList);//获取变量
         getView();
         initView();
         setListener();
@@ -261,7 +266,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
         tv_config_clippingnumber.setText(tvnewlyClippingNumber);//实裁数
         tv_config_totalcompletion.setText(tvnewlyCompletedLastMonth);//总完工数
         et_config_completedlastmonth.setText(tvnewlyCompletedLastMonth);//上月完工数
-        tv_config_state.setText(tvnewlyTotal);//状态
+        tv_config_state.setText(tvnewlyPrdstatus);//状态
         tv_config_recorder.setText(tvnewlyrecorder);//制单人
         tv_config_recordat.setText(tvnewlyrecordat);//制单时间
         tv_config_cutdate.setText(year + "/" + month + "/" + datetime);//裁床时间
@@ -300,6 +305,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
         et_config_thirtyoneday.setText(tvnewlyday31);
         String prodetailPredocdt = (year + "/" + month + "/" + datetime);
         spUtils.put(getApplicationContext(), "prodetailPredocdt", prodetailPredocdt);
+        //判断是否是裁床
         if (isprodure.equals("0")) {
             ll_config_singularsystem.setVisibility(View.VISIBLE);
             ll_config_completedlast.setVisibility(View.VISIBLE);
@@ -339,101 +345,532 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
     }
 
     /*接收上一个页面传过来的点击的数据*/
-    private void setSpUtils() {
+    private void setSpUtils(List<FTYDLDailyBean.DataBean> detailBeenList) {
+        detailBeenList = getIntent().getParcelableArrayListExtra("detailBeenList");
         sp = getSharedPreferences("my_sp", 0);
+        position = Integer.parseInt(
+                sp.getString("tvFTYDLDetailId", ""));//接收的索引
+
         isprodure = sp.getString("FTYDLDetailISProdure", "");
         usernamerecoder = sp.getString("usernamerecoder", "");//登录人
-        tvnewlyItem = sp.getString("tvFTYDLDetailItem", "");//款号
-        tvnewlyctmtxt = sp.getString("tvFTYDLDetailCtmtxt", "");//客户
-        tvnewlyDocumentary = sp.getString("tvFTYDLDetailDocumentary", "");//跟单
-        tvnewlyFactory = sp.getString("tvFTYDLDetailFactory", "");//工厂
-        tvnewlyDepartment = sp.getString("tvFTYDLDetailFactoryTeams", "");//部门/组别
         tvnewlyProcedure = sp.getString("tvFTYDLDetailProcedure", "");//工序
-        tvnewlyOthers = sp.getString("tvFTYDLDetailWorkers", "");//组别人数
-        tvnewpqty = sp.getString("tvFTYDLDetailPqty", "");//制单数
-        tvTaskqty = sp.getString("tvFTYDLDetailTaskqty", "");//任务数
-        tvnewMdl = sp.getString("tvFTYDLDetailMdl", "");//尺码
-        tvnewlyProdcol = sp.getString("tvFTYDLDetailProdcol", "");//花色
-        tvnewlyClippingNumber = sp.getString("tvFTYDLDetailFactcutqty",
-                "");//实裁数
-        tvnewlyCompletedLastMonth = sp.getString("tvFTYDLDetailSumCompletedQty",
-                "");//总完工数
-        tvnewlyTotal = sp.getString("tvFTYDLDetailPrdstatus", "");//状态
-        tvnewlyrecorder = sp.getString("tvFTYDLDetailRecorder", "");//制单人
-        tvnewlyrecordat = sp.getString("tvFTYDLDetailRecordat", "");//制单时间
-        tvnyear = sp.getString("tvFTYDLDetailYear", "");//年
-        tvnmonth = sp.getString("tvFTYDLDetailMonth", "");//月
-        tvnewlyday1 = sp.getString("tvFTYDLDetailDay1", "");//1
-        tvnewlyday2 = sp.getString("tvFTYDLDetailDay2", "");//2
-        tvnewlyday3 = sp.getString("tvFTYDLDetailDay3", "");//3
-        tvnewlyday4 = sp.getString("tvFTYDLDetailDay4", "");//4
-        tvnewlyday5 = sp.getString("tvFTYDLDetailDay5", "");//5
-        tvnewlyday6 = sp.getString("tvFTYDLDetailDay6", "");//6
-        tvnewlyday7 = sp.getString("tvFTYDLDetailDay7", "");//7
-        tvnewlyday8 = sp.getString("tvFTYDLDetailDay8", "");//8
-        tvnewlyday9 = sp.getString("tvFTYDLDetailDay9", "");//9
-        tvnewlyday10 = sp.getString("tvFTYDLDetailDay10", "");//10
-        tvnewlyday11 = sp.getString("tvFTYDLDetailDay11", "");//11
-        tvnewlyday12 = sp.getString("tvFTYDLDetailDay12", "");//12
-        tvnewlyday13 = sp.getString("tvFTYDLDetailDay13", "");//13
-        tvnewlyday14 = sp.getString("tvFTYDLDetailDay14", "");//14
-        tvnewlyday15 = sp.getString("tvFTYDLDetailDay15", "");//15
-        tvnewlyday16 = sp.getString("tvFTYDLDetailDay16", "");//16
-        tvnewlyday17 = sp.getString("tvFTYDLDetailDay17", "");//17
-        tvnewlyday18 = sp.getString("tvFTYDLDetailDay18", "");//18
-        tvnewlyday19 = sp.getString("tvFTYDLDetailDay19", "");//19
-        tvnewlyday20 = sp.getString("tvFTYDLDetailDay20", "");//20
-        tvnewlyday21 = sp.getString("tvFTYDLDetailDay21", "");//21
-        tvnewlyday22 = sp.getString("tvFTYDLDetailDay22", "");//22
-        tvnewlyday23 = sp.getString("tvFTYDLDetailDay23", "");//23
-        tvnewlyday24 = sp.getString("tvFTYDLDetailDay24", "");//24
-        tvnewlyday25 = sp.getString("tvFTYDLDetailDay25", "");//25
-        tvnewlyday26 = sp.getString("tvFTYDLDetailDay26", "");//26
-        tvnewlyday27 = sp.getString("tvFTYDLDetailDay27", "");//27
-        tvnewlyday28 = sp.getString("tvFTYDLDetailDay28", "");//28
-        tvnewlyday29 = sp.getString("tvFTYDLDetailDay29", "");//29
-        tvnewlyday30 = sp.getString("tvFTYDLDetailDay30", "");//30
-        tvnewlyday31 = sp.getString("tvFTYDLDetailDay31", "");//31
-        tvnewlySalid = sp.getString("tvFTYDLDetailSalesID", "");
-        id = sp.getString("tvFTYDLDetailID", "");//id
-        tvnewlyplanid = sp.getString("tvFTYDLDetailPlanId", "");//引用的工厂计划id
-        tvnewlysn = sp.getString("tvFTYDLDetailSn", "");//序列号
-        tvnewlycontractno = sp.getString("tvFTYDLDetailContractno", "");//销售合同号
-        tvnewlyinbill = sp.getString("tvFTYDLDetailInbill", "");//内部id
-        tvnewlyarea = sp.getString("tvFTYDLDetailArea", "");//片区号
-        tvnewlycompanytxt = sp.getString("tvFTYDLDetailCompanytxt", "");//公司名称
-        tvnewlypo = sp.getString("tvFTYDLDetailPo", "");//po
-        tvnewlyoitem = sp.getString("tvFTYDLDetailOitem", "");//原款号
-        tvnewlyctmid = sp.getString("tvFTYDLDetailCtmid", "");//客户id
-        tvnewlyctmcompanytxt = sp.getString("tvFTYDLDetailCtmcompanytxt",
-                "");//客户归属公司
-        tvnewlyprdtyp = sp.getString("tvFTYDLDetailPrdtyp", "");//产品大类
-        tvnewlylcdat = sp.getString("tvFTYDLDetailLcdat", "");//计划离厂日期
-        tvnewlylbdat = sp.getString("tvFTYDLDetailLbdat", "");//计划离岸日期
-        tvnewlystyp = sp.getString("tvFTYDLDetailStyp", "");//po类型
-        tvnewlyfsaler = sp.getString("tvFTYDLDetailFsaler", "");//外贸业务员
-        tvnewlypsaler = sp.getString("tvFTYDLDetailPsaler", "");//生产业务员
-        tvnewlymemo = sp.getString("tvFTYDLDetailMemo", "");//备注
-        tvnewlyunit = sp.getString("tvFTYDLDetailUnit", "");//单位
-        tvnewlymegitem = sp.getString("tvFTYDLDetailMegitem", "");//合并款号
-        tvnewlyteamname = sp.getString("tvFTYDLDetailTeamname", "");//外贸组别
-        tvnewlyrecordid = sp.getString("tvFTYDLDetailRecordid", "");//制单人id
-        tvnewlycutbdt = sp.getString("tvFTYDLDetailCutbdt", "");//开采日期
-        tvnewlysewbdt = sp.getString("tvFTYDLDetailSewbdt", "");//上线日期
-        tvnewlysewedt = sp.getString("tvFTYDLDetailSewedt", "");//完工日期
-        tvnewlysewDays = sp.getString("tvFTYDLDetailSewDays", "");//天数
-        tvnewlyperqty = sp.getString("tvFTYDLDetailPerqty", "");//人均件数
-        tvnewlycutamount = sp.getString("tvFTYDLDetailCutamount", "");//裁剪金额
-        tvnewlysewamount = sp.getString("tvFTYDLDetailSewamount", "");
-        tvnewlypackamount = sp.getString("tvFTYDLDetailPackamount", "");
-        tvnewlyamount = sp.getString("tvFTYDLDetailAmount", "");//总价
-        tvnewlyperMachineQty = sp.getString("tvFTYDLDetailPerMachineQty", "");//车间人均台产
-        tvnewlysumMachineQty = sp.getString("tvFTYDLDetailSumMachineQty", "");//台总产
-        tvnewlyprdmaster = sp.getString("tvFTYDLDetailPrdmaster", "");//生产主管
-        tvnewlyleftQty = sp.getString("tvFTYDLDetailLeftQty", "");//结余数量
-        tvnewlylastMonQty = sp.getString("tvFTYDLDetailLastMonQty", "");//上月结余数量
-        tvnewlyprddocumentaryid = sp.getString("tvFTYDLDetailPrdDocumentaryId", "");//跟单id
-        tvnewlyisdiffc = sp.getString("tvFTYDLDetailIsdiffc", "");//是否分色
+        tvnewlyItem = detailBeenList.get(position).getItem();//款号
+        if (detailBeenList.get(position).getCtmtxt() == null) {//客户
+            tvnewlyctmtxt = "";
+        } else {
+            tvnewlyctmtxt = detailBeenList.get(position).getCtmtxt();
+        }
+
+        if (detailBeenList.get(position).getPrddocumentary() == null) {//跟单
+            tvnewlyDocumentary = "";
+        } else {
+            tvnewlyDocumentary = detailBeenList.get(position).getPrddocumentary();
+        }
+
+        if (detailBeenList.get(position).getSubfactory() == null) {//工厂
+            tvnewlyFactory = "";
+        } else {
+            tvnewlyFactory = detailBeenList.get(position).getSubfactory();
+        }
+
+        if (detailBeenList.get(position).getSubfactoryTeams() == null) {//部门组别
+            tvnewlyDepartment = "";
+        } else {
+            tvnewlyDepartment = detailBeenList.get(position).getSubfactoryTeams();
+        }
+
+        if (detailBeenList.get(position).getWorkers() == null) {//组别人数
+            tvnewlyOthers = "";
+        } else {
+            tvnewlyOthers = detailBeenList.get(position).getWorkers();
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getPqty()) == null) {//制单数
+            tvnewpqty = "";
+        } else {
+            tvnewpqty = String.valueOf(detailBeenList.get(position).getPqty());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getTaskqty()) == null) {//任务数
+            tvTaskqty = "";
+        } else {
+            tvTaskqty = String.valueOf(detailBeenList.get(position).getTaskqty());
+        }
+
+        if (detailBeenList.get(position).getMdl() == null) {//尺码
+            tvnewMdl = "";
+        } else {
+            tvnewMdl = detailBeenList.get(position).getMdl();
+        }
+
+        if (detailBeenList.get(position).getProdcol() == null) {//花色
+            tvnewlyProdcol = "";
+        } else {
+            tvnewlyProdcol = detailBeenList.get(position).getProdcol();
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getFactcutqty()) == null) {//实裁数
+            tvnewlyClippingNumber = "";
+        } else {
+            tvnewlyClippingNumber = String.valueOf(detailBeenList.get(position).getFactcutqty());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getSumCompletedQty()) == null) {//总完工数
+            tvnewlyCompletedLastMonth = "";
+        } else {
+            tvnewlyCompletedLastMonth = String.valueOf(detailBeenList.
+                    get(position).getSumCompletedQty());
+        }
+
+        if (detailBeenList.get(position).getPrdstatus() == null) {//状态
+            tvnewlyPrdstatus = "";
+        } else {
+            tvnewlyPrdstatus = detailBeenList.get(position).getPrdstatus();
+        }
+
+        if (detailBeenList.get(position).getRecorder() == null) {//制单人
+            tvnewlyrecorder = "";
+        } else {
+            tvnewlyrecorder = detailBeenList.get(position).getRecorder();
+        }
+
+        if (detailBeenList.get(position).getRecordat() == null) {//制单时间
+            tvnewlyrecordat = "";
+        } else {
+            tvnewlyrecordat = detailBeenList.get(position).getRecordat();
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getYear()) == null) {//年
+            tvnyear = "";
+        } else {
+            tvnyear = String.valueOf(detailBeenList.get(position).getYear());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getMonth()) == null) {//月
+            tvnmonth = "";
+        } else {
+            tvnmonth = String.valueOf(detailBeenList.get(position).getMonth());
+        }
+
+        if (detailBeenList.get(position).getDay1() == null) {//1
+            tvnewlyday1 = "";
+        } else {
+            tvnewlyday1 = detailBeenList.get(position).getDay1();
+        }
+
+        if (detailBeenList.get(position).getDay2() == null) {//2
+            tvnewlyday2 = "";
+        } else {
+            tvnewlyday2 = detailBeenList.get(position).getDay2();
+        }
+
+        if (detailBeenList.get(position).getDay3() == null) {//3
+            tvnewlyday3 = "";
+        } else {
+            tvnewlyday3 = detailBeenList.get(position).getDay3();
+        }
+
+        if (detailBeenList.get(position).getDay4() == null) {//4
+            tvnewlyday4 = "";
+        } else {
+            tvnewlyday4 = detailBeenList.get(position).getDay4();
+        }
+
+        if (detailBeenList.get(position).getDay5() == null) {//5
+            tvnewlyday5 = "";
+        } else {
+            tvnewlyday5 = detailBeenList.get(position).getDay5();
+        }
+
+        if (detailBeenList.get(position).getDay6() == null) {//6
+            tvnewlyday6 = "";
+        } else {
+            tvnewlyday6 = detailBeenList.get(position).getDay6();
+        }
+
+        if (detailBeenList.get(position).getDay7() == null) {//7
+            tvnewlyday7 = "";
+        } else {
+            tvnewlyday7 = detailBeenList.get(position).getDay7();
+        }
+
+        if (detailBeenList.get(position).getDay8() == null) {//8
+            tvnewlyday8 = "";
+        } else {
+            tvnewlyday8 = detailBeenList.get(position).getDay8();
+        }
+
+        if (detailBeenList.get(position).getDay9() == null) {//9
+            tvnewlyday9 = "";
+        } else {
+            tvnewlyday9 = detailBeenList.get(position).getDay9();
+        }
+
+        if (detailBeenList.get(position).getDay10() == null) {//10
+            tvnewlyday10 = "";
+        } else {
+            tvnewlyday10 = detailBeenList.get(position).getDay10();
+        }
+
+        if (detailBeenList.get(position).getDay11() == null) {//11
+            tvnewlyday11 = "";
+        } else {
+            tvnewlyday11 = detailBeenList.get(position).getDay11();
+        }
+
+        if (detailBeenList.get(position).getDay12() == null) {//12
+            tvnewlyday12 = "";
+        } else {
+            tvnewlyday12 = detailBeenList.get(position).getDay12();
+        }
+
+        if (detailBeenList.get(position).getDay13() == null) {//13
+            tvnewlyday13 = "";
+        } else {
+            tvnewlyday13 = detailBeenList.get(position).getDay13();
+        }
+
+        if (detailBeenList.get(position).getDay14() == null) {//14
+            tvnewlyday14 = "";
+        } else {
+            tvnewlyday14 = detailBeenList.get(position).getDay14();
+        }
+
+        if (detailBeenList.get(position).getDay15() == null) {//15
+            tvnewlyday15 = "";
+        } else {
+            tvnewlyday15 = detailBeenList.get(position).getDay15();
+        }
+
+        if (detailBeenList.get(position).getDay16() == null) {//16
+            tvnewlyday16 = "";
+        } else {
+            tvnewlyday16 = detailBeenList.get(position).getDay16();
+        }
+
+        if (detailBeenList.get(position).getDay17() == null) {//17
+            tvnewlyday17 = "";
+        } else {
+            tvnewlyday17 = detailBeenList.get(position).getDay17();
+        }
+
+        if (detailBeenList.get(position).getDay18() == null) {//18
+            tvnewlyday18 = "";
+        } else {
+            tvnewlyday18 = detailBeenList.get(position).getDay18();
+        }
+
+        if (detailBeenList.get(position).getDay19() == null) {//19
+            tvnewlyday19 = "";
+        } else {
+            tvnewlyday19 = detailBeenList.get(position).getDay19();
+        }
+
+        if (detailBeenList.get(position).getDay20() == null) {//20
+            tvnewlyday20 = "";
+        } else {
+            tvnewlyday20 = detailBeenList.get(position).getDay20();
+        }
+
+        if (detailBeenList.get(position).getDay21() == null) {//21
+            tvnewlyday21 = "";
+        } else {
+            tvnewlyday21 = detailBeenList.get(position).getDay21();
+        }
+
+        if (detailBeenList.get(position).getDay22() == null) {//22
+            tvnewlyday22 = "";
+        } else {
+            tvnewlyday22 = detailBeenList.get(position).getDay22();
+        }
+
+        if (detailBeenList.get(position).getDay23() == null) {//23
+            tvnewlyday23 = "";
+        } else {
+            tvnewlyday23 = detailBeenList.get(position).getDay23();
+        }
+
+        if (detailBeenList.get(position).getDay24() == null) {//24
+            tvnewlyday24 = "";
+        } else {
+            tvnewlyday24 = detailBeenList.get(position).getDay24();
+        }
+
+        if (detailBeenList.get(position).getDay25() == null) {//25
+            tvnewlyday25 = "";
+        } else {
+            tvnewlyday25 = detailBeenList.get(position).getDay25();
+        }
+
+        if (detailBeenList.get(position).getDay26() == null) {//26
+            tvnewlyday26 = "";
+        } else {
+            tvnewlyday26 = detailBeenList.get(position).getDay26();
+        }
+
+        if (detailBeenList.get(position).getDay27() == null) {//27
+            tvnewlyday27 = "";
+        } else {
+            tvnewlyday27 = detailBeenList.get(position).getDay27();
+        }
+
+        if (detailBeenList.get(position).getDay28() == null) {//28
+            tvnewlyday28 = "";
+        } else {
+            tvnewlyday28 = detailBeenList.get(position).getDay28();
+        }
+
+        if (detailBeenList.get(position).getDay29() == null) {//29
+            tvnewlyday29 = "";
+        } else {
+            tvnewlyday29 = detailBeenList.get(position).getDay29();
+        }
+
+        if (detailBeenList.get(position).getDay30() == null) {//30
+            tvnewlyday30 = "";
+        } else {
+            tvnewlyday30 = detailBeenList.get(position).getDay30();
+        }
+
+        if (detailBeenList.get(position).getDay31() == null) {//31
+            tvnewlyday31 = "";
+        } else {
+            tvnewlyday31 = detailBeenList.get(position).getDay31();
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getSalesid()) == null) {//排单id
+            tvnewlySalid = "";
+        } else {
+            tvnewlySalid = String.valueOf(detailBeenList.get(position).getSalesid());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getID()) == null) {//id
+            id = "";
+        } else {
+            id = String.valueOf(detailBeenList.get(position).getID());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getPlanid()) == null) {///引用的工厂计划id
+            tvnewlyplanid = "";
+        } else {
+            tvnewlyplanid = String.valueOf(detailBeenList.get(position).getPlanid());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getSn()) == null) {//序列号
+            tvnewlysn = "";
+        } else {
+            tvnewlysn = String.valueOf(detailBeenList.get(position).getSn());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getContractno()) == null) {//销售合同号
+            tvnewlycontractno = "";
+        } else {
+            tvnewlycontractno = String.valueOf(detailBeenList.get(position).getContractno());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getInbill()) == null) {//内部id
+            tvnewlyinbill = "";
+        } else {
+            tvnewlyinbill = String.valueOf(detailBeenList.get(position).getInbill());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getArea()) == null) {//片区号
+            tvnewlyarea = "";
+        } else {
+            tvnewlyarea = String.valueOf(detailBeenList.get(position).getArea());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getCompanytxt()) == null) {//公司名称
+            tvnewlycompanytxt = "";
+        } else {
+            tvnewlycompanytxt = String.valueOf(detailBeenList.get(position).getCompanytxt());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getPo()) == null) {//po
+            tvnewlypo = "";
+        } else {
+            tvnewlypo = String.valueOf(detailBeenList.get(position).getPo());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getOitem()) == null) {//原款号
+            tvnewlyoitem = "";
+        } else {
+            tvnewlyoitem = String.valueOf(detailBeenList.get(position).getOitem());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getCtmid()) == null) {//客户id
+            tvnewlyctmid = "";
+        } else {
+            tvnewlyctmid = String.valueOf(detailBeenList.get(position).getCtmid());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getCtmcompanytxt()) == null) {//客户归属公司
+            tvnewlyctmcompanytxt = "";
+        } else {
+            tvnewlyctmcompanytxt = String.valueOf(detailBeenList.get(position).getCtmcompanytxt());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getPrdtyp()) == null) {//产品大类
+            tvnewlyprdtyp = "";
+        } else {
+            tvnewlyprdtyp = String.valueOf(detailBeenList.get(position).getPrdtyp());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getLcdat()) == null) {//计划离厂日期
+            tvnewlylcdat = "";
+        } else {
+            tvnewlylcdat = String.valueOf(detailBeenList.get(position).getLcdat());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getLbdat()) == null) {//计划离岸日期
+            tvnewlylbdat = "";
+        } else {
+            tvnewlylbdat = String.valueOf(detailBeenList.get(position).getLbdat());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getStyp()) == null) {//po类型
+            tvnewlystyp = "";
+        } else {
+            tvnewlystyp = String.valueOf(detailBeenList.get(position).getStyp());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getFsaler()) == null) {//外贸业务员
+            tvnewlyfsaler = "";
+        } else {
+            tvnewlyfsaler = String.valueOf(detailBeenList.get(position).getFsaler());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getPsaler()) == null) {//生产业务员
+            tvnewlypsaler = "";
+        } else {
+            tvnewlypsaler = String.valueOf(detailBeenList.get(position).getPsaler());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getMemo()) == null) {//备注
+            tvnewlymemo = "";
+        } else {
+            tvnewlymemo = String.valueOf(detailBeenList.get(position).getMemo());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getUnit()) == null) {//单位
+            tvnewlyunit = "";
+        } else {
+            tvnewlyunit = String.valueOf(detailBeenList.get(position).getUnit());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getMegitem()) == null) {//合并款号
+            tvnewlymegitem = "";
+        } else {
+            tvnewlymegitem = String.valueOf(detailBeenList.get(position).getMegitem());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getTeamname()) == null) {//外贸组别
+            tvnewlyteamname = "";
+        } else {
+            tvnewlyteamname = String.valueOf(detailBeenList.get(position).getTeamname());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getRecordid()) == null) {//制单人id
+            tvnewlyrecordid = "";
+        } else {
+            tvnewlyrecordid = String.valueOf(detailBeenList.get(position).getRecordid());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getCutbdt()) == null) {//开采日期
+            tvnewlycutbdt = "";
+        } else {
+            tvnewlycutbdt = String.valueOf(detailBeenList.get(position).getCutbdt());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getSewbdt()) == null) {//上线日期
+            tvnewlysewbdt = "";
+        } else {
+            tvnewlysewbdt = String.valueOf(detailBeenList.get(position).getSewbdt());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getSewedt()) == null) {//完工日期
+            tvnewlysewedt = "";
+        } else {
+            tvnewlysewedt = String.valueOf(detailBeenList.get(position).getSewedt());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getSewDays()) == null) {//天数
+            tvnewlysewDays = "";
+        } else {
+            tvnewlysewDays = String.valueOf(detailBeenList.get(position).getSewDays());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getPerqty()) == null) {//人均件数
+            tvnewlyperqty = "";
+        } else {
+            tvnewlyperqty = String.valueOf(detailBeenList.get(position).getPerqty());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getCutamount()) == null) {//裁剪金额
+            tvnewlycutamount = "";
+        } else {
+            tvnewlycutamount = String.valueOf(detailBeenList.get(position).getCutamount());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getSewamount()) == null) {
+            tvnewlysewamount = "";
+        } else {
+            tvnewlysewamount = String.valueOf(detailBeenList.get(position).getSewamount());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getPackamount()) == null) {
+            tvnewlypackamount = "";
+        } else {
+            tvnewlypackamount = String.valueOf(detailBeenList.get(position).getPackamount());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getAmount()) == null) {//总价
+            tvnewlyamount = "";
+        } else {
+            tvnewlyamount = String.valueOf(detailBeenList.get(position).getAmount());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getPerMachineQty()) == null) {//车间人均台产
+            tvnewlyperMachineQty = "";
+        } else {
+            tvnewlyperMachineQty = String.valueOf(detailBeenList.get(position).getPerMachineQty());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getSumMachineQty()) == null) {//台总产
+            tvnewlysumMachineQty = "";
+        } else {
+            tvnewlysumMachineQty = String.valueOf(detailBeenList.get(position).getSumMachineQty());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getPrdmaster()) == null) {//生产主管
+            tvnewlyprdmaster = "";
+        } else {
+            tvnewlyprdmaster = String.valueOf(detailBeenList.get(position).getPrdmaster());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getLeftQty()) == null) {//结余数量
+            tvnewlyleftQty = "";
+        } else {
+            tvnewlyleftQty = String.valueOf(detailBeenList.get(position).getLeftQty());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getLastMonQty()) == null) {//上月结余数量
+            tvnewlylastMonQty = "";
+        } else {
+            tvnewlylastMonQty = String.valueOf(detailBeenList.get(position).getLastMonQty());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getPrddocumentaryid()) == null) {//跟单id
+            tvnewlyprddocumentaryid = "";
+        } else {
+            tvnewlyprddocumentaryid = String.valueOf(detailBeenList.get(position).getPrddocumentaryid());
+        }
+
+        if (String.valueOf(detailBeenList.get(position).getIsdiffc()) == null) {//是否分色
+            tvnewlyisdiffc = "";
+        } else {
+            tvnewlyisdiffc = String.valueOf(detailBeenList.get(position).getIsdiffc());
+        }
     }
 
     /*判断是否可输入*/
@@ -522,7 +959,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
             int tvsum = 0;
             for (int i = 0; i < newdataBeans.size(); i++) {
                 String sumcom = String.valueOf(newdataBeans.get(i).getSumCompletedQty());
-                if (sumcom == null||sumcom.equals("")) {
+                if (sumcom == null || sumcom.equals("")) {
                     sumcom = String.valueOf(0);
                 }
                 tvsum = tvsum + Integer.parseInt(sumcom);
@@ -588,7 +1025,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
         saveBean.setAmount(tvnewlyamount);
         saveBean.setPerMachineQty(tvnewlyperMachineQty);
         saveBean.setSumMachineQty(tvnewlysumMachineQty);
-        saveBean.setPrdstatus(tvnewlyTotal);//状态
+        saveBean.setPrdstatus(tvnewlyPrdstatus);//状态
         saveBean.setPrdmaster(tvnewlyprdmaster);//主管
         saveBean.setPrddocumentary(tvnewlyDocumentary);//跟单
         saveBean.setTaskqty(tvTaskqty);//任务数
@@ -669,59 +1106,6 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
         }
     }
 
-    /*精确查询除了裁床之外*/
-    private void setDateNewly() {
-        String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
-        final Gson gson = new Gson();
-        final FTYDLDetailDetailBean detailDetailBean = new FTYDLDetailDetailBean();
-        FTYDLDetailDetailBean.Conditions conditions =
-                detailDetailBean.new Conditions();
-        conditions.setID(Integer.parseInt(id));
-        conditions.setItem(tvnewlyItem);//款号
-        conditions.setSalesid(Integer.parseInt(tvnewlySalid));
-        conditions.setWorkingProcedure(tvnewlyProcedure);//工序
-        conditions.setPrddocumentary(tvnewlyDocumentary);//跟单人
-        conditions.setRecordat(tvnewlyrecordat);//时间
-        conditions.setRecorder(tvnewlyrecorder);//制单人
-        conditions.setRecordid(tvnewlyrecordid);//制单人id
-        conditions.setProdcol(tvnewlyProdcol);//花色
-        conditions.setYear(tvnyear);//年
-        conditions.setMonth(tvnmonth);//月
-        conditions.setSubfactoryTeams(tvnewlyDepartment);//组别
-        conditions.setPrddocumentaryisnull(false);//制单人是否可空
-        detailDetailBean.setConditions(conditions);
-        detailDetailBean.setPageNum(0);
-        detailDetailBean.setPageSize(15);
-        final String bean = gson.toJson(detailDetailBean);
-        String dateee = bean.replace("\"\"", "null");
-        if (NetWork.isNetWorkAvailable(this)) {
-            OkHttpUtils.postString()
-                    .url(urlDaily)
-                    .content(dateee)
-                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            e.printStackTrace();
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-                            System.out.println(response);
-                            String ress = response.replace("\\", "");
-                            System.out.print(ress);
-                            String ression = StringUtil.sideTrim(ress, "\"");
-                            System.out.print(ression);
-                            colorBean = new Gson().fromJson(ression, FTYDLDetailColorBean.class);
-                            newdataBeans = colorBean.getData();
-                        }
-                    });
-        } else {
-            ToastUtils.ShowToastMessage(R.string.noHttp, FTYDLSearchDetailActivity.this);
-        }
-    }
-
     /*获取相同款号相同部门相同工序的全部数据*/
     private void setMonthSearch() {
         String strMonth = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
@@ -759,10 +1143,10 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         monthlistBean = ftydlMonthBean.getData();
                         System.out.println(monthlistBean);
                         setEnabled();
-                        if(tvnewlyProcedure.equals("裁床")){
+                        if (tvnewlyProcedure.equals("裁床")) {
                             setDateCutting();
-                        }else{
-                            setDateNewly();
+                        } else {
+                            setDateCutting();
                         }
                     }
                 });
@@ -818,6 +1202,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
     /*可输入状态*/
     private void setEnableTrue() {
         sp = getSharedPreferences("my_sp", 0);
+        detailBeenList = getIntent().getParcelableArrayListExtra("detailBeenList");
         final ProductionUtil productionUtil = new ProductionUtil();
         saveBean = new FTYDLDetailSaveBean();
         postdataBean = new FTYDLDetailColorBean.DataBean();
@@ -855,9 +1240,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                             et_config_others.setSelection(et_config_others.length());
                         }
                         String proitem = et_config_others.getText().toString();
-                        String tvprodetailOthers = sp.getString("tvFTYDLDetailWorkers", "");
-                        if (tvprodetailOthers == null) {
+                        String tvprodetailOthers;
+                        if (detailBeenList.get(position).getWorkers() == null) {
                             tvprodetailOthers = "";
+                        }else{
+                            tvprodetailOthers = detailBeenList.get(position).getWorkers();
                         }
                         String nullmemo;
                         if (tvprodetailOthers.equals(proitem)) {
@@ -907,9 +1294,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_singularsystem.setSelection(et_config_singularsystem.length());
                     }
                     String proitem = et_config_singularsystem.getText().toString();
-                    String progettasknumber = sp.getString("tvFTYDLDetailTaskqty", "");
-                    if (progettasknumber == null) {
+                    String progettasknumber;
+                    if (String.valueOf(detailBeenList.get(position).getTaskqty()) == null) {
                         progettasknumber = "";
+                    }else{
+                        progettasknumber = String.valueOf(detailBeenList.get(position).getTaskqty());
                     }
                     String nulltasknumber;
                     if (progettasknumber.equals(proitem)) {
@@ -954,9 +1343,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_completedlastmonth.setSelection(et_config_completedlastmonth.length());
                     }
                     String proitem = et_config_completedlastmonth.getText().toString();
-                    String progetlastmon = sp.getString("tvFTYDLDetailLastMonQty", "");
-                    if (progetlastmon == null) {
+                    String progetlastmon;
+                    if (String.valueOf(detailBeenList.get(position).getLastMonQty()) == null) {
                         progetlastmon = "";
+                    }else{
+                        progetlastmon = String.valueOf(detailBeenList.get(position).getLastMonQty());
                     }
                     String nulllastmon;
                     if (progetlastmon.equals(proitem)) {
@@ -1018,9 +1409,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_oneday.setSelection(et_config_oneday.length());
                     }
                     String proitem = et_config_oneday.getText().toString();
-                    String progetlastmon = sp.getString("", "");
-                    if (progetlastmon == null) {
+                    String progetlastmon;
+                    if (detailBeenList.get(position).getDay1() == null) {
                         progetlastmon = "";
+                    }else{
+                        progetlastmon = detailBeenList.get(position).getDay1();
                     }
                     String nulllastmon;
                     if (progetlastmon.equals(proitem)) {
@@ -1080,9 +1473,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_twoday.setSelection(et_config_twoday.length());
                     }
                     String proitem = et_config_twoday.getText().toString();
-                    String progetday2 = sp.getString("", "");
-                    if (progetday2 == null) {
+                    String progetday2;
+                    if (detailBeenList.get(position).getDay2() == null) {
                         progetday2 = "";
+                    }else{
+                        progetday2 = detailBeenList.get(position).getDay2();
                     }
                     String nullday2;
                     if (progetday2.equals(proitem)) {
@@ -1145,9 +1540,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_threeday.setSelection(et_config_threeday.length());
                     }
                     String proitem = et_config_threeday.getText().toString();
-                    String progetday3 = sp.getString("tvFTYDLDetailDay3", "");
-                    if (progetday3 == null) {
+                    String progetday3;
+                    if (detailBeenList.get(position).getDay3() == null) {
                         progetday3 = "";
+                    }else{
+                        progetday3 = detailBeenList.get(position).getDay3();
                     }
                     String nullday3;
                     if (progetday3.equals(proitem)) {
@@ -1210,9 +1607,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_foreday.setSelection(et_config_foreday.length());
                     }
                     String proitem = et_config_foreday.getText().toString();
-                    String progetday4 = sp.getString("tvFTYDLDetailDay4", "");
-                    if (progetday4 == null) {
+                    String progetday4;
+                    if (detailBeenList.get(position).getDay4() == null) {
                         progetday4 = "";
+                    }else{
+                        progetday4 = detailBeenList.get(position).getDay4();
                     }
                     String nullday4;
                     if (progetday4.equals(proitem)) {
@@ -1275,9 +1674,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_fiveday.setSelection(et_config_fiveday.length());
                     }
                     String proitem = et_config_fiveday.getText().toString();
-                    String progetday5 = sp.getString("tvFTYDLDetailDay5", "");
-                    if (progetday5 == null) {
+                    String progetday5;
+                    if (detailBeenList.get(position).getDay5() == null) {
                         progetday5 = "";
+                    }else{
+                        progetday5 = detailBeenList.get(position).getDay5();
                     }
                     String nullday5;
                     if (progetday5.equals(proitem)) {
@@ -1340,9 +1741,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_sixday.setSelection(et_config_sixday.length());
                     }
                     String proitem = et_config_sixday.getText().toString();
-                    String progetday6 = sp.getString("tvFTYDLDetailDay6", "");
-                    if (progetday6 == null) {
+                    String progetday6;
+                    if (detailBeenList.get(position).getDay6() == null) {
                         progetday6 = "";
+                    }else{
+                        progetday6 = detailBeenList.get(position).getDay6();
                     }
                     String nullday6;
                     if (progetday6.equals(proitem)) {
@@ -1402,9 +1805,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_servenday.setSelection(et_config_servenday.length());
                     }
                     String proitem = et_config_servenday.getText().toString();
-                    String progetday7 = sp.getString("tvFTYDLDetailDay7", "");
-                    if (progetday7 == null) {
+                    String progetday7;
+                    if (detailBeenList.get(position).getDay7() == null) {
                         progetday7 = "";
+                    }else{
+                        progetday7 = detailBeenList.get(position).getDay7();
                     }
                     String nullday7;
                     if (progetday7.equals(proitem)) {
@@ -1464,9 +1869,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_eightday.setSelection(et_config_eightday.length());
                     }
                     String proitem = et_config_eightday.getText().toString();
-                    String progetday8 = sp.getString("tvFTYDLDetailDay8", "");
-                    if (progetday8 == null) {
+                    String progetday8;
+                    if (detailBeenList.get(position).getDay8() == null) {
                         progetday8 = "";
+                    }else{
+                        progetday8 = detailBeenList.get(position).getDay8();
                     }
                     String nullday8;
                     if (progetday8.equals(proitem)) {
@@ -1526,9 +1933,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_nineday.setSelection(et_config_nineday.length());
                     }
                     String proitem = et_config_nineday.getText().toString();
-                    String progetday9 = sp.getString("tvFTYDLDetailDay9", "");
-                    if (progetday9 == null) {
+                    String progetday9;
+                    if (detailBeenList.get(position).getDay9() == null) {
                         progetday9 = "";
+                    }else{
+                        progetday9 = detailBeenList.get(position).getDay9();
                     }
                     String nullday9;
                     if (progetday9.equals(proitem)) {
@@ -1588,9 +1997,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_tenday.setSelection(et_config_tenday.length());
                     }
                     String proitem = et_config_tenday.getText().toString();
-                    String progetday10 = sp.getString("tvFTYDLDetailDay10", "");
-                    if (progetday10 == null) {
+                    String progetday10;
+                    if (detailBeenList.get(position).getDay10() == null) {
                         progetday10 = "";
+                    }else{
+                        progetday10 = detailBeenList.get(position).getDay10();
                     }
                     String nullday10;
                     if (progetday10.equals(proitem)) {
@@ -1650,9 +2061,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_elevenday.setSelection(et_config_elevenday.length());
                     }
                     String proitem = et_config_elevenday.getText().toString();
-                    String progetday11 = sp.getString("tvFTYDLDetailDay11", "");
-                    if (progetday11 == null) {
+                    String progetday11;
+                    if (detailBeenList.get(position).getDay11() == null) {
                         progetday11 = "";
+                    }else{
+                        progetday11 = detailBeenList.get(position).getDay11();
                     }
                     String nullday11;
                     if (progetday11.equals(proitem)) {
@@ -1712,9 +2125,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_twelveday.setSelection(et_config_twelveday.length());
                     }
                     String proitem = et_config_twelveday.getText().toString();
-                    String progetday12 = sp.getString("tvFTYDLDetailDay12", "");
-                    if (progetday12 == null) {
+                    String progetday12;
+                    if (detailBeenList.get(position).getDay12() == null) {
                         progetday12 = "";
+                    }else{
+                        progetday12 = detailBeenList.get(position).getDay12();
                     }
                     String nullday12;
                     if (progetday12.equals(proitem)) {
@@ -1774,9 +2189,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_thirteenday.setSelection(et_config_thirteenday.length());
                     }
                     String proitem = et_config_thirteenday.getText().toString();
-                    String progetday13 = sp.getString("tvFTYDLDetailDay13", "");
-                    if (progetday13 == null) {
+                    String progetday13;
+                    if (detailBeenList.get(position).getDay13() == null) {
                         progetday13 = "";
+                    }else{
+                        progetday13 = detailBeenList.get(position).getDay13();
                     }
                     String nullday13;
                     if (progetday13.equals(proitem)) {
@@ -1836,9 +2253,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_fourteenday.setSelection(et_config_fourteenday.length());
                     }
                     String proitem = et_config_fourteenday.getText().toString();
-                    String progetday14 = sp.getString("tvFTYDLDetailDay14", "");
-                    if (progetday14 == null) {
+                    String progetday14;
+                    if (detailBeenList.get(position).getDay14() == null) {
                         progetday14 = "";
+                    }else{
+                        progetday14 = detailBeenList.get(position).getDay14();
                     }
                     String nullday14;
                     if (progetday14.equals(proitem)) {
@@ -1898,9 +2317,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_fifteenday.setSelection(et_config_fifteenday.length());
                     }
                     String proitem = et_config_fifteenday.getText().toString();
-                    String progetday15 = sp.getString("tvFTYDLDetailDay15", "");
-                    if (progetday15 == null) {
+                    String progetday15;
+                    if (detailBeenList.get(position).getDay15() == null) {
                         progetday15 = "";
+                    }else{
+                        progetday15 = detailBeenList.get(position).getDay15();
                     }
                     String nullday15;
                     if (progetday15.equals(proitem)) {
@@ -1960,9 +2381,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_sixteenday.setSelection(et_config_sixteenday.length());
                     }
                     String proitem = et_config_sixteenday.getText().toString();
-                    String progetday16 = sp.getString("tvFTYDLDetailDay16", "");
-                    if (progetday16 == null) {
+                    String progetday16;
+                    if (detailBeenList.get(position).getDay16() == null) {
                         progetday16 = "";
+                    }else{
+                        progetday16 = detailBeenList.get(position).getDay16();
                     }
                     String nullday16;
                     if (progetday16.equals(proitem)) {
@@ -2022,9 +2445,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_seventeenday.setSelection(et_config_seventeenday.length());
                     }
                     String proitem = et_config_seventeenday.getText().toString();
-                    String progetday17 = sp.getString("tvFTYDLDetailDay17", "");
-                    if (progetday17 == null) {
+                    String progetday17;
+                    if (detailBeenList.get(position).getDay17() == null) {
                         progetday17 = "";
+                    }else{
+                        progetday17 = detailBeenList.get(position).getDay17();
                     }
                     String nullday17;
                     if (progetday17.equals(proitem)) {
@@ -2084,9 +2509,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_eighteenday.setSelection(et_config_eighteenday.length());
                     }
                     String proitem = et_config_eighteenday.getText().toString();
-                    String progetday18 = sp.getString("tvFTYDLDetailDay18", "");
-                    if (progetday18 == null) {
+                    String progetday18;
+                    if (detailBeenList.get(position).getDay18() == null) {
                         progetday18 = "";
+                    }else{
+                        progetday18 = detailBeenList.get(position).getDay18();
                     }
                     String nullday18;
                     if (progetday18.equals(proitem)) {
@@ -2146,9 +2573,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_nineteenday.setSelection(et_config_nineteenday.length());
                     }
                     String proitem = et_config_nineteenday.getText().toString();
-                    String progetday19 = sp.getString("tvFTYDLDetailDay19", "");
-                    if (progetday19 == null) {
+                    String progetday19;
+                    if (detailBeenList.get(position).getDay19() == null) {
                         progetday19 = "";
+                    }else{
+                        progetday19 = detailBeenList.get(position).getDay19();
                     }
                     String nullday19;
                     if (progetday19.equals(proitem)) {
@@ -2208,9 +2637,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_twentyday.setSelection(et_config_twentyday.length());
                     }
                     String proitem = et_config_twentyday.getText().toString();
-                    String progetday20 = sp.getString("tvFTYDLDetailDay20", "");
-                    if (progetday20 == null) {
+                    String progetday20;
+                    if (detailBeenList.get(position).getDay20() == null) {
                         progetday20 = "";
+                    }else{
+                        progetday20 = detailBeenList.get(position).getDay20();
                     }
                     String nullday20;
                     if (progetday20.equals(proitem)) {
@@ -2270,9 +2701,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_TwentyOneDay.setSelection(et_config_TwentyOneDay.length());
                     }
                     String proitem = et_config_TwentyOneDay.getText().toString();
-                    String progetday21 = sp.getString("tvFTYDLDetailDay21", "");
-                    if (progetday21 == null) {
+                    String progetday21;
+                    if (detailBeenList.get(position).getDay21() == null) {
                         progetday21 = "";
+                    }else{
+                        progetday21 = detailBeenList.get(position).getDay21();
                     }
                     String nullday21;
                     if (progetday21.equals(proitem)) {
@@ -2332,9 +2765,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_twentytwoday.setSelection(et_config_twentytwoday.length());
                     }
                     String proitem = et_config_twentytwoday.getText().toString();
-                    String progetday22 = sp.getString("tvFTYDLDetailDay22", "");
-                    if (progetday22 == null) {
+                    String progetday22;
+                    if (detailBeenList.get(position).getDay22() == null) {
                         progetday22 = "";
+                    }else{
+                        progetday22 = detailBeenList.get(position).getDay22();
                     }
                     String nullday22;
                     if (progetday22.equals(proitem)) {
@@ -2394,9 +2829,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_twentyThreeday.setSelection(et_config_twentyThreeday.length());
                     }
                     String proitem = et_config_twentyThreeday.getText().toString();
-                    String progetday23 = sp.getString("tvFTYDLDetailDay23", "");
-                    if (progetday23 == null) {
+                    String progetday23;
+                    if (detailBeenList.get(position).getDay23() == null) {
                         progetday23 = "";
+                    }else{
+                        progetday23 = detailBeenList.get(position).getDay23();
                     }
                     String nullday23;
                     if (progetday23.equals(proitem)) {
@@ -2456,9 +2893,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_twentyforeday.setSelection(et_config_twentyforeday.length());
                     }
                     String proitem = et_config_twentyforeday.getText().toString();
-                    String progetday24 = sp.getString("tvFTYDLDetailDay24", "");
-                    if (progetday24 == null) {
+                    String progetday24;
+                    if (detailBeenList.get(position).getDay24() == null) {
                         progetday24 = "";
+                    }else{
+                        progetday24 = detailBeenList.get(position).getDay24();
                     }
                     String nullday24;
                     if (progetday24.equals(proitem)) {
@@ -2518,9 +2957,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_twentyfiveday.setSelection(et_config_twentyfiveday.length());
                     }
                     String proitem = et_config_twentyfiveday.getText().toString();
-                    String progetday25 = sp.getString("tvFTYDLDetailDay25", "");
-                    if (progetday25 == null) {
+                    String progetday25;
+                    if (detailBeenList.get(position).getDay25() == null) {
                         progetday25 = "";
+                    }else{
+                        progetday25 = detailBeenList.get(position).getDay25();
                     }
                     String nullday25;
                     if (progetday25.equals(proitem)) {
@@ -2580,9 +3021,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_twentysixday.setSelection(et_config_twentysixday.length());
                     }
                     String proitem = et_config_twentysixday.getText().toString();
-                    String progetday26 = sp.getString("tvFTYDLDetailDay26", "");
-                    if (progetday26 == null) {
+                    String progetday26;
+                    if (detailBeenList.get(position).getDay26() == null) {
                         progetday26 = "";
+                    }else{
+                        progetday26 = detailBeenList.get(position).getDay26();
                     }
                     String nullday26;
                     if (progetday26.equals(proitem)) {
@@ -2642,9 +3085,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_twentysevenday.setSelection(et_config_twentysevenday.length());
                     }
                     String proitem = et_config_twentysevenday.getText().toString();
-                    String progetday27 = sp.getString("tvFTYDLDetailDay27", "");
-                    if (progetday27 == null) {
+                    String progetday27;
+                    if (detailBeenList.get(position).getDay27() == null) {
                         progetday27 = "";
+                    }else{
+                        progetday27 = detailBeenList.get(position).getDay27();
                     }
                     String nullday27;
                     if (progetday27.equals(proitem)) {
@@ -2704,9 +3149,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_twentyeightday.setSelection(et_config_twentyeightday.length());
                     }
                     String proitem = et_config_twentyeightday.getText().toString();
-                    String progetday28 = sp.getString("tvFTYDLDetailDay28", "");
-                    if (progetday28 == null) {
+                    String progetday28;
+                    if (detailBeenList.get(position).getDay28() == null) {
                         progetday28 = "";
+                    }else{
+                        progetday28 = detailBeenList.get(position).getDay28();
                     }
                     String nullday28;
                     if (progetday28.equals(proitem)) {
@@ -2766,9 +3213,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_twentynineday.setSelection(et_config_twentynineday.length());
                     }
                     String proitem = et_config_twentynineday.getText().toString();
-                    String progetday29 = sp.getString("tvFTYDLDetailDay29", "");
-                    if (progetday29 == null) {
+                    String progetday29;
+                    if (detailBeenList.get(position).getDay29() == null) {
                         progetday29 = "";
+                    }else{
+                        progetday29 = detailBeenList.get(position).getDay29();
                     }
                     String nullday29;
                     if (progetday29.equals(proitem)) {
@@ -2828,9 +3277,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         et_config_thirtyday.setSelection(et_config_thirtyday.length());
                     }
                     String proitem = et_config_thirtyday.getText().toString();
-                    String progetday30 = sp.getString("tvFTYDLDetailDay30", "");
-                    if (progetday30 == null) {
+                    String progetday30;
+                    if (detailBeenList.get(position).getDay30() == null) {
                         progetday30 = "";
+                    }else{
+                        progetday30 = detailBeenList.get(position).getDay30();
                     }
                     String nullday30;
                     if (progetday30.equals(proitem)) {
@@ -2898,9 +3349,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                             et_config_thirtyoneday.setSelection(et_config_thirtyoneday.length());
                         }
                         String proitem = et_config_thirtyoneday.getText().toString();
-                        String progetday31 = sp.getString("tvFTYDLDetailDay31", "");
-                        if (progetday31 == null) {
+                        String progetday31;
+                        if (detailBeenList.get(position).getDay31() == null) {
                             progetday31 = "";
+                        }else{
+                            progetday31 = detailBeenList.get(position).getDay31();
                         }
                         String nullday31;
                         if (progetday31.equals(proitem)) {
@@ -2948,9 +3401,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
             public void afterTextChanged(Editable s) {
                 Log.d(TAG, "afterTextChanged");
                 String proitem = et_config_remarks.getText().toString();
-                String progetmemo = sp.getString("tvFTYDLDetailMemo", "");
-                if (progetmemo == null) {
+                String progetmemo;
+                if (detailBeenList.get(position).getMemo() == null) {
                     progetmemo = "";
+                }else{
+                    progetmemo = detailBeenList.get(position).getMemo();
                 }
                 String nullmemo;
                 if (progetmemo.equals(proitem)) {
@@ -3034,17 +3489,17 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
         tv_config_department.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(getApplicationContext(), v);
+                final PopupMenu popupMenu = new PopupMenu(getApplicationContext(), v);
                 popupMenu.getMenuInflater().inflate(R.menu.menu_pro_column, popupMenu.getMenu());
                 // menu的item点击事件
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         String title = item.getTitle().toString();
-                        pronullpartment = sp.getString("tvFTYDLDetailFactoryTeams",
-                                "");
-                        if (pronullpartment == null) {
+                        if (detailBeenList.get(position).getSubfactoryTeams() == null) {
                             pronullpartment = "";
+                        }else{
+                            pronullpartment = detailBeenList.get(position).getSubfactoryTeams();
                         }
                         String nullpartment;
                         if (pronullpartment.equals(title)) {
@@ -3080,10 +3535,11 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         String title = item.getTitle().toString();
-                        String pronullstate = sp.getString("tvFTYDLDetailPrdstatus",
-                                "");
-                        if (pronullstate == null) {
+                        String pronullstate;
+                        if (detailBeenList.get(position).getPrdstatus() == null) {
                             pronullstate = "";
+                        }else{
+                            pronullstate = detailBeenList.get(position).getPrdstatus();
                         }
                         String nullstate;
                         if (pronullstate.equals(title)) {
@@ -3154,7 +3610,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
 
     /*修改保存*/
     private void setSaveDate() {
-        sp = getSharedPreferences("my_sp", 0);
+        detailBeenList = getIntent().getParcelableArrayListExtra("detailBeenList");
         if (NetWork.isNetWorkAvailable(this)) {
             String saveurl = HttpUrl.debugoneUrl + "FactoryPlan/SaveFactoryDaily/";
             setVariable();
@@ -3170,12 +3626,22 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         int cli;
                         String total;
                         if (procalbeanlist.get(i).getProClippingnumber() == null) {
-                            String tvprodetailClippingNumber = sp.getString("tvFTYDLDetailFactcutqty",
-                                    "");
+                            String tvprodetailClippingNumber;
+                            if(String.valueOf(detailBeenList.get(position).getFactcutqty())==null){
+                                tvprodetailClippingNumber = "";
+                            }else{
+                                tvprodetailClippingNumber = String.valueOf(detailBeenList.
+                                        get(position).getFactcutqty());
+                            }
                             cli = Integer.parseInt(tvprodetailClippingNumber);
                             clippingint = cli;
-                            String tvprodetailCompletedLastMonth = sp.getString(
-                                    "tvFTYDLDetailSumCompletedQty", "");
+                            String tvprodetailCompletedLastMonth;
+                            if(String.valueOf(detailBeenList.get(position).getSumCompletedQty())==null){
+                                tvprodetailCompletedLastMonth = "";
+                            }else{
+                                tvprodetailCompletedLastMonth = String.valueOf(detailBeenList.
+                                        get(position).getSumCompletedQty());
+                            }
                             total = tvprodetailCompletedLastMonth;
                         } else {
                             cli = Integer.parseInt(procalbeanlist.get(i).getProClippingnumber());
@@ -3307,12 +3773,22 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         int cli;
                         String total;
                         if (procalbeanlist.get(i).getProClippingnumber() == null) {
-                            String tvprodetailClippingNumber = sp.getString("tvFTYDLDetailFactcutqty",
-                                    "");
+                            String tvprodetailClippingNumber;
+                            if(String.valueOf(detailBeenList.get(position).getFactcutqty())==null){
+                                tvprodetailClippingNumber = "";
+                            }else{
+                                tvprodetailClippingNumber = String.valueOf(detailBeenList.
+                                        get(position).getFactcutqty());
+                            }
                             cli = Integer.parseInt(tvprodetailClippingNumber);
                             clippingint = cli;
-                            String tvprodetailCompletedLastMonth = sp.getString(
-                                    "tvFTYDLDetailSumCompletedQty", "");
+                            String tvprodetailCompletedLastMonth;
+                            if(String.valueOf(detailBeenList.get(position).getSumCompletedQty())==null){
+                                tvprodetailCompletedLastMonth = "";
+                            }else{
+                                tvprodetailCompletedLastMonth = String.valueOf(detailBeenList
+                                        .get(position).getSumCompletedQty());
+                            }
                             total = tvprodetailCompletedLastMonth;
                         } else {
                             cli = Integer.parseInt(procalbeanlist.get(i).getProClippingnumber());
@@ -3870,8 +4346,8 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
         }
 
         String prosavestate = sp.getString("prosavestate", "");//修改的状态
-        if (prosavestate.isEmpty() || prosavestate.equals(tvnewlyTotal)) {
-            savestate = tvnewlyTotal;
+        if (prosavestate.isEmpty() || prosavestate.equals(tvnewlyPrdstatus)) {
+            savestate = tvnewlyPrdstatus;
         } else {
             savestate = prosavestate;
         }
@@ -4199,189 +4675,18 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
         editor.remove("pronullday31");
         editor.remove("pronullmemo");
 
-        editor.remove("tvFTYDLDetailID");
-        editor.remove("tvFTYDLDetailSalesID");
-        editor.remove("tvFTYDLDetailPlanId");
-        editor.remove("tvFTYDLDetailSn");
-        editor.remove("tvFTYDLDetailContractno");
-        editor.remove("tvFTYDLDetailInbill");
-        editor.remove("tvFTYDLDetailArea");
-        editor.remove("tvFTYDLDetailCompanytxt");
-        editor.remove("tvFTYDLDetailPo");
-        editor.remove("tvFTYDLDetailItem");
-        editor.remove("tvFTYDLDetailOitem");
-        editor.remove("tvFTYDLDetailMdl");
-        editor.remove("tvFTYDLDetailCtmid");
-        editor.remove("tvFTYDLDetailCtmtxt");
-        editor.remove("tvFTYDLDetailCtmcompanytxt");
-        editor.remove("tvFTYDLDetailPrdtyp");
-        editor.remove("tvFTYDLDetailLcdat");
-        editor.remove("tvFTYDLDetailLbdat");
-        editor.remove("tvFTYDLDetailStyp");
-        editor.remove("tvFTYDLDetailFsaler");
-        editor.remove("tvFTYDLDetailPsaler");
-        editor.remove("tvFTYDLDetailMemo");
-        editor.remove("tvFTYDLDetailPqty");
-        editor.remove("tvFTYDLDetailUnit");
-        editor.remove("tvFTYDLDetailMegitem");
-        editor.remove("tvFTYDLDetailTeamname");
-        editor.remove("tvFTYDLDetailRecordat");
-        editor.remove("tvFTYDLDetailRecordid");
-        editor.remove("tvFTYDLDetailRecorder");
-        editor.remove("tvFTYDLDetailFactory");
         editor.remove("tvFTYDLDetailProcedure");
-        editor.remove("tvFTYDLDetailFactoryTeams");
-        editor.remove("tvFTYDLDetailWorkers");
-        editor.remove("tvFTYDLDetailFactcutqty");
-        editor.remove("tvFTYDLDetailCutbdt");
-        editor.remove("tvFTYDLDetailSewbdt");
-        editor.remove("tvFTYDLDetailSewedt");
-        editor.remove("tvFTYDLDetailSewDays");
-        editor.remove("tvFTYDLDetailPerqty");
-        editor.remove("tvFTYDLDetailCutamount");
-        editor.remove("tvFTYDLDetailSewamount");
-        editor.remove("tvFTYDLDetailPackamount");
-        editor.remove("tvFTYDLDetailAmount");
-        editor.remove("tvFTYDLDetailPerMachineQty");
-        editor.remove("tvFTYDLDetailSumMachineQty");
-        editor.remove("tvFTYDLDetailPrdstatus");
-        editor.remove("tvFTYDLDetailPrdmaster");
-        editor.remove("tvFTYDLDetailDocumentary");
-        editor.remove("tvFTYDLDetailTaskqty");
-        editor.remove("tvFTYDLDetailSumCompletedQty");
-        editor.remove("tvFTYDLDetailLeftQty");
-        editor.remove("tvFTYDLDetailLastMonQty");
-        editor.remove("tvFTYDLDetailYear");
-        editor.remove("tvFTYDLDetailMonth");
-        editor.remove("tvFTYDLDetailDay1");
-        editor.remove("tvFTYDLDetailDay2");
-        editor.remove("tvFTYDLDetailDay3");
-        editor.remove("tvFTYDLDetailDay4");
-        editor.remove("tvFTYDLDetailDay5");
-        editor.remove("tvFTYDLDetailDay6");
-        editor.remove("tvFTYDLDetailDay7");
-        editor.remove("tvFTYDLDetailDay8");
-        editor.remove("tvFTYDLDetailDay9");
-        editor.remove("tvFTYDLDetailDay10");
-        editor.remove("tvFTYDLDetailDay11");
-        editor.remove("tvFTYDLDetailDay12");
-        editor.remove("tvFTYDLDetailDay13");
-        editor.remove("tvFTYDLDetailDay14");
-        editor.remove("tvFTYDLDetailDay15");
-        editor.remove("tvFTYDLDetailDay16");
-        editor.remove("tvFTYDLDetailDay17");
-        editor.remove("tvFTYDLDetailDay18");
-        editor.remove("tvFTYDLDetailDay19");
-        editor.remove("tvFTYDLDetailDay20");
-        editor.remove("tvFTYDLDetailDay21");
-        editor.remove("tvFTYDLDetailDay22");
-        editor.remove("tvFTYDLDetailDay23");
-        editor.remove("tvFTYDLDetailDay24");
-        editor.remove("tvFTYDLDetailDay25");
-        editor.remove("tvFTYDLDetailDay26");
-        editor.remove("tvFTYDLDetailDay27");
-        editor.remove("tvFTYDLDetailDay28");
-        editor.remove("tvFTYDLDetailDay29");
-        editor.remove("tvFTYDLDetailDay30");
-        editor.remove("tvFTYDLDetailDay31");
-        editor.remove("tvFTYDLDetailPrdDocumentaryId");
-        editor.remove("tvFTYDLDetailIsdiffc");
+        editor.remove("tvFTYDLDetailId");
+        editor.remove("FTYDLDetailISProdure");
         editor.commit();
     }
 
     @Override
     protected void onDestroy() {
         SharedPreferences.Editor editor = sp.edit();
-        editor.remove("tvFTYDLDetailID");
-        editor.remove("tvFTYDLDetailSalesID");
-        editor.remove("tvFTYDLDetailItem");
-        editor.remove("tvFTYDLDetailPlanId");
-        editor.remove("tvFTYDLDetailSn");
-        editor.remove("tvFTYDLDetailContractno");
-        editor.remove("tvFTYDLDetailInbill");
-        editor.remove("tvFTYDLDetailArea");
-        editor.remove("tvFTYDLDetailCompanytxt");
-        editor.remove("tvFTYDLDetailPo");
-        editor.remove("tvFTYDLDetailOitem");
-        editor.remove("tvFTYDLDetailMdl");
-        editor.remove("tvFTYDLDetailCtmid");
-        editor.remove("tvFTYDLDetailCtmtxt");
-        editor.remove("tvFTYDLDetailCtmcompanytxt");
-        editor.remove("tvFTYDLDetailPrdtyp");
-        editor.remove("tvFTYDLDetailLcdat");
-        editor.remove("tvFTYDLDetailLbdat");
-        editor.remove("tvFTYDLDetailStyp");
-        editor.remove("tvFTYDLDetailFsaler");
-        editor.remove("tvFTYDLDetailPsaler");
-        editor.remove("tvFTYDLDetailMemo");
-        editor.remove("tvFTYDLDetailPqty");
-        editor.remove("tvFTYDLDetailUnit");
-        editor.remove("tvFTYDLDetailProdcol");
-        editor.remove("tvFTYDLDetailMegitem");
-        editor.remove("tvFTYDLDetailTeamname");
-        editor.remove("tvFTYDLDetailRecordat");
-        editor.remove("tvFTYDLDetailRecordid");
-        editor.remove("tvFTYDLDetailRecorder");
-        editor.remove("tvFTYDLDetailFactory");
         editor.remove("tvFTYDLDetailProcedure");
-        editor.remove("tvFTYDLDetailFactoryTeams");
-        editor.remove("tvFTYDLDetailWorkers");
-        editor.remove("tvFTYDLDetailFactcutqty");
-        editor.remove("tvFTYDLDetailCutbdt");
-        editor.remove("tvFTYDLDetailSewbdt");
-        editor.remove("tvFTYDLDetailSewedt");
-        editor.remove("tvFTYDLDetailSewDays");
-        editor.remove("tvFTYDLDetailPerqty");
-        editor.remove("tvFTYDLDetailCutamount");
-        editor.remove("tvFTYDLDetailSewamount");
-        editor.remove("tvFTYDLDetailPackamount");
-        editor.remove("tvFTYDLDetailAmount");
-        editor.remove("tvFTYDLDetailPerMachineQty");
-        editor.remove("tvFTYDLDetailSumMachineQty");
-        editor.remove("tvFTYDLDetailPrdstatus");
-        editor.remove("tvFTYDLDetailPrdmaster");
-        editor.remove("tvFTYDLDetailDocumentary");
-        editor.remove("tvFTYDLDetailTaskqty");
-        editor.remove("tvFTYDLDetailSumCompletedQty");
-        editor.remove("tvFTYDLDetailLeftQty");
-        editor.remove("tvFTYDLDetailLastMonQty");
-        editor.remove("tvFTYDLDetailYear");
-        editor.remove("tvFTYDLDetailMonth");
-        editor.remove("tvFTYDLDetailDay1");
-        editor.remove("tvFTYDLDetailDay2");
-        editor.remove("tvFTYDLDetailDay3");
-        editor.remove("tvFTYDLDetailDay4");
-        editor.remove("tvFTYDLDetailDay5");
-        editor.remove("tvFTYDLDetailDay6");
-        editor.remove("tvFTYDLDetailDay7");
-        editor.remove("tvFTYDLDetailDay8");
-        editor.remove("tvFTYDLDetailDay9");
-        editor.remove("tvFTYDLDetailDay10");
-        editor.remove("tvFTYDLDetailDay11");
-        editor.remove("tvFTYDLDetailDay12");
-        editor.remove("tvFTYDLDetailDay13");
-        editor.remove("tvFTYDLDetailDay14");
-        editor.remove("tvFTYDLDetailDay15");
-        editor.remove("tvFTYDLDetailDay16");
-        editor.remove("tvFTYDLDetailDay17");
-        editor.remove("tvFTYDLDetailDay18");
-        editor.remove("tvFTYDLDetailDay19");
-        editor.remove("tvFTYDLDetailDay20");
-        editor.remove("tvFTYDLDetailDay21");
-        editor.remove("tvFTYDLDetailDay22");
-        editor.remove("tvFTYDLDetailDay23");
-        editor.remove("tvFTYDLDetailDay24");
-        editor.remove("tvFTYDLDetailDay25");
-        editor.remove("tvFTYDLDetailDay26");
-        editor.remove("tvFTYDLDetailDay27");
-        editor.remove("tvFTYDLDetailDay28");
-        editor.remove("tvFTYDLDetailDay29");
-        editor.remove("tvFTYDLDetailDay30");
-        editor.remove("tvFTYDLDetailDay31");
-        editor.remove("tvFTYDLDetailPrdDocumentaryId");
-        editor.remove("tvFTYDLDetailIsdiffc");
-        editor.remove("tvFTYDLDetailBoolIsdiffc");
-        editor.remove("tvFTYDLDetailProdcol");
+        editor.remove("tvFTYDLDetailId");
+        editor.remove("FTYDLDetailISProdure");
 
         editor.remove("prosavecount");
         editor.remove("pronullothers");

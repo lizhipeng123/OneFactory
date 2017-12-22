@@ -24,6 +24,8 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.ftydl.FTYDLSearchDetailActivity;
+import com.daoran.newfactory.onefactory.bean.qacworkbean.QACworkPageDataBean;
 import com.daoran.newfactory.onefactory.bean.qacworkbean.QACworkRightsTableBean;
 import com.daoran.newfactory.onefactory.bean.qacworkbean.QACworkDetailSaveBean;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
@@ -58,6 +60,9 @@ public class QACworkDetailActivity extends Activity
             new ArrayList<QACworkRightsTableBean.JsonTextBean>();
     private QACworkRightsTableBean QACworkRightsTableBean;
 
+    List<QACworkPageDataBean.DataBean> qaCworkDataBean =
+            new ArrayList<QACworkPageDataBean.DataBean>();//查货跟踪数据
+
     private AlertDialog noticeDialog;//退出当前页提示弹窗
     private ImageView ivCommoditySql;//返回按钮
     private Button btnCommoSave;//保存按钮
@@ -82,7 +87,6 @@ public class QACworkDetailActivity extends Activity
             tv_commodetail_chker, tv_commodetail_QAname, tv_commodetail_QAScore,
             tv_commodetail_chkplace;
 
-    private String commodetailPrddocumentary, commodetailprdmaster, nameid, commodetailOurAfter;
     private String[] columns = new String[]{"ID", "subfactory", "item", "sealedrev",
             "docback", "predt", "lcdat", "sewFdt", "sewMdt", "taskqty",
             "cutqty", "preMemo", "predoc", "fabricsok", "accessoriesok",
@@ -109,18 +113,419 @@ public class QACworkDetailActivity extends Activity
             ll_PPSDetail_txt_QAname, ll_PPSDetail_txt_QAScore, ll_PPSDetail_txt_QAMemo, ll_PPSDetail_txt_chker,
             ll_PPSDetail_txt_chkpdt, ll_PPSDetail_txt_chkfctdt, ll_PPSDetail_txt_chkplace;
 
+    //接收的数据变量
+    private String commodetailproid, commoitem, commodetailCtmtxt, commodetailPrddocumentary,
+            commodetailSubfactory, commodetailTaskqty, commodetailprdmaster, commodetailPrdmasterid,
+            commodetailQCMasterScore, commodetailfirstsamQA, commodetailfirstsamQAid,
+            commodetailSealedrev, commodetailDocback, commodetailLcdat, commodetailPreMemo,
+            commodetailPredocdt, commodetailPred, commodetailPredoc, commodetailFabricsok,
+            commodetailAccessoriesok, commodetailSpcproDec, commodetailSpcproMemo,
+            commodetailCutqty, commodetailSewFdt, commodetailSewMdt, commodetailPrebdt,
+            commodetailQCbdt, commodetailQCbdtDoc, commodetailPremdt, commodetailQCmdt,
+            commodetailQCmdtDoc, commodetailPreedt, commodetailQCMedt,
+            commodetailQCedtDoc, commodetailFctmdt, commodetailFctedt, commodetailPackbdat,
+            commoPackqty2, commodetailQCMemo, commodetailFactlcdat, commodetailBatchid,
+            commodetailCtmchkdt, commodetailIPQCPedt, commodetailIPQCmdt,
+            commodetailIPQC, commoQAname, commodetailQAScore, commodetailQAMemo,
+            commodetailchker, commodetailchkpdt, commodetailchkfctdt, commodetailchkplace,
+            commodetailIPQCid;
+    //本页面的存储变量
+    private String nameid, commodetailOurAfter, saveboolean, dateSealedrewtimesign,
+            dateDocbacktimesign, datePredtimesign, dateSewFdttimesign, dateSewMdttimesign,
+            CommodityCutqty, CommodityPreMemo, CommodityPredoc, CommodityFabricsok,
+            CommodityAccessoriesok, CommoditySpcproDec, CommoditySpcproMemo,
+            dateQCbdttimesign, dateQCmdttimesign, dateQCMedttimesign, Commodityqcbdtdoc,
+            CommodityQCmdtDoc, CommodityQCedtDoc,CommodityQCMemo,datePackbdattimesign,
+            CommodityPackqty2,dateFactlcdattimesign,commohdTitle,CommodityQCMasterScore,
+            CommodityBatchid,dateCtmchkdttimesign,CommodityIPQCmdt,
+            CommodityIPQCPedt,datePredocdttimesign,datePrebdttimesign,
+            datePremdttimesign,datePreedttimesign;
+    //本地字符串变量
+    private String sealedrevstr, Docbackstr, predtstr, sewfdtstr, sewmdtstr, cutqtystr,
+            prememostr, predocstr, fabricsokstr, accessoriesokstr, spcprodecstr,
+            spcpromemostr, qcbdtstr, qcmdtstr, qcmedtstr, qcbdtdocstr, qcmdtdocstr,
+            qcedtdocstr, fctmdtstr, fctedtstr, dateFctmdttimesign, dateFctedttimesign,
+            qcmemostr, packbdatstr, packqty2str, factlcdatstr, ourafterstr, qcmasterscorestr,
+            batchidstr, ctmchkdtstr, ipqcmdtstr, ipqcpedtstr, predocdtstr, prebdtstr,
+            premdtstr, preedtstr;
     private boolean flagblackBoolean;//是否修改过数据
+    private int position;//数据位置索引
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qacwork_detail);
+        setSpUtils(qaCworkDataBean);
         getViews();
         setColumRight();
         setViews();
         setListener();
     }
 
+    /*获取传过来的数据*/
+    private void setSpUtils(List<QACworkPageDataBean.DataBean> qaCworkDataBean) {
+        sp = getSharedPreferences("my_sp", 0);
+        nameid = sp.getString("usernamerecoder", "");
+        position = Integer.parseInt(
+                sp.getString("tvQACWorkDetailId", ""));//位置索引
+        qaCworkDataBean = getIntent().getParcelableArrayListExtra("qaCworkDataBean");
+
+        commodetailproid = String.valueOf(qaCworkDataBean.get(position).getID());//id
+        commoitem = qaCworkDataBean.get(position).getItem();//款号
+        if (qaCworkDataBean.get(position).getCtmtxt() == null) {//客户
+            commodetailCtmtxt = "";
+        } else {
+            commodetailCtmtxt = qaCworkDataBean.get(position).getCtmtxt();
+        }
+
+        if (qaCworkDataBean.get(position).getPrddocumentary() == null) {//跟单
+            commodetailPrddocumentary = "";
+        } else {
+            commodetailPrddocumentary = qaCworkDataBean.get(position).getPrddocumentary();
+        }
+
+        if (qaCworkDataBean.get(position).getSubfactory() == null) {//工厂
+            commodetailSubfactory = "";
+        } else {
+            commodetailSubfactory = qaCworkDataBean.get(position).getSubfactory();
+        }
+
+        if (qaCworkDataBean.get(position).getTaskqty() == null) {//制单数量
+            commodetailTaskqty = "";
+        } else {
+            commodetailTaskqty = qaCworkDataBean.get(position).getTaskqty();
+        }
+
+        if (qaCworkDataBean.get(position).getPrdmaster() == null) {//生产主管
+            commodetailprdmaster = "";
+        } else {
+            commodetailprdmaster = qaCworkDataBean.get(position).getPrdmaster();
+        }
+
+        if (qaCworkDataBean.get(position).getPrdmasterid() == null) {//生产主管id
+            commodetailPrdmasterid = "";
+        } else {
+            commodetailPrdmasterid = qaCworkDataBean.get(position).getPrdmasterid();
+        }
+
+        if (qaCworkDataBean.get(position).getQCMasterScore() == null) {//主管评分
+            commodetailQCMasterScore = "";
+        } else {
+            commodetailQCMasterScore = qaCworkDataBean.get(position).getQCMasterScore();
+        }
+
+        if (qaCworkDataBean.get(position).getSealedrev() == null) {//封样资料接收时间
+            commodetailSealedrev = "";
+        } else {
+            commodetailSealedrev = qaCworkDataBean.get(position).getSealedrev();
+        }
+
+        if (qaCworkDataBean.get(position).getDocback() == null) {//大货资料接收时间
+            commodetailDocback = "";
+        } else {
+            commodetailDocback = qaCworkDataBean.get(position).getDocback();
+        }
+
+        if (qaCworkDataBean.get(position).getLcdat() == null) {//出货时间
+            commodetailLcdat = "";
+        } else {
+            commodetailLcdat = qaCworkDataBean.get(position).getLcdat();
+        }
+
+        if (qaCworkDataBean.get(position).getPreMemo() == null) {//特别备注情况
+            commodetailPreMemo = "";
+        } else {
+            commodetailPreMemo = qaCworkDataBean.get(position).getPreMemo();
+        }
+
+        if (qaCworkDataBean.get(position).getPredocdt() == null) {//预计产前会报告时间
+            commodetailPredocdt = "";
+        } else {
+            commodetailPredocdt = qaCworkDataBean.get(position).getPredocdt();
+        }
+
+        if (qaCworkDataBean.get(position).getPredt() == null) {//开产前会时间
+            commodetailPred = "";
+        } else {
+            commodetailPred = qaCworkDataBean.get(position).getPredt();
+        }
+
+        if (qaCworkDataBean.get(position).getPredoc() == null) {//产前会报告
+            commodetailPredoc = "";
+        } else {
+            commodetailPredoc = qaCworkDataBean.get(position).getPredoc();
+        }
+
+        if (qaCworkDataBean.get(position).getFabricsok() == null) {//大货面料情况
+            commodetailFabricsok = "";
+        } else {
+            commodetailFabricsok = qaCworkDataBean.get(position).getFabricsok();
+        }
+
+        if (qaCworkDataBean.get(position).getAccessoriesok() == null) {//大货辅料情况
+            commodetailAccessoriesok = "";
+        } else {
+            commodetailAccessoriesok = qaCworkDataBean.get(position).getAccessoriesok();
+        }
+
+        if (qaCworkDataBean.get(position).getSpcproDec() == null) {//特殊工艺情况
+            commodetailSpcproDec = "";
+        } else {
+            commodetailSpcproDec = qaCworkDataBean.get(position).getSpcproDec();
+        }
+
+        if (qaCworkDataBean.get(position).getSpcproMemo() == null) {//特殊工艺备注
+            commodetailSpcproMemo = "";
+        } else {
+            commodetailSpcproMemo = qaCworkDataBean.get(position).getSpcproMemo();
+        }
+
+        if (qaCworkDataBean.get(position).getCutqty() == null) {//实裁数
+            commodetailCutqty = "";
+        } else {
+            commodetailCutqty = qaCworkDataBean.get(position).getCutqty();
+        }
+
+        if (qaCworkDataBean.get(position).getSewFdt() == null) {//上线日期
+            commodetailSewFdt = "";
+        } else {
+            commodetailSewFdt = qaCworkDataBean.get(position).getSewFdt();
+        }
+
+        if (qaCworkDataBean.get(position).getSewMdt() == null) {//下线日期
+            commodetailSewMdt = "";
+        } else {
+            commodetailSewMdt = qaCworkDataBean.get(position).getSewMdt();
+        }
+
+        if (qaCworkDataBean.get(position).getPrebdt() == null) {//预计早期时间
+            commodetailPrebdt = "";
+        } else {
+            commodetailPrebdt = qaCworkDataBean.get(position).getPrebdt();
+        }
+
+        if (qaCworkDataBean.get(position).getQCbdt() == null) {//自查早期时间
+            commodetailQCbdt = "";
+        } else {
+            commodetailQCbdt = qaCworkDataBean.get(position).getQCbdt();
+        }
+
+        if (qaCworkDataBean.get(position).getQCbdtDoc() == null) {//早期报告
+            commodetailQCbdtDoc = "";
+        } else {
+            commodetailQCbdtDoc = qaCworkDataBean.get(position).getQCbdtDoc();
+        }
+
+        if (qaCworkDataBean.get(position).getPremdt() == null) {//预计中期时间
+            commodetailPremdt = "";
+        } else {
+            commodetailPremdt = qaCworkDataBean.get(position).getPremdt();
+        }
+
+        if (qaCworkDataBean.get(position).getQCmdt() == null) {//自查中期时间
+            commodetailQCmdt = "";
+        } else {
+            commodetailQCmdt = qaCworkDataBean.get(position).getQCmdt();
+        }
+
+        if (qaCworkDataBean.get(position).getQCmdtDoc() == null) {//中期报告
+            commodetailQCmdtDoc = "";
+        } else {
+            commodetailQCmdtDoc = qaCworkDataBean.get(position).getQCmdtDoc();
+        }
+
+        if (qaCworkDataBean.get(position).getPreedt() == null) {//预计尾期时间
+            commodetailPreedt = "";
+        } else {
+            commodetailPreedt = qaCworkDataBean.get(position).getPreedt();
+        }
+
+        if (qaCworkDataBean.get(position).getQCMedt() == null) {//自查尾期时间
+            commodetailQCMedt = "";
+        } else {
+            commodetailQCMedt = qaCworkDataBean.get(position).getQCMedt();
+        }
+
+        if (qaCworkDataBean.get(position).getQCedtDoc() == null) {//尾期报告
+            commodetailQCedtDoc = "";
+        } else {
+            commodetailQCedtDoc = qaCworkDataBean.get(position).getQCedtDoc();
+        }
+
+        if (qaCworkDataBean.get(position).getFctmdt() == null) {//客查中期时间
+            commodetailFctmdt = "";
+        } else {
+            commodetailFctmdt = qaCworkDataBean.get(position).getFctmdt();
+        }
+
+        if (qaCworkDataBean.get(position).getFctedt() == null) {//客查尾期时间
+            commodetailFctedt = "";
+        } else {
+            commodetailFctedt = qaCworkDataBean.get(position).getFctedt();
+        }
+
+        if (qaCworkDataBean.get(position).getPackbdat() == null) {//成品包装开始时间
+            commodetailPackbdat = "";
+        } else {
+            commodetailPackbdat = qaCworkDataBean.get(position).getPackbdat();
+        }
+
+        if (qaCworkDataBean.get(position).getPackqty2() == null) {//装箱数量
+            commoPackqty2 = "";
+        } else {
+            commoPackqty2 = qaCworkDataBean.get(position).getPackqty2();
+        }
+
+        if (qaCworkDataBean.get(position).getQCMemo() == null) {//QC特别备注
+            commodetailQCMemo = "";
+        } else {
+            commodetailQCMemo = qaCworkDataBean.get(position).getQCMemo();
+        }
+
+        if (qaCworkDataBean.get(position).getFactlcdat() == null) {//离厂日期
+            commodetailFactlcdat = "";
+        } else {
+            commodetailFactlcdat = qaCworkDataBean.get(position).getFactlcdat();
+        }
+
+        if (qaCworkDataBean.get(position).getBatchid() == null) {//查货批次
+            commodetailBatchid = "";
+        } else {
+            commodetailBatchid = qaCworkDataBean.get(position).getBatchid();
+        }
+
+        if (qaCworkDataBean.get(position).getOurAfter() == null) {//后道
+            commodetailOurAfter = "";
+        } else {
+            commodetailOurAfter = qaCworkDataBean.get(position).getOurAfter();
+        }
+
+        if (qaCworkDataBean.get(position).getCtmchkdt() == null) {//业务员确认客查日期
+            commodetailCtmchkdt = "";
+        } else {
+            commodetailCtmchkdt = qaCworkDataBean.get(position).getCtmchkdt();
+        }
+
+        if (qaCworkDataBean.get(position).getIPQCPedt() == null) {//尾查预查
+            commodetailIPQCPedt = "";
+        } else {
+            commodetailIPQCPedt = qaCworkDataBean.get(position).getIPQCPedt();
+        }
+
+        if (qaCworkDataBean.get(position).getIPQCmdt() == null) {//巡检中查
+            commodetailIPQCmdt = "";
+        } else {
+            commodetailIPQCmdt = qaCworkDataBean.get(position).getIPQCmdt();
+        }
+
+        if (qaCworkDataBean.get(position).getIPQC() == null) {//巡检
+            commodetailIPQC = "";
+        } else {
+            commodetailIPQC = qaCworkDataBean.get(position).getIPQC();
+        }
+
+        if (qaCworkDataBean.get(position).getQAname() == null) {//QA首扎
+            commoQAname = "";
+        } else {
+            commoQAname = qaCworkDataBean.get(position).getQAname();
+        }
+
+        if (qaCworkDataBean.get(position).getQAScore() == null) {//QA首扎件数
+            commodetailQAScore = "";
+        } else {
+            commodetailQAScore = qaCworkDataBean.get(position).getQAScore();
+        }
+
+        if (qaCworkDataBean.get(position).getQAMemo() == null) {//QA首扎日期
+            commodetailQAMemo = "";
+        } else {
+            commodetailQAMemo = qaCworkDataBean.get(position).getQAMemo();
+        }
+
+        if (qaCworkDataBean.get(position).getChker() == null) {//件查
+            commodetailchker = "";
+        } else {
+            commodetailchker = qaCworkDataBean.get(position).getChker();
+        }
+
+        if (qaCworkDataBean.get(position).getChkpdt() == null) {//预计件查时间
+            commodetailchkpdt = "";
+        } else {
+            commodetailchkpdt = qaCworkDataBean.get(position).getChkpdt();
+        }
+
+        if (qaCworkDataBean.get(position).getChkfctdt() == null) {//实际件查时间
+            commodetailchkfctdt = "";
+        } else {
+            commodetailchkfctdt = qaCworkDataBean.get(position).getChkfctdt();
+        }
+
+        if (qaCworkDataBean.get(position).getChkplace() == null) {//件查地址
+            commodetailchkplace = "";
+        } else {
+            commodetailchkplace = qaCworkDataBean.get(position).getChkplace();
+        }
+
+        if (qaCworkDataBean.get(position).getFirstsamQA() == null) {//
+            commodetailfirstsamQA = "";
+        } else {
+            commodetailfirstsamQA = qaCworkDataBean.get(position).getFirstsamQA();
+        }
+
+        if (qaCworkDataBean.get(position).getFirstsamQAid() == null) {
+            commodetailfirstsamQAid = "";
+        } else {
+            commodetailfirstsamQAid = qaCworkDataBean.get(position).getFirstsamQAid();
+        }
+
+        if (qaCworkDataBean.get(position).getIPQCid() == null) {
+            commodetailIPQCid = "";
+        } else {
+            commodetailIPQCid = qaCworkDataBean.get(position).getIPQCid();
+        }
+    }
+
+    /*本地修改的数据*/
+    private void setLocalSpUtils() {
+        sp = getSharedPreferences("my_sp", 0);
+        dateSealedrewtimesign = sp.getString("dateSealedrewtimesign", "");//修改的封样资料接收时间
+        dateDocbacktimesign = sp.getString("dateDocbacktimesign", "");//修改的大货资料接收时间
+        datePredtimesign = sp.getString("datePredtimesign", "");//修改的开产前会时间
+        dateSewFdttimesign = sp.getString("dateSewFdttimesign", "");//修改的上线日期
+        dateSewMdttimesign = sp.getString("dateSewMdttimesign", "");//修改的下线日期
+        CommodityCutqty = sp.getString("CommodityCutqty", "");//修改的实裁数
+        CommodityPreMemo = sp.getString("CommodityPreMemo", "");//修改的需要备注的特殊情况
+        CommodityPredoc = sp.getString("CommodityPredoc", "");//修改的产前会报告
+        CommodityFabricsok = sp.getString("CommodityFabricsok", "");//修改的大货面料情况
+        CommodityAccessoriesok = sp.getString("CommodityAccessoriesok", "");//修改的大货辅料情况
+        CommoditySpcproDec = sp.getString("CommoditySpcproDec", "");//修改的大货特殊工艺情况
+        CommoditySpcproMemo = sp.getString("CommoditySpcproMemo", "");//修改的特殊工艺备注
+        dateQCbdttimesign = sp.getString("dateQCbdttimesign", "");//修改的自查早期时间
+        dateQCmdttimesign = sp.getString("dateQCmdttimesign", "");//修改的自查中期时间
+        dateQCMedttimesign = sp.getString("dateQCMedttimesign", "");//修改的自查尾期时间
+        Commodityqcbdtdoc = sp.getString("Commodityqcbdtdoc", "");//修改的早期报告
+        CommodityQCmdtDoc = sp.getString("CommodityQCmdtDoc", "");//修改的中期报告
+        CommodityQCedtDoc = sp.getString("CommodityQCedtDoc", "");//修改的尾期报告
+        dateFctmdttimesign = sp.getString("dateFctmdttimesign", "");//修改的客查中期时间
+        dateFctedttimesign = sp.getString("dateFctedttimesign", "");//修改的客查尾期时间
+        CommodityQCMemo = sp.getString("CommodityQCMemo", "");//修改的QC特别备注
+        datePackbdattimesign = sp.getString("datePackbdattimesign", "");//修改的成品包装开始日期
+        CommodityPackqty2 = sp.getString("CommodityPackqty2", "");//修改的装箱数量
+        dateFactlcdattimesign = sp.getString("dateFactlcdattimesign", "");//修改的离厂日期
+        commohdTitle = sp.getString("commohdTitle", "");//修改的后道
+        CommodityQCMasterScore = sp.getString("CommodityQCMasterScore", "");//修改的主管评分
+        CommodityBatchid = sp.getString("CommodityBatchid", "");//修改的查货批次
+        dateCtmchkdttimesign = sp.getString("dateCtmchkdttimesign", "");//修改的业务员确认客查日期
+        CommodityIPQCmdt = sp.getString("CommodityIPQCmdt", "");//修改的巡检中查
+        CommodityIPQCPedt = sp.getString("CommodityIPQCPedt", "");//修改的尾查预查
+        datePredocdttimesign = sp.getString("datePredocdttimesign", "");//修改的预计产前会报告时间
+        datePrebdttimesign = sp.getString("datePrebdttimesign", "");//修改的预计早期时间
+        datePremdttimesign = sp.getString("datePremdttimesign", "");//修改的预计中期时间
+        datePreedttimesign = sp.getString("datePreedttimesign", "");//修改的预计尾期时间
+
+    }
+
+    /*实例化控件*/
     private void getViews() {
         ivCommoditySql = (ImageView) findViewById(R.id.ivCommoditySql);//返回按钮
         btnCommoSave = (Button) findViewById(R.id.btnCommoSave);//保存按钮
@@ -223,61 +628,8 @@ public class QACworkDetailActivity extends Activity
         ll_PPSDetail_txt_chkfctdt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_chkfctdt);
         ll_PPSDetail_txt_chkplace = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_chkplace);
     }
-
+    /*初始化控件显示的数据*/
     private void setViews() {
-        sp = getSharedPreferences("my_sp", 0);
-        nameid = sp.getString("usernamerecoder", "");
-        String commodetailproid = sp.getString("commodetailproid", "");//id
-        String commoitem = sp.getString("commodetailitem", "");//款号
-        String commodetailCtmtxt = sp.getString("commodetailCtmtxt", "");//客户
-        commodetailPrddocumentary = sp.getString("commodetailPrddocumentary", "");//跟单
-        String commodetailSubfactory = sp.getString("commodetailSubfactory", "");//工厂
-        String commodetailTaskqty = sp.getString("commodetailTaskqty", "");//制单数量
-        commodetailprdmaster = sp.getString("commodetailprdmaster", "");//生产主管
-        String commodetailQCMasterScore = sp.getString("commodetailQCMasterScore", "");//主管评分
-        String commodetailSealedrev = sp.getString("commodetailSealedrev", "");//封样资料接收时间
-        String commodetailDocback = sp.getString("commodetailDocback", "");//大货资料接收时间
-        String commodetailLcdat = sp.getString("commodetailLcdat", "");//出货时间
-        String commodetailPreMemo = sp.getString("commodetailPreMemo", "");//特别备注情况
-        String commodetailPredocdt = sp.getString("commodetailPredocdt", "");//预计产前会报告时间
-        String commodetailPred = sp.getString("commodetailPred", "");//开产前会时间
-        String commodetailPredoc = sp.getString("commodetailPredoc", "");//产前会报告
-        String commodetailFabricsok = sp.getString("commodetailFabricsok", "");//大货面料情况
-        String commodetailAccessoriesok = sp.getString("commodetailAccessoriesok", "");//大货辅料情况
-        String commodetailSpcproDec = sp.getString("commodetailSpcproDec", "");//特殊工艺情况
-        String commodetailSpcproMemo = sp.getString("commodetailSpcproMemo", "");//特殊工艺备注
-        String commodetailCutqty = sp.getString("commodetailCutqty", "");//实裁数
-        String commodetailSewFdt = sp.getString("commodetailSewFdt", "");//上线日期
-        String commodetailSewMdt = sp.getString("commodetailSewMdt", "");//下线日期
-        String commodetailPrebdt = sp.getString("commodetailPrebdt", "");//预计早期时间
-        String commodetailQCbdt = sp.getString("commodetailQCbdt", "");//自查早期时间
-        String commodetailQCbdtDoc = sp.getString("commodetailQCbdtDoc", "");//早期报告
-        String commodetailPremdt = sp.getString("commodetailPremdt", "");//预计中期时间
-        String commodetailQCmdt = sp.getString("commodetailQCmdt", "");//自查中期时间
-        String commodetailQCmdtDoc = sp.getString("commodetailQCmdtDoc", "");//中期报告
-        String commodetailPreedt = sp.getString("commodetailPreedt", "");//预计尾期时间
-        String commodetailQCMedt = sp.getString("commodetailQCMedt", "");//自查尾期时间
-        String commodetailQCedtDoc = sp.getString("commodetailQCedtDoc", "");//尾期报告
-        String commodetailFctmdt = sp.getString("commodetailFctmdt", "");//客查中期时间
-        String commodetailFctedt = sp.getString("commodetailFctedt", "");//客查尾期时间
-        String commodetailPackbdat = sp.getString("commodetailPackbdat", "");//成品包装开始时间
-        String commoPackqty2 = sp.getString("commoPackqty2", "");//装箱数量
-        String commodetailQCMemo = sp.getString("commodetailQCMemo", "");//QC特别备注
-        String commodetailFactlcdat = sp.getString("commodetailFactlcdat", "");//离厂日期
-        String commodetailBatchid = sp.getString("commodetailBatchid", "");//查货批次
-        commodetailOurAfter = sp.getString("commodetailOurAfter", "");//后道
-        String commodetailCtmchkdt = sp.getString("commodetailCtmchkdt", "");//业务员确认客查日期
-        String commodetailIPQCPedt = sp.getString("commodetailIPQCPedt", "");//尾查预查
-        String commodetailIPQCmdt = sp.getString("commodetailIPQCmdt", "");//巡检中查
-        String commodetailIPQC = sp.getString("commodetailIPQC", "");//巡检
-        String commoQAname = sp.getString("commodetailfirstsamQA", "");//QA首扎
-        String commodetailQAScore = sp.getString("commodetailQAScore", "");//QA首扎件数
-        String commodetailQAMemo = sp.getString("commodetailQAMemo", "");//QA首扎日期
-        String commodetailchker = sp.getString("commodetailchker", "");//件查
-        String commodetailchkpdt = sp.getString("commodetailchkpdt", "");//预计件查时间
-        String commodetailchkfctdt = sp.getString("commodetailchkfctdt", "");//实际件查时间
-        String commodetailchkplace = sp.getString("commodetailchkplace", "");//件查地址
-
         tv_commodetail_date.setText(commoitem);
         tv_commodetail_ctmtxt.setText(commodetailCtmtxt);
         tv_commodetail_factory.setText(commodetailSubfactory);
@@ -411,6 +763,7 @@ public class QACworkDetailActivity extends Activity
      * 客查中期时间、成品包装开始日期、装箱数量、离厂日期、业务员确认客查日期
      */
     private void setVisibility() {
+        qaCworkDataBean = getIntent().getParcelableArrayListExtra("qaCworkDataBean");
         sp = getSharedPreferences("my_sp", 0);
         if (commodetailprdmaster.equals(nameid)) {//判断生产主管是否是当前用户
             tv_commodetail_ourAfter.setEnabled(true);//后道弹出选择菜单
@@ -451,60 +804,65 @@ public class QACworkDetailActivity extends Activity
             tv_commodetail_QCMasterScore.setEnabled(true);//生产主管频分
             tv_commodetail_QCMasterScore.setFilters(new
                     InputFilter[]{new InputFilter.LengthFilter(10)});
-            tv_commodetail_QCMasterScore.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if (hasFocus) {//得到焦点
-                        String qcmaster = sp.getString("CommodityQCMasterScore", "");
-                        spUtils.put(getApplicationContext(), "debugQCMasterScore", qcmaster);
-                        TextWatcher Tvqcmasterscore = new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                                Log.d(TAG, "beforeTextChanged");
-                            }
+            tv_commodetail_QCMasterScore.setOnFocusChangeListener(
+                    new View.OnFocusChangeListener() {
+                        @Override
+                        public void onFocusChange(View v, boolean hasFocus) {
+                            if (hasFocus) {//得到焦点
+                                String qcmaster = sp.getString("CommodityQCMasterScore", "");
+                                spUtils.put(getApplicationContext(), "debugQCMasterScore", qcmaster);
+                                TextWatcher Tvqcmasterscore = new TextWatcher() {
+                                    @Override
+                                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                                        Log.d(TAG, "beforeTextChanged");
+                                    }
 
-                            @Override
-                            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                                Log.d(TAG, "onTextChanged");
-                            }
+                                    @Override
+                                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                        Log.d(TAG, "onTextChanged");
+                                    }
 
-                            @Override
-                            public void afterTextChanged(Editable s) {
-                                Log.d(TAG, "afterTextChanged");
-                                String proitem = tv_commodetail_QCMasterScore.getText().toString();
-                                String commoitem = sp.getString("commodetailQCMasterScore", "");
-                                if (commoitem == null) {
+                                    @Override
+                                    public void afterTextChanged(Editable s) {
+                                        Log.d(TAG, "afterTextChanged");
+                                        String proitem = tv_commodetail_QCMasterScore.getText().toString();
+                                        String commoitem;
+                                        if (qaCworkDataBean.get(position).getQCMasterScore() == null) {
+                                            commoitem = "";
+                                        } else {
+                                            commoitem = qaCworkDataBean.get(position).getQCMasterScore();
+                                        }
+                                        String nullitem;
+                                        if (commoitem.equals(proitem)) {
+                                            nullitem = "1";
+                                        } else {
+                                            nullitem = "2";
+
+                                        }
+                                        spUtils.put(getApplicationContext(), "commonullitem", nullitem);
+                                        spUtils.put(getApplicationContext(), "CommodityQCMasterScore", proitem);//主管评分
+                                    }
+                                };
+                                tv_commodetail_QCMasterScore.addTextChangedListener(Tvqcmasterscore);
+                                tv_commodetail_QCMasterScore.setTag(Tvqcmasterscore);
+                            } else {//失去焦点
+                                String qcmastertwoo = tv_commodetail_QCMasterScore.getText().toString();
+                                String commoitem;
+                                if (qaCworkDataBean.get(position).getQCMasterScore() == null) {
                                     commoitem = "";
+                                } else {
+                                    commoitem = qaCworkDataBean.get(position).getQCMasterScore();
                                 }
                                 String nullitem;
-                                if (commoitem.equals(proitem)) {
+                                if (commoitem.equals(qcmastertwoo)) {
                                     nullitem = "1";
                                 } else {
                                     nullitem = "2";
-
                                 }
                                 spUtils.put(getApplicationContext(), "commonullitem", nullitem);
-                                spUtils.put(getApplicationContext(), "CommodityQCMasterScore", proitem);//主管评分
                             }
-                        };
-                        tv_commodetail_QCMasterScore.addTextChangedListener(Tvqcmasterscore);
-                        tv_commodetail_QCMasterScore.setTag(Tvqcmasterscore);
-                    } else {//失去焦点
-                        String qcmastertwoo = tv_commodetail_QCMasterScore.getText().toString();
-                        String commoitem = sp.getString("commodetailQCMasterScore", "");
-                        if (commoitem == null) {
-                            commoitem = "";
                         }
-                        String nullitem;
-                        if (commoitem.equals(qcmastertwoo)) {
-                            nullitem = "1";
-                        } else {
-                            nullitem = "2";
-                        }
-                        spUtils.put(getApplicationContext(), "commonullitem", nullitem);
-                    }
-                }
-            });
+                    });
             /*光标放置在文本最后*/
             tv_commodetail_QCMasterScore.setSelection(tv_commodetail_QCMasterScore.length());
 
@@ -529,9 +887,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_sealedrev.setText(datetime);
-                                    String commosearledrev = sp.getString("commodetailSealedrev", "");
-                                    if (commosearledrev == null) {
+                                    String commosearledrev;
+                                    if (qaCworkDataBean.get(position).getSealedrev() == null) {
                                         commosearledrev = "";
+                                    } else {
+                                        commosearledrev = qaCworkDataBean.get(position).getSealedrev();
                                     }
                                     String nullsearledrev;
                                     if (commosearledrev.equals(datetime)) {
@@ -548,9 +908,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_sealedrev.setText("");
-                                    String commosearledrev = sp.getString("commodetailSealedrev", "");
-                                    if (commosearledrev == null) {
+                                    String commosearledrev;
+                                    if (qaCworkDataBean.get(position).getSealedrev() == null) {
                                         commosearledrev = "";
+                                    } else {
+                                        commosearledrev = qaCworkDataBean.get(position).getSealedrev();
                                     }
                                     String nullsearledrev;
                                     if (commosearledrev.equals("")) {
@@ -594,9 +956,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_docback.setText(datetime);
-                                    String commodocback = sp.getString("commodetailDocback", "");
-                                    if (commodocback == null) {
+                                    String commodocback;
+                                    if (qaCworkDataBean.get(position).getDocback() == null) {
                                         commodocback = "";
+                                    } else {
+                                        commodocback = qaCworkDataBean.get(position).getDocback();
                                     }
                                     String nulldocback;
                                     if (commodocback.equals(datetime)) {
@@ -613,9 +977,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_docback.setText("");
-                                    String commodocback = sp.getString("commodetailDocback", "");
-                                    if (commodocback == null) {
+                                    String commodocback;
+                                    if (qaCworkDataBean.get(position).getDocback() == null) {
                                         commodocback = "";
+                                    } else {
+                                        commodocback = qaCworkDataBean.get(position).getDocback();
                                     }
                                     String nulldocback;
                                     if (commodocback.equals("")) {
@@ -655,13 +1021,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_preMemo.setText("");
                     }
                     String proitem = tv_commodetail_preMemo.getText().toString();
-                    String commopromemo = sp.getString("commodetailPreMemo", "");
-                    if (commopromemo == null) {
+                    String commopromemo;
+                    if (qaCworkDataBean.get(position).getPreMemo() == null) {
                         commopromemo = "";
+                    } else {
+                        commopromemo = qaCworkDataBean.get(position).getPreMemo();
                     }
                     String nullmemo;
                     if (commopromemo.equals(proitem)) {
@@ -697,9 +1065,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_predocdt.setText(datetime);
-                                    String commopreducdt = sp.getString("commodetailPredocdt", "");
-                                    if (commopreducdt == null) {
+                                    String commopreducdt;
+                                    if (qaCworkDataBean.get(position).getPredocdt() == null) {
                                         commopreducdt = "";
+                                    } else {
+                                        commopreducdt = qaCworkDataBean.get(position).getPredocdt();
                                     }
                                     String nullpreducdt;
                                     if (commopreducdt.equals(datetime)) {
@@ -716,9 +1086,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_predocdt.setText("");
-                                    String commopreducdt = sp.getString("commodetailPredocdt", "");
-                                    if (commopreducdt == null) {
+                                    String commopreducdt;
+                                    if (qaCworkDataBean.get(position).getPredocdt() == null) {
                                         commopreducdt = "";
+                                    } else {
+                                        commopreducdt = qaCworkDataBean.get(position).getPredocdt();
                                     }
                                     String nullpreducdt;
                                     if (commopreducdt.equals("")) {
@@ -762,9 +1134,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_predt.setText(datetime);
-                                    String commopred = sp.getString("commodetailPred", "");
-                                    if (commopred == null) {
+                                    String commopred;
+                                    if (qaCworkDataBean.get(position).getPredt() == null) {
                                         commopred = "";
+                                    } else {
+                                        commopred = qaCworkDataBean.get(position).getPredt();
                                     }
                                     String nullpred;
                                     if (commopred.equals(datetime)) {
@@ -781,9 +1155,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_predt.setText("");
-                                    String commopred = sp.getString("commodetailPred", "");
-                                    if (commopred == null) {
+                                    String commopred;
+                                    if (qaCworkDataBean.get(position).getPredt() == null) {
                                         commopred = "";
+                                    } else {
+                                        commopred = qaCworkDataBean.get(position).getPredt();
                                     }
                                     String nullpred;
                                     if (commopred.equals("")) {
@@ -821,13 +1197,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_fabricsok.setText("");
                     }
                     String proitem = tv_commodetail_fabricsok.getText().toString();
-                    String commofabricsok = sp.getString("commodetailFabricsok", "");
-                    if (commofabricsok == null) {
+                    String commofabricsok;
+                    if (qaCworkDataBean.get(position).getFabricsok() == null) {
                         commofabricsok = "";
+                    } else {
+                        commofabricsok = qaCworkDataBean.get(position).getFabricsok();
                     }
                     String nullfabricsok;
                     if (commofabricsok.equals(proitem)) {
@@ -856,13 +1234,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_accessoriesok.setText("");
                     }
                     String proitem = tv_commodetail_accessoriesok.getText().toString();
-                    String commoaccessori = sp.getString("commodetailAccessoriesok", "");
-                    if (commoaccessori == null) {
+                    String commoaccessori;
+                    if (qaCworkDataBean.get(position).getAccessoriesok() == null) {
                         commoaccessori = "";
+                    } else {
+                        commoaccessori = qaCworkDataBean.get(position).getAccessoriesok();
                     }
                     String nullaccessori;
                     if (commoaccessori.equals(proitem)) {
@@ -891,13 +1271,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_spcproDec.setText("");
                     }
                     String proitem = tv_commodetail_spcproDec.getText().toString();
-                    String commospcprodec = sp.getString("commodetailSpcproDec", "");
-                    if (commospcprodec == null) {
+                    String commospcprodec;
+                    if (qaCworkDataBean.get(position).getSpcproDec() == null) {
                         commospcprodec = "";
+                    } else {
+                        commospcprodec = qaCworkDataBean.get(position).getSpcproDec();
                     }
                     String nullspcprodec;
                     if (commospcprodec.equals(proitem)) {
@@ -926,13 +1308,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_spcproMemo.setText("");
                     }
                     String proitem = tv_commodetail_spcproMemo.getText().toString();
-                    String commospcpromemo = sp.getString("commodetailSpcproMemo", "");
-                    if (commospcpromemo == null) {
+                    String commospcpromemo;
+                    if (qaCworkDataBean.get(position).getSpcproMemo() == null) {
                         commospcpromemo = "";
+                    } else {
+                        commospcpromemo = qaCworkDataBean.get(position).getSpcproMemo();
                     }
                     String nullspcpromemo;
                     if (commospcpromemo.equals(proitem)) {
@@ -964,9 +1348,11 @@ public class QACworkDetailActivity extends Activity
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = tv_commodetail_cutqty.getText().toString();
-                    String commocutqty = sp.getString("commodetailCutqty", "");
-                    if (commocutqty == null) {
+                    String commocutqty;
+                    if (qaCworkDataBean.get(position).getCutqty() == null) {
                         commocutqty = "";
+                    } else {
+                        commocutqty = qaCworkDataBean.get(position).getCutqty();
                     }
                     String nullcutqty;
                     if (commocutqty.equals(proitem)) {
@@ -1001,9 +1387,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_sewFdt.setText(datetime);
-                                    String commosewfdt = sp.getString("commodetailSewFdt", "");
-                                    if (commosewfdt == null) {
+                                    String commosewfdt;
+                                    if (qaCworkDataBean.get(position).getSewFdt() == null) {
                                         commosewfdt = "";
+                                    } else {
+                                        commosewfdt = qaCworkDataBean.get(position).getSewFdt();
                                     }
                                     String nullsewfdt;
                                     if (commosewfdt.equals(datetime)) {
@@ -1020,9 +1408,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_sewFdt.setText("");
-                                    String commosewfdt = sp.getString("commodetailSewFdt", "");
-                                    if (commosewfdt == null) {
+                                    String commosewfdt;
+                                    if (qaCworkDataBean.get(position).getSewFdt() == null) {
                                         commosewfdt = "";
+                                    } else {
+                                        commosewfdt = qaCworkDataBean.get(position).getSewFdt();
                                     }
                                     String nullsewfdt;
                                     if (commosewfdt.equals("")) {
@@ -1066,9 +1456,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_sewMdt.setText(datetime);
-                                    String commosewmdt = sp.getString("commodetailSewMdt", "");
-                                    if (commosewmdt == null) {
+                                    String commosewmdt;
+                                    if (qaCworkDataBean.get(position).getSewMdt() == null) {
                                         commosewmdt = "";
+                                    } else {
+                                        commosewmdt = qaCworkDataBean.get(position).getSewMdt();
                                     }
                                     String nullsewmdt;
                                     if (commosewmdt.equals(datetime)) {
@@ -1085,9 +1477,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_sewMdt.setText("");
-                                    String commosewmdt = sp.getString("commodetailSewMdt", "");
-                                    if (commosewmdt == null) {
+                                    String commosewmdt;
+                                    if (qaCworkDataBean.get(position).getSewMdt() == null) {
                                         commosewmdt = "";
+                                    } else {
+                                        commosewmdt = qaCworkDataBean.get(position).getSewMdt();
                                     }
                                     String nullsewmdt;
                                     if (commosewmdt.equals("")) {
@@ -1131,9 +1525,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_prebdt.setText(datetime);
-                                    String commoprebdt = sp.getString("commodetailPrebdt", "");
-                                    if (commoprebdt == null) {
+                                    String commoprebdt;
+                                    if (qaCworkDataBean.get(position).getPrebdt() == null) {
                                         commoprebdt = "";
+                                    } else {
+                                        commoprebdt = qaCworkDataBean.get(position).getPrebdt();
                                     }
                                     String nullprebdt;
                                     if (commoprebdt.equals(datetime)) {
@@ -1150,9 +1546,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_prebdt.setText("");
-                                    String commoprebdt = sp.getString("commodetailPrebdt", "");
-                                    if (commoprebdt == null) {
+                                    String commoprebdt;
+                                    if (qaCworkDataBean.get(position).getPrebdt() == null) {
                                         commoprebdt = "";
+                                    } else {
+                                        commoprebdt = qaCworkDataBean.get(position).getPrebdt();
                                     }
                                     String nullprebdt;
                                     if (commoprebdt.equals("")) {
@@ -1191,9 +1589,11 @@ public class QACworkDetailActivity extends Activity
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = tv_commodetail_QCbdt.getText().toString();
-                    String commocutqty = sp.getString("commodetailQCbdt", "");
-                    if (commocutqty == null) {
+                    String commocutqty;
+                    if (qaCworkDataBean.get(position).getQCbdt() == null) {
                         commocutqty = "";
+                    } else {
+                        commocutqty = qaCworkDataBean.get(position).getQCbdt();
                     }
                     String nullqcbdt;
                     if (commocutqty.equals(proitem)) {
@@ -1228,9 +1628,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_premdt.setText(datetime);
-                                    String commopremdt = sp.getString("commodetailPremdt", "");
-                                    if (commopremdt == null) {
+                                    String commopremdt;
+                                    if (qaCworkDataBean.get(position).getPremdt() == null) {
                                         commopremdt = "";
+                                    } else {
+                                        commopremdt = qaCworkDataBean.get(position).getPremdt();
                                     }
                                     String nullpremdt;
                                     if (commopremdt.equals(datetime)) {
@@ -1247,9 +1649,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_premdt.setText("");
-                                    String commopremdt = sp.getString("commodetailPremdt", "");
-                                    if (commopremdt == null) {
+                                    String commopremdt;
+                                    if (qaCworkDataBean.get(position).getPremdt() == null) {
                                         commopremdt = "";
+                                    } else {
+                                        commopremdt = qaCworkDataBean.get(position).getPremdt();
                                     }
                                     String nullpremdt;
                                     if (commopremdt.equals("")) {
@@ -1288,9 +1692,11 @@ public class QACworkDetailActivity extends Activity
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = tv_commodetail_QCmdt.getText().toString();
-                    String commocutqty = sp.getString("commodetailQCmdt", "");
-                    if (commocutqty == null) {
+                    String commocutqty;
+                    if (qaCworkDataBean.get(position).getQCmdt() == null) {
                         commocutqty = "";
+                    } else {
+                        commocutqty = qaCworkDataBean.get(position).getQCmdt();
                     }
                     String nullqcmdt;
                     if (commocutqty.equals(proitem)) {
@@ -1325,9 +1731,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_preedt.setText(datetime);
-                                    String commopreedt = sp.getString("commodetailPreedt", "");
-                                    if (commopreedt == null) {
+                                    String commopreedt;
+                                    if (qaCworkDataBean.get(position).getPreedt() == null) {
                                         commopreedt = "";
+                                    } else {
+                                        commopreedt = qaCworkDataBean.get(position).getPreedt();
                                     }
                                     String nullpreedt;
                                     if (commopreedt.equals(datetime)) {
@@ -1344,9 +1752,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_preedt.setText("");
-                                    String commopreedt = sp.getString("commodetailPreedt", "");
-                                    if (commopreedt == null) {
+                                    String commopreedt;
+                                    if (qaCworkDataBean.get(position).getPreedt() == null) {
                                         commopreedt = "";
+                                    } else {
+                                        commopreedt = qaCworkDataBean.get(position).getPreedt();
                                     }
                                     String nullpreedt;
                                     if (commopreedt.equals("")) {
@@ -1385,9 +1795,11 @@ public class QACworkDetailActivity extends Activity
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = tv_commodetail_QCmdt.getText().toString();
-                    String commocutqty = sp.getString("commodetailQCmdt", "");
-                    if (commocutqty == null) {
+                    String commocutqty;
+                    if (qaCworkDataBean.get(position).getQCmdt() == null) {
                         commocutqty = "";
+                    } else {
+                        commocutqty = qaCworkDataBean.get(position).getQCmdt();
                     }
                     String nullqcmedt;
                     if (commocutqty.equals(proitem)) {
@@ -1422,9 +1834,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_fctmdt.setText(datetime);
-                                    String commofctmdt = sp.getString("commodetailFctmdt", "");
-                                    if (commofctmdt == null) {
+                                    String commofctmdt;
+                                    if (qaCworkDataBean.get(position).getFctmdt() == null) {
                                         commofctmdt = "";
+                                    } else {
+                                        commofctmdt = qaCworkDataBean.get(position).getFctmdt();
                                     }
                                     String nullfctmdt;
                                     if (commofctmdt.equals(datetime)) {
@@ -1441,9 +1855,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_fctmdt.setText("");
-                                    String commofctmdt = sp.getString("commodetailFctmdt", "");
-                                    if (commofctmdt == null) {
+                                    String commofctmdt;
+                                    if (qaCworkDataBean.get(position).getFctmdt() == null) {
                                         commofctmdt = "";
+                                    } else {
+                                        commofctmdt = qaCworkDataBean.get(position).getFctmdt();
                                     }
                                     String nullfctmdt;
                                     if (commofctmdt.equals("")) {
@@ -1487,9 +1903,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_fctedt.setText(datetime);
-                                    String commofctedt = sp.getString("commodetailFctedt", "");
-                                    if (commofctedt == null) {
+                                    String commofctedt;
+                                    if (qaCworkDataBean.get(position).getFctedt() == null) {
                                         commofctedt = "";
+                                    } else {
+                                        commofctedt = qaCworkDataBean.get(position).getFctedt();
                                     }
                                     String nullfctedt;
                                     if (commofctedt.equals(datetime)) {
@@ -1506,9 +1924,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_fctedt.setText("");
-                                    String commofctedt = sp.getString("commodetailFctedt", "");
-                                    if (commofctedt == null) {
+                                    String commofctedt;
+                                    if (qaCworkDataBean.get(position).getFctedt() == null) {
                                         commofctedt = "";
+                                    } else {
+                                        commofctedt = qaCworkDataBean.get(position).getFctedt();
                                     }
                                     String nullfctedt;
                                     if (commofctedt.equals("")) {
@@ -1552,9 +1972,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_packbdat.setText(datetime);
-                                    String commopackbdat = sp.getString("commodetailPackbdat", "");
-                                    if (commopackbdat == null) {
+                                    String commopackbdat;
+                                    if (qaCworkDataBean.get(position).getPackbdat() == null) {
                                         commopackbdat = "";
+                                    } else {
+                                        commopackbdat = qaCworkDataBean.get(position).getPackbdat();
                                     }
                                     String nullpackbdat;
                                     if (commopackbdat.equals(datetime)) {
@@ -1571,9 +1993,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_packbdat.setText("");
-                                    String commopackbdat = sp.getString("commodetailPackbdat", "");
-                                    if (commopackbdat == null) {
+                                    String commopackbdat;
+                                    if (qaCworkDataBean.get(position).getPackbdat() == null) {
                                         commopackbdat = "";
+                                    } else {
+                                        commopackbdat = qaCworkDataBean.get(position).getPackbdat();
                                     }
                                     String nullpackbdat;
                                     if (commopackbdat.equals("")) {
@@ -1614,9 +2038,11 @@ public class QACworkDetailActivity extends Activity
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = tv_commodetail_packqty2.getText().toString();
-                    String commopackqty2 = sp.getString("commoPackqty2", "");
-                    if (commopackqty2 == null) {
+                    String commopackqty2;
+                    if (qaCworkDataBean.get(position).getPackqty2() == null) {
                         commopackqty2 = "";
+                    } else {
+                        commopackqty2 = qaCworkDataBean.get(position).getPackqty2();
                     }
                     String nullpackqty2;
                     if (commopackqty2.equals(proitem)) {
@@ -1645,13 +2071,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_QCMemo.setText("");
                     }
                     String proitem = tv_commodetail_QCMemo.getText().toString();
-                    String commoqcmemo = sp.getString("commodetailQCMemo", "");
-                    if (commoqcmemo == null) {
+                    String commoqcmemo;
+                    if (qaCworkDataBean.get(position).getQCMemo() == null) {
                         commoqcmemo = "";
+                    } else {
+                        commoqcmemo = qaCworkDataBean.get(position).getQCMemo();
                     }
                     String nullqcmemo;
                     if (commoqcmemo.equals(proitem)) {
@@ -1686,9 +2114,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_factlcdat.setText(datetime);
-                                    String commofactlcdat = sp.getString("commodetailFactlcdat", "");
-                                    if (commofactlcdat == null) {
+                                    String commofactlcdat;
+                                    if (qaCworkDataBean.get(position).getFactlcdat() == null) {
                                         commofactlcdat = "";
+                                    } else {
+                                        commofactlcdat = qaCworkDataBean.get(position).getFactlcdat();
                                     }
                                     String nullfactlcdat;
                                     if (commofactlcdat.equals(datetime)) {
@@ -1705,9 +2135,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_factlcdat.setText("");
-                                    String commofactlcdat = sp.getString("commodetailFactlcdat", "");
-                                    if (commofactlcdat == null) {
+                                    String commofactlcdat;
+                                    if (qaCworkDataBean.get(position).getFactlcdat() == null) {
                                         commofactlcdat = "";
+                                    } else {
+                                        commofactlcdat = qaCworkDataBean.get(position).getFactlcdat();
                                     }
                                     String nullfactlcdat;
                                     if (commofactlcdat.equals("")) {
@@ -1746,9 +2178,11 @@ public class QACworkDetailActivity extends Activity
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = tv_commodetail_batchid.getText().toString();
-                    String commoBatchid = sp.getString("commodetailBatchid", "");
-                    if (commoBatchid == null) {
+                    String commoBatchid;
+                    if (qaCworkDataBean.get(position).getBatchid() == null) {
                         commoBatchid = "";
+                    } else {
+                        commoBatchid = qaCworkDataBean.get(position).getBatchid();
                     }
                     String nullBatchid;
                     if (commoBatchid.equals(proitem)) {
@@ -1783,9 +2217,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_ctmchkdt.setText(datetime);
-                                    String commoCtmchkdt = sp.getString("commodetailCtmchkdt", "");
-                                    if (commoCtmchkdt == null) {
+                                    String commoCtmchkdt;
+                                    if (qaCworkDataBean.get(position).getCtmchkdt() == null) {
                                         commoCtmchkdt = "";
+                                    } else {
+                                        commoCtmchkdt = qaCworkDataBean.get(position).getCtmchkdt();
                                     }
                                     String nullCtmchkdt;
                                     if (commoCtmchkdt.equals(datetime)) {
@@ -1802,9 +2238,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_ctmchkdt.setText("");
-                                    String commoCtmchkdt = sp.getString("commodetailCtmchkdt", "");
-                                    if (commoCtmchkdt == null) {
+                                    String commoCtmchkdt;
+                                    if (qaCworkDataBean.get(position).getCtmchkdt() == null) {
                                         commoCtmchkdt = "";
+                                    } else {
+                                        commoCtmchkdt = qaCworkDataBean.get(position).getCtmchkdt();
                                     }
                                     String nullCtmchkdt;
                                     if (commoCtmchkdt.equals("")) {
@@ -1848,9 +2286,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_IPQCPedt.setText(datetime);
-                                    String commoCtmchkdt = sp.getString("commodetailIPQCPedt", "");
-                                    if (commoCtmchkdt == null) {
+                                    String commoCtmchkdt;
+                                    if (qaCworkDataBean.get(position).getCtmchkdt() == null) {
                                         commoCtmchkdt = "";
+                                    } else {
+                                        commoCtmchkdt = qaCworkDataBean.get(position).getCtmchkdt();
                                     }
                                     String nullipqcpedt;
                                     if (commoCtmchkdt.equals(datetime)) {
@@ -1867,9 +2307,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_IPQCPedt.setText("");
-                                    String commoCtmchkdt = sp.getString("commodetailIPQCPedt", "");
-                                    if (commoCtmchkdt == null) {
+                                    String commoCtmchkdt;
+                                    if (qaCworkDataBean.get(position).getCtmchkdt() == null) {
                                         commoCtmchkdt = "";
+                                    } else {
+                                        commoCtmchkdt = qaCworkDataBean.get(position).getCtmchkdt();
                                     }
                                     String nullipqcpedt;
                                     if (commoCtmchkdt.equals("")) {
@@ -1913,9 +2355,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_IPQCmdt.setText(datetime);
-                                    String commoCtmchkdt = sp.getString("commodetailIPQCmdt", "");
-                                    if (commoCtmchkdt == null) {
+                                    String commoCtmchkdt;
+                                    if (qaCworkDataBean.get(position).getIPQCmdt() == null) {
                                         commoCtmchkdt = "";
+                                    } else {
+                                        commoCtmchkdt = qaCworkDataBean.get(position).getIPQCmdt();
                                     }
                                     String nullipqcmdt;
                                     if (commoCtmchkdt.equals(datetime)) {
@@ -1932,9 +2376,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_IPQCmdt.setText("");
-                                    String commoCtmchkdt = sp.getString("commodetailIPQCmdt", "");
-                                    if (commoCtmchkdt == null) {
+                                    String commoCtmchkdt;
+                                    if (qaCworkDataBean.get(position).getIPQCmdt() == null) {
                                         commoCtmchkdt = "";
+                                    } else {
+                                        commoCtmchkdt = qaCworkDataBean.get(position).getIPQCmdt();
                                     }
                                     String nullipqcmdt;
                                     if (commoCtmchkdt.equals("")) {
@@ -2025,9 +2471,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_sealedrev.setText(datetime);
-                                    String commosearledrev = sp.getString("commodetailSealedrev", "");
-                                    if (commosearledrev == null) {
+                                    String commosearledrev;
+                                    if (qaCworkDataBean.get(position).getSealedrev() == null) {
                                         commosearledrev = "";
+                                    } else {
+                                        commosearledrev = qaCworkDataBean.get(position).getSealedrev();
                                     }
                                     String nullsearledrev;
                                     if (commosearledrev.equals(datetime)) {
@@ -2044,9 +2492,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_sealedrev.setText("");
-                                    String commosearledrev = sp.getString("commodetailSealedrev", "");
-                                    if (commosearledrev == null) {
+                                    String commosearledrev;
+                                    if (qaCworkDataBean.get(position).getSealedrev() == null) {
                                         commosearledrev = "";
+                                    } else {
+                                        commosearledrev = qaCworkDataBean.get(position).getSealedrev();
                                     }
                                     String nullsearledrev;
                                     if (commosearledrev.equals("")) {
@@ -2090,9 +2540,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_docback.setText(datetime);
-                                    String commodocback = sp.getString("commodetailDocback", "");
-                                    if (commodocback == null) {
+                                    String commodocback;
+                                    if (qaCworkDataBean.get(position).getDocback() == null) {
                                         commodocback = "";
+                                    } else {
+                                        commodocback = qaCworkDataBean.get(position).getDocback();
                                     }
                                     String nulldocback;
                                     if (commodocback.equals(datetime)) {
@@ -2109,9 +2561,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_docback.setText("");
-                                    String commodocback = sp.getString("commodetailDocback", "");
-                                    if (commodocback == null) {
+                                    String commodocback;
+                                    if (qaCworkDataBean.get(position).getDocback() == null) {
                                         commodocback = "";
+                                    } else {
+                                        commodocback = qaCworkDataBean.get(position).getDocback();
                                     }
                                     String nulldocback;
                                     if (commodocback.equals("")) {
@@ -2151,13 +2605,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_preMemo.setText("");
                     }
                     String proitem = tv_commodetail_preMemo.getText().toString();
-                    String commopromemo = sp.getString("commodetailPreMemo", "");
-                    if (commopromemo == null) {
+                    String commopromemo;
+                    if (qaCworkDataBean.get(position).getPreMemo() == null) {
                         commopromemo = "";
+                    } else {
+                        commopromemo = qaCworkDataBean.get(position).getPreMemo();
                     }
                     String nullmemo;
                     if (commopromemo.equals(proitem)) {
@@ -2193,9 +2649,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_predocdt.setText(datetime);
-                                    String commopreducdt = sp.getString("commodetailPredocdt", "");
-                                    if (commopreducdt == null) {
+                                    String commopreducdt;
+                                    if (qaCworkDataBean.get(position).getPredocdt() == null) {
                                         commopreducdt = "";
+                                    } else {
+                                        commopreducdt = qaCworkDataBean.get(position).getPredocdt();
                                     }
                                     String nullpreducdt;
                                     if (commopreducdt.equals(datetime)) {
@@ -2212,9 +2670,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_predocdt.setText("");
-                                    String commopreducdt = sp.getString("commodetailPredocdt", "");
-                                    if (commopreducdt == null) {
+                                    String commopreducdt;
+                                    if (qaCworkDataBean.get(position).getPredocdt() == null) {
                                         commopreducdt = "";
+                                    } else {
+                                        commopreducdt = qaCworkDataBean.get(position).getPredocdt();
                                     }
                                     String nullpreducdt;
                                     if (commopreducdt.equals("")) {
@@ -2258,9 +2718,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_predt.setText(datetime);
-                                    String commopred = sp.getString("commodetailPred", "");
-                                    if (commopred == null) {
+                                    String commopred;
+                                    if (qaCworkDataBean.get(position).getPredt() == null) {
                                         commopred = "";
+                                    } else {
+                                        commopred = qaCworkDataBean.get(position).getPredt();
                                     }
                                     String nullpred;
                                     if (commopred.equals(datetime)) {
@@ -2277,9 +2739,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_predt.setText("");
-                                    String commopred = sp.getString("commodetailPred", "");
-                                    if (commopred == null) {
+                                    String commopred;
+                                    if (qaCworkDataBean.get(position).getPredt() == null) {
                                         commopred = "";
+                                    } else {
+                                        commopred = qaCworkDataBean.get(position).getPredt();
                                     }
                                     String nullpred;
                                     if (commopred.equals("")) {
@@ -2317,13 +2781,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_fabricsok.setText("");
                     }
                     String proitem = tv_commodetail_fabricsok.getText().toString();
-                    String commofabricsok = sp.getString("commodetailFabricsok", "");
-                    if (commofabricsok == null) {
+                    String commofabricsok;
+                    if (qaCworkDataBean.get(position).getFabricsok() == null) {
                         commofabricsok = "";
+                    } else {
+                        commofabricsok = qaCworkDataBean.get(position).getFabricsok();
                     }
                     String nullfabricsok;
                     if (commofabricsok.equals(proitem)) {
@@ -2352,13 +2818,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_accessoriesok.setText("");
                     }
                     String proitem = tv_commodetail_accessoriesok.getText().toString();
-                    String commoaccessori = sp.getString("commodetailAccessoriesok", "");
-                    if (commoaccessori == null) {
+                    String commoaccessori;
+                    if (qaCworkDataBean.get(position).getAccessoriesok() == null) {
                         commoaccessori = "";
+                    } else {
+                        commoaccessori = qaCworkDataBean.get(position).getAccessoriesok();
                     }
                     String nullaccessori;
                     if (commoaccessori.equals(proitem)) {
@@ -2387,13 +2855,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_spcproDec.setText("");
                     }
                     String proitem = tv_commodetail_spcproDec.getText().toString();
-                    String commospcprodec = sp.getString("commodetailSpcproDec", "");
-                    if (commospcprodec == null) {
+                    String commospcprodec;
+                    if (qaCworkDataBean.get(position).getSpcproDec() == null) {
                         commospcprodec = "";
+                    } else {
+                        commospcprodec = qaCworkDataBean.get(position).getSpcproDec();
                     }
                     String nullspcprodec;
                     if (commospcprodec.equals(proitem)) {
@@ -2422,13 +2892,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_spcproMemo.setText("");
                     }
                     String proitem = tv_commodetail_spcproMemo.getText().toString();
-                    String commospcpromemo = sp.getString("commodetailSpcproMemo", "");
-                    if (commospcpromemo == null) {
+                    String commospcpromemo;
+                    if (qaCworkDataBean.get(position).getSpcproMemo() == null) {
                         commospcpromemo = "";
+                    } else {
+                        commospcpromemo = qaCworkDataBean.get(position).getSpcproMemo();
                     }
                     String nullspcpromemo;
                     if (commospcpromemo.equals(proitem)) {
@@ -2460,9 +2932,11 @@ public class QACworkDetailActivity extends Activity
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = tv_commodetail_cutqty.getText().toString();
-                    String commocutqty = sp.getString("commodetailCutqty", "");
-                    if (commocutqty == null) {
+                    String commocutqty;
+                    if (qaCworkDataBean.get(position).getCutqty() == null) {
                         commocutqty = "";
+                    } else {
+                        commocutqty = qaCworkDataBean.get(position).getCutqty();
                     }
                     String nullcutqty;
                     if (commocutqty.equals(proitem)) {
@@ -2497,9 +2971,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_sewFdt.setText(datetime);
-                                    String commosewfdt = sp.getString("commodetailSewFdt", "");
-                                    if (commosewfdt == null) {
+                                    String commosewfdt;
+                                    if (qaCworkDataBean.get(position).getSewFdt() == null) {
                                         commosewfdt = "";
+                                    } else {
+                                        commosewfdt = qaCworkDataBean.get(position).getSewFdt();
                                     }
                                     String nullsewfdt;
                                     if (commosewfdt.equals(datetime)) {
@@ -2516,9 +2992,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_sewFdt.setText("");
-                                    String commosewfdt = sp.getString("commodetailSewFdt", "");
-                                    if (commosewfdt == null) {
+                                    String commosewfdt;
+                                    if (qaCworkDataBean.get(position).getSewFdt() == null) {
                                         commosewfdt = "";
+                                    } else {
+                                        commosewfdt = qaCworkDataBean.get(position).getSewFdt();
                                     }
                                     String nullsewfdt;
                                     if (commosewfdt.equals("")) {
@@ -2562,9 +3040,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_sewMdt.setText(datetime);
-                                    String commosewmdt = sp.getString("commodetailSewMdt", "");
-                                    if (commosewmdt == null) {
+                                    String commosewmdt;
+                                    if (qaCworkDataBean.get(position).getSewMdt() == null) {
                                         commosewmdt = "";
+                                    } else {
+                                        commosewmdt = qaCworkDataBean.get(position).getSewMdt();
                                     }
                                     String nullsewmdt;
                                     if (commosewmdt.equals(datetime)) {
@@ -2581,9 +3061,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_sewMdt.setText("");
-                                    String commosewmdt = sp.getString("commodetailSewMdt", "");
-                                    if (commosewmdt == null) {
+                                    String commosewmdt;
+                                    if (qaCworkDataBean.get(position).getSewMdt() == null) {
                                         commosewmdt = "";
+                                    } else {
+                                        commosewmdt = qaCworkDataBean.get(position).getSewMdt();
                                     }
                                     String nullsewmdt;
                                     if (commosewmdt.equals("")) {
@@ -2627,9 +3109,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_prebdt.setText(datetime);
-                                    String commoprebdt = sp.getString("commodetailPrebdt", "");
-                                    if (commoprebdt == null) {
+                                    String commoprebdt;
+                                    if (qaCworkDataBean.get(position).getPrebdt() == null) {
                                         commoprebdt = "";
+                                    } else {
+                                        commoprebdt = qaCworkDataBean.get(position).getPrebdt();
                                     }
                                     String nullprebdt;
                                     if (commoprebdt.equals(datetime)) {
@@ -2646,9 +3130,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_prebdt.setText("");
-                                    String commoprebdt = sp.getString("commodetailPrebdt", "");
-                                    if (commoprebdt == null) {
+                                    String commoprebdt;
+                                    if (qaCworkDataBean.get(position).getPrebdt() == null) {
                                         commoprebdt = "";
+                                    } else {
+                                        commoprebdt = qaCworkDataBean.get(position).getPrebdt();
                                     }
                                     String nullprebdt;
                                     if (commoprebdt.equals("")) {
@@ -2687,9 +3173,11 @@ public class QACworkDetailActivity extends Activity
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = tv_commodetail_QCbdt.getText().toString();
-                    String commocutqty = sp.getString("commodetailQCbdt", "");
-                    if (commocutqty == null) {
+                    String commocutqty;
+                    if (qaCworkDataBean.get(position).getQCbdt() == null) {
                         commocutqty = "";
+                    } else {
+                        commocutqty = qaCworkDataBean.get(position).getQCbdt();
                     }
                     String nullqcbdt;
                     if (commocutqty.equals(proitem)) {
@@ -2724,9 +3212,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_premdt.setText(datetime);
-                                    String commopremdt = sp.getString("commodetailPremdt", "");
-                                    if (commopremdt == null) {
+                                    String commopremdt;
+                                    if (qaCworkDataBean.get(position).getPremdt() == null) {
                                         commopremdt = "";
+                                    } else {
+                                        commopremdt = qaCworkDataBean.get(position).getPremdt();
                                     }
                                     String nullpremdt;
                                     if (commopremdt.equals(datetime)) {
@@ -2743,9 +3233,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_premdt.setText("");
-                                    String commopremdt = sp.getString("commodetailPremdt", "");
-                                    if (commopremdt == null) {
+                                    String commopremdt;
+                                    if (qaCworkDataBean.get(position).getPremdt() == null) {
                                         commopremdt = "";
+                                    } else {
+                                        commopremdt = qaCworkDataBean.get(position).getPremdt();
                                     }
                                     String nullpremdt;
                                     if (commopremdt.equals("")) {
@@ -2784,9 +3276,11 @@ public class QACworkDetailActivity extends Activity
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = tv_commodetail_QCmdt.getText().toString();
-                    String commocutqty = sp.getString("commodetailQCmdt", "");
-                    if (commocutqty == null) {
+                    String commocutqty;
+                    if (qaCworkDataBean.get(position).getQCmdt() == null) {
                         commocutqty = "";
+                    } else {
+                        commocutqty = qaCworkDataBean.get(position).getQCmdt();
                     }
                     String nullqcmdt;
                     if (commocutqty.equals(proitem)) {
@@ -2821,9 +3315,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_preedt.setText(datetime);
-                                    String commopreedt = sp.getString("commodetailPreedt", "");
-                                    if (commopreedt == null) {
+                                    String commopreedt;
+                                    if (qaCworkDataBean.get(position).getPreedt() == null) {
                                         commopreedt = "";
+                                    } else {
+                                        commopreedt = qaCworkDataBean.get(position).getPreedt();
                                     }
                                     String nullpreedt;
                                     if (commopreedt.equals(datetime)) {
@@ -2840,9 +3336,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_preedt.setText("");
-                                    String commopreedt = sp.getString("commodetailPreedt", "");
-                                    if (commopreedt == null) {
+                                    String commopreedt;
+                                    if (qaCworkDataBean.get(position).getPreedt() == null) {
                                         commopreedt = "";
+                                    } else {
+                                        commopreedt = qaCworkDataBean.get(position).getPreedt();
                                     }
                                     String nullpreedt;
                                     if (commopreedt.equals("")) {
@@ -2881,9 +3379,11 @@ public class QACworkDetailActivity extends Activity
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = tv_commodetail_QCmdt.getText().toString();
-                    String commocutqty = sp.getString("commodetailQCmdt", "");
-                    if (commocutqty == null) {
+                    String commocutqty;
+                    if (qaCworkDataBean.get(position).getQCmdt() == null) {
                         commocutqty = "";
+                    } else {
+                        commocutqty = qaCworkDataBean.get(position).getQCmdt();
                     }
                     String nullqcmedt;
                     if (commocutqty.equals(proitem)) {
@@ -2918,9 +3418,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_fctmdt.setText(datetime);
-                                    String commofctmdt = sp.getString("commodetailFctmdt", "");
-                                    if (commofctmdt == null) {
+                                    String commofctmdt;
+                                    if (qaCworkDataBean.get(position).getFctmdt() == null) {
                                         commofctmdt = "";
+                                    } else {
+                                        commofctmdt = qaCworkDataBean.get(position).getFctmdt();
                                     }
                                     String nullfctmdt;
                                     if (commofctmdt.equals(datetime)) {
@@ -2937,9 +3439,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_fctmdt.setText("");
-                                    String commofctmdt = sp.getString("commodetailFctmdt", "");
-                                    if (commofctmdt == null) {
+                                    String commofctmdt;
+                                    if (qaCworkDataBean.get(position).getFctmdt() == null) {
                                         commofctmdt = "";
+                                    } else {
+                                        commofctmdt = qaCworkDataBean.get(position).getFctmdt();
                                     }
                                     String nullfctmdt;
                                     if (commofctmdt.equals("")) {
@@ -2983,9 +3487,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_fctedt.setText(datetime);
-                                    String commofctedt = sp.getString("commodetailFctedt", "");
-                                    if (commofctedt == null) {
+                                    String commofctedt;
+                                    if (qaCworkDataBean.get(position).getFctedt() == null) {
                                         commofctedt = "";
+                                    } else {
+                                        commofctedt = qaCworkDataBean.get(position).getFctedt();
                                     }
                                     String nullfctedt;
                                     if (commofctedt.equals(datetime)) {
@@ -3002,9 +3508,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_fctedt.setText("");
-                                    String commofctedt = sp.getString("commodetailFctedt", "");
-                                    if (commofctedt == null) {
+                                    String commofctedt;
+                                    if (qaCworkDataBean.get(position).getFctedt() == null) {
                                         commofctedt = "";
+                                    } else {
+                                        commofctedt = qaCworkDataBean.get(position).getFctedt();
                                     }
                                     String nullfctedt;
                                     if (commofctedt.equals("")) {
@@ -3048,9 +3556,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_packbdat.setText(datetime);
-                                    String commopackbdat = sp.getString("commodetailPackbdat", "");
-                                    if (commopackbdat == null) {
+                                    String commopackbdat;
+                                    if (qaCworkDataBean.get(position).getPackbdat() == null) {
                                         commopackbdat = "";
+                                    } else {
+                                        commopackbdat = qaCworkDataBean.get(position).getPackbdat();
                                     }
                                     String nullpackbdat;
                                     if (commopackbdat.equals(datetime)) {
@@ -3067,9 +3577,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_packbdat.setText("");
-                                    String commopackbdat = sp.getString("commodetailPackbdat", "");
-                                    if (commopackbdat == null) {
+                                    String commopackbdat;
+                                    if (qaCworkDataBean.get(position).getPackbdat() == null) {
                                         commopackbdat = "";
+                                    } else {
+                                        commopackbdat = qaCworkDataBean.get(position).getPackbdat();
                                     }
                                     String nullpackbdat;
                                     if (commopackbdat.equals("")) {
@@ -3110,9 +3622,11 @@ public class QACworkDetailActivity extends Activity
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = tv_commodetail_packqty2.getText().toString();
-                    String commopackqty2 = sp.getString("commoPackqty2", "");
-                    if (commopackqty2 == null) {
+                    String commopackqty2;
+                    if (qaCworkDataBean.get(position).getPackqty2() == null) {
                         commopackqty2 = "";
+                    } else {
+                        commopackqty2 = qaCworkDataBean.get(position).getPackqty2();
                     }
                     String nullpackqty2;
                     if (commopackqty2.equals(proitem)) {
@@ -3141,13 +3655,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_QCMemo.setText("");
                     }
                     String proitem = tv_commodetail_QCMemo.getText().toString();
-                    String commoqcmemo = sp.getString("commodetailQCMemo", "");
-                    if (commoqcmemo == null) {
+                    String commoqcmemo;
+                    if (qaCworkDataBean.get(position).getQCMemo() == null) {
                         commoqcmemo = "";
+                    } else {
+                        commoqcmemo = qaCworkDataBean.get(position).getQCMemo();
                     }
                     String nullqcmemo;
                     if (commoqcmemo.equals(proitem)) {
@@ -3182,9 +3698,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_factlcdat.setText(datetime);
-                                    String commofactlcdat = sp.getString("commodetailFactlcdat", "");
-                                    if (commofactlcdat == null) {
+                                    String commofactlcdat;
+                                    if (qaCworkDataBean.get(position).getFactlcdat() == null) {
                                         commofactlcdat = "";
+                                    } else {
+                                        commofactlcdat = qaCworkDataBean.get(position).getFactlcdat();
                                     }
                                     String nullfactlcdat;
                                     if (commofactlcdat.equals(datetime)) {
@@ -3201,9 +3719,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_factlcdat.setText("");
-                                    String commofactlcdat = sp.getString("commodetailFactlcdat", "");
-                                    if (commofactlcdat == null) {
+                                    String commofactlcdat;
+                                    if (qaCworkDataBean.get(position).getFactlcdat() == null) {
                                         commofactlcdat = "";
+                                    } else {
+                                        commofactlcdat = qaCworkDataBean.get(position).getFactlcdat();
                                     }
                                     String nullfactlcdat;
                                     if (commofactlcdat.equals("")) {
@@ -3242,9 +3762,11 @@ public class QACworkDetailActivity extends Activity
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = tv_commodetail_batchid.getText().toString();
-                    String commoBatchid = sp.getString("commodetailBatchid", "");
-                    if (commoBatchid == null) {
+                    String commoBatchid;
+                    if (qaCworkDataBean.get(position).getBatchid() == null) {
                         commoBatchid = "";
+                    } else {
+                        commoBatchid = qaCworkDataBean.get(position).getBatchid();
                     }
                     String nullBatchid;
                     if (commoBatchid.equals(proitem)) {
@@ -3279,9 +3801,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_ctmchkdt.setText(datetime);
-                                    String commoCtmchkdt = sp.getString("commodetailCtmchkdt", "");
-                                    if (commoCtmchkdt == null) {
+                                    String commoCtmchkdt;
+                                    if (qaCworkDataBean.get(position).getCtmchkdt() == null) {
                                         commoCtmchkdt = "";
+                                    } else {
+                                        commoCtmchkdt = qaCworkDataBean.get(position).getCtmchkdt();
                                     }
                                     String nullCtmchkdt;
                                     if (commoCtmchkdt.equals(datetime)) {
@@ -3298,9 +3822,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_ctmchkdt.setText("");
-                                    String commoCtmchkdt = sp.getString("commodetailCtmchkdt", "");
-                                    if (commoCtmchkdt == null) {
+                                    String commoCtmchkdt;
+                                    if (qaCworkDataBean.get(position).getCtmchkdt() == null) {
                                         commoCtmchkdt = "";
+                                    } else {
+                                        commoCtmchkdt = qaCworkDataBean.get(position).getCtmchkdt();
                                     }
                                     String nullCtmchkdt;
                                     if (commoCtmchkdt.equals("")) {
@@ -3344,9 +3870,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_IPQCPedt.setText(datetime);
-                                    String commoCtmchkdt = sp.getString("commodetailIPQCPedt", "");
-                                    if (commoCtmchkdt == null) {
+                                    String commoCtmchkdt;
+                                    if (qaCworkDataBean.get(position).getIPQCPedt() == null) {
                                         commoCtmchkdt = "";
+                                    } else {
+                                        commoCtmchkdt = qaCworkDataBean.get(position).getIPQCPedt();
                                     }
                                     String nullipqcpedt;
                                     if (commoCtmchkdt.equals(datetime)) {
@@ -3363,9 +3891,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_IPQCPedt.setText("");
-                                    String commoCtmchkdt = sp.getString("commodetailIPQCPedt", "");
-                                    if (commoCtmchkdt == null) {
+                                    String commoCtmchkdt;
+                                    if (qaCworkDataBean.get(position).getIPQCPedt() == null) {
                                         commoCtmchkdt = "";
+                                    } else {
+                                        commoCtmchkdt = qaCworkDataBean.get(position).getIPQCPedt();
                                     }
                                     String nullipqcpedt;
                                     if (commoCtmchkdt.equals("")) {
@@ -3409,9 +3939,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_IPQCmdt.setText(datetime);
-                                    String commoCtmchkdt = sp.getString("commodetailIPQCmdt", "");
-                                    if (commoCtmchkdt == null) {
+                                    String commoCtmchkdt;
+                                    if (qaCworkDataBean.get(position).getIPQCmdt() == null) {
                                         commoCtmchkdt = "";
+                                    } else {
+                                        commoCtmchkdt = qaCworkDataBean.get(position).getIPQCmdt();
                                     }
                                     String nullipqcmdt;
                                     if (commoCtmchkdt.equals(datetime)) {
@@ -3428,9 +3960,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_IPQCmdt.setText("");
-                                    String commoCtmchkdt = sp.getString("commodetailIPQCmdt", "");
-                                    if (commoCtmchkdt == null) {
+                                    String commoCtmchkdt;
+                                    if (qaCworkDataBean.get(position).getIPQCmdt() == null) {
                                         commoCtmchkdt = "";
+                                    } else {
+                                        commoCtmchkdt = qaCworkDataBean.get(position).getIPQCmdt();
                                     }
                                     String nullipqcmdt;
                                     if (commoCtmchkdt.equals("")) {
@@ -3521,9 +4055,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_sealedrev.setText(datetime);
-                                    String commosearledrev = sp.getString("commodetailSealedrev", "");
-                                    if (commosearledrev == null) {
+                                    String commosearledrev;
+                                    if (qaCworkDataBean.get(position).getSealedrev() == null) {
                                         commosearledrev = "";
+                                    } else {
+                                        commosearledrev = qaCworkDataBean.get(position).getSealedrev();
                                     }
                                     String nullsearledrev;
                                     if (commosearledrev.equals(datetime)) {
@@ -3540,9 +4076,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_sealedrev.setText("");
-                                    String commosearledrev = sp.getString("commodetailSealedrev", "");
-                                    if (commosearledrev == null) {
+                                    String commosearledrev;
+                                    if (qaCworkDataBean.get(position).getSealedrev() == null) {
                                         commosearledrev = "";
+                                    } else {
+                                        commosearledrev = qaCworkDataBean.get(position).getSealedrev();
                                     }
                                     String nullsearledrev;
                                     if (commosearledrev.equals("")) {
@@ -3586,9 +4124,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_docback.setText(datetime);
-                                    String commodocback = sp.getString("commodetailDocback", "");
-                                    if (commodocback == null) {
+                                    String commodocback;
+                                    if (qaCworkDataBean.get(position).getDocback() == null) {
                                         commodocback = "";
+                                    } else {
+                                        commodocback = qaCworkDataBean.get(position).getDocback();
                                     }
                                     String nulldocback;
                                     if (commodocback.equals(datetime)) {
@@ -3605,9 +4145,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_docback.setText("");
-                                    String commodocback = sp.getString("commodetailDocback", "");
-                                    if (commodocback == null) {
+                                    String commodocback;
+                                    if (qaCworkDataBean.get(position).getDocback() == null) {
                                         commodocback = "";
+                                    } else {
+                                        commodocback = qaCworkDataBean.get(position).getDocback();
                                     }
                                     String nulldocback;
                                     if (commodocback.equals("")) {
@@ -3645,13 +4187,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_preMemo.setText("");
                     }
                     String proitem = tv_commodetail_preMemo.getText().toString();
-                    String commopromemo = sp.getString("commodetailPreMemo", "");
-                    if (commopromemo == null) {
+                    String commopromemo;
+                    if (qaCworkDataBean.get(position).getPreMemo() == null) {
                         commopromemo = "";
+                    } else {
+                        commopromemo = qaCworkDataBean.get(position).getPreMemo();
                     }
                     String nullmemo;
                     if (commopromemo.equals(proitem)) {
@@ -3664,7 +4208,6 @@ public class QACworkDetailActivity extends Activity
                 }
             });
             tv_commodetail_preMemo.setSelection(tv_commodetail_preMemo.length());
-
 
             tv_commodetail_predocdt.setEnabled(true);//预计产前会报告时间
             tv_commodetail_predocdt.setOnClickListener(new View.OnClickListener() {
@@ -3687,9 +4230,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_predocdt.setText(datetime);
-                                    String commopreducdt = sp.getString("commodetailPredocdt", "");
-                                    if (commopreducdt == null) {
+                                    String commopreducdt;
+                                    if (qaCworkDataBean.get(position).getPredocdt() == null) {
                                         commopreducdt = "";
+                                    } else {
+                                        commopreducdt = qaCworkDataBean.get(position).getPredocdt();
                                     }
                                     String nullpreducdt;
                                     if (commopreducdt.equals(datetime)) {
@@ -3706,9 +4251,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_predocdt.setText("");
-                                    String commopreducdt = sp.getString("commodetailPredocdt", "");
-                                    if (commopreducdt == null) {
+                                    String commopreducdt;
+                                    if (qaCworkDataBean.get(position).getPredocdt() == null) {
                                         commopreducdt = "";
+                                    } else {
+                                        commopreducdt = qaCworkDataBean.get(position).getPredocdt();
                                     }
                                     String nullpreducdt;
                                     if (commopreducdt.equals("")) {
@@ -3752,9 +4299,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_predt.setText(datetime);
-                                    String commopred = sp.getString("commodetailPred", "");
-                                    if (commopred == null) {
+                                    String commopred;
+                                    if (qaCworkDataBean.get(position).getPredt() == null) {
                                         commopred = "";
+                                    } else {
+                                        commopred = qaCworkDataBean.get(position).getPredt();
                                     }
                                     String nullpred;
                                     if (commopred.equals(datetime)) {
@@ -3771,9 +4320,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_predt.setText("");
-                                    String commopred = sp.getString("commodetailPred", "");
-                                    if (commopred == null) {
+                                    String commopred;
+                                    if (qaCworkDataBean.get(position).getPredt() == null) {
                                         commopred = "";
+                                    } else {
+                                        commopred = qaCworkDataBean.get(position).getPredt();
                                     }
                                     String nullpred;
                                     if (commopred.equals("")) {
@@ -3811,13 +4362,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_fabricsok.setText("");
                     }
                     String proitem = tv_commodetail_fabricsok.getText().toString();
-                    String commofabricsok = sp.getString("commodetailFabricsok", "");
-                    if (commofabricsok == null) {
+                    String commofabricsok;
+                    if (qaCworkDataBean.get(position).getFabricsok() == null) {
                         commofabricsok = "";
+                    } else {
+                        commofabricsok = qaCworkDataBean.get(position).getFabricsok();
                     }
                     String nullfabricsok;
                     if (commofabricsok.equals(proitem)) {
@@ -3846,13 +4399,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_accessoriesok.setText("");
                     }
                     String proitem = tv_commodetail_accessoriesok.getText().toString();
-                    String commoaccessori = sp.getString("commodetailAccessoriesok", "");
-                    if (commoaccessori == null) {
+                    String commoaccessori;
+                    if (qaCworkDataBean.get(position).getAccessoriesok() == null) {
                         commoaccessori = "";
+                    } else {
+                        commoaccessori = qaCworkDataBean.get(position).getAccessoriesok();
                     }
                     String nullaccessori;
                     if (commoaccessori.equals(proitem)) {
@@ -3881,13 +4436,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_spcproDec.setText("");
                     }
                     String proitem = tv_commodetail_spcproDec.getText().toString();
-                    String commospcprodec = sp.getString("commodetailSpcproDec", "");
-                    if (commospcprodec == null) {
+                    String commospcprodec;
+                    if (qaCworkDataBean.get(position).getSpcproDec() == null) {
                         commospcprodec = "";
+                    } else {
+                        commospcprodec = qaCworkDataBean.get(position).getSpcproDec();
                     }
                     String nullspcprodec;
                     if (commospcprodec.equals(proitem)) {
@@ -3916,13 +4473,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_spcproMemo.setText("");
                     }
                     String proitem = tv_commodetail_spcproMemo.getText().toString();
-                    String commospcpromemo = sp.getString("commodetailSpcproMemo", "");
-                    if (commospcpromemo == null) {
+                    String commospcpromemo;
+                    if (qaCworkDataBean.get(position).getSpcproMemo() == null) {
                         commospcpromemo = "";
+                    } else {
+                        commospcpromemo = qaCworkDataBean.get(position).getSpcproMemo();
                     }
                     String nullspcpromemo;
                     if (commospcpromemo.equals(proitem)) {
@@ -3954,9 +4513,11 @@ public class QACworkDetailActivity extends Activity
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = tv_commodetail_cutqty.getText().toString();
-                    String commocutqty = sp.getString("commodetailCutqty", "");
-                    if (commocutqty == null) {
+                    String commocutqty;
+                    if (qaCworkDataBean.get(position).getCutqty() == null) {
                         commocutqty = "";
+                    } else {
+                        commocutqty = qaCworkDataBean.get(position).getCutqty();
                     }
                     String nullcutqty;
                     if (commocutqty.equals(proitem)) {
@@ -3991,9 +4552,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_sewFdt.setText(datetime);
-                                    String commosewfdt = sp.getString("commodetailSewFdt", "");
-                                    if (commosewfdt == null) {
+                                    String commosewfdt;
+                                    if (qaCworkDataBean.get(position).getSewFdt() == null) {
                                         commosewfdt = "";
+                                    } else {
+                                        commosewfdt = qaCworkDataBean.get(position).getSewFdt();
                                     }
                                     String nullsewfdt;
                                     if (commosewfdt.equals(datetime)) {
@@ -4010,9 +4573,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_sewFdt.setText("");
-                                    String commosewfdt = sp.getString("commodetailSewFdt", "");
-                                    if (commosewfdt == null) {
+                                    String commosewfdt;
+                                    if (qaCworkDataBean.get(position).getSewFdt() == null) {
                                         commosewfdt = "";
+                                    } else {
+                                        commosewfdt = qaCworkDataBean.get(position).getSewFdt();
                                     }
                                     String nullsewfdt;
                                     if (commosewfdt.equals("")) {
@@ -4056,9 +4621,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_sewMdt.setText(datetime);
-                                    String commosewmdt = sp.getString("commodetailSewMdt", "");
-                                    if (commosewmdt == null) {
+                                    String commosewmdt;
+                                    if (qaCworkDataBean.get(position).getSewMdt() == null) {
                                         commosewmdt = "";
+                                    } else {
+                                        commosewmdt = qaCworkDataBean.get(position).getSewMdt();
                                     }
                                     String nullsewmdt;
                                     if (commosewmdt.equals(datetime)) {
@@ -4075,9 +4642,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_sewMdt.setText("");
-                                    String commosewmdt = sp.getString("commodetailSewMdt", "");
-                                    if (commosewmdt == null) {
+                                    String commosewmdt;
+                                    if (qaCworkDataBean.get(position).getSewMdt() == null) {
                                         commosewmdt = "";
+                                    } else {
+                                        commosewmdt = qaCworkDataBean.get(position).getSewMdt();
                                     }
                                     String nullsewmdt;
                                     if (commosewmdt.equals("")) {
@@ -4121,9 +4690,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_prebdt.setText(datetime);
-                                    String commoprebdt = sp.getString("commodetailPrebdt", "");
-                                    if (commoprebdt == null) {
+                                    String commoprebdt;
+                                    if (qaCworkDataBean.get(position).getPrebdt() == null) {
                                         commoprebdt = "";
+                                    } else {
+                                        commoprebdt = qaCworkDataBean.get(position).getPrebdt();
                                     }
                                     String nullprebdt;
                                     if (commoprebdt.equals(datetime)) {
@@ -4140,9 +4711,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_prebdt.setText("");
-                                    String commoprebdt = sp.getString("commodetailPrebdt", "");
-                                    if (commoprebdt == null) {
+                                    String commoprebdt;
+                                    if (qaCworkDataBean.get(position).getPrebdt() == null) {
                                         commoprebdt = "";
+                                    } else {
+                                        commoprebdt = qaCworkDataBean.get(position).getPrebdt();
                                     }
                                     String nullprebdt;
                                     if (commoprebdt.equals("")) {
@@ -4181,9 +4754,11 @@ public class QACworkDetailActivity extends Activity
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = tv_commodetail_QCbdt.getText().toString();
-                    String commocutqty = sp.getString("commodetailQCbdt", "");
-                    if (commocutqty == null) {
+                    String commocutqty;
+                    if (qaCworkDataBean.get(position).getQCbdt() == null) {
                         commocutqty = "";
+                    } else {
+                        commocutqty = qaCworkDataBean.get(position).getQCbdt();
                     }
                     String nullqcbdt;
                     if (commocutqty.equals(proitem)) {
@@ -4218,9 +4793,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_premdt.setText(datetime);
-                                    String commopremdt = sp.getString("commodetailPremdt", "");
-                                    if (commopremdt == null) {
+                                    String commopremdt;
+                                    if (qaCworkDataBean.get(position).getPremdt() == null) {
                                         commopremdt = "";
+                                    } else {
+                                        commopremdt = qaCworkDataBean.get(position).getPremdt();
                                     }
                                     String nullpremdt;
                                     if (commopremdt.equals(datetime)) {
@@ -4237,9 +4814,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_premdt.setText("");
-                                    String commopremdt = sp.getString("commodetailPremdt", "");
-                                    if (commopremdt == null) {
+                                    String commopremdt;
+                                    if (qaCworkDataBean.get(position).getPremdt() == null) {
                                         commopremdt = "";
+                                    } else {
+                                        commopremdt = qaCworkDataBean.get(position).getPremdt();
                                     }
                                     String nullpremdt;
                                     if (commopremdt.equals("")) {
@@ -4278,9 +4857,11 @@ public class QACworkDetailActivity extends Activity
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = tv_commodetail_QCmdt.getText().toString();
-                    String commocutqty = sp.getString("commodetailQCmdt", "");
-                    if (commocutqty == null) {
+                    String commocutqty;
+                    if (qaCworkDataBean.get(position).getQCmdt() == null) {
                         commocutqty = "";
+                    } else {
+                        commocutqty = qaCworkDataBean.get(position).getQCmdt();
                     }
                     String nullqcmdt;
                     if (commocutqty.equals(proitem)) {
@@ -4315,9 +4896,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_preedt.setText(datetime);
-                                    String commopreedt = sp.getString("commodetailPreedt", "");
-                                    if (commopreedt == null) {
+                                    String commopreedt;
+                                    if (qaCworkDataBean.get(position).getPreedt() == null) {
                                         commopreedt = "";
+                                    } else {
+                                        commopreedt = qaCworkDataBean.get(position).getPreedt();
                                     }
                                     String nullpreedt;
                                     if (commopreedt.equals(datetime)) {
@@ -4334,9 +4917,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_preedt.setText("");
-                                    String commopreedt = sp.getString("commodetailPreedt", "");
-                                    if (commopreedt == null) {
+                                    String commopreedt;
+                                    if (qaCworkDataBean.get(position).getPreedt() == null) {
                                         commopreedt = "";
+                                    } else {
+                                        commopreedt = qaCworkDataBean.get(position).getPreedt();
                                     }
                                     String nullpreedt;
                                     if (commopreedt.equals("")) {
@@ -4375,9 +4960,11 @@ public class QACworkDetailActivity extends Activity
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = tv_commodetail_QCmdt.getText().toString();
-                    String commocutqty = sp.getString("commodetailQCmdt", "");
-                    if (commocutqty == null) {
+                    String commocutqty;
+                    if (qaCworkDataBean.get(position).getQCmdt() == null) {
                         commocutqty = "";
+                    } else {
+                        commocutqty = qaCworkDataBean.get(position).getQCmdt();
                     }
                     String nullqcmedt;
                     if (commocutqty.equals(proitem)) {
@@ -4412,9 +4999,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_fctmdt.setText(datetime);
-                                    String commofctmdt = sp.getString("commodetailFctmdt", "");
-                                    if (commofctmdt == null) {
+                                    String commofctmdt;
+                                    if (qaCworkDataBean.get(position).getFctmdt() == null) {
                                         commofctmdt = "";
+                                    } else {
+                                        commofctmdt = qaCworkDataBean.get(position).getFctmdt();
                                     }
                                     String nullfctmdt;
                                     if (commofctmdt.equals(datetime)) {
@@ -4431,9 +5020,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_fctmdt.setText("");
-                                    String commofctmdt = sp.getString("commodetailFctmdt", "");
-                                    if (commofctmdt == null) {
+                                    String commofctmdt;
+                                    if (qaCworkDataBean.get(position).getFctmdt() == null) {
                                         commofctmdt = "";
+                                    } else {
+                                        commofctmdt = qaCworkDataBean.get(position).getFctmdt();
                                     }
                                     String nullfctmdt;
                                     if (commofctmdt.equals("")) {
@@ -4477,9 +5068,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_fctedt.setText(datetime);
-                                    String commofctedt = sp.getString("commodetailFctedt", "");
-                                    if (commofctedt == null) {
+                                    String commofctedt;
+                                    if (qaCworkDataBean.get(position).getFctedt() == null) {
                                         commofctedt = "";
+                                    } else {
+                                        commofctedt = qaCworkDataBean.get(position).getFctedt();
                                     }
                                     String nullfctedt;
                                     if (commofctedt.equals(datetime)) {
@@ -4496,9 +5089,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_fctedt.setText("");
-                                    String commofctedt = sp.getString("commodetailFctedt", "");
-                                    if (commofctedt == null) {
+                                    String commofctedt;
+                                    if (qaCworkDataBean.get(position).getFctedt() == null) {
                                         commofctedt = "";
+                                    } else {
+                                        commofctedt = qaCworkDataBean.get(position).getFctedt();
                                     }
                                     String nullfctedt;
                                     if (commofctedt.equals("")) {
@@ -4542,9 +5137,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_packbdat.setText(datetime);
-                                    String commopackbdat = sp.getString("commodetailPackbdat", "");
-                                    if (commopackbdat == null) {
+                                    String commopackbdat;
+                                    if (qaCworkDataBean.get(position).getPackbdat() == null) {
                                         commopackbdat = "";
+                                    } else {
+                                        commopackbdat = qaCworkDataBean.get(position).getPackbdat();
                                     }
                                     String nullpackbdat;
                                     if (commopackbdat.equals(datetime)) {
@@ -4561,9 +5158,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_packbdat.setText("");
-                                    String commopackbdat = sp.getString("commodetailPackbdat", "");
-                                    if (commopackbdat == null) {
+                                    String commopackbdat;
+                                    if (qaCworkDataBean.get(position).getPackbdat() == null) {
                                         commopackbdat = "";
+                                    } else {
+                                        commopackbdat = qaCworkDataBean.get(position).getPackbdat();
                                     }
                                     String nullpackbdat;
                                     if (commopackbdat.equals("")) {
@@ -4604,9 +5203,11 @@ public class QACworkDetailActivity extends Activity
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = tv_commodetail_packqty2.getText().toString();
-                    String commopackqty2 = sp.getString("commoPackqty2", "");
-                    if (commopackqty2 == null) {
+                    String commopackqty2;
+                    if (qaCworkDataBean.get(position).getPackqty2() == null) {
                         commopackqty2 = "";
+                    } else {
+                        commopackqty2 = qaCworkDataBean.get(position).getPackqty2();
                     }
                     String nullpackqty2;
                     if (commopackqty2.equals(proitem)) {
@@ -4635,13 +5236,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_QCMemo.setText("");
                     }
                     String proitem = tv_commodetail_QCMemo.getText().toString();
-                    String commoqcmemo = sp.getString("commodetailQCMemo", "");
-                    if (commoqcmemo == null) {
+                    String commoqcmemo;
+                    if (qaCworkDataBean.get(position).getQCMemo() == null) {
                         commoqcmemo = "";
+                    } else {
+                        commoqcmemo = qaCworkDataBean.get(position).getQCMemo();
                     }
                     String nullqcmemo;
                     if (commoqcmemo.equals(proitem)) {
@@ -4676,9 +5279,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_factlcdat.setText(datetime);
-                                    String commofactlcdat = sp.getString("commodetailFactlcdat", "");
-                                    if (commofactlcdat == null) {
+                                    String commofactlcdat;
+                                    if (qaCworkDataBean.get(position).getFactlcdat() == null) {
                                         commofactlcdat = "";
+                                    } else {
+                                        commofactlcdat = qaCworkDataBean.get(position).getFactlcdat();
                                     }
                                     String nullfactlcdat;
                                     if (commofactlcdat.equals(datetime)) {
@@ -4695,9 +5300,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_factlcdat.setText("");
-                                    String commofactlcdat = sp.getString("commodetailFactlcdat", "");
-                                    if (commofactlcdat == null) {
+                                    String commofactlcdat;
+                                    if (qaCworkDataBean.get(position).getFactlcdat() == null) {
                                         commofactlcdat = "";
+                                    } else {
+                                        commofactlcdat = qaCworkDataBean.get(position).getFactlcdat();
                                     }
                                     String nullfactlcdat;
                                     if (commofactlcdat.equals("")) {
@@ -4736,9 +5343,11 @@ public class QACworkDetailActivity extends Activity
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
                     String proitem = tv_commodetail_batchid.getText().toString();
-                    String commoBatchid = sp.getString("commodetailBatchid", "");
-                    if (commoBatchid == null) {
+                    String commoBatchid;
+                    if (qaCworkDataBean.get(position).getBatchid() == null) {
                         commoBatchid = "";
+                    } else {
+                        commoBatchid = qaCworkDataBean.get(position).getBatchid();
                     }
                     String nullBatchid;
                     if (commoBatchid.equals(proitem)) {
@@ -4773,9 +5382,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_ctmchkdt.setText(datetime);
-                                    String commoCtmchkdt = sp.getString("commodetailCtmchkdt", "");
-                                    if (commoCtmchkdt == null) {
+                                    String commoCtmchkdt;
+                                    if (qaCworkDataBean.get(position).getCtmchkdt() == null) {
                                         commoCtmchkdt = "";
+                                    } else {
+                                        commoCtmchkdt = qaCworkDataBean.get(position).getCtmchkdt();
                                     }
                                     String nullCtmchkdt;
                                     if (commoCtmchkdt.equals(datetime)) {
@@ -4792,9 +5403,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_ctmchkdt.setText("");
-                                    String commoCtmchkdt = sp.getString("commodetailCtmchkdt", "");
-                                    if (commoCtmchkdt == null) {
+                                    String commoCtmchkdt;
+                                    if (qaCworkDataBean.get(position).getCtmchkdt() == null) {
                                         commoCtmchkdt = "";
+                                    } else {
+                                        commoCtmchkdt = qaCworkDataBean.get(position).getCtmchkdt();
                                     }
                                     String nullCtmchkdt;
                                     if (commoCtmchkdt.equals("")) {
@@ -4838,9 +5451,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_IPQCPedt.setText(datetime);
-                                    String commoCtmchkdt = sp.getString("commodetailIPQCPedt", "");
-                                    if (commoCtmchkdt == null) {
+                                    String commoCtmchkdt;
+                                    if (qaCworkDataBean.get(position).getIPQCPedt() == null) {
                                         commoCtmchkdt = "";
+                                    } else {
+                                        commoCtmchkdt = qaCworkDataBean.get(position).getIPQCPedt();
                                     }
                                     String nullipqcpedt;
                                     if (commoCtmchkdt.equals(datetime)) {
@@ -4857,9 +5472,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_IPQCPedt.setText("");
-                                    String commoCtmchkdt = sp.getString("commodetailIPQCPedt", "");
-                                    if (commoCtmchkdt == null) {
+                                    String commoCtmchkdt;
+                                    if (qaCworkDataBean.get(position).getIPQCPedt() == null) {
                                         commoCtmchkdt = "";
+                                    } else {
+                                        commoCtmchkdt = qaCworkDataBean.get(position).getIPQCPedt();
                                     }
                                     String nullipqcpedt;
                                     if (commoCtmchkdt.equals("")) {
@@ -4903,9 +5520,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_IPQCmdt.setText(datetime);
-                                    String commoCtmchkdt = sp.getString("commodetailIPQCmdt", "");
-                                    if (commoCtmchkdt == null) {
+                                    String commoCtmchkdt;
+                                    if (qaCworkDataBean.get(position).getIPQCmdt() == null) {
                                         commoCtmchkdt = "";
+                                    } else {
+                                        commoCtmchkdt = qaCworkDataBean.get(position).getIPQCmdt();
                                     }
                                     String nullipqcmdt;
                                     if (commoCtmchkdt.equals(datetime)) {
@@ -4922,9 +5541,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_IPQCmdt.setText("");
-                                    String commoCtmchkdt = sp.getString("commodetailIPQCmdt", "");
-                                    if (commoCtmchkdt == null) {
+                                    String commoCtmchkdt;
+                                    if (qaCworkDataBean.get(position).getIPQCmdt() == null) {
                                         commoCtmchkdt = "";
+                                    } else {
+                                        commoCtmchkdt = qaCworkDataBean.get(position).getIPQCmdt();
                                     }
                                     String nullipqcmdt;
                                     if (commoCtmchkdt.equals("")) {
@@ -4962,13 +5583,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_QAname.setText("");
                     }
                     String proitem = tv_commodetail_QAname.getText().toString();
-                    String commoQaname = sp.getString("commoQAname", "");
-                    if (commoQaname == null) {
+                    String commoQaname;
+                    if (qaCworkDataBean.get(position).getQAname() == null) {
                         commoQaname = "";
+                    } else {
+                        commoQaname = qaCworkDataBean.get(position).getQAname();
                     }
                     String nullqaname;
                     if (commoQaname.equals(proitem)) {
@@ -4997,13 +5620,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_QAScore.setText("");
                     }
                     String proitem = tv_commodetail_QAScore.getText().toString();
-                    String commoqascore = sp.getString("commodetailQAScore", "");//QA首扎件数
-                    if (commoqascore == null) {
+                    String commoqascore;//QA首扎件数
+                    if (qaCworkDataBean.get(position).getQAScore() == null) {
                         commoqascore = "";
+                    } else {
+                        commoqascore = qaCworkDataBean.get(position).getQAScore();
                     }
                     String nullqascore;
                     if (commoqascore.equals(proitem)) {
@@ -5038,9 +5663,11 @@ public class QACworkDetailActivity extends Activity
                                     int day = datePicker.getDayOfMonth();
                                     String datetime = year + "/" + (month + 1) + "/" + day;
                                     tv_commodetail_QAMemo.setText(datetime);
-                                    String commoqamemo = sp.getString("commodetailQAMemo", "");//QA首扎日期
-                                    if (commoqamemo == null) {
+                                    String commoqamemo;//QA首扎日期
+                                    if (qaCworkDataBean.get(position).getQAMemo() == null) {
                                         commoqamemo = "";
+                                    } else {
+                                        commoqamemo = qaCworkDataBean.get(position).getQAMemo();
                                     }
                                     String nullqamemo;
                                     if (commoqamemo.equals(datetime)) {
@@ -5057,9 +5684,11 @@ public class QACworkDetailActivity extends Activity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     tv_commodetail_QAMemo.setText("");
-                                    String commoqamemo = sp.getString("commodetailQAMemo", "");//QA首扎日期
-                                    if (commoqamemo == null) {
+                                    String commoqamemo;//QA首扎日期
+                                    if (qaCworkDataBean.get(position).getQAMemo() == null) {
                                         commoqamemo = "";
+                                    } else {
+                                        commoqamemo = qaCworkDataBean.get(position).getQAMemo();
                                     }
                                     String nullqamemo;
                                     if (commoqamemo.equals("")) {
@@ -5097,13 +5726,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_predoc.setText("");
                     }
                     String proitem = tv_commodetail_predoc.getText().toString();
-                    String commopredoc = sp.getString("commodetailPredoc", "");//产前会报告
-                    if (commopredoc == null) {
+                    String commopredoc;//产前会报告
+                    if (qaCworkDataBean.get(position).getPredoc() == null) {
                         commopredoc = "";
+                    } else {
+                        commopredoc = qaCworkDataBean.get(position).getPredoc();
                     }
                     String nullpredoc;
                     if (commopredoc.equals(proitem)) {
@@ -5132,13 +5763,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_QCbdtDoc.setText("");
                     }
                     String proitem = tv_commodetail_QCbdtDoc.getText().toString();
-                    String commoqcbdtdoc = sp.getString("commodetailQCbdtDoc", "");//早期报告
-                    if (commoqcbdtdoc == null) {
+                    String commoqcbdtdoc;//早期报告
+                    if (qaCworkDataBean.get(position).getQCbdtDoc() == null) {
                         commoqcbdtdoc = "";
+                    } else {
+                        commoqcbdtdoc = qaCworkDataBean.get(position).getQCbdtDoc();
                     }
                     String nullqcbdtdoc;
                     if (commoqcbdtdoc.equals(proitem)) {
@@ -5167,13 +5800,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_QCmdtDoc.setText("");
                     }
                     String proitem = tv_commodetail_QCmdtDoc.getText().toString();
-                    String commoqcmdtdoc = sp.getString("commodetailQCmdtDoc", "");//中期报告
-                    if (commoqcmdtdoc == null) {
+                    String commoqcmdtdoc;//中期报告
+                    if (qaCworkDataBean.get(position).getQCmdtDoc() == null) {
                         commoqcmdtdoc = "";
+                    } else {
+                        commoqcmdtdoc = qaCworkDataBean.get(position).getQCmdtDoc();
                     }
                     String nullqcmdtdoc;
                     if (commoqcmdtdoc.equals(proitem)) {
@@ -5202,13 +5837,15 @@ public class QACworkDetailActivity extends Activity
                 @Override
                 public void afterTextChanged(Editable s) {
                     Log.d(TAG, "afterTextChanged");
-                    if(s.toString().equals("\n")||s.toString().equals(" ")){
+                    if (s.toString().equals("\n") || s.toString().equals(" ")) {
                         tv_commodetail_QCedtDoc.setText("");
                     }
                     String proitem = tv_commodetail_QCedtDoc.getText().toString();
-                    String commoqcedtdoc = sp.getString("commodetailQCedtDoc", "");//尾期报告
-                    if (commoqcedtdoc == null) {
+                    String commoqcedtdoc;//尾期报告
+                    if (qaCworkDataBean.get(position).getQCedtDoc() == null) {
                         commoqcedtdoc = "";
+                    } else {
+                        commoqcedtdoc = qaCworkDataBean.get(position).getQCedtDoc();
                     }
                     String nullqcedtdoc;
                     if (commoqcedtdoc.equals(proitem)) {
@@ -5367,494 +6004,226 @@ public class QACworkDetailActivity extends Activity
 //        }
     }
 
+    /*本地变量判断是否修改，修改过则赋予修改的值，没有修改则赋予原本的数据*/
+    private void setVariable() {
+        if (dateSealedrewtimesign.equals(commodetailSealedrev)) {//封样时间
+            sealedrevstr = commodetailSealedrev;
+        } else {
+            sealedrevstr = dateSealedrewtimesign;
+        }
+
+        if (dateDocbacktimesign.equals(commodetailDocback)) {//大货时间
+            Docbackstr = commodetailDocback;
+        } else {
+            Docbackstr = dateDocbacktimesign;
+        }
+
+        if (datePredtimesign.equals(commodetailPred)) {//开产前会时间
+            predtstr = commodetailPred;
+        } else {
+            predtstr = datePredtimesign;
+        }
+
+        if (dateSewFdttimesign.equals(commodetailSewFdt)) {//上线日期
+            sewfdtstr = commodetailSewFdt;
+        } else {
+            sewfdtstr = dateSewFdttimesign;
+        }
+
+        if (dateSewMdttimesign.equals(commodetailSewMdt)) {//下线日期
+            sewmdtstr = commodetailSewMdt;
+        } else {
+            sewmdtstr = dateSewMdttimesign;
+        }
+
+        if (CommodityCutqty.equals(commodetailCutqty)) {//实裁数
+            cutqtystr = commodetailCutqty;
+        } else {
+            cutqtystr = CommodityCutqty;
+        }
+
+        if (CommodityPreMemo.equals(commodetailPreMemo)) {//需要备注的特殊情况
+            prememostr = commodetailPreMemo;
+        } else {
+            prememostr = CommodityPreMemo;
+        }
+
+        if (CommodityPredoc.equals(commodetailPredoc)) {//产前会报告
+            predocstr = commodetailPredoc;
+        } else {
+            predocstr = CommodityPredoc;
+        }
+
+        if (CommodityFabricsok.equals(commodetailFabricsok)) {//大货面料情况
+            fabricsokstr = commodetailFabricsok;
+        } else {
+            fabricsokstr = CommodityFabricsok;
+        }
+
+        if (CommodityAccessoriesok.equals(commodetailAccessoriesok)) {//大货辅料情况
+            accessoriesokstr = commodetailAccessoriesok;
+        } else {
+            accessoriesokstr = CommodityAccessoriesok;
+        }
+
+        if (CommoditySpcproDec.equals(commodetailSpcproDec)) {//大货特殊工艺情况
+            spcprodecstr = commodetailSpcproDec;
+        } else {
+            spcprodecstr = CommoditySpcproDec;
+        }
+
+        if (CommoditySpcproMemo.equals(commodetailSpcproMemo)) {//特殊工艺备注
+            spcpromemostr = commodetailSpcproMemo;
+        } else {
+            spcpromemostr = CommoditySpcproMemo;
+        }
+
+        if (dateQCbdttimesign.equals(commodetailQCbdt)) {//自查早期时间
+            qcbdtstr = commodetailQCbdt;
+        } else {
+            qcbdtstr = dateQCbdttimesign;
+        }
+
+        if (dateQCmdttimesign.equals(commodetailQCmdt)) {//自查中期时间
+            qcmdtstr = commodetailQCmdt;
+        } else {
+            qcmdtstr = dateQCmdttimesign;
+        }
+
+        if (dateQCMedttimesign.equals(commodetailQCMedt)) {//自查尾期时间
+            qcmedtstr = commodetailQCMedt;
+        } else {
+            qcmedtstr = dateQCMedttimesign;
+        }
+
+        if (Commodityqcbdtdoc.equals(commodetailQCbdtDoc)) {//早期报告
+            qcbdtdocstr = commodetailQCbdtDoc;
+        } else {
+            qcbdtdocstr = Commodityqcbdtdoc;
+        }
+
+        if (CommodityQCmdtDoc.equals(commodetailQCmdtDoc)) {//中期报告
+            qcmdtdocstr = commodetailQCmdtDoc;
+        } else {
+            qcmdtdocstr = CommodityQCmdtDoc;
+        }
+
+        if (CommodityQCedtDoc.equals(commodetailQCedtDoc)) {//尾期报告
+            qcedtdocstr = commodetailQCedtDoc;
+        } else {
+            qcedtdocstr = CommodityQCedtDoc;
+        }
+
+        if (dateFctmdttimesign.equals(commodetailFctmdt)) {//客查中期时间
+            fctmdtstr = commodetailFctmdt;
+        } else {
+            fctmdtstr = dateFctmdttimesign;
+        }
+
+        if (dateFctedttimesign.equals(commodetailFctedt)) {//客查尾期时间
+            fctedtstr = commodetailFctedt;
+        } else {
+            fctedtstr = dateFctedttimesign;
+        }
+
+        if (CommodityQCMemo.equals(commodetailQCMemo)) {//QC特别备注
+            qcmemostr = commodetailQCMemo;
+        } else {
+            qcmemostr = CommodityQCMemo;
+        }
+
+        if (datePackbdattimesign.equals(commodetailPackbdat)) {//成品包装开始时间
+            packbdatstr = commodetailPackbdat;
+        } else {
+            packbdatstr = datePackbdattimesign;
+        }
+
+        if (CommodityPackqty2.equals(commoPackqty2)) {//装箱数量
+            packqty2str = commoPackqty2;
+        } else {
+            packqty2str = CommodityPackqty2;
+        }
+
+        if (dateFactlcdattimesign.equals(commodetailFactlcdat)) {//离厂日期
+            factlcdatstr = commodetailFactlcdat;
+        } else {
+            factlcdatstr = dateFactlcdattimesign;
+        }
+
+        if (commohdTitle.equals(commodetailOurAfter)) {//后道
+            ourafterstr = commodetailOurAfter;
+        } else {
+            ourafterstr = commohdTitle;
+        }
+
+        if (CommodityQCMasterScore.equals(commodetailQCMasterScore)) {//主管评分
+            qcmasterscorestr = commodetailQCMasterScore;
+        } else {
+            qcmasterscorestr = CommodityQCMasterScore;
+        }
+
+        if (CommodityBatchid.equals(commodetailBatchid)) {//查货批次
+            batchidstr = commodetailBatchid;
+        } else {
+            batchidstr = CommodityBatchid;
+        }
+
+        if (dateCtmchkdttimesign.equals(commodetailCtmchkdt)) {//业务员确认客查日期
+            ctmchkdtstr = commodetailCtmchkdt;
+        } else {
+            ctmchkdtstr = dateCtmchkdttimesign;
+        }
+
+        if (CommodityIPQCmdt.equals(commodetailIPQCmdt)) {//巡检中查
+            ipqcmdtstr = commodetailIPQCmdt;
+        } else {
+            ipqcmdtstr = CommodityIPQCmdt;
+        }
+
+        if (CommodityIPQCPedt.equals(commodetailIPQCPedt)) {//尾查预查
+            ipqcpedtstr = commodetailIPQCPedt;
+        } else {
+            ipqcpedtstr = CommodityIPQCPedt;
+        }
+
+        if (datePredocdttimesign.equals(commodetailPredocdt)) {//预计产前会报告时间
+            predocdtstr = commodetailPredocdt;
+        } else {
+            predocdtstr = datePredocdttimesign;
+        }
+
+        if (datePrebdttimesign.equals(commodetailPrebdt)) {//预计早起时间
+            prebdtstr = commodetailPrebdt;
+        } else {
+            prebdtstr = datePrebdttimesign;
+        }
+
+        if (datePremdttimesign.equals(commodetailPremdt)) {//预计中期时间
+            premdtstr = commodetailPremdt;
+        } else {
+            premdtstr = datePremdttimesign;
+        }
+
+        if (datePreedttimesign.equals(commodetailPreedt)) {//预计尾期时间
+            preedtstr = commodetailPreedt;
+        } else {
+            preedtstr = datePreedttimesign;
+        }
+    }
+
     /*保存上传*/
     private void setSaveDate() {
         if (NetWork.isNetWorkAvailable(this)) {
             sp = getSharedPreferences("my_sp", 0);
             String saveurl = HttpUrl.debugoneUrl + "QACwork/SaveQACwork/";
-            /*判断修改前和修改后的值是否相同*/
-            String commonulltitle = sp.getString("commonulltitle", "");//后道
-            if (commonulltitle.equals("")) {
-                commonulltitle = "1";
-            }
-            String commonullitem = sp.getString("commonullitem", "");//主管评分
-            if (commonullitem.equals("")) {
-                commonullitem = "1";
-            }
-            String commonullsearledrev = sp.getString("commonullsearledrev", "");//封样资料接收时间
-            if (commonullsearledrev.equals("")) {
-                commonullsearledrev = "1";
-            }
-            String commonulldocback = sp.getString("commonulldocback", "");//大货资料接收时间
-            if (commonulldocback.equals("")) {
-                commonulldocback = "1";
-            }
-            String commonullmemo = sp.getString("commonullmemo", "");//需要特别备注的情况
-            if (commonullmemo.equals("")) {
-                commonullmemo = "1";
-            }
-            String commonullpreducdt = sp.getString("commonullpreducdt", "");//预计产前报告时间
-            if (commonullpreducdt.equals("")) {
-                commonullpreducdt = "1";
-            }
-            String commonullpred = sp.getString("commonullpred", "");//开产前会时间
-            if (commonullpred.equals("")) {
-                commonullpred = "1";
-            }
-            String commonullpredoc = sp.getString("commonullpredoc", "");//产前会报告
-            if (commonullpredoc.equals("")) {
-                commonullpredoc = "1";
-            }
-            String commonullfabricsok = sp.getString("commonullfabricsok", "");//大货面料情况
-            if (commonullfabricsok.equals("")) {
-                commonullfabricsok = "1";
-            }
-            String commonullaccessori = sp.getString("commonullaccessori", "");//大货辅料情况
-            if (commonullaccessori.equals("")) {
-                commonullaccessori = "1";
-            }
-            String commonullspcprodec = sp.getString("commonullspcprodec", "");//大货特殊工艺情况
-            if (commonullspcprodec.equals("")) {
-                commonullspcprodec = "1";
-            }
-            String commonullspcpromemo = sp.getString("commonullspcpromemo", "");//特殊工艺特别备注
-            if (commonullspcpromemo.equals("")) {
-                commonullspcpromemo = "1";
-            }
-            String commonullcutqty = sp.getString("commonullcutqty", "");//实裁数
-            if (commonullcutqty.equals("")) {
-                commonullcutqty = "1";
-            }
-            String commonullsewfdt = sp.getString("commonullsewfdt", "");//上线日期
-            if (commonullsewfdt.equals("")) {
-                commonullsewfdt = "1";
-            }
-            String commonullsewmdt = sp.getString("commonullsewmdt", "");//下线日期
-            if (commonullsewmdt.equals("")) {
-                commonullsewmdt = "1";
-            }
-            String commonullprebdt = sp.getString("commonullprebdt", "");//预计早期时间
-            if (commonullprebdt.equals("")) {
-                commonullprebdt = "1";
-            }
-            String commonullqcbdt = sp.getString("commonullqcbdt", "");//自查早期时间
-            if (commonullqcbdt.equals("")) {
-                commonullqcbdt = "1";
-            }
-            String commonullqcbdtdoc = sp.getString("commonullqcbdtdoc", "");//早期报告
-            if (commonullqcbdtdoc.equals("")) {
-                commonullqcbdtdoc = "1";
-            }
-            String commonullpremdt = sp.getString("commonullpremdt", "");//预计中期时间
-            if (commonullpremdt.equals("")) {
-                commonullpremdt = "1";
-            }
-            String commonullqcmdt = sp.getString("commonullqcmdt", "");//自查中期时间
-            if (commonullqcmdt.equals("")) {
-                commonullqcmdt = "1";
-            }
-            String commonullqcmdtdoc = sp.getString("commonullqcmdtdoc", "");//中期报告
-            if (commonullqcmdtdoc.equals("")) {
-                commonullqcmdtdoc = "1";
-            }
-            String commonullpreedt = sp.getString("commonullpreedt", "");//预计尾期时间
-            if (commonullpreedt.equals("")) {
-                commonullpreedt = "1";
-            }
-            String commonullqcmedt = sp.getString("commonullqcmedt", "");//自查尾期时间
-            if (commonullqcmedt.equals("")) {
-                commonullqcmedt = "1";
-            }
-            String commonullqcedtdoc = sp.getString("commonullqcedtdoc", "");//尾查报告
-            if (commonullqcedtdoc.equals("")) {
-                commonullqcedtdoc = "1";
-            }
-            String commonullfctmdt = sp.getString("commonullfctmdt", "");//客查中期时间
-            if (commonullfctmdt.equals("")) {
-                commonullfctmdt = "1";
-            }
-            String commonullfctedt = sp.getString("commonullfctedt", "");//客查尾期时间
-            if (commonullfctedt.equals("")) {
-                commonullfctedt = "1";
-            }
-            String commonullpackbdat = sp.getString("commonullpackbdat", "");//成品包装开始时间
-            if (commonullpackbdat.equals("")) {
-                commonullpackbdat = "1";
-            }
-            String commonullpackqty2 = sp.getString("commonullpackqty2", "");//装箱数量
-            if (commonullpackqty2.equals("")) {
-                commonullpackqty2 = "1";
-            }
-            String commonullqcmemo = sp.getString("commonullqcmemo", "");//qc特别备注
-            if (commonullqcmemo.equals("")) {
-                commonullqcmemo = "1";
-            }
-            String commonullfactlcdat = sp.getString("commonullfactlcdat", "");//离厂日期
-            if (commonullfactlcdat.equals("")) {
-                commonullfactlcdat = "1";
-            }
-            String commonullBatchid = sp.getString("commonullBatchid", "");//查货批次
-            if (commonullBatchid.equals("")) {
-                commonullBatchid = "1";
-            }
-            String commonullCtmchkdt = sp.getString("commonullCtmchkdt", "");//业务员确认客查日期
-            if (commonullCtmchkdt.equals("")) {
-                commonullCtmchkdt = "1";
-            }
-            String commonullipqcpedt = sp.getString("commonullipqcpedt", "");//尾查预查
-            if (commonullipqcpedt.equals("")) {
-                commonullipqcpedt = "1";
-            }
-            String commonullipqcmdt = sp.getString("commonullipqcmdt", "");//巡检中查
-            if (commonullipqcmdt.equals("")) {
-                commonullipqcmdt = "1";
-            }
-            String commonullqaname = sp.getString("commonullqaname", "");//QA首扎
-            if (commonullqaname.equals("")) {
-                commonullqaname = "1";
-            }
-            String commonullqascore = sp.getString("commonullqascore", "");//QA首扎件数
-            if (commonullqascore.equals("")) {
-                commonullqascore = "1";
-            }
-            String commonullqamemo = sp.getString("commonullqamemo", "");//QA首扎日
-            if (commonullqamemo.equals("")) {
-                commonullqamemo = "1";
-            }
-            String commodetailproid = sp.getString("commodetailproid", "");
-            String commodetailPrddocumentary =
-                    sp.getString("commodetailPrddocumentary", "");
-            String commodetailitem = sp.getString("commodetailitem", "");
-            String commodetailCtmtxt = sp.getString("commodetailCtmtxt", "");
-            String dateSealedrewtimesign = sp.getString("dateSealedrewtimesign", "");//修改的封样资料接收时间
-            String commodetailSealedrev = sp.getString("commodetailSealedrev", "");//原本的封样资料接收时间
-            String sealedrevstr;
-            if (dateSealedrewtimesign.equals(commodetailSealedrev)) {
-                sealedrevstr = commodetailSealedrev;
-            } else {
-                sealedrevstr = dateSealedrewtimesign;
-            }
-
-            String dateDocbacktimesign = sp.getString("dateDocbacktimesign", "");//修改的大货资料接收时间
-            String commodetailDocback = sp.getString("commodetailDocback", "");//原本的大货资料接收时间
-            String Docbackstr;
-            if (dateDocbacktimesign.equals(commodetailDocback)) {
-                Docbackstr = commodetailDocback;
-            } else {
-                Docbackstr = dateDocbacktimesign;
-            }
-
-            String datePredtimesign = sp.getString("datePredtimesign", "");//修改的开产前会时间
-            String commodetailPred = sp.getString("commodetailPred", "");//原本的开产前会时间
-            String predtstr;
-            if (datePredtimesign.equals(commodetailPred)) {
-                predtstr = commodetailPred;
-            } else {
-                predtstr = datePredtimesign;
-            }
-
-            String commodetailLcdat = sp.getString("commodetailLcdat", "");//出货时间
-            String dateSewFdttimesign = sp.getString("dateSewFdttimesign", "");//修改的上线日期
-            String commodetailSewFdt = sp.getString("commodetailSewFdt", "");//原本的上线日期
-            String sewfdtstr;
-            if (dateSewFdttimesign.equals(commodetailSewFdt)) {
-                sewfdtstr = commodetailSewFdt;
-            } else {
-                sewfdtstr = dateSewFdttimesign;
-            }
-
-            String dateSewMdttimesign = sp.getString("dateSewMdttimesign", "");//修改的下线日期
-            String commodetailSewMdt = sp.getString("commodetailSewMdt", "");//原本的下线日期
-            String sewmdtstr;
-            if (dateSewMdttimesign.equals(commodetailSewMdt)) {
-                sewmdtstr = commodetailSewMdt;
-            } else {
-                sewmdtstr = dateSewMdttimesign;
-            }
-
-            String commodetailTaskqty = sp.getString("commodetailTaskqty", "");//制单数量
-            String CommodityCutqty = sp.getString("CommodityCutqty", "");//修改的实裁数
-            String commodetailCutqty = sp.getString("commodetailCutqty", "");//原本的实裁数
-            String cutqtystr;
-            if (CommodityCutqty.equals(commodetailCutqty)) {
-                cutqtystr = commodetailCutqty;
-            } else {
-                cutqtystr = CommodityCutqty;
-            }
-
-            String CommodityPreMemo = sp.getString("CommodityPreMemo", "");//修改的需要备注的特殊情况
-            String commodetailPreMemo = sp.getString("commodetailPreMemo", "");//原本的需要备注的特殊情况
-            String prememostr;
-            if (CommodityPreMemo.equals(commodetailPreMemo)) {
-                prememostr = commodetailPreMemo;
-            } else {
-                prememostr = CommodityPreMemo;
-            }
-
-            String CommodityPredoc = sp.getString("CommodityPredoc", "");//修改的产前会报告
-            String commodetailPredoc = sp.getString("commodetailPredoc", "");//原本的产前会报告
-            String predocstr;
-            if (CommodityPredoc.equals(commodetailPredoc)) {
-                predocstr = commodetailPredoc;
-            } else {
-                predocstr = CommodityPredoc;
-            }
-
-            String CommodityFabricsok = sp.getString("CommodityFabricsok", "");//修改的大货面料情况
-            String commodetailFabricsok = sp.getString("commodetailFabricsok", "");//原本的大货面料情况
-            String fabricsokstr;
-            if (CommodityFabricsok.equals(commodetailFabricsok)) {
-                fabricsokstr = commodetailFabricsok;
-            } else {
-                fabricsokstr = CommodityFabricsok;
-            }
-
-            String CommodityAccessoriesok = sp.getString("CommodityAccessoriesok", "");//修改的大货辅料情况
-            String commodetailAccessoriesok = sp.getString("commodetailAccessoriesok", "");//原本的大货辅料情况
-            String accessoriesokstr;
-            if (CommodityAccessoriesok.equals(commodetailAccessoriesok)) {
-                accessoriesokstr = commodetailAccessoriesok;
-            } else {
-                accessoriesokstr = CommodityAccessoriesok;
-            }
-
-            String CommoditySpcproDec = sp.getString("CommoditySpcproDec", "");//修改的大货特殊工艺情况
-            String commodetailSpcproDec = sp.getString("commodetailSpcproDec", "");//原本的特殊工艺情况
-            String spcprodecstr;
-            if (CommoditySpcproDec.equals(commodetailSpcproDec)) {
-                spcprodecstr = commodetailSpcproDec;
-            } else {
-                spcprodecstr = CommoditySpcproDec;
-            }
-
-            String CommoditySpcproMemo = sp.getString("CommoditySpcproMemo", "");//修改的特殊工艺备注
-            String commodetailSpcproMemo = sp.getString("commodetailSpcproMemo", "");//原本的特殊工艺备注
-            String spcpromemostr;
-            if (CommoditySpcproMemo.equals(commodetailSpcproMemo)) {
-                spcpromemostr = commodetailSpcproMemo;
-            } else {
-                spcpromemostr = CommoditySpcproMemo;
-            }
-
-            String dateQCbdttimesign = sp.getString("dateQCbdttimesign", "");//修改的自查早期时间
-            String commodetailQCbdt = sp.getString("commodetailQCbdt", "");//原本的自查早期时间
-            String qcbdtstr;
-            if (dateQCbdttimesign.equals(commodetailQCbdt)) {
-                qcbdtstr = commodetailQCbdt;
-            } else {
-                qcbdtstr = dateQCbdttimesign;
-            }
-
-            String dateQCmdttimesign = sp.getString("dateQCmdttimesign", "");//修改的自查中期时间
-            String commodetailQCmdt = sp.getString("commodetailQCmdt", "");//原本的自查中期时间
-            String qcmdtstr;
-            if (dateQCmdttimesign.equals(commodetailQCmdt)) {
-                qcmdtstr = commodetailQCmdt;
-            } else {
-                qcmdtstr = dateQCmdttimesign;
-            }
-
-            String dateQCMedttimesign = sp.getString("dateQCMedttimesign", "");//修改的自查尾期时间
-            String commodetailQCMedt = sp.getString("commodetailQCMedt", "");//原本的自查尾期时间
-            String qcmedtstr;
-            if (dateQCMedttimesign.equals(commodetailQCMedt)) {
-                qcmedtstr = commodetailQCMedt;
-            } else {
-                qcmedtstr = dateQCMedttimesign;
-            }
-
-            String Commodityqcbdtdoc = sp.getString("Commodityqcbdtdoc", "");//修改的早期报告
-            String commodetailQCbdtDoc = sp.getString("commodetailQCbdtDoc", "");//原本的早期报告
-            String qcbdtdocstr;
-            if (Commodityqcbdtdoc.equals(commodetailQCbdtDoc)) {
-                qcbdtdocstr = commodetailQCbdtDoc;
-            } else {
-                qcbdtdocstr = Commodityqcbdtdoc;
-            }
-
-            String CommodityQCmdtDoc = sp.getString("CommodityQCmdtDoc", "");//修改的中期报告
-            String commodetailQCmdtDoc = sp.getString("commodetailQCmdtDoc", "");//原本的中期报告
-            String qcmdtdocstr;
-            if (CommodityQCmdtDoc.equals(commodetailQCmdtDoc)) {
-                qcmdtdocstr = commodetailQCmdtDoc;
-            } else {
-                qcmdtdocstr = CommodityQCmdtDoc;
-            }
-
-            String CommodityQCedtDoc = sp.getString("CommodityQCedtDoc", "");//修改的尾期报告
-            String commodetailQCedtDoc = sp.getString("commodetailQCedtDoc", "");//原本的尾期报告
-            String qcedtdocstr;
-            if (CommodityQCedtDoc.equals(commodetailQCedtDoc)) {
-                qcedtdocstr = commodetailQCedtDoc;
-            } else {
-                qcedtdocstr = CommodityQCedtDoc;
-            }
-
-            String dateFctmdttimesign = sp.getString("dateFctmdttimesign", "");//修改的客查中期时间
-            String commodetailFctmdt = sp.getString("commodetailFctmdt", "");//原本的客查中期时间
-            String fctmdtstr;
-            if (dateFctmdttimesign.equals(commodetailFctmdt)) {
-                fctmdtstr = commodetailFctmdt;
-            } else {
-                fctmdtstr = dateFctmdttimesign;
-            }
-
-            String dateFctedttimesign = sp.getString("dateFctedttimesign", "");//修改的客查尾期时间
-            String commodetailFctedt = sp.getString("commodetailFctedt", "");//原本的客查尾期时间
-            String fctedtstr;
-            if (dateFctedttimesign.equals(commodetailFctedt)) {
-                fctedtstr = commodetailFctedt;
-            } else {
-                fctedtstr = dateFctedttimesign;
-            }
-
-            String CommodityQCMemo = sp.getString("CommodityQCMemo", "");//修改的QC特别备注
-            String commodetailQCMemo = sp.getString("commodetailQCMemo", "");//原本的QC特别备注
-            String qcmemostr;
-            if (CommodityQCMemo.equals(commodetailQCMemo)) {
-                qcmemostr = commodetailQCMemo;
-            } else {
-                qcmemostr = CommodityQCMemo;
-            }
-
-            String datePackbdattimesign = sp.getString("datePackbdattimesign", "");//修改的成品包装开始日期
-            String commodetailPackbdat = sp.getString("commodetailPackbdat", "");//原本的成品包装开始日期
-            String packbdatstr;
-            if (datePackbdattimesign.equals(commodetailPackbdat)) {
-                packbdatstr = commodetailPackbdat;
-            } else {
-                packbdatstr = datePackbdattimesign;
-            }
-
-            String CommodityPackqty2 = sp.getString("CommodityPackqty2", "");//修改的装箱数量
-            String commoPackqty2 = sp.getString("commoPackqty2", "");//原本的装箱数量
-            String packqty2str;
-            if (CommodityPackqty2.equals(commoPackqty2)) {
-                packqty2str = commoPackqty2;
-            } else {
-                packqty2str = CommodityPackqty2;
-            }
-
-            String dateFactlcdattimesign = sp.getString("dateFactlcdattimesign", "");//修改的离厂日期
-            String commodetailFactlcdat = sp.getString("commodetailFactlcdat", "");//原本的离厂日期
-            String factlcdatstr;
-            if (dateFactlcdattimesign.equals(commodetailFactlcdat)) {
-                factlcdatstr = commodetailFactlcdat;
-            } else {
-                factlcdatstr = dateFactlcdattimesign;
-            }
-
-            String commohdTitle = sp.getString("commohdTitle", "");//修改的后道
-            String commodetailOurAfter = sp.getString("commodetailOurAfter", "");//原本的后道
-            String ourafterstr;
-            if (commohdTitle.equals(commodetailOurAfter)) {
-                ourafterstr = commodetailOurAfter;
-            } else {
-                ourafterstr = commohdTitle;
-            }
-
-            String commodetailprdmasterid = sp.getString("commodetailprdmasterid", "");//生产主管id
-            String CommodityQCMasterScore = sp.getString("CommodityQCMasterScore", "");//修改的主管评分
-            String commodetailQCMasterScore = sp.getString("commodetailQCMasterScore", "");//原本的主管评分
-            String qcmasterscorestr;
-            if (CommodityQCMasterScore.equals(commodetailQCMasterScore)) {
-                qcmasterscorestr = commodetailQCMasterScore;
-            } else {
-                qcmasterscorestr = CommodityQCMasterScore;
-            }
-
-            String CommodityBatchid = sp.getString("CommodityBatchid", "");//修改的查货批次
-            String commodetailBatchid = sp.getString("commodetailBatchid", "");//原本的查获批次
-            String batchidstr;
-            if (CommodityBatchid.equals(commodetailBatchid)) {
-                batchidstr = commodetailBatchid;
-            } else {
-                batchidstr = CommodityBatchid;
-            }
-
-            String commoQAname = sp.getString("commoQAname", "");//QA首扎
-            String commodetailfirstsamQA = sp.getString("commodetailfirstsamQA", "");//QA首扎改后
-            String commodetailQAScore = sp.getString("commodetailQAScore", "");//QA首扎件数
-            String commodetailfirstsamQAid = sp.getString("commodetailfirstsamQAid", "");
-            String commodetailQAMemo = sp.getString("commodetailQAMemo", "");//QA首扎日期
-
-            String dateCtmchkdttimesign = sp.getString("dateCtmchkdttimesign", "");//修改的业务员确认客查日期
-            String commodetailCtmchkdt = sp.getString("commodetailCtmchkdt", "");//原本的业务员确认客查日期
-            String ctmchkdtstr;
-            if (dateCtmchkdttimesign.equals(commodetailCtmchkdt)) {
-                ctmchkdtstr = commodetailCtmchkdt;
-            } else {
-                ctmchkdtstr = dateCtmchkdttimesign;
-            }
-
-            String commodetailIPQC = sp.getString("commodetailIPQC", "");//巡检
-            String commodetailIPQCid = sp.getString("commodetailIPQCid", "");//巡检id
-
-            String CommodityIPQCmdt = sp.getString("CommodityIPQCmdt", "");//修改的巡检中查
-            String commodetailIPQCmdt = sp.getString("commodetailIPQCmdt", "");//原本的巡检中查
-            String ipqcmdtstr;
-            if (CommodityIPQCmdt.equals(commodetailIPQCmdt)) {
-                ipqcmdtstr = commodetailIPQCmdt;
-            } else {
-                ipqcmdtstr = CommodityIPQCmdt;
-            }
-
-            String CommodityIPQCPedt = sp.getString("CommodityIPQCPedt", "");//修改的尾查预查
-            String commodetailIPQCPedt = sp.getString("commodetailIPQCPedt", "");//原本的尾查预查
-            String ipqcpedtstr;
-            if (CommodityIPQCPedt.equals(commodetailIPQCPedt)) {
-                ipqcpedtstr = commodetailIPQCPedt;
-            } else {
-                ipqcpedtstr = CommodityIPQCPedt;
-            }
-
-            String datePredocdttimesign = sp.getString("datePredocdttimesign", "");//修改的预计产前会报告时间
-            String commodetailPredocdt = sp.getString("commodetailPredocdt", "");//原本的预计产前会报告时间
-            String predocdtstr;
-            if (datePredocdttimesign.equals(commodetailPredocdt)) {
-                predocdtstr = commodetailPredocdt;
-            } else {
-                predocdtstr = datePredocdttimesign;
-            }
-
-            String datePrebdttimesign = sp.getString("datePrebdttimesign", "");//修改的预计早期时间
-            String commodetailPrebdt = sp.getString("commodetailPrebdt", "");//原本的预计早期时间
-            String prebdtstr;
-            if (datePrebdttimesign.equals(commodetailPrebdt)) {
-                prebdtstr = commodetailPrebdt;
-            } else {
-                prebdtstr = datePrebdttimesign;
-            }
-
-            String datePremdttimesign = sp.getString("datePremdttimesign", "");//修改的预计中期时间
-            String commodetailPremdt = sp.getString("commodetailPremdt", "");//原本的预计中期时间
-            String premdtstr;
-            if (datePremdttimesign.equals(commodetailPremdt)) {
-                premdtstr = commodetailPremdt;
-            } else {
-                premdtstr = datePremdttimesign;
-            }
-
-            String datePreedttimesign = sp.getString("datePreedttimesign", "");//修改的预计尾期时间
-            String commodetailPreedt = sp.getString("commodetailPreedt", "");//原本的预计尾期时间
-            String preedtstr;
-            if (datePreedttimesign.equals(commodetailPreedt)) {
-                preedtstr = commodetailPreedt;
-            } else {
-                preedtstr = datePreedttimesign;
-            }
-
-            String commodetailchker = sp.getString("commodetailchker", "");//件查
-            String commodetailchkpdt = sp.getString("commodetailchkpdt", "");//预计件查时间
-            String commodetailchkfctdt = sp.getString("commodetailchkfctdt", "");//实际件查时间
-            String commodetailchkplace = sp.getString("commodetailchkplace", "");//件查地址
+            setLocalSpUtils();//修改的变量判断
+            setVariable();//本地的变量
             List<QACworkDetailSaveBean.DataBean> commoditySaveBean =
                     new ArrayList<QACworkDetailSaveBean.DataBean>();
-            QACworkDetailSaveBean saveBean = new QACworkDetailSaveBean();
             QACworkDetailSaveBean.DataBean dataBean = new QACworkDetailSaveBean.DataBean();
             dataBean.setID(Integer.parseInt(commodetailproid));//id
             dataBean.setSubfactory(commodetailPrddocumentary);//跟单
-            dataBean.setItem(commodetailitem);//款号
+            dataBean.setItem(commoitem);//款号
             dataBean.setCtmtxt(commodetailCtmtxt);//客户
             dataBean.setSealedrev(sealedrevstr);//封样资料接收时间
             dataBean.setDocback(Docbackstr);//大货资料接收时间
@@ -5884,7 +6253,7 @@ public class QACworkDetailActivity extends Activity
             dataBean.setFactlcdat(factlcdatstr);//离厂日期
             dataBean.setOurAfter(ourafterstr);//后道
             dataBean.setPrdmaster(commodetailprdmaster);//生产主管
-            dataBean.setPrdmasterid(commodetailprdmasterid);//生产主管id
+            dataBean.setPrdmasterid(commodetailPrdmasterid);//生产主管id
             dataBean.setQCMasterScore(qcmasterscorestr);//主管评分
             dataBean.setBatchid(batchidstr);//查货批次
             dataBean.setQAname(commoQAname);//QA首扎
@@ -5909,21 +6278,7 @@ public class QACworkDetailActivity extends Activity
             Gson gson = new Gson();
             String commjson = gson.toJson(commoditySaveBean);
             String dateee = commjson.replace("\"\"", "null");
-            if (commonulltitle.equals("1") && commonullitem.equals("1") && commonullsearledrev.equals("1")
-                    && commonulldocback.equals("1") && commonullmemo.equals("1") && commonullpreducdt.equals("1")
-                    && commonullpred.equals("1") && commonullpredoc.equals("1") && commonullfabricsok.equals("1")
-                    && commonullaccessori.equals("1") && commonullspcprodec.equals("1") && commonullspcpromemo.equals("1")
-                    && commonullcutqty.equals("1") && commonullsewfdt.equals("1") && commonullsewmdt.equals("1")
-                    && commonullprebdt.equals("1") && commonullqcbdt.equals("1") && commonullqcbdtdoc.equals("1")
-                    && commonullpremdt.equals("1") && commonullqcmdt.equals("1") && commonullqcmdtdoc.equals("1")
-                    && commonullpreedt.equals("1") && commonullqcmedt.equals("1") && commonullqcedtdoc.equals("1")
-                    && commonullfctmdt.equals("1") && commonullfctedt.equals("1") && commonullpackbdat.equals("1")
-                    && commonullpackqty2.equals("1") && commonullqcmemo.equals("1") && commonullfactlcdat.equals("1")
-                    && commonullBatchid.equals("1") && commonullCtmchkdt.equals("1") && commonullipqcpedt.equals("1")
-                    && commonullipqcmdt.equals("1") && commonullqaname.equals("1") && commonullqascore.equals("1")
-                    && commonullqamemo.equals("1")) {
-                ToastUtils.ShowToastMessage("未修改表中数据", QACworkDetailActivity.this);
-            } else if (commodetailPrddocumentary.equals(nameid)) {
+            if (commodetailPrddocumentary.equals(nameid)) {
                 OkHttpUtils.postString()
                         .url(saveurl)
                         .content(dateee)
@@ -5994,6 +6349,176 @@ public class QACworkDetailActivity extends Activity
             }
         } else {
             ToastUtils.ShowToastMessage(R.string.noHttp, QACworkDetailActivity.this);
+        }
+    }
+
+    private void getBooleanSave() {
+        sp = getSharedPreferences("my_sp", 0);
+        /*判断修改前和修改后的值是否相同*/
+        String commonulltitle = sp.getString("commonulltitle", "");//后道
+        if (commonulltitle.equals("")) {
+            commonulltitle = "1";
+        }
+        String commonullitem = sp.getString("commonullitem", "");//主管评分
+        if (commonullitem.equals("")) {
+            commonullitem = "1";
+        }
+        String commonullsearledrev = sp.getString("commonullsearledrev", "");//封样资料接收时间
+        if (commonullsearledrev.equals("")) {
+            commonullsearledrev = "1";
+        }
+        String commonulldocback = sp.getString("commonulldocback", "");//大货资料接收时间
+        if (commonulldocback.equals("")) {
+            commonulldocback = "1";
+        }
+        String commonullmemo = sp.getString("commonullmemo", "");//需要特别备注的情况
+        if (commonullmemo.equals("")) {
+            commonullmemo = "1";
+        }
+        String commonullpreducdt = sp.getString("commonullpreducdt", "");//预计产前报告时间
+        if (commonullpreducdt.equals("")) {
+            commonullpreducdt = "1";
+        }
+        String commonullpred = sp.getString("commonullpred", "");//开产前会时间
+        if (commonullpred.equals("")) {
+            commonullpred = "1";
+        }
+        String commonullpredoc = sp.getString("commonullpredoc", "");//产前会报告
+        if (commonullpredoc.equals("")) {
+            commonullpredoc = "1";
+        }
+        String commonullfabricsok = sp.getString("commonullfabricsok", "");//大货面料情况
+        if (commonullfabricsok.equals("")) {
+            commonullfabricsok = "1";
+        }
+        String commonullaccessori = sp.getString("commonullaccessori", "");//大货辅料情况
+        if (commonullaccessori.equals("")) {
+            commonullaccessori = "1";
+        }
+        String commonullspcprodec = sp.getString("commonullspcprodec", "");//大货特殊工艺情况
+        if (commonullspcprodec.equals("")) {
+            commonullspcprodec = "1";
+        }
+        String commonullspcpromemo = sp.getString("commonullspcpromemo", "");//特殊工艺特别备注
+        if (commonullspcpromemo.equals("")) {
+            commonullspcpromemo = "1";
+        }
+        String commonullcutqty = sp.getString("commonullcutqty", "");//实裁数
+        if (commonullcutqty.equals("")) {
+            commonullcutqty = "1";
+        }
+        String commonullsewfdt = sp.getString("commonullsewfdt", "");//上线日期
+        if (commonullsewfdt.equals("")) {
+            commonullsewfdt = "1";
+        }
+        String commonullsewmdt = sp.getString("commonullsewmdt", "");//下线日期
+        if (commonullsewmdt.equals("")) {
+            commonullsewmdt = "1";
+        }
+        String commonullprebdt = sp.getString("commonullprebdt", "");//预计早期时间
+        if (commonullprebdt.equals("")) {
+            commonullprebdt = "1";
+        }
+        String commonullqcbdt = sp.getString("commonullqcbdt", "");//自查早期时间
+        if (commonullqcbdt.equals("")) {
+            commonullqcbdt = "1";
+        }
+        String commonullqcbdtdoc = sp.getString("commonullqcbdtdoc", "");//早期报告
+        if (commonullqcbdtdoc.equals("")) {
+            commonullqcbdtdoc = "1";
+        }
+        String commonullpremdt = sp.getString("commonullpremdt", "");//预计中期时间
+        if (commonullpremdt.equals("")) {
+            commonullpremdt = "1";
+        }
+        String commonullqcmdt = sp.getString("commonullqcmdt", "");//自查中期时间
+        if (commonullqcmdt.equals("")) {
+            commonullqcmdt = "1";
+        }
+        String commonullqcmdtdoc = sp.getString("commonullqcmdtdoc", "");//中期报告
+        if (commonullqcmdtdoc.equals("")) {
+            commonullqcmdtdoc = "1";
+        }
+        String commonullpreedt = sp.getString("commonullpreedt", "");//预计尾期时间
+        if (commonullpreedt.equals("")) {
+            commonullpreedt = "1";
+        }
+        String commonullqcmedt = sp.getString("commonullqcmedt", "");//自查尾期时间
+        if (commonullqcmedt.equals("")) {
+            commonullqcmedt = "1";
+        }
+        String commonullqcedtdoc = sp.getString("commonullqcedtdoc", "");//尾查报告
+        if (commonullqcedtdoc.equals("")) {
+            commonullqcedtdoc = "1";
+        }
+        String commonullfctmdt = sp.getString("commonullfctmdt", "");//客查中期时间
+        if (commonullfctmdt.equals("")) {
+            commonullfctmdt = "1";
+        }
+        String commonullfctedt = sp.getString("commonullfctedt", "");//客查尾期时间
+        if (commonullfctedt.equals("")) {
+            commonullfctedt = "1";
+        }
+        String commonullpackbdat = sp.getString("commonullpackbdat", "");//成品包装开始时间
+        if (commonullpackbdat.equals("")) {
+            commonullpackbdat = "1";
+        }
+        String commonullpackqty2 = sp.getString("commonullpackqty2", "");//装箱数量
+        if (commonullpackqty2.equals("")) {
+            commonullpackqty2 = "1";
+        }
+        String commonullqcmemo = sp.getString("commonullqcmemo", "");//qc特别备注
+        if (commonullqcmemo.equals("")) {
+            commonullqcmemo = "1";
+        }
+        String commonullfactlcdat = sp.getString("commonullfactlcdat", "");//离厂日期
+        if (commonullfactlcdat.equals("")) {
+            commonullfactlcdat = "1";
+        }
+        String commonullBatchid = sp.getString("commonullBatchid", "");//查货批次
+        if (commonullBatchid.equals("")) {
+            commonullBatchid = "1";
+        }
+        String commonullCtmchkdt = sp.getString("commonullCtmchkdt", "");//业务员确认客查日期
+        if (commonullCtmchkdt.equals("")) {
+            commonullCtmchkdt = "1";
+        }
+        String commonullipqcpedt = sp.getString("commonullipqcpedt", "");//尾查预查
+        if (commonullipqcpedt.equals("")) {
+            commonullipqcpedt = "1";
+        }
+        String commonullipqcmdt = sp.getString("commonullipqcmdt", "");//巡检中查
+        if (commonullipqcmdt.equals("")) {
+            commonullipqcmdt = "1";
+        }
+        String commonullqaname = sp.getString("commonullqaname", "");//QA首扎
+        if (commonullqaname.equals("")) {
+            commonullqaname = "1";
+        }
+        String commonullqascore = sp.getString("commonullqascore", "");//QA首扎件数
+        if (commonullqascore.equals("")) {
+            commonullqascore = "1";
+        }
+        String commonullqamemo = sp.getString("commonullqamemo", "");//QA首扎日
+        if (commonullqamemo.equals("")) {
+            commonullqamemo = "1";
+        }
+        if (commonulltitle.equals("1") && commonullitem.equals("1") && commonullsearledrev.equals("1")
+                && commonulldocback.equals("1") && commonullmemo.equals("1") && commonullpreducdt.equals("1")
+                && commonullpred.equals("1") && commonullpredoc.equals("1") && commonullfabricsok.equals("1")
+                && commonullaccessori.equals("1") && commonullspcprodec.equals("1") && commonullspcpromemo.equals("1")
+                && commonullcutqty.equals("1") && commonullsewfdt.equals("1") && commonullsewmdt.equals("1")
+                && commonullprebdt.equals("1") && commonullqcbdt.equals("1") && commonullqcbdtdoc.equals("1")
+                && commonullpremdt.equals("1") && commonullqcmdt.equals("1") && commonullqcmdtdoc.equals("1")
+                && commonullpreedt.equals("1") && commonullqcmedt.equals("1") && commonullqcedtdoc.equals("1")
+                && commonullfctmdt.equals("1") && commonullfctedt.equals("1") && commonullpackbdat.equals("1")
+                && commonullpackqty2.equals("1") && commonullqcmemo.equals("1") && commonullfactlcdat.equals("1")
+                && commonullBatchid.equals("1") && commonullCtmchkdt.equals("1") && commonullipqcpedt.equals("1")
+                && commonullipqcmdt.equals("1") && commonullqaname.equals("1") && commonullqascore.equals("1")
+                && commonullqamemo.equals("1")) {
+            saveboolean = "未修改";
+        } else {
+            saveboolean = "已修改";
         }
     }
 
@@ -6203,7 +6728,12 @@ public class QACworkDetailActivity extends Activity
                 }
                 break;
             case R.id.btnCommoSave:
-                setSaveDate();
+                getBooleanSave();
+                if (saveboolean.equals("未修改")) {
+                    ToastUtils.ShowToastMessage("未修改表中数据", QACworkDetailActivity.this);
+                } else {
+                    setSaveDate();
+                }
                 break;
         }
     }

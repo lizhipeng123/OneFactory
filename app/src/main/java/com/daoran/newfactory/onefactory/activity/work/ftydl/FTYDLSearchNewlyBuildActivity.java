@@ -34,6 +34,7 @@ import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLNewlyBuildSearchBean
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
+import com.daoran.newfactory.onefactory.util.Listener.SetListener;
 import com.daoran.newfactory.onefactory.util.file.json.StringUtil;
 import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 import com.daoran.newfactory.onefactory.util.utils.Util;
@@ -90,7 +91,7 @@ public class FTYDLSearchNewlyBuildActivity
 
     private int pageCount;//请求获取的总页数
     private int pageIndex = 0;//初始页数
-    private String configid,pagesize;
+    private String configid, pagesize;
 
     private SharedPreferences sp;//轻量级存储
     private SPUtils spUtils;//保存在手机中的目录
@@ -241,10 +242,15 @@ public class FTYDLSearchNewlyBuildActivity
                                     tvNewbuildPage.setText(count);
                                     buildAdapter = new FTYDLNewlyBuildAdapter(
                                             FTYDLSearchNewlyBuildActivity.this, dataBeen);
-                                    lv_newbuild_data.setAdapter(buildAdapter);
                                     leftAdapter = new FTYDLNewlyBuildLeftAdapter(
                                             FTYDLSearchNewlyBuildActivity.this, dataBeen);
                                     lv_pleft.setAdapter(leftAdapter);
+                                    lv_newbuild_data.setAdapter(buildAdapter);
+                                    SetListener setListener = new SetListener();
+                                    setListener.setFTYDLNewlyLister(FTYDLSearchNewlyBuildActivity.this,
+                                            buildAdapter, dataBeen);
+                                    setListener.setFTYDLNewlyLeftLister(FTYDLSearchNewlyBuildActivity.this,
+                                            leftAdapter, dataBeen);
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
                                     scroll_content.setVisibility(View.GONE);
@@ -325,7 +331,11 @@ public class FTYDLSearchNewlyBuildActivity
                                         leftAdapter = new FTYDLNewlyBuildLeftAdapter(
                                                 FTYDLSearchNewlyBuildActivity.this, dataBeen);
                                         lv_pleft.setAdapter(leftAdapter);
-                                        buildAdapter.notifyDataSetChanged();
+                                        SetListener setListener = new SetListener();
+                                        setListener.setFTYDLNewlyLister(FTYDLSearchNewlyBuildActivity.this,
+                                                buildAdapter, dataBeen);
+                                        setListener.setFTYDLNewlyLeftLister(FTYDLSearchNewlyBuildActivity.this,
+                                                leftAdapter, dataBeen);
                                     } else {
                                         ll_visibi.setVisibility(View.VISIBLE);
                                         scroll_content.setVisibility(View.GONE);
@@ -356,66 +366,15 @@ public class FTYDLSearchNewlyBuildActivity
         if (pagesize.equals("")) {
             pagesize = String.valueOf(10);
         }
-        if (WorkingProcedure == "选择工序" || WorkingProcedure.equals("选择工序")) {
-            Gson gson = new Gson();
-            final FTYDLNewlyBuildSearchBean buildBean = new FTYDLNewlyBuildSearchBean();
-            FTYDLNewlyBuildSearchBean.Conditions conditions = buildBean.new Conditions();
-            conditions.setItem("");
-            conditions.setWorkingProcedure("");
-            buildBean.setConditions(conditions);
-            buildBean.setPageNum(ind);
-            buildBean.setPageSize(Integer.parseInt(pagesize));
-            final String bean = gson.toJson(buildBean);
-            if (NetWork.isNetWorkAvailable(this)) {
-               ResponseDialog.showLoading(this,"正在查询");
-                final int finalGetsize = Integer.parseInt(pagesize);
-                OkHttpUtils.postString()
-                        .url(urlDaily)
-                        .content(bean)
-                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                e.printStackTrace();
-                                ResponseDialog.closeLoading();
-                            }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                try {
-                                    String ress = response.replace("\\", "");
-                                    String ression = StringUtil.sideTrim(ress, "\"");
-                                    newlyBuildBean = new Gson().fromJson(ression, FTYDLFactoryDailyBean.class);
-                                    dataBeen = newlyBuildBean.getData();
-                                    if (newlyBuildBean.getTotalCount() != 0) {
-                                        ll_visibi.setVisibility(View.GONE);
-                                        scroll_content.setVisibility(View.VISIBLE);
-                                        pageCount = newlyBuildBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / finalGetsize + 1);
-                                        tvNewbuildPage.setText(count);
-                                        buildAdapter = new FTYDLNewlyBuildAdapter(
-                                                FTYDLSearchNewlyBuildActivity.this, dataBeen);
-                                        lv_newbuild_data.setAdapter(buildAdapter);
-                                        leftAdapter = new FTYDLNewlyBuildLeftAdapter(
-                                                FTYDLSearchNewlyBuildActivity.this, dataBeen);
-                                        lv_pleft.setAdapter(leftAdapter);
-                                        buildAdapter.notifyDataSetChanged();
-                                    } else {
-                                        ll_visibi.setVisibility(View.VISIBLE);
-                                        scroll_content.setVisibility(View.GONE);
-                                        tv_visibi.setText("没有更多数据");
-                                    }
-                                    ResponseDialog.closeLoading();
-                                } catch (JsonSyntaxException e) {
-                                    e.printStackTrace();
-                                    ResponseDialog.closeLoading();
-                                }
-                            }
-                        });
-            } else {
-                ToastUtils.ShowToastMessage(R.string.noHttp, FTYDLSearchNewlyBuildActivity.this);
-            }
+        if (WorkingProcedure.equals("选择工序") || WorkingProcedure == null) {
+            new AlertDialog.Builder(FTYDLSearchNewlyBuildActivity.this).setTitle("提示信息")
+                    .setMessage("请选择工序,再查找款号信息")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();//相应事件
         } else {
             Gson gson = new Gson();
             final FTYDLNewlyBuildSearchBean buildBean = new FTYDLNewlyBuildSearchBean();
@@ -427,7 +386,7 @@ public class FTYDLSearchNewlyBuildActivity
             buildBean.setPageSize(Integer.parseInt(pagesize));
             final String bean = gson.toJson(buildBean);
             if (NetWork.isNetWorkAvailable(this)) {
-                ResponseDialog.showLoading(this,"正在查询");
+                ResponseDialog.showLoading(this, "正在查询");
                 final int finalGetsize = Integer.parseInt(pagesize);
                 OkHttpUtils.postString()
                         .url(urlDaily)
@@ -460,7 +419,11 @@ public class FTYDLSearchNewlyBuildActivity
                                         leftAdapter = new FTYDLNewlyBuildLeftAdapter(
                                                 FTYDLSearchNewlyBuildActivity.this, dataBeen);
                                         lv_pleft.setAdapter(leftAdapter);
-                                        buildAdapter.notifyDataSetChanged();
+                                        SetListener setListener = new SetListener();
+                                        setListener.setFTYDLNewlyLister(FTYDLSearchNewlyBuildActivity.this,
+                                                buildAdapter, dataBeen);
+                                        setListener.setFTYDLNewlyLeftLister(FTYDLSearchNewlyBuildActivity.this,
+                                                leftAdapter, dataBeen);
                                     } else {
                                         ll_visibi.setVisibility(View.VISIBLE);
                                         scroll_content.setVisibility(View.GONE);
@@ -484,131 +447,73 @@ public class FTYDLSearchNewlyBuildActivity
         sp = getSharedPreferences("my_sp", 0);
         String urlDaily = HttpUrl.debugoneUrl + "FactoryPlan/FactoryDailyAPP/";
         String WorkingProcedure = spinnerProcedure.getText().toString();//工序
-        String editItem= etItem.getText().toString();//输入款号
+        String editItem = etItem.getText().toString();//输入款号
         pagesize = sp.getString("clumnsFTYDLpageSize", "");
         if (pagesize.equals("")) {
             pagesize = String.valueOf(10);
         }
-        if (WorkingProcedure == "选择工序" || WorkingProcedure.equals("选择工序")) {
-            Gson gson = new Gson();
-            final FTYDLNewlyBuildSearchBean buildBean = new FTYDLNewlyBuildSearchBean();
-            FTYDLNewlyBuildSearchBean.Conditions conditions = buildBean.new Conditions();
-            conditions.setItem("");
-            conditions.setWorkingProcedure("");
-            buildBean.setConditions(conditions);
-            buildBean.setPageNum(Integer.parseInt(pageupdateindex));
-            buildBean.setPageSize(Integer.parseInt(pagesize));
-            final String bean = gson.toJson(buildBean);
-            if (NetWork.isNetWorkAvailable(this)) {
-                ResponseDialog.showLoading(this,"正在查询");
-                final int finalGetsize = Integer.parseInt(pagesize);
-                OkHttpUtils.postString()
-                        .url(urlDaily)
-                        .content(bean)
-                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
+        Gson gson = new Gson();
+        final FTYDLNewlyBuildSearchBean buildBean = new FTYDLNewlyBuildSearchBean();
+        FTYDLNewlyBuildSearchBean.Conditions conditions = buildBean.new Conditions();
+        conditions.setItem(editItem);
+        conditions.setWorkingProcedure(WorkingProcedure);
+        buildBean.setConditions(conditions);
+        buildBean.setPageNum(Integer.parseInt(pageupdateindex));
+        buildBean.setPageSize(Integer.parseInt(pagesize));
+        final String bean = gson.toJson(buildBean);
+        if (NetWork.isNetWorkAvailable(this)) {
+            ResponseDialog.showLoading(this, "正在查询");
+            final int finalGetsize = Integer.parseInt(pagesize);
+            OkHttpUtils.postString()
+                    .url(urlDaily)
+                    .content(bean)
+                    .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            e.printStackTrace();
+                            ResponseDialog.closeLoading();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            try {
+                                String ress = response.replace("\\", "");
+                                String ression = StringUtil.sideTrim(ress, "\"");
+                                newlyBuildBean = new Gson().fromJson(ression, FTYDLFactoryDailyBean.class);
+                                dataBeen = newlyBuildBean.getData();
+                                if (newlyBuildBean.getTotalCount() != 0) {
+                                    ll_visibi.setVisibility(View.GONE);
+                                    scroll_content.setVisibility(View.VISIBLE);
+                                    pageCount = newlyBuildBean.getTotalCount();
+                                    String count = String.valueOf(pageCount / finalGetsize + 1);
+                                    tvNewbuildPage.setText(count);
+                                    buildAdapter = new FTYDLNewlyBuildAdapter(
+                                            FTYDLSearchNewlyBuildActivity.this, dataBeen);
+                                    lv_newbuild_data.setAdapter(buildAdapter);
+                                    leftAdapter = new FTYDLNewlyBuildLeftAdapter(
+                                            FTYDLSearchNewlyBuildActivity.this, dataBeen);
+                                    lv_pleft.setAdapter(leftAdapter);
+                                    SetListener setListener = new SetListener();
+                                    setListener.setFTYDLNewlyLister(FTYDLSearchNewlyBuildActivity.this,
+                                            buildAdapter, dataBeen);
+                                    setListener.setFTYDLNewlyLeftLister(FTYDLSearchNewlyBuildActivity.this,
+                                            leftAdapter, dataBeen);
+                                } else {
+                                    ll_visibi.setVisibility(View.VISIBLE);
+                                    scroll_content.setVisibility(View.GONE);
+                                    tv_visibi.setText("没有更多数据");
+                                }
+                                ResponseDialog.closeLoading();
+                            } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
                                 ResponseDialog.closeLoading();
                             }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                try {
-                                    String ress = response.replace("\\", "");
-                                    String ression = StringUtil.sideTrim(ress, "\"");
-                                    newlyBuildBean = new Gson().fromJson(ression, FTYDLFactoryDailyBean.class);
-                                    dataBeen = newlyBuildBean.getData();
-                                    if (newlyBuildBean.getTotalCount() != 0) {
-                                        ll_visibi.setVisibility(View.GONE);
-                                        scroll_content.setVisibility(View.VISIBLE);
-                                        pageCount = newlyBuildBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / finalGetsize + 1);
-                                        tvNewbuildPage.setText(count);
-                                        buildAdapter = new FTYDLNewlyBuildAdapter(
-                                                FTYDLSearchNewlyBuildActivity.this, dataBeen);
-                                        lv_newbuild_data.setAdapter(buildAdapter);
-                                        leftAdapter = new FTYDLNewlyBuildLeftAdapter(
-                                                FTYDLSearchNewlyBuildActivity.this, dataBeen);
-                                        lv_pleft.setAdapter(leftAdapter);
-                                        buildAdapter.notifyDataSetChanged();
-                                    } else {
-                                        ll_visibi.setVisibility(View.VISIBLE);
-                                        scroll_content.setVisibility(View.GONE);
-                                        tv_visibi.setText("没有更多数据");
-                                    }
-                                    ResponseDialog.closeLoading();
-                                } catch (JsonSyntaxException e) {
-                                    e.printStackTrace();
-                                    ResponseDialog.closeLoading();
-                                }
-                            }
-                        });
-            } else {
-                ToastUtils.ShowToastMessage(R.string.noHttp, FTYDLSearchNewlyBuildActivity.this);
-            }
+                        }
+                    });
         } else {
-            Gson gson = new Gson();
-            final FTYDLNewlyBuildSearchBean buildBean = new FTYDLNewlyBuildSearchBean();
-            FTYDLNewlyBuildSearchBean.Conditions conditions = buildBean.new Conditions();
-            conditions.setItem(editItem);
-            conditions.setWorkingProcedure(WorkingProcedure);
-            buildBean.setConditions(conditions);
-            buildBean.setPageNum(Integer.parseInt(pageupdateindex));
-            buildBean.setPageSize(Integer.parseInt(pagesize));
-            final String bean = gson.toJson(buildBean);
-            if (NetWork.isNetWorkAvailable(this)) {
-                ResponseDialog.showLoading(this,"正在查询");
-                final int finalGetsize = Integer.parseInt(pagesize);
-                OkHttpUtils.postString()
-                        .url(urlDaily)
-                        .content(bean)
-                        .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                e.printStackTrace();
-                                ResponseDialog.closeLoading();
-                            }
-
-                            @Override
-                            public void onResponse(String response, int id) {
-                                try {
-                                    String ress = response.replace("\\", "");
-                                    String ression = StringUtil.sideTrim(ress, "\"");
-                                    newlyBuildBean = new Gson().fromJson(ression, FTYDLFactoryDailyBean.class);
-                                    dataBeen = newlyBuildBean.getData();
-                                    if (newlyBuildBean.getTotalCount() != 0) {
-                                        ll_visibi.setVisibility(View.GONE);
-                                        scroll_content.setVisibility(View.VISIBLE);
-                                        pageCount = newlyBuildBean.getTotalCount();
-                                        String count = String.valueOf(pageCount / finalGetsize + 1);
-                                        tvNewbuildPage.setText(count);
-                                        buildAdapter = new FTYDLNewlyBuildAdapter(
-                                                FTYDLSearchNewlyBuildActivity.this, dataBeen);
-                                        lv_newbuild_data.setAdapter(buildAdapter);
-                                        leftAdapter = new FTYDLNewlyBuildLeftAdapter(
-                                                FTYDLSearchNewlyBuildActivity.this, dataBeen);
-                                        lv_pleft.setAdapter(leftAdapter);
-                                        buildAdapter.notifyDataSetChanged();
-                                    } else {
-                                        ll_visibi.setVisibility(View.VISIBLE);
-                                        scroll_content.setVisibility(View.GONE);
-                                        tv_visibi.setText("没有更多数据");
-                                    }
-                                    ResponseDialog.closeLoading();
-                                } catch (JsonSyntaxException e) {
-                                    e.printStackTrace();
-                                    ResponseDialog.closeLoading();
-                                }
-                            }
-                        });
-            } else {
-                ToastUtils.ShowToastMessage(R.string.noHttp, FTYDLSearchNewlyBuildActivity.this);
-            }
+            ToastUtils.ShowToastMessage(R.string.noHttp, FTYDLSearchNewlyBuildActivity.this);
         }
     }
 
@@ -674,44 +579,68 @@ public class FTYDLSearchNewlyBuildActivity
                 break;
             /*上一页*/
             case R.id.ivUpLeftPage:
-                sethideSoft(v);
-                String texteditstr = etNewbuildDetail.getText().toString();
-                if (texteditstr.equals("")) {
-                    ToastUtils.ShowToastMessage("页码不能为空", FTYDLSearchNewlyBuildActivity.this);
+                String WorkingProcedure = spinnerProcedure.getText().toString();//工序
+                if (WorkingProcedure.equals("选择工序") || WorkingProcedure == null) {
+                    new AlertDialog.Builder(FTYDLSearchNewlyBuildActivity.this).setTitle("提示信息")
+                            .setMessage("请选择工序,再查找款号信息")
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();//相应事件
                 } else {
-                    int textedit = Integer.parseInt(texteditstr);
-                    int texteditindex = textedit - 2;
-                    if (texteditindex < 0) {
-                        ToastUtils.ShowToastMessage("已经是第一页", FTYDLSearchNewlyBuildActivity.this);
+                    sethideSoft(v);
+                    String texteditstr = etNewbuildDetail.getText().toString();
+                    if (texteditstr.equals("")) {
+                        ToastUtils.ShowToastMessage("页码不能为空", FTYDLSearchNewlyBuildActivity.this);
                     } else {
-                        String indexstr = String.valueOf(texteditindex);
-                        int indexcount = texteditindex + 1;
-                        etNewbuildDetail.setText(String.valueOf(indexcount));
-                        etNewbuildDetail.setSelection(String.valueOf(indexcount).length());
-                        setPageUpDate(indexstr);
+                        int textedit = Integer.parseInt(texteditstr);
+                        int texteditindex = textedit - 2;
+                        if (texteditindex < 0) {
+                            ToastUtils.ShowToastMessage("已经是第一页", FTYDLSearchNewlyBuildActivity.this);
+                        } else {
+                            String indexstr = String.valueOf(texteditindex);
+                            int indexcount = texteditindex + 1;
+                            etNewbuildDetail.setText(String.valueOf(indexcount));
+                            etNewbuildDetail.setSelection(String.valueOf(indexcount).length());
+                            setPageUpDate(indexstr);
+                        }
                     }
                 }
                 break;
             /*下一页*/
             case R.id.ivDownRightPage:
-                sethideSoft(v);
-                String texteditstr2 = etNewbuildDetail.getText().toString();
-                if (texteditstr2.equals("")) {
-                    ToastUtils.ShowToastMessage("页码不能为空", FTYDLSearchNewlyBuildActivity.this);
+                String WorkingProceduredown = spinnerProcedure.getText().toString();//工序
+                if (WorkingProceduredown.equals("选择工序") || WorkingProceduredown == null) {
+                    new AlertDialog.Builder(FTYDLSearchNewlyBuildActivity.this).setTitle("提示信息")
+                            .setMessage("请选择工序,再查找款号信息")
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();//相应事件
                 } else {
-                    int textedit2 = Integer.parseInt(texteditstr2);
-                    int index2 = textedit2;
-                    String countpageindex = tvNewbuildPage.getText().toString();
-                    int indexmax = Integer.parseInt(countpageindex);
-                    int index3 = index2 + 1;
-                    if (index3 > indexmax) {
-                        ToastUtils.ShowToastMessage("已经是最后一页", FTYDLSearchNewlyBuildActivity.this);
+                    sethideSoft(v);
+                    String texteditstr2 = etNewbuildDetail.getText().toString();
+                    if (texteditstr2.equals("")) {
+                        ToastUtils.ShowToastMessage("页码不能为空", FTYDLSearchNewlyBuildActivity.this);
                     } else {
-                        String indexstr = String.valueOf(index2);
-                        int indexcount = index2 + 1;
-                        etNewbuildDetail.setText(String.valueOf(indexcount));
-                        etNewbuildDetail.setSelection(String.valueOf(indexcount).length());
-                        setPageUpDate(indexstr);
+                        int textedit2 = Integer.parseInt(texteditstr2);
+                        int index2 = textedit2;
+                        String countpageindex = tvNewbuildPage.getText().toString();
+                        int indexmax = Integer.parseInt(countpageindex);
+                        int index3 = index2 + 1;
+                        if (index3 > indexmax) {
+                            ToastUtils.ShowToastMessage("已经是最后一页", FTYDLSearchNewlyBuildActivity.this);
+                        } else {
+                            String indexstr = String.valueOf(index2);
+                            int indexcount = index2 + 1;
+                            etNewbuildDetail.setText(String.valueOf(indexcount));
+                            etNewbuildDetail.setSelection(String.valueOf(indexcount).length());
+                            setPageUpDate(indexstr);
+                        }
                     }
                 }
                 break;

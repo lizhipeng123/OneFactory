@@ -485,6 +485,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         dialog = new SignSearchDialog(this,
                 R.style.dialogstyle, onClickListener, onCancleListener);
         dialog.show();
+        dialog.setCancelable(false);
     }
 
     /*取消事件*/

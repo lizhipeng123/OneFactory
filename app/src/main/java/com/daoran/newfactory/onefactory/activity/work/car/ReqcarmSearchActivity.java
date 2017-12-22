@@ -154,6 +154,7 @@ public class ReqcarmSearchActivity extends BaseListActivity implements View.OnCl
         dialog =
                 new ReqCarSearchDialog(this, R.style.dialogstyle, onClickListener, onCancleListener);
         dialog.show();
+        dialog.setCancelable(false);
     }
 
     /*取消*/
