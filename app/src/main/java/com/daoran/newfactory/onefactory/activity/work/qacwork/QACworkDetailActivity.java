@@ -628,7 +628,6 @@ public class QACworkDetailActivity extends Activity
         ll_PPSDetail_txt_chkfctdt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_chkfctdt);
         ll_PPSDetail_txt_chkplace = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_chkplace);
     }
-
     /*初始化控件显示的数据*/
     private void setViews() {
         tv_commodetail_date.setText(commoitem);
@@ -764,6 +763,7 @@ public class QACworkDetailActivity extends Activity
      * 客查中期时间、成品包装开始日期、装箱数量、离厂日期、业务员确认客查日期
      */
     private void setVisibility() {
+        qaCworkDataBean = getIntent().getParcelableArrayListExtra("qaCworkDataBean");
         sp = getSharedPreferences("my_sp", 0);
         if (commodetailprdmaster.equals(nameid)) {//判断生产主管是否是当前用户
             tv_commodetail_ourAfter.setEnabled(true);//后道弹出选择菜单
