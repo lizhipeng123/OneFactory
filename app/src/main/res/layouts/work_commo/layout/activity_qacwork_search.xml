@@ -971,14 +971,14 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/ivDownRightPage"
-                android:layout_width="@dimen/dimen_100"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/dimen_20"
-                android:rotation="180"
-                android:src="@mipmap/left49" />
+            android:id="@+id/ivDownRightPage"
+            android:layout_width="@dimen/dimen_100"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dimen_20"
+            android:rotation="180"
+            android:src="@mipmap/left49" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

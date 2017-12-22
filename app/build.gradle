@@ -58,6 +58,7 @@ android {
                             'src/main/res/layouts/main_start',
                             'src/main/res/layouts/work_setting',
                             'src/main/res/layouts/work_sign',
+                            'src/main/res/layouts/work_pocontrast',
                             'src/main/res/layouts/main_fragment',
                             'src/main/res/layouts/main_adapter',
                             'src/main/res/layouts/util_view',
