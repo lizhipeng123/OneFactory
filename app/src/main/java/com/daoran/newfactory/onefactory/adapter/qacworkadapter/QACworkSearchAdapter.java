@@ -368,7 +368,7 @@ public class QACworkSearchAdapter extends BaseAdapter {
         return convertView;
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         LinearLayout lin_content;
         TextView tvCommoourAfter, tvCommoItem, tvCommoctmtxt, tvCommoQAMemo,
                 tvCommoprddocumentary, tvCommoprdmaster, tvCommosealedrev,

@@ -175,7 +175,7 @@ public class FTYDLSearchAdapter extends BaseAdapter {
         return convertView;
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         LinearLayout lin_content;
         TextView tvProDocumentary,//跟单
                 tvProFactory,//工厂

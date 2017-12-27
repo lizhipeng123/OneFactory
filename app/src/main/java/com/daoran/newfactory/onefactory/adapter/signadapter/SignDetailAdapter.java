@@ -64,7 +64,7 @@ public class SignDetailAdapter extends BaseAdapter {
         return convertView;
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         TextView tvsignName;
         TextView tvClasses;
         TextView tvSignData;

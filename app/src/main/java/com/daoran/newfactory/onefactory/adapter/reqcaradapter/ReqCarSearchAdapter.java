@@ -79,7 +79,7 @@ public class ReqCarSearchAdapter extends BaseAdapter {
         return convertView;
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         TextView tvSqlCarId;
         TextView tvSqlApplyName;
         TextView tvSqlCarDate;

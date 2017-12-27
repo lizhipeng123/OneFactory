@@ -56,7 +56,7 @@ public class SideAdatper extends BaseAdapter {
         return convertView;
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         TextView tv;
     }
 }

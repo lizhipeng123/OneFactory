@@ -65,7 +65,7 @@ public class SelectEventSetAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private class ViewHolder {
+    static class ViewHolder {
         private ImageView ivEventSetIcon;
         private TextView tvEventSetName;
         private RadioButton rbEventSet;

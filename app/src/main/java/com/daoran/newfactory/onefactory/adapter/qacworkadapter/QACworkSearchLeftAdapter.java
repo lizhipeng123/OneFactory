@@ -70,7 +70,7 @@ public class QACworkSearchLeftAdapter extends BaseAdapter {
         return convertView;
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         TextView tvLeft;
     }
 }

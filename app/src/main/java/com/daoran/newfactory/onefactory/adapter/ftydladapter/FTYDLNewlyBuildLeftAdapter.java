@@ -76,7 +76,7 @@ public class FTYDLNewlyBuildLeftAdapter extends BaseAdapter {
         return convertView;
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         TextView tvLeft;
         RelativeLayout lin_content;
     }

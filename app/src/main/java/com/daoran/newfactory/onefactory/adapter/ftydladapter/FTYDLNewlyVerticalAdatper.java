@@ -124,7 +124,7 @@ public class FTYDLNewlyVerticalAdatper extends BaseAdapter {
         return convertView;
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         TextView tv_color_item_config;
         TextView tv_color_item_count;
         EditText et_color_item_config_clipping;

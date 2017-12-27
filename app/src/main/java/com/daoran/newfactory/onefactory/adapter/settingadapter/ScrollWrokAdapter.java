@@ -115,7 +115,7 @@ public class ScrollWrokAdapter extends BaseAdapter {
         return convertView;
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         TextView tvOpenCarDetail;
         ImageView ivopenCarDetail;
         LinearLayout llOpenCarDetail;

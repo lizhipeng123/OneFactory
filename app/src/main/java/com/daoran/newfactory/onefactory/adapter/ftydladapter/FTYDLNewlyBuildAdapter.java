@@ -166,7 +166,7 @@ public class FTYDLNewlyBuildAdapter extends BaseAdapter {
         return convertView;
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         TextView tvProDocumentary,//跟单
                 tvProFactory,//工厂
                 tvProDepartment,//部门、组别

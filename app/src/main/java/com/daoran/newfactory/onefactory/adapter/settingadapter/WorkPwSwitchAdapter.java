@@ -155,7 +155,7 @@ public class WorkPwSwitchAdapter extends BaseAdapter {
         }
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         TextView tvWorkPwswitch;//显示的用户名控件
     }
 }
