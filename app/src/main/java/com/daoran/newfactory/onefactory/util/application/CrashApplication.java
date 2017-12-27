@@ -1,6 +1,7 @@
 package com.daoran.newfactory.onefactory.util.application;
 
 import android.content.Context;
+import android.os.Debug;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
@@ -31,12 +32,14 @@ public class CrashApplication extends MultiDexApplication {
     public void onCreate() {
         // TODO Auto-generated method stub
         super.onCreate();
+        Debug.startMethodTracing("OneFactory");
         Bugly.init(this, "52c746d40d", false);//腾讯分享口令
 //        CrashHandler crashHandler = CrashHandler.getInstance();
 //        crashHandler.init(getApplicationContext());
         need2Exit = false;
         ueHandler = new UEHandler(this);
         Thread.setDefaultUncaughtExceptionHandler(ueHandler);
+        Debug.stopMethodTracing();
     }
 
     @Override

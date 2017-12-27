@@ -262,7 +262,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     private void setPageDate(String pageIndex1) {
         String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
         sp = SignDetailActivity.this.getSharedPreferences("my_sp", 0);
-        String name = sp.getString("name", "");
+        String name = sp.getString("Recordname", "");
         String datetime = sp.getString("datetimesign", "");
         String endtime = sp.getString("endtimesign", "");
         String getsize = sp.getString("clumnssignspinner", "");
@@ -335,7 +335,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     private void setSignDetail() {
         String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
         sp = SignDetailActivity.this.getSharedPreferences("my_sp", 0);
-        String name = sp.getString("name", "");//当前登录用户
+        String name = sp.getString("Recordname", "");//当前登录用户
         String getsize = sp.getString("clumnssignspinner", "");//每页显示的条目数
         //默认显示10条
         if (getsize.equals("")) {
@@ -410,7 +410,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     private void setPageSignDetail() {
         String str = HttpUrl.debugoneUrl + "OutRegister/BindSearchAPPPage/";
         sp = SignDetailActivity.this.getSharedPreferences("my_sp", 0);
-        String name = sp.getString("name", "");
+        String name = sp.getString("Recordname", "");
         String datetime = sp.getString("datetimesign", "");
         String endtime = sp.getString("endtimesign", "");
         String getsize = sp.getString("clumnssignspinner", "");

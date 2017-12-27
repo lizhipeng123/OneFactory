@@ -120,24 +120,25 @@ public class FTYDLSearchNewlyBuildActivity
 
     /*实例化控件*/
     private void getViews() {
+        View button_filp_view = findViewById(R.id.button_filp_view);
         ivProductionBack = (ImageView) findViewById(R.id.ivProductionBack);
         btnNewbuildConfirm = (Button) findViewById(R.id.btnNewbuildConfirm);
         spinnerProcedure = (TextView) findViewById(R.id.spinnerNewbuild);
         etItem = (EditText) findViewById(R.id.etNewbuild);
-        etNewbuildDetail = (EditText) findViewById(R.id.etNewbuildDetail);
+        etNewbuildDetail = (EditText) findViewById(R.id.etSqlDetail);
         mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
         mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
         etNewbuildSql = (Button) findViewById(R.id.etNewbuildSql);
-        btnNewbuildPage = (Button) findViewById(R.id.btnNewbuildPage);
-        tvNewbuildPage = (TextView) findViewById(R.id.tvNewbuildPage);
+        btnNewbuildPage = (Button) findViewById(R.id.btnSignPage);
+        tvNewbuildPage = (TextView) findViewById(R.id.tvSignPage);
         lv_newbuild_data = (ListView) findViewById(R.id.lv_newbuild_data);
         lv_pleft = (NoscrollListView) findViewById(R.id.lv_pleft);
         ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
         tv_visibi = (TextView) findViewById(R.id.tv_visibi);
         scroll_content = (ScrollView) findViewById(R.id.scroll_content);
-        spinnProNewPageClumns = (Spinner) findViewById(R.id.spinnProNewPageClumns);
-        ivUpLeftPage = (ImageView) findViewById(R.id.ivUpLeftPage);
-        ivDownRightPage = (ImageView) findViewById(R.id.ivDownRightPage);
+        spinnProNewPageClumns = (Spinner) button_filp_view.findViewById(R.id.spinnCommoPageClumns);
+        ivUpLeftPage = (ImageView) button_filp_view.findViewById(R.id.ivUpLeftPage);
+        ivDownRightPage = (ImageView) button_filp_view.findViewById(R.id.ivDownRightPage);
         ivNewlyFilp = (ImageView) findViewById(R.id.ivNewlyFilp);
         Util.setEditTextInhibitInputSpeChat(etNewbuildDetail);
         Util.setEditTextInhibitInputSpeChat(etItem);
@@ -549,7 +550,7 @@ public class FTYDLSearchNewlyBuildActivity
                 popupMenu.show();
                 break;
             /*翻页确定按钮*/
-            case R.id.btnNewbuildPage:
+            case R.id.btnSignPage:
                 sethideSoft(v);
                 String countpage = tvNewbuildPage.getText().toString();
                 String text = etNewbuildDetail.getText().toString();

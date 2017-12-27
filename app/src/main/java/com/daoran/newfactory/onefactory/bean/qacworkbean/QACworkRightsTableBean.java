@@ -1,5 +1,8 @@
 package com.daoran.newfactory.onefactory.bean.qacworkbean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -8,7 +11,7 @@ import java.util.List;
  * 功能描述：
  */
 
-public class QACworkRightsTableBean {
+public class QACworkRightsTableBean implements Parcelable {
     private int id;
     private String TableCode;//数据库表名
     private String TableTxt;//表名
@@ -16,6 +19,26 @@ public class QACworkRightsTableBean {
     private int TableTypeID;//类别id
     private Object istransfer;
     private List<JsonTextBean> JsonText;
+
+    protected QACworkRightsTableBean(Parcel in) {
+        id = in.readInt();
+        TableCode = in.readString();
+        TableTxt = in.readString();
+        UserCode = in.readString();
+        TableTypeID = in.readInt();
+    }
+
+    public static final Creator<QACworkRightsTableBean> CREATOR = new Creator<QACworkRightsTableBean>() {
+        @Override
+        public QACworkRightsTableBean createFromParcel(Parcel in) {
+            return new QACworkRightsTableBean(in);
+        }
+
+        @Override
+        public QACworkRightsTableBean[] newArray(int size) {
+            return new QACworkRightsTableBean[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -73,7 +96,21 @@ public class QACworkRightsTableBean {
         this.JsonText = JsonText;
     }
 
-    public static class JsonTextBean {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(TableCode);
+        dest.writeString(TableTxt);
+        dest.writeString(UserCode);
+        dest.writeInt(TableTypeID);
+    }
+
+    public static class JsonTextBean implements Parcelable{
         /**
          * id : 0
          * pId : -1
@@ -91,6 +128,28 @@ public class QACworkRightsTableBean {
         private boolean checked;
         private boolean open;
         private String ColumnName;
+
+        protected JsonTextBean(Parcel in) {
+            id = in.readString();
+            pId = in.readString();
+            name = in.readString();
+            isParent = in.readByte() != 0;
+            checked = in.readByte() != 0;
+            open = in.readByte() != 0;
+            ColumnName = in.readString();
+        }
+
+        public static final Creator<JsonTextBean> CREATOR = new Creator<JsonTextBean>() {
+            @Override
+            public JsonTextBean createFromParcel(Parcel in) {
+                return new JsonTextBean(in);
+            }
+
+            @Override
+            public JsonTextBean[] newArray(int size) {
+                return new JsonTextBean[size];
+            }
+        };
 
         public String getId() {
             return id;
@@ -146,6 +205,22 @@ public class QACworkRightsTableBean {
 
         public void setColumnName(String ColumnName) {
             this.ColumnName = ColumnName;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(id);
+            dest.writeString(pId);
+            dest.writeString(name);
+            dest.writeByte((byte) (isParent ? 1 : 0));
+            dest.writeByte((byte) (checked ? 1 : 0));
+            dest.writeByte((byte) (open ? 1 : 0));
+            dest.writeString(ColumnName);
         }
     }
 }

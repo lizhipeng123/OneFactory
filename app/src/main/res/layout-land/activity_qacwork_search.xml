@@ -94,7 +94,7 @@
         <View
             android:layout_width="1px"
             android:layout_height="40dp"
-            android:background="#cccccc" />
+            android:background="@color/darkgray" />
 
         <LinearLayout
             android:id="@+id/lin_header_content"
@@ -878,106 +878,10 @@
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
-
-        <RelativeLayout
+        <include
+            android:id="@+id/button_filp_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_80"
-            android:background="@color/lightblue"
-            android:gravity="center">
-
-            <ImageView
-                android:id="@+id/ivUpLeftPage"
-                android:layout_width="@dimen/dimen_100"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dimen_20"
-                android:src="@mipmap/left49" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/etSqlDetail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:background="@drawable/shape_edittext_sql_boild"
-                    android:gravity="center"
-                    android:inputType="phone|number"
-                    android:numeric="integer"
-                    android:textColor="@color/icon_color"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:text="1"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="5dp"
-                    android:gravity="center"
-                    android:text="/"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/tvSignPage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="5dp"
-                    android:gravity="center"
-                    android:textColor="@color/icon_color"
-                    android:text="0"
-                    android:textSize="20sp" />
-
-                <Button
-                    android:id="@+id/btnSignPage"
-                    android:layout_width="@dimen/dimen_130"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/dimen_30"
-                    android:background="@drawable/shape_btn_newsbuild_boild"
-                    android:textColor="@color/icon_color"
-                    android:text="确定" />
-
-                <Spinner
-                    android:id="@+id/spinnCommoPageClumns"
-                    android:layout_width="@dimen/dimen_130"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/dimen_30"
-                    android:background="@drawable/spinner_bg"
-                    android:entries="@array/clumnsCommon"
-                    android:gravity="center_vertical"
-                    android:text="每页10行"
-                    android:textSize="@dimen/dimen_50sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/dimen_30"
-                    android:gravity="center"
-                    android:text="条"
-                    android:textColor="@color/icon_color"
-                    android:textSize="@dimen/dimen_40sp" />
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/ivDownRightPage"
-                android:layout_width="@dimen/dimen_100"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/dimen_20"
-                android:rotation="180"
-                android:src="@mipmap/left49" />
-        </RelativeLayout>
+            layout="@layout/button_flip_view"/>
     </LinearLayout>
 </LinearLayout>

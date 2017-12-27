@@ -216,6 +216,11 @@
             android:name=".activity.side.SideActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activity.work.pocontrast.PoContrastActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <!--查货跟踪详情页面-->
         <activity
             android:name=".activity.work.qacwork.QACworkDetailActivity"

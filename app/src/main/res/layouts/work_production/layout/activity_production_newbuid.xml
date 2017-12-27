@@ -14,9 +14,9 @@
             android:id="@+id/ivProductionBack"
             android:layout_width="@dimen/dimen_60"
             android:layout_height="@dimen/dimen_60"
-            android:layout_marginLeft="@dimen/dimen_20"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dimen_20"
             android:src="@mipmap/ali_back_two" />
 
         <View
@@ -49,14 +49,15 @@
             android:text="确定"
             android:textSize="@dimen/dimen_40sp"
             android:visibility="gone" />
+
         <ImageView
             android:id="@+id/ivNewlyFilp"
             android:layout_width="@dimen/dimen_70"
             android:layout_height="@dimen/dimen_70"
-            android:src="@mipmap/spin_filp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dimen_30"/>
+            android:layout_marginRight="@dimen/dimen_30"
+            android:src="@mipmap/spin_filp" />
     </RelativeLayout>
 
     <View
@@ -95,9 +96,9 @@
             android:layout_weight="3"
             android:background="@drawable/shape_edittext_sql_boild"
             android:hint="请输入款号"
-            android:singleLine="true"
             android:paddingLeft="@dimen/dimen_42"
             android:paddingRight="@dimen/dimen_42"
+            android:singleLine="true"
             android:textColorHint="@color/defaultTextColor"
             android:textSize="@dimen/dimen_50sp" />
 
@@ -146,7 +147,7 @@
         <View
             android:layout_width="1px"
             android:layout_height="50dp"
-            android:background="#cccccc" />
+            android:background="@color/darkgray" />
 
         <LinearLayout
             android:id="@+id/lin_header_content"
@@ -442,100 +443,11 @@
             </LinearLayout>
         </ScrollView>
 
-        <RelativeLayout
+        <include
+            android:id="@+id/button_filp_view"
+            layout="@layout/button_flip_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="9"
-            android:background="@color/lightblue"
-            android:gravity="center_vertical">
-            <ImageView
-                android:id="@+id/ivUpLeftPage"
-                android:layout_width="@dimen/dimen_100"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dimen_20"
-                android:src="@mipmap/left49" />
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/etNewbuildDetail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dimen_90"
-                    android:layout_gravity="center"
-                    android:background="@drawable/shape_edittext_sql_boild"
-                    android:inputType="phone|number"
-                    android:numeric="integer"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:text="1"
-                    android:textColor="@color/icon_color"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_gravity="center"
-                    android:text="/"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/tvNewbuildPage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_gravity="center"
-                    android:text="0"
-                    android:textColor="@color/icon_color"
-                    android:textSize="20sp" />
-
-                <Button
-                    android:id="@+id/btnNewbuildPage"
-                    android:layout_width="@dimen/dimen_170"
-                    android:layout_height="@dimen/dimen_100"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/dimen_30"
-                    android:background="@drawable/shape_btn_newsbuild_boild"
-                    android:textColor="@color/icon_color"
-                    android:text="确定" />
-                <Spinner
-                    android:id="@+id/spinnProNewPageClumns"
-                    android:layout_width="@dimen/dimen_150"
-                    android:layout_height="@dimen/dimen_100"
-                    android:layout_marginLeft="@dimen/dimen_30"
-                    android:background="@drawable/spinner_bg"
-                    android:entries="@array/clumnsCommon"
-                    android:gravity="center_vertical"
-                    android:text="每页10行"
-                    android:textSize="@dimen/dimen_50sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/dimen_30"
-                    android:gravity="center"
-                    android:text="条"
-                    android:textColor="@color/icon_color"
-                    android:textSize="@dimen/dimen_50sp" />
-            </LinearLayout>
-            <ImageView
-                android:id="@+id/ivDownRightPage"
-                android:layout_width="@dimen/dimen_100"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/dimen_20"
-                android:rotation="180"
-                android:src="@mipmap/left49" />
-        </RelativeLayout>
+            android:layout_weight="9" />
     </LinearLayout>
-
 </LinearLayout>

@@ -171,62 +171,108 @@ public class QACworkSearchAdapter extends BaseAdapter {
             holder.tvCommoThingAddress = (TextView) convertView.findViewById(R.id.tvCommoThingAddress);
             holder.tvCommoIPQC = (TextView) convertView.findViewById(R.id.tvCommoIPQC);
 
-
-            holder.tvviewctmtxt = (View) convertView.findViewById(R.id.tvviewctmtxt);
-            holder.tvviewprddocumentary = (View) convertView.findViewById(R.id.tvviewprddocumentary);
-            holder.tvviewprdmaster = (View) convertView.findViewById(R.id.tvviewprdmaster);
-            holder.tvviewQCMasterScore = (View) convertView.findViewById(R.id.tvviewQCMasterScore);
-            holder.tvviewsealedrev = (View) convertView.findViewById(R.id.tvviewsealedrev);
-            holder.tvviewdocback = (View) convertView.findViewById(R.id.tvviewdocback);
-            holder.tvviewlcdat = (View) convertView.findViewById(R.id.tvviewlcdat);
-            holder.tvviewtaskqty = (View) convertView.findViewById(R.id.tvviewtaskqty);
-            holder.tvviewpreMemo = (View) convertView.findViewById(R.id.tvviewpreMemo);
-            holder.tvviewpredocdt = (View) convertView.findViewById(R.id.tvviewpredocdt);
-            holder.tvviewpredt = (View) convertView.findViewById(R.id.tvviewpredt);
-            holder.tvviewpredoc = (View) convertView.findViewById(R.id.tvviewpredoc);
-            holder.tvviewfabricsok = (View) convertView.findViewById(R.id.tvviewfabricsok);
-            holder.tvviewaccessoriesok = (View) convertView.findViewById(R.id.tvviewaccessoriesok);
-            holder.tvviewspcproDec = (View) convertView.findViewById(R.id.tvviewspcproDec);
-            holder.tvviewspcproMemo = (View) convertView.findViewById(R.id.tvviewspcproMemo);
-            holder.tvviewcutqty = (View) convertView.findViewById(R.id.tvviewcutqty);
-            holder.tvviewsewFdt = (View) convertView.findViewById(R.id.tvviewsewFdt);
-            holder.tvviewsewMdt = (View) convertView.findViewById(R.id.tvviewsewMdt);
-            holder.tvviewsubfactory = (View) convertView.findViewById(R.id.tvviewsubfactory);
-            holder.tvviewprebdt = (View) convertView.findViewById(R.id.tvviewprebdt);
-            holder.tvviewQCbdt = (View) convertView.findViewById(R.id.tvviewQCbdt);
-            holder.tvviewQCbdtDoc = (View) convertView.findViewById(R.id.tvviewQCbdtDoc);
-            holder.tvviewpremdt = (View) convertView.findViewById(R.id.tvviewpremdt);
-            holder.tvviewQCmdt = (View) convertView.findViewById(R.id.tvviewQCmdt);
-            holder.tvviewQCmdtDoc = (View) convertView.findViewById(R.id.tvviewQCmdtDoc);
-            holder.tvviewpreedt = (View) convertView.findViewById(R.id.tvviewpreedt);
-            holder.tvviewQCMedt = (View) convertView.findViewById(R.id.tvviewQCMedt);
-            holder.tvviewQCedtDoc = (View) convertView.findViewById(R.id.tvviewQCedtDoc);
-            holder.tvviewfctmdt = (View) convertView.findViewById(R.id.tvviewfctmdt);
-            holder.tvviewfctedt = (View) convertView.findViewById(R.id.tvviewfctedt);
-            holder.tvviewpackbdat = (View) convertView.findViewById(R.id.tvviewpackbdat);
-            holder.tvviewpackqty2 = (View) convertView.findViewById(R.id.tvviewpackqty2);
-            holder.tvviewQCMemo = (View) convertView.findViewById(R.id.tvviewQCMemo);
-            holder.tvviewfactlcdat = (View) convertView.findViewById(R.id.tvviewfactlcdat);
-            holder.tvviewbatchid = (View) convertView.findViewById(R.id.tvviewbatchid);
-            holder.tvviewourAfter = (View) convertView.findViewById(R.id.tvviewourAfter);
-            holder.tvviewctmchkdt = (View) convertView.findViewById(R.id.tvviewctmchkdt);
-            holder.tvviewIPQCPedt = (View) convertView.findViewById(R.id.tvviewIPQCPedt);
-            holder.tvviewIPQCmdt = (View) convertView.findViewById(R.id.tvviewIPQCmdt);
-            holder.tvviewQAname = (View) convertView.findViewById(R.id.tvviewQAname);
-            holder.tvviewQAScore = (View) convertView.findViewById(R.id.tvviewQAScore);
-            holder.tvviewQAMemo = (View) convertView.findViewById(R.id.tvviewQAMemo);
-            holder.tvviewThing = (View) convertView.findViewById(R.id.tvviewThing);
-            holder.tvviewIPQC = (View)convertView.findViewById(R.id.tvviewIPQC);
-            holder.tvviewThingExpectedTime = (View) convertView.
+            holder.tvviewctmtxt = convertView.findViewById(R.id.tvviewctmtxt);
+            holder.tvviewprddocumentary = convertView.findViewById(R.id.tvviewprddocumentary);
+            holder.tvviewprdmaster = convertView.findViewById(R.id.tvviewprdmaster);
+            holder.tvviewQCMasterScore = convertView.findViewById(R.id.tvviewQCMasterScore);
+            holder.tvviewsealedrev = convertView.findViewById(R.id.tvviewsealedrev);
+            holder.tvviewdocback = convertView.findViewById(R.id.tvviewdocback);
+            holder.tvviewlcdat = convertView.findViewById(R.id.tvviewlcdat);
+            holder.tvviewtaskqty = convertView.findViewById(R.id.tvviewtaskqty);
+            holder.tvviewpreMemo = convertView.findViewById(R.id.tvviewpreMemo);
+            holder.tvviewpredocdt = convertView.findViewById(R.id.tvviewpredocdt);
+            holder.tvviewpredt = convertView.findViewById(R.id.tvviewpredt);
+            holder.tvviewpredoc = convertView.findViewById(R.id.tvviewpredoc);
+            holder.tvviewfabricsok = convertView.findViewById(R.id.tvviewfabricsok);
+            holder.tvviewaccessoriesok = convertView.findViewById(R.id.tvviewaccessoriesok);
+            holder.tvviewspcproDec = convertView.findViewById(R.id.tvviewspcproDec);
+            holder.tvviewspcproMemo = convertView.findViewById(R.id.tvviewspcproMemo);
+            holder.tvviewcutqty = convertView.findViewById(R.id.tvviewcutqty);
+            holder.tvviewsewFdt = convertView.findViewById(R.id.tvviewsewFdt);
+            holder.tvviewsewMdt = convertView.findViewById(R.id.tvviewsewMdt);
+            holder.tvviewsubfactory = convertView.findViewById(R.id.tvviewsubfactory);
+            holder.tvviewprebdt = convertView.findViewById(R.id.tvviewprebdt);
+            holder.tvviewQCbdt = convertView.findViewById(R.id.tvviewQCbdt);
+            holder.tvviewQCbdtDoc = convertView.findViewById(R.id.tvviewQCbdtDoc);
+            holder.tvviewpremdt = convertView.findViewById(R.id.tvviewpremdt);
+            holder.tvviewQCmdt = convertView.findViewById(R.id.tvviewQCmdt);
+            holder.tvviewQCmdtDoc = convertView.findViewById(R.id.tvviewQCmdtDoc);
+            holder.tvviewpreedt = convertView.findViewById(R.id.tvviewpreedt);
+            holder.tvviewQCMedt = convertView.findViewById(R.id.tvviewQCMedt);
+            holder.tvviewQCedtDoc = convertView.findViewById(R.id.tvviewQCedtDoc);
+            holder.tvviewfctmdt = convertView.findViewById(R.id.tvviewfctmdt);
+            holder.tvviewfctedt = convertView.findViewById(R.id.tvviewfctedt);
+            holder.tvviewpackbdat = convertView.findViewById(R.id.tvviewpackbdat);
+            holder.tvviewpackqty2 = convertView.findViewById(R.id.tvviewpackqty2);
+            holder.tvviewQCMemo = convertView.findViewById(R.id.tvviewQCMemo);
+            holder.tvviewfactlcdat = convertView.findViewById(R.id.tvviewfactlcdat);
+            holder.tvviewbatchid = convertView.findViewById(R.id.tvviewbatchid);
+            holder.tvviewourAfter = convertView.findViewById(R.id.tvviewourAfter);
+            holder.tvviewctmchkdt = convertView.findViewById(R.id.tvviewctmchkdt);
+            holder.tvviewIPQCPedt = convertView.findViewById(R.id.tvviewIPQCPedt);
+            holder.tvviewIPQCmdt = convertView.findViewById(R.id.tvviewIPQCmdt);
+            holder.tvviewQAname = convertView.findViewById(R.id.tvviewQAname);
+            holder.tvviewQAScore = convertView.findViewById(R.id.tvviewQAScore);
+            holder.tvviewQAMemo = convertView.findViewById(R.id.tvviewQAMemo);
+            holder.tvviewThing = convertView.findViewById(R.id.tvviewThing);
+            holder.tvviewIPQC =convertView.findViewById(R.id.tvviewIPQC);
+            holder.tvviewThingExpectedTime = convertView.
                     findViewById(R.id.tvviewThingExpectedTime);
-            holder.tvviewThingTime = (View) convertView.findViewById(R.id.tvviewThingTime);
-            holder.tvviewThingAddress = (View) convertView.findViewById(R.id.tvviewThingAddress);
-            spUtils.put(context, "strposition", position);
+            holder.tvviewThingTime = convertView.findViewById(R.id.tvviewThingTime);
+            holder.tvviewThingAddress = convertView.findViewById(R.id.tvviewThingAddress);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        holder.tvCommoctmtxt.setText(getItem(position).getCtmtxt());//客户
+        holder.tvCommoIPQC.setText(getItem(position).getIPQC());//巡检
+        holder.tvCommoprddocumentary.setText(getItem(position).getPrddocumentary());//跟单
+        holder.tvCommoprdmaster.setText(getItem(position).getPrdmaster());//生产主管
+        holder.tvCommoourAfter.setText(getItem(position).getOurAfter());//后道
+        holder.tvCommoQCMasterScore.setText(getItem(position).getQCMasterScore());//主管评分
+        holder.tvCommosealedrev.setText(getItem(position).getSealedrev());//封样资料接收时间
+        holder.tvCommodocback.setText(getItem(position).getDocback());//大货资料接收时间
+        holder.tvCommolcdat.setText(getItem(position).getLcdat());//出货时间
+        holder.tvCommotaskqty.setText(getItem(position).getTaskqty());//制单数量
+        holder.tvCommopreMemo.setText(getItem(position).getPreMemo());//需要特别备注的情况
+        holder.tvCommopredocdt.setText(getItem(position).getPredocdt());//预计产前报告时间
+        holder.tvCommopredt.setText(getItem(position).getPredt());//开产前会时间
+        holder.tvCommofabricsok.setText(getItem(position).getFabricsok());//大货面料情况
+        holder.tvCommoaccessoriesok.setText(getItem(position).getAccessoriesok());//大货辅料情况
+        holder.tvCommospcproDec.setText(getItem(position).getSpcproDec());//大货特殊工艺情况
+        holder.tvCommospcproMemo.setText(getItem(position).getSpcproMemo());//特殊工艺特别备注
+        holder.tvCommocutqty.setText(getItem(position).getCutqty());//实裁数
+        holder.tvCommosewFdt.setText(getItem(position).getSewFdt());//上线日期
+        holder.tvCommosewMdt.setText(getItem(position).getSewMdt());//下线日期
+        holder.tvCommosubfactory.setText(getItem(position).getSubfactory());//加工厂
+        holder.tvCommoprebdt.setText(getItem(position).getPrebdt());//预计早期时间
+        holder.tvCommoQCbdt.setText(getItem(position).getQCbdt());//自查早期时间
+        holder.tvCommopremdt.setText(getItem(position).getPremdt());//预计中期时间
+        holder.tvCommoQCmdt.setText(getItem(position).getQCmdt());//自查中期时间
+        holder.tvCommopreedt.setText(getItem(position).getPreedt());//预计尾期时间
+        holder.tvCommoQCMedt.setText(getItem(position).getQCMedt());//自查尾期时间
+        holder.tvCommofctmdt.setText(getItem(position).getFctmdt());//客查中期时间
+        holder.tvCommofctedt.setText(getItem(position).getFctedt());//客查尾期时间
+        holder.tvCommopackbdat.setText(getItem(position).getPackbdat());//成品包装开始时间
+        holder.tvCommopackqty2.setText(getItem(position).getPackqty2());//装箱数量
+        holder.tvCommoQCMemo.setText(getItem(position).getQCMemo());//qc特别备注
+        holder.tvCommofactlcdat.setText(getItem(position).getFactlcdat());//离厂日期
+        holder.tvCommobatchid.setText(getItem(position).getBatchid());//查货批次
+        holder.tvCommoctmchkdt.setText(getItem(position).getCtmchkdt());//业务员确认客查日期
+        holder.tvCommoIPQCPedt.setText(getItem(position).getIPQCPedt());//尾查预查
+        holder.tvCommoIPQCmdt.setText(getItem(position).getIPQCmdt());//巡检中查
+        holder.tvCommoQAname.setText(getItem(position).getFirstsamQA());//QA首扎
+        holder.tvCommoQAScore.setText(getItem(position).getQAScore());//QA首扎件数
+        holder.tvCommoQAMemo.setText(getItem(position).getQAMemo());//QA首扎日期
+        holder.tvCommopredoc.setText(getItem(position).getPredoc());//产前会报告
+        holder.tvCommoQCbdtDoc.setText(getItem(position).getQCbdtDoc());//早期报告
+        holder.tvCommoQCmdtDoc.setText(getItem(position).getQCmdtDoc());//中期报告
+        holder.tvCommoQCedtDoc.setText(getItem(position).getQCedtDoc());//尾期报告
+        holder.tvCommoThing.setText(getItem(position).getChker());//件查
+        holder.tvCommoThingAddress.setText(getItem(position).getChkplace());//查货地点（件查）
+        holder.tvCommoThingExpectedTime.setText(getItem(position).getChkpdt()); //预计件查时间
+        holder.tvCommoThingTime.setText(getItem(position).getChkfctdt());//实际件查时间
         String jsontext = String.valueOf(jsonTextBeanlist);
         if (jsontext.equals("null") || jsontext.equals("[]")) {
             for (int i = 0; i < columnlist.size(); i++) {
@@ -242,7 +288,6 @@ public class QACworkSearchAdapter extends BaseAdapter {
                     int iddtvview = fieldtvview.getInt(new R.id());
                     View viewtvview = convertView.findViewById(iddtvview);
                     viewtvview.setVisibility(View.VISIBLE);
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -312,54 +357,6 @@ public class QACworkSearchAdapter extends BaseAdapter {
                 }
             }
         }
-        holder.tvCommoctmtxt.setText(getItem(position).getCtmtxt());//客户
-        holder.tvCommoIPQC.setText(getItem(position).getIPQC());//巡检
-        holder.tvCommoprddocumentary.setText(getItem(position).getPrddocumentary());//跟单
-        holder.tvCommoprdmaster.setText(getItem(position).getPrdmaster());//生产主管
-        holder.tvCommoourAfter.setText(getItem(position).getOurAfter());//后道
-        holder.tvCommoQCMasterScore.setText(getItem(position).getQCMasterScore());//主管评分
-        holder.tvCommosealedrev.setText(getItem(position).getSealedrev());//封样资料接收时间
-        holder.tvCommodocback.setText(getItem(position).getDocback());//大货资料接收时间
-        holder.tvCommolcdat.setText(getItem(position).getLcdat());//出货时间
-        holder.tvCommotaskqty.setText(getItem(position).getTaskqty());//制单数量
-        holder.tvCommopreMemo.setText(getItem(position).getPreMemo());//需要特别备注的情况
-        holder.tvCommopredocdt.setText(getItem(position).getPredocdt());//预计产前报告时间
-        holder.tvCommopredt.setText(getItem(position).getPredt());//开产前会时间
-        holder.tvCommofabricsok.setText(getItem(position).getFabricsok());//大货面料情况
-        holder.tvCommoaccessoriesok.setText(getItem(position).getAccessoriesok());//大货辅料情况
-        holder.tvCommospcproDec.setText(getItem(position).getSpcproDec());//大货特殊工艺情况
-        holder.tvCommospcproMemo.setText(getItem(position).getSpcproMemo());//特殊工艺特别备注
-        holder.tvCommocutqty.setText(getItem(position).getCutqty());//实裁数
-        holder.tvCommosewFdt.setText(getItem(position).getSewFdt());//上线日期
-        holder.tvCommosewMdt.setText(getItem(position).getSewMdt());//下线日期
-        holder.tvCommosubfactory.setText(getItem(position).getSubfactory());//加工厂
-        holder.tvCommoprebdt.setText(getItem(position).getPrebdt());//预计早期时间
-        holder.tvCommoQCbdt.setText(getItem(position).getQCbdt());//自查早期时间
-        holder.tvCommopremdt.setText(getItem(position).getPremdt());//预计中期时间
-        holder.tvCommoQCmdt.setText(getItem(position).getQCmdt());//自查中期时间
-        holder.tvCommopreedt.setText(getItem(position).getPreedt());//预计尾期时间
-        holder.tvCommoQCMedt.setText(getItem(position).getQCMedt());//自查尾期时间
-        holder.tvCommofctmdt.setText(getItem(position).getFctmdt());//客查中期时间
-        holder.tvCommofctedt.setText(getItem(position).getFctedt());//客查尾期时间
-        holder.tvCommopackbdat.setText(getItem(position).getPackbdat());//成品包装开始时间
-        holder.tvCommopackqty2.setText(getItem(position).getPackqty2());//装箱数量
-        holder.tvCommoQCMemo.setText(getItem(position).getQCMemo());//qc特别备注
-        holder.tvCommofactlcdat.setText(getItem(position).getFactlcdat());//离厂日期
-        holder.tvCommobatchid.setText(getItem(position).getBatchid());//查货批次
-        holder.tvCommoctmchkdt.setText(getItem(position).getCtmchkdt());//业务员确认客查日期
-        holder.tvCommoIPQCPedt.setText(getItem(position).getIPQCPedt());//尾查预查
-        holder.tvCommoIPQCmdt.setText(getItem(position).getIPQCmdt());//巡检中查
-        holder.tvCommoQAname.setText(getItem(position).getFirstsamQA());//QA首扎
-        holder.tvCommoQAScore.setText(getItem(position).getQAScore());//QA首扎件数
-        holder.tvCommoQAMemo.setText(getItem(position).getQAMemo());//QA首扎日期
-        holder.tvCommopredoc.setText(getItem(position).getPredoc());//产前会报告
-        holder.tvCommoQCbdtDoc.setText(getItem(position).getQCbdtDoc());//早期报告
-        holder.tvCommoQCmdtDoc.setText(getItem(position).getQCmdtDoc());//中期报告
-        holder.tvCommoQCedtDoc.setText(getItem(position).getQCedtDoc());//尾期报告
-        holder.tvCommoThing.setText(getItem(position).getChker());//件查
-        holder.tvCommoThingAddress.setText(getItem(position).getChkplace());//查货地点（件查）
-        holder.tvCommoThingExpectedTime.setText(getItem(position).getChkpdt()); //预计件查时间
-        holder.tvCommoThingTime.setText(getItem(position).getChkfctdt());//实际件查时间
         if(mOnClickQACworkLinter!=null){
             holder.lin_content.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -82,7 +82,7 @@ public class SignSearchDialog extends Dialog {
         WindowManager.LayoutParams p = dialogWindow.getAttributes();
         p.width = (int) (display.getWidth() * 0.8);
         dialogWindow.setAttributes(p);
-        String etaa = sp.getString("name", "");//制单人（登录人）
+        String etaa = sp.getString("Recordname", "");//制单人（登录人）
         etAudit.setText(etaa);
         etAudit.setSelection(etAudit.getText().length());
         etAudit.addTextChangedListener(textWatcher);
@@ -202,7 +202,7 @@ public class SignSearchDialog extends Dialog {
             System.out.println("-1-onTextChanged-->"
                     + etAudit.getText().toString() + "<--");
             String textchanged = etAudit.getText().toString();
-            spUtils.put(content, "name", textchanged);
+            spUtils.put(content, "Recordname", textchanged);
         }
 
         @Override

@@ -1,6 +1,6 @@
 package com.daoran.newfactory.onefactory.activity.work.qacwork;
 
-import android.content.Intent;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -145,119 +146,120 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
 
     /*初始化控件*/
     private void getViews() {
+        View viewButton = findViewById(R.id.button_filp_view);//引用include布局
         ivProductionBack = (ImageView) findViewById(R.id.ivCommoditySql);
         lv_data = (NoscrollListView) findViewById(R.id.lv_data);
         lv_cleft = (NoscrollListView) findViewById(R.id.lv_cleft);
         mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
         mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
         ivSearch = (ImageView) findViewById(R.id.ivSearch);
-        tvSignPage = (TextView) findViewById(R.id.tvSignPage);
-        btnSignPage = (Button) findViewById(R.id.btnSignPage);
-        etSqlDetail = (EditText) findViewById(R.id.etSqlDetail);
+        tvSignPage = (TextView) viewButton.findViewById(R.id.tvSignPage);
+        btnSignPage = (Button) viewButton.findViewById(R.id.btnSignPage);
+        etSqlDetail = (EditText) viewButton.findViewById(R.id.etSqlDetail);
         ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
         tv_visibi = (TextView) findViewById(R.id.tv_visibi);
         scroll_content = (ScrollView) findViewById(R.id.scroll_content);
-        spinnCommoPageClumns = (Spinner) findViewById(R.id.spinnCommoPageClumns);
+        spinnCommoPageClumns = (Spinner) viewButton.findViewById(R.id.spinnCommoPageClumns);
         spinnermenu = (Button) findViewById(R.id.spinnermenu);
-        ivUpLeftPage = (ImageView) findViewById(R.id.ivUpLeftPage);
-        ivDownRightPage = (ImageView) findViewById(R.id.ivDownRightPage);
+        ivUpLeftPage = (ImageView) viewButton.findViewById(R.id.ivUpLeftPage);
+        ivDownRightPage = (ImageView) viewButton.findViewById(R.id.ivDownRightPage);
 
         tvCommodetailCtmtxt = (TextView) findViewById(R.id.tv_commodetail_ctmtxt);
-        tvviewctmtxt = (View) findViewById(R.id.tvviewctmtxt);
+        tvviewctmtxt = findViewById(R.id.tvviewctmtxt);
         tvCommodetailPrddocumentary = (TextView) findViewById(R.id.tv_commodetail_prddocumentary);
-        tvviewprddocumentary = (View) findViewById(R.id.tvviewprddocumentary);
+        tvviewprddocumentary = findViewById(R.id.tvviewprddocumentary);
         tvCommodetailPrdmaster = (TextView) findViewById(R.id.tv_commodetail_prdmaster);
-        tvviewprdmaster = (View) findViewById(R.id.tvviewprdmaster);
+        tvviewprdmaster = findViewById(R.id.tvviewprdmaster);
         tvCommodetailQCMasterScore = (TextView) findViewById(R.id.tv_commodetail_QCMasterScore);
-        tvviewQCMasterScore = (View) findViewById(R.id.tvviewQCMasterScore);
+        tvviewQCMasterScore = findViewById(R.id.tvviewQCMasterScore);
         tvCommodetailSealedrev = (TextView) findViewById(R.id.tv_commodetail_sealedrev);
-        tvviewsealedrev = (View) findViewById(R.id.tvviewsealedrev);
+        tvviewsealedrev = findViewById(R.id.tvviewsealedrev);
         tvCommodetailDocback = (TextView) findViewById(R.id.tv_commodetail_docback);
-        tvviewdocback = (View) findViewById(R.id.tvviewdocback);
+        tvviewdocback = findViewById(R.id.tvviewdocback);
         tvCommodetailLcdat = (TextView) findViewById(R.id.tv_commodetail_lcdat);
-        tvviewlcdat = (View) findViewById(R.id.tvviewlcdat);
+        tvviewlcdat = findViewById(R.id.tvviewlcdat);
         tvCommodetailCount = (TextView) findViewById(R.id.tv_commodetail_count);
-        tvviewtaskqty = (View) findViewById(R.id.tvviewtaskqty);
+        tvviewtaskqty = findViewById(R.id.tvviewtaskqty);
         tvCommodetailPreMemo = (TextView) findViewById(R.id.tv_commodetail_preMemo);
-        tvviewpreMemo = (View) findViewById(R.id.tvviewpreMemo);
+        tvviewpreMemo = findViewById(R.id.tvviewpreMemo);
         tvCommodetailPredocdt = (TextView) findViewById(R.id.tv_commodetail_predocdt);
-        tvviewpredocdt = (View) findViewById(R.id.tvviewpredocdt);
+        tvviewpredocdt = findViewById(R.id.tvviewpredocdt);
         tvCommodetailPredt = (TextView) findViewById(R.id.tv_commodetail_predt);
-        tvviewpredt = (View) findViewById(R.id.tvviewpredt);
+        tvviewpredt = findViewById(R.id.tvviewpredt);
         tvCommodetailPredoc = (TextView) findViewById(R.id.tv_commodetail_predoc);
-        tvviewpredoc = (View) findViewById(R.id.tvviewpredoc);
+        tvviewpredoc = findViewById(R.id.tvviewpredoc);
         tvCommodetailFabricsok = (TextView) findViewById(R.id.tv_commodetail_fabricsok);
-        tvviewfabricsok = (View) findViewById(R.id.tvviewfabricsok);
+        tvviewfabricsok = findViewById(R.id.tvviewfabricsok);
         tvCommodetailAccessoriesok = (TextView) findViewById(R.id.tv_commodetail_accessoriesok);
-        tvviewaccessoriesok = (View) findViewById(R.id.tvviewaccessoriesok);
+        tvviewaccessoriesok = findViewById(R.id.tvviewaccessoriesok);
         tvCommodetailSpcproDec = (TextView) findViewById(R.id.tv_commodetail_spcproDec);
-        tvviewspcproDec = (View) findViewById(R.id.tvviewspcproDec);
+        tvviewspcproDec = findViewById(R.id.tvviewspcproDec);
         tvCommodetailSpcproMemo = (TextView) findViewById(R.id.tv_commodetail_spcproMemo);
-        tvviewspcproMemo = (View) findViewById(R.id.tvviewspcproMemo);
+        tvviewspcproMemo = findViewById(R.id.tvviewspcproMemo);
         tvCommodetailCutqty = (TextView) findViewById(R.id.tv_commodetail_cutqty);
-        tvviewcutqty = (View) findViewById(R.id.tvviewcutqty);
+        tvviewcutqty = findViewById(R.id.tvviewcutqty);
         tvCommodetailSewFdt = (TextView) findViewById(R.id.tv_commodetail_sewFdt);
-        tvviewsewFdt = (View) findViewById(R.id.tvviewsewFdt);
+        tvviewsewFdt = findViewById(R.id.tvviewsewFdt);
         tvCommodetailSewMdt = (TextView) findViewById(R.id.tv_commodetail_sewMdt);
-        tvviewsewMdt = (View) findViewById(R.id.tvviewsewMdt);
+        tvviewsewMdt = findViewById(R.id.tvviewsewMdt);
         tvCommodetailSubfactory = (TextView) findViewById(R.id.tv_commodetail_subfactory);
-        tvviewsubfactory = (View) findViewById(R.id.tvviewsubfactory);
+        tvviewsubfactory = findViewById(R.id.tvviewsubfactory);
         tvCommodetailPrebdt = (TextView) findViewById(R.id.tv_commodetail_prebdt);
-        tvviewprebdt = (View) findViewById(R.id.tvviewprebdt);
+        tvviewprebdt = findViewById(R.id.tvviewprebdt);
         tvCommodetailQCbdt = (TextView) findViewById(R.id.tv_commodetail_QCbdt);
-        tvviewQCbdt = (View) findViewById(R.id.tvviewQCbdt);
+        tvviewQCbdt = findViewById(R.id.tvviewQCbdt);
         llPPSDetailTxtQCbdtDoc = (TextView) findViewById(R.id.ll_PPSDetail_txt_QCbdtDoc);
-        tvviewQCbdtDoc = (View) findViewById(R.id.tvviewQCbdtDoc);
+        tvviewQCbdtDoc = findViewById(R.id.tvviewQCbdtDoc);
         tvCommodetailPremdt = (TextView) findViewById(R.id.tv_commodetail_premdt);
-        tvviewpremdt = (View) findViewById(R.id.tvviewpremdt);
+        tvviewpremdt = findViewById(R.id.tvviewpremdt);
         tvCommodetailQCmdt = (TextView) findViewById(R.id.tv_commodetail_QCmdt);
-        tvviewQCmdt = (View) findViewById(R.id.tvviewQCmdt);
+        tvviewQCmdt = findViewById(R.id.tvviewQCmdt);
         tvCommodetailQCmdtDoc = (TextView) findViewById(R.id.tv_commodetail_QCmdtDoc);
-        tvviewQCmdtDoc = (View) findViewById(R.id.tvviewQCmdtDoc);
+        tvviewQCmdtDoc = findViewById(R.id.tvviewQCmdtDoc);
         tvCommodetailPreedt = (TextView) findViewById(R.id.tv_commodetail_preedt);
-        tvviewpreedt = (View) findViewById(R.id.tvviewpreedt);
+        tvviewpreedt = findViewById(R.id.tvviewpreedt);
         tvCommodetailQCMedt = (TextView) findViewById(R.id.tv_commodetail_QCMedt);
-        tvviewQCMedt = (View) findViewById(R.id.tvviewQCMedt);
+        tvviewQCMedt = findViewById(R.id.tvviewQCMedt);
         tvCommodetailQCedtDoc = (TextView) findViewById(R.id.tv_commodetail_QCedtDoc);
-        tvviewQCedtDoc = (View) findViewById(R.id.tvviewQCedtDoc);
+        tvviewQCedtDoc = findViewById(R.id.tvviewQCedtDoc);
         tvCommodetailFctmdt = (TextView) findViewById(R.id.tv_commodetail_fctmdt);
-        tvviewfctmdt = (View) findViewById(R.id.tvviewfctmdt);
+        tvviewfctmdt = findViewById(R.id.tvviewfctmdt);
         tvCommodetailFctedt = (TextView) findViewById(R.id.tv_commodetail_fctedt);
-        tvviewfctedt = (View) findViewById(R.id.tvviewfctedt);
+        tvviewfctedt = findViewById(R.id.tvviewfctedt);
         tvCommodetailPackbdat = (TextView) findViewById(R.id.tv_commodetail_packbdat);
-        tvviewpackbdat = (View) findViewById(R.id.tvviewpackbdat);
+        tvviewpackbdat = findViewById(R.id.tvviewpackbdat);
         tvCommodetailPackqty2 = (TextView) findViewById(R.id.tv_commodetail_packqty2);
-        tvviewpackqty2 = (View) findViewById(R.id.tvviewpackqty2);
+        tvviewpackqty2 = findViewById(R.id.tvviewpackqty2);
         tvCommodetailQCMemo = (TextView) findViewById(R.id.tv_commodetail_QCMemo);
-        tvviewQCMemo = (View) findViewById(R.id.tvviewQCMemo);
+        tvviewQCMemo = findViewById(R.id.tvviewQCMemo);
         tvCommodetailFactlcdat = (TextView) findViewById(R.id.tv_commodetail_factlcdat);
-        tvviewfactlcdat = (View) findViewById(R.id.tvviewfactlcdat);
+        tvviewfactlcdat = findViewById(R.id.tvviewfactlcdat);
         tvCommodetailBatchid = (TextView) findViewById(R.id.tv_commodetail_batchid);
-        tvviewbatchid = (View) findViewById(R.id.tvviewbatchid);
+        tvviewbatchid = findViewById(R.id.tvviewbatchid);
         tvCommodetailOurAfter = (TextView) findViewById(R.id.tv_commodetail_ourAfter);
-        tvviewourAfter = (View) findViewById(R.id.tvviewourAfter);
+        tvviewourAfter = findViewById(R.id.tvviewourAfter);
         tvCommodetailCtmchkdt = (TextView) findViewById(R.id.tv_commodetail_ctmchkdt);
-        tvviewctmchkdt = (View) findViewById(R.id.tvviewctmchkdt);
+        tvviewctmchkdt = findViewById(R.id.tvviewctmchkdt);
         tvCommodetailIPQCPedt = (TextView) findViewById(R.id.tv_commodetail_IPQCPedt);
-        tvviewIPQCPedt = (View) findViewById(R.id.tvviewIPQCPedt);
+        tvviewIPQCPedt = findViewById(R.id.tvviewIPQCPedt);
         tvCommodetailIPQC = (TextView) findViewById(R.id.tv_commodetail_IPQC);
-        tvviewIPQC = (View) findViewById(R.id.tvviewIPQC);
+        tvviewIPQC = findViewById(R.id.tvviewIPQC);
         tvCommodetailIPQCmdt = (TextView) findViewById(R.id.tv_commodetail_IPQCmdt);
-        tvviewIPQCmdt = (View) findViewById(R.id.tvviewIPQCmdt);
+        tvviewIPQCmdt = findViewById(R.id.tvviewIPQCmdt);
         tvCommodetailQAname = (TextView) findViewById(R.id.tv_commodetail_QAname);
-        tvviewQAname = (View) findViewById(R.id.tvviewQAname);
+        tvviewQAname = findViewById(R.id.tvviewQAname);
         tvCommodetailQAScore = (TextView) findViewById(R.id.tv_commodetail_QAScore);
-        tvviewQAScore = (View) findViewById(R.id.tvviewQAScore);
+        tvviewQAScore = findViewById(R.id.tvviewQAScore);
         tvCommodetailQAMemo = (TextView) findViewById(R.id.tv_commodetail_QAMemo);
-        tvviewQAMemo = (View) findViewById(R.id.tvviewQAMemo);
+        tvviewQAMemo = findViewById(R.id.tvviewQAMemo);
         tvCommodetailChker = (TextView) findViewById(R.id.tv_commodetail_chker);
-        tvviewchker = (View) findViewById(R.id.tvviewchker);
+        tvviewchker = findViewById(R.id.tvviewchker);
         tvCommodetailChkpdt = (TextView) findViewById(R.id.tv_commodetail_chkpdt);
-        tvviewchkpdt = (View) findViewById(R.id.tvviewchkpdt);
+        tvviewchkpdt = findViewById(R.id.tvviewchkpdt);
         tvCommodetailChkfctdt = (TextView) findViewById(R.id.tv_commodetail_chkfctdt);
-        tvviewchkfctdt = (View) findViewById(R.id.tvviewchkfctdt);
+        tvviewchkfctdt = findViewById(R.id.tvviewchkfctdt);
         tvCommodetailChkplace = (TextView) findViewById(R.id.tv_commodetail_chkplace);
-        tvviewchkplace = (View) findViewById(R.id.tvviewchkplace);
+        tvviewchkplace = findViewById(R.id.tvviewchkplace);
 
         Util.setEditTextInhibitInputSpeChat(etSqlDetail);
         getClumnsSpinner();
@@ -272,7 +274,7 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
         ArrayAdapter<String> adapterclumns = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, spinner);
         adapterclumns.setDropDownViewResource(R.layout.dropdown_stytle);
-        spinnCommoPageClumns.setAdapter(adapterclumns);
+        spinnCommoPageClumns.setAdapter(adapterclumns);//绑定数据到控件
         //列表点击事件选择每页显示的条目数
         spinnCommoPageClumns.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -329,6 +331,7 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btnComfirm:
+                    sethideSoft(v);
                     String etsql2 = etSqlDetail.getText().toString();
                     if (etsql2.equals("")) {
                         ToastUtils.ShowToastMessage("页码不能为空", QACworkSearchActivity.this);
@@ -417,16 +420,16 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
                                     pageCount = QACworkPageDataBean.getTotalCount();
                                     String count = String.valueOf(pageCount / finalGetsize + 1);
                                     tvSignPage.setText(count);
-                                    sqlAdapter = new QACworkSearchAdapter(QACworkSearchActivity.this, dataBeen,
-                                            jsonTextBeanlist);
-                                    lv_data.setAdapter(sqlAdapter);//绑定数据源
                                     leftAdapter = new QACworkSearchLeftAdapter(
                                             QACworkSearchActivity.this, dataBeen);
                                     lv_cleft.setAdapter(leftAdapter);
+                                    sqlAdapter = new QACworkSearchAdapter(QACworkSearchActivity.this, dataBeen,
+                                            jsonTextBeanlist);
+                                    lv_data.setAdapter(sqlAdapter);//绑定数据源
                                     SetListener setListener = new SetListener();
                                     setListener.setQACworkDetailLister(
                                             QACworkSearchActivity.this,
-                                            sqlAdapter,dataBeen);//回调进入详情修改页面
+                                            sqlAdapter, dataBeen);//回调进入详情修改页面
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
                                     scroll_content.setVisibility(View.GONE);
@@ -512,7 +515,7 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
                                     SetListener setListener = new SetListener();
                                     setListener.setQACworkDetailLister(
                                             QACworkSearchActivity.this,
-                                            sqlAdapter,dataBeen);//回调进入详情修改页面
+                                            sqlAdapter, dataBeen);//回调进入详情修改页面
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
                                     scroll_content.setVisibility(View.GONE);
@@ -585,7 +588,7 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
                                     SetListener setListener = new SetListener();
                                     setListener.setQACworkDetailLister(
                                             QACworkSearchActivity.this,
-                                            sqlAdapter,dataBeen);//回调进入详情修改页面
+                                            sqlAdapter, dataBeen);//回调进入详情修改页面
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
                                     scroll_content.setVisibility(View.GONE);
@@ -718,6 +721,21 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
                 });
     }
 
+    /*判断软键盘是否弹出*/
+    private void sethideSoft(View v) {
+        //判断软件盘是否弹出
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            if (imm.hideSoftInputFromWindow(v.getWindowToken(), 0)) {
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                        0);
+            } else {
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                        0);
+            }
+        }
+    }
+
     /*启动*/
     @Override
     protected void onStart() {
@@ -733,10 +751,12 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
                 break;
             /*查询*/
             case R.id.ivSearch:
+                sethideSoft(v);
                 ShowDialog(v);
                 break;
             /*翻页确认按钮*/
             case R.id.btnSignPage:
+                sethideSoft(v);
                 String txt = etSqlDetail.getText().toString();
                 String txtcount = tvSignPage.getText().toString();
                 if (txt.equals("")) {
@@ -769,6 +789,7 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
                 break;
             /*上一页*/
             case R.id.ivUpLeftPage:
+                sethideSoft(v);
                 String stredit = etSqlDetail.getText().toString();
                 if (stredit.equals("")) {
                     ToastUtils.ShowToastMessage("页码不能为空", QACworkSearchActivity.this);
@@ -788,6 +809,7 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
                 break;
             /*下一页*/
             case R.id.ivDownRightPage:
+                sethideSoft(v);
                 String stredit2 = etSqlDetail.getText().toString();
                 if (stredit2.equals("")) {
                     ToastUtils.ShowToastMessage("页码不能为空", QACworkSearchActivity.this);

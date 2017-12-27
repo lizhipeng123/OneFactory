@@ -105,23 +105,24 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
 
     /*初始化控件*/
     private void getViews() {
+        View button_filp_view = findViewById(R.id.button_filp_view);
         ivProductionBack = (ImageView) findViewById(R.id.ivProductionBack);
         lv_data = (NoscrollListView) findViewById(R.id.lv_data);
         lv_pleft = (NoscrollListView) findViewById(R.id.lv_pleft);
         ivSearch = (ImageView) findViewById(R.id.ivSearch);
         mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
         mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
-        etSqlDetail = (EditText) findViewById(R.id.etSqlDetail);
-        tvSignPage = (TextView) findViewById(R.id.tvSignPage);
-        btnSignPage = (Button) findViewById(R.id.btnSignPage);
+        etSqlDetail = (EditText)button_filp_view.findViewById(R.id.etSqlDetail);
+        tvSignPage = (TextView) button_filp_view.findViewById(R.id.tvSignPage);
+        btnSignPage = (Button) button_filp_view.findViewById(R.id.btnSignPage);
         btnProSave = (Button) findViewById(R.id.btnProSave);
         spinnermenu = (Button) findViewById(R.id.spinnermenu);
         ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
         tv_visibi = (TextView) findViewById(R.id.tv_visibi);
         scroll_content = (ScrollView) findViewById(R.id.scroll_content);
-        spinnProPageClumns = (Spinner) findViewById(R.id.spinnProPageClumns);
-        ivUpLeftPage = (ImageView) findViewById(R.id.ivUpLeftPage);
-        ivDownRightPage = (ImageView) findViewById(R.id.ivDownRightPage);
+        spinnProPageClumns = (Spinner) button_filp_view.findViewById(R.id.spinnCommoPageClumns);
+        ivUpLeftPage = (ImageView) button_filp_view.findViewById(R.id.ivUpLeftPage);
+        ivDownRightPage = (ImageView) button_filp_view.findViewById(R.id.ivDownRightPage);
         Util.setEditTextInhibitInputSpeChat(etSqlDetail);
         getClumnsSpinner();
     }
