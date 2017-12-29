@@ -34,3 +34,8 @@
 -dontwarn nl.siegmann.epublib.epub.**
 -dontwarn okio.**
 -keep class com.daoran.newfactory.onefactory.**
+-dontoptimize
+-dontpreverify
+
+-dontwarn cn.jpush.**
+-keep class cn.jpush.** { *; }

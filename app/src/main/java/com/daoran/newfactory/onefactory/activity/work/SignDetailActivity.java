@@ -57,16 +57,17 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     private SyncHorizontalScrollView data_horizontal;//可滑动scrollview视图列表（签到信息主体视图）
     private List<SignDailyBean.DataBean> mListData = new ArrayList<SignDailyBean.DataBean>();//列表内容签到信息集合
     private SignDailyBean signBean;//签到信息实体类
-    private ImageView ivSiganSqlDetail;//返回图片按钮
+    private ImageView ivProductionBack;//返回图片按钮
     private ImageView ivSearch;//条件查询图片按钮
     private SignSearchDialog dialog;//顶部右侧刷新等弹出菜单
     private EditText etSqlDetail;//页数输入框
     private TextView tvSignPage;//总页数
+    private TextView tvProTitle;//标题头
     private Button btnSignPage;//按页数查询按钮
     private LinearLayout ll_visibi;//没有数据时显示的页面
     private TextView tv_visibi;//空数据显示的信息
     private ScrollView scroll_content;//签到信息内容可上下滑动
-    private Spinner spinnSignPageClumns;//每页显示的条目数
+    private Spinner spinnCommoPageClumns;//每页显示的条目数
     private ImageView ivUpLeftPage, ivDownRightPage;//上下翻页图片按钮
     private Button spinnermenu;
 
@@ -86,30 +87,38 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
 
     /*实例化控件*/
     private void initView() {
-        ivSiganSqlDetail = (ImageView) findViewById(R.id.ivSiganSqlDetail);
+        View rl_title_top = findViewById(R.id.rl_title_top);
+        View button_filp_view = findViewById(R.id.button_filp_view);
+        ivProductionBack = (ImageView) rl_title_top.findViewById(R.id.ivProductionBack);
+        tvProTitle = (TextView) rl_title_top.findViewById(R.id.tvProTitle);
+        ivSearch = (ImageView) rl_title_top.findViewById(R.id.ivSearch);
+        spinnermenu = (Button) rl_title_top.findViewById(R.id.spinnermenu);
+
+        ivUpLeftPage = (ImageView) button_filp_view.findViewById(R.id.ivUpLeftPage);
+        ivDownRightPage = (ImageView) button_filp_view.findViewById(R.id.ivDownRightPage);
+        etSqlDetail = (EditText) button_filp_view.findViewById(R.id.etSqlDetail);
+        tvSignPage = (TextView) button_filp_view.findViewById(R.id.tvSignPage);
+        btnSignPage = (Button) button_filp_view.findViewById(R.id.btnSignPage);
+        spinnCommoPageClumns = (Spinner) button_filp_view.findViewById(R.id.spinnCommoPageClumns);
+
         lv_data = (NoscrollListView) findViewById(R.id.lv_data);
         lv_left = (NoscrollListView) findViewById(R.id.lv_left);
         data_horizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
         header_horizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
-        ivSearch = (ImageView) findViewById(R.id.ivSearch);
         data_horizontal.setSrollView(header_horizontal);
         header_horizontal.setSrollView(data_horizontal);
-        etSqlDetail = (EditText) findViewById(R.id.etSqlDetail);
-        tvSignPage = (TextView) findViewById(R.id.tvSignPage);
-        btnSignPage = (Button) findViewById(R.id.btnSignPage);
         ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
         tv_visibi = (TextView) findViewById(R.id.tv_visibi);
         scroll_content = (ScrollView) findViewById(R.id.scroll_content);
-        spinnSignPageClumns = (Spinner) findViewById(R.id.spinnSignPageClumns);
-        ivUpLeftPage = (ImageView) findViewById(R.id.ivUpLeftPage);
-        ivDownRightPage = (ImageView) findViewById(R.id.ivDownRightPage);
-        spinnermenu = (Button) findViewById(R.id.spinnermenu);
+
         Util.setEditTextInhibitInputSpeChat(etSqlDetail);
         getClumnsSpinner();
     }
 
     /*操作控件*/
     private void getViews() {
+        tvProTitle.setText("签到查询");
+        spinnermenu.setBackground(getResources().getDrawable(R.mipmap.spin_filp));
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Log.i("info", "landscape"); // 横屏
             configid = String.valueOf(1);
@@ -117,7 +126,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
             Log.i("info", "portrait"); // 竖屏
             configid = String.valueOf(2);
         }
-        ivSiganSqlDetail.setOnClickListener(this);
+        ivProductionBack.setOnClickListener(this);
         ivSearch.setOnClickListener(this);
         btnSignPage.setOnClickListener(this);
         ivUpLeftPage.setOnClickListener(this);
@@ -132,8 +141,8 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
         ArrayAdapter<String> adapterclumns = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, spinner);
         adapterclumns.setDropDownViewResource(R.layout.dropdown_stytle);
-        spinnSignPageClumns.setAdapter(adapterclumns);//绑定数据
-        spinnSignPageClumns.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnCommoPageClumns.setAdapter(adapterclumns);//绑定数据
+        spinnCommoPageClumns.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] languages = getResources().
@@ -155,7 +164,7 @@ public class SignDetailActivity extends BaseFrangmentActivity implements View.On
     public void onClick(View v) {
         switch (v.getId()) {
             /*返回*/
-            case R.id.ivSiganSqlDetail:
+            case R.id.ivProductionBack:
                 sethideSoft(v);
                 finish();
                 break;

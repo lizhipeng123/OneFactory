@@ -12,6 +12,8 @@ import com.tencent.bugly.beta.Beta;
 
 import java.io.File;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * 初始化操作（使得分包情况下可以正常运行程序）
  * 进行分享操作之类
@@ -19,6 +21,7 @@ import java.io.File;
  */
 
 public class CrashApplication extends MultiDexApplication {
+    private static final String TAG = "JIGUANG-Example";
     /** "/data/data/<app_package>/files/error.log" */
     public static final String PATH_ERROR_LOG = File.separator + "data" + File.separator + "data"
             + File.separator + "com.daoran.newfactory.onefactory" + File.separator + "files" + File.separator
@@ -51,11 +54,11 @@ public class CrashApplication extends MultiDexApplication {
         Beta.installTinker();
     }
 
-    public void setNeed2Exit(boolean bool){
+    public void setNeed2Exit(boolean bool) {
         need2Exit = bool;
     }
 
-    public boolean need2Exit(){
+    public boolean need2Exit() {
         return need2Exit;
     }
 }

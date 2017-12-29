@@ -54,7 +54,7 @@ public class FTYDLSearchAdapter extends BaseAdapter {
     /*填充item*/
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
-        final ViewHolder viewHolder;
+        ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_production_data, null);
@@ -163,7 +163,6 @@ public class FTYDLSearchAdapter extends BaseAdapter {
         viewHolder.tvProRemarks.setText(getItem(position).getMemo());
         viewHolder.tvProRecorder.setText(getItem(position).getRecorder());
         viewHolder.tvProRecordat.setText(getItem(position).getRecordat());
-
         if(mOnClickFTYDLSearchLinter!=null){
             viewHolder.lin_content.setOnClickListener(new View.OnClickListener() {
                 @Override

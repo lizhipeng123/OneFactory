@@ -4,66 +4,71 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <include
+        android:id="@+id/rl_title_top"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_150"
-        android:background="@color/lightblue">
+        layout="@layout/item_title_toolbar"/>
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/dimen_150"-->
+        <!--android:background="@color/lightblue">-->
 
-        <ImageView
-            android:id="@+id/ivCommoditySql"
-            android:layout_width="@dimen/dimen_60"
-            android:layout_height="@dimen/dimen_60"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_20"
-            android:src="@mipmap/ali_back_two" />
+        <!--<ImageView-->
+            <!--android:id="@+id/ivCommoditySql"-->
+            <!--android:layout_width="@dimen/dimen_60"-->
+            <!--android:layout_height="@dimen/dimen_60"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginLeft="@dimen/dimen_20"-->
+            <!--android:src="@mipmap/ali_back_two" />-->
 
-        <View
-            android:id="@+id/viewtitletwo"
-            android:layout_width="1px"
-            android:layout_height="@dimen/dimen_100"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_20"
-            android:layout_toRightOf="@+id/ivCommoditySql"
-            android:background="#FF909090" />
+        <!--<View-->
+            <!--android:id="@+id/viewtitletwo"-->
+            <!--android:layout_width="1px"-->
+            <!--android:layout_height="@dimen/dimen_100"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginLeft="@dimen/dimen_20"-->
+            <!--android:layout_toRightOf="@+id/ivCommoditySql"-->
+            <!--android:background="#FF909090" />-->
 
-        <TextView
-            android:id="@+id/tvCommoTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="查货跟踪单"
-            android:textColor="@color/icon_color"
-            android:textSize="@dimen/dimen_55sp" />
+        <!--<TextView-->
+            <!--android:id="@+id/tvCommoTitle"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:text="查货跟踪单"-->
+            <!--android:textColor="@color/icon_color"-->
+            <!--android:textSize="@dimen/dimen_55sp" />-->
 
-        <ImageView
-            android:id="@+id/ivSearch"
-            android:layout_width="@dimen/dimen_70"
-            android:layout_height="@dimen/dimen_70"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_20"
-            android:layout_toRightOf="@+id/viewtitletwo"
-            android:src="@mipmap/ali_search_two" />
+        <!--<ImageView-->
+            <!--android:id="@+id/ivSearch"-->
+            <!--android:layout_width="@dimen/dimen_70"-->
+            <!--android:layout_height="@dimen/dimen_70"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginLeft="@dimen/dimen_20"-->
+            <!--android:layout_toRightOf="@+id/viewtitletwo"-->
+            <!--android:src="@mipmap/ali_search_two" />-->
 
-        <View
-            android:id="@+id/viewtitle"
-            android:layout_width="1px"
-            android:layout_height="@dimen/dimen_100"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_20"
-            android:layout_toLeftOf="@+id/spinnermenu"
-            android:background="#FF909090" />
+        <!--<View-->
+            <!--android:id="@+id/viewtitle"-->
+            <!--android:layout_width="1px"-->
+            <!--android:layout_height="@dimen/dimen_100"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginLeft="@dimen/dimen_20"-->
+            <!--android:layout_toLeftOf="@+id/spinnermenu"-->
+            <!--android:background="#FF909090" />-->
 
-        <Button
-            android:id="@+id/spinnermenu"
-            android:layout_width="@dimen/dimen_80"
-            android:layout_height="@dimen/dimen_80"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_30"
-            android:layout_marginRight="@dimen/dimen_30"
-            android:background="@mipmap/spin_filp" />
-    </RelativeLayout>
+        <!--<Button-->
+            <!--android:id="@+id/spinnermenu"-->
+            <!--android:layout_width="@dimen/dimen_80"-->
+            <!--android:layout_height="@dimen/dimen_80"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginLeft="@dimen/dimen_30"-->
+            <!--android:layout_marginRight="@dimen/dimen_30"-->
+            <!--android:background="@mipmap/spin_filp" />-->
+    <!--</RelativeLayout>-->
 
     <View
         android:layout_width="fill_parent"

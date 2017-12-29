@@ -1,7 +1,10 @@
 package com.daoran.newfactory.onefactory.activity.main;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,10 +23,13 @@ import com.daoran.newfactory.onefactory.fragment.InformationFragment;
 import com.daoran.newfactory.onefactory.fragment.OfficeFragment;
 import com.daoran.newfactory.onefactory.fragment.SetupFragment;
 import com.daoran.newfactory.onefactory.fragment.WorkFragment;
+import com.daoran.newfactory.onefactory.util.receiver.ExampleUtil;
 import com.daoran.newfactory.onefactory.view.fragment.FragmentTabHost;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * 主框架
@@ -42,6 +48,8 @@ public class MainActivity extends BaseFrangmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);//加载主页面
+        JPushInterface.setDebugMode(true);//设置开启日志，发布时关闭日志
+        JPushInterface.init(this);//初始化JPush
         id = getIntent().getIntExtra(idd, 0);//接收添加账号传过来的id以便刷新本页
         getViews();//调用实例化控件方法
     }
@@ -136,5 +144,15 @@ public class MainActivity extends BaseFrangmentActivity {
         TextView textView = (TextView) view.findViewById(R.id.tab_title);
         textView.setText(bean.getTitle());
         return view;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 }

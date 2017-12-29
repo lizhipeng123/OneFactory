@@ -67,9 +67,9 @@ public class QACworkSearchAdapter extends BaseAdapter {
         return position;
     }
 
-    @Override
+    @Override//重写getView
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final ViewHolder holder;
+        ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_qacwork_search_data, null);
@@ -220,11 +220,10 @@ public class QACworkSearchAdapter extends BaseAdapter {
                     findViewById(R.id.tvviewThingExpectedTime);
             holder.tvviewThingTime = convertView.findViewById(R.id.tvviewThingTime);
             holder.tvviewThingAddress = convertView.findViewById(R.id.tvviewThingAddress);
-            convertView.setTag(holder);
+            convertView.setTag(holder);//第二次绘制的时候从tag中取出
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
         holder.tvCommoctmtxt.setText(getItem(position).getCtmtxt());//客户
         holder.tvCommoIPQC.setText(getItem(position).getIPQC());//巡检
         holder.tvCommoprddocumentary.setText(getItem(position).getPrddocumentary());//跟单

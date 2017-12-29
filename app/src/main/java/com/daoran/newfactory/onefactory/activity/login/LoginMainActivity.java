@@ -24,10 +24,12 @@ import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +53,7 @@ import com.daoran.newfactory.onefactory.util.file.image.CropSquareTransformation
 import com.daoran.newfactory.onefactory.util.utils.Util;
 import com.daoran.newfactory.onefactory.view.edit.EditTextWithDelete;
 import com.daoran.newfactory.onefactory.view.dialog.utildialog.ResponseDialog;
+import com.daoran.newfactory.onefactory.view.weight.InputMethodRelativeLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.squareup.picasso.Picasso;
@@ -75,7 +78,8 @@ import java.util.regex.Pattern;
  * 登录页
  * Created by lizhipeng on 2017/4/10.
  */
-public class LoginMainActivity extends BaseFrangmentActivity {
+public class LoginMainActivity extends BaseFrangmentActivity
+        implements InputMethodRelativeLayout.OnSizeChangedListenner {
 
     private Button Login_div_loginbutton;//登录按钮
     private EditTextWithDelete Login_txt_username, Login_txt_password;//自定义用户名，密码填写框
@@ -99,6 +103,10 @@ public class LoginMainActivity extends BaseFrangmentActivity {
     private AlertDialog updateloadDialog;//下载对话框dialog
     private TextView tvcode;//显示的版本号
     private TextView text_notuse;
+    private ImageView image_login_h;
+    private InputMethodRelativeLayout layout;//自定义布局
+    private LinearLayout login_logo_layout_v;//大logo
+    private LinearLayout login_logo_layout_h;//小logo
 
     //下载返回handler通信结果
     private static final int DOWN_NOSDCARD = 0;
@@ -166,6 +174,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
             @Override
             public void onClick(View v) {
                 if (validate()) {//判断非空
+                    sethideSoft(v);
                     postLogin();//登录方法
                 }
             }
@@ -192,7 +201,11 @@ public class LoginMainActivity extends BaseFrangmentActivity {
         Login_chk_password = (CheckBox) findViewById(R.id.Login_chk_password);
         Login_div_loginbutton = (Button) findViewById(R.id.Login_div_loginbutton);
         Login_chk_aotulogin = (CheckBox) findViewById(R.id.Login_chk_aotulogin);
+        layout = (InputMethodRelativeLayout) findViewById(R.id.loginpage);
+        login_logo_layout_v = (LinearLayout) findViewById(R.id.login_logo_layout_v);
+        login_logo_layout_h = (LinearLayout) findViewById(R.id.login_logo_layout_h);
         image_login = (ImageView) findViewById(R.id.image_login);
+        image_login_h = (ImageView) findViewById(R.id.image_login_h);
         tvcode = (TextView) findViewById(R.id.tvcode);
         text_notuse = (TextView) findViewById(R.id.text_notuse);
         text_notuse.requestFocus();//在此控件设置焦点
@@ -202,6 +215,7 @@ public class LoginMainActivity extends BaseFrangmentActivity {
     private void initViews() {
         Util.setEditTextInhibitInputSpeChat(Login_txt_username);//用户名调用判断规范方法
         Util.setEditTextInhibitInputSpeChat(Login_txt_password);//密码调用判断规范方法
+        layout.setOnSizeChangedListener(this);
         //picasso加载登录页上方图片，并且处理为圆角
         Picasso.with(LoginMainActivity.this)
                 .load(R.mipmap.daoran)//正常加载的图片
@@ -272,157 +286,171 @@ public class LoginMainActivity extends BaseFrangmentActivity {
 //                dialog.setButton("确定", listenerwifi);
 //                dialog.show();
 //            } else {
-                final ProgressDialog progressDialog = ProgressDialog.show(this,
-                        getResources().getString(R.string.login_his_later), getResources().getString(R.string.logining), false, true);//等待加载弹窗
-                List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(NetUtil.createParam("Logid", Login_txt_username.getText().toString()));
-                params.add(NetUtil.createParam("pwd", Login_txt_password.getText().toString()));
-                params.add(NetUtil.createParam("Ischeckpwd", true));
-                params.add(NetUtil.createParam("Company", "杭州道然进出口有限公司"));
-                RequestParams requestParams = new RequestParams(params);
-                NetUtil.getAsyncHttpClient().post(loginuserUrl, requestParams, new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(String content) {
-                        super.onSuccess(content);
-                        System.out.print(content);//打印返回的结果
-                        if (!content.equals("null")) {//如果返回结果不为空则执行方法内部
-                            //开启线程延时1秒关闭
-                            Thread thread = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        Thread.sleep(1000);//睡眠时间设置长度
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                    progressDialog.dismiss();
+            final ProgressDialog progressDialog = ProgressDialog.show(this,
+                    getResources().getString(R.string.login_his_later), getResources().getString(R.string.logining), false, true);//等待加载弹窗
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(NetUtil.createParam("Logid", Login_txt_username.getText().toString()));
+            params.add(NetUtil.createParam("pwd", Login_txt_password.getText().toString()));
+            params.add(NetUtil.createParam("Ischeckpwd", true));
+            params.add(NetUtil.createParam("Company", "杭州道然进出口有限公司"));
+            RequestParams requestParams = new RequestParams(params);
+            NetUtil.getAsyncHttpClient().post(loginuserUrl, requestParams, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(String content) {
+                    super.onSuccess(content);
+                    System.out.print(content);//打印返回的结果
+                    if (!content.equals("null")) {//如果返回结果不为空则执行方法内部
+                        //开启线程延时1秒关闭
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(1000);//睡眠时间设置长度
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
                                 }
-                            });
-                            thread.start();//start方法启动线程，必须添加
-                            userNameValue = Login_txt_username.getText().toString();
-                            passwordValue = Login_txt_password.getText().toString();
-                            Editor editor = sp.edit();//开启editor内部接口可写入数据
-                            Gson gson = new Gson();
-                            UsergetBean userBean = gson.fromJson(content, UsergetBean.class);
-                            if (userBean.isStatus() == true) {
-                                spUtils.put(LoginMainActivity.this, "username", userNameValue);
-                                spUtils.put(LoginMainActivity.this, "passwd", passwordValue);
-                                //记住密码
-                                if (Login_chk_password.isChecked()) {
-                                    spUtils.put(LoginMainActivity.this, "remember", true);
-                                    String listwork = sp.getString("workbeenlist", "");
-                                    workPwSwitchBean = new Gson().fromJson(listwork, WorkPwSwitchBean.class);
-                                    //实体类等于空，也就是第一次进的时候，数据是空的
-                                    //第一次加载为空时，添加当前登录人信息到bean类保存
-                                    if (workPwSwitchBean == null) {
-                                        workPwSwitchBean = new WorkPwSwitchBean();
-                                        switchBean = new WorkPwSwitchBean.Data();
-                                        String uuname = userBean.getU_name();
+                                progressDialog.dismiss();
+                            }
+                        });
+                        thread.start();//start方法启动线程，必须添加
+                        userNameValue = Login_txt_username.getText().toString();
+                        passwordValue = Login_txt_password.getText().toString();
+                        Editor editor = sp.edit();//开启editor内部接口可写入数据
+                        Gson gson = new Gson();
+                        UsergetBean userBean = gson.fromJson(content, UsergetBean.class);
+                        if (userBean.isStatus() == true) {
+                            spUtils.put(LoginMainActivity.this, "username", userNameValue);
+                            spUtils.put(LoginMainActivity.this, "passwd", passwordValue);
+                            //记住密码
+                            if (Login_chk_password.isChecked()) {
+                                spUtils.put(LoginMainActivity.this, "remember", true);
+                                String listwork = sp.getString("workbeenlist", "");
+                                workPwSwitchBean = new Gson().fromJson(listwork, WorkPwSwitchBean.class);
+                                //实体类等于空，也就是第一次进的时候，数据是空的
+                                //第一次加载为空时，添加当前登录人信息到bean类保存
+                                if (workPwSwitchBean == null) {
+                                    workPwSwitchBean = new WorkPwSwitchBean();
+                                    switchBean = new WorkPwSwitchBean.Data();
+                                    String uuname = userBean.getU_name();
+                                    switchBean.setU_name(uuname);
+                                    String uulogid = userBean.getLogid();
+                                    switchBean.setLogid(uulogid);
+                                    switchBean.setPasswork(passwordValue);
+                                    switchBeendatalist.add(switchBean);
+                                    workPwSwitchBean.setDatas(switchBeendatalist);
+                                } else {//bean不为空时，继续按list顺序添加保存
+                                    switchBeendatalist = workPwSwitchBean.getDatas();
+                                    switchBean = new WorkPwSwitchBean.Data();
+                                    String uuname = userBean.getU_name();
+                                    String uulogid = userBean.getLogid();
+                                    String[] uname = uuname.split(",");
+                                    String[] listname = new String[switchBeendatalist.size()];
+                                    for (int i = 0; i < switchBeendatalist.size(); i++) {
+                                        listname[i] = switchBeendatalist.get(i).getU_name();
+                                    }
+                                    System.out.print(switchBeendatalist);
+                                    System.out.print(listname);
+                                    boolean booname = containsAll(listname, uname);
+                                    //添加账号信息，如果不相同则添加，相同则不添加
+                                    if (booname == false) {
                                         switchBean.setU_name(uuname);
-                                        String uulogid = userBean.getLogid();
                                         switchBean.setLogid(uulogid);
                                         switchBean.setPasswork(passwordValue);
                                         switchBeendatalist.add(switchBean);
                                         workPwSwitchBean.setDatas(switchBeendatalist);
-                                    } else {//bean不为空时，继续按list顺序添加保存
-                                        switchBeendatalist = workPwSwitchBean.getDatas();
-                                        switchBean = new WorkPwSwitchBean.Data();
-                                        String uuname = userBean.getU_name();
-                                        String uulogid = userBean.getLogid();
-                                        String[] uname = uuname.split(",");
-                                        String[] listname = new String[switchBeendatalist.size()];
-                                        for (int i = 0; i < switchBeendatalist.size(); i++) {
-                                            listname[i] = switchBeendatalist.get(i).getU_name();
-                                        }
-                                        System.out.print(switchBeendatalist);
-                                        System.out.print(listname);
-                                        boolean booname = containsAll(listname, uname);
-                                        //添加账号信息，如果不相同则添加，相同则不添加
-                                        if (booname == false) {
-                                            switchBean.setU_name(uuname);
-                                            switchBean.setLogid(uulogid);
-                                            switchBean.setPasswork(passwordValue);
-                                            switchBeendatalist.add(switchBean);
-                                            workPwSwitchBean.setDatas(switchBeendatalist);
-                                        } else {
-                                            ToastUtils.ShowToastMessage("已有当前账号,登录中", LoginMainActivity.this);
-                                        }
+                                    } else {
+                                        ToastUtils.ShowToastMessage("已有当前账号,登录中", LoginMainActivity.this);
                                     }
-                                    System.out.print(workPwSwitchBean);
-                                    String workbeenlist = gson.toJson(switchBeendatalist);//将查询出的数据转化为json
-                                    String worklist = gson.toJson(workPwSwitchBean);
-                                    System.out.print(worklist);
-                                    System.out.print(workbeenlist);
-                                    spUtils.put(LoginMainActivity.this, "workbeenlist", worklist);
-                                } else {
-                                    spUtils.put(LoginMainActivity.this, "remember", false);
                                 }
-                                if (Login_chk_aotulogin.isChecked()) {
-                                    spUtils.put(LoginMainActivity.this, "autologin", true);
-                                } else {
-                                    spUtils.put(LoginMainActivity.this, "autologin", false);
-                                }
-                                editor.commit();
-                                //登录成功后，保存用户名与用户ID
-                                spUtils.put(getApplicationContext(), "name", userBean.getU_name());
-                                spUtils.put(getApplicationContext(),"Recordname",userBean.getU_name());
-                                spUtils.put(getApplicationContext(), "FTYDLName", userBean.getU_name());
-                                spUtils.put(getApplicationContext(), "QACworkDialogPrddocumentary", userBean.getU_name());
-                                spUtils.put(getApplicationContext(), "commologinid", userBean.getLogid());
-                                Intent intent = new Intent(LoginMainActivity.this, MainActivity.class);
-                                Bundle bundle = new Bundle();
-                                bundle.putString("u_name", userBean.getU_name());
-                                intent.putExtras(bundle);
-                                startActivity(intent);
-
+                                System.out.print(workPwSwitchBean);
+                                String workbeenlist = gson.toJson(switchBeendatalist);//将查询出的数据转化为json
+                                String worklist = gson.toJson(workPwSwitchBean);
+                                System.out.print(worklist);
+                                System.out.print(workbeenlist);
+                                spUtils.put(LoginMainActivity.this, "workbeenlist", worklist);
                             } else {
-                                ToastUtils.ShowToastMessage(R.string.user_tips, LoginMainActivity.this);
-                                ResponseDialog.closeLoading();
+                                spUtils.put(LoginMainActivity.this, "remember", false);
                             }
+                            if (Login_chk_aotulogin.isChecked()) {
+                                spUtils.put(LoginMainActivity.this, "autologin", true);
+                            } else {
+                                spUtils.put(LoginMainActivity.this, "autologin", false);
+                            }
+                            editor.commit();
+                            //登录成功后，保存用户名与用户ID
+                            spUtils.put(getApplicationContext(), "name", userBean.getU_name());
+                            spUtils.put(getApplicationContext(), "Recordname", userBean.getU_name());
+                            spUtils.put(getApplicationContext(), "FTYDLName", userBean.getU_name());
+                            spUtils.put(getApplicationContext(), "QACworkDialogPrddocumentary", userBean.getU_name());
+                            spUtils.put(getApplicationContext(), "commologinid", userBean.getLogid());
+                            Intent intent = new Intent(LoginMainActivity.this, MainActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("u_name", userBean.getU_name());
+                            intent.putExtras(bundle);
+                            startActivity(intent);
                         } else {
-                            progressDialog.dismiss();
-                            ToastUtils.ShowToastMessage("返回为空,请确认本机ip", LoginMainActivity.this);
+                            ToastUtils.ShowToastMessage(R.string.user_tips, LoginMainActivity.this);
+                            ResponseDialog.closeLoading();
                         }
+                    } else {
+                        progressDialog.dismiss();
+                        ToastUtils.ShowToastMessage("返回为空,请确认本机ip", LoginMainActivity.this);
                     }
+                }
 
-                    @Override
-                    public void onFailure(Throwable error, String content) {//异常
-                        super.onFailure(error, content);
-                        ToastUtils.ShowToastMessage(R.string.login_has_error, LoginMainActivity.this);
-                        Thread thread = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                progressDialog.dismiss();
+                @Override
+                public void onFailure(Throwable error, String content) {//异常
+                    super.onFailure(error, content);
+                    ToastUtils.ShowToastMessage(R.string.login_has_error, LoginMainActivity.this);
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
-                        });
-                        thread.start();
-                    }
+                            progressDialog.dismiss();
+                        }
+                    });
+                    thread.start();
+                }
 
-                    @Override
-                    public void onFinish() {//最后执行所走方法
-                        super.onFinish();
-                        Thread thread = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                progressDialog.dismiss();
+                @Override
+                public void onFinish() {//最后执行所走方法
+                    super.onFinish();
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
-                        });
-                        thread.start();
-                    }
-                });
+                            progressDialog.dismiss();
+                        }
+                    });
+                    thread.start();
+                }
+            });
 //            }
         } else {
             ToastUtils.ShowToastMessage(getString(R.string.noHttp), LoginMainActivity.this);
+        }
+    }
+
+    /*判断软键盘是否弹出*/
+    private void sethideSoft(View v) {
+        //判断软件盘是否弹出
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            if (imm.hideSoftInputFromWindow(v.getWindowToken(), 0)) {
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                        0);
+            } else {
+                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),
+                        0);
+            }
         }
     }
 
@@ -726,6 +754,24 @@ public class LoginMainActivity extends BaseFrangmentActivity {
             }
         }
     };
+
+    @Override
+    public void onSizeChange(boolean paramBoolean, int w, int h) {
+        if(paramBoolean){//键盘弹出时
+            layout.setPadding(0,-10,0,0);
+            login_logo_layout_v.setVisibility(View.GONE);
+            login_logo_layout_h.setVisibility(View.VISIBLE);
+            Picasso.with(LoginMainActivity.this)
+                    .load(R.mipmap.daoran)//正常加载的图片
+                    .error(R.mipmap.daoran)//异常加载的图片
+                    .transform(new CropSquareTransformation())//调用自定义接口，处理图片
+                    .into(image_login_h);//设置显示的控件
+        }else{//键盘隐藏时
+            layout.setPadding(0,0,0,0);
+            login_logo_layout_v.setVisibility(View.VISIBLE);
+            login_logo_layout_h.setVisibility(View.GONE);
+        }
+    }
 
     /*合并网络patch增量包和本地旧apk，并安装*/
     private class PatchTask extends AsyncTask<String, Void, Integer> {

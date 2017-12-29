@@ -76,6 +76,7 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
 
     private TextView tvSignPage,//显示的总页数
             tv_visibi;//空数据显示的页面信息
+    private TextView tvProTitle;//标题头
     private EditText etSqlDetail;//输入的页数
     private Button btnSignPage,//翻页确认
             spinnermenu;//最右侧菜单
@@ -147,20 +148,24 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
     /*初始化控件*/
     private void getViews() {
         View viewButton = findViewById(R.id.button_filp_view);//引用include布局
-        ivProductionBack = (ImageView) findViewById(R.id.ivCommoditySql);
+        View rl_title_top = findViewById(R.id.rl_title_top);
+        ivProductionBack = (ImageView) rl_title_top.findViewById(R.id.ivProductionBack);
+        tvProTitle = (TextView) rl_title_top.findViewById(R.id.tvProTitle);
+        ivSearch = (ImageView) rl_title_top.findViewById(R.id.ivSearch);
+        spinnermenu = (Button) rl_title_top.findViewById(R.id.spinnermenu);
+
         lv_data = (NoscrollListView) findViewById(R.id.lv_data);
         lv_cleft = (NoscrollListView) findViewById(R.id.lv_cleft);
         mDataHorizontal = (SyncHorizontalScrollView) findViewById(R.id.data_horizontal);
         mHeaderHorizontal = (SyncHorizontalScrollView) findViewById(R.id.header_horizontal);
-        ivSearch = (ImageView) findViewById(R.id.ivSearch);
-        tvSignPage = (TextView) viewButton.findViewById(R.id.tvSignPage);
-        btnSignPage = (Button) viewButton.findViewById(R.id.btnSignPage);
-        etSqlDetail = (EditText) viewButton.findViewById(R.id.etSqlDetail);
         ll_visibi = (LinearLayout) findViewById(R.id.ll_visibi);
         tv_visibi = (TextView) findViewById(R.id.tv_visibi);
         scroll_content = (ScrollView) findViewById(R.id.scroll_content);
+
+        tvSignPage = (TextView) viewButton.findViewById(R.id.tvSignPage);
+        btnSignPage = (Button) viewButton.findViewById(R.id.btnSignPage);
+        etSqlDetail = (EditText) viewButton.findViewById(R.id.etSqlDetail);
         spinnCommoPageClumns = (Spinner) viewButton.findViewById(R.id.spinnCommoPageClumns);
-        spinnermenu = (Button) findViewById(R.id.spinnermenu);
         ivUpLeftPage = (ImageView) viewButton.findViewById(R.id.ivUpLeftPage);
         ivDownRightPage = (ImageView) viewButton.findViewById(R.id.ivDownRightPage);
 
@@ -295,6 +300,8 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
 
     /*控件操作*/
     private void initView() {
+        tvProTitle.setText("查货跟踪表");
+        spinnermenu.setBackground(getResources().getDrawable(R.mipmap.spin_filp));
         mDataHorizontal.setSrollView(mHeaderHorizontal);
         mHeaderHorizontal.setSrollView(mDataHorizontal);
         etSqlDetail.setSelection(etSqlDetail.getText().length());
@@ -392,8 +399,8 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
         //将bean中的数据转成json数据
         String stringpost = gson.toJson(postBean);
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this, "正在查询");
             final int finalGetsize = Integer.parseInt(pagesize);
+            ResponseDialog.showLoading(this, "正在查询");
             OkHttpUtils.postString()
                     .url(str)
                     .content(stringpost)
@@ -418,8 +425,7 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
                                     ll_visibi.setVisibility(View.GONE);
                                     scroll_content.setVisibility(View.VISIBLE);
                                     pageCount = QACworkPageDataBean.getTotalCount();
-                                    String count = String.valueOf(pageCount / finalGetsize + 1);
-                                    tvSignPage.setText(count);
+                                    tvSignPage.setText(String.valueOf(pageCount / finalGetsize + 1));
                                     leftAdapter = new QACworkSearchLeftAdapter(
                                             QACworkSearchActivity.this, dataBeen);
                                     lv_cleft.setAdapter(leftAdapter);
@@ -504,8 +510,7 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
                                     ll_visibi.setVisibility(View.GONE);
                                     scroll_content.setVisibility(View.VISIBLE);
                                     pageCount = QACworkPageDataBean.getTotalCount();
-                                    String count = String.valueOf(pageCount / finalGetsize + 1);
-                                    tvSignPage.setText(count);//总页数
+                                    tvSignPage.setText(String.valueOf(pageCount / finalGetsize + 1));//总页数
                                     sqlAdapter = new QACworkSearchAdapter(QACworkSearchActivity.this, dataBeen
                                             , jsonTextBeanlist);
                                     lv_data.setAdapter(sqlAdapter);//绑定数据源
@@ -552,7 +557,7 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
         postBean.setPageSize(Integer.parseInt(pagesize));
         String stringpost = gson.toJson(postBean);
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this);
+            ResponseDialog.showLoading(this, "正在查询");
             final int finalGetsize = Integer.parseInt(pagesize);
             OkHttpUtils.postString()
                     .url(str)
@@ -577,8 +582,7 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
                                     ll_visibi.setVisibility(View.GONE);
                                     scroll_content.setVisibility(View.VISIBLE);
                                     pageCount = QACworkPageDataBean.getTotalCount();
-                                    String count = String.valueOf(pageCount / finalGetsize + 1);
-                                    tvSignPage.setText(count);
+                                    tvSignPage.setText(String.valueOf(pageCount / finalGetsize + 1));
                                     sqlAdapter = new QACworkSearchAdapter(QACworkSearchActivity.this,
                                             dataBeen, jsonTextBeanlist);
                                     lv_data.setAdapter(sqlAdapter);//绑定数据源
@@ -746,7 +750,7 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
     public void onClick(View v) {
         switch (v.getId()) {
             /*返回按钮*/
-            case R.id.ivCommoditySql:
+            case R.id.ivProductionBack:
                 finish();
                 break;
             /*查询*/
