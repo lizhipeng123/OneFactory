@@ -1,5 +1,6 @@
 package com.daoran.newfactory.onefactory.util.receiver;
 
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -43,19 +44,30 @@ public class JPushReceiver extends BroadcastReceiver {
 
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(
                 intent.getAction())) {
+            //此处可以做统计信息，或者其他工作
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
 
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
-
-            //打开自定义的Activity
-            Intent i = new Intent(context, SignDetailActivity.class);
-            i.putExtras(bundle);
-            //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
-            context.startActivity(i);
+            //获取当前的activity
+            ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+            String runningActivity = activityManager.getRunningTasks(1).get(0)
+                    .topActivity.getClassName();
+            if(runningActivity.equals("com.daoran.newfactory.onefactory.activity.main.MainActivity")){
+                Intent i = new Intent(context, MainActivity.class);
+                i.putExtras(bundle);
+                //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
+                context.startActivity(i);
+            }else{
+                Intent i = new Intent(context, MainActivity.class);
+                i.putExtras(bundle);
+                //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
+                context.startActivity(i);
+            }
         } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 用户收到到RICH PUSH CALLBACK: "
                     + bundle.getString(JPushInterface.EXTRA_EXTRA));

@@ -86,7 +86,7 @@
             android:name=".activity.main.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustNothing"/>
+            android:windowSoftInputMode="stateHidden|adjustNothing" />
 
         <!-- 引导页 -->
         <activity
@@ -163,19 +163,19 @@
         <!-- 查货跟踪查询类 -->
         <activity
             android:name=".activity.work.qacwork.QACworkSearchActivity"
+            android:configChanges="keyboardHidden"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden"/>
+            android:screenOrientation="portrait" />
 
         <!-- 外勤签到测试类 -->
 
         <!-- 外勤签到测试类 -->
         <activity
             android:name=".activity.login.LoginMainActivity"
-            android:launchMode="singleTask"
             android:configChanges="keyboardHidden"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
 
         <!-- 公交路线 -->
         <activity
@@ -193,7 +193,7 @@
             android:name=".activity.work.ftydl.FTYDLSearchNewlyBuildActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustNothing"/>
+            android:windowSoftInputMode="stateHidden|adjustNothing" />
 
         <!-- 新建保存 -->
 
@@ -245,7 +245,7 @@
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
 
         <activity
             android:name=".activity.side.SideActivity"
@@ -261,7 +261,7 @@
             android:name=".activity.work.qacwork.QACworkDetailActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <!--日历页面-->
         <activity
             android:name=".activity.work.setting.MonthActivity"
@@ -284,7 +284,7 @@
             android:name=".activity.work.ftydl.FTYDLSearchDetailActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <!--qq分享-->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
@@ -309,8 +309,14 @@
 
         <activity
             android:name="cn.jpush.android.ui.PopWinActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:exported="false"
-            android:theme="@style/MyDialogStyle"/>
+            android:theme="@style/MyDialogStyle">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.daoran.newfactory.onefactory" />
+            </intent-filter>
+        </activity>
 
         <receiver
             android:name="cn.jpush.android.service.PushReceiver"
@@ -337,7 +343,8 @@
         <provider
             android:name="cn.jpush.android.service.DataProvider"
             android:authorities="com.daoran.newfactory.onefactory.DataProvider"
-            android:exported="false" />
+            android:exported="true" />
+
         <receiver
             android:name="com.daoran.newfactory.onefactory.util.receiver.JPushReceiver"
             android:enabled="true">
@@ -352,7 +359,14 @@
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
                 <!-- 接收网络变化 连接/断开 since 1.6.3 -->
                 <action android:name="cn.jpush.android.intent.CONNECTION" />
-                <category android:name="com.project.fors.jpush" />
+                <category android:name="com.daoran.newfactory.onefactory" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.daoran.newfactory.onefactory.util.receiver.MyJPushMessageReceiver">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
+                <category android:name="com.daoran.newfactory.onefactory" />
             </intent-filter>
         </receiver>
 

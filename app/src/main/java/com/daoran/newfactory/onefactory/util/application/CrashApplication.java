@@ -5,7 +5,6 @@ import android.os.Debug;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
-import com.daoran.newfactory.onefactory.util.application.settings.CrashHandler;
 import com.daoran.newfactory.onefactory.util.exception.UEHandler;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
@@ -37,6 +36,8 @@ public class CrashApplication extends MultiDexApplication {
         super.onCreate();
         Debug.startMethodTracing("OneFactory");
         Bugly.init(this, "52c746d40d", false);//腾讯分享口令
+        JPushInterface.setDebugMode(true);//设置开启日志，发布时关闭日志
+        JPushInterface.init(this);//初始化JPush
 //        CrashHandler crashHandler = CrashHandler.getInstance();
 //        crashHandler.init(getApplicationContext());
         need2Exit = false;

@@ -48,8 +48,6 @@ public class MainActivity extends BaseFrangmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);//加载主页面
-        JPushInterface.setDebugMode(true);//设置开启日志，发布时关闭日志
-        JPushInterface.init(this);//初始化JPush
         id = getIntent().getIntExtra(idd, 0);//接收添加账号传过来的id以便刷新本页
         getViews();//调用实例化控件方法
     }
