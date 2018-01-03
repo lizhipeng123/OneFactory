@@ -38,7 +38,7 @@
                 android:layout_weight="1"
                 android:layout_height="@dimen/dimen_138"
                 android:background="@drawable/gray_bg"
-                android:text="确定"
+                android:text="@android:string/yes"
                 android:textColor="#696969"
                 android:textSize="18sp" />
 
@@ -49,7 +49,7 @@
                 android:layout_height="@dimen/dimen_138"
                 android:layout_marginLeft="@dimen/dimen_30"
                 android:background="@drawable/login_red_btn_selector"
-                android:text="取消"
+                android:text="@android:string/no"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
         </LinearLayout>

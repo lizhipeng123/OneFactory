@@ -140,7 +140,7 @@
                 android:layout_height="@dimen/dimen_70"
                 android:layout_weight="1"
                 android:background="@drawable/shape_btn_sql_boild"
-                android:text="取消"
+                android:text="@android:string/no"
                 android:textColor="@color/white" />
 
             <Button
@@ -150,7 +150,7 @@
                 android:layout_marginLeft="@dimen/dimen_200"
                 android:layout_weight="1"
                 android:background="@drawable/shape_btn_sql_boild"
-                android:text="确定"
+                android:text="@android:string/yes"
                 android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>

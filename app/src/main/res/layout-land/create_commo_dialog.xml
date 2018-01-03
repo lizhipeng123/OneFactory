@@ -212,7 +212,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_btn_sql_boild"
                 android:textColor="@color/white"
-                android:text="取消" />
+                android:text="@android:string/no" />
 
             <Button
                 android:id="@+id/btnComfirm"
@@ -222,7 +222,7 @@
                 android:background="@drawable/shape_btn_sql_boild"
                 android:textColor="@color/white"
                 android:layout_weight="1"
-                android:text="确定" />
+                android:text="@android:string/yes" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

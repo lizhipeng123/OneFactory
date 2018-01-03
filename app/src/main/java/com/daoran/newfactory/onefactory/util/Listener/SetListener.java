@@ -40,7 +40,7 @@ public class SetListener {
             new ArrayList<FTYDLDailyBean.DataBean>();//生产日报数据
     List<QACworkPageDataBean.DataBean> qaCworkDataBean =
             new ArrayList<QACworkPageDataBean.DataBean>();//查货跟踪数据
-    List<FTYDLFactoryDailyBean.DataBean> buildDataBean=
+    List<FTYDLFactoryDailyBean.DataBean> buildDataBean =
             new ArrayList<FTYDLFactoryDailyBean.DataBean>();//生产日报款号选择数据
 
     FTYDLSearchAdapter adapter;//生产日报总表适配器
@@ -135,7 +135,7 @@ public class SetListener {
 
     /*查货跟踪点击进入修改页面回调方法*/
     public void setQACworkDetailLister(final Context context, QACworkSearchAdapter qaCworkSearchAdapter,
-                                       final List<QACworkPageDataBean.DataBean> qaCworkDataBean){
+                                       final List<QACworkPageDataBean.DataBean> qaCworkDataBean) {
         this.context = context;
         this.qaCworkSearchAdapter = qaCworkSearchAdapter;
         this.qaCworkDataBean = qaCworkDataBean;
@@ -156,7 +156,7 @@ public class SetListener {
 
     /*生产日报进入新建页面回调方法*/
     public void setFTYDLNewlyLister(final Context context, FTYDLNewlyBuildAdapter buildAdapter,
-                                    final List<FTYDLFactoryDailyBean.DataBean> buildDataBean){
+                                    final List<FTYDLFactoryDailyBean.DataBean> buildDataBean) {
         this.context = context;
         this.buildAdapter = buildAdapter;
         this.buildDataBean = buildDataBean;
@@ -188,7 +188,7 @@ public class SetListener {
 
     /*生产日报进入新建页面回调方法*/
     public void setFTYDLNewlyLeftLister(final Context context, FTYDLNewlyBuildLeftAdapter buildleftAdapter,
-                                        final List<FTYDLFactoryDailyBean.DataBean> buildDataBean){
+                                        final List<FTYDLFactoryDailyBean.DataBean> buildDataBean) {
         this.context = context;
         this.buildleftAdapter = buildleftAdapter;
         this.buildDataBean = buildDataBean;

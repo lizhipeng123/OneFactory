@@ -63,7 +63,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/dimen_30"
             android:background="@drawable/shape_btn_newsbuild_boild"
-            android:text="确定"
+            android:text="@android:string/yes"
             android:textColor="@color/icon_color" />
 
         <Spinner

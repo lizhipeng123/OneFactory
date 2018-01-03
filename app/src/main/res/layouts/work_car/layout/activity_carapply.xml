@@ -648,7 +648,7 @@
             android:textColor="@color/white"
             android:background="@drawable/shape_btn_sql_boild"
             android:layout_weight="1"
-            android:text="取消" />
+            android:text="@android:string/no" />
 
         <Button
             android:layout_width="0dp"

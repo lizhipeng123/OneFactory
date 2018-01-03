@@ -65,7 +65,7 @@
             android:layout_marginLeft="@dimen/dimen_30"
             android:background="@drawable/shape_btn_newsbuild_boild"
             android:textColor="@color/icon_color"
-            android:text="确定" />
+            android:text="@android:string/yes" />
 
         <Spinner
             android:id="@+id/spinnCommoPageClumns"

@@ -264,15 +264,19 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                                     pageCount = detailBean.getTotalCount();
                                     String count = String.valueOf(pageCount / finalGetsize + 1);
                                     tvSignPage.setText(count);
-                                    mLeftAdapter = new FTYDLSearchLeftAdapter(FTYDLSearchActivity.this, detailBeenList);
+                                    mLeftAdapter = new FTYDLSearchLeftAdapter(
+                                            FTYDLSearchActivity.this, detailBeenList);
                                     lv_pleft.setAdapter(mLeftAdapter);
-                                    adapter = new FTYDLSearchAdapter(FTYDLSearchActivity.this, detailBeenList);
+                                    adapter = new FTYDLSearchAdapter(
+                                            FTYDLSearchActivity.this, detailBeenList);
                                     lv_data.setAdapter(adapter);
                                     SetListener setListener = new SetListener();
                                     setListener.setFTYDLSearchLister(
-                                            FTYDLSearchActivity.this, adapter, detailBeenList);
+                                            FTYDLSearchActivity.this,
+                                            adapter, detailBeenList);
                                     setListener.setFTYDLCopyLister(
-                                            FTYDLSearchActivity.this, mLeftAdapter, detailBeenList
+                                            FTYDLSearchActivity.this,
+                                            mLeftAdapter, detailBeenList
                                     );
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
@@ -287,8 +291,8 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                         }
                     });
         } else {
-            ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", FTYDLSearchActivity.this);
-
+            ToastUtils.ShowToastMessage("当前网络不可用,请重新再试",
+                    FTYDLSearchActivity.this);
         }
     }
 
@@ -367,7 +371,8 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                                     setListener.setFTYDLSearchLister(FTYDLSearchActivity.this,
                                             adapter, detailBeenList);
                                     setListener.setFTYDLCopyLister(
-                                            FTYDLSearchActivity.this, mLeftAdapter, detailBeenList
+                                            FTYDLSearchActivity.this,
+                                            mLeftAdapter, detailBeenList
                                     );
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
@@ -382,7 +387,8 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                         }
                     });
         } else {
-            ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", FTYDLSearchActivity.this);
+            ToastUtils.ShowToastMessage("当前网络不可用,请重新再试",
+                    FTYDLSearchActivity.this);
         }
     }
 
@@ -454,10 +460,12 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                                             FTYDLSearchActivity.this, detailBeenList);
                                     lv_pleft.setAdapter(mLeftAdapter);
                                     SetListener setListener = new SetListener();
-                                    setListener.setFTYDLSearchLister(FTYDLSearchActivity.this,
+                                    setListener.setFTYDLSearchLister(
+                                            FTYDLSearchActivity.this,
                                             adapter, detailBeenList);
                                     setListener.setFTYDLCopyLister(
-                                            FTYDLSearchActivity.this, mLeftAdapter, detailBeenList
+                                            FTYDLSearchActivity.this,
+                                            mLeftAdapter, detailBeenList
                                     );
                                 } else {
                                     ll_visibi.setVisibility(View.VISIBLE);
@@ -472,7 +480,8 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                         }
                     });
         } else {
-            ToastUtils.ShowToastMessage("当前网络不可用,请重新再试", FTYDLSearchActivity.this);
+            ToastUtils.ShowToastMessage("当前网络不可用,请重新再试",
+                    FTYDLSearchActivity.this);
         }
     }
 
@@ -608,18 +617,23 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                 String txtcount = tvSignPage.getText().toString();
                 //判断页数输入框是否为空，否则不能点击
                 if (txt.equals("")) {
-                    ToastUtils.ShowToastMessage("页码不能为空", FTYDLSearchActivity.this);
+                    ToastUtils.ShowToastMessage("页码不能为空",
+                            FTYDLSearchActivity.this);
                 } else {
                     int txtindex = Integer.parseInt(txt);
                     int txtcountindex = Integer.parseInt(txtcount);
                     if (txtindex > txtcountindex) {
-                        ToastUtils.ShowToastMessage("已经是最后一页", FTYDLSearchActivity.this);
+                        ToastUtils.ShowToastMessage("已经是最后一页",
+                                FTYDLSearchActivity.this);
                     } else if (txtindex < 1) {
-                        ToastUtils.ShowToastMessage("已经是第一页", FTYDLSearchActivity.this);
+                        ToastUtils.ShowToastMessage("已经是第一页",
+                                FTYDLSearchActivity.this);
                     } else if (txt.length() == 0) {
-                        ToastUtils.ShowToastMessage("页码不能为空", FTYDLSearchActivity.this);
+                        ToastUtils.ShowToastMessage("页码不能为空",
+                                FTYDLSearchActivity.this);
                     } else if (etSqlDetail.getText().toString() == null) {
-                        ToastUtils.ShowToastMessage("页码不能为空", FTYDLSearchActivity.this);
+                        ToastUtils.ShowToastMessage("页码不能为空",
+                                FTYDLSearchActivity.this);
                     } else {
                         setPageDetail();
                     }
@@ -639,12 +653,14 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                 String etsql = etSqlDetail.getText().toString();
                 //判断页码输入框是否为空
                 if (etsql.equals("")) {
-                    ToastUtils.ShowToastMessage("页码不能为空", FTYDLSearchActivity.this);
+                    ToastUtils.ShowToastMessage("页码不能为空",
+                            FTYDLSearchActivity.this);
                 } else {
                     pageIndex = Integer.parseInt(etsql);
                     int index = pageIndex - 2;
                     if (index < 0) {
-                        ToastUtils.ShowToastMessage("已经是第一页", FTYDLSearchActivity.this);
+                        ToastUtils.ShowToastMessage("已经是第一页",
+                                FTYDLSearchActivity.this);
                     } else {
                         String indexstr = String.valueOf(index);
                         int indexcount = index + 1;
@@ -660,7 +676,8 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                 String etsql2 = etSqlDetail.getText().toString();
                 //判断页码输入框是否为空
                 if (etsql2.equals("")) {
-                    ToastUtils.ShowToastMessage("页码不能为空", FTYDLSearchActivity.this);
+                    ToastUtils.ShowToastMessage("页码不能为空",
+                            FTYDLSearchActivity.this);
                 } else {
                     int textedit2 = Integer.parseInt(etsql2);
                     int editindex = textedit2;
@@ -668,7 +685,8 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                     int indexmax = Integer.parseInt(maxpageindex);
                     int index2 = editindex + 1;
                     if (index2 > indexmax) {
-                        ToastUtils.ShowToastMessage("已经是最后一页", FTYDLSearchActivity.this);
+                        ToastUtils.ShowToastMessage("已经是最后一页",
+                                FTYDLSearchActivity.this);
                     } else {
                         String index2str = String.valueOf(editindex);
                         int indexcount = editindex + 1;

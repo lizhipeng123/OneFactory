@@ -20,7 +20,7 @@ import cn.jpush.android.api.JPushInterface;
 /**
  * 创建时间：2017/12/28
  * 编写人：lizhipeng
- * 功能描述：自定义接收器
+ * 功能描述：自定义广播推送接收器
  */
 
 public class JPushReceiver extends BroadcastReceiver {
