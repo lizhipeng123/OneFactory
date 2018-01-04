@@ -1261,7 +1261,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="@dimen/dimen_250"
+                        android:layout_width="@dimen/dimen_300"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="20日："
@@ -1272,7 +1272,7 @@
                         android:id="@+id/et_config_twentyday"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen_120"
-                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_marginLeft="@dimen/dimen_10"
                         android:layout_weight="1"
                         android:cursorVisible="true"
                         android:gravity="center_vertical"
@@ -1290,7 +1290,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="@dimen/dimen_250"
+                        android:layout_width="@dimen/dimen_300"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="21日："
@@ -1301,7 +1301,7 @@
                         android:id="@+id/et_config_TwentyOneDay"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen_120"
-                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_marginLeft="@dimen/dimen_10"
                         android:layout_weight="1"
                         android:cursorVisible="true"
                         android:gravity="center_vertical"
@@ -1319,7 +1319,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="@dimen/dimen_250"
+                        android:layout_width="@dimen/dimen_300"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="22日："
@@ -1330,7 +1330,7 @@
                         android:id="@+id/et_config_twentytwoday"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen_120"
-                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_marginLeft="@dimen/dimen_10"
                         android:layout_weight="1"
                         android:cursorVisible="true"
                         android:gravity="center_vertical"
@@ -1358,7 +1358,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="@dimen/dimen_250"
+                        android:layout_width="@dimen/dimen_300"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="23日："
@@ -1369,7 +1369,7 @@
                         android:id="@+id/et_config_twentyThreeday"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen_120"
-                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_marginLeft="@dimen/dimen_10"
                         android:layout_weight="1"
                         android:cursorVisible="true"
                         android:gravity="center_vertical"
@@ -1387,7 +1387,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="@dimen/dimen_250"
+                        android:layout_width="@dimen/dimen_300"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="24日："
@@ -1398,7 +1398,7 @@
                         android:id="@+id/et_config_twentyforeday"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen_120"
-                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_marginLeft="@dimen/dimen_10"
                         android:layout_weight="1"
                         android:cursorVisible="true"
                         android:gravity="center_vertical"
@@ -1416,7 +1416,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="@dimen/dimen_250"
+                        android:layout_width="@dimen/dimen_300"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="25日："
@@ -1427,7 +1427,7 @@
                         android:id="@+id/et_config_twentyfiveday"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen_120"
-                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_marginLeft="@dimen/dimen_10"
                         android:layout_weight="1"
                         android:cursorVisible="true"
                         android:gravity="center_vertical"
@@ -1455,7 +1455,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="@dimen/dimen_250"
+                        android:layout_width="@dimen/dimen_300"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="26日："
@@ -1466,7 +1466,7 @@
                         android:id="@+id/et_config_twentysixday"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen_120"
-                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_marginLeft="@dimen/dimen_10"
                         android:layout_weight="1"
                         android:cursorVisible="true"
                         android:gravity="center_vertical"
@@ -1484,7 +1484,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="@dimen/dimen_250"
+                        android:layout_width="@dimen/dimen_300"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="27日："
@@ -1495,7 +1495,7 @@
                         android:id="@+id/et_config_twentysevenday"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen_120"
-                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_marginLeft="@dimen/dimen_10"
                         android:layout_weight="1"
                         android:cursorVisible="true"
                         android:gravity="center_vertical"
@@ -1513,7 +1513,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="@dimen/dimen_250"
+                        android:layout_width="@dimen/dimen_300"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="28日："
@@ -1524,7 +1524,7 @@
                         android:id="@+id/et_config_twentyeightday"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen_120"
-                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_marginLeft="@dimen/dimen_10"
                         android:layout_weight="1"
                         android:cursorVisible="true"
                         android:gravity="center_vertical"
@@ -1552,7 +1552,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="@dimen/dimen_250"
+                        android:layout_width="@dimen/dimen_300"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="29日："
@@ -1563,7 +1563,7 @@
                         android:id="@+id/et_config_twentynineday"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen_120"
-                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_marginLeft="@dimen/dimen_10"
                         android:layout_weight="1"
                         android:cursorVisible="true"
                         android:gravity="center_vertical"
@@ -1581,7 +1581,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="@dimen/dimen_250"
+                        android:layout_width="@dimen/dimen_300"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="30日："
@@ -1592,7 +1592,7 @@
                         android:id="@+id/et_config_thirtyday"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen_120"
-                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_marginLeft="@dimen/dimen_10"
                         android:layout_weight="1"
                         android:cursorVisible="true"
                         android:gravity="center_vertical"
@@ -1610,7 +1610,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="@dimen/dimen_250"
+                        android:layout_width="@dimen/dimen_300"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="31日："
@@ -1621,7 +1621,7 @@
                         android:id="@+id/et_config_thirtyoneday"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen_120"
-                        android:layout_marginLeft="@dimen/dimen_20"
+                        android:layout_marginLeft="@dimen/dimen_10"
                         android:layout_weight="1"
                         android:cursorVisible="true"
                         android:gravity="center_vertical"
