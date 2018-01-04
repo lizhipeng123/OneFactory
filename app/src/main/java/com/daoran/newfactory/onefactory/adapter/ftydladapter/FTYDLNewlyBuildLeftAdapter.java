@@ -1,7 +1,6 @@
 package com.daoran.newfactory.onefactory.adapter.ftydladapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.ftydl.FTYDLNewlyComfigDetailActivity;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLFactoryDailyBean;
-import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
-import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 
 import java.util.List;
 
@@ -26,9 +22,6 @@ public class FTYDLNewlyBuildLeftAdapter extends BaseAdapter {
     private Context context;
     private List<FTYDLFactoryDailyBean.DataBean> dataBeen;//初始化全部的数据
     private OnClickNewlyBuildLister mOnClickNewlyBuildLister;
-    private SPUtils spUtils;
-    private boolean flag = false;
-    private int isprodure;
 
     public FTYDLNewlyBuildLeftAdapter(Context context
             , List<FTYDLFactoryDailyBean.DataBean> dataBeen) {

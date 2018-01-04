@@ -1,7 +1,6 @@
 package com.daoran.newfactory.onefactory.adapter.qacworkadapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +9,8 @@ import android.widget.TextView;
 import android.widget.LinearLayout;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.qacwork.QACworkDetailActivity;
 import com.daoran.newfactory.onefactory.bean.qacworkbean.QACworkRightsTableBean;
 import com.daoran.newfactory.onefactory.bean.qacworkbean.QACworkPageDataBean;
-import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -43,7 +40,6 @@ public class QACworkSearchAdapter extends BaseAdapter {
     private List<String> columnlist = Arrays.asList(columns);
 
     private OnClickQACworkLinter mOnClickQACworkLinter;
-    private SPUtils spUtils;
 
     public QACworkSearchAdapter(Context context, List<QACworkPageDataBean.DataBean> dataBeen
             , List<QACworkRightsTableBean.JsonTextBean> jsonTextBeanlist) {

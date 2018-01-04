@@ -176,7 +176,7 @@
                             android:layout_marginRight="@dimen/dimen_100"
                             android:layout_marginTop="@dimen/dimen_60"
                             android:background="@drawable/shape_btn_sql_boild"
-                            android:text="@android:string/kg_login_submit_button"
+                            android:text="@string/login"
                             android:textColor="@color/white"
                             android:textSize="@dimen/dimen_60sp" />
                     </LinearLayout>

@@ -36,7 +36,8 @@ import java.io.IOException;
 /**
  * 震动/蜂鸣提示
  */
-public class BeepManager implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, Closeable {
+public class BeepManager implements MediaPlayer.OnCompletionListener,
+		MediaPlayer.OnErrorListener, Closeable {
 
 	static final String TAG = BeepManager.class.getSimpleName();
 
@@ -139,5 +140,4 @@ public class BeepManager implements MediaPlayer.OnCompletionListener, MediaPlaye
 			mediaPlayer = null;
 		}
 	}
-
 }

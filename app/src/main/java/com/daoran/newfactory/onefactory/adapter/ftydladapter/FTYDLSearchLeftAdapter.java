@@ -1,7 +1,6 @@
 package com.daoran.newfactory.onefactory.adapter.ftydladapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.ftydl.FTYDLSearchCopyDetailActivity;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDailyBean;
-import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
-import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 
 import java.util.List;
 
@@ -25,9 +21,6 @@ import java.util.List;
 public class FTYDLSearchLeftAdapter extends BaseAdapter {
     private List<FTYDLDailyBean.DataBean> dataBeen;
     private Context context;
-    private SPUtils spUtils;
-    private boolean flag = false;
-    private int isprodure;
     private OnClickFTYDLCopyLinter mOnClickFTYDLCopyLinter;
 
     public FTYDLSearchLeftAdapter(Context context, List<FTYDLDailyBean.DataBean> dataBeen) {

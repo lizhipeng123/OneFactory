@@ -1,8 +1,6 @@
 package com.daoran.newfactory.onefactory.adapter.ftydladapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
-import com.daoran.newfactory.onefactory.activity.work.ftydl.FTYDLSearchDetailActivity;
 import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDailyBean;
-import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
-import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 
 import java.util.List;
 
@@ -26,12 +21,10 @@ import java.util.List;
 public class FTYDLSearchAdapter extends BaseAdapter {
     private Context context;
     private List<FTYDLDailyBean.DataBean> dataBeen;
-    private SPUtils spUtils;
-    private int isprodure;
     private OnClickFTYDLSearchLinter mOnClickFTYDLSearchLinter;
 
-    public FTYDLSearchAdapter(Context context, List<FTYDLDailyBean.DataBean> dataBeen
-    ) {
+    public FTYDLSearchAdapter(Context context,
+                              List<FTYDLDailyBean.DataBean> dataBeen) {
         this.context = context;
         this.dataBeen = dataBeen;
     }
@@ -233,7 +226,8 @@ public class FTYDLSearchAdapter extends BaseAdapter {
         void MyFTYDLSearchLinter(int id);//创建回调函数
     }
 
-    public void setmOnClickFTYDLSearchLinter(OnClickFTYDLSearchLinter mOnClickFTYDLSearchLinter) {
+    public void setmOnClickFTYDLSearchLinter(
+            OnClickFTYDLSearchLinter mOnClickFTYDLSearchLinter) {
         this.mOnClickFTYDLSearchLinter = mOnClickFTYDLSearchLinter;
     }
 }

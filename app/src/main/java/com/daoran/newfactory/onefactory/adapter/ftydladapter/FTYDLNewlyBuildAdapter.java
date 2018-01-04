@@ -28,8 +28,6 @@ public class FTYDLNewlyBuildAdapter extends BaseAdapter {
     private Context context;
     private List<FTYDLFactoryDailyBean.DataBean> dataBeen;
     private int selectItem = -1;
-    private SPUtils spUtils;
-    private boolean flag = false;
     private AlertDialog alertDialog;
     private int isprodure;
     private OnClickNewlyBuildLister mOnClickNewlyBuildLister;
@@ -99,44 +97,44 @@ public class FTYDLNewlyBuildAdapter extends BaseAdapter {
         } else {
             viewHolder.lin_content.setBackgroundColor(Color.TRANSPARENT);
         }
-//        //长按弹出花色具体信息
-//        viewHolder.tvProSize.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                builder.setMessage(getItem(position).getProdcol());
-//                builder.setNegativeButton("退出",
-//                        new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        });
-//                alertDialog = builder.create();
-//                alertDialog.setCanceledOnTouchOutside(false);
-//                alertDialog.show();
-//                return false;
-//            }
-//        });
-//        //长按弹出尺码具体信息
-//        viewHolder.tvProTaskNumber.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                builder.setMessage(getItem(position).getMdl());
-//                builder.setNegativeButton("退出",
-//                        new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        });
-//                alertDialog = builder.create();
-//                alertDialog.setCanceledOnTouchOutside(false);
-//                alertDialog.show();
-//                return false;
-//            }
-//        });
+        //长按弹出花色具体信息
+        viewHolder.tvProSize.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage(getItem(position).getProdcol());
+                builder.setNegativeButton("退出",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog = builder.create();
+                alertDialog.setCanceledOnTouchOutside(false);
+                alertDialog.show();
+                return false;
+            }
+        });
+        //长按弹出尺码具体信息
+        viewHolder.tvProTaskNumber.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage(getItem(position).getMdl());
+                builder.setNegativeButton("退出",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog = builder.create();
+                alertDialog.setCanceledOnTouchOutside(false);
+                alertDialog.show();
+                return false;
+            }
+        });
         if (mOnClickNewlyBuildLister != null) {
             viewHolder.tvProTaskNumber.setOnClickListener(new View.OnClickListener() {
                 @Override
