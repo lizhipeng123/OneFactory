@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -135,11 +136,11 @@ public class QACworkDetailActivity extends Activity
             CommodityCutqty, CommodityPreMemo, CommodityPredoc, CommodityFabricsok,
             CommodityAccessoriesok, CommoditySpcproDec, CommoditySpcproMemo,
             dateQCbdttimesign, dateQCmdttimesign, dateQCMedttimesign, Commodityqcbdtdoc,
-            CommodityQCmdtDoc, CommodityQCedtDoc,CommodityQCMemo,datePackbdattimesign,
-            CommodityPackqty2,dateFactlcdattimesign,commohdTitle,CommodityQCMasterScore,
-            CommodityBatchid,dateCtmchkdttimesign,CommodityIPQCmdt,
-            CommodityIPQCPedt,datePredocdttimesign,datePrebdttimesign,
-            datePremdttimesign,datePreedttimesign;
+            CommodityQCmdtDoc, CommodityQCedtDoc, CommodityQCMemo, datePackbdattimesign,
+            CommodityPackqty2, dateFactlcdattimesign, commohdTitle, CommodityQCMasterScore,
+            CommodityBatchid, dateCtmchkdttimesign, CommodityIPQCmdt,
+            CommodityIPQCPedt, datePredocdttimesign, datePrebdttimesign,
+            datePremdttimesign, datePreedttimesign;
     //本地字符串变量
     private String sealedrevstr, Docbackstr, predtstr, sewfdtstr, sewmdtstr, cutqtystr,
             prememostr, predocstr, fabricsokstr, accessoriesokstr, spcprodecstr,
@@ -155,6 +156,7 @@ public class QACworkDetailActivity extends Activity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qacwork_detail);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setSpUtils(qaCworkDataBean);
         getViews();
         setColumRight();
@@ -628,6 +630,7 @@ public class QACworkDetailActivity extends Activity
         ll_PPSDetail_txt_chkfctdt = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_chkfctdt);
         ll_PPSDetail_txt_chkplace = (LinearLayout) findViewById(R.id.ll_PPSDetail_txt_chkplace);
     }
+
     /*初始化控件显示的数据*/
     private void setViews() {
         tv_commodetail_date.setText(commoitem);

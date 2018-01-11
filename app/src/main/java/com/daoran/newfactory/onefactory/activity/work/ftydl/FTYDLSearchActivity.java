@@ -260,7 +260,6 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                                 if (detailBean.getTotalCount() != 0) {
                                     ll_visibi.setVisibility(View.GONE);
                                     scroll_content.setVisibility(View.VISIBLE);
-                                    System.out.print(detailBeenList);
                                     pageCount = detailBean.getTotalCount();
                                     String count = String.valueOf(pageCount / finalGetsize + 1);
                                     tvSignPage.setText(count);
@@ -347,17 +346,13 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                         @Override
                         public void onResponse(String response, int id) {
                             try {
-                                System.out.print(response);
                                 String ress = response.replace("\\", "");
-                                System.out.print(ress);
                                 String ression = StringUtil.sideTrim(ress, "\"");
-                                System.out.print(ression);
                                 detailBean = new Gson().fromJson(ression, FTYDLDailyBean.class);
                                 detailBeenList = detailBean.getData();
                                 if (detailBean.getTotalCount() != 0) {
                                     ll_visibi.setVisibility(View.GONE);
                                     scroll_content.setVisibility(View.VISIBLE);
-                                    System.out.print(detailBeenList);
                                     pageCount = detailBean.getTotalCount();
                                     String count = String.valueOf(pageCount / finalGetsize + 1);
                                     tvSignPage.setText(count);

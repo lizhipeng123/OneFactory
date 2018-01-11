@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -156,6 +157,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_production_config_vertical);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setSpUtils(detailBeenList);//获取变量
         getView();
         initView();
@@ -1243,7 +1245,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         String tvprodetailOthers;
                         if (detailBeenList.get(position).getWorkers() == null) {
                             tvprodetailOthers = "";
-                        }else{
+                        } else {
                             tvprodetailOthers = detailBeenList.get(position).getWorkers();
                         }
                         String nullmemo;
@@ -1297,7 +1299,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progettasknumber;
                     if (String.valueOf(detailBeenList.get(position).getTaskqty()) == null) {
                         progettasknumber = "";
-                    }else{
+                    } else {
                         progettasknumber = String.valueOf(detailBeenList.get(position).getTaskqty());
                     }
                     String nulltasknumber;
@@ -1346,7 +1348,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetlastmon;
                     if (String.valueOf(detailBeenList.get(position).getLastMonQty()) == null) {
                         progetlastmon = "";
-                    }else{
+                    } else {
                         progetlastmon = String.valueOf(detailBeenList.get(position).getLastMonQty());
                     }
                     String nulllastmon;
@@ -1412,7 +1414,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetlastmon;
                     if (detailBeenList.get(position).getDay1() == null) {
                         progetlastmon = "";
-                    }else{
+                    } else {
                         progetlastmon = detailBeenList.get(position).getDay1();
                     }
                     String nulllastmon;
@@ -1476,7 +1478,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday2;
                     if (detailBeenList.get(position).getDay2() == null) {
                         progetday2 = "";
-                    }else{
+                    } else {
                         progetday2 = detailBeenList.get(position).getDay2();
                     }
                     String nullday2;
@@ -1543,7 +1545,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday3;
                     if (detailBeenList.get(position).getDay3() == null) {
                         progetday3 = "";
-                    }else{
+                    } else {
                         progetday3 = detailBeenList.get(position).getDay3();
                     }
                     String nullday3;
@@ -1610,7 +1612,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday4;
                     if (detailBeenList.get(position).getDay4() == null) {
                         progetday4 = "";
-                    }else{
+                    } else {
                         progetday4 = detailBeenList.get(position).getDay4();
                     }
                     String nullday4;
@@ -1677,7 +1679,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday5;
                     if (detailBeenList.get(position).getDay5() == null) {
                         progetday5 = "";
-                    }else{
+                    } else {
                         progetday5 = detailBeenList.get(position).getDay5();
                     }
                     String nullday5;
@@ -1744,7 +1746,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday6;
                     if (detailBeenList.get(position).getDay6() == null) {
                         progetday6 = "";
-                    }else{
+                    } else {
                         progetday6 = detailBeenList.get(position).getDay6();
                     }
                     String nullday6;
@@ -1808,7 +1810,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday7;
                     if (detailBeenList.get(position).getDay7() == null) {
                         progetday7 = "";
-                    }else{
+                    } else {
                         progetday7 = detailBeenList.get(position).getDay7();
                     }
                     String nullday7;
@@ -1872,7 +1874,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday8;
                     if (detailBeenList.get(position).getDay8() == null) {
                         progetday8 = "";
-                    }else{
+                    } else {
                         progetday8 = detailBeenList.get(position).getDay8();
                     }
                     String nullday8;
@@ -1936,7 +1938,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday9;
                     if (detailBeenList.get(position).getDay9() == null) {
                         progetday9 = "";
-                    }else{
+                    } else {
                         progetday9 = detailBeenList.get(position).getDay9();
                     }
                     String nullday9;
@@ -2000,7 +2002,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday10;
                     if (detailBeenList.get(position).getDay10() == null) {
                         progetday10 = "";
-                    }else{
+                    } else {
                         progetday10 = detailBeenList.get(position).getDay10();
                     }
                     String nullday10;
@@ -2064,7 +2066,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday11;
                     if (detailBeenList.get(position).getDay11() == null) {
                         progetday11 = "";
-                    }else{
+                    } else {
                         progetday11 = detailBeenList.get(position).getDay11();
                     }
                     String nullday11;
@@ -2128,7 +2130,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday12;
                     if (detailBeenList.get(position).getDay12() == null) {
                         progetday12 = "";
-                    }else{
+                    } else {
                         progetday12 = detailBeenList.get(position).getDay12();
                     }
                     String nullday12;
@@ -2192,7 +2194,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday13;
                     if (detailBeenList.get(position).getDay13() == null) {
                         progetday13 = "";
-                    }else{
+                    } else {
                         progetday13 = detailBeenList.get(position).getDay13();
                     }
                     String nullday13;
@@ -2256,7 +2258,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday14;
                     if (detailBeenList.get(position).getDay14() == null) {
                         progetday14 = "";
-                    }else{
+                    } else {
                         progetday14 = detailBeenList.get(position).getDay14();
                     }
                     String nullday14;
@@ -2320,7 +2322,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday15;
                     if (detailBeenList.get(position).getDay15() == null) {
                         progetday15 = "";
-                    }else{
+                    } else {
                         progetday15 = detailBeenList.get(position).getDay15();
                     }
                     String nullday15;
@@ -2384,7 +2386,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday16;
                     if (detailBeenList.get(position).getDay16() == null) {
                         progetday16 = "";
-                    }else{
+                    } else {
                         progetday16 = detailBeenList.get(position).getDay16();
                     }
                     String nullday16;
@@ -2448,7 +2450,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday17;
                     if (detailBeenList.get(position).getDay17() == null) {
                         progetday17 = "";
-                    }else{
+                    } else {
                         progetday17 = detailBeenList.get(position).getDay17();
                     }
                     String nullday17;
@@ -2512,7 +2514,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday18;
                     if (detailBeenList.get(position).getDay18() == null) {
                         progetday18 = "";
-                    }else{
+                    } else {
                         progetday18 = detailBeenList.get(position).getDay18();
                     }
                     String nullday18;
@@ -2576,7 +2578,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday19;
                     if (detailBeenList.get(position).getDay19() == null) {
                         progetday19 = "";
-                    }else{
+                    } else {
                         progetday19 = detailBeenList.get(position).getDay19();
                     }
                     String nullday19;
@@ -2640,7 +2642,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday20;
                     if (detailBeenList.get(position).getDay20() == null) {
                         progetday20 = "";
-                    }else{
+                    } else {
                         progetday20 = detailBeenList.get(position).getDay20();
                     }
                     String nullday20;
@@ -2704,7 +2706,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday21;
                     if (detailBeenList.get(position).getDay21() == null) {
                         progetday21 = "";
-                    }else{
+                    } else {
                         progetday21 = detailBeenList.get(position).getDay21();
                     }
                     String nullday21;
@@ -2768,7 +2770,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday22;
                     if (detailBeenList.get(position).getDay22() == null) {
                         progetday22 = "";
-                    }else{
+                    } else {
                         progetday22 = detailBeenList.get(position).getDay22();
                     }
                     String nullday22;
@@ -2832,7 +2834,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday23;
                     if (detailBeenList.get(position).getDay23() == null) {
                         progetday23 = "";
-                    }else{
+                    } else {
                         progetday23 = detailBeenList.get(position).getDay23();
                     }
                     String nullday23;
@@ -2896,7 +2898,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday24;
                     if (detailBeenList.get(position).getDay24() == null) {
                         progetday24 = "";
-                    }else{
+                    } else {
                         progetday24 = detailBeenList.get(position).getDay24();
                     }
                     String nullday24;
@@ -2960,7 +2962,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday25;
                     if (detailBeenList.get(position).getDay25() == null) {
                         progetday25 = "";
-                    }else{
+                    } else {
                         progetday25 = detailBeenList.get(position).getDay25();
                     }
                     String nullday25;
@@ -3024,7 +3026,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday26;
                     if (detailBeenList.get(position).getDay26() == null) {
                         progetday26 = "";
-                    }else{
+                    } else {
                         progetday26 = detailBeenList.get(position).getDay26();
                     }
                     String nullday26;
@@ -3088,7 +3090,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday27;
                     if (detailBeenList.get(position).getDay27() == null) {
                         progetday27 = "";
-                    }else{
+                    } else {
                         progetday27 = detailBeenList.get(position).getDay27();
                     }
                     String nullday27;
@@ -3152,7 +3154,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday28;
                     if (detailBeenList.get(position).getDay28() == null) {
                         progetday28 = "";
-                    }else{
+                    } else {
                         progetday28 = detailBeenList.get(position).getDay28();
                     }
                     String nullday28;
@@ -3216,7 +3218,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday29;
                     if (detailBeenList.get(position).getDay29() == null) {
                         progetday29 = "";
-                    }else{
+                    } else {
                         progetday29 = detailBeenList.get(position).getDay29();
                     }
                     String nullday29;
@@ -3280,7 +3282,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                     String progetday30;
                     if (detailBeenList.get(position).getDay30() == null) {
                         progetday30 = "";
-                    }else{
+                    } else {
                         progetday30 = detailBeenList.get(position).getDay30();
                     }
                     String nullday30;
@@ -3352,7 +3354,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         String progetday31;
                         if (detailBeenList.get(position).getDay31() == null) {
                             progetday31 = "";
-                        }else{
+                        } else {
                             progetday31 = detailBeenList.get(position).getDay31();
                         }
                         String nullday31;
@@ -3404,7 +3406,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                 String progetmemo;
                 if (detailBeenList.get(position).getMemo() == null) {
                     progetmemo = "";
-                }else{
+                } else {
                     progetmemo = detailBeenList.get(position).getMemo();
                 }
                 String nullmemo;
@@ -3498,7 +3500,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         String title = item.getTitle().toString();
                         if (detailBeenList.get(position).getSubfactoryTeams() == null) {
                             pronullpartment = "";
-                        }else{
+                        } else {
                             pronullpartment = detailBeenList.get(position).getSubfactoryTeams();
                         }
                         String nullpartment;
@@ -3538,7 +3540,7 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         String pronullstate;
                         if (detailBeenList.get(position).getPrdstatus() == null) {
                             pronullstate = "";
-                        }else{
+                        } else {
                             pronullstate = detailBeenList.get(position).getPrdstatus();
                         }
                         String nullstate;
@@ -3627,18 +3629,18 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         String total;
                         if (procalbeanlist.get(i).getProClippingnumber() == null) {
                             String tvprodetailClippingNumber;
-                            if(String.valueOf(detailBeenList.get(position).getFactcutqty())==null){
+                            if (String.valueOf(detailBeenList.get(position).getFactcutqty()) == null) {
                                 tvprodetailClippingNumber = "";
-                            }else{
+                            } else {
                                 tvprodetailClippingNumber = String.valueOf(detailBeenList.
                                         get(position).getFactcutqty());
                             }
                             cli = Integer.parseInt(tvprodetailClippingNumber);
                             clippingint = cli;
                             String tvprodetailCompletedLastMonth;
-                            if(String.valueOf(detailBeenList.get(position).getSumCompletedQty())==null){
+                            if (String.valueOf(detailBeenList.get(position).getSumCompletedQty()) == null) {
                                 tvprodetailCompletedLastMonth = "";
-                            }else{
+                            } else {
                                 tvprodetailCompletedLastMonth = String.valueOf(detailBeenList.
                                         get(position).getSumCompletedQty());
                             }
@@ -3774,18 +3776,18 @@ public class FTYDLSearchDetailActivity extends BaseFrangmentActivity implements
                         String total;
                         if (procalbeanlist.get(i).getProClippingnumber() == null) {
                             String tvprodetailClippingNumber;
-                            if(String.valueOf(detailBeenList.get(position).getFactcutqty())==null){
+                            if (String.valueOf(detailBeenList.get(position).getFactcutqty()) == null) {
                                 tvprodetailClippingNumber = "";
-                            }else{
+                            } else {
                                 tvprodetailClippingNumber = String.valueOf(detailBeenList.
                                         get(position).getFactcutqty());
                             }
                             cli = Integer.parseInt(tvprodetailClippingNumber);
                             clippingint = cli;
                             String tvprodetailCompletedLastMonth;
-                            if(String.valueOf(detailBeenList.get(position).getSumCompletedQty())==null){
+                            if (String.valueOf(detailBeenList.get(position).getSumCompletedQty()) == null) {
                                 tvprodetailCompletedLastMonth = "";
-                            }else{
+                            } else {
                                 tvprodetailCompletedLastMonth = String.valueOf(detailBeenList
                                         .get(position).getSumCompletedQty());
                             }

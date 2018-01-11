@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -124,7 +125,7 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
             tvnewlypsaler, tvnewlymemo, tvnewlyunit, tvnewlymegitem, tvnewlyteamname,
             tvnewlyrecordid, tvnewlycutbdt, tvnewlysewbdt, tvnewlysewedt, tvnewlysewDays, tvnewlyperqty, tvnewlycutamount, tvnewlysewamount, tvnewlypackamount, tvnewlyamount, tvnewlyperMachineQty, tvnewlysumMachineQty, tvnewlyprdmaster, tvnewlyleftQty, tvnewlylastMonQty, tvnewlyprddocumentaryid, tvnewlyisdiffc;
 
-    private String usernamerecoder,recordid, //登录人
+    private String usernamerecoder, recordid, //登录人
             monthnew, //复制月变量
             yearnew, //复制年变量
             CountMonthstr//总完工数
@@ -158,6 +159,7 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_production_config_vertical);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setSpUtils();
         getViews();
         initViews();
@@ -356,9 +358,9 @@ public class FTYDLSearchCopyDetailActivity extends BaseFrangmentActivity
         isprodure = sp.getString("FTYDLLeftIsProdure", "");//是否是工序
         usernamerecoder = sp.getString("usernamerecoder", "");//登录人
         recordid = sp.getString("username", "");//制单人id(登录名)
-        if(detailBeenList.get(idpostion).getWorkingProcedure()==null){//工序
+        if (detailBeenList.get(idpostion).getWorkingProcedure() == null) {//工序
             tvnewlyProcedure = "";
-        }else{
+        } else {
             tvnewlyProcedure = detailBeenList.get(idpostion).getWorkingProcedure();
         }
 
