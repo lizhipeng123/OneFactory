@@ -87,7 +87,7 @@ public class QACworkDetailActivity extends Activity
             tv_commodetail_packqty2, tv_commodetail_QCMemo, tv_commodetail_batchid,
             tv_commodetail_chker, tv_commodetail_QAname, tv_commodetail_QAScore,
             tv_commodetail_chkplace;
-
+    //列名数组
     private String[] columns = new String[]{"ID", "subfactory", "item", "sealedrev",
             "docback", "predt", "lcdat", "sewFdt", "sewMdt", "taskqty",
             "cutqty", "preMemo", "predoc", "fabricsok", "accessoriesok",

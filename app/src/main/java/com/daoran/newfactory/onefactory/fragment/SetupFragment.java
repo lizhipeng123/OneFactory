@@ -23,14 +23,19 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.daoran.newfactory.onefactory.R;
 import com.daoran.newfactory.onefactory.activity.login.LoginMainActivity;
@@ -46,6 +51,7 @@ import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
 import com.daoran.newfactory.onefactory.util.Http.NetUtil;
 import com.daoran.newfactory.onefactory.util.Http.NetWork;
 import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
+import com.daoran.newfactory.onefactory.util.Listener.ToggleLintener;
 import com.daoran.newfactory.onefactory.util.file.json.StringUtil;
 import com.daoran.newfactory.onefactory.util.exception.ToastUtils;
 import com.daoran.newfactory.onefactory.util.file.setting.DataCleanManager;
@@ -63,6 +69,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.List;
+
+import cn.jpush.android.api.JPushInterface;
 
 import static com.umeng.analytics.MobclickAgent.onProfileSignOff;
 
@@ -99,6 +107,8 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout rlcopyname;//切换用户
     private TextView tvwifimanager, tvwifissid;
     private TextView tvcopynames;
+    private ToggleButton toggle_AutoPlay;
+    private ImageButton toggleButton_AutoPlay;
 
     /*下载文件的状态*/
     private static final int DOWN_NOSDCARD = 0;//未找到sd卡
@@ -135,9 +145,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
     }
 
-    /**
-     * 实例化控件
-     */
+    /*实例化控件*/
     private void getViews() {
         rlAgainLogin = (RelativeLayout) view.findViewById(R.id.rlAgainLogin);
         rlEditionUpdate = (RelativeLayout) view.findViewById(R.id.rlEditionUpdate);
@@ -157,19 +165,14 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         rlrili = (RelativeLayout) view.findViewById(R.id.rlrili);
         rlcopyname = (RelativeLayout) view.findViewById(R.id.rlcopyname);
         tvcopynames = (TextView) view.findViewById(R.id.tvcopynames);
-        sp = mactivity.getSharedPreferences("my_sp", 0);
-        String vercode = sp.getString("Applicationscode", "");
-        String namebuld = sp.getString("name", "");
-        tvcopynames.setText(namebuld);
-        tvNewVersion.setText(vercode);
-        String cleanmana = getAppCacheSize();
+        toggle_AutoPlay = (ToggleButton) view.findViewById(R.id.toggle_AutoPlay);
+        toggleButton_AutoPlay = (ImageButton) view.findViewById(R.id.toggleButton_AutoPlay);
+        String cleanmana = getAppCacheSize();//计算的缓存大小
         tv_clean.setText(cleanmana);
         spUtils.put(mactivity, "cleanmana", cleanmana);
     }
 
-    /**
-     * 操作控件
-     */
+    /*操作控件*/
     private void initViews() {
         rlAgainLogin.setOnClickListener(this);
         rlEditionUpdate.setOnClickListener(this);
@@ -184,6 +187,43 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         rlPhoto.setOnClickListener(this);
         rlrili.setOnClickListener(this);
         rlcopyname.setOnClickListener(this);
+        sp = mactivity.getSharedPreferences("my_sp", 0);
+        String vercode = sp.getString("Applicationscode", "");//版本号
+        String namebuld = sp.getString("name", "");//用户名
+        tvcopynames.setText(namebuld);
+        tvNewVersion.setText(vercode);
+        boolean isAutoPlay = sp.getBoolean("truePushflag", true);//是否接受推送
+        toggle_AutoPlay.setChecked(isAutoPlay);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) toggleButton_AutoPlay.getLayoutParams();
+        if (isAutoPlay) {//默认为开启状态
+            params.addRule(RelativeLayout.ALIGN_RIGHT, -1);
+            params.addRule(RelativeLayout.ALIGN_LEFT, R.id.toggleButton_AutoPlay);
+            toggleButton_AutoPlay.setLayoutParams(params);
+            toggleButton_AutoPlay.setImageResource(R.drawable.push_thumb);
+            toggle_AutoPlay.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+            JPushInterface.resumePush(mactivity.getApplicationContext());
+        } else {//关闭状态
+            params.addRule(RelativeLayout.ALIGN_RIGHT, R.id.toggle_AutoPlay);
+            params.addRule(RelativeLayout.ALIGN_LEFT, -1);
+            toggleButton_AutoPlay.setLayoutParams(params);
+            toggleButton_AutoPlay.setImageResource(R.drawable.push_thumb_off);
+            JPushInterface.stopPush(mactivity.getApplicationContext());
+        }
+        setOnclick();
+    }
+
+    private void setOnclick() {
+        //监听动画
+        toggle_AutoPlay.setOnCheckedChangeListener(new ToggleLintener(mactivity,
+                "开启",
+                toggle_AutoPlay, toggleButton_AutoPlay));
+        View.OnClickListener clickToToggleListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggle_AutoPlay.toggle();
+            }
+        };
+        toggleButton_AutoPlay.setOnClickListener(clickToToggleListener);
     }
 
     @Override
@@ -312,13 +352,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    /**
-     * 安装app
-     *
-     * @param context
-     * @param packagename
-     * @return
-     */
+    /*安装app*/
     private boolean isAppInstalled(Context context, String packagename) {
         PackageInfo packageInfo;
         try {
@@ -359,11 +393,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         return copyIsFinish;
     }
 
-    /**
-     * 安装云信apk
-     *
-     * @param context
-     */
+    /*安装云信apk*/
     public void intallApp(Context context) {
         try {
             String path = context.getFilesDir().getAbsolutePath() + "/nim.apk";  //从assets中解压到这个目录
@@ -397,12 +427,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    /**
-     * 传输apk文件
-     *
-     * @param inputStream
-     * @param file
-     */
+    /*传输apk文件*/
     public void inputStreamToFile(InputStream inputStream, File file) {
         OutputStream outputStream = null;//准备传输对象
         try {
@@ -433,13 +458,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    /**
-     * 启动已安装的云信apk
-     *
-     * @param context
-     * @param packageName
-     * @return
-     */
+    /*启动已安装的云信apk*/
     public boolean startApp(Context context, String packageName) {
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -462,9 +481,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         return false;
     }
 
-    /**
-     * 获取本机版本号
-     */
+    /*获取本机版本号*/
     private void getCurrentVersion() {
         try {
             PackageInfo info =
@@ -477,9 +494,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    /**
-     * 版本更新
-     */
+    /*版本更新*/
     private void checkAppVersion(final boolean slience) {
         getCurrentVersion();
         String strversion = HttpUrl.debugoneUrl + "AppVersion/GetAppVersion";
@@ -544,10 +559,8 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    /**
-     * 显示版本更新通知对话框
-     * focuseUpdate 0:自己服务端更新 1：自己服务端强制更新
-     */
+    /*显示版本更新通知对话框*/
+    /*focuseUpdate 0:自己服务端更新 1：自己服务端强制更新*/
     public void showNoticeDialog(int focuseUpdate, boolean slience) {
         sp = mactivity.getSharedPreferences("my_sp", 0);
         String reason = sp.getString("reason", "");
@@ -595,9 +608,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    /**
-     * 显示下载对话框
-     */
+    /*显示下载对话框*/
     private void showDownloadDialog(int focuseUpdate) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mactivity);
         builder.setTitle("正在下载新版本");
@@ -644,9 +655,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         ;
     };
 
-    /**
-     * 开启线程更新app
-     */
+    /*开启线程更新app*/
     private Runnable mdownApkRunnable = new Runnable() {
         @Override
         public void run() {
@@ -734,17 +743,13 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         tvwifissid.setText(infossid);
     }
 
-    /**
-     * 下载apk
-     */
+    /*下载apk*/
     private void downloadApk() {
         downLoadThread = new Thread(mdownApkRunnable);
         downLoadThread.start();
     }
 
-    /**
-     * 安装apk
-     */
+    /*安装apk*/
     private void installApk() {
         File apkfile = new File(apkFilePath);
         Intent i = new Intent(Intent.ACTION_VIEW);
@@ -761,11 +766,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         startActivity(i);
     }
 
-    /**
-     * 检测缓存大小
-     *
-     * @return
-     */
+    /*检测缓存大小*/
     private String getAppCacheSize() {
         try {
             long cacheSize = DataCleanManager.getFolderSize(mactivity.getApplicationContext().getCacheDir()) +
@@ -777,9 +778,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         return "--B";
     }
 
-    /**
-     * 清除缓存
-     */
+    /*清除缓存*/
     private void showClearDialog() {
         progressDialog = new Dialog(mactivity, R.style.CustomProgressDialog);
         progressDialog.setContentView(R.layout.set_clearcache_dialog);

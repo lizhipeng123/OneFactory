@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 生产日报详情实体类(条件性质)
+ * 生产日报详情实体类(条件性质)(序列化)
  * Created by lizhipeng on 2017/4/27.
  * 生产日报点击修改时，判断裁床多色查询接收的全部数据
  */

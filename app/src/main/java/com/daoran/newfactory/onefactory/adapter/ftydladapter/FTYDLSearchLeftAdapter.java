@@ -14,7 +14,7 @@ import com.daoran.newfactory.onefactory.bean.ftydlbean.FTYDLDailyBean;
 import java.util.List;
 
 /**
- * 生产日报左侧列表适配
+ * 生产日报左侧款号列表适配
  * Created by lizhipeng on 2017/6/22.
  */
 
@@ -57,7 +57,6 @@ public class FTYDLSearchLeftAdapter extends BaseAdapter {
         }
         String productionItem = getItem(position).getItem();
         viewHolder.tvLeft.setText(productionItem);
-
         if(mOnClickFTYDLCopyLinter!=null){
             viewHolder.lin_content.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 查货跟踪详情实体类
+ * 查货跟踪详情实体类(序列化)
  * Created by lizhipeng on 2017/4/27.
  */
 

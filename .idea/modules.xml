@@ -4,18 +4,18 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/OneFactory.iml" filepath="$PROJECT_DIR$/OneFactory.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://E:/androidwork/OneFactory/appp/appp.iml" filepath="E:/androidwork/OneFactory/appp/appp.iml" />
+      <module fileurl="file://E:\androidwork\OneFactory\appp\appp.iml" filepath="E:\androidwork\OneFactory\appp\appp.iml" />
       <module fileurl="file://$PROJECT_DIR$/calendar/calendar.iml" filepath="$PROJECT_DIR$/calendar/calendar.iml" />
       <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
       <module fileurl="file://$PROJECT_DIR$/epubReader/epubReader.iml" filepath="$PROJECT_DIR$/epubReader/epubReader.iml" />
-      <module fileurl="file://E:/androidwork/OneFactory/lib/lib.iml" filepath="E:/androidwork/OneFactory/lib/lib.iml" />
+      <module fileurl="file://E:\androidwork\OneFactory\lib\lib.iml" filepath="E:\androidwork\OneFactory\lib\lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
-      <module fileurl="file://E:/androidwork/OneFactory/myapplication/myapplication.iml" filepath="E:/androidwork/OneFactory/myapplication/myapplication.iml" />
-      <module fileurl="file://E:/androidwork/OneFactory/mylibrary/mylibrary.iml" filepath="E:/androidwork/OneFactory/mylibrary/mylibrary.iml" />
+      <module fileurl="file://E:\androidwork\OneFactory\myapplication\myapplication.iml" filepath="E:\androidwork\OneFactory\myapplication\myapplication.iml" />
+      <module fileurl="file://E:\androidwork\OneFactory\mylibrary\mylibrary.iml" filepath="E:\androidwork\OneFactory\mylibrary\mylibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/myrecycleview/myrecycleview.iml" filepath="$PROJECT_DIR$/myrecycleview/myrecycleview.iml" />
-      <module fileurl="file://E:/androidwork/OneFactory/uikit/uikit.iml" filepath="E:/androidwork/OneFactory/uikit/uikit.iml" />
+      <module fileurl="file://E:\androidwork\OneFactory\uikit\uikit.iml" filepath="E:\androidwork\OneFactory\uikit\uikit.iml" />
       <module fileurl="file://$PROJECT_DIR$/youkuPlayerOpenSDK/youkuPlayerOpenSDK.iml" filepath="$PROJECT_DIR$/youkuPlayerOpenSDK/youkuPlayerOpenSDK.iml" />
-      <module fileurl="file://E:/androidwork/OneFactory/zz-excel-creator/zz-excel-creator.iml" filepath="E:/androidwork/OneFactory/zz-excel-creator/zz-excel-creator.iml" />
+      <module fileurl="file://E:\androidwork\OneFactory\zz-excel-creator\zz-excel-creator.iml" filepath="E:\androidwork\OneFactory\zz-excel-creator\zz-excel-creator.iml" />
     </modules>
   </component>
 </project>

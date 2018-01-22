@@ -127,7 +127,7 @@ public class FTYDLNewlyComfigDetailActivity
     //内部数值变量赋值
     private String productionTaskNumber, totalBalanceamount, productionMonth,
             productionClippingNumber, productionCompletedLastMonth, productionTotalCompletion,
-            proColumnTitle, tvColorTaskqtyss, productionBalanceAmount,
+            proColumnTitle, tvTaskqtys, productionBalanceAmount,
             productionOneDay, productionTwoDay, productionThreeDay, productionForeDay,
             productionFiveDay, productionSixDay, productionSevenDay, productionEightDay,
             productionNineDay, productionTenDay, productionElevenDay, productionTwelveDay,
@@ -792,7 +792,7 @@ public class FTYDLNewlyComfigDetailActivity
                 String prooneday = et_config_sixday.getText().toString();
                 spUtils.put(getApplicationContext(), "configSixDay", prooneday);
                 String prolastmonth = et_config_completedlastmonth.getText().toString();
-                if (prolastmonth.equals("")) {
+                if (prolastmonth.equals("")) {//
                     lastmonth = 0;
                     setCount(lastmonth);
                 } else {
@@ -1963,9 +1963,9 @@ public class FTYDLNewlyComfigDetailActivity
         }
 
         if (productionTaskNumber.equals("")) {//如果没有修改任务数，就把款号传过来的任务数加进去
-            tvColorTaskqtyss = tvnewlyTaskqty;
+            tvTaskqtys = tvnewlyTaskqty;
         } else {
-            tvColorTaskqtyss = productionTaskNumber;
+            tvTaskqtys = productionTaskNumber;
         }
 
         if (proPrdstatusTitle.equals("")) {//状态
@@ -1973,19 +1973,19 @@ public class FTYDLNewlyComfigDetailActivity
         } else {
             tvnewlyTotalCompletionn = proPrdstatusTitle;
         }
-
-        int listsize = booleandatelist.size();
+        int listsize = booleandatelist.size();//查询出的相关数据的数量长度
         if (listsize == 0) {
             listsize = 1;
         } else {
             listsize = booleandatelist.size();
         }
         String[] arrsitem = tvnewlyItem.split(",");//修改的款号数组
-        String[] arrsdatemonth = new String[listsize];
+        String[] arrsdatemonth = new String[listsize];//月份数组
         String[] arrsdatepredure = new String[listsize];//符合条件的工序数组
         String[] arrsdateSubfactoryTeams = new String[listsize];//部门组别
         Gson gson = new Gson();
-        if (tvColorTaskqtyss.equals("") || tvColorTaskqtyss == null) {
+        //判断任务数是否为空，如果为空则不能执行下一步，任务数必须填写
+        if (tvTaskqtys.equals("") || tvTaskqtys == null) {
             ToastUtils.ShowToastMessage("任务数不能为空",
                     FTYDLNewlyComfigDetailActivity.this);
         } else {
@@ -1994,7 +1994,6 @@ public class FTYDLNewlyComfigDetailActivity
                 /*判断工序是否是裁床*/
                 if (tvnewlyProcedure.equals("裁床")) {
                     try {
-                        /*如果花色为多条，则循环把这条数据分成多条数据*/
                         for (int j = 0; j < newdataBeans.size(); j++) {
                             FTYDLDetailSaveBean consaveBean =
                                     new FTYDLDetailSaveBean();
@@ -2016,8 +2015,10 @@ public class FTYDLNewlyComfigDetailActivity
                             consaveBean.setSumCompletedQty(procalbeanlist.get(j)
                                     .getProTotalCompletion());//总完工数
                             consaveBean.setLastMonQty(productionCompletedLastMonth);//上月完工数
-                            int balan = Integer.parseInt(procalbeanlist.get(j).getBalanceAmount());
-                            int cli = Integer.parseInt(procalbeanlist.get(j).getProClippingnumber());
+                            int balan = Integer.parseInt(
+                                    procalbeanlist.get(j).getBalanceAmount());//结余数量
+                            int cli = Integer.parseInt(
+                                    procalbeanlist.get(j).getProClippingnumber());//实裁数
                             consaveBean.setLeftQty(String.valueOf(balan - cli));//结余数量/
                             consaveBean.setPrdstatus(tvnewlyTotalCompletionn);//状态
                             consaveBean.setYear(String.valueOf(year));//年
@@ -2162,7 +2163,7 @@ public class FTYDLNewlyComfigDetailActivity
                         consaveBean.setWorkingProcedure(tvnewlyProcedure);//工序
                         consaveBean.setWorkers(someOther);//组别人数
                         consaveBean.setPqty(tvnewSingularSystem);//制单数
-                        consaveBean.setTaskqty(tvColorTaskqtyss);//任务数
+                        consaveBean.setTaskqty(tvTaskqtys);//任务数
                         consaveBean.setMdl(tvnewlyMdl);//尺码
                         consaveBean.setFactcutqty(productionTaskNumber);//实裁数
                         consaveBean.setSumCompletedQty(productionTotalCompletion);//总完工数
@@ -2275,7 +2276,7 @@ public class FTYDLNewlyComfigDetailActivity
                             String woritem = booleandatelist.get(i).getItem();
                             String[] workitempro = woritem.split(",");
                             boolean probool = containsAll(arrsitem, workitempro);
-                            if (probool == true) {//得到一致的数据
+                            if (probool == true) {//得到的一致的数据
                                 arrsdatepredure[i] = booleandatelist.get(i).getWorkingProcedure();
                                 arrsdatemonth[i] = booleandatelist.get(i).getMonth();
                                 if (booleandatelist.get(i).getSubfactoryTeams() == null) {
@@ -2295,7 +2296,7 @@ public class FTYDLNewlyComfigDetailActivity
                         arrsdateSubfactoryTeams[i] = "";
                     }
                 }
-                StringBuffer sb = new StringBuffer();//循环去掉空的数据
+                StringBuffer sb = new StringBuffer();//循环去掉空的数据(截取字符串)
                 for (int i = 0; i < arrsdatepredure.length; i++) {
                     if ("".equals(arrsdatepredure[i])) {
                         continue;
@@ -2453,7 +2454,7 @@ public class FTYDLNewlyComfigDetailActivity
                         consaveBean.setWorkingProcedure(tvnewlyProcedure);//工序
                         consaveBean.setWorkers(someOther);//组别人数
                         consaveBean.setPqty(tvnewSingularSystem);//制单数
-                        consaveBean.setTaskqty(tvColorTaskqtyss);//任务数
+                        consaveBean.setTaskqty(tvTaskqtys);//任务数
                         consaveBean.setMdl(tvnewlyMdl);//尺码
                         consaveBean.setFactcutqty(productionTaskNumber);//实裁数
                         consaveBean.setSumCompletedQty(productionTotalCompletion);//总完工数

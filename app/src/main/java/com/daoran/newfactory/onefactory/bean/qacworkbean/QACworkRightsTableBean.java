@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 创建时间：2017/11/23
  * 编写人：lizhipeng
- * 功能描述：
+ * 功能描述：列权限实体(序列化)
  */
 
 public class QACworkRightsTableBean implements Parcelable {
@@ -110,7 +110,7 @@ public class QACworkRightsTableBean implements Parcelable {
         dest.writeInt(TableTypeID);
     }
 
-    public static class JsonTextBean implements Parcelable{
+    public static class JsonTextBean implements Parcelable {
         /**
          * id : 0
          * pId : -1

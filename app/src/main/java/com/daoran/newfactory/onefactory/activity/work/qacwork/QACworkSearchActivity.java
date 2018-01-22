@@ -71,8 +71,8 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
     private QACworkSearchAdapter sqlAdapter;//列表适配
 
     private List<QACworkRightsTableBean.JsonTextBean> jsonTextBeanlist =
-            new ArrayList<QACworkRightsTableBean.JsonTextBean>();
-    private QACworkRightsTableBean QACworkRightsTableBean;
+            new ArrayList<QACworkRightsTableBean.JsonTextBean>();//列权限集合
+    private QACworkRightsTableBean QACworkRightsTableBean;//列权限实体
 
     private TextView tvSignPage,//显示的总页数
             tv_visibi;//空数据显示的页面信息
@@ -93,6 +93,7 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
     private SharedPreferences sp;//轻量级存储本地数据
     private SPUtils spUtils;
 
+    //拼接的列名数组
     private String[] columns = new String[]{"ID", "subfactory", "item", "sealedrev",
             "docback", "predt", "lcdat", "sewFdt", "sewMdt", "taskqty",
             "cutqty", "preMemo", "predoc", "fabricsok", "accessoriesok",
@@ -102,7 +103,7 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
             "QCMasterScore", "batchid", "QAname", "QAScore", "QAMemo", "ctmtxt",
             "ctmchkdt", "IPQCmdt", "IPQCPedt", "predocdt", "prebdt", "premdt",
             "preedt"};
-    private List<String> columnlist = Arrays.asList(columns);
+    private List<String> columnlist = Arrays.asList(columns);//数组转化为集合
 
     private TextView tvCommodetailCtmtxt, tvCommodetailPrddocumentary,
             tvCommodetailPrdmaster, tvCommodetailQCMasterScore,
@@ -559,7 +560,7 @@ public class QACworkSearchActivity extends BaseFrangmentActivity
         if (NetWork.isNetWorkAvailable(this)) {
             ResponseDialog.showLoading(this, "正在查询");
             final int finalGetsize = Integer.parseInt(pagesize);
-            OkHttpUtils.postString()
+            OkHttpUtils.postString()//okhttputil
                     .url(str)
                     .content(stringpost)
                     .mediaType(MediaType.parse("application/json;charset=utf-8"))
