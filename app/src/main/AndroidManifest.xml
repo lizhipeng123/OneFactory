@@ -236,6 +236,7 @@
         <!--添加账号-->
         <activity
             android:name=".activity.work.setting.WorkPwSwitchActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
@@ -282,6 +283,12 @@
         <!--修改保存-->
         <activity
             android:name=".activity.work.ftydl.FTYDLSearchDetailActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <!--用户管理-->
+        <activity
+            android:name=".activity.work.setting.UserManagerActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />

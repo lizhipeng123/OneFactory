@@ -14,7 +14,6 @@ import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -71,8 +70,6 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 登录页
@@ -132,16 +129,16 @@ public class LoginMainActivity extends BaseFrangmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         sp = getSharedPreferences("my_sp", 0);//my_sp为轻量级存储文件，5.0以上只能设置后面参数为0，以下可以设置具体权限
-        if (Build.VERSION.SDK_INT >= 21) {//android沉浸式状态栏，只有5.0以上，才会有沉浸式状态栏
-            View decorView = getWindow().getDecorView();
-            //View.SYSTEM_UI_FLAG_FULLSCREEN 表示 activity全局显示，但状态栏不会隐藏覆盖
-            //View.SYSTEM_UI_FLAG_LAYOUT_STABLE 表示 防止状态栏隐藏
-            int option = View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-            decorView.setSystemUiVisibility(option);
-            //设置状态栏颜色
-            getWindow().setStatusBarColor(getResources().getColor(R.color.lightblue));
-        }
+//        if (Build.VERSION.SDK_INT >= 21) {//android沉浸式状态栏，只有5.0以上，才会有沉浸式状态栏
+//            View decorView = getWindow().getDecorView();
+//            //View.SYSTEM_UI_FLAG_FULLSCREEN 表示 activity全局显示，但状态栏不会隐藏覆盖
+//            //View.SYSTEM_UI_FLAG_LAYOUT_STABLE 表示 防止状态栏隐藏
+//            int option = View.SYSTEM_UI_FLAG_FULLSCREEN
+//                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+//            decorView.setSystemUiVisibility(option);
+//            //设置状态栏颜色
+//            getWindow().setStatusBarColor(getResources().getColor(R.color.lightblue));
+//        }
         getViews();
         initViews();
         checkAppVersion(true);//调用版本更新，调用状态默认为true，强制更新

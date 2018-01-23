@@ -64,13 +64,6 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pwswitch_work);
         sp = getSharedPreferences("my_sp", 0);
-        if (Build.VERSION.SDK_INT >= 21) {//沉浸式标题栏，适配6.0以上
-            View decorView = getWindow().getDecorView();
-            int option = View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-            decorView.setSystemUiVisibility(option);
-            getWindow().setStatusBarColor(getResources().getColor(R.color.lightblue));
-        }
         getViews();
         setViews();
         setListener();
@@ -114,7 +107,7 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
                 String speChat = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
                 Pattern pattern = Pattern.compile(speChat);
                 Matcher matcher = pattern.matcher(source.toString());
-                if (source.equals(" ")||source.equals("\n")||matcher.find())
+                if (source.equals(" ") || source.equals("\n") || matcher.find())
                     return "";
                 else
                     return null;
@@ -179,8 +172,7 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
     private void postLogin() {
         String loginuserUrl = HttpUrl.debugoneUrl + "Login/UserLogin/";
         if (NetWork.isNetWorkAvailable(this)) {
-            final ProgressDialog progressDialog = ProgressDialog.show(this,
-                    "请稍候...", "正在登录中...", false, true);
+            ResponseDialog.showLoading(this, "正在登录");
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(NetUtil.createParam("Logid", etUsername.getText().toString()));
             params.add(NetUtil.createParam("pwd", etPassword.getText().toString()));
@@ -192,18 +184,6 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
                         @Override
                         public void onSuccess(String content) {
                             super.onSuccess(content);
-                            Thread thread = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        Thread.sleep(3000);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                    progressDialog.dismiss();
-                                }
-                            });
-                            thread.start();
                             System.out.print(content);
                             userNameValue = etUsername.getText().toString();
                             passwordValue = etPassword.getText().toString();
@@ -266,6 +246,7 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
                                 intent.putExtras(bundle);
                                 setResult(2, intent);
                                 startActivity(intent);
+                                ResponseDialog.closeLoading();
                             } else {
                                 ToastUtils.ShowToastMessage(R.string.user_tips, WorkPwSwitchActivity.this);
                                 ResponseDialog.closeLoading();
@@ -275,36 +256,14 @@ public class WorkPwSwitchActivity extends BaseFrangmentActivity implements
                         @Override
                         public void onFailure(Throwable error, String content) {
                             super.onFailure(error, content);
+                            ResponseDialog.closeLoading();
                             ToastUtils.ShowToastMessage(R.string.login_has_error, WorkPwSwitchActivity.this);
-                            Thread thread = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        Thread.sleep(3000);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                    progressDialog.dismiss();
-                                }
-                            });
-                            thread.start();
                         }
 
                         @Override
                         public void onFinish() {
                             super.onFinish();
-                            Thread thread = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        Thread.sleep(3000);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                    progressDialog.dismiss();
-                                }
-                            });
-                            thread.start();
+                            ResponseDialog.closeLoading();
                         }
                     });
         } else {

@@ -45,6 +45,7 @@ import com.daoran.newfactory.onefactory.activity.work.setting.CoreActivity;
 import com.daoran.newfactory.onefactory.activity.work.setting.ExcelSDActivity;
 import com.daoran.newfactory.onefactory.activity.work.setting.MonthActivity;
 import com.daoran.newfactory.onefactory.activity.work.setting.PictureActivity;
+import com.daoran.newfactory.onefactory.activity.work.setting.UserManagerActivity;
 import com.daoran.newfactory.onefactory.bean.loginbean.VerCodeBean;
 import com.daoran.newfactory.onefactory.util.Http.AsyncHttpResponseHandler;
 import com.daoran.newfactory.onefactory.util.Http.HttpUrl;
@@ -175,7 +176,6 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     /*操作控件*/
     private void initViews() {
         rlAgainLogin.setOnClickListener(this);
-        rlEditionUpdate.setOnClickListener(this);
         tvVersion.setOnClickListener(this);
         rlClean.setOnClickListener(this);
         rlwifi.setOnClickListener(this);
@@ -194,20 +194,21 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         tvNewVersion.setText(vercode);
         boolean isAutoPlay = sp.getBoolean("truePushflag", true);//是否接受推送
         toggle_AutoPlay.setChecked(isAutoPlay);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) toggleButton_AutoPlay.getLayoutParams();
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)
+                toggleButton_AutoPlay.getLayoutParams();
         if (isAutoPlay) {//默认为开启状态
             params.addRule(RelativeLayout.ALIGN_RIGHT, -1);
             params.addRule(RelativeLayout.ALIGN_LEFT, R.id.toggleButton_AutoPlay);
             toggleButton_AutoPlay.setLayoutParams(params);
             toggleButton_AutoPlay.setImageResource(R.drawable.push_thumb);
             toggle_AutoPlay.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
-            JPushInterface.resumePush(mactivity.getApplicationContext());
+            JPushInterface.resumePush(mactivity.getApplicationContext());//重启推送
         } else {//关闭状态
             params.addRule(RelativeLayout.ALIGN_RIGHT, R.id.toggle_AutoPlay);
             params.addRule(RelativeLayout.ALIGN_LEFT, -1);
             toggleButton_AutoPlay.setLayoutParams(params);
             toggleButton_AutoPlay.setImageResource(R.drawable.push_thumb_off);
-            JPushInterface.stopPush(mactivity.getApplicationContext());
+            JPushInterface.stopPush(mactivity.getApplicationContext());//停止推送
         }
         setOnclick();
     }
@@ -254,9 +255,6 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 noticeDialog = builder1.create();
                 noticeDialog.setCanceledOnTouchOutside(false);
                 noticeDialog.show();
-                break;
-            /**/
-            case R.id.rlEditionUpdate:
                 break;
             /*版本更新*/
             case R.id.tvVersion:
@@ -345,9 +343,9 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 Intent intentrili = new Intent(mactivity, MonthActivity.class);
                 mactivity.startActivity(intentrili);
                 break;
-            /*用户管理*/
+            /*账号管理*/
             case R.id.rlcopyname:
-
+                startActivity(new Intent(mactivity, UserManagerActivity.class));
                 break;
         }
     }

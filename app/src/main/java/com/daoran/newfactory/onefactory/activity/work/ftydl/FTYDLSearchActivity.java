@@ -206,7 +206,7 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
     /*初始化查询全部数据*/
     private void setData() {
         String str = HttpUrl.debugoneUrl + "FactoryPlan/BindGridDailyAPP/";
-        setSPUtils();
+        setSPUtils();//dialog中填写的查询条件数据
         //如果查货跟踪传过来款号为空，则将dialog监听款号的信息传给变量，然后由变量进行查询
         if (productionleftItem.equals("")) {
             FTYDLSearchItem = FTYDLDialogItem;
@@ -226,14 +226,14 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
         Gson gson = new Gson();
         FTYDLSearchBean FTYDLSearchBean = new FTYDLSearchBean();
         FTYDLSearchBean.Conditions conditions = FTYDLSearchBean.new Conditions();
-        conditions.setItem(FTYDLSearchItem);
-        conditions.setPrddocumentary(FTYDLSearchName);
-        conditions.setSubfactory(FTYDLDialogFactory);
-        conditions.setWorkingProcedure(FTYDLDialogProcedure);
-        conditions.setPrddocumentaryisnull(stris);
+        conditions.setItem(FTYDLSearchItem);//款号
+        conditions.setPrddocumentary(FTYDLSearchName);//跟单
+        conditions.setSubfactory(FTYDLDialogFactory);//工厂
+        conditions.setWorkingProcedure(FTYDLDialogProcedure);//工序
+        conditions.setPrddocumentaryisnull(stris);//跟单是否可为空
         FTYDLSearchBean.setConditions(conditions);
-        FTYDLSearchBean.setPageNum(0);
-        FTYDLSearchBean.setPageSize(Integer.parseInt(ClumnsFTYDLPage));
+        FTYDLSearchBean.setPageNum(0);//初始页
+        FTYDLSearchBean.setPageSize(Integer.parseInt(ClumnsFTYDLPage));//每页显示的条目
         String gsonbeanStr = gson.toJson(FTYDLSearchBean);/*字符串转为json字符串*/
         if (NetWork.isNetWorkAvailable(this)) {
             final int finalGetsize = Integer.parseInt(ClumnsFTYDLPage);
@@ -255,20 +255,20 @@ public class FTYDLSearchActivity extends BaseFrangmentActivity
                             try {
                                 String ress = response.replace("\\", "");
                                 String ression = StringUtil.sideTrim(ress, "\"");
-                                detailBean = new Gson().fromJson(ression, FTYDLDailyBean.class);
+                                detailBean = new Gson().fromJson(ression, FTYDLDailyBean.class);//json解析为实体数据
                                 detailBeenList = detailBean.getData();
                                 if (detailBean.getTotalCount() != 0) {
                                     ll_visibi.setVisibility(View.GONE);
                                     scroll_content.setVisibility(View.VISIBLE);
                                     pageCount = detailBean.getTotalCount();
                                     String count = String.valueOf(pageCount / finalGetsize + 1);
-                                    tvSignPage.setText(count);
+                                    tvSignPage.setText(count);//当前计算的总页数
                                     mLeftAdapter = new FTYDLSearchLeftAdapter(
                                             FTYDLSearchActivity.this, detailBeenList);
                                     lv_pleft.setAdapter(mLeftAdapter);
                                     adapter = new FTYDLSearchAdapter(
                                             FTYDLSearchActivity.this, detailBeenList);
-                                    lv_data.setAdapter(adapter);
+                                    lv_data.setAdapter(adapter);//绑定数据源
                                     SetListener setListener = new SetListener();
                                     setListener.setFTYDLSearchLister(
                                             FTYDLSearchActivity.this,

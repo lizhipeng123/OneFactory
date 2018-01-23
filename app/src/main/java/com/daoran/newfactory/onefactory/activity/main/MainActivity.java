@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,12 +18,14 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.daoran.newfactory.onefactory.R;
+import com.daoran.newfactory.onefactory.activity.work.ftydl.FTYDLSearchActivity;
 import com.daoran.newfactory.onefactory.base.BaseFrangmentActivity;
 import com.daoran.newfactory.onefactory.bean.settingbean.TabHostBean;
 import com.daoran.newfactory.onefactory.fragment.InformationFragment;
 import com.daoran.newfactory.onefactory.fragment.OfficeFragment;
 import com.daoran.newfactory.onefactory.fragment.SetupFragment;
 import com.daoran.newfactory.onefactory.fragment.WorkFragment;
+import com.daoran.newfactory.onefactory.util.Http.sharedparams.SPUtils;
 import com.daoran.newfactory.onefactory.util.receiver.ExampleUtil;
 import com.daoran.newfactory.onefactory.view.fragment.FragmentTabHost;
 
@@ -42,13 +45,23 @@ public class MainActivity extends BaseFrangmentActivity {
     //    private DrawerFragment drawerFragment;
     //    private Fragment navigation_drawer;
     String idd;
+    private SharedPreferences sp;
+    private SPUtils spUtils;
     int id;
-
+    public static MainActivity  maininstance;//本页面实例
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);//加载主页面
-        id = getIntent().getIntExtra(idd, 0);//接收添加账号传过来的id以便刷新本页
+        maininstance = this;
+        sp = getSharedPreferences("my_sp",0);
+        idd = sp.getString("u_name_value","");
+        if(idd.equals("")){
+            id = 0;
+        }else{
+            id = Integer.parseInt(idd);
+        }
+//        id = getIntent().getIntExtra(idd, 0);//接收添加账号传过来的id以便刷新本页
         getViews();//调用实例化控件方法
     }
 

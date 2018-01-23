@@ -22,7 +22,7 @@
             android:paddingLeft="@dimen/dimen_30"
             android:paddingRight="@dimen/dimen_30"
             android:paddingTop="@dimen/dimen_30"
-            android:text="毕三军"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="@dimen/dimen_40sp" />
 
