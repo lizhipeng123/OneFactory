@@ -7,8 +7,6 @@
 
     <include
         android:id="@+id/rl_title_top"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_100"
         layout="@layout/item_title_toolbar"/>
 
     <View

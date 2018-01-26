@@ -17,6 +17,7 @@ import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -232,6 +233,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
     /*实例化控件*/
     private void getViews() {
         scrollviewSign = (ScrollView) findViewById(R.id.scrollviewSign);
+        tvSignAddress = (TextView) findViewById(R.id.tvSignAddress);
         ivSignBack = (ImageView) findViewById(R.id.ivSignBack);
         btnCount = (Button) findViewById(R.id.btnCount);
         btnSignOk = (LinearLayout) findViewById(R.id.btnSignOk);
@@ -289,7 +291,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String str = (String) spinnerfineTune.getSelectedItem();
                 spUtils.put(SignOpenActivity.this, "addressItem", str);
-                tvSignAddress = (TextView) findViewById(R.id.tvSignAddress);
                 tvSignAddress.setText(str);
                 Thread thread1 = new Thread(new Runnable() {
                     @Override
@@ -304,6 +305,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
                 });
                 thread1.start();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -469,38 +471,43 @@ public class SignOpenActivity extends BaseFrangmentActivity
             /*签到按钮，目前十分钟之内不能重复签到*/
             case R.id.btnSignOk:
                 sethideSoft(v);
-                long prolongtime = sp.getLong("prolongtime", 0);
-                int prolong = (int) prolongtime;
-                if (prolong == 0) {//第一次点击，初始化为本次单机的时间
-                    long time = System.currentTimeMillis() / 1000;//获取系统时间的10位的时间戳
-                    strprolong1 = formatData("yyyy-MM-dd HH:mm:ss", time);
-                    spUtils.put(SignOpenActivity.this, "prolongtime", time);
-                    getpicture();
+                if (TextUtils.isEmpty(tvSignAddress.getText())) {
+                    ToastUtils.ShowToastMessage("签到失败，请确认定位成功后再进行签到", this);
                     break;
                 } else {
-                    long time = System.currentTimeMillis() / 1000;//获取系统时间的10位的时间戳
-                    String strprolong = formatData("yyyy-MM-dd HH:mm:ss", time);
-                    String strpro = formatData("yyyy-MM-dd HH:mm:ss", prolongtime);
-                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    try {
-                        Date df1 = df.parse(strprolong);
-                        Date df2 = df.parse(strpro);
-                        long fiff = df1.getTime() - df2.getTime();
-                        long days = fiff / (1000 * 60 * 60 * 24);
-                        long hours = (fiff - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
-                        long minutes = (fiff - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);
-                        int minu = (int) minutes;
-                        if (minu < 5) {
-                            ToastUtils.ShowToastMessage("五分钟之内不能重复签到", SignOpenActivity.this);
-                            ResponseDialog.closeLoading();
-                        } else {
-                            getpicture();
-                            spUtils.put(SignOpenActivity.this, "prolongtime", time);
+                    long prolongtime = sp.getLong("prolongtime", 0);
+                    int prolong = (int) prolongtime;
+                    if (prolong == 0) {//第一次点击，初始化为本次单机的时间
+                        long time = System.currentTimeMillis() / 1000;//获取系统时间的10位的时间戳
+                        strprolong1 = formatData("yyyy-MM-dd HH:mm:ss", time);
+                        spUtils.put(SignOpenActivity.this, "prolongtime", time);
+                        getpicture();
+                        break;
+                    } else {
+                        long time = System.currentTimeMillis() / 1000;//获取系统时间的10位的时间戳
+                        String strprolong = formatData("yyyy-MM-dd HH:mm:ss", time);
+                        String strpro = formatData("yyyy-MM-dd HH:mm:ss", prolongtime);
+                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        try {
+                            Date df1 = df.parse(strprolong);
+                            Date df2 = df.parse(strpro);
+                            long fiff = df1.getTime() - df2.getTime();
+                            long days = fiff / (1000 * 60 * 60 * 24);//日
+                            long hours = (fiff - days * (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);//时
+                            long minutes = (fiff - days * (1000 * 60 * 60 * 24) - hours * (1000 * 60 * 60)) / (1000 * 60);//分
+                            int minu = (int) minutes;
+                            if (minu < 5) {
+                                ToastUtils.ShowToastMessage("五分钟之内不能重复签到", SignOpenActivity.this);
+                                ResponseDialog.closeLoading();
+                            } else {
+                                getpicture();
+                                spUtils.put(SignOpenActivity.this, "prolongtime", time);
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
                         }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                        break;
                     }
-                    break;
                 }
             case R.id.topBg:
                 break;
@@ -577,7 +584,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
         String picstr = sp.getString("picurl", "");
         String address = sp.getString("addressItem", "");
         if (NetWork.isNetWorkAvailable(this)) {
-            ResponseDialog.showLoading(this,"正在签到");
+            ResponseDialog.showLoading(this, "正在签到");
             OkHttpUtils.post()
                     .url(url)
                     .addParams("id", "")//id

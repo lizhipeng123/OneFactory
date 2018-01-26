@@ -55,7 +55,7 @@ public class MainActivity extends BaseFrangmentActivity {
         setContentView(R.layout.activity_main);//加载主页面
         maininstance = this;
         sp = getSharedPreferences("my_sp",0);
-        idd = sp.getString("u_name_value","");
+        idd = sp.getString("u_name_value","");//添加账号中的标志
         if(idd.equals("")){
             id = 0;
         }else{

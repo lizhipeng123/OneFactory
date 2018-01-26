@@ -147,7 +147,8 @@ public class WorkPwSwitchAdapter extends BaseAdapter {
                                 "commologinid", userBean.getLogid());//账号
                         Intent intent = new Intent(context, MainActivity.class);
                         Bundle bundle = new Bundle();//实例化传递参数的类（bundle是一个key-value对，传递时需要一一对应key值和value值）
-                        spUtils.put(context,"u_name_value","1");
+                        spUtils.put(context, "u_name_value", "1");
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//设置由不是activity的页面跳转别的activity
                         intent.putExtras(bundle);//将获取到的用户名传递到将要跳转的页面
                         context.startActivity(intent);
                         ResponseDialog.closeLoading();
