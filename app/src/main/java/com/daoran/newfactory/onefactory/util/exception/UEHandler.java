@@ -13,7 +13,7 @@ import java.io.PrintStream;
 /**
  * 创建时间：2017/12/11
  * 编写人：lizhipeng
- * 功能描述：
+ * 功能描述：android记录崩溃信息日志
  */
 
 public class UEHandler implements Thread.UncaughtExceptionHandler  {

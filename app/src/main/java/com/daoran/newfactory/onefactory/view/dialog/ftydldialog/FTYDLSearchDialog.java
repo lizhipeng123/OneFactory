@@ -87,7 +87,7 @@ public class FTYDLSearchDialog extends Dialog {
     private void initViews() {
         sp = content.getSharedPreferences("my_sp", 0);
         Window dialogWindow = this.getWindow();
-        WindowManager m = content.getWindowManager();
+        WindowManager m = content.getWindowManager();//获取当前页面设置信息
         Display display = m.getDefaultDisplay();
         WindowManager.LayoutParams p = dialogWindow.getAttributes();
         p.width = (int) (display.getWidth() * 0.8);
@@ -106,7 +106,7 @@ public class FTYDLSearchDialog extends Dialog {
             etprodialogRecode.setText("");
             etprodialogStyle.setText(productionleftItem);//填充款号到输入框
         }
-        String[] spinnerProcedure = content.getResources().getStringArray(R.array.Procedure);
+        String[] spinnerProcedure = content.getResources().getStringArray(R.array.Procedure);//加载资源文件中的信息资源转化为数组
         //填充工序资源信息到spinner中
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>
@@ -136,11 +136,11 @@ public class FTYDLSearchDialog extends Dialog {
 
             }
         });
-        etprodialogStyle.addTextChangedListener(textWatcher);
-        etprodialogFactory.addTextChangedListener(etprodialog);
-        etprodialogRecode.addTextChangedListener(etproRecode);
-        btnComfirm.setOnClickListener(mClickListener);
-        btnCancle.setOnClickListener(mCancleLinstener);
+        etprodialogStyle.addTextChangedListener(textWatcher);//监听款号
+        etprodialogFactory.addTextChangedListener(etprodialog);//监听工厂
+        etprodialogRecode.addTextChangedListener(etproRecode);//监听工序
+        btnComfirm.setOnClickListener(mClickListener);//监听确认按钮
+        btnCancle.setOnClickListener(mCancleLinstener);//监听取消按钮
         /*是否可空点击文本改变checkbox状态*/
         tvProDialogcheck.setOnClickListener(new View.OnClickListener() {
             @Override

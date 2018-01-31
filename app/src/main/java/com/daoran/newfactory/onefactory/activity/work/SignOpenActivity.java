@@ -9,6 +9,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorListener;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -85,7 +90,7 @@ import permissions.dispatcher.RuntimePermissions;
 public class SignOpenActivity extends BaseFrangmentActivity
         implements View.OnClickListener, PoiSearch.OnPoiSearchListener,
         LocationSource, AMapLocationListener, AMap.OnCameraChangeListener
-        , ActivityCompat.OnRequestPermissionsResultCallback {
+        , ActivityCompat.OnRequestPermissionsResultCallback, SensorEventListener {
     private MapView mapView;//地图控件
     private AMap aMap;//初始化地图控制器对象
     private AMapLocationClient mapLocationClient;//声明aMapLocationClient对象
@@ -126,6 +131,9 @@ public class SignOpenActivity extends BaseFrangmentActivity
     private SharedPreferences sp;//轻量级存储框架
     private SPUtils spUtils;
 
+    private SensorManager mSensorManager;
+    private Sensor mSensor;
+
     /*判断是否需要检测，防止不停的弹框*/
 //    private boolean isNeedCheck = true;
     private static final int msgKey1 = 1;
@@ -152,8 +160,11 @@ public class SignOpenActivity extends BaseFrangmentActivity
             myLocationStyle = new MyLocationStyle();
             myLocationStyle.strokeColor(Color.argb(0, 0, 0, 0));
             myLocationStyle.radiusFillColor(Color.argb(0, 0, 0, 0));
-            myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);
+            myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//设置小蓝点跟随设备移动
             aMap.setMyLocationStyle(myLocationStyle);
+            mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);//注册陀螺仪服务
+            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+            mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_UI);//监听位置变化
         }
         setUp();//设置显示的地图模式
         mMarkerOptions = new MarkerOptions();
@@ -163,6 +174,24 @@ public class SignOpenActivity extends BaseFrangmentActivity
         initViews();
         initSpinner();//初始化下拉控件并且加载数据
         SignOpenActivityPermissionsDispatcher.startLocationWithCheck(this);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ORIENTATION) {
+            float degree = event.values[0];
+            float bearing = aMap.getCameraPosition().bearing;
+            if (degree + bearing > 360) {
+                aMap.setMyLocationRotateAngle(degree + bearing - 360);//设置小蓝点旋转角度
+            } else {
+                aMap.setMyLocationRotateAngle(degree + bearing);
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 
     public class TimeThread extends Thread {
@@ -256,6 +285,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
         aMap.moveCamera(CameraUpdateFactory.zoomTo(17.5f));
     }
 
+
     /*遍历查询周边地址特征*/
     private void initSpinner() {
         final String[] str = new String[]{"默认的地址类型", "汽车服务", "汽车销售", "汽车维修",
@@ -339,30 +369,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
         SignOpenActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
-    /*显示提示信息*/
-    private void showMissingPermissionDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.notifyTitle);
-        builder.setMessage(R.string.notifyMsg);
-        // 拒绝, 退出应用
-        builder.setNegativeButton(R.string.cancel,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
-        builder.setPositiveButton(R.string.setting,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startAppSettings();
-                    }
-                });
-        builder.setCancelable(false);
-        builder.show();
-    }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -370,14 +376,6 @@ public class SignOpenActivity extends BaseFrangmentActivity
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    /*启动应用的设置*/
-    private void startAppSettings() {
-        Intent intent = new Intent(
-                Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse("package:" + getPackageName()));
-        startActivity(intent);
     }
 
     /*签到类型适配*/
@@ -577,11 +575,11 @@ public class SignOpenActivity extends BaseFrangmentActivity
     private void setSignSave() {
         String url = HttpUrl.debugoneUrl + "OutRegister/SaveBill/";
         sp = this.getSharedPreferences("my_sp", 0);
-        String recodername = sp.getString("name", "");
-        String userna = sp.getString("username", "");
-        String Latitude = sp.getString("latitude", "");
-        String languages = sp.getString("languages", "");
-        String picstr = sp.getString("picurl", "");
+        String recodername = sp.getString("name", "");//姓名
+        String userna = sp.getString("username", "");//账号id
+        String Latitude = sp.getString("latitude", "");//经纬度
+        String languages = sp.getString("languages", "");//签到类型
+        String picstr = sp.getString("picurl", "");//图片地址
         String address = sp.getString("addressItem", "");
         if (NetWork.isNetWorkAvailable(this)) {
             ResponseDialog.showLoading(this, "正在签到");
@@ -609,7 +607,7 @@ public class SignOpenActivity extends BaseFrangmentActivity
                         @Override
                         public void onResponse(String response, int id) {
                             try {
-                                String strresponse = String.valueOf(response.charAt(1));
+                                String strresponse = String.valueOf(response.charAt(1));//截取字符串
                                 if (strresponse.equals("1")) {
                                     ToastUtils.ShowToastMessage(R.string.signloadsuccess, SignOpenActivity.this);
                                 } else {

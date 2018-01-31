@@ -97,6 +97,12 @@ android {
         }
         ali {
             manifestPlaceholders = [APP_NAME: "dfAPP_ali", APP_CHANNEL: "ali"]
+            minSdkVersion 19
+            applicationId 'com.daoran.newfactory.onefactory'
+            targetSdkVersion 22
+            testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+            versionCode 1
+            versionName '1.0.0'
         }
         baidu {
             manifestPlaceholders = [APP_NAME: "dfAPP_baidu", APP_CHANNEL: "baidu"]

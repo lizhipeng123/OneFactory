@@ -33,6 +33,7 @@ public class StartActivity extends BaseFrangmentActivity {
         initViews();
     }
 
+    /*初始化信息*/
     private void initViews() {
         //判断是否登录过用户
         auto_login = PreferencesUtils.getString(this, Comfig.USERNAME)
@@ -46,6 +47,7 @@ public class StartActivity extends BaseFrangmentActivity {
         ivStart = (ImageView) findViewById(R.id.ivStart);
     }
 
+    /*已打开过app*/
     private void DelayToLogin(int time) {
         handler.postDelayed(new Runnable() {
             @Override
@@ -56,6 +58,7 @@ public class StartActivity extends BaseFrangmentActivity {
         }, time);
     }
 
+    /*第一次打开app*/
     private void DelayToLoginActivity(int time) {
         handler.postDelayed(new Runnable() {
             @Override

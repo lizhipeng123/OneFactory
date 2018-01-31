@@ -106,7 +106,6 @@ public class WorkFragment extends Fragment
                 case REFRESH_COMPLETE:
                     swipeRefreshLayout.setRefreshing(false);
                     setPhoneMenu();
-                    ToastUtils.ShowToastMessage("刷新了", getActivity());
                     break;
             }
         }
@@ -371,6 +370,5 @@ public class WorkFragment extends Fragment
     @Override
     public void onRefresh() {
         mHandler.sendEmptyMessageDelayed(REFRESH_COMPLETE, 1000);
-
     }
 }

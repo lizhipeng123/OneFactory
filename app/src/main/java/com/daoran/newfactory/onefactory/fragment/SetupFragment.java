@@ -116,8 +116,6 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     private static final int DOWN_UPDATE = 1;//下载中
     private static final int DOWN_OVER = 2;//下载完成
 
-    private static final int DIALOG_TYPE_LATEST = 0;
-    private static final int DIALOG_TYPE_FAIL = 1;
     protected int progress;
     protected String apkFileSize;//命名apk文件名称
     protected String tmpFileSize;//命名临时下载文件名称

@@ -94,7 +94,7 @@ public class PictureActivity extends BaseFrangmentActivity
         }
         if (!picPath.equals("")) {
             Intent intent = new Intent(this, PictureSelectActivity.class);
-            intent.putExtra("Pathpic", picPath);
+            intent.putExtra("Pathpic", picPath);//如果不为空，则传递地址到图片上传页面
             startActivity(intent);
         }
     }

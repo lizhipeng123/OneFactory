@@ -23,8 +23,8 @@ public class Comfig {
      */
     public static final String TOKEN = "token";
     public static String USERINFO = "userinfo";
-    public static final String USERNAME = "Login";
-    public static final String PASSWORD = "pwd";
+    public static final String USERNAME = "Login";//账号
+    public static final String PASSWORD = "pwd";//密码
 
     /**
      * 是否开启打印输出 true 开启打印输出 false 关闭打印输出,发布设置为flase
@@ -44,7 +44,7 @@ public class Comfig {
 
     public static String key = "token值";
 
-    public static int[] getGuiderResIds() {
+    public static int[] getGuiderResIds() {//首次进入的引导页
         return new int[]{R.drawable.welcome_01, R.drawable.welcome_02, R.drawable.welcome_03};
     }
 

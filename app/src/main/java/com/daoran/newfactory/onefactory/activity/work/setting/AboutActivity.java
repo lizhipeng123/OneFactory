@@ -55,7 +55,7 @@ public class AboutActivity extends BaseFrangmentActivity
         Picasso.with(AboutActivity.this)
                 .load(R.mipmap.daoran)
                 .error(R.mipmap.daoran)
-                .transform(new CropSquareTransformation())
+                .transform(new CropSquareTransformation() )
                 .into(ivAbout);
     }
 

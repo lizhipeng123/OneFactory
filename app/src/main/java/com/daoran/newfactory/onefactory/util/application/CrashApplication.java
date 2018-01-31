@@ -24,7 +24,7 @@ public class CrashApplication extends MultiDexApplication {
     /** "/data/data/<app_package>/files/error.log" */
     public static final String PATH_ERROR_LOG = File.separator + "data" + File.separator + "data"
             + File.separator + "com.daoran.newfactory.onefactory" + File.separator + "files" + File.separator
-            + "error.log";
+            + "error.log";//异常保存的文件地址
     /** 标识是否需要退出。为true时表示当前的Activity要执行finish()。 */
     private boolean need2Exit;
     /** 异常处理类。 */
@@ -34,16 +34,16 @@ public class CrashApplication extends MultiDexApplication {
     public void onCreate() {
         // TODO Auto-generated method stub
         super.onCreate();
-        Debug.startMethodTracing("OneFactory");
+        Debug.startMethodTracing("OneFactory");//开启debug记录日志
         Bugly.init(this, "52c746d40d", false);//腾讯分享口令
-        JPushInterface.setDebugMode(true);//设置开启日志，发布时关闭日志
+        JPushInterface.setDebugMode(true);//推送设置开启日志，发布时关闭日志
         JPushInterface.init(this);//初始化JPush
 //        CrashHandler crashHandler = CrashHandler.getInstance();
 //        crashHandler.init(getApplicationContext());
         need2Exit = false;
-        ueHandler = new UEHandler(this);
+        ueHandler = new UEHandler(this);//崩溃信息日志初始化
         Thread.setDefaultUncaughtExceptionHandler(ueHandler);
-        Debug.stopMethodTracing();
+        Debug.stopMethodTracing();//关闭debug
     }
 
     @Override

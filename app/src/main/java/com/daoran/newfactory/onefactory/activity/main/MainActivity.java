@@ -44,7 +44,7 @@ public class MainActivity extends BaseFrangmentActivity {
     private List<TabHostBean> mTabs = new ArrayList<>(4);//便签组
     //    private DrawerFragment drawerFragment;
     //    private Fragment navigation_drawer;
-    String idd;
+    String idvalue;
     private SharedPreferences sp;
     private SPUtils spUtils;
     int id;
@@ -55,11 +55,11 @@ public class MainActivity extends BaseFrangmentActivity {
         setContentView(R.layout.activity_main);//加载主页面
         maininstance = this;
         sp = getSharedPreferences("my_sp",0);
-        idd = sp.getString("u_name_value","");//添加账号中的标志
-        if(idd.equals("")){
+        idvalue = sp.getString("u_name_value","");//添加账号中的标志
+        if(idvalue.equals("")){
             id = 0;
         }else{
-            id = Integer.parseInt(idd);
+            id = Integer.parseInt(idvalue);
         }
 //        id = getIntent().getIntExtra(idd, 0);//接收添加账号传过来的id以便刷新本页
         getViews();//调用实例化控件方法
