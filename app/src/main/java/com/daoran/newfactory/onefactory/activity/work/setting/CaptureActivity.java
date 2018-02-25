@@ -82,7 +82,7 @@ public final class CaptureActivity extends Activity
     private static final int IMAGE = 1;
     private static final int REQUEST_CODE = 234;
     private ImageView ivBack;//返回图片按钮
-    private SurfaceView scanPreview = null;
+    private SurfaceView scanPreview = null;//表层的view对象(画布)
     private RelativeLayout scanContainer;//顶部标题之下的主页面
     private RelativeLayout scanCropView;//二维码扫描框
     private ImageView scanLine;//二维码扫描横杠
@@ -92,8 +92,9 @@ public final class CaptureActivity extends Activity
     private boolean isHasSurface = false;
     private Bitmap scanBitmap;//保存的图片类型
     private String imagePath;
-    boolean isOpenLight=false;
+    boolean isOpenLight = false;
 
+    /*创建线程*/
     public Handler getHandler() {
         return handler;
     }
@@ -159,7 +160,7 @@ public final class CaptureActivity extends Activity
      */
     private void photo() {
         Intent innerIntent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);//获取文件路径
         Intent wrapperIntent = Intent.createChooser(innerIntent, "选择二维码图片");
         CaptureActivity.this
                 .startActivityForResult(wrapperIntent, REQUEST_CODE);
@@ -216,13 +217,13 @@ public final class CaptureActivity extends Activity
                                             getApplicationContext());
                                     Looper.loop();
                                 } else {
-                                    String recode = recode(result.toString());
+                                    String recode = recode(result.toString());//返回值转化为字符串
                                     Bundle bundle = new Bundle();
                                     Intent data = new Intent();
-                                    bundle.putString("result", recode);
+                                    bundle.putString("result", recode);//传递到回调函数
                                     data.putExtras(bundle);
                                     CaptureActivity.this.setResult(RESULT_OK, data);
-                                    CaptureActivity.this.finish();
+                                    CaptureActivity.this.finish();//关闭当前页面
                                 }
                             }
                         }).start();
@@ -282,6 +283,7 @@ public final class CaptureActivity extends Activity
         return result;
     }
 
+    /*创建自定义接口*/
     public void onPermissionRequests(String permission,
                                      OnBooleanListener onBooleanListener) {
         onPermissionListener = onBooleanListener;
@@ -291,6 +293,7 @@ public final class CaptureActivity extends Activity
                 != PackageManager.PERMISSION_GRANTED) {
             // Should we show an explanation?
             Log.d("CoreActivity", "1");
+            //判断权限是否存在
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.READ_CONTACTS)) {
                 //权限已有
@@ -311,7 +314,7 @@ public final class CaptureActivity extends Activity
     @Override
     protected void onResume() {
         super.onResume();
-        cameraManager = new CameraManager(getApplication());
+        cameraManager = new CameraManager(getApplication());//开启相机相关操作
         handler = null;
         if (isHasSurface) {
             initCamera(scanPreview.getHolder());
@@ -343,7 +346,7 @@ public final class CaptureActivity extends Activity
     }
 
     @Override
-    public void surfaceCreated(SurfaceHolder holder) {
+    public void surfaceCreated(SurfaceHolder holder) {//surfaceView加载后调用此方法
         if (holder == null) {
             Log.e(TAG, "*** WARNING *** surfaceCreated() gave us a null surface!");
         }
@@ -474,9 +477,14 @@ public final class CaptureActivity extends Activity
         mCropRect = new Rect(x, y, width + x, height + y);
     }
 
+    /**
+     * 通过反射获取状态栏高度
+     *
+     * @return
+     */
     private int getStatusBarHeight() {
         try {
-            Class<?> c = Class.forName("com.android.internal.R$dimen");
+            Class<?> c = Class.forName("com.android.internal.R$dimen");//获取资源目录包
             Object obj = c.newInstance();
             Field field = c.getField("status_bar_height");
             int x = Integer.parseInt(field.get(obj).toString());
@@ -556,7 +564,7 @@ public final class CaptureActivity extends Activity
                     .canEncode(str);
             if (ISO) {
                 formart = new String(str.getBytes("ISO-8859-1"), "GB2312");
-                Log.i("1234      ISO8859-1", formart);
+                Log.i("1234      ISO-8859-1", formart);
             } else {
                 formart = str;
                 Log.i("1234      stringExtra", str);
@@ -611,13 +619,13 @@ public final class CaptureActivity extends Activity
     /**
      * 开关闪关灯
      */
-    public void switchLight(){
-        if(isOpenLight){
+    public void switchLight() {
+        if (isOpenLight) {//判断灯光是否开关
             cameraManager.offLight();
-        }else{
+        } else {
             cameraManager.openLight();
         }
-        isOpenLight=!isOpenLight;
+        isOpenLight = !isOpenLight;
     }
 
     @Override

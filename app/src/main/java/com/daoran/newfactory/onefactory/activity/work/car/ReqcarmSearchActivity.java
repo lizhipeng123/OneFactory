@@ -84,17 +84,17 @@ public class ReqcarmSearchActivity extends BaseListActivity implements View.OnCl
         sp = ReqcarmSearchActivity.this.getSharedPreferences("my_sp", 0);
         String datetime = sp.getString("ReqCarDateTime", "");//开始时间
         String endtime = sp.getString("ReqCarEndTime", "");//结束时间
-        String spinnerPosition = sp.getString("ReqCarState", "");
+        String spinnerPosition = sp.getString("ReqCarState", "");//审核状态
         if (NetWork.isNetWorkAvailable(this)) {
             ResponseDialog.showLoading(this,"正在查询");
             OkHttpUtils
                     .post()
                     .url(sqlcar)
-                    .addParams("start", datetime)
-                    .addParams("endtime", endtime)
-                    .addParams("title", spinnerPosition)
-                    .addParams("pageNum", pageIndex * 1 + "")
-                    .addParams("pageSize", "10")
+                    .addParams("start", datetime)//开始时间
+                    .addParams("endtime", endtime)//结束时间
+                    .addParams("title", spinnerPosition)//审核状态
+                    .addParams("pageNum", pageIndex * 1 + "")//初始页
+                    .addParams("pageSize", "10")//每次加载的数量
                     .build()
                     .execute(new StringCallback() {
                         @Override
@@ -122,9 +122,9 @@ public class ReqcarmSearchActivity extends BaseListActivity implements View.OnCl
                                 ll_visibi.setVisibility(View.GONE);
                                 listView.setVisibility(View.VISIBLE);
                                 dataBeenlist = carApplyBean.getData();
-                                setListData(carApplyBean.getData());
+                                setListData(dataBeenlist);//数据源绑定
                             } catch (JsonSyntaxException e) {
-                                setListData(new ArrayList());
+                                setListData(new ArrayList());//异常则返回空数据
                             } catch (Exception e) {
                                 setListData(new ArrayList());
                             }
@@ -152,8 +152,9 @@ public class ReqcarmSearchActivity extends BaseListActivity implements View.OnCl
     /*条件查询弹出输入框*/
     public void showEditDialog(View view) {
         dialog =
-                new ReqCarSearchDialog(this, R.style.dialogstyle, onClickListener, onCancleListener);
-        dialog.show();
+                new ReqCarSearchDialog(this,
+                        R.style.dialogstyle, onClickListener, onCancleListener);
+        dialog.show();//显示
         dialog.setCancelable(false);
     }
 

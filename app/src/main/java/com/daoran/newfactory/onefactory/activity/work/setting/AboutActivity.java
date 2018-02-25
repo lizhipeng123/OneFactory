@@ -52,6 +52,8 @@ public class AboutActivity extends BaseFrangmentActivity
     private void initViews(){
         String vercode = sp.getString("curVersionCode", "");
         tvCoreAbout.setText("V "+vercode);
+
+          
         Picasso.with(AboutActivity.this)
                 .load(R.mipmap.daoran)
                 .error(R.mipmap.daoran)

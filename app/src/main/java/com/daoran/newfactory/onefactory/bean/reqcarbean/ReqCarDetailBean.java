@@ -9,34 +9,34 @@ import java.io.Serializable;
 
 public class ReqCarDetailBean implements Serializable {
     private int id;//id唯一
-    private String code;//用车单编号
-    private String compytxt;
-    private String recordt;//申请时间
-    private String recorder;//申请人
-    private String recordid;//申请人id
-    private String handler;
-    private String handlid;
+    private String code;//用车单编号/单据号
+    private String compytxt;//公司名称
+    private String recordt;//申请时间/制单时间
+    private String recorder;//申请人/制单人
+    private String recordid;//申请人id/制单人id
+    private String handler;//经手人
+    private String handlid;//经手人id/采购人id
     private String appstatus;//审核状态
-    private String ctemp1;//明细款号
-    private String ctemp2;
-    private String isend;
-    private String isMsgCompleted;
-    private String assememo;
-    private String memo;
+    private String ctemp1;//明细客户款号
+    private String ctemp2;//明细，单据编号
+    private String isend;//是否结束
+    private String isMsgCompleted;//消息签字是否完成
+    private String assememo;//审核过程
+    private String memo;//备注
     private String road;//地点按时
-    private String withcarpsn;
+    private String withcarpsn;//随车人
     private String preoutdate;
     private String reason;//事由
     private String driver;
-    private String plateNumber;
-    private String departureDate;
+    private String plateNumber;//车牌
+    private String departureDate;//出车时间
     private String departureBdt;//预计出发日期
-    private String departureEdt;
-    private String bKG;
-    private String eKG;
-    private String curKG;
-    private String islong;
-    private String isrange;
+    private String departureEdt;//预计回来日期
+    private String bKG;//出发公里数
+    private String eKG;//结束公里数
+    private String curKG;//本次公里数
+    private String islong;//是否长途
+    private String isrange;//非公里数补贴范围
     private String roadamount;
     private String stopamount;
     private String authorizeamount;
@@ -56,7 +56,7 @@ public class ReqCarDetailBean implements Serializable {
     private String asseid5;
     private String asser5;
     private String assedat5;
-    private String printmemo;
+    private String printmemo;//打印备注
     private boolean isprivate;
 
     public int getId() {

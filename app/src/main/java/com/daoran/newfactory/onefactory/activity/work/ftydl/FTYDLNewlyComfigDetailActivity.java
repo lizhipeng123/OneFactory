@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -144,12 +145,12 @@ public class FTYDLNewlyComfigDetailActivity
             day19, day20, day21, day22, day23, day24, day25, day26, day27,
             day28, day29, day30, day31;
     private int position;
-    private FTYDLNewlyVerticalAdatper verticalAdatper;
+    private FTYDLNewlyVerticalAdatper verticalAdatper;//分色列表适配
     private List<FTYDLColSelectBean.Data> procaldataList
-            = new ArrayList<FTYDLColSelectBean.Data>();
+            = new ArrayList<FTYDLColSelectBean.Data>();//花色集合
 
     private List<FTYDLColCountBean.Data> procalbeanlist =
-            new ArrayList<FTYDLColCountBean.Data>();
+            new ArrayList<FTYDLColCountBean.Data>();//裁床情况，对应的数量及完工数集合
 
     private FTYDLFactoryDailyColBean newlyBuildDateBean;//初始化数据实体bean
     private List<FTYDLFactoryDailyColBean.DataBean> newdataBeans
@@ -163,7 +164,7 @@ public class FTYDLNewlyComfigDetailActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_production_config_vertical);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        setSpUtils(buildDataBean);
+        setSpUtils(buildDataBean);//获取数据
         getView();
         initView();
         setListener();
@@ -417,7 +418,7 @@ public class FTYDLNewlyComfigDetailActivity
             verticalAdatper = new FTYDLNewlyVerticalAdatper(
                     FTYDLNewlyComfigDetailActivity.this,
                     newdataBeans, procalbeanlist);
-            list_pro_config_vertical.setAdapter(verticalAdatper);
+            list_pro_config_vertical.setAdapter(verticalAdatper);//绑定数据
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -443,9 +444,9 @@ public class FTYDLNewlyComfigDetailActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 DatePicker datePicker = datePickerDialog.getDatePicker();
-                                int year = datePicker.getYear();
-                                int month = datePicker.getMonth();
-                                int day = datePicker.getDayOfMonth();
+                                int year = datePicker.getYear();//年
+                                int month = datePicker.getMonth();//月
+                                int day = datePicker.getDayOfMonth();//日
                                 String datetime = year + "/" + (month + 1) + "/" + day;
                                 tv_config_cutdate.setText(datetime);
                                 spUtils.put(getApplicationContext(),
@@ -475,7 +476,8 @@ public class FTYDLNewlyComfigDetailActivity
         final int MIN_MARK_OTHER = 0;
         final int MAX_MARK_OTHER = 200;
         //组别人数监听
-        et_config_others.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
+        et_config_others.setFilters(new InputFilter[]
+                {new InputFilter.LengthFilter(10)});//设置输入长度不能超过10位
         et_config_others.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

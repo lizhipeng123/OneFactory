@@ -16,4 +16,9 @@
         <attr name="bottomcircle_x" format="dimension"/>
         <attr name="bottomcircle_y" format="dimension"/>
     </declare-styleable>
+    <declare-styleable name="ShadowImageView">
+        <attr name="shadowRound" format="dimension" />
+        <attr name="shadowSrc" format="reference" />
+        <attr name="shadowColor" format="color" />
+    </declare-styleable>
 </resources>

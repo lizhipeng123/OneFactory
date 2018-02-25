@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 创建时间：2017/11/15
  * 编写人：lizhipeng
- * 功能描述：
+ * 功能描述：花色实体
  */
 
 public class FTYDLColSelectBean {

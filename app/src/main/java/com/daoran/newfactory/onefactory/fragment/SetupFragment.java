@@ -123,17 +123,18 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     protected String apkFilePath;//命名apk文件保存地址
     protected String tmpFilePath;//命名临时下载文件保存地址
 
-    private Dialog progressDialog;
-    private SharedPreferences sp;
+    private Dialog progressDialog;//弹窗
+    private SharedPreferences sp;//存储
     private SPUtils spUtils;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         mactivity = getActivity();
         view = inflater.inflate(R.layout.fragment_setup, container, false);
-        tbarSetup = (Toolbar) view.findViewById(R.id.tbarSetup);
-        tbarSetup.setTitle("");
+        tbarSetup = (Toolbar) view.findViewById(R.id.tbarSetup);//顶部菜单
+        tbarSetup.setTitle("");//标题
         getViews();
         initViews();
         return view;
@@ -212,7 +213,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setOnclick() {
-        //监听动画
+        //推送监听动画
         toggle_AutoPlay.setOnCheckedChangeListener(new ToggleLintener(mactivity,
                 "开启",
                 toggle_AutoPlay, toggleButton_AutoPlay));
@@ -237,22 +238,22 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                         , new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                startActivity(new Intent(getActivity(), LoginMainActivity.class));
-                                onProfileSignOff();
-                                dialog.dismiss();
-                                mactivity.finish();
+                                startActivity(new Intent(getActivity(), LoginMainActivity.class));//跳转登录页面
+                                onProfileSignOff();//关闭友盟服务
+                                dialog.dismiss();//关闭弹窗
+                                mactivity.finish();//销毁MainActivity页面
                             }
                         });
                 builder1.setNegativeButton("取消",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                                dialog.dismiss();//关闭弹窗
                             }
                         });
-                noticeDialog = builder1.create();
+                noticeDialog = builder1.create();//执行弹窗的运行方法
                 noticeDialog.setCanceledOnTouchOutside(false);
-                noticeDialog.show();
+                noticeDialog.show();//显示弹窗
                 break;
             /*版本更新*/
             case R.id.tvVersion:
@@ -268,7 +269,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 showClearDialog();
-                                dialog.dismiss();
+                                dialog.dismiss();//关闭弹窗
                             }
                         });
                 builder.setNegativeButton("取消",
@@ -499,25 +500,16 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void onSuccess(String content) {
                     super.onSuccess(content);
-                    System.out.print(content);
                     content = content.replace("{", "{\"");
-                    System.out.print(content);
                     content = content.replace("\'", "\"");
-                    System.out.print(content);
                     content = content.replace(",", ",\"");
-                    System.out.print(content);
                     content = content.replace(":\"", "\":\"");
-                    System.out.print(content);
                     String strfram = StringUtil.sideTrim(content, "\"");
-                    System.out.print(strfram);
                     try {
                         codeBean = new Gson().fromJson(strfram, VerCodeBean.class);
                         String vercode = codeBean.getVerCode();//版本号
-                        System.out.print(vercode);
                         String apkpath = codeBean.getApkPath();//版本地址
-                        System.out.print(apkpath);
                         String reason = codeBean.getReason();//版本说明
-                        System.out.print(reason);
                         spUtils.put(mactivity, "vercodeupdate", vercode);
                         spUtils.put(mactivity, "apkpath", apkpath);
                         spUtils.put(mactivity, "reason", reason);
@@ -584,7 +576,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
             });
             noticeDialog = builder.create();
             noticeDialog.setCanceledOnTouchOutside(false);
-            noticeDialog.show();
+            noticeDialog.show();//显示更新弹窗
         } else if (focuseUpdate == 1) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mactivity);
             builder.setTitle("软件版本更新");
@@ -629,6 +621,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         downloadApk();
     }
 
+    /*线程中的状态*/
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -636,11 +629,11 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                     mProgress.setProgress(progress);
                     mProgressText.setText(tmpFileSize + "/" + apkFileSize);
                     break;
-                case DOWN_OVER:
+                case DOWN_OVER://下载完毕
                     downloadDialog.dismiss();
                     installApk();
                     break;
-                case DOWN_NOSDCARD:
+                case DOWN_NOSDCARD://没有SD卡
                     downloadDialog.dismiss();
                     Toast.makeText(mactivity, "无法下载安装文件，请检查SD卡是否挂载",
                             Toast.LENGTH_SHORT).show();
@@ -657,9 +650,9 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         public void run() {
             try {
                 String apkName = "CLApp_"
-                        + "Dfapp" + ".apk";
+                        + "Dfapp" + ".apk";//文件名
                 String tmpApk = "CLApp_"
-                        + "Dfapp" + ".tmp";
+                        + "Dfapp" + ".tmp";//临时文件名
                 // 判断是否挂载了SD卡
                 String storageState = Environment.getExternalStorageState();
                 if (storageState.equals(Environment.MEDIA_MOUNTED)) {
@@ -667,10 +660,10 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                             .getAbsolutePath() + "/CL/Update/";
                     File file = new File(savePath);
                     if (!file.exists()) {
-                        file.mkdirs();
+                        file.mkdirs();//创建一层目录
                     }
-                    apkFilePath = savePath + apkName;
-                    tmpFilePath = savePath + tmpApk;
+                    apkFilePath = savePath + apkName;//保存的文件地址路径
+                    tmpFilePath = savePath + tmpApk;//临时的文件地址路径
                 }
                 // 没有挂载SD卡，无法下载文件
                 if (apkFilePath == null || apkFilePath == "") {
@@ -681,7 +674,7 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 // 是否已下载更新文件
                 if (ApkFile.exists()) {
                     downloadDialog.dismiss();
-                    installApk();
+                    installApk();//安装apk
                     return;
                 }
                 // 输出临时下载文件
@@ -693,15 +686,15 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                 HttpURLConnection conn = (HttpURLConnection) url
                         .openConnection();
                 conn.connect();
-                int length = conn.getContentLength();
-                InputStream is = conn.getInputStream();
+                int length = conn.getContentLength();//数据总长度
+                InputStream is = conn.getInputStream();//设置输入流
                 // 显示文件大小格式：2个小数点显示
                 DecimalFormat df = new DecimalFormat("0.00");
                 // 进度条下面显示的总文件大小
                 apkFileSize = df.format((float) length / 1024 / 1024) + "MB";
                 int count = 0;
                 byte buf[] = new byte[1024];
-                do {
+                do {//循环下载
                     int numread = is.read(buf);
                     count += numread;
                     // 进度条下面显示的当前下载文件大小
@@ -776,11 +769,11 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
 
     /*清除缓存*/
     private void showClearDialog() {
-        progressDialog = new Dialog(mactivity, R.style.CustomProgressDialog);
-        progressDialog.setContentView(R.layout.set_clearcache_dialog);
-        progressDialog.setCancelable(false);
+        progressDialog = new Dialog(mactivity, R.style.CustomProgressDialog);//初始化并且设置样式
+        progressDialog.setContentView(R.layout.set_clearcache_dialog);//设置页面xml
+        progressDialog.setCancelable(false);//点击外部界面无法使其消失
         progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);//背景为透明色
         TextView msg = (TextView) progressDialog.findViewById(R.id.message);
         Button cancelButton = (Button) progressDialog.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {

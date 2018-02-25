@@ -42,10 +42,10 @@ public class ReqCarmDetailActivity extends BaseFrangmentActivity
     private EditText etStartDataClick, etEndDataClick;
     private int id;
     private Spinner spinnerdriver, spinnerNumberBind;
-    private List<ReqCarDriverBindBean> bindBeen = new ArrayList<ReqCarDriverBindBean>();
-    private List<ReqCarNumberBindBean> bindBeencar = new ArrayList<ReqCarNumberBindBean>();
+    private List<ReqCarDriverBindBean> bindBeen = new ArrayList<ReqCarDriverBindBean>();//司机集合
+    private List<ReqCarNumberBindBean> bindBeencar = new ArrayList<ReqCarNumberBindBean>();//车牌集合
     private ReqCarDetailBean reqCarDetailBean;
-    private ImageView ivBack;
+    private ImageView ivBack;//返回按钮
     private TextView tvCarcode,//编号
             tvCarrecorder,//申请人
             tvCarroad,//地点
@@ -61,7 +61,6 @@ public class ReqCarmDetailActivity extends BaseFrangmentActivity
         getViews();
         initViews();
         setCardetail();
-        setListener();
         setDriverBind();
         setCarNumberBind();
     }
@@ -94,8 +93,6 @@ public class ReqCarmDetailActivity extends BaseFrangmentActivity
         ivBack.setOnClickListener(this);
     }
 
-    private void setListener() {}
-
     private void showEditClickPopupWindow() {
         WindowManager manager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         Display display = manager.getDefaultDisplay();
@@ -114,16 +111,14 @@ public class ReqCarmDetailActivity extends BaseFrangmentActivity
                 @Override
                 public void onSuccess(String content) {
                     super.onSuccess(content);
-                    System.out.print(content);
-                    reqCarDetailBean = new Gson().fromJson(content, ReqCarDetailBean.class);
-                    System.out.print(reqCarDetailBean);
-                    tvCarcode.setText(reqCarDetailBean.getCode());
-                    tvCarrecorder.setText(reqCarDetailBean.getRecorder());
-                    tvCarroad.setText(reqCarDetailBean.getRoad());
-                    tvCarrecordt.setText(reqCarDetailBean.getRecordt());
-                    tvCarreason.setText(reqCarDetailBean.getReason());
-                    tvCardepartureBdt.setText(reqCarDetailBean.getDepartureBdt());
-                    tvCardepartureEdt.setText(reqCarDetailBean.getDepartureEdt());
+                    reqCarDetailBean = new Gson().fromJson(content, ReqCarDetailBean.class);//json数据解析转换
+                    tvCarcode.setText(reqCarDetailBean.getCode());//用车单编号
+                    tvCarrecorder.setText(reqCarDetailBean.getRecorder());//制单人
+                    tvCarroad.setText(reqCarDetailBean.getRoad());//地点
+                    tvCarrecordt.setText(reqCarDetailBean.getRecordt());//制单时间
+                    tvCarreason.setText(reqCarDetailBean.getReason());//事由
+                    tvCardepartureBdt.setText(reqCarDetailBean.getDepartureBdt());//出发时间
+                    tvCardepartureEdt.setText(reqCarDetailBean.getDepartureEdt());//回来时间
                     ResponseDialog.closeLoading();
                 }
 
@@ -154,18 +149,15 @@ public class ReqCarmDetailActivity extends BaseFrangmentActivity
                 @Override
                 public void onSuccess(String content) {
                     super.onSuccess(content);
-                    System.out.print(content);
                     String ress = content.replace("\\", "");
-                    System.out.print(ress);
                     String ression = StringUtil.sideTrim(ress, "\"");
-                    System.out.print(ression);
                     bindBeen = JsonUtil.stringToList(ression, ReqCarDriverBindBean.class);
-                    System.out.print(bindBeen);
-                    String[] spinnerr = getResources().getStringArray(R.array.driver);
+                    String[] spinnerr = getResources().getStringArray(R.array.driver);//加载数据数组
                     ArrayAdapter<String> adapter = new
-                            ArrayAdapter<String>(ReqCarmDetailActivity.this, android.R.layout.simple_spinner_item, spinnerr);
+                            ArrayAdapter<String>(ReqCarmDetailActivity.this,
+                            android.R.layout.simple_spinner_item, spinnerr);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinnerdriver.setAdapter(adapter);
+                    spinnerdriver.setAdapter(adapter);//绑定数据源
                     spinnerdriver.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -206,13 +198,9 @@ public class ReqCarmDetailActivity extends BaseFrangmentActivity
                 @Override
                 public void onSuccess(String content) {
                     super.onSuccess(content);
-                    System.out.print(content);
                     String ress = content.replace("\\", "");
-                    System.out.print(ress);
                     String ression = StringUtil.sideTrim(ress, "\"");
-                    System.out.print(ression);
                     bindBeencar = JsonUtil.stringToList(ression, ReqCarNumberBindBean.class);
-                    System.out.print(bindBeencar);
                     String[] spinnerr = getResources().getStringArray(R.array.CarNumberBind);
                     ArrayAdapter<String> adapter = new
                             ArrayAdapter<String>(ReqCarmDetailActivity.this, android.R.layout.simple_spinner_item, spinnerr);
@@ -249,6 +237,7 @@ public class ReqCarmDetailActivity extends BaseFrangmentActivity
 
     /**
      * 获取SD可用容量
+     *
      * @param context
      * @return
      */
@@ -267,6 +256,7 @@ public class ReqCarmDetailActivity extends BaseFrangmentActivity
             case R.id.etStartDataClick:
                 showEditClickPopupWindow();
                 break;
+            /*返回*/
             case R.id.ivBack:
                 finish();
                 break;
